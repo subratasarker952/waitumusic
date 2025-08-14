@@ -1,0 +1,45 @@
+client:536  WebSocket connection to 'wss://e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/?token=xpMowm4pYpRT' failed: 
+setupWebSocket @ client:536
+(anonymous) @ client:531
+client:536  Uncaught (in promise) SyntaxError: Failed to construct 'WebSocket': The URL 'wss://localhost:undefined/?token=xpMowm4pYpRT' is invalid.
+    at setupWebSocket (client:536:19)
+    at fallback (client:509:16)
+    at WebSocket.<anonymous> (client:555:7)
+setupWebSocket @ client:536
+fallback @ client:509
+(anonymous) @ client:555
+[NEW] Explain Console errors by using Copilot in Edge: click
+         
+         to explain an error. 
+        Learn more
+        Don't show again
+main.tsx:26 ✅ React app mounted successfully
+workspace_iframe.html:1  Unrecognized feature: 'ambient-light-sensor'.
+workspace_iframe.html:1  Unrecognized feature: 'battery'.
+workspace_iframe.html:1  Unrecognized feature: 'execution-while-not-rendered'.
+workspace_iframe.html:1  Unrecognized feature: 'execution-while-out-of-viewport'.
+workspace_iframe.html:1  Unrecognized feature: 'layout-animations'.
+workspace_iframe.html:1  Unrecognized feature: 'legacy-image-formats'.
+workspace_iframe.html:1  Unrecognized feature: 'navigation-override'.
+workspace_iframe.html:1  Unrecognized feature: 'oversized-images'.
+workspace_iframe.html:1  Unrecognized feature: 'publickey-credentials'.
+workspace_iframe.html:1  Unrecognized feature: 'speaker-selection'.
+workspace_iframe.html:1  Unrecognized feature: 'unoptimized-images'.
+workspace_iframe.html:1  Unrecognized feature: 'unsized-media'.
+workspace_iframe.html:1  Allow attribute will take precedence over 'allowfullscreen'.
+workspace_iframe.html:1  Allow attribute will take precedence over 'allowpaymentrequest'.
+WaituMusicManager:1  Unrecognized feature: 'ambient-light-sensor'.
+WaituMusicManager:1  Unrecognized feature: 'battery'.
+WaituMusicManager:1  Unrecognized feature: 'execution-while-not-rendered'.
+WaituMusicManager:1  Unrecognized feature: 'execution-while-out-of-viewport'.
+WaituMusicManager:1  Unrecognized feature: 'layout-animations'.
+WaituMusicManager:1  Unrecognized feature: 'legacy-image-formats'.
+WaituMusicManager:1  Unrecognized feature: 'navigation-override'.
+WaituMusicManager:1  Unrecognized feature: 'oversized-images'.
+WaituMusicManager:1  Unrecognized feature: 'publickey-credentials'.
+WaituMusicManager:1  Unrecognized feature: 'speaker-selection'.
+WaituMusicManager:1  Unrecognized feature: 'unoptimized-images'.
+WaituMusicManager:1  Unrecognized feature: 'unsized-media'.
+WaituMusicManager:1  Unrecognized feature: 'pointer-lock'.
+WaituMusicManager:1  Allow attribute will take precedence over 'allowfullscreen'.
+WaituMusicManager:1  Allow attribute will take precedence over 'allowpaymentrequest'.

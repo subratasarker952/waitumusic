@@ -1,0 +1,301 @@
+ Browsing Topics API removed from https://replit.com/@waitumusic/WaituMusicManager which is main frame
+cdn.segment.com/v1/projects/dMePKGC4BqfBivpe0Hvl8IoPpzSHgjdX/settings:1   Failed to load resource: net::ERR_BLOCKED_BY_CLIENT
+index.ts:46  Failed to fetch
+(anonymous) @ index.ts:46
+standalone.ts:45  [analytics.js] Failed to load Analytics.js TypeError: Failed to fetch
+    at o (sdk.min.js:1:23763)
+    at index.ts:34:26
+    at tslib.es6.js:103:23
+    at Object.next (tslib.es6.js:108:37)
+    at tslib.es6.js:80:8
+    at new Promise (<anonymous>)
+    at u (tslib.es6.js:72:27)
+    at re (index.ts:239:4)
+    at index.ts:338:7
+(anonymous) @ standalone.ts:45
+api.segment.io/v1/m:1   Failed to load resource: net::ERR_BLOCKED_BY_CLIENT
+remote-metrics.ts:53  Error sending segment performance metrics TypeError: Failed to fetch
+    at o (sdk.min.js:1:23763)
+    at t.<anonymous> (remote-metrics.ts:138:12)
+    at tslib.es6.js:103:23
+    at Object.next (tslib.es6.js:108:37)
+    at tslib.es6.js:80:8
+    at new Promise (<anonymous>)
+    at u (tslib.es6.js:72:27)
+    at t.send (sdk.min.js:1:22021)
+    at t.<anonymous> (remote-metrics.ts:125:16)
+    at tslib.es6.js:103:23
+a @ remote-metrics.ts:53
+ stallwart: failed ping 1
+_app-4a8ba4289f8c8026.js:13 
+      /////////////////////
+   ///////////////////////////
+  ////////@@@@@@@//////////////
+  ////////@@@@@@@//////////////
+  ////////@@@@@@@//////////////        Curious and driven?
+  ///////////////@@@@@@@///////        Work with us!
+  ///////////////@@@@@@@///////
+  ///////////////@@@@@@@///////        https://join.replit.com/hack.with.us
+  ////////@@@@@@@//////////////
+  ////////@@@@@@@//////////////
+  ////////@@@@@@#//////////////
+   ///////////////////////////
+      /////////////////////
+      
+_app-4a8ba4289f8c8026.js:13 [LaunchDarkly] LaunchDarkly client initialized
+ Browsing Topics API removed from https://js.stripe.com/v3/controller-with-preconnect-5c13e60ebf28d1a65f6b7f907c813590.html#__shared_params__[version]=acacia&apiKey=pk_live_515YpNsJAmnYVOvfnsBqRdATWS6SzbNAslOz1z2tujdKuvRMDAwWMeFXp6dJL1YKRrQjB0WAp0UDGwlFYL7hxw7Fc00QkfxBFsL&apiVersion=2025-01-27.acacia&stripeJsId=d8326259-ba6b-4430-8325-c269013ac126&stripeObjId=sobj-afca6feb-abc5-4717-ae4f-eb94e64c68e4&firstStripeInstanceCreatedLatency=78&controllerCount=1&isCheckout=false&stripeJsLoadTime=1753877238419&manualBrowserDeprecationRollout=false&mids[guid]=NA&mids[muid]=ca9a3c25-0f65-4f56-98d2-91061691de398de85f&mids[sid]=09e3aed1-bd5f-4113-a626-a50d6eee1bcd938c4e&referrer=https%3A%2F%2Freplit.com%2F%40waitumusic%2FWaituMusicManager&controllerId=__privateStripeController7451 which is iframe
+WaituMusicManager:1  Tracking Prevention blocked access to storage for https://www.gravatar.com/avatar/a3be3e59cb36da8a00d29fe26d1575a9?d=blank&s=256.
+WaituMusicManager:1  Tracking Prevention blocked access to storage for https://www.gravatar.com/avatar/a3be3e59cb36da8a00d29fe26d1575a9?d=blank&s=256.
+WaituMusicManager:1  Tracking Prevention blocked access to storage for https://www.gravatar.com/avatar/a3be3e59cb36da8a00d29fe26d1575a9?d=blank&s=256.
+WaituMusicManager:1  Tracking Prevention blocked access to storage for https://www.gravatar.com/avatar/a3be3e59cb36da8a00d29fe26d1575a9?d=blank&s=256.
+  Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+_ @ framework-b78d8f0f1215c812.js:1
+  Unrecognized feature: 'ambient-light-sensor'.
+_ @ framework-b78d8f0f1215c812.js:1
+  Unrecognized feature: 'battery'.
+_ @ framework-b78d8f0f1215c812.js:1
+  Unrecognized feature: 'execution-while-not-rendered'.
+_ @ framework-b78d8f0f1215c812.js:1
+  Unrecognized feature: 'execution-while-out-of-viewport'.
+_ @ framework-b78d8f0f1215c812.js:1
+  Unrecognized feature: 'layout-animations'.
+_ @ framework-b78d8f0f1215c812.js:1
+  Unrecognized feature: 'legacy-image-formats'.
+_ @ framework-b78d8f0f1215c812.js:1
+  Unrecognized feature: 'navigation-override'.
+_ @ framework-b78d8f0f1215c812.js:1
+  Unrecognized feature: 'oversized-images'.
+_ @ framework-b78d8f0f1215c812.js:1
+  Unrecognized feature: 'publickey-credentials'.
+_ @ framework-b78d8f0f1215c812.js:1
+  Unrecognized feature: 'speaker-selection'.
+_ @ framework-b78d8f0f1215c812.js:1
+  Unrecognized feature: 'unoptimized-images'.
+_ @ framework-b78d8f0f1215c812.js:1
+  Unrecognized feature: 'unsized-media'.
+_ @ framework-b78d8f0f1215c812.js:1
+  Unrecognized feature: 'pointer-lock'.
+_ @ framework-b78d8f0f1215c812.js:1
+  Allow attribute will take precedence over 'allowfullscreen'.
+_ @ framework-b78d8f0f1215c812.js:1
+  Allow attribute will take precedence over 'allowpaymentrequest'.
+_ @ framework-b78d8f0f1215c812.js:1
+ Browsing Topics API removed from https://www.google.com/recaptcha/enterprise/anchor?ar=1&k=6LdqhwwoAAAAAFPdw8jCuvY3PaHQItGj3RzOS4fW&co=aHR0cHM6Ly9yZXBsaXQuY29tOjQ0Mw..&hl=en&v=ngcIAHyEnHQZZIKkyKneDTW3&size=invisible&anchor-ms=20000&execute-ms=15000&cb=5gpfa1rznhd9 which is iframe
+ Browsing Topics API removed from about:blank which is iframe
+ Browsing Topics API removed from about:blank which is iframe
+ Browsing Topics API removed from https://js.stripe.com/v3/m-outer-3437aaddcdf6922d623e172c2d6f9278.html#url=https%3A%2F%2Freplit.com%2F%40waitumusic%2FWaituMusicManager&title=WaituMusicManager%20-%20Replit&referrer=&muid=ca9a3c25-0f65-4f56-98d2-91061691de398de85f&sid=09e3aed1-bd5f-4113-a626-a50d6eee1bcd938c4e&version=6&preview=false&__shared_params__[version]=acacia which is iframe
+ Browsing Topics API removed from https://m.stripe.network/inner.html#url=https%3A%2F%2Freplit.com%2F%40waitumusic%2FWaituMusicManager&title=WaituMusicManager%20-%20Replit&referrer=&muid=ca9a3c25-0f65-4f56-98d2-91061691de398de85f&sid=09e3aed1-bd5f-4113-a626-a50d6eee1bcd938c4e&version=6&preview=false&__shared_params__[version]=acacia which is iframe
+WaituMusicManager:1 Banner not shown: beforeinstallpromptevent.preventDefault() called. The page must call beforeinstallpromptevent.prompt() to show the banner.
+events.launchdarkly.com/events/bulk/62b35a865152ab14c5942820:1   Failed to load resource: net::ERR_BLOCKED_BY_CLIENT
+events.launchdarkly.com/events/bulk/62b35a865152ab14c5942820:1   Failed to load resource: net::ERR_BLOCKED_BY_CLIENT
+events.launchdarkly.com/events/bulk/62b35a865152ab14c5942820:1   Failed to load resource: net::ERR_BLOCKED_BY_CLIENT
+events.launchdarkly.com/events/bulk/62b35a865152ab14c5942820:1   Failed to load resource: net::ERR_BLOCKED_BY_CLIENT
+  Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+_ @ framework-b78d8f0f1215c812.js:1
+  Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+_ @ framework-b78d8f0f1215c812.js:1
+workspace_iframe.html:32  Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+workspace_iframe.html:32  Unrecognized feature: 'ambient-light-sensor'.
+workspace_iframe.html:32  Unrecognized feature: 'battery'.
+workspace_iframe.html:32  Unrecognized feature: 'execution-while-not-rendered'.
+workspace_iframe.html:32  Unrecognized feature: 'execution-while-out-of-viewport'.
+workspace_iframe.html:32  Unrecognized feature: 'layout-animations'.
+workspace_iframe.html:32  Unrecognized feature: 'legacy-image-formats'.
+workspace_iframe.html:32  Unrecognized feature: 'navigation-override'.
+workspace_iframe.html:32  Unrecognized feature: 'oversized-images'.
+workspace_iframe.html:32  Unrecognized feature: 'publickey-credentials'.
+workspace_iframe.html:32  Unrecognized feature: 'speaker-selection'.
+workspace_iframe.html:32  Unrecognized feature: 'unoptimized-images'.
+workspace_iframe.html:32  Unrecognized feature: 'unsized-media'.
+workspace_iframe.html:32  Allow attribute will take precedence over 'allowfullscreen'.
+workspace_iframe.html:32  Allow attribute will take precedence over 'allowpaymentrequest'.
+ Browsing Topics API removed from https://e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/__replco/workspace_iframe.html?initialPath=%2F&id=%3Ar66%3A which is iframe
+ Browsing Topics API removed from about:blank which is iframe
+ Browsing Topics API removed from https://e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/ which is iframe
+  WebSocket connection to 'wss://e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/?token=nrlwBIrBB-LR' failed: 
+setupWebSocket @ client:536
+client:536  Uncaught (in promise) 
+ ✅ React app mounted successfully
+ 🔍 HIERARCHICAL DASHBOARD: User role debugging
+ 🔍 User object: Object
+ 🔍 user.roleId: 1
+ 🔍 Detected role: superadmin
+ 🔍 Accessible sections: 4
+ FRONTEND: Fetching booking workflow for ID 22
+ FRONTEND: Received booking data with primaryArtist: Object
+ USEEFFECT: Processing booking data: Object
+ USEEFFECT: Primary artist data: Object
+ USEEFFECT: Determined artist type: Managed Artist from userType: Managed Artist isManaged: true
+ USEEFFECT: Creating primary talent assignment: Object
+ DEBUG: Syncing stage legend talent/skills with band members
+ 🔄 TECHNICAL RIDER: Initializing band members
+ 🔄 Assigned musicians (props) count: 4
+ 🔄 Final assigned musicians (API) count: 4
+ 🔄 Will use: assignedMusicians (props)
+ 🔄 Using musician data source: assignedMusicians (props)
+ 🔄 Processing musician 1: Princess Trinidad
+ 🔄 Full musician data: Object
+ 🔄 Musician roleId: undefined talentType: Artist
+ 🔄 Membership determination: roleId undefined talentType: Artist type: Managed Artist isProfessional: false Result: BAND
+ 🔄 Role badge: Artist
+ 🔄 Membership: BAND
+ 🔄 Primary role: Lead Vocalist
+ 🎯 Building dropdown options for: Princess Trinidad
+ 🎯 Available profile data: Object
+ 🎯 Skills array contents: Array(1)
+ 🎯 Generated dropdown options: Array(4)
+ 🎯 Expected dropdown selection: Lead Vocalist
+ 🔄 Adding member 1: Princess Trinidad Membership: BAND
+ 🔄 Processing musician 2: Michael Rodriguez
+ 🔄 Full musician data: Object
+ 🔄 Musician roleId: undefined talentType: Artist
+ 🔄 Membership determination: roleId undefined talentType: Artist type: Musician isProfessional: false Result: BAND
+ 🔄 Role badge: Artist
+ 🔄 Membership: BAND
+ 🔄 Primary role: Drummer
+ 🎯 Building dropdown options for: Michael Rodriguez
+ 🎯 Available profile data: Object
+ 🎯 Skills array contents: Array(2)
+ 🎯 Generated dropdown options: Array(4)
+ 🎯 Expected dropdown selection: Drummer
+ 🔄 Adding member 2: Michael Rodriguez Membership: BAND
+ 🔄 Processing musician 3: Sophia Chen
+ 🔄 Full musician data: Object
+ 🔄 Musician roleId: undefined talentType: Artist
+ 🔄 Membership determination: roleId undefined talentType: Artist type: Musician isProfessional: false Result: BAND
+ 🔄 Role badge: Artist
+ 🔄 Membership: BAND
+ 🔄 Primary role: Bass Player
+ 🎯 Building dropdown options for: Sophia Chen
+ 🎯 Available profile data: Object
+ 🎯 Skills array contents: Array(2)
+ 🎯 Generated dropdown options: Array(3)
+ 🎯 Expected dropdown selection: Bass Player
+ 🔄 Adding member 3: Sophia Chen Membership: BAND
+ 🔄 Processing musician 4: Managed Musician Two
+ 🔄 Full musician data: Object
+ 🔄 Musician roleId: undefined talentType: Artist
+ 🔄 Membership determination: roleId undefined talentType: Artist type: Musician isProfessional: false Result: BAND
+ 🔄 Role badge: Artist
+ 🔄 Membership: BAND
+ 🔄 Primary role: Keyboardist
+ 🎯 Building dropdown options for: Managed Musician Two
+ 🎯 Available profile data: Object
+ 🎯 Skills array contents: Array(3)
+ 🎯 Generated dropdown options: Array(5)
+ 🎯 Expected dropdown selection: Keyboardist
+ 🔄 Adding member 4: Managed Musician Two Membership: BAND
+ 🔄 Total members added from API: 4
+ Sorting: Sophia Chen badge: Artist order: 7 vs Michael Rodriguez badge: Artist order: 7
+ Sorting: Managed Musician Two badge: Artist order: 7 vs Sophia Chen badge: Artist order: 7
+ Sorting: Mr Lindsay George badge: MANAGEMENT order: 999 vs Managed Musician Two badge: Artist order: 7
+ Sorting: Ms Joyette Pascal badge: MANAGEMENT order: 999 vs Mr Lindsay George badge: MANAGEMENT order: 999
+ 🔄 FINAL: Setting 6 band members
+The specified value "2025-07-28T04:00:00.000Z" does not conform to the required format, "yyyy-MM-dd".
+The specified value "2025-07-28T04:00:00.000Z" does not conform to the required format, "yyyy-MM-dd".
+The specified value "2025-07-28T04:00:00.000Z" does not conform to the required format, "yyyy-MM-dd".
+The specified value "2025-07-28T04:00:00.000Z" does not conform to the required format, "yyyy-MM-dd".
+The specified value "2025-07-28T04:00:00.000Z" does not conform to the required format, "yyyy-MM-dd".
+The specified value "2025-07-28T04:00:00.000Z" does not conform to the required format, "yyyy-MM-dd".
+ DEBUG: Syncing stage legend talent/skills with band members
+ 🔄 TECHNICAL RIDER: Initializing band members
+ 🔄 Assigned musicians (props) count: 4
+ 🔄 Final assigned musicians (API) count: 1
+ 🔄 Will use: assignedMusicians (props)
+ 🔄 Using musician data source: assignedMusicians (props)
+ 🔄 Processing musician 1: Princess Trinidad
+ 🔄 Full musician data: Object
+ 🔄 Musician roleId: undefined talentType: Artist
+ 🔄 Membership determination: roleId undefined talentType: Artist type: Managed Artist isProfessional: false Result: BAND
+ 🔄 Role badge: Artist
+ 🔄 Membership: BAND
+ 🔄 Primary role: Lead Vocalist
+ 🎯 Building dropdown options for: Princess Trinidad
+ 🎯 Available profile data: Object
+ 🎯 Skills array contents: Array(1)
+ 🎯 Generated dropdown options: Array(4)
+ 🎯 Expected dropdown selection: Lead Vocalist
+ 🔄 Adding member 1: Princess Trinidad Membership: BAND
+ 🔄 Processing musician 2: Michael Rodriguez
+ 🔄 Full musician data: Object
+ 🔄 Musician roleId: undefined talentType: Artist
+ 🔄 Membership determination: roleId undefined talentType: Artist type: Musician isProfessional: false Result: BAND
+ 🔄 Role badge: Artist
+ 🔄 Membership: BAND
+ 🔄 Primary role: Drummer
+ 🎯 Building dropdown options for: Michael Rodriguez
+ 🎯 Available profile data: Object
+ 🎯 Skills array contents: Array(2)
+ 🎯 Generated dropdown options: Array(4)
+ 🎯 Expected dropdown selection: Drummer
+ 🔄 Adding member 2: Michael Rodriguez Membership: BAND
+ 🔄 Processing musician 3: Sophia Chen
+ 🔄 Full musician data: Object
+ 🔄 Musician roleId: undefined talentType: Artist
+ 🔄 Membership determination: roleId undefined talentType: Artist type: Musician isProfessional: false Result: BAND
+ 🔄 Role badge: Artist
+ 🔄 Membership: BAND
+ 🔄 Primary role: Bass Player
+ 🎯 Building dropdown options for: Sophia Chen
+ 🎯 Available profile data: Object
+ 🎯 Skills array contents: Array(2)
+ 🎯 Generated dropdown options: Array(3)
+ 🎯 Expected dropdown selection: Bass Player
+ 🔄 Adding member 3: Sophia Chen Membership: BAND
+ 🔄 Processing musician 4: Managed Musician Two
+ 🔄 Full musician data: Object
+ 🔄 Musician roleId: undefined talentType: Artist
+ 🔄 Membership determination: roleId undefined talentType: Artist type: Musician isProfessional: false Result: BAND
+ 🔄 Role badge: Artist
+ 🔄 Membership: BAND
+ 🔄 Primary role: Keyboardist
+ 🎯 Building dropdown options for: Managed Musician Two
+ 🎯 Available profile data: Object
+ 🎯 Skills array contents: Array(3)
+ 🎯 Generated dropdown options: Array(5)
+ 🎯 Expected dropdown selection: Keyboardist
+ 🔄 Adding member 4: Managed Musician Two Membership: BAND
+ 🔄 Total members added from API: 4
+EnhancedTechnicalRider.tsx:842 Sorting: Sophia Chen badge: Artist order: 7 vs Michael Rodriguez badge: Artist order: 7
+EnhancedTechnicalRider.tsx:842 Sorting: Managed Musician Two badge: Artist order: 7 vs Sophia Chen badge: Artist order: 7
+EnhancedTechnicalRider.tsx:842 Sorting: Mr Lindsay George badge: MANAGEMENT order: 999 vs Managed Musician Two badge: Artist order: 7
+EnhancedTechnicalRider.tsx:842 Sorting: Ms Joyette Pascal badge: MANAGEMENT order: 999 vs Mr Lindsay George badge: MANAGEMENT order: 999
+EnhancedTechnicalRider.tsx:847 🔄 FINAL: Setting 6 band members
+EnhancedTechnicalRider.tsx:537 DEBUG: Syncing stage legend talent/skills with band members
+EnhancedTechnicalRider.tsx:2076 🎯 TALENT/SKILL CHANGE: Michael Rodriguez selected "Percussion"
+EnhancedTechnicalRider.tsx:2081 🎯 Updated band member musician-21 with selectedTalent: Percussion
+EnhancedTechnicalRider.tsx:2149 🎯 AUTO-ASSIGN: Assigning Michael Rodriguez to percussion channel perc-1
+EnhancedTechnicalRider.tsx:344 🎚️ Assigned channel perc-1 to Michael Rodriguez
+EnhancedTechnicalRider.tsx:2155 🎯 Talent/skill synchronization complete for Michael Rodriguez
+EnhancedTechnicalRider.tsx:2104 🎯 Stage legend after update: Array(0)
+EnhancedTechnicalRider.tsx:537 DEBUG: Syncing stage legend talent/skills with band members
+events.launchdarkly.com/events/bulk/62b35a865152ab14c5942820:1   Failed to load resource: net::ERR_BLOCKED_BY_CLIENT
+events.launchdarkly.com/events/bulk/62b35a865152ab14c5942820:1   Failed to load resource: net::ERR_BLOCKED_BY_CLIENT
+EnhancedTechnicalRider.tsx:2076 🎯 TALENT/SKILL CHANGE: Michael Rodriguez selected "Drummer"
+EnhancedTechnicalRider.tsx:2081 🎯 Updated band member musician-21 with selectedTalent: Drummer
+EnhancedTechnicalRider.tsx:2149 🎯 AUTO-ASSIGN: Assigning Michael Rodriguez to drums channel drum-1
+EnhancedTechnicalRider.tsx:344 🎚️ Assigned channel drum-1 to Michael Rodriguez
+EnhancedTechnicalRider.tsx:2155 🎯 Talent/skill synchronization complete for Michael Rodriguez
+EnhancedTechnicalRider.tsx:2104 🎯 Stage legend after update: Array(0)
+EnhancedTechnicalRider.tsx:537 DEBUG: Syncing stage legend talent/skills with band members
+EnhancedTechnicalRider.tsx:344 🎚️ Assigned channel drum-2 to Michael Rodriguez
+EnhancedTechnicalRider.tsx:344 🎚️ Assigned channel drum-3 to Michael Rodriguez
+EnhancedTechnicalRider.tsx:344 🎚️ Assigned channel drum-4 to Michael Rodriguez
+EnhancedTechnicalRider.tsx:344 🎚️ Assigned channel drum-5 to Michael Rodriguez
+EnhancedTechnicalRider.tsx:344 🎚️ Assigned channel drum-6 to Michael Rodriguez
+EnhancedTechnicalRider.tsx:344 🎚️ Assigned channel drum-7 to Michael Rodriguez
+EnhancedTechnicalRider.tsx:344 🎚️ Assigned channel drum-8 to Michael Rodriguez
+EnhancedTechnicalRider.tsx:344 🎚️ Assigned channel drum-9 to Michael Rodriguez
+EnhancedTechnicalRider.tsx:344 🎚️ Assigned channel drum-10 to Michael Rodriguez
+EnhancedTechnicalRider.tsx:344 🎚️ Assigned channel perc-1 to 
+EnhancedTechnicalRider.tsx:537 DEBUG: Syncing stage legend talent/skills with band members
+EnhancedTechnicalRider.tsx:537 DEBUG: Syncing stage legend talent/skills with band members
+EnhancedTechnicalRider.tsx:537 DEBUG: Syncing stage legend talent/skills with band members
+events.launchdarkly.com/events/bulk/62b35a865152ab14c5942820:1   Failed to load resource: net::ERR_BLOCKED_BY_CLIENT
+events.launchdarkly.com/events/bulk/62b35a865152ab14c5942820:1   Failed to load resource: net::ERR_BLOCKED_BY_CLIENT
+[NEW] Explain Console errors by using Copilot in Edge: click
+         
+         to explain an error. 
+        Learn more
+        Don't show again
+stallwart.build.js:1 stallwart: failed ping 1

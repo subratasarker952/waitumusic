@@ -1,0 +1,284 @@
+ComprehensiveBookingWorkflow.tsx:180 🔍 FRONTEND: Fetching assigned talent for booking ID: 1
+ComprehensiveBookingWorkflow.tsx:182 📋 FRONTEND: Received assigned talent data: (2) [{…}, {…}]
+ComprehensiveBookingWorkflow.tsx:224 📋 UPDATING assigned talent state: (2) [{…}, {…}]
+ComprehensiveBookingWorkflow.tsx:225 🔍 DETAILED DATA CHECK - First talent object: {id: 'assignment-2', userId: 6, name: 'Lí-Lí Octave', assignmentName: 'Lianne Letang(Lí-Lí Octave)', fullName: 'Lianne Letang', …}
+ComprehensiveBookingWorkflow.tsx:226 🔍 KEYS in first talent: (17) ['id', 'userId', 'name', 'assignmentName', 'fullName', 'stageName', 'type', 'role', 'isMainBookedTalent', 'isPrimary', 'talentType', 'primaryTalent', 'secondaryTalents', 'assignmentId', 'isOriginallyBooked', 'showAcceptDecline', 'showRemove']
+ComprehensiveBookingWorkflow.tsx:227 🔍 PRIMARY TALENT field: Lead Vocalist
+ComprehensiveBookingWorkflow.tsx:228 🔍 SECONDARY TALENTS field: []
+EnhancedTechnicalRider.tsx:811 DEBUG: Syncing stage legend talent/skills with band members
+EnhancedTechnicalRider.tsx:857 🔄 TECHNICAL RIDER: Initializing band members
+EnhancedTechnicalRider.tsx:858 🔄 Assigned musicians (props) count: 8
+EnhancedTechnicalRider.tsx:859 🔄 Final assigned musicians (API) count: 8
+EnhancedTechnicalRider.tsx:860 🔄 Will use: assignedMusicians (props)
+ 🔄 Using musician data source: assignedMusicians (props)
+ 🔄 Total members added from API: 8
+ Sorting: Maya Bass badge: managed_musician order: 7 vs Lí-Lí Octave badge: managed_artist order: 7
+ Sorting: Phoenix Chen badge: Artist order: 7 vs Indie Stone badge: Artist order: 7
+ Sorting: Storm Johnson badge: Artist order: 7 vs Phoenix Chen badge: Artist order: 7
+ Sorting: Session Brooks badge: Artist order: 7 vs Storm Johnson badge: Artist order: 7
+ Sorting: Sage Rodriguez badge: Artist order: 7 vs Session Brooks badge: Artist order: 7
+ Sorting: Freelance Gray badge: Artist order: 7 vs Sage Rodriguez badge: Artist order: 7
+EnhancedTechnicalRider.tsx:992 Sorting: Mr Lindsay George badge: MANAGEMENT order: 999 vs Freelance Gray badge: Artist order: 7
+EnhancedTechnicalRider.tsx:992 Sorting: Ms Joyette Pascal badge: MANAGEMENT order: 999 vs Mr Lindsay George badge: MANAGEMENT order: 999
+EnhancedTechnicalRider.tsx:997 🔄 FINAL: Setting 10 band members
+EnhancedTechnicalRider.tsx:722 🎯 DROPDOWN DEBUG - Member data: {name: 'Lí-Lí Octave', primaryTalent: 'Lead Vocalist', secondaryTalents: Array(0), hasPrimaryTalent: true, hasSecondaryTalents: false}
+EnhancedTechnicalRider.tsx:771 🎯 DROPDOWN DEBUG - Generated options: 1 [{…}]
+EnhancedTechnicalRider.tsx:722 🎯 DROPDOWN DEBUG - Member data: {name: 'Maya Bass', primaryTalent: 'Bass Player', secondaryTalents: Array(0), hasPrimaryTalent: true, hasSecondaryTalents: false}
+EnhancedTechnicalRider.tsx:771 🎯 DROPDOWN DEBUG - Generated options: 1 [{…}]
+EnhancedTechnicalRider.tsx:722 🎯 DROPDOWN DEBUG - Member data: {name: 'Indie Stone', primaryTalent: undefined, secondaryTalents: undefined, hasPrimaryTalent: false, hasSecondaryTalents: false}
+EnhancedTechnicalRider.tsx:760 ❌ DROPDOWN DEBUG - No talent options found for Indie Stone
+EnhancedTechnicalRider.tsx:771 🎯 DROPDOWN DEBUG - Generated options: 1 [{…}]
+EnhancedTechnicalRider.tsx:722 🎯 DROPDOWN DEBUG - Member data: {name: 'Phoenix Chen', primaryTalent: undefined, secondaryTalents: undefined, hasPrimaryTalent: false, hasSecondaryTalents: false}
+EnhancedTechnicalRider.tsx:760 ❌ DROPDOWN DEBUG - No talent options found for Phoenix Chen
+EnhancedTechnicalRider.tsx:771 🎯 DROPDOWN DEBUG - Generated options: 1 [{…}]
+EnhancedTechnicalRider.tsx:722 🎯 DROPDOWN DEBUG - Member data: {name: 'Storm Johnson', primaryTalent: undefined, secondaryTalents: undefined, hasPrimaryTalent: false, hasSecondaryTalents: false}
+EnhancedTechnicalRider.tsx:760 ❌ DROPDOWN DEBUG - No talent options found for Storm Johnson
+EnhancedTechnicalRider.tsx:771 🎯 DROPDOWN DEBUG - Generated options: 1 [{…}]
+EnhancedTechnicalRider.tsx:722 🎯 DROPDOWN DEBUG - Member data: {name: 'Session Brooks', primaryTalent: undefined, secondaryTalents: undefined, hasPrimaryTalent: false, hasSecondaryTalents: false}
+EnhancedTechnicalRider.tsx:760 ❌ DROPDOWN DEBUG - No talent options found for Session Brooks
+EnhancedTechnicalRider.tsx:771 🎯 DROPDOWN DEBUG - Generated options: 1 [{…}]
+EnhancedTechnicalRider.tsx:722 🎯 DROPDOWN DEBUG - Member data: {name: 'Sage Rodriguez', primaryTalent: undefined, secondaryTalents: undefined, hasPrimaryTalent: false, hasSecondaryTalents: false}
+EnhancedTechnicalRider.tsx:760 ❌ DROPDOWN DEBUG - No talent options found for Sage Rodriguez
+EnhancedTechnicalRider.tsx:771 🎯 DROPDOWN DEBUG - Generated options: 1 [{…}]
+EnhancedTechnicalRider.tsx:722 🎯 DROPDOWN DEBUG - Member data: {name: 'Freelance Gray', primaryTalent: undefined, secondaryTalents: undefined, hasPrimaryTalent: false, hasSecondaryTalents: false}
+EnhancedTechnicalRider.tsx:760 ❌ DROPDOWN DEBUG - No talent options found for Freelance Gray
+EnhancedTechnicalRider.tsx:771 🎯 DROPDOWN DEBUG - Generated options: 1 [{…}]
+EnhancedTechnicalRider.tsx:722 🎯 DROPDOWN DEBUG - Member data: {name: 'Mr Lindsay George', primaryTalent: undefined, secondaryTalents: undefined, hasPrimaryTalent: undefined, hasSecondaryTalents: undefined}
+EnhancedTechnicalRider.tsx:760 ❌ DROPDOWN DEBUG - No talent options found for Mr Lindsay George
+EnhancedTechnicalRider.tsx:771 🎯 DROPDOWN DEBUG - Generated options: 1 [{…}]
+EnhancedTechnicalRider.tsx:722 🎯 DROPDOWN DEBUG - Member data: {name: 'Ms Joyette Pascal', primaryTalent: undefined, secondaryTalents: undefined, hasPrimaryTalent: undefined, hasSecondaryTalents: undefined}
+EnhancedTechnicalRider.tsx:760 ❌ DROPDOWN DEBUG - No talent options found for Ms Joyette Pascal
+EnhancedTechnicalRider.tsx:771 🎯 DROPDOWN DEBUG - Generated options: 1 [{…}]
+EnhancedTechnicalRider.tsx:811 DEBUG: Syncing stage legend talent/skills with band members
+EnhancedTechnicalRider.tsx:722 🎯 DROPDOWN DEBUG - Member data: {name: 'Lí-Lí Octave', primaryTalent: 'Lead Vocalist', secondaryTalents: Array(0), hasPrimaryTalent: true, hasSecondaryTalents: false}
+EnhancedTechnicalRider.tsx:771 🎯 DROPDOWN DEBUG - Generated options: 1 [{…}]
+EnhancedTechnicalRider.tsx:722 🎯 DROPDOWN DEBUG - Member data: {name: 'Maya Bass', primaryTalent: 'Bass Player', secondaryTalents: Array(0), hasPrimaryTalent: true, hasSecondaryTalents: false}
+EnhancedTechnicalRider.tsx:771 🎯 DROPDOWN DEBUG - Generated options: 1 [{…}]
+EnhancedTechnicalRider.tsx:722 🎯 DROPDOWN DEBUG - Member data: {name: 'Indie Stone', primaryTalent: undefined, secondaryTalents: undefined, hasPrimaryTalent: false, hasSecondaryTalents: false}
+EnhancedTechnicalRider.tsx:760 ❌ DROPDOWN DEBUG - No talent options found for Indie Stone
+EnhancedTechnicalRider.tsx:771 🎯 DROPDOWN DEBUG - Generated options: 1 [{…}]
+EnhancedTechnicalRider.tsx:722 🎯 DROPDOWN DEBUG - Member data: {name: 'Phoenix Chen', primaryTalent: undefined, secondaryTalents: undefined, hasPrimaryTalent: false, hasSecondaryTalents: false}
+EnhancedTechnicalRider.tsx:760 ❌ DROPDOWN DEBUG - No talent options found for Phoenix Chen
+EnhancedTechnicalRider.tsx:771 🎯 DROPDOWN DEBUG - Generated options: 1 [{…}]
+EnhancedTechnicalRider.tsx:722 🎯 DROPDOWN DEBUG - Member data: {name: 'Storm Johnson', primaryTalent: undefined, secondaryTalents: undefined, hasPrimaryTalent: false, hasSecondaryTalents: false}
+EnhancedTechnicalRider.tsx:760 ❌ DROPDOWN DEBUG - No talent options found for Storm Johnson
+EnhancedTechnicalRider.tsx:771 🎯 DROPDOWN DEBUG - Generated options: 1 [{…}]
+EnhancedTechnicalRider.tsx:722 🎯 DROPDOWN DEBUG - Member data: {name: 'Session Brooks', primaryTalent: undefined, secondaryTalents: undefined, hasPrimaryTalent: false, hasSecondaryTalents: false}
+EnhancedTechnicalRider.tsx:760 ❌ DROPDOWN DEBUG - No talent options found for Session Brooks
+EnhancedTechnicalRider.tsx:771 🎯 DROPDOWN DEBUG - Generated options: 1 [{…}]
+EnhancedTechnicalRider.tsx:722 🎯 DROPDOWN DEBUG - Member data: {name: 'Sage Rodriguez', primaryTalent: undefined, secondaryTalents: undefined, hasPrimaryTalent: false, hasSecondaryTalents: false}
+EnhancedTechnicalRider.tsx:760 ❌ DROPDOWN DEBUG - No talent options found for Sage Rodriguez
+EnhancedTechnicalRider.tsx:771 🎯 DROPDOWN DEBUG - Generated options: 1 [{…}]
+EnhancedTechnicalRider.tsx:722 🎯 DROPDOWN DEBUG - Member data: {name: 'Freelance Gray', primaryTalent: undefined, secondaryTalents: undefined, hasPrimaryTalent: false, hasSecondaryTalents: false}
+EnhancedTechnicalRider.tsx:760 ❌ DROPDOWN DEBUG - No talent options found for Freelance Gray
+EnhancedTechnicalRider.tsx:771 🎯 DROPDOWN DEBUG - Generated options: 1 [{…}]
+EnhancedTechnicalRider.tsx:722 🎯 DROPDOWN DEBUG - Member data: {name: 'Mr Lindsay George', primaryTalent: undefined, secondaryTalents: undefined, hasPrimaryTalent: undefined, hasSecondaryTalents: undefined}
+EnhancedTechnicalRider.tsx:760 ❌ DROPDOWN DEBUG - No talent options found for Mr Lindsay George
+EnhancedTechnicalRider.tsx:771 🎯 DROPDOWN DEBUG - Generated options: 1 [{…}]
+EnhancedTechnicalRider.tsx:722 🎯 DROPDOWN DEBUG - Member data: {name: 'Ms Joyette Pascal', primaryTalent: undefined, secondaryTalents: undefined, hasPrimaryTalent: undefined, hasSecondaryTalents: undefined}
+EnhancedTechnicalRider.tsx:760 ❌ DROPDOWN DEBUG - No talent options found for Ms Joyette Pascal
+EnhancedTechnicalRider.tsx:771 🎯 DROPDOWN DEBUG - Generated options: 1 [{…}]
+EnhancedTechnicalRider.tsx:722 🎯 DROPDOWN DEBUG - Member data: {name: 'Lí-Lí Octave', primaryTalent: 'Lead Vocalist', secondaryTalents: Array(0), hasPrimaryTalent: true, hasSecondaryTalents: false}
+EnhancedTechnicalRider.tsx:771 🎯 DROPDOWN DEBUG - Generated options: 1 [{…}]
+EnhancedTechnicalRider.tsx:722 🎯 DROPDOWN DEBUG - Member data: {name: 'Maya Bass', primaryTalent: 'Bass Player', secondaryTalents: Array(0), hasPrimaryTalent: true, hasSecondaryTalents: false}
+EnhancedTechnicalRider.tsx:771 🎯 DROPDOWN DEBUG - Generated options: 1 [{…}]
+EnhancedTechnicalRider.tsx:722 🎯 DROPDOWN DEBUG - Member data: {name: 'Indie Stone', primaryTalent: undefined, secondaryTalents: undefined, hasPrimaryTalent: false, hasSecondaryTalents: false}
+EnhancedTechnicalRider.tsx:760 ❌ DROPDOWN DEBUG - No talent options found for Indie Stone
+EnhancedTechnicalRider.tsx:771 🎯 DROPDOWN DEBUG - Generated options: 1 [{…}]
+EnhancedTechnicalRider.tsx:722 🎯 DROPDOWN DEBUG - Member data: {name: 'Phoenix Chen', primaryTalent: undefined, secondaryTalents: undefined, hasPrimaryTalent: false, hasSecondaryTalents: false}
+EnhancedTechnicalRider.tsx:760 ❌ DROPDOWN DEBUG - No talent options found for Phoenix Chen
+ 🎯 DROPDOWN DEBUG - Generated options: 1 [{…}]
+ 🎯 DROPDOWN DEBUG - Member data: {name: 'Storm Johnson', primaryTalent: undefined, secondaryTalents: undefined, hasPrimaryTalent: false, hasSecondaryTalents: false}
+ ❌ DROPDOWN DEBUG - No talent options found for Storm Johnson
+ 🎯 DROPDOWN DEBUG - Generated options: 1 [{…}]
+ 🎯 DROPDOWN DEBUG - Member data: {name: 'Session Brooks', primaryTalent: undefined, secondaryTalents: undefined, hasPrimaryTalent: false, hasSecondaryTalents: false}
+ ❌ DROPDOWN DEBUG - No talent options found for Session Brooks
+ 🎯 DROPDOWN DEBUG - Generated options: 1 [{…}]
+ 🎯 DROPDOWN DEBUG - Member data: {name: 'Sage Rodriguez', primaryTalent: undefined, secondaryTalents: undefined, hasPrimaryTalent: false, hasSecondaryTalents: false}
+ ❌ DROPDOWN DEBUG - No talent options found for Sage Rodriguez
+ 🎯 DROPDOWN DEBUG - Generated options: 1 [{…}]
+ 🎯 DROPDOWN DEBUG - Member data: {name: 'Freelance Gray', primaryTalent: undefined, secondaryTalents: undefined, hasPrimaryTalent: false, hasSecondaryTalents: false}
+ ❌ DROPDOWN DEBUG - No talent options found for Freelance Gray
+ 🎯 DROPDOWN DEBUG - Generated options: 1 [{…}]
+ 🎯 DROPDOWN DEBUG - Member data: {name: 'Mr Lindsay George', primaryTalent: undefined, secondaryTalents: undefined, hasPrimaryTalent: undefined, hasSecondaryTalents: undefined}
+ ❌ DROPDOWN DEBUG - No talent options found for Mr Lindsay George
+ 🎯 DROPDOWN DEBUG - Generated options: 1 [{…}]
+ 🎯 DROPDOWN DEBUG - Member data: {name: 'Ms Joyette Pascal', primaryTalent: undefined, secondaryTalents: undefined, hasPrimaryTalent: undefined, hasSecondaryTalents: undefined}
+ ❌ DROPDOWN DEBUG - No talent options found for Ms Joyette Pascal
+ 🎯 DROPDOWN DEBUG - Generated options: 1 [{…}]
+ 🔄 TECHNICAL RIDER: Initializing band members
+ 🔄 Assigned musicians (props) count: 8
+ 🔄 Final assigned musicians (API) count: 2
+ 🔄 Will use: assignedMusicians (props)
+ 🔄 Using musician data source: assignedMusicians (props)
+ 🔄 Total members added from API: 8
+ Sorting: Maya Bass badge: managed_musician order: 7 vs Lí-Lí Octave badge: managed_artist order: 7
+ Sorting: Phoenix Chen badge: Artist order: 7 vs Indie Stone badge: Artist order: 7
+ Sorting: Storm Johnson badge: Artist order: 7 vs Phoenix Chen badge: Artist order: 7
+ Sorting: Session Brooks badge: Artist order: 7 vs Storm Johnson badge: Artist order: 7
+ Sorting: Sage Rodriguez badge: Artist order: 7 vs Session Brooks badge: Artist order: 7
+ Sorting: Freelance Gray badge: Artist order: 7 vs Sage Rodriguez badge: Artist order: 7
+ Sorting: Mr Lindsay George badge: MANAGEMENT order: 999 vs Freelance Gray badge: Artist order: 7
+ Sorting: Ms Joyette Pascal badge: MANAGEMENT order: 999 vs Mr Lindsay George badge: MANAGEMENT order: 999
+ 🔄 FINAL: Setting 10 band members
+ 🎯 DROPDOWN DEBUG - Member data: {name: 'Lí-Lí Octave', primaryTalent: 'Lead Vocalist', secondaryTalents: Array(0), hasPrimaryTalent: true, hasSecondaryTalents: false}
+ 🎯 DROPDOWN DEBUG - Generated options: 1 [{…}]
+ 🎯 DROPDOWN DEBUG - Member data: {name: 'Maya Bass', primaryTalent: 'Bass Player', secondaryTalents: Array(0), hasPrimaryTalent: true, hasSecondaryTalents: false}
+ 🎯 DROPDOWN DEBUG - Generated options: 1 [{…}]
+ 🎯 DROPDOWN DEBUG - Member data: {name: 'Indie Stone', primaryTalent: undefined, secondaryTalents: undefined, hasPrimaryTalent: false, hasSecondaryTalents: false}
+ ❌ DROPDOWN DEBUG - No talent options found for Indie Stone
+ 🎯 DROPDOWN DEBUG - Generated options: 1 [{…}]
+ 🎯 DROPDOWN DEBUG - Member data: {name: 'Phoenix Chen', primaryTalent: undefined, secondaryTalents: undefined, hasPrimaryTalent: false, hasSecondaryTalents: false}
+ ❌ DROPDOWN DEBUG - No talent options found for Phoenix Chen
+ 🎯 DROPDOWN DEBUG - Generated options: 1 [{…}]
+ 🎯 DROPDOWN DEBUG - Member data: {name: 'Storm Johnson', primaryTalent: undefined, secondaryTalents: undefined, hasPrimaryTalent: false, hasSecondaryTalents: false}
+ ❌ DROPDOWN DEBUG - No talent options found for Storm Johnson
+ 🎯 DROPDOWN DEBUG - Generated options: 1 [{…}]
+ 🎯 DROPDOWN DEBUG - Member data: {name: 'Session Brooks', primaryTalent: undefined, secondaryTalents: undefined, hasPrimaryTalent: false, hasSecondaryTalents: false}
+ ❌ DROPDOWN DEBUG - No talent options found for Session Brooks
+ 🎯 DROPDOWN DEBUG - Generated options: 1 [{…}]
+ 🎯 DROPDOWN DEBUG - Member data: {name: 'Sage Rodriguez', primaryTalent: undefined, secondaryTalents: undefined, hasPrimaryTalent: false, hasSecondaryTalents: false}
+ ❌ DROPDOWN DEBUG - No talent options found for Sage Rodriguez
+EnhancedTechnicalRider.tsx:771 🎯 DROPDOWN DEBUG - Generated options: 1 [{…}]
+EnhancedTechnicalRider.tsx:722 🎯 DROPDOWN DEBUG - Member data: {name: 'Freelance Gray', primaryTalent: undefined, secondaryTalents: undefined, hasPrimaryTalent: false, hasSecondaryTalents: false}
+EnhancedTechnicalRider.tsx:760 ❌ DROPDOWN DEBUG - No talent options found for Freelance Gray
+EnhancedTechnicalRider.tsx:771 🎯 DROPDOWN DEBUG - Generated options: 1 [{…}]
+EnhancedTechnicalRider.tsx:722 🎯 DROPDOWN DEBUG - Member data: {name: 'Mr Lindsay George', primaryTalent: undefined, secondaryTalents: undefined, hasPrimaryTalent: undefined, hasSecondaryTalents: undefined}
+EnhancedTechnicalRider.tsx:760 ❌ DROPDOWN DEBUG - No talent options found for Mr Lindsay George
+EnhancedTechnicalRider.tsx:771 🎯 DROPDOWN DEBUG - Generated options: 1 [{…}]
+EnhancedTechnicalRider.tsx:722 🎯 DROPDOWN DEBUG - Member data: {name: 'Ms Joyette Pascal', primaryTalent: undefined, secondaryTalents: undefined, hasPrimaryTalent: undefined, hasSecondaryTalents: undefined}
+EnhancedTechnicalRider.tsx:760 ❌ DROPDOWN DEBUG - No talent options found for Ms Joyette Pascal
+EnhancedTechnicalRider.tsx:771 🎯 DROPDOWN DEBUG - Generated options: 1 [{…}]
+EnhancedTechnicalRider.tsx:811 DEBUG: Syncing stage legend talent/skills with band members
+EnhancedTechnicalRider.tsx:722 🎯 DROPDOWN DEBUG - Member data: {name: 'Lí-Lí Octave', primaryTalent: 'Lead Vocalist', secondaryTalents: Array(0), hasPrimaryTalent: true, hasSecondaryTalents: false}
+EnhancedTechnicalRider.tsx:771 🎯 DROPDOWN DEBUG - Generated options: 1 [{…}]0: {value: 'Lead Vocalist', label: 'Lead Vocalist ⭐', color: 'blue', icon: '⭐', tier: 1, …}length: 1[[Prototype]]: Array(0)
+EnhancedTechnicalRider.tsx:722 🎯 DROPDOWN DEBUG - Member data: {name: 'Maya Bass', primaryTalent: 'Bass Player', secondaryTalents: Array(0), hasPrimaryTalent: true, hasSecondaryTalents: false}
+EnhancedTechnicalRider.tsx:771 🎯 DROPDOWN DEBUG - Generated options: 1 [{…}]
+EnhancedTechnicalRider.tsx:722 🎯 DROPDOWN DEBUG - Member data: {name: 'Indie Stone', primaryTalent: undefined, secondaryTalents: undefined, hasPrimaryTalent: false, hasSecondaryTalents: false}hasPrimaryTalent: falsehasSecondaryTalents: falsename: "Indie Stone"primaryTalent: undefinedsecondaryTalents: undefined[[Prototype]]: Object
+EnhancedTechnicalRider.tsx:760 ❌ DROPDOWN DEBUG - No talent options found for Indie Stone
+EnhancedTechnicalRider.tsx:771 🎯 DROPDOWN DEBUG - Generated options: 1 [{…}]
+EnhancedTechnicalRider.tsx:722 🎯 DROPDOWN DEBUG - Member data: {name: 'Phoenix Chen', primaryTalent: undefined, secondaryTalents: undefined, hasPrimaryTalent: false, hasSecondaryTalents: false}
+EnhancedTechnicalRider.tsx:760 ❌ DROPDOWN DEBUG - No talent options found for Phoenix Chen
+EnhancedTechnicalRider.tsx:771 🎯 DROPDOWN DEBUG - Generated options: 1 [{…}]
+EnhancedTechnicalRider.tsx:722 🎯 DROPDOWN DEBUG - Member data: {name: 'Storm Johnson', primaryTalent: undefined, secondaryTalents: undefined, hasPrimaryTalent: false, hasSecondaryTalents: false}
+EnhancedTechnicalRider.tsx:760 ❌ DROPDOWN DEBUG - No talent options found for Storm Johnson
+EnhancedTechnicalRider.tsx:771 🎯 DROPDOWN DEBUG - Generated options: 1 [{…}]
+EnhancedTechnicalRider.tsx:722 🎯 DROPDOWN DEBUG - Member data: {name: 'Session Brooks', primaryTalent: undefined, secondaryTalents: undefined, hasPrimaryTalent: false, hasSecondaryTalents: false}
+EnhancedTechnicalRider.tsx:760 ❌ DROPDOWN DEBUG - No talent options found for Session Brooks
+EnhancedTechnicalRider.tsx:771 🎯 DROPDOWN DEBUG - Generated options: 1 [{…}]
+EnhancedTechnicalRider.tsx:722 🎯 DROPDOWN DEBUG - Member data: {name: 'Sage Rodriguez', primaryTalent: undefined, secondaryTalents: undefined, hasPrimaryTalent: false, hasSecondaryTalents: false}
+EnhancedTechnicalRider.tsx:760 ❌ DROPDOWN DEBUG - No talent options found for Sage Rodriguez
+EnhancedTechnicalRider.tsx:771 🎯 DROPDOWN DEBUG - Generated options: 1 [{…}]
+EnhancedTechnicalRider.tsx:722 🎯 DROPDOWN DEBUG - Member data: {name: 'Freelance Gray', primaryTalent: undefined, secondaryTalents: undefined, hasPrimaryTalent: false, hasSecondaryTalents: false}hasPrimaryTalent: falsehasSecondaryTalents: falsename: "Freelance Gray"primaryTalent: undefinedsecondaryTalents: undefined[[Prototype]]: Object
+EnhancedTechnicalRider.tsx:760 ❌ DROPDOWN DEBUG - No talent options found for Freelance Gray
+EnhancedTechnicalRider.tsx:771 🎯 DROPDOWN DEBUG - Generated options: 1 [{…}]
+EnhancedTechnicalRider.tsx:722 🎯 DROPDOWN DEBUG - Member data: {name: 'Mr Lindsay George', primaryTalent: undefined, secondaryTalents: undefined, hasPrimaryTalent: undefined, hasSecondaryTalents: undefined}
+EnhancedTechnicalRider.tsx:760 ❌ DROPDOWN DEBUG - No talent options found for Mr Lindsay George
+EnhancedTechnicalRider.tsx:771 🎯 DROPDOWN DEBUG - Generated options: 1 [{…}]
+EnhancedTechnicalRider.tsx:722 🎯 DROPDOWN DEBUG - Member data: {name: 'Ms Joyette Pascal', primaryTalent: undefined, secondaryTalents: undefined, hasPrimaryTalent: undefined, hasSecondaryTalents: undefined}
+EnhancedTechnicalRider.tsx:760 ❌ DROPDOWN DEBUG - No talent options found for Ms Joyette Pascal
+EnhancedTechnicalRider.tsx:771 🎯 DROPDOWN DEBUG - Generated options: 1 [{…}]
+_app-790adb1aecb43abf.js:13   POST https://events.launchdarkly.com/events/bulk/62b35a865152ab14c5942820 net::ERR_BLOCKED_BY_CLIENT
+(anonymous) @ _app-790adb1aecb43abf.js:13
+(anonymous) @ _app-790adb1aecb43abf.js:13
+promise @ _app-790adb1aecb43abf.js:40
+(anonymous) @ _app-790adb1aecb43abf.js:40
+r.httpRequest @ _app-790adb1aecb43abf.js:40
+t @ _app-790adb1aecb43abf.js:40
+a.sendChunk @ _app-790adb1aecb43abf.js:40
+a.sendEvents @ _app-790adb1aecb43abf.js:40
+a.flush @ _app-790adb1aecb43abf.js:40
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+setTimeout
+(anonymous) @ _app-790adb1aecb43abf.js:13
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+setTimeout
+(anonymous) @ _app-790adb1aecb43abf.js:13
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+setTimeout
+(anonymous) @ _app-790adb1aecb43abf.js:13
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+setTimeout
+(anonymous) @ _app-790adb1aecb43abf.js:13
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+setTimeout
+(anonymous) @ _app-790adb1aecb43abf.js:13
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+setTimeout
+(anonymous) @ _app-790adb1aecb43abf.js:13
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+setTimeout
+(anonymous) @ _app-790adb1aecb43abf.js:13
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+setTimeout
+(anonymous) @ _app-790adb1aecb43abf.js:13
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+setTimeout
+(anonymous) @ _app-790adb1aecb43abf.js:13
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+[NEW] Explain Console errors by using Copilot in Edge: click
+         
+         to explain an error. 
+        Learn more
+        Don't show again
+_app-790adb1aecb43abf.js:13   POST https://events.launchdarkly.com/events/bulk/62b35a865152ab14c5942820 net::ERR_BLOCKED_BY_CLIENT
+(anonymous) @ _app-790adb1aecb43abf.js:13
+(anonymous) @ _app-790adb1aecb43abf.js:13
+promise @ _app-790adb1aecb43abf.js:40
+(anonymous) @ _app-790adb1aecb43abf.js:40
+r.httpRequest @ _app-790adb1aecb43abf.js:40
+t @ _app-790adb1aecb43abf.js:40
+(anonymous) @ _app-790adb1aecb43abf.js:40
+Promise.catch
+t @ _app-790adb1aecb43abf.js:40
+a.sendChunk @ _app-790adb1aecb43abf.js:40
+a.sendEvents @ _app-790adb1aecb43abf.js:40
+a.flush @ _app-790adb1aecb43abf.js:40
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+setTimeout
+(anonymous) @ _app-790adb1aecb43abf.js:13
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+setTimeout
+(anonymous) @ _app-790adb1aecb43abf.js:13
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+setTimeout
+(anonymous) @ _app-790adb1aecb43abf.js:13
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+setTimeout
+(anonymous) @ _app-790adb1aecb43abf.js:13
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+setTimeout
+(anonymous) @ _app-790adb1aecb43abf.js:13
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+setTimeout
+(anonymous) @ _app-790adb1aecb43abf.js:13
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+setTimeout
+(anonymous) @ _app-790adb1aecb43abf.js:13
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+setTimeout
+(anonymous) @ _app-790adb1aecb43abf.js:13
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+setTimeout
+(anonymous) @ _app-790adb1aecb43abf.js:13
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13

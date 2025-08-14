@@ -1,0 +1,79 @@
+ComprehensiveBookingWorkflow.tsx:149 FRONTEND: Fetching booking workflow for ID 1
+ComprehensiveBookingWorkflow.tsx:149 FRONTEND: Fetching booking workflow for ID 1
+ComprehensiveBookingWorkflow.tsx:149 FRONTEND: Fetching booking workflow for ID 1
+ComprehensiveBookingWorkflow.tsx:149 FRONTEND: Fetching booking workflow for ID 1
+ComprehensiveBookingWorkflow.tsx:151 FRONTEND: Received booking data with primaryArtist: {id: 6, email: 'lilioctave@waitumusic.com', passwordHash: '$2b$10$.Xea1Tvc8b7Oeegjy3gkP.kM6vyNLlu/G5Gh2BdbCYFlcYQ0ausBq', fullName: 'Lianne Letang', roleId: 3, …}
+ComprehensiveBookingWorkflow.tsx:151 FRONTEND: Received booking data with primaryArtist: {id: 6, email: 'lilioctave@waitumusic.com', passwordHash: '$2b$10$.Xea1Tvc8b7Oeegjy3gkP.kM6vyNLlu/G5Gh2BdbCYFlcYQ0ausBq', fullName: 'Lianne Letang', roleId: 3, …}
+ComprehensiveBookingWorkflow.tsx:151 FRONTEND: Received booking data with primaryArtist: {id: 6, email: 'lilioctave@waitumusic.com', passwordHash: '$2b$10$.Xea1Tvc8b7Oeegjy3gkP.kM6vyNLlu/G5Gh2BdbCYFlcYQ0ausBq', fullName: 'Lianne Letang', roleId: 3, …}
+ComprehensiveBookingWorkflow.tsx:151 FRONTEND: Received booking data with primaryArtist: {id: 6, email: 'lilioctave@waitumusic.com', passwordHash: '$2b$10$.Xea1Tvc8b7Oeegjy3gkP.kM6vyNLlu/G5Gh2BdbCYFlcYQ0ausBq', fullName: 'Lianne Letang', roleId: 3, …}
+ComprehensiveBookingWorkflow.tsx:149 FRONTEND: Fetching booking workflow for ID 1
+ComprehensiveBookingWorkflow.tsx:151 FRONTEND: Received booking data with primaryArtist: {id: 6, email: 'lilioctave@waitumusic.com', passwordHash: '$2b$10$.Xea1Tvc8b7Oeegjy3gkP.kM6vyNLlu/G5Gh2BdbCYFlcYQ0ausBq', fullName: 'Lianne Letang', roleId: 3, …}
+ComprehensiveBookingWorkflow.tsx:149 FRONTEND: Fetching booking workflow for ID 1
+ComprehensiveBookingWorkflow.tsx:151 FRONTEND: Received booking data with primaryArtist: {id: 6, email: 'lilioctave@waitumusic.com', passwordHash: '$2b$10$.Xea1Tvc8b7Oeegjy3gkP.kM6vyNLlu/G5Gh2BdbCYFlcYQ0ausBq', fullName: 'Lianne Letang', roleId: 3, …}
+ComprehensiveBookingWorkflow.tsx:149 FRONTEND: Fetching booking workflow for ID 1
+ComprehensiveBookingWorkflow.tsx:151 FRONTEND: Received booking data with primaryArtist: {id: 6, email: 'lilioctave@waitumusic.com', passwordHash: '$2b$10$.Xea1Tvc8b7Oeegjy3gkP.kM6vyNLlu/G5Gh2BdbCYFlcYQ0ausBq', fullName: 'Lianne Letang', roleId: 3, …}
+ComprehensiveBookingWorkflow.tsx:149 FRONTEND: Fetching booking workflow for ID 1
+ComprehensiveBookingWorkflow.tsx:151 FRONTEND: Received booking data with primaryArtist: {id: 6, email: 'lilioctave@waitumusic.com', passwordHash: '$2b$10$.Xea1Tvc8b7Oeegjy3gkP.kM6vyNLlu/G5Gh2BdbCYFlcYQ0ausBq', fullName: 'Lianne Letang', roleId: 3, …}
+ComprehensiveBookingWorkflow.tsx:149 FRONTEND: Fetching booking workflow for ID 1
+ComprehensiveBookingWorkflow.tsx:151 FRONTEND: Received booking data with primaryArtist: {id: 6, email: 'lilioctave@waitumusic.com', passwordHash: '$2b$10$.Xea1Tvc8b7Oeegjy3gkP.kM6vyNLlu/G5Gh2BdbCYFlcYQ0ausBq', fullName: 'Lianne Letang', roleId: 3, …}
+ComprehensiveBookingWorkflow.tsx:149 FRONTEND: Fetching booking workflow for ID 1
+ComprehensiveBookingWorkflow.tsx:151 FRONTEND: Received booking data with primaryArtist: {id: 6, email: 'lilioctave@waitumusic.com', passwordHash: '$2b$10$.Xea1Tvc8b7Oeegjy3gkP.kM6vyNLlu/G5Gh2BdbCYFlcYQ0ausBq', fullName: 'Lianne Letang', roleId: 3, …}
+ComprehensiveBookingWorkflow.tsx:149 FRONTEND: Fetching booking workflow for ID 1
+ComprehensiveBookingWorkflow.tsx:151 FRONTEND: Received booking data with primaryArtist: {id: 6, email: 'lilioctave@waitumusic.com', passwordHash: '$2b$10$.Xea1Tvc8b7Oeegjy3gkP.kM6vyNLlu/G5Gh2BdbCYFlcYQ0ausBq', fullName: 'Lianne Letang', roleId: 3, …}
+ComprehensiveBookingWorkflow.tsx:149 FRONTEND: Fetching booking workflow for ID 1
+ComprehensiveBookingWorkflow.tsx:151 FRONTEND: Received booking data with primaryArtist: {id: 6, email: 'lilioctave@waitumusic.com', passwordHash: '$2b$10$.Xea1Tvc8b7Oeegjy3gkP.kM6vyNLlu/G5Gh2BdbCYFlcYQ0ausBq', fullName: 'Lianne Letang', roleId: 3, …}
+ComprehensiveBookingWorkflow.tsx:149 FRONTEND: Fetching booking workflow for ID 1
+ComprehensiveBookingWorkflow.tsx:151 FRONTEND: Received booking data with primaryArtist: {id: 6, email: 'lilioctave@waitumusic.com', passwordHash: '$2b$10$.Xea1Tvc8b7Oeegjy3gkP.kM6vyNLlu/G5Gh2BdbCYFlcYQ0ausBq', fullName: 'Lianne Letang', roleId: 3, …}
+ComprehensiveBookingWorkflow.tsx:149 FRONTEND: Fetching booking workflow for ID 1
+ComprehensiveBookingWorkflow.tsx:151 FRONTEND: Received booking data with primaryArtist: {id: 6, email: 'lilioctave@waitumusic.com', passwordHash: '$2b$10$.Xea1Tvc8b7Oeegjy3gkP.kM6vyNLlu/G5Gh2BdbCYFlcYQ0ausBq', fullName: 'Lianne Letang', roleId: 3, …}
+ComprehensiveBookingWorkflow.tsx:149 FRONTEND: Fetching booking workflow for ID 1
+ComprehensiveBookingWorkflow.tsx:151 FRONTEND: Received booking data with primaryArtist: {id: 6, email: 'lilioctave@waitumusic.com', passwordHash: '$2b$10$.Xea1Tvc8b7Oeegjy3gkP.kM6vyNLlu/G5Gh2BdbCYFlcYQ0ausBq', fullName: 'Lianne Letang', roleId: 3, …}
+ComprehensiveBookingWorkflow.tsx:149 FRONTEND: Fetching booking workflow for ID 1
+ComprehensiveBookingWorkflow.tsx:151 FRONTEND: Received booking data with primaryArtist: {id: 6, email: 'lilioctave@waitumusic.com', passwordHash: '$2b$10$.Xea1Tvc8b7Oeegjy3gkP.kM6vyNLlu/G5Gh2BdbCYFlcYQ0ausBq', fullName: 'Lianne Letang', roleId: 3, …}
+ComprehensiveBookingWorkflow.tsx:149 FRONTEND: Fetching booking workflow for ID 1
+ComprehensiveBookingWorkflow.tsx:151 FRONTEND: Received booking data with primaryArtist: {id: 6, email: 'lilioctave@waitumusic.com', passwordHash: '$2b$10$.Xea1Tvc8b7Oeegjy3gkP.kM6vyNLlu/G5Gh2BdbCYFlcYQ0ausBq', fullName: 'Lianne Letang', roleId: 3, …}
+ComprehensiveBookingWorkflow.tsx:149 FRONTEND: Fetching booking workflow for ID 1
+ComprehensiveBookingWorkflow.tsx:149 FRONTEND: Fetching booking workflow for ID 1
+ComprehensiveBookingWorkflow.tsx:151 FRONTEND: Received booking data with primaryArtist: {id: 6, email: 'lilioctave@waitumusic.com', passwordHash: '$2b$10$.Xea1Tvc8b7Oeegjy3gkP.kM6vyNLlu/G5Gh2BdbCYFlcYQ0ausBq', fullName: 'Lianne Letang', roleId: 3, …}
+ComprehensiveBookingWorkflow.tsx:151 FRONTEND: Received booking data with primaryArtist: {id: 6, email: 'lilioctave@waitumusic.com', passwordHash: '$2b$10$.Xea1Tvc8b7Oeegjy3gkP.kM6vyNLlu/G5Gh2BdbCYFlcYQ0ausBq', fullName: 'Lianne Letang', roleId: 3, …}
+ComprehensiveBookingWorkflow.tsx:149 FRONTEND: Fetching booking workflow for ID 1
+ComprehensiveBookingWorkflow.tsx:149 FRONTEND: Fetching booking workflow for ID 1
+ComprehensiveBookingWorkflow.tsx:151 FRONTEND: Received booking data with primaryArtist: {id: 6, email: 'lilioctave@waitumusic.com', passwordHash: '$2b$10$.Xea1Tvc8b7Oeegjy3gkP.kM6vyNLlu/G5Gh2BdbCYFlcYQ0ausBq', fullName: 'Lianne Letang', roleId: 3, …}
+ComprehensiveBookingWorkflow.tsx:151 FRONTEND: Received booking data with primaryArtist: {id: 6, email: 'lilioctave@waitumusic.com', passwordHash: '$2b$10$.Xea1Tvc8b7Oeegjy3gkP.kM6vyNLlu/G5Gh2BdbCYFlcYQ0ausBq', fullName: 'Lianne Letang', roleId: 3, …}
+ComprehensiveBookingWorkflow.tsx:149 FRONTEND: Fetching booking workflow for ID 1
+ComprehensiveBookingWorkflow.tsx:151 FRONTEND: Received booking data with primaryArtist: {id: 6, email: 'lilioctave@waitumusic.com', passwordHash: '$2b$10$.Xea1Tvc8b7Oeegjy3gkP.kM6vyNLlu/G5Gh2BdbCYFlcYQ0ausBq', fullName: 'Lianne Letang', roleId: 3, …}
+ComprehensiveBookingWorkflow.tsx:149 FRONTEND: Fetching booking workflow for ID 1
+ComprehensiveBookingWorkflow.tsx:151 FRONTEND: Received booking data with primaryArtist: {id: 6, email: 'lilioctave@waitumusic.com', passwordHash: '$2b$10$.Xea1Tvc8b7Oeegjy3gkP.kM6vyNLlu/G5Gh2BdbCYFlcYQ0ausBq', fullName: 'Lianne Letang', roleId: 3, …}
+ComprehensiveBookingWorkflow.tsx:149 FRONTEND: Fetching booking workflow for ID 1
+ComprehensiveBookingWorkflow.tsx:149 FRONTEND: Fetching booking workflow for ID 1
+ComprehensiveBookingWorkflow.tsx:151 FRONTEND: Received booking data with primaryArtist: {id: 6, email: 'lilioctave@waitumusic.com', passwordHash: '$2b$10$.Xea1Tvc8b7Oeegjy3gkP.kM6vyNLlu/G5Gh2BdbCYFlcYQ0ausBq', fullName: 'Lianne Letang', roleId: 3, …}
+ComprehensiveBookingWorkflow.tsx:151 FRONTEND: Received booking data with primaryArtist: {id: 6, email: 'lilioctave@waitumusic.com', passwordHash: '$2b$10$.Xea1Tvc8b7Oeegjy3gkP.kM6vyNLlu/G5Gh2BdbCYFlcYQ0ausBq', fullName: 'Lianne Letang', roleId: 3, …}
+ComprehensiveBookingWorkflow.tsx:149 FRONTEND: Fetching booking workflow for ID 1
+ComprehensiveBookingWorkflow.tsx:151 FRONTEND: Received booking data with primaryArtist: {id: 6, email: 'lilioctave@waitumusic.com', passwordHash: '$2b$10$.Xea1Tvc8b7Oeegjy3gkP.kM6vyNLlu/G5Gh2BdbCYFlcYQ0ausBq', fullName: 'Lianne Letang', roleId: 3, …}
+ComprehensiveBookingWorkflow.tsx:149 FRONTEND: Fetching booking workflow for ID 1
+ComprehensiveBookingWorkflow.tsx:149 FRONTEND: Fetching booking workflow for ID 1
+ComprehensiveBookingWorkflow.tsx:151 FRONTEND: Received booking data with primaryArtist: {id: 6, email: 'lilioctave@waitumusic.com', passwordHash: '$2b$10$.Xea1Tvc8b7Oeegjy3gkP.kM6vyNLlu/G5Gh2BdbCYFlcYQ0ausBq', fullName: 'Lianne Letang', roleId: 3, …}
+ComprehensiveBookingWorkflow.tsx:151 FRONTEND: Received booking data with primaryArtist: {id: 6, email: 'lilioctave@waitumusic.com', passwordHash: '$2b$10$.Xea1Tvc8b7Oeegjy3gkP.kM6vyNLlu/G5Gh2BdbCYFlcYQ0ausBq', fullName: 'Lianne Letang', roleId: 3, …}
+ComprehensiveBookingWorkflow.tsx:149 FRONTEND: Fetching booking workflow for ID 1
+ComprehensiveBookingWorkflow.tsx:151 FRONTEND: Received booking data with primaryArtist: {id: 6, email: 'lilioctave@waitumusic.com', passwordHash: '$2b$10$.Xea1Tvc8b7Oeegjy3gkP.kM6vyNLlu/G5Gh2BdbCYFlcYQ0ausBq', fullName: 'Lianne Letang', roleId: 3, …}
+ComprehensiveBookingWorkflow.tsx:149 FRONTEND: Fetching booking workflow for ID 1
+ComprehensiveBookingWorkflow.tsx:149 FRONTEND: Fetching booking workflow for ID 1
+ComprehensiveBookingWorkflow.tsx:151 FRONTEND: Received booking data with primaryArtist: {id: 6, email: 'lilioctave@waitumusic.com', passwordHash: '$2b$10$.Xea1Tvc8b7Oeegjy3gkP.kM6vyNLlu/G5Gh2BdbCYFlcYQ0ausBq', fullName: 'Lianne Letang', roleId: 3, …}
+ComprehensiveBookingWorkflow.tsx:149 FRONTEND: Fetching booking workflow for ID 1
+ComprehensiveBookingWorkflow.tsx:151 FRONTEND: Received booking data with primaryArtist: {id: 6, email: 'lilioctave@waitumusic.com', passwordHash: '$2b$10$.Xea1Tvc8b7Oeegjy3gkP.kM6vyNLlu/G5Gh2BdbCYFlcYQ0ausBq', fullName: 'Lianne Letang', roleId: 3, …}
+ComprehensiveBookingWorkflow.tsx:149 FRONTEND: Fetching booking workflow for ID 1
+ComprehensiveBookingWorkflow.tsx:151 FRONTEND: Received booking data with primaryArtist: {id: 6, email: 'lilioctave@waitumusic.com', passwordHash: '$2b$10$.Xea1Tvc8b7Oeegjy3gkP.kM6vyNLlu/G5Gh2BdbCYFlcYQ0ausBq', fullName: 'Lianne Letang', roleId: 3, …}
+ComprehensiveBookingWorkflow.tsx:149 FRONTEND: Fetching booking workflow for ID 1
+ComprehensiveBookingWorkflow.tsx:151 FRONTEND: Received booking data with primaryArtist: {id: 6, email: 'lilioctave@waitumusic.com', passwordHash: '$2b$10$.Xea1Tvc8b7Oeegjy3gkP.kM6vyNLlu/G5Gh2BdbCYFlcYQ0ausBq', fullName: 'Lianne Letang', roleId: 3, …}
+ComprehensiveBookingWorkflow.tsx:151 FRONTEND: Received booking data with primaryArtist: {id: 6, email: 'lilioctave@waitumusic.com', passwordHash: '$2b$10$.Xea1Tvc8b7Oeegjy3gkP.kM6vyNLlu/G5Gh2BdbCYFlcYQ0ausBq', fullName: 'Lianne Letang', roleId: 3, …}
+ComprehensiveBookingWorkflow.tsx:149 FRONTEND: Fetching booking workflow for ID 1
+ComprehensiveBookingWorkflow.tsx:151 FRONTEND: Received booking data with primaryArtist: {id: 6, email: 'lilioctave@waitumusic.com', passwordHash: '$2b$10$.Xea1Tvc8b7Oeegjy3gkP.kM6vyNLlu/G5Gh2BdbCYFlcYQ0ausBq', fullName: 'Lianne Letang', roleId: 3, …}
+ComprehensiveBookingWorkflow.tsx:149 FRONTEND: Fetching booking workflow for ID 1
+ComprehensiveBookingWorkflow.tsx:149 FRONTEND: Fetching booking workflow for ID 1
+ComprehensiveBookingWorkflow.tsx:151 FRONTEND: Received booking data with primaryArtist: {id: 6, email: 'lilioctave@waitumusic.com', passwordHash: '$2b$10$.Xea1Tvc8b7Oeegjy3gkP.kM6vyNLlu/G5Gh2BdbCYFlcYQ0ausBq', fullName: 'Lianne Letang', roleId: 3, …}
+ComprehensiveBookingWorkflow.tsx:149 FRONTEND: Fetching booking workflow for ID 1
+ComprehensiveBookingWorkflow.tsx:151 FRONTEND: Received booking data with primaryArtist: {id: 6, email: 'lilioctave@waitumusic.com', passwordHash: '$2b$10$.Xea1Tvc8b7Oeegjy3gkP.kM6vyNLlu/G5Gh2BdbCYFlcYQ0ausBq', fullName: 'Lianne Letang', roleId: 3, …}
+ComprehensiveBookingWorkflow.tsx:151 FRONTEND: Received booking data with primaryArtist: {id: 6, email: 'lilioctave@waitumusic.com', passwordHash: '$2b$10$.Xea1Tvc8b7Oeegjy3gkP.kM6vyNLlu/G5Gh2BdbCYFlcYQ0ausBq', fullName: 'Lianne Letang', roleId: 3, …}
+ComprehensiveBookingWorkflow.tsx:149 FRONTEND: Fetching booking workflow for ID 1
+ComprehensiveBookingWorkflow.tsx:151 FRONTEND: Received booking data with primaryArtist: {id: 6, email: 'lilioctave@waitumusic.com', passwordHash: '$2b$10$.Xea1Tvc8b7Oeegjy3gkP.kM6vyNLlu/G5Gh2BdbCYFlcYQ0ausBq', fullName: 'Lianne Letang', roleId: 3, …}
+ComprehensiveBookingWorkflow.tsx:149 FRONTEND: Fetching booking workflow for ID 1

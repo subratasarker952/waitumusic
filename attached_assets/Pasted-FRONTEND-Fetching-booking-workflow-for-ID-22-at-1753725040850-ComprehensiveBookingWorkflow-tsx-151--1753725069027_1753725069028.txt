@@ -1,0 +1,77 @@
+FRONTEND: Fetching booking workflow for ID 22 at 1753725040850
+ComprehensiveBookingWorkflow.tsx:151 FRONTEND: Received booking data: {id: 22, bookerUserId: null, primaryArtistUserId: 19, eventName: 'dffdfdfdfdfd', eventType: 'wedding', …}
+ComprehensiveBookingWorkflow.tsx:149 FRONTEND: Fetching booking workflow for ID 22 at 1753725041241
+ComprehensiveBookingWorkflow.tsx:149 FRONTEND: Fetching booking workflow for ID 22 at 1753725041370
+ComprehensiveBookingWorkflow.tsx:149 FRONTEND: Fetching booking workflow for ID 22 at 1753725041548
+ComprehensiveBookingWorkflow.tsx:151 FRONTEND: Received booking data: {id: 22, bookerUserId: null, primaryArtistUserId: 19, eventName: 'dffdfdfdfdfd', eventType: 'wedding', …}
+ComprehensiveBookingWorkflow.tsx:151 FRONTEND: Received booking data: {id: 22, bookerUserId: null, primaryArtistUserId: 19, eventName: 'dffdfdfdfdfd', eventType: 'wedding', …}
+ComprehensiveBookingWorkflow.tsx:151 FRONTEND: Received booking data: {id: 22, bookerUserId: null, primaryArtistUserId: 19, eventName: 'dffdfdfdfdfd', eventType: 'wedding', …}
+ComprehensiveBookingWorkflow.tsx:149 FRONTEND: Fetching booking workflow for ID 22 at 1753725041757
+ComprehensiveBookingWorkflow.tsx:151 FRONTEND: Received booking data: {id: 22, bookerUserId: null, primaryArtistUserId: 19, eventName: 'dffdfdfdfdfd', eventType: 'wedding', …}
+ComprehensiveBookingWorkflow.tsx:149 FRONTEND: Fetching booking workflow for ID 22 at 1753725041966
+ComprehensiveBookingWorkflow.tsx:151 FRONTEND: Received booking data: {id: 22, bookerUserId: null, primaryArtistUserId: 19, eventName: 'dffdfdfdfdfd', eventType: 'wedding', …}
+ComprehensiveBookingWorkflow.tsx:149 FRONTEND: Fetching booking workflow for ID 22 at 1753725042201
+ComprehensiveBookingWorkflow.tsx:151 FRONTEND: Received booking data: {id: 22, bookerUserId: null, primaryArtistUserId: 19, eventName: 'dffdfdfdfdfd', eventType: 'wedding', …}
+ComprehensiveBookingWorkflow.tsx:149 FRONTEND: Fetching booking workflow for ID 22 at 1753725042431
+ComprehensiveBookingWorkflow.tsx:151 FRONTEND: Received booking data: {id: 22, bookerUserId: null, primaryArtistUserId: 19, eventName: 'dffdfdfdfdfd', eventType: 'wedding', …}
+ComprehensiveBookingWorkflow.tsx:149 FRONTEND: Fetching booking workflow for ID 22 at 1753725042662
+ComprehensiveBookingWorkflow.tsx:151 FRONTEND: Received booking data: {id: 22, bookerUserId: null, primaryArtistUserId: 19, eventName: 'dffdfdfdfdfd', eventType: 'wedding', …}
+ComprehensiveBookingWorkflow.tsx:149 FRONTEND: Fetching booking workflow for ID 22 at 1753725042887
+ComprehensiveBookingWorkflow.tsx:151 FRONTEND: Received booking data: {id: 22, bookerUserId: null, primaryArtistUserId: 19, eventName: 'dffdfdfdfdfd', eventType: 'wedding', …}
+ComprehensiveBookingWorkflow.tsx:149 FRONTEND: Fetching booking workflow for ID 22 at 1753725043110
+ComprehensiveBookingWorkflow.tsx:151 FRONTEND: Received booking data: {id: 22, bookerUserId: null, primaryArtistUserId: 19, eventName: 'dffdfdfdfdfd', eventType: 'wedding', …}
+ComprehensiveBookingWorkflow.tsx:149 FRONTEND: Fetching booking workflow for ID 22 at 1753725043332
+ComprehensiveBookingWorkflow.tsx:151 FRONTEND: Received booking data: {id: 22, bookerUserId: null, primaryArtistUserId: 19, eventName: 'dffdfdfdfdfd', eventType: 'wedding', …}
+ComprehensiveBookingWorkflow.tsx:149 FRONTEND: Fetching booking workflow for ID 22 at 1753725043550
+ComprehensiveBookingWorkflow.tsx:151 FRONTEND: Received booking data: {id: 22, bookerUserId: null, primaryArtistUserId: 19, eventName: 'dffdfdfdfdfd', eventType: 'wedding', …}
+ComprehensiveBookingWorkflow.tsx:149 FRONTEND: Fetching booking workflow for ID 22 at 1753725043787
+ComprehensiveBookingWorkflow.tsx:151 FRONTEND: Received booking data: {id: 22, bookerUserId: null, primaryArtistUserId: 19, eventName: 'dffdfdfdfdfd', eventType: 'wedding', …}
+ComprehensiveBookingWorkflow.tsx:149 FRONTEND: Fetching booking workflow for ID 22 at 1753725044029
+ComprehensiveBookingWorkflow.tsx:151 FRONTEND: Received booking data: {id: 22, bookerUserId: null, primaryArtistUserId: 19, eventName: 'dffdfdfdfdfd', eventType: 'wedding', …}
+ComprehensiveBookingWorkflow.tsx:149 FRONTEND: Fetching booking workflow for ID 22 at 1753725044310
+ComprehensiveBookingWorkflow.tsx:151 FRONTEND: Received booking data: {id: 22, bookerUserId: null, primaryArtistUserId: 19, eventName: 'dffdfdfdfdfd', eventType: 'wedding', …}
+ComprehensiveBookingWorkflow.tsx:149 FRONTEND: Fetching booking workflow for ID 22 at 1753725044531
+ComprehensiveBookingWorkflow.tsx:151 FRONTEND: Received booking data: {id: 22, bookerUserId: null, primaryArtistUserId: 19, eventName: 'dffdfdfdfdfd', eventType: 'wedding', …}
+ComprehensiveBookingWorkflow.tsx:149 FRONTEND: Fetching booking workflow for ID 22 at 1753725044744
+ComprehensiveBookingWorkflow.tsx:151 FRONTEND: Received booking data: {id: 22, bookerUserId: null, primaryArtistUserId: 19, eventName: 'dffdfdfdfdfd', eventType: 'wedding', …}
+ComprehensiveBookingWorkflow.tsx:149 FRONTEND: Fetching booking workflow for ID 22 at 1753725044957
+ComprehensiveBookingWorkflow.tsx:151 FRONTEND: Received booking data: {id: 22, bookerUserId: null, primaryArtistUserId: 19, eventName: 'dffdfdfdfdfd', eventType: 'wedding', …}
+ComprehensiveBookingWorkflow.tsx:149 FRONTEND: Fetching booking workflow for ID 22 at 1753725045169
+ComprehensiveBookingWorkflow.tsx:151 FRONTEND: Received booking data: {id: 22, bookerUserId: null, primaryArtistUserId: 19, eventName: 'dffdfdfdfdfd', eventType: 'wedding', …}
+ComprehensiveBookingWorkflow.tsx:149 FRONTEND: Fetching booking workflow for ID 22 at 1753725045371
+ComprehensiveBookingWorkflow.tsx:151 FRONTEND: Received booking data: {id: 22, bookerUserId: null, primaryArtistUserId: 19, eventName: 'dffdfdfdfdfd', eventType: 'wedding', …}
+ComprehensiveBookingWorkflow.tsx:149 FRONTEND: Fetching booking workflow for ID 22 at 1753725045598
+ComprehensiveBookingWorkflow.tsx:151 FRONTEND: Received booking data: {id: 22, bookerUserId: null, primaryArtistUserId: 19, eventName: 'dffdfdfdfdfd', eventType: 'wedding', …}
+ComprehensiveBookingWorkflow.tsx:149 FRONTEND: Fetching booking workflow for ID 22 at 1753725045813
+ComprehensiveBookingWorkflow.tsx:151 FRONTEND: Received booking data: {id: 22, bookerUserId: null, primaryArtistUserId: 19, eventName: 'dffdfdfdfdfd', eventType: 'wedding', …}
+ComprehensiveBookingWorkflow.tsx:149 FRONTEND: Fetching booking workflow for ID 22 at 1753725046024
+ComprehensiveBookingWorkflow.tsx:151 FRONTEND: Received booking data: {id: 22, bookerUserId: null, primaryArtistUserId: 19, eventName: 'dffdfdfdfdfd', eventType: 'wedding', …}
+ComprehensiveBookingWorkflow.tsx:149 FRONTEND: Fetching booking workflow for ID 22 at 1753725046229
+ComprehensiveBookingWorkflow.tsx:151 FRONTEND: Received booking data: {id: 22, bookerUserId: null, primaryArtistUserId: 19, eventName: 'dffdfdfdfdfd', eventType: 'wedding', …}
+ComprehensiveBookingWorkflow.tsx:149 FRONTEND: Fetching booking workflow for ID 22 at 1753725046443
+ComprehensiveBookingWorkflow.tsx:151 FRONTEND: Received booking data: {id: 22, bookerUserId: null, primaryArtistUserId: 19, eventName: 'dffdfdfdfdfd', eventType: 'wedding', …}
+ComprehensiveBookingWorkflow.tsx:149 FRONTEND: Fetching booking workflow for ID 22 at 1753725046663
+ComprehensiveBookingWorkflow.tsx:151 FRONTEND: Received booking data: {id: 22, bookerUserId: null, primaryArtistUserId: 19, eventName: 'dffdfdfdfdfd', eventType: 'wedding', …}
+ComprehensiveBookingWorkflow.tsx:149 FRONTEND: Fetching booking workflow for ID 22 at 1753725046873
+ComprehensiveBookingWorkflow.tsx:151 FRONTEND: Received booking data: {id: 22, bookerUserId: null, primaryArtistUserId: 19, eventName: 'dffdfdfdfdfd', eventType: 'wedding', …}
+ComprehensiveBookingWorkflow.tsx:149 FRONTEND: Fetching booking workflow for ID 22 at 1753725047067
+ComprehensiveBookingWorkflow.tsx:151 FRONTEND: Received booking data: {id: 22, bookerUserId: null, primaryArtistUserId: 19, eventName: 'dffdfdfdfdfd', eventType: 'wedding', …}
+ComprehensiveBookingWorkflow.tsx:149 FRONTEND: Fetching booking workflow for ID 22 at 1753725047320
+ComprehensiveBookingWorkflow.tsx:151 FRONTEND: Received booking data: {id: 22, bookerUserId: null, primaryArtistUserId: 19, eventName: 'dffdfdfdfdfd', eventType: 'wedding', …}
+ComprehensiveBookingWorkflow.tsx:149 FRONTEND: Fetching booking workflow for ID 22 at 1753725047543
+ComprehensiveBookingWorkflow.tsx:151 FRONTEND: Received booking data: {id: 22, bookerUserId: null, primaryArtistUserId: 19, eventName: 'dffdfdfdfdfd', eventType: 'wedding', …}
+ComprehensiveBookingWorkflow.tsx:149 FRONTEND: Fetching booking workflow for ID 22 at 1753725047736
+ComprehensiveBookingWorkflow.tsx:151 FRONTEND: Received booking data: {id: 22, bookerUserId: null, primaryArtistUserId: 19, eventName: 'dffdfdfdfdfd', eventType: 'wedding', …}
+ComprehensiveBookingWorkflow.tsx:149 FRONTEND: Fetching booking workflow for ID 22 at 1753725047914
+ComprehensiveBookingWorkflow.tsx:151 FRONTEND: Received booking data: {id: 22, bookerUserId: null, primaryArtistUserId: 19, eventName: 'dffdfdfdfdfd', eventType: 'wedding', …}
+ComprehensiveBookingWorkflow.tsx:149 FRONTEND: Fetching booking workflow for ID 22 at 1753725048121
+ComprehensiveBookingWorkflow.tsx:151 FRONTEND: Received booking data: {id: 22, bookerUserId: null, primaryArtistUserId: 19, eventName: 'dffdfdfdfdfd', eventType: 'wedding', …}
+ComprehensiveBookingWorkflow.tsx:149 FRONTEND: Fetching booking workflow for ID 22 at 1753725048308
+ComprehensiveBookingWorkflow.tsx:151 FRONTEND: Received booking data: {id: 22, bookerUserId: null, primaryArtistUserId: 19, eventName: 'dffdfdfdfdfd', eventType: 'wedding', …}
+ComprehensiveBookingWorkflow.tsx:149 FRONTEND: Fetching booking workflow for ID 22 at 1753725048532
+ComprehensiveBookingWorkflow.tsx:151 FRONTEND: Received booking data: {id: 22, bookerUserId: null, primaryArtistUserId: 19, eventName: 'dffdfdfdfdfd', eventType: 'wedding', …}
+ComprehensiveBookingWorkflow.tsx:149 FRONTEND: Fetching booking workflow for ID 22 at 1753725048748
+ComprehensiveBookingWorkflow.tsx:151 FRONTEND: Received booking data: {id: 22, bookerUserId: null, primaryArtistUserId: 19, eventName: 'dffdfdfdfdfd', eventType: 'wedding', …}
+ComprehensiveBookingWorkflow.tsx:149 FRONTEND: Fetching booking workflow for ID 22 at 1753725048970
+ComprehensiveBookingWorkflow.tsx:151 FRONTEND: Received booking data: {id: 22, bookerUserId: null, primaryArtistUserId: 19, eventName: 'dffdfdfdfdfd', eventType: 'wedding', …}
+ComprehensiveBookingWorkflow.tsx:149 FRONTEND: Fetching booking workflow for ID 22 at 1753725049197

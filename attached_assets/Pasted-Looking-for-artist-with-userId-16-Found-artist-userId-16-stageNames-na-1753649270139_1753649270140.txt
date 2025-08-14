@@ -1,0 +1,83 @@
+Looking for artist with userId: 16
+Found artist: {
+  userId: 16,
+  stageNames: [
+    {
+      name: 'Lí-Lí Octave',
+      isPrimary: true,
+      usageType: 'both',
+      isForBookings: true
+    }
+  ],
+  primaryGenre: 'Neo Soul',
+  secondaryGenres: [ 'Zouk', 'Kompa', 'Kadass', 'Jazz', 'R&B', 'Soul' ],
+  topGenres: [ 'Caribbean Neo Soul', 'Neo Soul', 'Jazz' ],
+  socialMediaHandles: [
+    {
+      url: 'https://instagram.com/lilioctave',
+      handle: '@lilioctave',
+      platform: 'instagram'
+    },
+    {
+      url: 'https://open.spotify.com/artist/1PjLcGZis8YD4zNDvfqclZ',
+      handle: 'Lí-Lí Octave',
+      platform: 'spotify'
+    },
+    {
+      url: 'https://lilioctave.com',
+      handle: 'lilioctave.com',
+      platform: 'website'
+    },
+    {
+      url: 'mailto:waitumusic@gmail.com',
+      handle: 'waitumusic@gmail.com',
+      platform: 'email'
+    }
+  ],
+  basePrice: '3500.00',
+  managementTierId: 3,
+  isManaged: true,
+  bookingFormPictureUrl: 'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=400&h=400&fit=crop&crop=face',
+  performingRightsOrganization: 'ASCAP',
+  ipiNumber: 'IPI-1234567890',
+  technicalRiderProfile: {
+    bandMembers: [ [Object], [Object], [Object], [Object], [Object], [Object] ],
+    performanceSpecs: {
+      setupTime: '3 hours minimum',
+      encorePolicy: '2-song encore standard',
+      intermissionNeeds: true,
+      soundcheckDuration: '90 minutes with full band',
+      performanceDurations: [Object]
+    },
+    stageRequirements: {
+      stageSize: '24 x 16 minimum',
+      backlineNeeds: [Array],
+      lightingNeeds: 'Professional concert lighting with color temperature control',
+      powerRequirements: '220V/30A dedicated circuits',
+      monitorRequirements: 'Individual IEM systems for all 6 members'
+    },
+    equipmentRequirements: [ [Object], [Object] ],
+    hospitalityRequirements: [ [Object], [Object], [Object], [Object] ]
+  }
+}
+8:47:19 PM [express] GET /api/artists/16 200 in 160ms :: {"userId":16,"stageNames":[{"name":"Lí-Lí O…
+Role check: {
+  userId: 16,
+  userRoleId: 3,
+  userRole: 'managed_artist',
+  requiredRoles: [ 'superadmin', 'admin', 'managed_artist', 'managed_musician' ]
+}
+8:47:21 PM [express] GET /api/website-integrations 304 in 80ms :: [{"id":2,"userId":16,"slug":"lilio…
+Role check: {
+  userId: 16,
+  userRoleId: 3,
+  userRole: 'managed_artist',
+  requiredRoles: [ 'superadmin', 'admin', 'managed_artist', 'managed_musician' ]
+}
+8:47:22 PM [express] GET /api/website-integrations 304 in 72ms :: [{"id":2,"userId":16,"slug":"lilio…
+Role check: {
+  userId: 16,
+  userRoleId: 3,
+  userRole: 'managed_artist',
+  requiredRoles: [ 'superadmin', 'admin', 'managed_artist', 'managed_musician' ]
+}

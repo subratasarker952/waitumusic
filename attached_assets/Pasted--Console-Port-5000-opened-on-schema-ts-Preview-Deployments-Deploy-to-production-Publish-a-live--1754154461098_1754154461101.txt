@@ -1,0 +1,19 @@
+
+Console
+Port :5000 opened on
+schema.ts
+Preview
+/
+
+Deployments
+Deploy to production
+Publish a live, stable, public version of your App, unaffected by the changes you make in the workspace Learn more.
+Scale up and down to meet demand exactly
+Automatically scales from zero to any level of demand, making it inexpensive for most apps and effortless when you go viral.
+Usage-based pricing. Billed at $0.0000032 per compute unit, plus a fixed cost of $1 per month per deployment.
+Suitable for web apps and stateless APIs.
+Security scan
+Identify potential vulnerabilities by running a security scan powered by our partner, Semgrep.
+Agent
+Improve talent/skill options in technical rider to be dynamic and relevant
+What about all the other areas where the front end and the backend need to be in perfect harmony/sync? I can create the contracts/agreements? I can see the financial records and payment requests and payment vouchers? Can the respective users access everything through their approved means to enable proper access to the features of the platform? The UI is consistent everywhere? All authentication issues resolved? Superadmin can control absolutely everything? Is the media hub integration working especially when it comes to receiving coded songs, documents between booker and assigned admins and superadmins regarding their booking and vice versa with the necessary permission flow, the .ccf files for the chord charts for the coded songs and downloaded songs from YouTube and the uploaded songs, documents between management and talent, graphic file(s) per booked talent per booking? Is song coding working based on the splitsheet does it know where to add what (do research on what from a splitsheet needs to be embedded in the .WAV Or . mp3(320kbps) )? Is the integration with the payment gateways working? Is the site adding a percentage and fixed value (settable by the superadmin) over and above all asking prices, which the total of which is shown to the site visitor? Is the site commission apart from it all settable and working? Can ALL toast and popup notifications be controlled from as single source. Does the site with all its navigation tabs and sub-navigation tabs, show properly on all devices with no need for horizontal scrolling and no buttons cut off off-screen? Will the demo user links disappear from the login screen when the site is removed from demo mode? Can the site go into and out of maintenance mode properly? Does the subscription system to the OppHub marketplace work? Does registration with a PRO only show the results if successful PRO registration has been confirmed through the addition of an IPI number? Is the site even able to accept monthly subscriptions?

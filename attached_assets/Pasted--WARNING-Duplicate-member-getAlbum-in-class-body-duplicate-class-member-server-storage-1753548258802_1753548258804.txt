@@ -1,0 +1,70 @@
+▲ [WARNING] Duplicate member "getAlbum" in class body [duplicate-class-member]
+
+    server/storage.ts:1966:8:
+      1966 │   async getAlbum(id: number): Promise<Album | undefined> {
+           ╵         ~~~~~~~~
+
+  The original member "getAlbum" is here:
+
+    server/storage.ts:1866:8:
+      1866 │   async getAlbum(id: number): Promise<Album | undefined> {
+           ╵         ~~~~~~~~
+
+▲ [WARNING] Duplicate member "getAlbumsByArtist" in class body [duplicate-class-                                                                                                                                                             member]
+
+    server/storage.ts:1971:8:
+      1971 │   async getAlbumsByArtist(artistUserId: number): Promise<Album[]> {
+           ╵         ~~~~~~~~~~~~~~~~~
+
+  The original member "getAlbumsByArtist" is here:
+
+    server/storage.ts:1871:8:
+      1871 │   async getAlbumsByArtist(artistUserId: number): Promise<Album[]> {
+           ╵         ~~~~~~~~~~~~~~~~~
+
+▲ [WARNING] Duplicate member "createAlbum" in class body [duplicate-class-member                                                                                                                                                             ]
+
+    server/storage.ts:1975:8:
+      1975 │   async createAlbum(album: InsertAlbum): Promise<Album> {
+           ╵         ~~~~~~~~~~~
+
+  The original member "createAlbum" is here:
+
+    server/storage.ts:1875:8:
+      1875 │   async createAlbum(album: InsertAlbum): Promise<Album> {
+           ╵         ~~~~~~~~~~~
+
+▲ [WARNING] Duplicate member "createCrossUpsellRelationship" in class body [dupl                                                                                                                                                             icate-class-member]
+
+    server/storage.ts:3947:8:
+      3947 │   async createCrossUpsellRelationship(relationship: InsertCrossU...
+           ╵         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+  The original member "createCrossUpsellRelationship" is here:
+
+    server/storage.ts:1906:8:
+      1906 │   async createCrossUpsellRelationship(relationship: InsertCrossU...
+           ╵         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+▲ [WARNING] Duplicate member "getCrossUpsellRelationships" in class body [duplic                                                                                                                                                             ate-class-member]
+
+    server/storage.ts:3955:8:
+      3955 │   async getCrossUpsellRelationships(sourceType: string, sourceId...
+           ╵         ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+  The original member "getCrossUpsellRelationships" is here:
+
+    server/storage.ts:1902:8:
+      1902 │   async getCrossUpsellRelationships(): Promise<CrossUpsellRelati...
+           ╵         ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+▲ [WARNING] Duplicate member "getOpportunities" in class body [duplicate-class-m                                                                                                                                                             ember]
+
+    server/storage.ts:6148:8:
+      6148 │   async getOpportunities(): Promise<Opportunity[]> {
+           ╵         ~~~~~~~~~~~~~~~~
+
+  The original member "getOpportunities" is here:
+
+    server/storage.ts:5288:8:
+      5288 │   async getOpportunities(filters?: { status?: string }): Promise...

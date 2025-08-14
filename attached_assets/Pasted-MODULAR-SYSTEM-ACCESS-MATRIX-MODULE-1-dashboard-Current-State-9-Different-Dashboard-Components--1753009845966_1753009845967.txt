@@ -1,0 +1,109 @@
+MODULAR SYSTEM ACCESS MATRIX
+MODULE 1: /dashboard
+Current State: 9 Different Dashboard Components Based on Role
+
+Modular Transformation:
+
+Superadmin: All 8 tabs (Overview, Users, Managed Users, Assignments, Applications, System, Activity, Media)
+Admin: 6 tabs (Overview, Users, Artists, Bookings, Contracts, Forms)
+Managed Artist: Enhanced tabs (AI insights, premium analytics, flexible music management)
+Artist: Standard tabs (basic metrics, limited music upload)
+Managed Musician: Session-focused tabs with AI recommendations
+Musician: Basic session management
+Managed Professional: Advanced service management with AI
+Professional: Standard consultation management
+Fan: Activity tracking, bookings, purchases
+MODULE 2: /booking
+Current State: Role-based restrictions (managed users only can create)
+
+Modular Capabilities:
+
+Superadmin/Admin: View all bookings, approve/decline, assign professionals and managed professionals and managed artists and artists and managed musicians and musicians, generate contracts
+Managed Artists: Accept/decline incoming bookings, calendar management, contract review
+Artists: Basic booking acceptance, limited calendar access
+Managed Musicians: Session booking priority, advanced availability management
+Musicians: Standard session booking responses
+Managed Professionals: Business consultation bookings, represent Wai'tuMusic
+Professionals: Standard consultation bookings only
+Fans: Book any managed artist (even as guest), view booking history
+Counter-offers from managed users go to their assigned admin or superadmin for review and acceptance, because for every booking the assigned admin or admin or superadmin will set a price per assigned user which they will be getting for the booking. 
+Only managed users will be able to send counter-offers.
+
+MODULE 3: /music-catalog
+Current State: Upload restricted to artists, previews vary by management status
+
+Modular Capabilities:
+
+Superadmin/Admin: Full catalog oversight, approve uploads, manage all artist content
+Managed Artists: Unlimited uploads, flexible preview controls (15s-full track), ISRC management, store auto-publishing
+Artists: Limited uploads, 30-second preview restriction, basic metadata
+Managed Musicians: Equipment-specific uploads, music uploads, session recording management
+Musicians: Basic audio file uploads for portfolio
+Professionals: No direct music uploads (consultation materials only)
+Fans: Browse only, purchase/download capabilities
+MODULE 4: /store
+Current State: Browse/purchase for all, sell capabilities for artists only
+
+Modular Capabilities:
+
+Superadmin/Admin: Full store management, pricing control, currency management
+Managed Artists: Advanced selling (auto-publish songs/merch, cross-selling, bundle creation, discount management)
+Artists: Basic selling (manual song listing, basic merchandise)
+Managed Musicians: Session service packages, equipment rental listings
+Musicians: Basic service offerings
+Managed Professionals: Premium service packages, consultation bundles
+Professionals: Standard service listings
+Fans: Browse all, purchase anything, cart management, multi-currency support
+MODULE 5: /contracts
+Current State: Generation limited to admins, viewing varies by involvement
+
+Modular Capabilities:
+
+Superadmin: Generate any contract type and their respective proforma, invoices and payment receipts and payment vouchers(for paying the assigned users for the booking) , multi-party signatures, approve release or application contracts
+Admin: Generate booking/performance contracts, technical riders, and their related invoicese etc
+Managed Artists: View/sign booking agreements, performance contracts, request contract modifications
+Artists: basic View/sign performance contracts
+Managed Professionals: Generate service agreements, represent Wai'tuMusic in legal/financial/etc matters if non-performance type of managed professional
+Professionals: View/sign service agreements only
+Musicians: View/sign performance engagement contracts
+Fans: View booking agreements they've initiated and the proformas(which they will approve, thereby converting it to an invoice), invoices and payment receipts
+MODULE 6: /profile
+Current State: Enhanced features for managed users vs basic for others
+
+Modular Capabilities:
+
+Superadmin/Admin: Edit any profile, role management, secondary role approval
+Managed Users: Multiple stage names, advanced social media integration, genre customization, industry data (PRO, IPI)
+Regular Users: Single stage name, basic (but all) social media, standard genre selection
+All Types: Profile pictures, bio, contact information, technical requirements, hospitality requirements
+MODULE 7: /ai-insights
+Current State: Exclusive to managed users + admins
+
+Modular Capabilities:
+
+Superadmin: View all AI activity across platform, system-wide recommendations
+Admin: View managed user AI insights for oversight
+Managed Users Only: Career recommendations, market analysis, performance optimization
+Regular Users: No access (premium feature)
+MODULE 8: /financial
+Current State: Admin/superadmin only
+
+Modular Capabilities:
+
+Superadmin: Full financial control, proforma generation, invoice generation, automatic receipt generation, automatic payment vouchers when paying asssigned users to a booking, payout management, commission configuration(superadmin can set the percentage over and above the base price making it the price viewable to potential buyers)
+Admin: Proforma and Invoice creation, payment tracking, limited financial oversight
+Managed Users: View earnings, service discounts (10%/50%/100%), financial reports
+Regular Users: Basic payment history, purchase receipts
+Fans: Purchase history, download management
+KEY MODULAR PRINCIPLES:
+Feature Granularity: Each module has 20-30 specific features that can be toggled per user type
+Permission Inheritance: Managed users inherit regular user permissions + premium features
+Administrative Override: Superadmin can access everything, Admin has broad but limited access
+Premium Gating: AI insights, advanced analytics, flexible controls reserved for managed tier
+Guest Accessibility: Critical features (booking, purchasing) available without accounts
+Your Superadmin Control System Would Allow:
+
+Toggle any feature on/off per user type per module
+Create custom permission profiles beyond the 9 standard types
+Override restrictions for specific users
+Monitor usage patterns across all modules and user types

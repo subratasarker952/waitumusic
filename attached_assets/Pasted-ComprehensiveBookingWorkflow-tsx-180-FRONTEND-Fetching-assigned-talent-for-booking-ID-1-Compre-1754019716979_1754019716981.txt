@@ -1,0 +1,410 @@
+ComprehensiveBookingWorkflow.tsx:180 🔍 FRONTEND: Fetching assigned talent for booking ID: 1
+ComprehensiveBookingWorkflow.tsx:182 📋 FRONTEND: Received assigned talent data: (2) [{…}, {…}]
+ComprehensiveBookingWorkflow.tsx:224 📋 UPDATING assigned talent state: (2) [{…}, {…}]
+ComprehensiveBookingWorkflow.tsx:225 🔍 DETAILED DATA CHECK - First talent object: {id: 'assignment-2', userId: 6, name: 'Lí-Lí Octave', assignmentName: 'Lianne Letang(Lí-Lí Octave)', fullName: 'Lianne Letang', …}
+ComprehensiveBookingWorkflow.tsx:226 🔍 KEYS in first talent: (17) ['id', 'userId', 'name', 'assignmentName', 'fullName', 'stageName', 'type', 'role', 'isMainBookedTalent', 'isPrimary', 'talentType', 'primaryTalent', 'secondaryTalents', 'assignmentId', 'isOriginallyBooked', 'showAcceptDecline', 'showRemove']
+ComprehensiveBookingWorkflow.tsx:227 🔍 PRIMARY TALENT field: Lead Vocalist
+ComprehensiveBookingWorkflow.tsx:228 🔍 SECONDARY TALENTS field: []
+EnhancedTechnicalRider.tsx:789 DEBUG: Syncing stage legend talent/skills with band members
+EnhancedTechnicalRider.tsx:992 🔄 TECHNICAL RIDER: Initializing band members
+EnhancedTechnicalRider.tsx:993 🔄 Assigned musicians (props) count: 5
+EnhancedTechnicalRider.tsx:994 🔄 Final assigned musicians (API) count: 5
+ 🔄 Will use: assignedMusicians (props)
+ 🔄 Using musician data source: assignedMusicians (props)
+ 🔄 Processing musician 1: Lí-Lí Octave
+ 🔄 Full musician data: {id: 6, userId: 6, roleId: undefined, name: 'Lí-Lí Octave', fullName: 'Lianne Letang', …}
+ 🔄 Musician roleId: undefined talentType: managed_artist
+ 🔄 Database talents - Primary: Lead Vocalist Secondary: []
+ 🔄 Raw musician object keys: (21) ['id', 'userId', 'roleId', 'name', 'fullName', 'stageName', 'role', 'primaryRole', 'skillsAndInstruments', 'availableRoles', 'instruments', 'selectedRoles', 'isMainBookedTalent', 'assignedRole', 'type', 'talentType', 'assignmentRole', 'primaryTalent', 'secondaryTalents', 'hasPrimaryTalent', 'hasSecondaryTalents']
+ 🔄 Membership determination: roleId undefined talentType: managed_artist type: Main Booked Talent isProfessional: false Result: BAND
+ 🔄 Role badge: managed_artist
+ 🔄 Membership: BAND
+ 🔄 Primary role: Lead Vocalist
+ 🎯 Building dropdown options for: Lí-Lí Octave
+ 🎯 Available profile data: {assignedRole: 'Main Booked Talent', primaryRole: 'Lead Vocalist', primaryTalent: 'Lead Vocalist', secondaryTalents: Array(0), skillsAndInstruments: Array(0), …}
+ 🎯 Skills array contents: []
+ 🎯 SKILLS DEBUG: Processing skillsAndInstruments for Lí-Lí Octave: []
+ 🎯 Generated dropdown options: (2) [{…}, {…}]
+ 🎯 Expected dropdown selection: Lead Vocalist
+ 🔄 Adding member 1: Lí-Lí Octave Membership: BAND
+ 🔄 Processing musician 2: Maya Bass
+ 🔄 Full musician data: {id: 12, userId: 12, roleId: undefined, name: 'Maya Bass', fullName: 'Maya Thompson', …}
+ 🔄 Musician roleId: undefined talentType: managed_musician
+ 🔄 Database talents - Primary: Bass Player Secondary: []
+ 🔄 Raw musician object keys: (21) ['id', 'userId', 'roleId', 'name', 'fullName', 'stageName', 'role', 'primaryRole', 'skillsAndInstruments', 'availableRoles', 'instruments', 'selectedRoles', 'isMainBookedTalent', 'assignedRole', 'type', 'talentType', 'assignmentRole', 'primaryTalent', 'secondaryTalents', 'hasPrimaryTalent', 'hasSecondaryTalents']
+ 🔄 Membership determination: roleId undefined talentType: managed_musician type: Main Booked Talent isProfessional: false Result: BAND
+ 🔄 Role badge: managed_musician
+ 🔄 Membership: BAND
+ 🔄 Primary role: Bass Player
+ 🎯 Building dropdown options for: Maya Bass
+ 🎯 Available profile data: {assignedRole: 'Main Booked Talent', primaryRole: 'Lead Vocalist', primaryTalent: 'Bass Player', secondaryTalents: Array(0), skillsAndInstruments: Array(0), …}
+ 🎯 Skills array contents: []
+ 🎯 SKILLS DEBUG: Processing skillsAndInstruments for Maya Bass: []
+ 🎯 Generated dropdown options: (2) [{…}, {…}]
+ 🎯 Expected dropdown selection: Bass Player
+ 🔄 Adding member 2: Maya Bass Membership: BAND
+ 🔄 Processing musician 3: Phoenix Chen
+ 🔄 Full musician data: {id: 13, userId: 13, roleId: undefined, name: 'Phoenix Chen', fullName: undefined, …}
+ 🔄 Musician roleId: undefined talentType: Artist
+ 🔄 Database talents - Primary: undefined Secondary: undefined
+ 🔄 Raw musician object keys: (21) ['id', 'userId', 'roleId', 'name', 'fullName', 'stageName', 'role', 'primaryRole', 'skillsAndInstruments', 'availableRoles', 'instruments', 'selectedRoles', 'isMainBookedTalent', 'assignedRole', 'type', 'talentType', 'assignmentRole', 'primaryTalent', 'secondaryTalents', 'hasPrimaryTalent', 'hasSecondaryTalents']
+ 🔄 Membership determination: roleId undefined talentType: Artist type: Musician isProfessional: false Result: BAND
+ 🔄 Role badge: Artist
+ 🔄 Membership: BAND
+ 🔄 Primary role: null
+ 🎯 Building dropdown options for: Phoenix Chen
+ 🎯 Available profile data: {assignedRole: 'Lead Vocalist', primaryRole: 'Lead Vocalist', primaryTalent: undefined, secondaryTalents: undefined, skillsAndInstruments: Array(0), …}
+ 🎯 Skills array contents: []
+ 🎯 SKILLS DEBUG: Processing skillsAndInstruments for Phoenix Chen: []
+ 🎯 Generated dropdown options: [{…}]
+ 🎯 Expected dropdown selection: Lead Vocalist
+ 🔄 Adding member 3: Phoenix Chen Membership: BAND
+ 🔄 Processing musician 4: Indie Stone
+ 🔄 Full musician data: {id: 25, userId: 25, roleId: undefined, name: 'Indie Stone', fullName: undefined, …}
+ 🔄 Musician roleId: undefined talentType: Artist
+ 🔄 Database talents - Primary: undefined Secondary: undefined
+ 🔄 Raw musician object keys: (21) ['id', 'userId', 'roleId', 'name', 'fullName', 'stageName', 'role', 'primaryRole', 'skillsAndInstruments', 'availableRoles', 'instruments', 'selectedRoles', 'isMainBookedTalent', 'assignedRole', 'type', 'talentType', 'assignmentRole', 'primaryTalent', 'secondaryTalents', 'hasPrimaryTalent', 'hasSecondaryTalents']
+ 🔄 Membership determination: roleId undefined talentType: Artist type: Artist isProfessional: false Result: BAND
+ 🔄 Role badge: Artist
+EnhancedTechnicalRider.tsx:1034 🔄 Membership: BAND
+EnhancedTechnicalRider.tsx:1035 🔄 Primary role: null
+EnhancedTechnicalRider.tsx:813 🎯 Building dropdown options for: Indie Stone
+EnhancedTechnicalRider.tsx:814 🎯 Available profile data: {assignedRole: 'Lead Vocalist', primaryRole: 'Lead Vocalist', primaryTalent: undefined, secondaryTalents: undefined, skillsAndInstruments: Array(0), …}
+EnhancedTechnicalRider.tsx:826 🎯 Skills array contents: []
+EnhancedTechnicalRider.tsx:866 🎯 SKILLS DEBUG: Processing skillsAndInstruments for Indie Stone: []
+EnhancedTechnicalRider.tsx:945 🎯 Generated dropdown options: [{…}]
+EnhancedTechnicalRider.tsx:946 🎯 Expected dropdown selection: Lead Vocalist
+EnhancedTechnicalRider.tsx:1063 🔄 Adding member 4: Indie Stone Membership: BAND
+EnhancedTechnicalRider.tsx:1005 🔄 Processing musician 5: Freelance Gray
+EnhancedTechnicalRider.tsx:1006 🔄 Full musician data: {id: 27, userId: 27, roleId: undefined, name: 'Freelance Gray', fullName: undefined, …}
+EnhancedTechnicalRider.tsx:1007 🔄 Musician roleId: undefined talentType: Artist
+EnhancedTechnicalRider.tsx:1008 🔄 Database talents - Primary: undefined Secondary: undefined
+EnhancedTechnicalRider.tsx:1009 🔄 Raw musician object keys: (21) ['id', 'userId', 'roleId', 'name', 'fullName', 'stageName', 'role', 'primaryRole', 'skillsAndInstruments', 'availableRoles', 'instruments', 'selectedRoles', 'isMainBookedTalent', 'assignedRole', 'type', 'talentType', 'assignmentRole', 'primaryTalent', 'secondaryTalents', 'hasPrimaryTalent', 'hasSecondaryTalents']
+EnhancedTechnicalRider.tsx:1028 🔄 Membership determination: roleId undefined talentType: Artist type: Professional isProfessional: true Result: TEAM
+EnhancedTechnicalRider.tsx:1033 🔄 Role badge: Artist
+EnhancedTechnicalRider.tsx:1034 🔄 Membership: TEAM
+EnhancedTechnicalRider.tsx:1035 🔄 Primary role: null
+EnhancedTechnicalRider.tsx:813 🎯 Building dropdown options for: Freelance Gray
+EnhancedTechnicalRider.tsx:814 🎯 Available profile data: {assignedRole: 'Professional', primaryRole: 'Lead Vocalist', primaryTalent: undefined, secondaryTalents: undefined, skillsAndInstruments: Array(0), …}
+EnhancedTechnicalRider.tsx:826 🎯 Skills array contents: []
+EnhancedTechnicalRider.tsx:866 🎯 SKILLS DEBUG: Processing skillsAndInstruments for Freelance Gray: []
+EnhancedTechnicalRider.tsx:945 🎯 Generated dropdown options: [{…}]
+EnhancedTechnicalRider.tsx:946 🎯 Expected dropdown selection: Professional
+EnhancedTechnicalRider.tsx:1063 🔄 Adding member 5: Freelance Gray Membership: TEAM
+EnhancedTechnicalRider.tsx:1070 🔄 Total members added from API: 5
+EnhancedTechnicalRider.tsx:1134 Sorting: Maya Bass badge: managed_musician order: 7 vs Lí-Lí Octave badge: managed_artist order: 7
+EnhancedTechnicalRider.tsx:1134 Sorting: Indie Stone badge: Artist order: 7 vs Phoenix Chen badge: Artist order: 7
+EnhancedTechnicalRider.tsx:1134 Sorting: Freelance Gray badge: Artist order: 7 vs Indie Stone badge: Artist order: 7
+EnhancedTechnicalRider.tsx:1134 Sorting: Mr Lindsay George badge: MANAGEMENT order: 999 vs Freelance Gray badge: Artist order: 7
+EnhancedTechnicalRider.tsx:1134 Sorting: Ms Joyette Pascal badge: MANAGEMENT order: 999 vs Mr Lindsay George badge: MANAGEMENT order: 999
+EnhancedTechnicalRider.tsx:1139 🔄 FINAL: Setting 7 band members
+EnhancedTechnicalRider.tsx:789 DEBUG: Syncing stage legend talent/skills with band members
+EnhancedTechnicalRider.tsx:992 🔄 TECHNICAL RIDER: Initializing band members
+EnhancedTechnicalRider.tsx:993 🔄 Assigned musicians (props) count: 5
+EnhancedTechnicalRider.tsx:994 🔄 Final assigned musicians (API) count: 2
+EnhancedTechnicalRider.tsx:995 🔄 Will use: assignedMusicians (props)
+ 🔄 Using musician data source: assignedMusicians (props)
+ 🔄 Processing musician 1: Lí-Lí Octave
+ 🔄 Full musician data: {id: 6, userId: 6, roleId: undefined, name: 'Lí-Lí Octave', fullName: 'Lianne Letang', …}
+ 🔄 Musician roleId: undefined talentType: managed_artist
+ 🔄 Database talents - Primary: Lead Vocalist Secondary: []
+ 🔄 Raw musician object keys: (21) ['id', 'userId', 'roleId', 'name', 'fullName', 'stageName', 'role', 'primaryRole', 'skillsAndInstruments', 'availableRoles', 'instruments', 'selectedRoles', 'isMainBookedTalent', 'assignedRole', 'type', 'talentType', 'assignmentRole', 'primaryTalent', 'secondaryTalents', 'hasPrimaryTalent', 'hasSecondaryTalents']
+ 🔄 Membership determination: roleId undefined talentType: managed_artist type: Main Booked Talent isProfessional: false Result: BAND
+ 🔄 Role badge: managed_artist
+ 🔄 Membership: BAND
+ 🔄 Primary role: Lead Vocalist
+ 🎯 Building dropdown options for: Lí-Lí Octave
+ 🎯 Available profile data: {assignedRole: 'Main Booked Talent', primaryRole: 'Lead Vocalist', primaryTalent: 'Lead Vocalist', secondaryTalents: Array(0), skillsAndInstruments: Array(0), …}
+ 🎯 Skills array contents: []
+ 🎯 SKILLS DEBUG: Processing skillsAndInstruments for Lí-Lí Octave: []
+ 🎯 Generated dropdown options: (2) [{…}, {…}]
+ 🎯 Expected dropdown selection: Lead Vocalist
+ 🔄 Adding member 1: Lí-Lí Octave Membership: BAND
+ 🔄 Processing musician 2: Maya Bass
+ 🔄 Full musician data: {id: 12, userId: 12, roleId: undefined, name: 'Maya Bass', fullName: 'Maya Thompson', …}
+ 🔄 Musician roleId: undefined talentType: managed_musician
+ 🔄 Database talents - Primary: Bass Player Secondary: []
+ 🔄 Raw musician object keys: (21) ['id', 'userId', 'roleId', 'name', 'fullName', 'stageName', 'role', 'primaryRole', 'skillsAndInstruments', 'availableRoles', 'instruments', 'selectedRoles', 'isMainBookedTalent', 'assignedRole', 'type', 'talentType', 'assignmentRole', 'primaryTalent', 'secondaryTalents', 'hasPrimaryTalent', 'hasSecondaryTalents']
+ 🔄 Membership determination: roleId undefined talentType: managed_musician type: Main Booked Talent isProfessional: false Result: BAND
+ 🔄 Role badge: managed_musician
+ 🔄 Membership: BAND
+ 🔄 Primary role: Bass Player
+ 🎯 Building dropdown options for: Maya Bass
+ 🎯 Available profile data: {assignedRole: 'Main Booked Talent', primaryRole: 'Lead Vocalist', primaryTalent: 'Bass Player', secondaryTalents: Array(0), skillsAndInstruments: Array(0), …}
+ 🎯 Skills array contents: []
+ 🎯 SKILLS DEBUG: Processing skillsAndInstruments for Maya Bass: []
+ 🎯 Generated dropdown options: (2) [{…}, {…}]
+ 🎯 Expected dropdown selection: Bass Player
+ 🔄 Adding member 2: Maya Bass Membership: BAND
+ 🔄 Processing musician 3: Phoenix Chen
+ 🔄 Full musician data: {id: 13, userId: 13, roleId: undefined, name: 'Phoenix Chen', fullName: undefined, …}
+ 🔄 Musician roleId: undefined talentType: Artist
+ 🔄 Database talents - Primary: undefined Secondary: undefined
+ 🔄 Raw musician object keys: (21) ['id', 'userId', 'roleId', 'name', 'fullName', 'stageName', 'role', 'primaryRole', 'skillsAndInstruments', 'availableRoles', 'instruments', 'selectedRoles', 'isMainBookedTalent', 'assignedRole', 'type', 'talentType', 'assignmentRole', 'primaryTalent', 'secondaryTalents', 'hasPrimaryTalent', 'hasSecondaryTalents']
+ 🔄 Membership determination: roleId undefined talentType: Artist type: Musician isProfessional: false Result: BAND
+ 🔄 Role badge: Artist
+ 🔄 Membership: BAND
+ 🔄 Primary role: null
+ 🎯 Building dropdown options for: Phoenix Chen
+ 🎯 Available profile data: {assignedRole: 'Lead Vocalist', primaryRole: 'Lead Vocalist', primaryTalent: undefined, secondaryTalents: undefined, skillsAndInstruments: Array(0), …}
+ 🎯 Skills array contents: []
+ 🎯 SKILLS DEBUG: Processing skillsAndInstruments for Phoenix Chen: []
+ 🎯 Generated dropdown options: [{…}]
+ 🎯 Expected dropdown selection: Lead Vocalist
+ 🔄 Adding member 3: Phoenix Chen Membership: BAND
+ 🔄 Processing musician 4: Indie Stone
+ 🔄 Full musician data: {id: 25, userId: 25, roleId: undefined, name: 'Indie Stone', fullName: undefined, …}
+ 🔄 Musician roleId: undefined talentType: Artist
+ 🔄 Database talents - Primary: undefined Secondary: undefined
+ 🔄 Raw musician object keys: (21) ['id', 'userId', 'roleId', 'name', 'fullName', 'stageName', 'role', 'primaryRole', 'skillsAndInstruments', 'availableRoles', 'instruments', 'selectedRoles', 'isMainBookedTalent', 'assignedRole', 'type', 'talentType', 'assignmentRole', 'primaryTalent', 'secondaryTalents', 'hasPrimaryTalent', 'hasSecondaryTalents']
+ 🔄 Membership determination: roleId undefined talentType: Artist type: Artist isProfessional: false Result: BAND
+ 🔄 Role badge: Artist
+ 🔄 Membership: BAND
+EnhancedTechnicalRider.tsx:1035 🔄 Primary role: null
+EnhancedTechnicalRider.tsx:813 🎯 Building dropdown options for: Indie Stone
+EnhancedTechnicalRider.tsx:814 🎯 Available profile data: {assignedRole: 'Lead Vocalist', primaryRole: 'Lead Vocalist', primaryTalent: undefined, secondaryTalents: undefined, skillsAndInstruments: Array(0), …}
+EnhancedTechnicalRider.tsx:826 🎯 Skills array contents: []
+EnhancedTechnicalRider.tsx:866 🎯 SKILLS DEBUG: Processing skillsAndInstruments for Indie Stone: []
+EnhancedTechnicalRider.tsx:945 🎯 Generated dropdown options: [{…}]
+EnhancedTechnicalRider.tsx:946 🎯 Expected dropdown selection: Lead Vocalist
+EnhancedTechnicalRider.tsx:1063 🔄 Adding member 4: Indie Stone Membership: BAND
+EnhancedTechnicalRider.tsx:1005 🔄 Processing musician 5: Freelance Gray
+EnhancedTechnicalRider.tsx:1006 🔄 Full musician data: {id: 27, userId: 27, roleId: undefined, name: 'Freelance Gray', fullName: undefined, …}
+EnhancedTechnicalRider.tsx:1007 🔄 Musician roleId: undefined talentType: Artist
+EnhancedTechnicalRider.tsx:1008 🔄 Database talents - Primary: undefined Secondary: undefined
+EnhancedTechnicalRider.tsx:1009 🔄 Raw musician object keys: (21) ['id', 'userId', 'roleId', 'name', 'fullName', 'stageName', 'role', 'primaryRole', 'skillsAndInstruments', 'availableRoles', 'instruments', 'selectedRoles', 'isMainBookedTalent', 'assignedRole', 'type', 'talentType', 'assignmentRole', 'primaryTalent', 'secondaryTalents', 'hasPrimaryTalent', 'hasSecondaryTalents']
+EnhancedTechnicalRider.tsx:1028 🔄 Membership determination: roleId undefined talentType: Artist type: Professional isProfessional: true Result: TEAM
+EnhancedTechnicalRider.tsx:1033 🔄 Role badge: Artist
+EnhancedTechnicalRider.tsx:1034 🔄 Membership: TEAM
+EnhancedTechnicalRider.tsx:1035 🔄 Primary role: null
+EnhancedTechnicalRider.tsx:813 🎯 Building dropdown options for: Freelance Gray
+EnhancedTechnicalRider.tsx:814 🎯 Available profile data: {assignedRole: 'Professional', primaryRole: 'Lead Vocalist', primaryTalent: undefined, secondaryTalents: undefined, skillsAndInstruments: Array(0), …}
+EnhancedTechnicalRider.tsx:826 🎯 Skills array contents: []
+EnhancedTechnicalRider.tsx:866 🎯 SKILLS DEBUG: Processing skillsAndInstruments for Freelance Gray: []
+EnhancedTechnicalRider.tsx:945 🎯 Generated dropdown options: [{…}]
+EnhancedTechnicalRider.tsx:946 🎯 Expected dropdown selection: Professional
+EnhancedTechnicalRider.tsx:1063 🔄 Adding member 5: Freelance Gray Membership: TEAM
+EnhancedTechnicalRider.tsx:1070 🔄 Total members added from API: 5
+EnhancedTechnicalRider.tsx:1134 Sorting: Maya Bass badge: managed_musician order: 7 vs Lí-Lí Octave badge: managed_artist order: 7
+EnhancedTechnicalRider.tsx:1134 Sorting: Indie Stone badge: Artist order: 7 vs Phoenix Chen badge: Artist order: 7
+EnhancedTechnicalRider.tsx:1134 Sorting: Freelance Gray badge: Artist order: 7 vs Indie Stone badge: Artist order: 7
+EnhancedTechnicalRider.tsx:1134 Sorting: Mr Lindsay George badge: MANAGEMENT order: 999 vs Freelance Gray badge: Artist order: 7
+EnhancedTechnicalRider.tsx:1134 Sorting: Ms Joyette Pascal badge: MANAGEMENT order: 999 vs Mr Lindsay George badge: MANAGEMENT order: 999
+EnhancedTechnicalRider.tsx:1139 🔄 FINAL: Setting 7 band members
+EnhancedTechnicalRider.tsx:789 DEBUG: Syncing stage legend talent/skills with band members
+_app-790adb1aecb43abf.js:13   POST https://events.launchdarkly.com/events/bulk/62b35a865152ab14c5942820 net::ERR_BLOCKED_BY_CLIENT
+(anonymous) @ _app-790adb1aecb43abf.js:13
+(anonymous) @ _app-790adb1aecb43abf.js:13
+promise @ _app-790adb1aecb43abf.js:40
+(anonymous) @ _app-790adb1aecb43abf.js:40
+r.httpRequest @ _app-790adb1aecb43abf.js:40
+t @ _app-790adb1aecb43abf.js:40
+a.sendChunk @ _app-790adb1aecb43abf.js:40
+a.sendEvents @ _app-790adb1aecb43abf.js:40
+a.flush @ _app-790adb1aecb43abf.js:40
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+setTimeout
+(anonymous) @ _app-790adb1aecb43abf.js:13
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+setTimeout
+(anonymous) @ _app-790adb1aecb43abf.js:13
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+setTimeout
+(anonymous) @ _app-790adb1aecb43abf.js:13
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+setTimeout
+(anonymous) @ _app-790adb1aecb43abf.js:13
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+setTimeout
+(anonymous) @ _app-790adb1aecb43abf.js:13
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+setTimeout
+(anonymous) @ _app-790adb1aecb43abf.js:13
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+setTimeout
+(anonymous) @ _app-790adb1aecb43abf.js:13
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+setTimeout
+(anonymous) @ _app-790adb1aecb43abf.js:13
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+setTimeout
+(anonymous) @ _app-790adb1aecb43abf.js:13
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+setTimeout
+(anonymous) @ _app-790adb1aecb43abf.js:13
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+setTimeout
+(anonymous) @ _app-790adb1aecb43abf.js:13
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+setTimeout
+(anonymous) @ _app-790adb1aecb43abf.js:13
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+setTimeout
+(anonymous) @ _app-790adb1aecb43abf.js:13
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+setTimeout
+(anonymous) @ _app-790adb1aecb43abf.js:13
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+setTimeout
+(anonymous) @ _app-790adb1aecb43abf.js:13
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+setTimeout
+(anonymous) @ _app-790adb1aecb43abf.js:13
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+setTimeout
+(anonymous) @ _app-790adb1aecb43abf.js:13
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+setTimeout
+(anonymous) @ _app-790adb1aecb43abf.js:13
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+setTimeout
+(anonymous) @ _app-790adb1aecb43abf.js:13
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+setTimeout
+(anonymous) @ _app-790adb1aecb43abf.js:13
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+setTimeout
+(anonymous) @ _app-790adb1aecb43abf.js:13
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+setTimeout
+(anonymous) @ _app-790adb1aecb43abf.js:13
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+setTimeout
+(anonymous) @ _app-790adb1aecb43abf.js:13
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+[NEW] Explain Console errors by using Copilot in Edge: click
+         
+         to explain an error. 
+        Learn more
+        Don't show again
+_app-790adb1aecb43abf.js:13   POST https://events.launchdarkly.com/events/bulk/62b35a865152ab14c5942820 net::ERR_BLOCKED_BY_CLIENT
+(anonymous) @ _app-790adb1aecb43abf.js:13
+(anonymous) @ _app-790adb1aecb43abf.js:13
+promise @ _app-790adb1aecb43abf.js:40
+(anonymous) @ _app-790adb1aecb43abf.js:40
+r.httpRequest @ _app-790adb1aecb43abf.js:40
+t @ _app-790adb1aecb43abf.js:40
+(anonymous) @ _app-790adb1aecb43abf.js:40
+Promise.catch
+t @ _app-790adb1aecb43abf.js:40
+a.sendChunk @ _app-790adb1aecb43abf.js:40
+a.sendEvents @ _app-790adb1aecb43abf.js:40
+a.flush @ _app-790adb1aecb43abf.js:40
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+setTimeout
+(anonymous) @ _app-790adb1aecb43abf.js:13
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+setTimeout
+(anonymous) @ _app-790adb1aecb43abf.js:13
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+setTimeout
+(anonymous) @ _app-790adb1aecb43abf.js:13
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+setTimeout
+(anonymous) @ _app-790adb1aecb43abf.js:13
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+setTimeout
+(anonymous) @ _app-790adb1aecb43abf.js:13
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+setTimeout
+(anonymous) @ _app-790adb1aecb43abf.js:13
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+setTimeout
+(anonymous) @ _app-790adb1aecb43abf.js:13
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+setTimeout
+(anonymous) @ _app-790adb1aecb43abf.js:13
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+setTimeout
+(anonymous) @ _app-790adb1aecb43abf.js:13
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+setTimeout
+(anonymous) @ _app-790adb1aecb43abf.js:13
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+setTimeout
+(anonymous) @ _app-790adb1aecb43abf.js:13
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+setTimeout
+(anonymous) @ _app-790adb1aecb43abf.js:13
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+setTimeout
+(anonymous) @ _app-790adb1aecb43abf.js:13
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+setTimeout
+(anonymous) @ _app-790adb1aecb43abf.js:13
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+setTimeout
+(anonymous) @ _app-790adb1aecb43abf.js:13
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+setTimeout
+(anonymous) @ _app-790adb1aecb43abf.js:13
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+setTimeout
+(anonymous) @ _app-790adb1aecb43abf.js:13
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+setTimeout
+(anonymous) @ _app-790adb1aecb43abf.js:13
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+setTimeout
+(anonymous) @ _app-790adb1aecb43abf.js:13
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+setTimeout
+(anonymous) @ _app-790adb1aecb43abf.js:13
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+setTimeout
+(anonymous) @ _app-790adb1aecb43abf.js:13
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+setTimeout
+(anonymous) @ _app-790adb1aecb43abf.js:13
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+setTimeout
+(anonymous) @ _app-790adb1aecb43abf.js:13
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13

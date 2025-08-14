@@ -1,0 +1,66 @@
+0|waitumusic-production  | 2025-07-26T00:17:07: Error fetching artists: ErrorEvent {
+0|waitumusic-production  | 2025-07-26T00:17:07:   [Symbol(kTarget)]: WebSocket {
+0|waitumusic-production  | 2025-07-26T00:17:07:     _events: [Object: null prototype] {
+0|waitumusic-production  | 2025-07-26T00:17:07:       error: [Function],
+0|waitumusic-production  | 2025-07-26T00:17:07:       message: [Function],
+0|waitumusic-production  | 2025-07-26T00:17:07:       close: [Function],
+0|waitumusic-production  | 2025-07-26T00:17:07:       open: [Function]
+0|waitumusic-production  | 2025-07-26T00:17:07:     },
+0|waitumusic-production  | 2025-07-26T00:17:07:     _eventsCount: 4,
+0|waitumusic-production  | 2025-07-26T00:17:07:     _maxListeners: undefined,
+0|waitumusic-production  | 2025-07-26T00:17:07:     _binaryType: 'arraybuffer',
+0|waitumusic-production  | 2025-07-26T00:17:07:     _closeCode: 1006,
+0|waitumusic-production  | 2025-07-26T00:17:07:     _closeFrameReceived: false,
+0|waitumusic-production  | 2025-07-26T00:17:07:     _closeFrameSent: false,
+0|waitumusic-production  | 2025-07-26T00:17:07:     _closeMessage: <Buffer >,
+0|waitumusic-production  | 2025-07-26T00:17:07:     _closeTimer: null,
+0|waitumusic-production  | 2025-07-26T00:17:07:     _errorEmitted: true,
+0|waitumusic-production  | 2025-07-26T00:17:07:     _extensions: {},
+0|waitumusic-production  | 2025-07-26T00:17:07:     _paused: false,
+0|waitumusic-production  | 2025-07-26T00:17:07:     _protocol: '',
+0|waitumusic-production  | 2025-07-26T00:17:07:     _readyState: 3,
+0|waitumusic-production  | 2025-07-26T00:17:07:     _receiver: null,
+0|waitumusic-production  | 2025-07-26T00:17:07:     _sender: null,
+0|waitumusic-production  | 2025-07-26T00:17:07:     _socket: null,
+0|waitumusic-production  | 2025-07-26T00:17:07:     _bufferedAmount: 0,
+0|waitumusic-production  | 2025-07-26T00:17:07:     _isServer: false,
+0|waitumusic-production  | 2025-07-26T00:17:07:     _redirects: 0,
+0|waitumusic-production  | 2025-07-26T00:17:07:     _autoPong: true,
+0|waitumusic-production  | 2025-07-26T00:17:07:     _url: 'wss://waitumusic.com/v2',
+0|waitumusic-production  | 2025-07-26T00:17:07:     _req: null,
+0|waitumusic-production  | 2025-07-26T00:17:07:     [Symbol(shapeMode)]: false,
+0|waitumusic-production  | 2025-07-26T00:17:07:     [Symbol(kCapture)]: false
+0|waitumusic-production  | 2025-07-26T00:17:07:   },
+0|waitumusic-production  | 2025-07-26T00:17:07:   [Symbol(kType)]: 'error',
+0|waitumusic-production  | 2025-07-26T00:17:07:   [Symbol(kError)]: Error [ERR_TLS_CERT_ALTNAME_INVALID]: Hostname/IP does not match certificate's altnames: Host: waitumusic.com. is not in the cert's altnames: DNS:support.krystallion.com
+0|waitumusic-production  | 2025-07-26T00:17:07:       at Object.checkServerIdentity (node:tls:316:12)
+0|waitumusic-production  | 2025-07-26T00:17:07:       at TLSSocket.onConnectSecure (node:_tls_wrap:1687:27)
+0|waitumusic-production  | 2025-07-26T00:17:07:       at TLSSocket.emit (node:events:524:28)
+0|waitumusic-production  | 2025-07-26T00:17:07:       at TLSSocket._finishInit (node:_tls_wrap:1076:8)
+0|waitumusic-production  | 2025-07-26T00:17:07:       at ssl.onhandshakedone (node:_tls_wrap:862:12) {
+0|waitumusic-production  | 2025-07-26T00:17:07:     code: 'ERR_TLS_CERT_ALTNAME_INVALID',
+0|waitumusic-production  | 2025-07-26T00:17:07:     reason: "Host: waitumusic.com. is not in the cert's altnames: DNS:support.krystallion.com",
+0|waitumusic-production  | 2025-07-26T00:17:07:     host: 'waitumusic.com',
+0|waitumusic-production  | 2025-07-26T00:17:07:     cert: {
+0|waitumusic-production  | 2025-07-26T00:17:07:       subject: [Object: null prototype],
+0|waitumusic-production  | 2025-07-26T00:17:07:       issuer: [Object: null prototype],
+0|waitumusic-production  | 2025-07-26T00:17:07:       subjectaltname: 'DNS:support.krystallion.com',
+0|waitumusic-production  | 2025-07-26T00:17:07:       infoAccess: [Object: null prototype],
+0|waitumusic-production  | 2025-07-26T00:17:07:       ca: false,
+0|waitumusic-production  | 2025-07-26T00:17:07:       bits: 256,
+0|waitumusic-production  | 2025-07-26T00:17:07:       pubkey: <Buffer 04 df 39 b3 76 35 62 fb 3d b9 8d 2c 2e 9e 6e c1 08 7c 42 6c 2f 70 df 6e df 43 c0 e9 f4 86 f7 b6 51 09 44 14 46 d2 ca 0b 16 14 3a c7 b9 a2 64 91 c9 e4 ... 15 more bytes>,
+0|waitumusic-production  | 2025-07-26T00:17:07:       asn1Curve: 'prime256v1',
+0|waitumusic-production  | 2025-07-26T00:17:07:       nistCurve: 'P-256',
+0|waitumusic-production  | 2025-07-26T00:17:07:       valid_from: 'Jun 28 23:10:35 2025 GMT',
+0|waitumusic-production  | 2025-07-26T00:17:07:       valid_to: 'Sep 26 23:10:34 2025 GMT',
+0|waitumusic-production  | 2025-07-26T00:17:07:       fingerprint: 'B0:55:C2:74:2A:45:44:FA:0D:4A:1C:C9:D4:EE:5B:1E:7A:F5:FF:28',
+0|waitumusic-production  | 2025-07-26T00:17:07:       fingerprint256: 'D9:C3:5D:9E:C4:E8:10:0D:55:86:3C:07:71:FE:38:4A:15:BE:75:4E:CA:9D:13:F0:99:A9:F5:C8:A9:72:14:5C',
+0|waitumusic-production  | 2025-07-26T00:17:07:       fingerprint512: '14:C6:3E:A8:30:7C:2E:0A:2F:F2:46:97:4B:E7:78:9A:70:AF:36:AD:E4:0C:8B:57:26:6B:11:17:BA:21:8B:07:D1:54:46:74:E0:3A:70:67:F3:D2:04:18:B9:D4:EF:AE:62:50:95:B2:2B:64:BB:B7:8A:0F:7F:51:2E:CC:79:AE',
+0|waitumusic-production  | 2025-07-26T00:17:07:       ext_key_usage: [Array],
+0|waitumusic-production  | 2025-07-26T00:17:07:       serialNumber: '053D42AFD8E5EAA95139816B3A5414809A1F',
+0|waitumusic-production  | 2025-07-26T00:17:07:       raw: <Buffer 30 82 03 9a 30 82 03 20 a0 03 02 01 02 02 12 05 3d 42 af d8 e5 ea a9 51 39 81 6b 3a 54 14 80 9a 1f 30 0a 06 08 2a 86 48 ce 3d 04 03 03 30 32 31 0b 30 ... 876 more bytes>,
+0|waitumusic-production  | 2025-07-26T00:17:07:       issuerCertificate: [Object]
+0|waitumusic-production  | 2025-07-26T00:17:07:     }
+0|waitumusic-production  | 2025-07-26T00:17:07:   },
+0|waitumusic-production  | 2025-07-26T00:17:07:   [Symbol(kMessage)]: "Hostname/IP does not match certificate's altnames: Host: waitumusic.com. is not in the cert's altnames: DNS:support.krystallion.com"
+0|waitumusic-production  | 2025-07-26T00:17:07: }

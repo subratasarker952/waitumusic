@@ -1,0 +1,102 @@
+1. Comprehensive Overview of Wai’tuMusic
+Wai’tuMusic functions as a deeply integrated, multi-faceted digital platform engineered for the full-spectrum management of music industry participants. This includes but is not limited to: managed artists, independent artists, managed musicians, independent musicians, managed professionals, independent professionals, and fans. The platform is purpose-built to facilitate music catalog management, dynamic booking, contractual documentation, merchandise e-commerce, digital distribution, and hierarchical revenue tracking, all while maintaining strict role-based permissions, comprehensive media handling, and scalable analytics reporting.
+Its operational architecture ensures modular flexibility, enabling each user type to interact with the platform through bespoke, role-optimized dashboards that present functionalities strictly governed by their user role and management tier.
+
+2. Module Architecture and Functional Process Flow
+Module 1: Role-Specific Management - Artists, Musicians & Professionals
+2.1 Exhaustive User Classification
+    • Managed Artists: Professional recording artists explicitly enrolled into the system under one of two management agreements:
+        ◦ Full Management Tier: Allows access to all service functionalities with up to 100% discounts applied systematically.
+        ◦ Administration Tier: Permits discounted access up to a maximum of 50%.
+        ◦ The superadmin reserves authority to override any default discount or access limitation per managed artist account.
+    • Artists: Independently registered musicians with standard permissions and without managerial discounts or service subsidies.
+    • Managed Musicians: Session or touring musicians classified into:
+        ◦ Full Management Tier or
+        ◦ Administration Tier, following identical discount and access protocols as Managed Artists.
+    • Musicians: Independent session or live musicians with autonomous profiles and baseline feature access.
+    • Managed Professionals: Includes dancers, audio engineers, choreographers, and other service providers:
+        ◦ Full Management Tier or
+        ◦ Administration Tier, subject to management-based benefits.
+    • Professionals: Independent service professionals registered publicly without systemic discounts.
+    • Fans: General user base, capable of browsing, purchasing, and submitting upgrade requests to higher user roles upon verification.
+2.2 Core Profile Infrastructure
+    • Electronic Press Kit (EPK): A comprehensive digital dossier for all managed users consolidating biography, professional images, service summaries, and promotional assets.
+    • Gallery Upload System:
+        ◦ Access limited to Managed Artists, Managed Musicians, and Managed Professionals.
+        ◦ Supports multimedia upload (graphics, documents, videos) subject to 30-day provisional approval by assigned admins or superadmins.
+    • Link Aggregation and Streaming Metrics:
+        ◦ Role-specific profile fields consolidate official websites, music streaming links (Spotify, Apple Music), and all active social media accounts.
+        ◦ Integrated public metric displays for YouTube subscribers, Spotify listener counts, and top-streamed content.
+2.3 Music Catalog & Digital Media Management
+    • Track Upload Validation:
+        ◦ ISRC code mandatory for all track uploads.
+        ◦ Cover art resolution minimum enforced at 3000x3000 pixels.
+    • Monetization Controls:
+        ◦ Tracks can be offered as free content or monetized downloads/streams.
+    • Dynamic Audio Preview Engine:
+        ◦ Managed users enjoy advanced slider-controlled previews (15 seconds up to full track).
+        ◦ Independent users restricted to 30-second preview selection.
+2.4 Collaboration Facilitation Module
+    • Unified framework enabling collaboration between any two or more registered users (independent or managed), supporting session recording projects, live collaborations, and service partnerships within the platform ecosystem.
+
+Module 2: Booking Management, Contract System & Document Workflow
+2.5 Hierarchical Booking Lifecycle & Documentation Generation
+    • Booking System Access Restriction:
+        ◦ Booking calendar functionalities are strictly limited to Managed Artists, Managed Musicians, and Managed Professionals. Independent counterparts do not access direct booking functionalities.
+    • Automated Document Generation Upon Booking Initiation:
+        ◦ Booking Agreements
+        ◦ Technical Riders (pre-populated from individual, private, itemized profile data filled in by the non-fan and non-admin user, editable at the contract level after being auto-populated therein)
+        ◦ Performance Agreements (specifically for Managed Artists and Managed Musicians, Artists and Musicians)
+        ◦ Performance Engagement Contracts (for Professionals)
+    • Confidential Technical Rider System:
+        ◦ Auto-fills equipment and hospitality requirements from users’ private profiles.
+        ◦ Information can be edited at booking-specific instances without overwriting master profile data.
+        ◦ Confidential rider specifications visible solely to assigned admins, superadmins, or the booking party.
+2.6 Centralized Document Control & Notifications Management
+    • Permission-Based Media/Document Hub:
+        ◦ Central system controlling document/media upload, visibility, assignment, and audit trails.
+    • Approval Workflow:
+        ◦ File submissions trigger notification flows to admins/superadmins for review, approval, and role-assigned visibility.
+
+Module 3: Calendar Systems, Dynamic Pricing Engine & Financial Model
+2.7 Dual Calendar Systems
+    • Booking Calendar:
+        ◦ Available exclusively to Managed Artists, Managed Musicians, and Managed Professionals.
+        ◦ Color-coded system indicating date availability, confirmed bookings, conflicts, and date selection.
+    • Consultation Calendar:
+        ◦ Reserved for scheduling of professional service appointments.
+        ◦ Managed Artists, Managed Musicians, or Managed Professionals can be assigned to a service that can be booked in the consultation calendar. When these are added to the service, the price that the managed artist, managed musician, managed professional will be entered and will then immediately be added to the base price of that service. Any number of managed artists, managed musicians and/or managed professionals can be added to the service. These can also indicate the dates they are unavailable for the service, they will also get an alert when a consultation booking is made they will get an alert.
+2.8 Adaptive Pricing & Residual Revenue Engine
+    • Dynamic Add-On Pricing Mechanism:
+        ◦ Allows managed users to append services, equipment, or collaborative personnel as price-modifying add-ons.
+    • Financial Transparency and Residual Tracking:
+        ◦ Platform pricing algorithm guarantees that 100% of the base price set by the artist, musician, or professional is always disbursed as payout upon transaction completion.
+        ◦ Administrative fees (both fixed and percentage-based) and payment processor fees are dynamically calculated and applied atop the base price, ensuring no deductions affect the user’s set price.
+        ◦ Any surplus accrued beyond the 100% base price (from applied platform and processor fees) is systematically classified and tracked as residual income for the platform.
+        ◦ System-level tracking and reporting of residual earnings are integral, with reports accessible to the superadmin role.
+    • Merchandising & Cross-Promotion System:
+        ◦ Merchandise items are linked to songs/albums for targeted upselling.
+        ◦ Conversely, music tied to specific merch is recommended during merch browsing.
+
+4. Role-Specific Dashboards & System Interactions
+    • Superadmin: Global system oversight, user/role management, booking and financial reporting, API administration, and contract/document control.
+    • Admin: Operational user oversight and booking/contract facilitation.
+    • Managed Artist / Artist: Music and merch management, booking responses, performance statistics, profile updates.
+    • Managed Musician / Musician: Booking management, availability setting, session contracting, and financial tracking.
+    • Managed Professional / Professional: Consultation management, service delivery tracking, contract handling, payment overview.
+    • Fan: General purchasing, booking visibility, and interaction with artist content.
+
+
+5. Additional Functional Modules
+    • E-commerce System with Stripe and PayPal.
+    • Contract generation and e-signature workflows.
+    • Form builder, notification dispatch system, and multilingual text management.
+    • Comprehensive reporting, marketing, and analytics modules.
+    • A booker will receive an invoice, and all logged payments will trigger the creation of a receipt of that payment up to the point that full payment is made. This is made available in the profile area in its own tab whenever bookings (artist bookings or consultation bookings) are made. 
+
+6. Financial Model Summary
+    • Payout Guarantee:
+        ◦ At all times, artists, musicians, and professionals receive 100% of their defined base price without deductions.
+    • Residual Income Recording:
+        ◦ Administrative fees and processing fees, accumulated atop the base price, are meticulously logged as platform residual income.
+        ◦ Superadmins access categorized residual income analytics to facilitate strategic financial planning.

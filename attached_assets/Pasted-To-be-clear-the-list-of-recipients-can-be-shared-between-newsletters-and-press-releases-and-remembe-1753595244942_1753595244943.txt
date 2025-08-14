@@ -1,0 +1,22 @@
+To be clear the list of recipients can be shared between newsletters and press releases
+and remember the superadmins, admins and fully managed artists/musicians (with review and approval) can use the newsletter system. proceed with updating the frontend newsletter and press release management components to use this new recipient system.
+
+
+
+And don't forget that pictures/graphics, videos, documents can all be assigned to the press release or news letter by assigning from the media area.
+
+If I upload a song, I should also be able to edit the song, in order to adjust the preview span. remember what we said about the preview span selection for paid songs? make sure that is implemented along with the ability to reupload (but the song name must be the same and the ISRC must be thte same for the upload to work). this way the preview can be selected at any time and ensure the media player is able to follow the restrictions of the preview span before prompting someone who has not yet paid for the particular song to make payment and to add the song to cart in order to proceed. 
+
+
+
+regarding the media player, let it be slick and show up at the bottom so it can be played on every page in the public-facing front end and when previewing paid tracks/songs/albums, let it display add to cart icon with tooltip on hover.
+the media player should do this primarily for paid audio files. But it should be able to play all uploaded media types, especially video without problem. Only, for the paid songs it should encourage the purchase of the paid song and even upsell merch if merch is assigned to the album or song. if an album is being previewed then the media player should cycle through each song, playing the selected span and then going to the next song when the span duration for the current song has been reached. this will encourage consistent behaviour for paid songs/albums. free songs can be previewed in their entirety. 
+
+
+
+In newsletter management, in subscribers tab, it shows "Subscriber Management
+View and manage newsletter subscribers by artist interests
+Princess Trinidad
+Managed Artist
+
+Subscribers: Loading..." Subscribers loading needs to be changed to something useful. what was the onbjective here?I don't see where to add the emails and categories of the recipients for neither the newsletter and press release.tell me all the features of the newsletter. Because I still don't know how I'm supposed to add other recipients apart from fans (and/or fans of the managed artist or managed musician) also when it comes to press releases how are the recipients managed apart from the fans/fans of the managed talent users? fans get the newsletters and press releases first, but the recipients other than that need to be grouped by type like radio, tv, dj, festival organizer, booking agents etc etc etc, I need a system to be able to ensue the content of the press release matches the type of recipient. like a gospel album press release needs to go to gospel recipients etc.

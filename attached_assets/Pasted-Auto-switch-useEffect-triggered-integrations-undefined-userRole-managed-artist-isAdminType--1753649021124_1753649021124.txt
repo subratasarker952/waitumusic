@@ -1,0 +1,89 @@
+Auto-switch useEffect triggered: {integrations: undefined, userRole: 'managed_artist', isAdminType: false, activeTab: 'create', artistId: 16, …}
+WebsiteIntegrationModal.tsx:91 Auto-switch useEffect triggered: {integrations: undefined, userRole: 'managed_artist', isAdminType: false, activeTab: 'create', artistId: 16, …}
+RoleBasedRoute.tsx:47 RoleBasedRoute Debug: {user: {…}, role: 'superadmin', roleType: 'string', roleName: 'superadmin', allowedRoles: Array(9), …}
+queryClient.ts:41   GET https://e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/api/favorites 500 (Internal Server Error)
+(anonymous) @ queryClient.ts:41
+fetchFn @ query.ts:429
+run @ retryer.ts:153
+start @ retryer.ts:218
+fetch @ query.ts:540
+executeFetch_fn @ queryObserver.ts:346
+onSubscribe @ queryObserver.ts:108
+subscribe @ subscribable.ts:11
+(anonymous) @ useBaseQuery.ts:92
+subscribeToStore @ react-dom.development.js:16139
+commitHookEffectListMount @ react-dom.development.js:23189
+commitPassiveMountOnFiber @ react-dom.development.js:24965
+commitPassiveMountEffects_complete @ react-dom.development.js:24930
+commitPassiveMountEffects_begin @ react-dom.development.js:24917
+commitPassiveMountEffects @ react-dom.development.js:24905
+flushPassiveEffectsImpl @ react-dom.development.js:27078
+flushPassiveEffects @ react-dom.development.js:27023
+commitRootImpl @ react-dom.development.js:26974
+commitRoot @ react-dom.development.js:26721
+performSyncWorkOnRoot @ react-dom.development.js:26156
+flushSyncCallbacks @ react-dom.development.js:12042
+(anonymous) @ react-dom.development.js:25690
+queryClient.ts:41   GET https://e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/api/favorites 500 (Internal Server Error)
+(anonymous) @ queryClient.ts:41
+fetchFn @ query.ts:429
+run @ retryer.ts:153
+(anonymous) @ retryer.ts:199
+Promise.then
+(anonymous) @ retryer.ts:195
+Promise.catch
+run @ retryer.ts:160
+start @ retryer.ts:218
+fetch @ query.ts:540
+executeFetch_fn @ queryObserver.ts:346
+onSubscribe @ queryObserver.ts:108
+subscribe @ subscribable.ts:11
+(anonymous) @ useBaseQuery.ts:92
+subscribeToStore @ react-dom.development.js:16139
+commitHookEffectListMount @ react-dom.development.js:23189
+commitPassiveMountOnFiber @ react-dom.development.js:24965
+commitPassiveMountEffects_complete @ react-dom.development.js:24930
+commitPassiveMountEffects_begin @ react-dom.development.js:24917
+commitPassiveMountEffects @ react-dom.development.js:24905
+flushPassiveEffectsImpl @ react-dom.development.js:27078
+flushPassiveEffects @ react-dom.development.js:27023
+commitRootImpl @ react-dom.development.js:26974
+commitRoot @ react-dom.development.js:26721
+performSyncWorkOnRoot @ react-dom.development.js:26156
+flushSyncCallbacks @ react-dom.development.js:12042
+(anonymous) @ react-dom.development.js:25690
+WebsiteIntegrationModal.tsx:91 Auto-switch useEffect triggered: {integrations: undefined, userRole: 'superadmin', isAdminType: true, activeTab: 'create', artistId: 16, …}
+queryClient.ts:41   GET https://e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/api/favorites 500 (Internal Server Error)
+(anonymous) @ queryClient.ts:41
+fetchFn @ query.ts:429
+run @ retryer.ts:153
+(anonymous) @ retryer.ts:199
+Promise.then
+(anonymous) @ retryer.ts:195
+Promise.catch
+run @ retryer.ts:160
+(anonymous) @ retryer.ts:199
+Promise.then
+(anonymous) @ retryer.ts:195
+Promise.catch
+run @ retryer.ts:160
+start @ retryer.ts:218
+fetch @ query.ts:540
+executeFetch_fn @ queryObserver.ts:346
+onSubscribe @ queryObserver.ts:108
+subscribe @ subscribable.ts:11
+(anonymous) @ useBaseQuery.ts:92
+subscribeToStore @ react-dom.development.js:16139
+commitHookEffectListMount @ react-dom.development.js:23189
+commitPassiveMountOnFiber @ react-dom.development.js:24965
+commitPassiveMountEffects_complete @ react-dom.development.js:24930
+commitPassiveMountEffects_begin @ react-dom.development.js:24917
+commitPassiveMountEffects @ react-dom.development.js:24905
+flushPassiveEffectsImpl @ react-dom.development.js:27078
+flushPassiveEffects @ react-dom.development.js:27023
+commitRootImpl @ react-dom.development.js:26974
+commitRoot @ react-dom.development.js:26721
+performSyncWorkOnRoot @ react-dom.development.js:26156
+flushSyncCallbacks @ react-dom.development.js:12042
+(anonymous) @ react-dom.development.js:25690
+WebsiteIntegrationModal.tsx:91 Auto-switch useEffect triggered: {integrations: undefined, userRole: 'superadmin', isAdminType: true, activeTab: 'create', artistId: 16, …}

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+  <circle cx="256" cy="256" r="230" fill="#7C3AED" stroke="#FFFFFF" stroke-width="15"/>
+  <circle cx="256" cy="256" r="120" fill="#EF4444"/>
+  <!-- Music note -->
+  <circle cx="256" cy="280" r="12" fill="#7C3AED"/>
+  <path d="M256 280 Q275 235 295 245 Q290 250 270 260 L268 280 Z" fill="#7C3AED"/>
+  <!-- Sound waves -->
+  <rect x="200" y="225" width="8" height="40" rx="4" fill="#FFFFFF"/>
+  <rect x="215" y="210" width="8" height="70" rx="4" fill="#FFFFFF"/>
+  <rect x="230" y="235" width="8" height="30" rx="4" fill="#FFFFFF"/>
+  <rect x="295" y="225" width="8" height="40" rx="4" fill="#FFFFFF"/>
+  <rect x="310" y="210" width="8" height="70" rx="4" fill="#FFFFFF"/>
+  <rect x="325" y="235" width="8" height="30" rx="4" fill="#FFFFFF"/>
+  <!-- Purple sound waves -->
+  <rect x="185" y="240" width="6" height="20" rx="3" fill="#7C3AED"/>
+  <rect x="340" y="240" width="6" height="20" rx="3" fill="#7C3AED"/>
+  <rect x="170" y="245" width="4" height="15" rx="2" fill="#7C3AED"/>
+  <rect x="355" y="245" width="4" height="15" rx="2" fill="#7C3AED"/>
+  <!-- Text -->
+  <text x="256" y="420" font-family="Arial, sans-serif" font-size="36" font-weight="bold" text-anchor="middle" fill="#7C3AED">WAITU</text>
+  <text x="256" y="460" font-family="Arial, sans-serif" font-size="28" font-weight="bold" text-anchor="middle" fill="#7C3AED">MUSIC</text>
+</svg>

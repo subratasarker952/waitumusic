@@ -1,0 +1,509 @@
+ComprehensiveBookingWorkflow.tsx:148 FRONTEND: Fetching booking workflow for ID 22
+ComprehensiveBookingWorkflow.tsx:150 FRONTEND: Received booking data with primaryArtist: {id: 19, email: 'princesstrinidad@waitumusic.com', passwordHash: '$2b$10$nHLHyp4RpLss45EqMnrCh.yCGgHFmsZgY82r3snuVobM8hkQTjZP.', fullName: 'Joanna Davis (Princess Trinidad)', roleId: 3, …}
+ComprehensiveBookingWorkflow.tsx:190 USEEFFECT: Processing booking data: {id: 22, bookerUserId: null, primaryArtistUserId: 19, eventName: 'dffdfdfdfdfd', eventType: 'wedding', …}
+ComprehensiveBookingWorkflow.tsx:191 USEEFFECT: Primary artist data: {id: 19, email: 'princesstrinidad@waitumusic.com', passwordHash: '$2b$10$nHLHyp4RpLss45EqMnrCh.yCGgHFmsZgY82r3snuVobM8hkQTjZP.', fullName: 'Joanna Davis (Princess Trinidad)', roleId: 3, …}
+ComprehensiveBookingWorkflow.tsx:199 USEEFFECT: Determined artist type: Managed Artist from userType: Managed Artist isManaged: true
+ComprehensiveBookingWorkflow.tsx:211 USEEFFECT: Creating primary talent assignment: {id: 'primary-19', userId: 19, name: 'Princess Trinidad', type: 'Managed Artist', role: 'Main Booked Talent', …}
+_app-424ade17f85111cf.js:18   POST https://events.launchdarkly.com/events/bulk/62b35a865152ab14c5942820 net::ERR_BLOCKED_BY_CLIENT
+(anonymous) @ _app-424ade17f85111cf.js:18
+(anonymous) @ _app-424ade17f85111cf.js:18
+promise @ _app-424ade17f85111cf.js:40
+(anonymous) @ _app-424ade17f85111cf.js:40
+r.httpRequest @ _app-424ade17f85111cf.js:40
+t @ _app-424ade17f85111cf.js:40
+a.sendChunk @ _app-424ade17f85111cf.js:40
+a.sendEvents @ _app-424ade17f85111cf.js:40
+a.flush @ _app-424ade17f85111cf.js:40
+e @ _app-424ade17f85111cf.js:40
+n @ _app-424ade17f85111cf.js:18
+setTimeout
+(anonymous) @ _app-424ade17f85111cf.js:18
+e @ _app-424ade17f85111cf.js:40
+n @ _app-424ade17f85111cf.js:18
+setTimeout
+(anonymous) @ _app-424ade17f85111cf.js:18
+e @ _app-424ade17f85111cf.js:40
+n @ _app-424ade17f85111cf.js:18
+setTimeout
+(anonymous) @ _app-424ade17f85111cf.js:18
+e @ _app-424ade17f85111cf.js:40
+n @ _app-424ade17f85111cf.js:18
+setTimeout
+(anonymous) @ _app-424ade17f85111cf.js:18
+e @ _app-424ade17f85111cf.js:40
+n @ _app-424ade17f85111cf.js:18
+setTimeout
+(anonymous) @ _app-424ade17f85111cf.js:18
+e @ _app-424ade17f85111cf.js:40
+n @ _app-424ade17f85111cf.js:18
+setTimeout
+(anonymous) @ _app-424ade17f85111cf.js:18
+e @ _app-424ade17f85111cf.js:40
+n @ _app-424ade17f85111cf.js:18
+setTimeout
+(anonymous) @ _app-424ade17f85111cf.js:18
+e @ _app-424ade17f85111cf.js:40
+n @ _app-424ade17f85111cf.js:18
+setTimeout
+(anonymous) @ _app-424ade17f85111cf.js:18
+e @ _app-424ade17f85111cf.js:40
+n @ _app-424ade17f85111cf.js:18
+setTimeout
+(anonymous) @ _app-424ade17f85111cf.js:18
+e @ _app-424ade17f85111cf.js:40
+n @ _app-424ade17f85111cf.js:18
+[NEW] Explain Console errors by using Copilot in Edge: click
+         
+         to explain an error. 
+        Learn more
+        Don't show again
+_app-424ade17f85111cf.js:18   POST https://events.launchdarkly.com/events/bulk/62b35a865152ab14c5942820 net::ERR_BLOCKED_BY_CLIENT
+(anonymous) @ _app-424ade17f85111cf.js:18
+(anonymous) @ _app-424ade17f85111cf.js:18
+promise @ _app-424ade17f85111cf.js:40
+(anonymous) @ _app-424ade17f85111cf.js:40
+r.httpRequest @ _app-424ade17f85111cf.js:40
+t @ _app-424ade17f85111cf.js:40
+(anonymous) @ _app-424ade17f85111cf.js:40
+Promise.catch
+t @ _app-424ade17f85111cf.js:40
+a.sendChunk @ _app-424ade17f85111cf.js:40
+a.sendEvents @ _app-424ade17f85111cf.js:40
+a.flush @ _app-424ade17f85111cf.js:40
+e @ _app-424ade17f85111cf.js:40
+n @ _app-424ade17f85111cf.js:18
+setTimeout
+(anonymous) @ _app-424ade17f85111cf.js:18
+e @ _app-424ade17f85111cf.js:40
+n @ _app-424ade17f85111cf.js:18
+setTimeout
+(anonymous) @ _app-424ade17f85111cf.js:18
+e @ _app-424ade17f85111cf.js:40
+n @ _app-424ade17f85111cf.js:18
+setTimeout
+(anonymous) @ _app-424ade17f85111cf.js:18
+e @ _app-424ade17f85111cf.js:40
+n @ _app-424ade17f85111cf.js:18
+setTimeout
+(anonymous) @ _app-424ade17f85111cf.js:18
+e @ _app-424ade17f85111cf.js:40
+n @ _app-424ade17f85111cf.js:18
+setTimeout
+(anonymous) @ _app-424ade17f85111cf.js:18
+e @ _app-424ade17f85111cf.js:40
+n @ _app-424ade17f85111cf.js:18
+setTimeout
+(anonymous) @ _app-424ade17f85111cf.js:18
+e @ _app-424ade17f85111cf.js:40
+n @ _app-424ade17f85111cf.js:18
+setTimeout
+(anonymous) @ _app-424ade17f85111cf.js:18
+e @ _app-424ade17f85111cf.js:40
+n @ _app-424ade17f85111cf.js:18
+setTimeout
+(anonymous) @ _app-424ade17f85111cf.js:18
+e @ _app-424ade17f85111cf.js:40
+n @ _app-424ade17f85111cf.js:18
+setTimeout
+(anonymous) @ _app-424ade17f85111cf.js:18
+e @ _app-424ade17f85111cf.js:40
+n @ _app-424ade17f85111cf.js:18
+EnhancedTechnicalRider.tsx:468 DEBUG: Syncing stage legend roles with band members
+EnhancedTechnicalRider.tsx:474 🔄 TECHNICAL RIDER: Initializing band members
+EnhancedTechnicalRider.tsx:475 🔄 Final assigned musicians count: 19
+EnhancedTechnicalRider.tsx:476 🔄 Final assigned musicians data: (19) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
+ 🔄 Processing musician 1: Princess Trinidad
+ 🔄 Full musician data: {id: 19, userId: 19, name: 'Princess Trinidad', fullName: 'Princess Trinidad', stageName: 'Princess Trinidad', …}
+  🚫 SKIPPING USER: Princess Trinidad - Missing assignment source data. This user will not appear in technical rider.
+(anonymous) @ EnhancedTechnicalRider.tsx:326
+initializeBandMembers @ EnhancedTechnicalRider.tsx:322
+(anonymous) @ EnhancedTechnicalRider.tsx:420
+commitHookEffectListMount @ chunk-RPCDYKBN.js?v=a9e8ae1c:16915
+commitPassiveMountOnFiber @ chunk-RPCDYKBN.js?v=a9e8ae1c:18156
+commitPassiveMountEffects_complete @ chunk-RPCDYKBN.js?v=a9e8ae1c:18129
+commitPassiveMountEffects_begin @ chunk-RPCDYKBN.js?v=a9e8ae1c:18119
+commitPassiveMountEffects @ chunk-RPCDYKBN.js?v=a9e8ae1c:18109
+flushPassiveEffectsImpl @ chunk-RPCDYKBN.js?v=a9e8ae1c:19490
+flushPassiveEffects @ chunk-RPCDYKBN.js?v=a9e8ae1c:19447
+commitRootImpl @ chunk-RPCDYKBN.js?v=a9e8ae1c:19416
+commitRoot @ chunk-RPCDYKBN.js?v=a9e8ae1c:19277
+performSyncWorkOnRoot @ chunk-RPCDYKBN.js?v=a9e8ae1c:18895
+flushSyncCallbacks @ chunk-RPCDYKBN.js?v=a9e8ae1c:9119
+(anonymous) @ chunk-RPCDYKBN.js?v=a9e8ae1c:18627
+ 🔄 Processing musician 2: Lí-Lí Octave
+ 🔄 Full musician data: {id: 16, userId: 16, name: 'Lí-Lí Octave', fullName: 'Lí-Lí Octave', stageName: {…}, …}
+  🚫 SKIPPING USER: Lí-Lí Octave - Missing assignment source data. This user will not appear in technical rider.
+(anonymous) @ EnhancedTechnicalRider.tsx:326
+initializeBandMembers @ EnhancedTechnicalRider.tsx:322
+(anonymous) @ EnhancedTechnicalRider.tsx:420
+commitHookEffectListMount @ chunk-RPCDYKBN.js?v=a9e8ae1c:16915
+commitPassiveMountOnFiber @ chunk-RPCDYKBN.js?v=a9e8ae1c:18156
+commitPassiveMountEffects_complete @ chunk-RPCDYKBN.js?v=a9e8ae1c:18129
+commitPassiveMountEffects_begin @ chunk-RPCDYKBN.js?v=a9e8ae1c:18119
+commitPassiveMountEffects @ chunk-RPCDYKBN.js?v=a9e8ae1c:18109
+flushPassiveEffectsImpl @ chunk-RPCDYKBN.js?v=a9e8ae1c:19490
+flushPassiveEffects @ chunk-RPCDYKBN.js?v=a9e8ae1c:19447
+commitRootImpl @ chunk-RPCDYKBN.js?v=a9e8ae1c:19416
+commitRoot @ chunk-RPCDYKBN.js?v=a9e8ae1c:19277
+performSyncWorkOnRoot @ chunk-RPCDYKBN.js?v=a9e8ae1c:18895
+flushSyncCallbacks @ chunk-RPCDYKBN.js?v=a9e8ae1c:9119
+(anonymous) @ chunk-RPCDYKBN.js?v=a9e8ae1c:18627
+ 🔄 Processing musician 3: Karlvin Deravariere
+ 🔄 Full musician data: {id: 17, userId: 17, name: 'Karlvin Deravariere', fullName: 'Karlvin Deravariere', stageName: 'JCro', …}
+  🚫 SKIPPING USER: Karlvin Deravariere - Missing assignment source data. This user will not appear in technical rider.
+(anonymous) @ EnhancedTechnicalRider.tsx:326
+initializeBandMembers @ EnhancedTechnicalRider.tsx:322
+(anonymous) @ EnhancedTechnicalRider.tsx:420
+commitHookEffectListMount @ chunk-RPCDYKBN.js?v=a9e8ae1c:16915
+commitPassiveMountOnFiber @ chunk-RPCDYKBN.js?v=a9e8ae1c:18156
+commitPassiveMountEffects_complete @ chunk-RPCDYKBN.js?v=a9e8ae1c:18129
+commitPassiveMountEffects_begin @ chunk-RPCDYKBN.js?v=a9e8ae1c:18119
+commitPassiveMountEffects @ chunk-RPCDYKBN.js?v=a9e8ae1c:18109
+flushPassiveEffectsImpl @ chunk-RPCDYKBN.js?v=a9e8ae1c:19490
+flushPassiveEffects @ chunk-RPCDYKBN.js?v=a9e8ae1c:19447
+commitRootImpl @ chunk-RPCDYKBN.js?v=a9e8ae1c:19416
+commitRoot @ chunk-RPCDYKBN.js?v=a9e8ae1c:19277
+performSyncWorkOnRoot @ chunk-RPCDYKBN.js?v=a9e8ae1c:18895
+flushSyncCallbacks @ chunk-RPCDYKBN.js?v=a9e8ae1c:9119
+(anonymous) @ chunk-RPCDYKBN.js?v=a9e8ae1c:18627
+ 🔄 Processing musician 4: Managed Artist Two
+ 🔄 Full musician data: {id: 27, userId: 27, name: 'Managed Artist Two', fullName: 'Managed Artist Two', stageName: 'Managed Artist Two', …}
+  🚫 SKIPPING USER: Managed Artist Two - Missing assignment source data. This user will not appear in technical rider.
+(anonymous) @ EnhancedTechnicalRider.tsx:326
+initializeBandMembers @ EnhancedTechnicalRider.tsx:322
+(anonymous) @ EnhancedTechnicalRider.tsx:420
+commitHookEffectListMount @ chunk-RPCDYKBN.js?v=a9e8ae1c:16915
+commitPassiveMountOnFiber @ chunk-RPCDYKBN.js?v=a9e8ae1c:18156
+commitPassiveMountEffects_complete @ chunk-RPCDYKBN.js?v=a9e8ae1c:18129
+commitPassiveMountEffects_begin @ chunk-RPCDYKBN.js?v=a9e8ae1c:18119
+commitPassiveMountEffects @ chunk-RPCDYKBN.js?v=a9e8ae1c:18109
+flushPassiveEffectsImpl @ chunk-RPCDYKBN.js?v=a9e8ae1c:19490
+flushPassiveEffects @ chunk-RPCDYKBN.js?v=a9e8ae1c:19447
+commitRootImpl @ chunk-RPCDYKBN.js?v=a9e8ae1c:19416
+commitRoot @ chunk-RPCDYKBN.js?v=a9e8ae1c:19277
+performSyncWorkOnRoot @ chunk-RPCDYKBN.js?v=a9e8ae1c:18895
+flushSyncCallbacks @ chunk-RPCDYKBN.js?v=a9e8ae1c:9119
+(anonymous) @ chunk-RPCDYKBN.js?v=a9e8ae1c:18627
+ 🔄 Processing musician 5: Janet Azzouz
+ 🔄 Full musician data: {id: 18, userId: 18, name: 'Janet Azzouz', fullName: 'Janet Azzouz', stageName: 'Janet Azzouz', …}
+  🚫 SKIPPING USER: Janet Azzouz - Missing assignment source data. This user will not appear in technical rider.
+(anonymous) @ EnhancedTechnicalRider.tsx:326
+initializeBandMembers @ EnhancedTechnicalRider.tsx:322
+(anonymous) @ EnhancedTechnicalRider.tsx:420
+commitHookEffectListMount @ chunk-RPCDYKBN.js?v=a9e8ae1c:16915
+commitPassiveMountOnFiber @ chunk-RPCDYKBN.js?v=a9e8ae1c:18156
+commitPassiveMountEffects_complete @ chunk-RPCDYKBN.js?v=a9e8ae1c:18129
+commitPassiveMountEffects_begin @ chunk-RPCDYKBN.js?v=a9e8ae1c:18119
+commitPassiveMountEffects @ chunk-RPCDYKBN.js?v=a9e8ae1c:18109
+flushPassiveEffectsImpl @ chunk-RPCDYKBN.js?v=a9e8ae1c:19490
+flushPassiveEffects @ chunk-RPCDYKBN.js?v=a9e8ae1c:19447
+commitRootImpl @ chunk-RPCDYKBN.js?v=a9e8ae1c:19416
+commitRoot @ chunk-RPCDYKBN.js?v=a9e8ae1c:19277
+performSyncWorkOnRoot @ chunk-RPCDYKBN.js?v=a9e8ae1c:18895
+flushSyncCallbacks @ chunk-RPCDYKBN.js?v=a9e8ae1c:9119
+(anonymous) @ chunk-RPCDYKBN.js?v=a9e8ae1c:18627
+ 🔄 Processing musician 6: Independent Artist Two
+ 🔄 Full musician data: {id: 30, userId: 30, name: 'Independent Artist Two', fullName: 'Independent Artist Two', stageName: 'Sarah J', …}
+  🚫 SKIPPING USER: Independent Artist Two - Missing assignment source data. This user will not appear in technical rider.
+(anonymous) @ EnhancedTechnicalRider.tsx:326
+initializeBandMembers @ EnhancedTechnicalRider.tsx:322
+(anonymous) @ EnhancedTechnicalRider.tsx:420
+commitHookEffectListMount @ chunk-RPCDYKBN.js?v=a9e8ae1c:16915
+commitPassiveMountOnFiber @ chunk-RPCDYKBN.js?v=a9e8ae1c:18156
+commitPassiveMountEffects_complete @ chunk-RPCDYKBN.js?v=a9e8ae1c:18129
+commitPassiveMountEffects_begin @ chunk-RPCDYKBN.js?v=a9e8ae1c:18119
+commitPassiveMountEffects @ chunk-RPCDYKBN.js?v=a9e8ae1c:18109
+flushPassiveEffectsImpl @ chunk-RPCDYKBN.js?v=a9e8ae1c:19490
+flushPassiveEffects @ chunk-RPCDYKBN.js?v=a9e8ae1c:19447
+commitRootImpl @ chunk-RPCDYKBN.js?v=a9e8ae1c:19416
+commitRoot @ chunk-RPCDYKBN.js?v=a9e8ae1c:19277
+performSyncWorkOnRoot @ chunk-RPCDYKBN.js?v=a9e8ae1c:18895
+flushSyncCallbacks @ chunk-RPCDYKBN.js?v=a9e8ae1c:9119
+(anonymous) @ chunk-RPCDYKBN.js?v=a9e8ae1c:18627
+ 🔄 Processing musician 7: Managed Musician Two
+ 🔄 Full musician data: {id: 28, userId: 28, name: 'Managed Musician Two', fullName: 'Managed Musician Two', stageName: '', …}
+  🚫 SKIPPING USER: Managed Musician Two - Missing assignment source data. This user will not appear in technical rider.
+(anonymous) @ EnhancedTechnicalRider.tsx:326
+initializeBandMembers @ EnhancedTechnicalRider.tsx:322
+(anonymous) @ EnhancedTechnicalRider.tsx:420
+commitHookEffectListMount @ chunk-RPCDYKBN.js?v=a9e8ae1c:16915
+commitPassiveMountOnFiber @ chunk-RPCDYKBN.js?v=a9e8ae1c:18156
+commitPassiveMountEffects_complete @ chunk-RPCDYKBN.js?v=a9e8ae1c:18129
+commitPassiveMountEffects_begin @ chunk-RPCDYKBN.js?v=a9e8ae1c:18119
+commitPassiveMountEffects @ chunk-RPCDYKBN.js?v=a9e8ae1c:18109
+flushPassiveEffectsImpl @ chunk-RPCDYKBN.js?v=a9e8ae1c:19490
+flushPassiveEffects @ chunk-RPCDYKBN.js?v=a9e8ae1c:19447
+commitRootImpl @ chunk-RPCDYKBN.js?v=a9e8ae1c:19416
+commitRoot @ chunk-RPCDYKBN.js?v=a9e8ae1c:19277
+performSyncWorkOnRoot @ chunk-RPCDYKBN.js?v=a9e8ae1c:18895
+flushSyncCallbacks @ chunk-RPCDYKBN.js?v=a9e8ae1c:9119
+(anonymous) @ chunk-RPCDYKBN.js?v=a9e8ae1c:18627
+ 🔄 Processing musician 8: Sophia Chen
+ 🔄 Full musician data: {id: 22, userId: 22, name: 'Sophia Chen', fullName: 'Sophia Chen', stageName: '', …}
+  🚫 SKIPPING USER: Sophia Chen - Missing assignment source data. This user will not appear in technical rider.
+(anonymous) @ EnhancedTechnicalRider.tsx:326
+initializeBandMembers @ EnhancedTechnicalRider.tsx:322
+(anonymous) @ EnhancedTechnicalRider.tsx:420
+commitHookEffectListMount @ chunk-RPCDYKBN.js?v=a9e8ae1c:16915
+commitPassiveMountOnFiber @ chunk-RPCDYKBN.js?v=a9e8ae1c:18156
+commitPassiveMountEffects_complete @ chunk-RPCDYKBN.js?v=a9e8ae1c:18129
+commitPassiveMountEffects_begin @ chunk-RPCDYKBN.js?v=a9e8ae1c:18119
+commitPassiveMountEffects @ chunk-RPCDYKBN.js?v=a9e8ae1c:18109
+flushPassiveEffectsImpl @ chunk-RPCDYKBN.js?v=a9e8ae1c:19490
+flushPassiveEffects @ chunk-RPCDYKBN.js?v=a9e8ae1c:19447
+commitRootImpl @ chunk-RPCDYKBN.js?v=a9e8ae1c:19416
+commitRoot @ chunk-RPCDYKBN.js?v=a9e8ae1c:19277
+performSyncWorkOnRoot @ chunk-RPCDYKBN.js?v=a9e8ae1c:18895
+flushSyncCallbacks @ chunk-RPCDYKBN.js?v=a9e8ae1c:9119
+(anonymous) @ chunk-RPCDYKBN.js?v=a9e8ae1c:18627
+ 🔄 Processing musician 9: Michael Rodriguez
+ 🔄 Full musician data: {id: 21, userId: 21, name: 'Michael Rodriguez', fullName: 'Michael Rodriguez', stageName: '', …}
+  🚫 SKIPPING USER: Michael Rodriguez - Missing assignment source data. This user will not appear in technical rider.
+(anonymous) @ EnhancedTechnicalRider.tsx:326
+initializeBandMembers @ EnhancedTechnicalRider.tsx:322
+(anonymous) @ EnhancedTechnicalRider.tsx:420
+commitHookEffectListMount @ chunk-RPCDYKBN.js?v=a9e8ae1c:16915
+commitPassiveMountOnFiber @ chunk-RPCDYKBN.js?v=a9e8ae1c:18156
+commitPassiveMountEffects_complete @ chunk-RPCDYKBN.js?v=a9e8ae1c:18129
+commitPassiveMountEffects_begin @ chunk-RPCDYKBN.js?v=a9e8ae1c:18119
+commitPassiveMountEffects @ chunk-RPCDYKBN.js?v=a9e8ae1c:18109
+flushPassiveEffectsImpl @ chunk-RPCDYKBN.js?v=a9e8ae1c:19490
+flushPassiveEffects @ chunk-RPCDYKBN.js?v=a9e8ae1c:19447
+commitRootImpl @ chunk-RPCDYKBN.js?v=a9e8ae1c:19416
+commitRoot @ chunk-RPCDYKBN.js?v=a9e8ae1c:19277
+performSyncWorkOnRoot @ chunk-RPCDYKBN.js?v=a9e8ae1c:18895
+flushSyncCallbacks @ chunk-RPCDYKBN.js?v=a9e8ae1c:9119
+(anonymous) @ chunk-RPCDYKBN.js?v=a9e8ae1c:18627
+ 🔄 Processing musician 10: Session Musician Two
+ 🔄 Full musician data: {id: 31, userId: 31, name: 'Session Musician Two', fullName: 'Session Musician Two', stageName: '', …}
+  🚫 SKIPPING USER: Session Musician Two - Missing assignment source data. This user will not appear in technical rider.
+(anonymous) @ EnhancedTechnicalRider.tsx:326
+initializeBandMembers @ EnhancedTechnicalRider.tsx:322
+(anonymous) @ EnhancedTechnicalRider.tsx:420
+commitHookEffectListMount @ chunk-RPCDYKBN.js?v=a9e8ae1c:16915
+commitPassiveMountOnFiber @ chunk-RPCDYKBN.js?v=a9e8ae1c:18156
+commitPassiveMountEffects_complete @ chunk-RPCDYKBN.js?v=a9e8ae1c:18129
+commitPassiveMountEffects_begin @ chunk-RPCDYKBN.js?v=a9e8ae1c:18119
+commitPassiveMountEffects @ chunk-RPCDYKBN.js?v=a9e8ae1c:18109
+flushPassiveEffectsImpl @ chunk-RPCDYKBN.js?v=a9e8ae1c:19490
+flushPassiveEffects @ chunk-RPCDYKBN.js?v=a9e8ae1c:19447
+commitRootImpl @ chunk-RPCDYKBN.js?v=a9e8ae1c:19416
+commitRoot @ chunk-RPCDYKBN.js?v=a9e8ae1c:19277
+performSyncWorkOnRoot @ chunk-RPCDYKBN.js?v=a9e8ae1c:18895
+flushSyncCallbacks @ chunk-RPCDYKBN.js?v=a9e8ae1c:9119
+(anonymous) @ chunk-RPCDYKBN.js?v=a9e8ae1c:18627
+ 🔄 Processing musician 11: Regular User
+ 🔄 Full musician data: {id: 15, userId: 15, name: 'Regular User', fullName: 'Regular User', stageName: '', …}
+EnhancedTechnicalRider.tsx:488  🚫 SKIPPING USER: Regular User - Missing assignment source data. This user will not appear in technical rider.
+(anonymous) @ EnhancedTechnicalRider.tsx:488
+initializeBandMembers @ EnhancedTechnicalRider.tsx:482
+(anonymous) @ EnhancedTechnicalRider.tsx:601
+commitHookEffectListMount @ react-dom.development.js:23189
+commitPassiveMountOnFiber @ react-dom.development.js:24965
+commitPassiveMountEffects_complete @ react-dom.development.js:24930
+commitPassiveMountEffects_begin @ react-dom.development.js:24917
+commitPassiveMountEffects @ react-dom.development.js:24905
+flushPassiveEffectsImpl @ react-dom.development.js:27078
+flushPassiveEffects @ react-dom.development.js:27023
+commitRootImpl @ react-dom.development.js:26974
+commitRoot @ react-dom.development.js:26721
+performSyncWorkOnRoot @ react-dom.development.js:26156
+flushSyncCallbacks @ react-dom.development.js:12042
+(anonymous) @ react-dom.development.js:25690
+EnhancedTechnicalRider.tsx:483 🔄 Processing musician 12: Alex Thompson
+EnhancedTechnicalRider.tsx:484 🔄 Full musician data: {id: 23, userId: 23, name: 'Alex Thompson', fullName: 'Alex Thompson', stageName: '', …}
+EnhancedTechnicalRider.tsx:488  🚫 SKIPPING USER: Alex Thompson - Missing assignment source data. This user will not appear in technical rider.
+(anonymous) @ EnhancedTechnicalRider.tsx:488
+initializeBandMembers @ EnhancedTechnicalRider.tsx:482
+(anonymous) @ EnhancedTechnicalRider.tsx:601
+commitHookEffectListMount @ react-dom.development.js:23189
+commitPassiveMountOnFiber @ react-dom.development.js:24965
+commitPassiveMountEffects_complete @ react-dom.development.js:24930
+commitPassiveMountEffects_begin @ react-dom.development.js:24917
+commitPassiveMountEffects @ react-dom.development.js:24905
+flushPassiveEffectsImpl @ react-dom.development.js:27078
+flushPassiveEffects @ react-dom.development.js:27023
+commitRootImpl @ react-dom.development.js:26974
+commitRoot @ react-dom.development.js:26721
+performSyncWorkOnRoot @ react-dom.development.js:26156
+flushSyncCallbacks @ react-dom.development.js:12042
+(anonymous) @ react-dom.development.js:25690
+EnhancedTechnicalRider.tsx:483 🔄 Processing musician 13: Sarah Martinez
+EnhancedTechnicalRider.tsx:484 🔄 Full musician data: {id: 34, userId: 34, name: 'Sarah Martinez', fullName: 'Sarah Martinez', stageName: '', …}
+EnhancedTechnicalRider.tsx:488  🚫 SKIPPING USER: Sarah Martinez - Missing assignment source data. This user will not appear in technical rider.
+(anonymous) @ EnhancedTechnicalRider.tsx:488
+initializeBandMembers @ EnhancedTechnicalRider.tsx:482
+(anonymous) @ EnhancedTechnicalRider.tsx:601
+commitHookEffectListMount @ react-dom.development.js:23189
+commitPassiveMountOnFiber @ react-dom.development.js:24965
+commitPassiveMountEffects_complete @ react-dom.development.js:24930
+commitPassiveMountEffects_begin @ react-dom.development.js:24917
+commitPassiveMountEffects @ react-dom.development.js:24905
+flushPassiveEffectsImpl @ react-dom.development.js:27078
+flushPassiveEffects @ react-dom.development.js:27023
+commitRootImpl @ react-dom.development.js:26974
+commitRoot @ react-dom.development.js:26721
+performSyncWorkOnRoot @ react-dom.development.js:26156
+flushSyncCallbacks @ react-dom.development.js:12042
+(anonymous) @ react-dom.development.js:25690
+EnhancedTechnicalRider.tsx:483 🔄 Processing musician 14: David Chen
+EnhancedTechnicalRider.tsx:484 🔄 Full musician data: {id: 35, userId: 35, name: 'David Chen', fullName: 'David Chen', stageName: '', …}
+EnhancedTechnicalRider.tsx:488  🚫 SKIPPING USER: David Chen - Missing assignment source data. This user will not appear in technical rider.
+(anonymous) @ EnhancedTechnicalRider.tsx:488
+initializeBandMembers @ EnhancedTechnicalRider.tsx:482
+(anonymous) @ EnhancedTechnicalRider.tsx:601
+commitHookEffectListMount @ react-dom.development.js:23189
+commitPassiveMountOnFiber @ react-dom.development.js:24965
+commitPassiveMountEffects_complete @ react-dom.development.js:24930
+commitPassiveMountEffects_begin @ react-dom.development.js:24917
+commitPassiveMountEffects @ react-dom.development.js:24905
+flushPassiveEffectsImpl @ react-dom.development.js:27078
+flushPassiveEffects @ react-dom.development.js:27023
+commitRootImpl @ react-dom.development.js:26974
+commitRoot @ react-dom.development.js:26721
+performSyncWorkOnRoot @ react-dom.development.js:26156
+flushSyncCallbacks @ react-dom.development.js:12042
+(anonymous) @ react-dom.development.js:25690
+EnhancedTechnicalRider.tsx:483 🔄 Processing musician 15: Maria Rodriguez
+EnhancedTechnicalRider.tsx:484 🔄 Full musician data: {id: 36, userId: 36, name: 'Maria Rodriguez', fullName: 'Maria Rodriguez', stageName: '', …}
+EnhancedTechnicalRider.tsx:488  🚫 SKIPPING USER: Maria Rodriguez - Missing assignment source data. This user will not appear in technical rider.
+(anonymous) @ EnhancedTechnicalRider.tsx:488
+initializeBandMembers @ EnhancedTechnicalRider.tsx:482
+(anonymous) @ EnhancedTechnicalRider.tsx:601
+commitHookEffectListMount @ react-dom.development.js:23189
+commitPassiveMountOnFiber @ react-dom.development.js:24965
+commitPassiveMountEffects_complete @ react-dom.development.js:24930
+commitPassiveMountEffects_begin @ react-dom.development.js:24917
+commitPassiveMountEffects @ react-dom.development.js:24905
+flushPassiveEffectsImpl @ react-dom.development.js:27078
+flushPassiveEffects @ react-dom.development.js:27023
+commitRootImpl @ react-dom.development.js:26974
+commitRoot @ react-dom.development.js:26721
+performSyncWorkOnRoot @ react-dom.development.js:26156
+flushSyncCallbacks @ react-dom.development.js:12042
+(anonymous) @ react-dom.development.js:25690
+EnhancedTechnicalRider.tsx:483 🔄 Processing musician 16: James Wilson
+EnhancedTechnicalRider.tsx:484 🔄 Full musician data: {id: 37, userId: 37, name: 'James Wilson', fullName: 'James Wilson', stageName: '', …}
+EnhancedTechnicalRider.tsx:488  🚫 SKIPPING USER: James Wilson - Missing assignment source data. This user will not appear in technical rider.
+(anonymous) @ EnhancedTechnicalRider.tsx:488
+initializeBandMembers @ EnhancedTechnicalRider.tsx:482
+(anonymous) @ EnhancedTechnicalRider.tsx:601
+commitHookEffectListMount @ react-dom.development.js:23189
+commitPassiveMountOnFiber @ react-dom.development.js:24965
+commitPassiveMountEffects_complete @ react-dom.development.js:24930
+commitPassiveMountEffects_begin @ react-dom.development.js:24917
+commitPassiveMountEffects @ react-dom.development.js:24905
+flushPassiveEffectsImpl @ react-dom.development.js:27078
+flushPassiveEffects @ react-dom.development.js:27023
+commitRootImpl @ react-dom.development.js:26974
+commitRoot @ react-dom.development.js:26721
+performSyncWorkOnRoot @ react-dom.development.js:26156
+flushSyncCallbacks @ react-dom.development.js:12042
+(anonymous) @ react-dom.development.js:25690
+EnhancedTechnicalRider.tsx:483 🔄 Processing musician 17: Lisa Thompson
+EnhancedTechnicalRider.tsx:484 🔄 Full musician data: {id: 38, userId: 38, name: 'Lisa Thompson', fullName: 'Lisa Thompson', stageName: '', …}
+EnhancedTechnicalRider.tsx:488  🚫 SKIPPING USER: Lisa Thompson - Missing assignment source data. This user will not appear in technical rider.
+(anonymous) @ EnhancedTechnicalRider.tsx:488
+initializeBandMembers @ EnhancedTechnicalRider.tsx:482
+(anonymous) @ EnhancedTechnicalRider.tsx:601
+commitHookEffectListMount @ react-dom.development.js:23189
+commitPassiveMountOnFiber @ react-dom.development.js:24965
+commitPassiveMountEffects_complete @ react-dom.development.js:24930
+commitPassiveMountEffects_begin @ react-dom.development.js:24917
+commitPassiveMountEffects @ react-dom.development.js:24905
+flushPassiveEffectsImpl @ react-dom.development.js:27078
+flushPassiveEffects @ react-dom.development.js:27023
+commitRootImpl @ react-dom.development.js:26974
+commitRoot @ react-dom.development.js:26721
+performSyncWorkOnRoot @ react-dom.development.js:26156
+flushSyncCallbacks @ react-dom.development.js:12042
+(anonymous) @ react-dom.development.js:25690
+EnhancedTechnicalRider.tsx:483 🔄 Processing musician 18: Managed Professional Two
+EnhancedTechnicalRider.tsx:484 🔄 Full musician data: {id: 29, userId: 29, name: 'Managed Professional Two', fullName: 'Managed Professional Two', stageName: '', …}
+EnhancedTechnicalRider.tsx:488  🚫 SKIPPING USER: Managed Professional Two - Missing assignment source data. This user will not appear in technical rider.
+(anonymous) @ EnhancedTechnicalRider.tsx:488
+initializeBandMembers @ EnhancedTechnicalRider.tsx:482
+(anonymous) @ EnhancedTechnicalRider.tsx:601
+commitHookEffectListMount @ react-dom.development.js:23189
+commitPassiveMountOnFiber @ react-dom.development.js:24965
+commitPassiveMountEffects_complete @ react-dom.development.js:24930
+commitPassiveMountEffects_begin @ react-dom.development.js:24917
+commitPassiveMountEffects @ react-dom.development.js:24905
+flushPassiveEffectsImpl @ react-dom.development.js:27078
+flushPassiveEffects @ react-dom.development.js:27023
+commitRootImpl @ react-dom.development.js:26974
+commitRoot @ react-dom.development.js:26721
+performSyncWorkOnRoot @ react-dom.development.js:26156
+flushSyncCallbacks @ react-dom.development.js:12042
+(anonymous) @ react-dom.development.js:25690
+EnhancedTechnicalRider.tsx:483 🔄 Processing musician 19: Independent Professional Two
+EnhancedTechnicalRider.tsx:484 🔄 Full musician data: {id: 32, userId: 32, name: 'Independent Professional Two', fullName: 'Independent Professional Two', stageName: '', …}
+EnhancedTechnicalRider.tsx:488  🚫 SKIPPING USER: Independent Professional Two - Missing assignment source data. This user will not appear in technical rider.
+(anonymous) @ EnhancedTechnicalRider.tsx:488
+initializeBandMembers @ EnhancedTechnicalRider.tsx:482
+(anonymous) @ EnhancedTechnicalRider.tsx:601
+commitHookEffectListMount @ react-dom.development.js:23189
+commitPassiveMountOnFiber @ react-dom.development.js:24965
+commitPassiveMountEffects_complete @ react-dom.development.js:24930
+commitPassiveMountEffects_begin @ react-dom.development.js:24917
+commitPassiveMountEffects @ react-dom.development.js:24905
+flushPassiveEffectsImpl @ react-dom.development.js:27078
+flushPassiveEffects @ react-dom.development.js:27023
+commitRootImpl @ react-dom.development.js:26974
+commitRoot @ react-dom.development.js:26721
+performSyncWorkOnRoot @ react-dom.development.js:26156
+flushSyncCallbacks @ react-dom.development.js:12042
+(anonymous) @ react-dom.development.js:25690
+EnhancedTechnicalRider.tsx:537 🔄 Total members added from API: 0
+EnhancedTechnicalRider.tsx:585 Sorting: Ms Joyette Pascal badge: undefined order: 999 vs Mr Lindsay George badge: undefined order: 999
+EnhancedTechnicalRider.tsx:590 🔄 FINAL: Setting 2 band members
+EnhancedTechnicalRider.tsx:591 🔄 Band members breakdown: {total: 2, band: 0, team: 0, management: 2}
+The specified value "2025-07-28T04:00:00.000Z" does not conform to the required format, "yyyy-MM-dd".
+The specified value "2025-07-28T04:00:00.000Z" does not conform to the required format, "yyyy-MM-dd".
+The specified value "2025-07-28T04:00:00.000Z" does not conform to the required format, "yyyy-MM-dd".
+The specified value "2025-07-28T04:00:00.000Z" does not conform to the required format, "yyyy-MM-dd".
+The specified value "2025-07-28T04:00:00.000Z" does not conform to the required format, "yyyy-MM-dd".
+The specified value "2025-07-28T04:00:00.000Z" does not conform to the required format, "yyyy-MM-dd".
+EnhancedTechnicalRider.tsx:468 DEBUG: Syncing stage legend roles with band members
+EnhancedTechnicalRider.tsx:474 🔄 TECHNICAL RIDER: Initializing band members
+EnhancedTechnicalRider.tsx:475 🔄 Final assigned musicians count: 4
+EnhancedTechnicalRider.tsx:476 🔄 Final assigned musicians data: (4) [{…}, {…}, {…}, {…}]
+EnhancedTechnicalRider.tsx:483 🔄 Processing musician 1: Princess Trinidad
+EnhancedTechnicalRider.tsx:484 🔄 Full musician data: {id: 'primary-19', userId: 19, name: 'Princess Trinidad', fullName: 'Joanna Davis (Princess Trinidad)', stageName: 'Princess Trinidad', …}
+EnhancedTechnicalRider.tsx:501 🔄 Assignment source: managed_artists
+EnhancedTechnicalRider.tsx:502 🔄 Role badge: Managed Artist
+EnhancedTechnicalRider.tsx:503 🔄 Membership: BAND
+EnhancedTechnicalRider.tsx:504 🔄 Assignment source role (blue default): Lead Vocalist
+ 🔄 Adding member 1: Princess Trinidad Membership: BAND
+EnhancedTechnicalRider.tsx:483 🔄 Processing musician 2: Michael Rodriguez
+EnhancedTechnicalRider.tsx:484 🔄 Full musician data: {id: 'assigned-25', userId: 21, name: 'Michael Rodriguez', fullName: 'Michael Rodriguez', stageName: 'Michael Rodriguez', …}
+EnhancedTechnicalRider.tsx:501 🔄 Assignment source: musicians
+EnhancedTechnicalRider.tsx:502 🔄 Role badge: Musician
+EnhancedTechnicalRider.tsx:503 🔄 Membership: BAND
+EnhancedTechnicalRider.tsx:504 🔄 Assignment source role (blue default): Drummer
+EnhancedTechnicalRider.tsx:530 🔄 Adding member 2: Michael Rodriguez Membership: BAND
+EnhancedTechnicalRider.tsx:483 🔄 Processing musician 3: Regular User
+EnhancedTechnicalRider.tsx:484 🔄 Full musician data: {id: 'assigned-26', userId: 15, name: 'Regular User', fullName: 'Regular User', stageName: 'Regular User', …}
+EnhancedTechnicalRider.tsx:501 🔄 Assignment source: professionals
+EnhancedTechnicalRider.tsx:502 🔄 Role badge: Managed Professional
+EnhancedTechnicalRider.tsx:503 🔄 Membership: TEAM
+EnhancedTechnicalRider.tsx:504 🔄 Assignment source role (blue default): Music Business Consultant
+EnhancedTechnicalRider.tsx:530 🔄 Adding member 3: Regular User Membership: TEAM
+EnhancedTechnicalRider.tsx:483 🔄 Processing musician 4: Managed Musician Two
+EnhancedTechnicalRider.tsx:484 🔄 Full musician data: {id: 'assigned-27', userId: 28, name: 'Managed Musician Two', fullName: 'Managed Musician Two', stageName: 'Managed Musician Two', …}
+EnhancedTechnicalRider.tsx:501 🔄 Assignment source: managed_musicians
+EnhancedTechnicalRider.tsx:502 🔄 Role badge: Managed Musician
+EnhancedTechnicalRider.tsx:503 🔄 Membership: BAND
+EnhancedTechnicalRider.tsx:504 🔄 Assignment source role (blue default): Keyboardist
+EnhancedTechnicalRider.tsx:530 🔄 Adding member 4: Managed Musician Two Membership: BAND
+EnhancedTechnicalRider.tsx:537 🔄 Total members added from API: 4
+EnhancedTechnicalRider.tsx:585 Sorting: Regular User badge: Managed Professional order: 5 vs Michael Rodriguez badge: Musician order: 4
+EnhancedTechnicalRider.tsx:585 Sorting: Managed Musician Two badge: Managed Musician order: 3 vs Regular User badge: Managed Professional order: 5
+EnhancedTechnicalRider.tsx:585 Sorting: Managed Musician Two badge: Managed Musician order: 3 vs Michael Rodriguez badge: Musician order: 4
+EnhancedTechnicalRider.tsx:585 Sorting: Mr Lindsay George badge: undefined order: 999 vs Michael Rodriguez badge: Musician order: 4
+EnhancedTechnicalRider.tsx:585 Sorting: Mr Lindsay George badge: undefined order: 999 vs Regular User badge: Managed Professional order: 5
+EnhancedTechnicalRider.tsx:585 Sorting: Ms Joyette Pascal badge: undefined order: 999 vs Michael Rodriguez badge: Musician order: 4
+EnhancedTechnicalRider.tsx:585 Sorting: Ms Joyette Pascal badge: undefined order: 999 vs Mr Lindsay George badge: undefined order: 999
+EnhancedTechnicalRider.tsx:590 🔄 FINAL: Setting 6 band members
+EnhancedTechnicalRider.tsx:591 🔄 Band members breakdown: {total: 6, band: 3, team: 1, management: 2}
+EnhancedTechnicalRider.tsx:468 DEBUG: Syncing stage legend roles with band members

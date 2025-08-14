@@ -1,0 +1,763 @@
+[Report Only] Refused to connect to '<URL>' because it violates the following Content Security Policy directive: "connect-src 'none'".
+
+[Report Only] Refused to connect to '<URL>' because it violates the following Content Security Policy directive: "connect-src 'none'".
+
+[Report Only] Refused to connect to '<URL>' because it violates the following Content Security Policy directive: "connect-src 'none'".
+
+[Report Only] Refused to connect to '<URL>' because it violates the following Content Security Policy directive: "connect-src 'none'".
+
+[Report Only] Refused to connect to '<URL>' because it violates the following Content Security Policy directive: "connect-src 'none'".
+
+[Report Only] Refused to connect to '<URL>' because it violates the following Content Security Policy directive: "connect-src 'none'".
+
+[Report Only] Refused to connect to '<URL>' because it violates the following Content Security Policy directive: "connect-src 'none'".
+
+[Report Only] Refused to connect to '<URL>' because it violates the following Content Security Policy directive: "connect-src 'none'".
+
+[Report Only] Refused to connect to '<URL>' because it violates the following Content Security Policy directive: "connect-src 'none'".
+
+[Report Only] Refused to connect to '<URL>' because it violates the following Content Security Policy directive: "connect-src 'none'".
+
+[Report Only] Refused to connect to '<URL>' because it violates the following Content Security Policy directive: "connect-src 'none'".
+
+[Report Only] Refused to connect to '<URL>' because it violates the following Content Security Policy directive: "connect-src 'none'".
+
+[Report Only] Refused to connect to '<URL>' because it violates the following Content Security Policy directive: "connect-src 'none'".
+
+[Report Only] Refused to connect to '<URL>' because it violates the following Content Security Policy directive: "connect-src 'none'".
+
+[Report Only] Refused to connect to '<URL>' because it violates the following Content Security Policy directive: "connect-src 'none'".
+
+[Report Only] Refused to connect to '<URL>' because it violates the following Content Security Policy directive: "connect-src 'none'".
+
+[Report Only] Refused to connect to '<URL>' because it violates the following Content Security Policy directive: "connect-src 'none'".
+
+[Report Only] Refused to connect to '<URL>' because it violates the following Content Security Policy directive: "connect-src 'none'".
+
+[Report Only] Refused to connect to '<URL>' because it violates the following Content Security Policy directive: "connect-src 'none'".
+
+[Report Only] Refused to connect to '<URL>' because it violates the following Content Security Policy directive: "connect-src 'none'".
+
+[Report Only] Refused to connect to '<URL>' because it violates the following Content Security Policy directive: "connect-src 'none'".
+
+[Report Only] Refused to connect to '<URL>' because it violates the following Content Security Policy directive: "connect-src 'none'".
+
+ComprehensiveBookingWorkflow.tsx:605 🎯 TALENT GROUPED BY ROLE_ID: {totalTalent: 10, roleGroups: Array(2), categorizedCounts: {…}}
+ComprehensiveBookingWorkflow.tsx:180 🔍 FRONTEND: Fetching assigned talent for booking ID: 1
+ComprehensiveBookingWorkflow.tsx:605 🎯 TALENT GROUPED BY ROLE_ID: {totalTalent: 10, roleGroups: Array(2), categorizedCounts: {…}}
+ComprehensiveBookingWorkflow.tsx:605 🎯 TALENT GROUPED BY ROLE_ID: {totalTalent: 16, roleGroups: Array(4), categorizedCounts: {…}}
+ComprehensiveBookingWorkflow.tsx:182 📋 FRONTEND: Received assigned talent data: (2) [{…}, {…}]
+ComprehensiveBookingWorkflow.tsx:605 🎯 TALENT GROUPED BY ROLE_ID: {totalTalent: 16, roleGroups: Array(4), categorizedCounts: {…}}
+ComprehensiveBookingWorkflow.tsx:224 📋 UPDATING assigned talent state: (2) [{…}, {…}]
+ComprehensiveBookingWorkflow.tsx:225 🔍 DETAILED DATA CHECK - First talent object: {id: 'assignment-2', userId: 6, name: 'Lí-Lí Octave', assignmentName: 'Lianne Letang(Lí-Lí Octave)', fullName: 'Lianne Letang', …}
+ComprehensiveBookingWorkflow.tsx:226 🔍 KEYS in first talent: (17) ['id', 'userId', 'name', 'assignmentName', 'fullName', 'stageName', 'type', 'role', 'isMainBookedTalent', 'isPrimary', 'talentType', 'primaryTalent', 'secondaryTalents', 'assignmentId', 'isOriginallyBooked', 'showAcceptDecline', 'showRemove']
+ComprehensiveBookingWorkflow.tsx:227 🔍 PRIMARY TALENT field: Lead Vocalist
+ComprehensiveBookingWorkflow.tsx:228 🔍 SECONDARY TALENTS field: []
+ComprehensiveBookingWorkflow.tsx:605 🎯 TALENT GROUPED BY ROLE_ID: {totalTalent: 16, roleGroups: Array(4), categorizedCounts: {…}}
+ComprehensiveBookingWorkflow.tsx:605 🎯 TALENT GROUPED BY ROLE_ID: {totalTalent: 23, roleGroups: Array(6), categorizedCounts: {…}}
+ComprehensiveBookingWorkflow.tsx:605 🎯 TALENT GROUPED BY ROLE_ID: {totalTalent: 23, roleGroups: Array(6), categorizedCounts: {…}}
+ComprehensiveBookingWorkflow.tsx:605 🎯 TALENT GROUPED BY ROLE_ID: {totalTalent: 23, roleGroups: Array(6), categorizedCounts: {…}}
+ComprehensiveBookingWorkflow.tsx:605 🎯 TALENT GROUPED BY ROLE_ID: {totalTalent: 23, roleGroups: Array(6), categorizedCounts: {…}}
+ComprehensiveBookingWorkflow.tsx:605 🎯 TALENT GROUPED BY ROLE_ID: {totalTalent: 23, roleGroups: Array(6), categorizedCounts: {…}}
+ComprehensiveBookingWorkflow.tsx:605 🎯 TALENT GROUPED BY ROLE_ID: {totalTalent: 23, roleGroups: Array(6), categorizedCounts: {…}}
+ComprehensiveBookingWorkflow.tsx:605 🎯 TALENT GROUPED BY ROLE_ID: {totalTalent: 23, roleGroups: Array(6), categorizedCounts: {…}}
+ComprehensiveBookingWorkflow.tsx:605 🎯 TALENT GROUPED BY ROLE_ID: {totalTalent: 23, roleGroups: Array(6), categorizedCounts: {…}}
+ComprehensiveBookingWorkflow.tsx:605 🎯 TALENT GROUPED BY ROLE_ID: {totalTalent: 23, roleGroups: Array(6), categorizedCounts: {…}}
+ComprehensiveBookingWorkflow.tsx:605 🎯 TALENT GROUPED BY ROLE_ID: {totalTalent: 23, roleGroups: Array(6), categorizedCounts: {…}}
+ComprehensiveBookingWorkflow.tsx:605 🎯 TALENT GROUPED BY ROLE_ID: {totalTalent: 23, roleGroups: Array(6), categorizedCounts: {…}}
+ComprehensiveBookingWorkflow.tsx:605 🎯 TALENT GROUPED BY ROLE_ID: {totalTalent: 23, roleGroups: Array(6), categorizedCounts: {…}}
+ComprehensiveBookingWorkflow.tsx:605 🎯 TALENT GROUPED BY ROLE_ID: {totalTalent: 23, roleGroups: Array(6), categorizedCounts: {…}}
+ComprehensiveBookingWorkflow.tsx:605 🎯 TALENT GROUPED BY ROLE_ID: {totalTalent: 23, roleGroups: Array(6), categorizedCounts: {…}}
+ComprehensiveBookingWorkflow.tsx:605 🎯 TALENT GROUPED BY ROLE_ID: {totalTalent: 23, roleGroups: Array(6), categorizedCounts: {…}}
+ComprehensiveBookingWorkflow.tsx:605 🎯 TALENT GROUPED BY ROLE_ID: {totalTalent: 23, roleGroups: Array(6), categorizedCounts: {…}}
+ComprehensiveBookingWorkflow.tsx:605 🎯 TALENT GROUPED BY ROLE_ID: {totalTalent: 23, roleGroups: Array(6), categorizedCounts: {…}}
+ComprehensiveBookingWorkflow.tsx:605 🎯 TALENT GROUPED BY ROLE_ID: {totalTalent: 23, roleGroups: Array(6), categorizedCounts: {…}}
+ComprehensiveBookingWorkflow.tsx:605 🎯 TALENT GROUPED BY ROLE_ID: {totalTalent: 23, roleGroups: Array(6), categorizedCounts: {…}}
+ComprehensiveBookingWorkflow.tsx:605 🎯 TALENT GROUPED BY ROLE_ID: {totalTalent: 23, roleGroups: Array(6), categorizedCounts: {…}}
+ComprehensiveBookingWorkflow.tsx:605 🎯 TALENT GROUPED BY ROLE_ID: {totalTalent: 23, roleGroups: Array(6), categorizedCounts: {…}}
+ComprehensiveBookingWorkflow.tsx:605 🎯 TALENT GROUPED BY ROLE_ID: {totalTalent: 23, roleGroups: Array(6), categorizedCounts: {…}}
+ComprehensiveBookingWorkflow.tsx:605 🎯 TALENT GROUPED BY ROLE_ID: {totalTalent: 23, roleGroups: Array(6), categorizedCounts: {…}}
+ComprehensiveBookingWorkflow.tsx:605 🎯 TALENT GROUPED BY ROLE_ID: {totalTalent: 23, roleGroups: Array(6), categorizedCounts: {…}}
+ComprehensiveBookingWorkflow.tsx:605 🎯 TALENT GROUPED BY ROLE_ID: {totalTalent: 23, roleGroups: Array(6), categorizedCounts: {…}}
+ComprehensiveBookingWorkflow.tsx:605 🎯 TALENT GROUPED BY ROLE_ID: {totalTalent: 23, roleGroups: Array(6), categorizedCounts: {…}}
+ComprehensiveBookingWorkflow.tsx:605 🎯 TALENT GROUPED BY ROLE_ID: {totalTalent: 23, roleGroups: Array(6), categorizedCounts: {…}}
+ComprehensiveBookingWorkflow.tsx:605 🎯 TALENT GROUPED BY ROLE_ID: {totalTalent: 23, roleGroups: Array(6), categorizedCounts: {…}}
+ComprehensiveBookingWorkflow.tsx:605 🎯 TALENT GROUPED BY ROLE_ID: {totalTalent: 23, roleGroups: Array(6), categorizedCounts: {…}}
+ComprehensiveBookingWorkflow.tsx:605 🎯 TALENT GROUPED BY ROLE_ID: {totalTalent: 23, roleGroups: Array(6), categorizedCounts: {…}}
+EnhancedTechnicalRider.tsx:1030 DEBUG: Syncing stage legend talent/skills with band members
+EnhancedTechnicalRider.tsx:1076 🔄 TECHNICAL RIDER: Initializing band members
+EnhancedTechnicalRider.tsx:1077 🔄 Assigned musicians (props) count: 11
+EnhancedTechnicalRider.tsx:1078 🔄 Final assigned musicians (API) count: 11
+EnhancedTechnicalRider.tsx:1079 🔄 Will use: assignedMusicians (props)
+EnhancedTechnicalRider.tsx:1085 🔄 Using musician data source: assignedMusicians (props)
+EnhancedTechnicalRider.tsx:1145 🔄 Total members added from API: 11
+EnhancedTechnicalRider.tsx:1209 Sorting: Maya Bass badge: managed_musician order: 7 vs Lí-Lí Octave badge: managed_artist order: 7
+EnhancedTechnicalRider.tsx:1209 Sorting: Echo Davis badge: Artist order: 7 vs Nova Williams badge: Artist order: 7
+EnhancedTechnicalRider.tsx:1209 Sorting: Cosmic Taylor badge: Artist order: 7 vs Echo Davis badge: Artist order: 7
+EnhancedTechnicalRider.tsx:1209 Sorting: Phoenix Chen badge: Artist order: 7 vs Cosmic Taylor badge: Artist order: 7
+EnhancedTechnicalRider.tsx:1209 Sorting: Indie Stone badge: Artist order: 7 vs Phoenix Chen badge: Artist order: 7
+EnhancedTechnicalRider.tsx:1209 Sorting: Storm Johnson badge: Artist order: 7 vs Indie Stone badge: Artist order: 7
+EnhancedTechnicalRider.tsx:1209 Sorting: Wave Anderson badge: Artist order: 7 vs Storm Johnson badge: Artist order: 7
+EnhancedTechnicalRider.tsx:1209 Sorting: Ocean Park badge: Artist order: 7 vs Wave Anderson badge: Artist order: 7
+EnhancedTechnicalRider.tsx:1209 Sorting: Session Brooks badge: Artist order: 7 vs Ocean Park badge: Artist order: 7
+EnhancedTechnicalRider.tsx:1209 Sorting: Mr Lindsay George badge: MANAGEMENT order: 999 vs Session Brooks badge: Artist order: 7
+EnhancedTechnicalRider.tsx:1209 Sorting: Ms Joyette Pascal badge: MANAGEMENT order: 999 vs Mr Lindsay George badge: MANAGEMENT order: 999
+EnhancedTechnicalRider.tsx:1214 🔄 FINAL: Setting 13 band members
+EnhancedTechnicalRider.tsx:1030 DEBUG: Syncing stage legend talent/skills with band members
+EnhancedTechnicalRider.tsx:1076 🔄 TECHNICAL RIDER: Initializing band members
+EnhancedTechnicalRider.tsx:1077 🔄 Assigned musicians (props) count: 11
+EnhancedTechnicalRider.tsx:1078 🔄 Final assigned musicians (API) count: 2
+EnhancedTechnicalRider.tsx:1079 🔄 Will use: assignedMusicians (props)
+EnhancedTechnicalRider.tsx:1085 🔄 Using musician data source: assignedMusicians (props)
+EnhancedTechnicalRider.tsx:1145 🔄 Total members added from API: 11
+EnhancedTechnicalRider.tsx:1209 Sorting: Maya Bass badge: managed_musician order: 7 vs Lí-Lí Octave badge: managed_artist order: 7
+EnhancedTechnicalRider.tsx:1209 Sorting: Echo Davis badge: Artist order: 7 vs Nova Williams badge: Artist order: 7
+EnhancedTechnicalRider.tsx:1209 Sorting: Cosmic Taylor badge: Artist order: 7 vs Echo Davis badge: Artist order: 7
+EnhancedTechnicalRider.tsx:1209 Sorting: Phoenix Chen badge: Artist order: 7 vs Cosmic Taylor badge: Artist order: 7
+EnhancedTechnicalRider.tsx:1209 Sorting: Indie Stone badge: Artist order: 7 vs Phoenix Chen badge: Artist order: 7
+EnhancedTechnicalRider.tsx:1209 Sorting: Storm Johnson badge: Artist order: 7 vs Indie Stone badge: Artist order: 7
+EnhancedTechnicalRider.tsx:1209 Sorting: Wave Anderson badge: Artist order: 7 vs Storm Johnson badge: Artist order: 7
+EnhancedTechnicalRider.tsx:1209 Sorting: Ocean Park badge: Artist order: 7 vs Wave Anderson badge: Artist order: 7
+EnhancedTechnicalRider.tsx:1209 Sorting: Session Brooks badge: Artist order: 7 vs Ocean Park badge: Artist order: 7
+EnhancedTechnicalRider.tsx:1209 Sorting: Mr Lindsay George badge: MANAGEMENT order: 999 vs Session Brooks badge: Artist order: 7
+EnhancedTechnicalRider.tsx:1209 Sorting: Ms Joyette Pascal badge: MANAGEMENT order: 999 vs Mr Lindsay George badge: MANAGEMENT order: 999
+EnhancedTechnicalRider.tsx:1214 🔄 FINAL: Setting 13 band members
+EnhancedTechnicalRider.tsx:1030 DEBUG: Syncing stage legend talent/skills with band members
+EnhancedTechnicalRider.tsx:1748 🎭 STAGE PLOT: Band member added to stage, triggering mixer auto-assignment
+EnhancedTechnicalRider.tsx:2288 🎛️ FLEXIBLE AUTO-ASSIGNMENT: Starting demonstration with test musicians
+EnhancedTechnicalRider.tsx:2302 🎛️ Test musicians for flexible assignment: (8) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
+EnhancedTechnicalRider.tsx:2315 🎛️ FLEXIBLE ASSIGNMENT: Analyzing all groups and musicians
+EnhancedTechnicalRider.tsx:2385 🎛️ GROUP: drums (DRUMS) - 10 channels, 1 musicians
+EnhancedTechnicalRider.tsx:2385 🎛️ GROUP: bass (BASS) - 2 channels, 1 musicians
+EnhancedTechnicalRider.tsx:2385 🎛️ GROUP: guitar (GUITAR) - 2 channels, 2 musicians
+EnhancedTechnicalRider.tsx:2385 🎛️ GROUP: percussion (PERCUSSION) - 2 channels, 1 musicians
+EnhancedTechnicalRider.tsx:2385 🎛️ GROUP: keyboards (KEYBOARD) - 8 channels, 1 musicians
+EnhancedTechnicalRider.tsx:2385 🎛️ GROUP: brass (BRASS) - 8 channels, 0 musicians
+EnhancedTechnicalRider.tsx:2385 🎛️ GROUP: vocals (VOCALS) - 5 channels, 3 musicians
+EnhancedTechnicalRider.tsx:2407 🎯 DRUMS SPECIAL RULE: Alex Drummer → ALL 10 channels (Kick In, Kick Out, Snare Top, Snare Bottom, Hi Hat, Rack Tom 1, Rack Tom 2, Rack Tom 3 / Floor Tom, Over Head Left, Over Head Right)
+EnhancedTechnicalRider.tsx:2411 🎯 FLEXIBLE DISTRIBUTION for BASS: 1 musicians → 2 channels
+EnhancedTechnicalRider.tsx:2430 ✅ BASS: Maya Bass → "Bass DI"
+EnhancedTechnicalRider.tsx:2444 🎯 EXTRA CHANNELS: Maya Bass gets 1 additional channels (Bass Mic)
+EnhancedTechnicalRider.tsx:2411 🎯 FLEXIBLE DISTRIBUTION for GUITAR: 2 musicians → 2 channels
+EnhancedTechnicalRider.tsx:2430 ✅ GUITAR: Sam Guitar → "Guitar 1"
+EnhancedTechnicalRider.tsx:2430 ✅ GUITAR: Riley Guitar → "Guitar 2"
+EnhancedTechnicalRider.tsx:2411 🎯 FLEXIBLE DISTRIBUTION for PERCUSSION: 1 musicians → 2 channels
+EnhancedTechnicalRider.tsx:2430 ✅ PERCUSSION: Alex Drummer → "Percussion – Electric Floor Tom"
+EnhancedTechnicalRider.tsx:2444 🎯 EXTRA CHANNELS: Alex Drummer gets 1 additional channels (Percussion – Cow Bell)
+EnhancedTechnicalRider.tsx:2411 🎯 FLEXIBLE DISTRIBUTION for KEYBOARD: 1 musicians → 8 channels
+EnhancedTechnicalRider.tsx:2430 ✅ KEYBOARD: Jordan Keys → "Keyboard 1 – Left"
+EnhancedTechnicalRider.tsx:2444 🎯 EXTRA CHANNELS: Jordan Keys gets 7 additional channels (Keyboard 1 – Right, Keyboard 2 – Left, Keyboard 2 – Right, Keyboard 3 – Left, Keyboard 3 – Right, Keyboard 4 – Left, Keyboard 4 – Right)
+EnhancedTechnicalRider.tsx:2411 🎯 FLEXIBLE DISTRIBUTION for VOCALS: 3 musicians → 5 channels
+EnhancedTechnicalRider.tsx:2430 ✅ VOCALS: Lí-Lí Octave → "Background Vocals 1"
+EnhancedTechnicalRider.tsx:2430 ✅ VOCALS: Taylor Vocal → "Background Vocals 2"
+EnhancedTechnicalRider.tsx:2430 ✅ VOCALS: Casey Vocal → "Background Vocals 3"
+EnhancedTechnicalRider.tsx:2444 🎯 EXTRA CHANNELS: Lí-Lí Octave gets 2 additional channels (Lead Vox – Spare, Lead Vox)
+EnhancedTechnicalRider.tsx:2470 🎛️ PHASE 2: Flexible assignment for remaining musicians
+EnhancedTechnicalRider.tsx:2493 🎛️ AUTO-ASSIGNMENT: Completed mixer channel assignments
+EnhancedTechnicalRider.tsx:1748 🎭 STAGE PLOT: Band member added to stage, triggering mixer auto-assignment
+EnhancedTechnicalRider.tsx:2288 🎛️ FLEXIBLE AUTO-ASSIGNMENT: Starting demonstration with test musicians
+EnhancedTechnicalRider.tsx:2302 🎛️ Test musicians for flexible assignment: (8) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
+EnhancedTechnicalRider.tsx:2315 🎛️ FLEXIBLE ASSIGNMENT: Analyzing all groups and musicians
+EnhancedTechnicalRider.tsx:2385 🎛️ GROUP: drums (DRUMS) - 0 channels, 1 musicians
+EnhancedTechnicalRider.tsx:2385 🎛️ GROUP: bass (BASS) - 0 channels, 1 musicians
+EnhancedTechnicalRider.tsx:2385 🎛️ GROUP: guitar (GUITAR) - 0 channels, 2 musicians
+EnhancedTechnicalRider.tsx:2385 🎛️ GROUP: percussion (PERCUSSION) - 0 channels, 1 musicians
+EnhancedTechnicalRider.tsx:2385 🎛️ GROUP: keyboards (KEYBOARD) - 0 channels, 1 musicians
+EnhancedTechnicalRider.tsx:2385 🎛️ GROUP: brass (BRASS) - 8 channels, 0 musicians
+EnhancedTechnicalRider.tsx:2385 🎛️ GROUP: vocals (VOCALS) - 0 channels, 3 musicians
+EnhancedTechnicalRider.tsx:2470 🎛️ PHASE 2: Flexible assignment for remaining musicians
+EnhancedTechnicalRider.tsx:2475 🎛️ UNASSIGNED MEMBERS: (8) ['Lí-Lí Octave (Lead Vocal, Backing Vocal)', 'Maya Bass (Bass Guitar, Electric Bass)', 'Alex Drummer (Drums, Percussion)', 'Sam Guitar (Electric Guitar, Acoustic Guitar)', 'Jordan Keys (Piano, Synthesizer)', 'Taylor Vocal (Backing Vocal, Harmony Vocal)', 'Riley Guitar (Rhythm Guitar, Lead Guitar)', 'Casey Vocal (Vocal, Singer)']
+EnhancedTechnicalRider.tsx:2476 🎛️ Strategy: Try to maximize existing channel group usage before creating new groups
+EnhancedTechnicalRider.tsx:2481 🎛️ FLEXIBLE OPTION: Lí-Lí Octave could be manually assigned to appropriate channels based on: Lead Vocal, Backing Vocal
+EnhancedTechnicalRider.tsx:2481 🎛️ FLEXIBLE OPTION: Maya Bass could be manually assigned to appropriate channels based on: Bass Guitar, Electric Bass
+EnhancedTechnicalRider.tsx:2481 🎛️ FLEXIBLE OPTION: Alex Drummer could be manually assigned to appropriate channels based on: Drums, Percussion
+EnhancedTechnicalRider.tsx:2481 🎛️ FLEXIBLE OPTION: Sam Guitar could be manually assigned to appropriate channels based on: Electric Guitar, Acoustic Guitar
+EnhancedTechnicalRider.tsx:2481 🎛️ FLEXIBLE OPTION: Jordan Keys could be manually assigned to appropriate channels based on: Piano, Synthesizer
+EnhancedTechnicalRider.tsx:2481 🎛️ FLEXIBLE OPTION: Taylor Vocal could be manually assigned to appropriate channels based on: Backing Vocal, Harmony Vocal
+EnhancedTechnicalRider.tsx:2481 🎛️ FLEXIBLE OPTION: Riley Guitar could be manually assigned to appropriate channels based on: Rhythm Guitar, Lead Guitar
+EnhancedTechnicalRider.tsx:2481 🎛️ FLEXIBLE OPTION: Casey Vocal could be manually assigned to appropriate channels based on: Vocal, Singer
+EnhancedTechnicalRider.tsx:2493 🎛️ AUTO-ASSIGNMENT: Completed mixer channel assignments
+EnhancedTechnicalRider.tsx:1748 🎭 STAGE PLOT: Band member added to stage, triggering mixer auto-assignment
+EnhancedTechnicalRider.tsx:2288 🎛️ FLEXIBLE AUTO-ASSIGNMENT: Starting demonstration with test musicians
+EnhancedTechnicalRider.tsx:2302 🎛️ Test musicians for flexible assignment: (8) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
+EnhancedTechnicalRider.tsx:2315 🎛️ FLEXIBLE ASSIGNMENT: Analyzing all groups and musicians
+EnhancedTechnicalRider.tsx:2385 🎛️ GROUP: drums (DRUMS) - 0 channels, 1 musicians
+EnhancedTechnicalRider.tsx:2385 🎛️ GROUP: bass (BASS) - 0 channels, 1 musicians
+EnhancedTechnicalRider.tsx:2385 🎛️ GROUP: guitar (GUITAR) - 0 channels, 2 musicians
+EnhancedTechnicalRider.tsx:2385 🎛️ GROUP: percussion (PERCUSSION) - 0 channels, 1 musicians
+EnhancedTechnicalRider.tsx:2385 🎛️ GROUP: keyboards (KEYBOARD) - 0 channels, 1 musicians
+EnhancedTechnicalRider.tsx:2385 🎛️ GROUP: brass (BRASS) - 8 channels, 0 musicians
+EnhancedTechnicalRider.tsx:2385 🎛️ GROUP: vocals (VOCALS) - 0 channels, 3 musicians
+EnhancedTechnicalRider.tsx:2470 🎛️ PHASE 2: Flexible assignment for remaining musicians
+EnhancedTechnicalRider.tsx:2475 🎛️ UNASSIGNED MEMBERS: (8) ['Lí-Lí Octave (Lead Vocal, Backing Vocal)', 'Maya Bass (Bass Guitar, Electric Bass)', 'Alex Drummer (Drums, Percussion)', 'Sam Guitar (Electric Guitar, Acoustic Guitar)', 'Jordan Keys (Piano, Synthesizer)', 'Taylor Vocal (Backing Vocal, Harmony Vocal)', 'Riley Guitar (Rhythm Guitar, Lead Guitar)', 'Casey Vocal (Vocal, Singer)']
+EnhancedTechnicalRider.tsx:2476 🎛️ Strategy: Try to maximize existing channel group usage before creating new groups
+EnhancedTechnicalRider.tsx:2481 🎛️ FLEXIBLE OPTION: Lí-Lí Octave could be manually assigned to appropriate channels based on: Lead Vocal, Backing Vocal
+EnhancedTechnicalRider.tsx:2481 🎛️ FLEXIBLE OPTION: Maya Bass could be manually assigned to appropriate channels based on: Bass Guitar, Electric Bass
+EnhancedTechnicalRider.tsx:2481 🎛️ FLEXIBLE OPTION: Alex Drummer could be manually assigned to appropriate channels based on: Drums, Percussion
+EnhancedTechnicalRider.tsx:2481 🎛️ FLEXIBLE OPTION: Sam Guitar could be manually assigned to appropriate channels based on: Electric Guitar, Acoustic Guitar
+EnhancedTechnicalRider.tsx:2481 🎛️ FLEXIBLE OPTION: Jordan Keys could be manually assigned to appropriate channels based on: Piano, Synthesizer
+EnhancedTechnicalRider.tsx:2481 🎛️ FLEXIBLE OPTION: Taylor Vocal could be manually assigned to appropriate channels based on: Backing Vocal, Harmony Vocal
+EnhancedTechnicalRider.tsx:2481 🎛️ FLEXIBLE OPTION: Riley Guitar could be manually assigned to appropriate channels based on: Rhythm Guitar, Lead Guitar
+EnhancedTechnicalRider.tsx:2481 🎛️ FLEXIBLE OPTION: Casey Vocal could be manually assigned to appropriate channels based on: Vocal, Singer
+EnhancedTechnicalRider.tsx:2493 🎛️ AUTO-ASSIGNMENT: Completed mixer channel assignments
+EnhancedTechnicalRider.tsx:1748 🎭 STAGE PLOT: Band member added to stage, triggering mixer auto-assignment
+EnhancedTechnicalRider.tsx:2288 🎛️ FLEXIBLE AUTO-ASSIGNMENT: Starting demonstration with test musicians
+EnhancedTechnicalRider.tsx:2302 🎛️ Test musicians for flexible assignment: (8) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
+EnhancedTechnicalRider.tsx:2315 🎛️ FLEXIBLE ASSIGNMENT: Analyzing all groups and musicians
+EnhancedTechnicalRider.tsx:2385 🎛️ GROUP: drums (DRUMS) - 0 channels, 1 musicians
+EnhancedTechnicalRider.tsx:2385 🎛️ GROUP: bass (BASS) - 0 channels, 1 musicians
+EnhancedTechnicalRider.tsx:2385 🎛️ GROUP: guitar (GUITAR) - 0 channels, 2 musicians
+EnhancedTechnicalRider.tsx:2385 🎛️ GROUP: percussion (PERCUSSION) - 0 channels, 1 musicians
+EnhancedTechnicalRider.tsx:2385 🎛️ GROUP: keyboards (KEYBOARD) - 0 channels, 1 musicians
+EnhancedTechnicalRider.tsx:2385 🎛️ GROUP: brass (BRASS) - 8 channels, 0 musicians
+EnhancedTechnicalRider.tsx:2385 🎛️ GROUP: vocals (VOCALS) - 0 channels, 3 musicians
+EnhancedTechnicalRider.tsx:2470 🎛️ PHASE 2: Flexible assignment for remaining musicians
+EnhancedTechnicalRider.tsx:2475 🎛️ UNASSIGNED MEMBERS: (8) ['Lí-Lí Octave (Lead Vocal, Backing Vocal)', 'Maya Bass (Bass Guitar, Electric Bass)', 'Alex Drummer (Drums, Percussion)', 'Sam Guitar (Electric Guitar, Acoustic Guitar)', 'Jordan Keys (Piano, Synthesizer)', 'Taylor Vocal (Backing Vocal, Harmony Vocal)', 'Riley Guitar (Rhythm Guitar, Lead Guitar)', 'Casey Vocal (Vocal, Singer)']
+EnhancedTechnicalRider.tsx:2476 🎛️ Strategy: Try to maximize existing channel group usage before creating new groups
+EnhancedTechnicalRider.tsx:2481 🎛️ FLEXIBLE OPTION: Lí-Lí Octave could be manually assigned to appropriate channels based on: Lead Vocal, Backing Vocal
+EnhancedTechnicalRider.tsx:2481 🎛️ FLEXIBLE OPTION: Maya Bass could be manually assigned to appropriate channels based on: Bass Guitar, Electric Bass
+EnhancedTechnicalRider.tsx:2481 🎛️ FLEXIBLE OPTION: Alex Drummer could be manually assigned to appropriate channels based on: Drums, Percussion
+EnhancedTechnicalRider.tsx:2481 🎛️ FLEXIBLE OPTION: Sam Guitar could be manually assigned to appropriate channels based on: Electric Guitar, Acoustic Guitar
+EnhancedTechnicalRider.tsx:2481 🎛️ FLEXIBLE OPTION: Jordan Keys could be manually assigned to appropriate channels based on: Piano, Synthesizer
+EnhancedTechnicalRider.tsx:2481 🎛️ FLEXIBLE OPTION: Taylor Vocal could be manually assigned to appropriate channels based on: Backing Vocal, Harmony Vocal
+EnhancedTechnicalRider.tsx:2481 🎛️ FLEXIBLE OPTION: Riley Guitar could be manually assigned to appropriate channels based on: Rhythm Guitar, Lead Guitar
+EnhancedTechnicalRider.tsx:2481 🎛️ FLEXIBLE OPTION: Casey Vocal could be manually assigned to appropriate channels based on: Vocal, Singer
+EnhancedTechnicalRider.tsx:2493 🎛️ AUTO-ASSIGNMENT: Completed mixer channel assignments
+EnhancedTechnicalRider.tsx:1748 🎭 STAGE PLOT: Band member added to stage, triggering mixer auto-assignment
+EnhancedTechnicalRider.tsx:2288 🎛️ FLEXIBLE AUTO-ASSIGNMENT: Starting demonstration with test musicians
+EnhancedTechnicalRider.tsx:2302 🎛️ Test musicians for flexible assignment: (8) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
+EnhancedTechnicalRider.tsx:2315 🎛️ FLEXIBLE ASSIGNMENT: Analyzing all groups and musicians
+EnhancedTechnicalRider.tsx:2385 🎛️ GROUP: drums (DRUMS) - 0 channels, 1 musicians
+EnhancedTechnicalRider.tsx:2385 🎛️ GROUP: bass (BASS) - 0 channels, 1 musicians
+EnhancedTechnicalRider.tsx:2385 🎛️ GROUP: guitar (GUITAR) - 0 channels, 2 musicians
+EnhancedTechnicalRider.tsx:2385 🎛️ GROUP: percussion (PERCUSSION) - 0 channels, 1 musicians
+EnhancedTechnicalRider.tsx:2385 🎛️ GROUP: keyboards (KEYBOARD) - 0 channels, 1 musicians
+EnhancedTechnicalRider.tsx:2385 🎛️ GROUP: brass (BRASS) - 8 channels, 0 musicians
+EnhancedTechnicalRider.tsx:2385 🎛️ GROUP: vocals (VOCALS) - 0 channels, 3 musicians
+EnhancedTechnicalRider.tsx:2470 🎛️ PHASE 2: Flexible assignment for remaining musicians
+EnhancedTechnicalRider.tsx:2475 🎛️ UNASSIGNED MEMBERS: (8) ['Lí-Lí Octave (Lead Vocal, Backing Vocal)', 'Maya Bass (Bass Guitar, Electric Bass)', 'Alex Drummer (Drums, Percussion)', 'Sam Guitar (Electric Guitar, Acoustic Guitar)', 'Jordan Keys (Piano, Synthesizer)', 'Taylor Vocal (Backing Vocal, Harmony Vocal)', 'Riley Guitar (Rhythm Guitar, Lead Guitar)', 'Casey Vocal (Vocal, Singer)']
+EnhancedTechnicalRider.tsx:2476 🎛️ Strategy: Try to maximize existing channel group usage before creating new groups
+EnhancedTechnicalRider.tsx:2481 🎛️ FLEXIBLE OPTION: Lí-Lí Octave could be manually assigned to appropriate channels based on: Lead Vocal, Backing Vocal
+EnhancedTechnicalRider.tsx:2481 🎛️ FLEXIBLE OPTION: Maya Bass could be manually assigned to appropriate channels based on: Bass Guitar, Electric Bass
+EnhancedTechnicalRider.tsx:2481 🎛️ FLEXIBLE OPTION: Alex Drummer could be manually assigned to appropriate channels based on: Drums, Percussion
+EnhancedTechnicalRider.tsx:2481 🎛️ FLEXIBLE OPTION: Sam Guitar could be manually assigned to appropriate channels based on: Electric Guitar, Acoustic Guitar
+EnhancedTechnicalRider.tsx:2481 🎛️ FLEXIBLE OPTION: Jordan Keys could be manually assigned to appropriate channels based on: Piano, Synthesizer
+EnhancedTechnicalRider.tsx:2481 🎛️ FLEXIBLE OPTION: Taylor Vocal could be manually assigned to appropriate channels based on: Backing Vocal, Harmony Vocal
+EnhancedTechnicalRider.tsx:2481 🎛️ FLEXIBLE OPTION: Riley Guitar could be manually assigned to appropriate channels based on: Rhythm Guitar, Lead Guitar
+EnhancedTechnicalRider.tsx:2481 🎛️ FLEXIBLE OPTION: Casey Vocal could be manually assigned to appropriate channels based on: Vocal, Singer
+EnhancedTechnicalRider.tsx:2493 🎛️ AUTO-ASSIGNMENT: Completed mixer channel assignments
+EnhancedTechnicalRider.tsx:1748 🎭 STAGE PLOT: Band member added to stage, triggering mixer auto-assignment
+EnhancedTechnicalRider.tsx:2288 🎛️ FLEXIBLE AUTO-ASSIGNMENT: Starting demonstration with test musicians
+EnhancedTechnicalRider.tsx:2302 🎛️ Test musicians for flexible assignment: (8) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
+EnhancedTechnicalRider.tsx:2315 🎛️ FLEXIBLE ASSIGNMENT: Analyzing all groups and musicians
+EnhancedTechnicalRider.tsx:2385 🎛️ GROUP: drums (DRUMS) - 0 channels, 1 musicians
+EnhancedTechnicalRider.tsx:2385 🎛️ GROUP: bass (BASS) - 0 channels, 1 musicians
+EnhancedTechnicalRider.tsx:2385 🎛️ GROUP: guitar (GUITAR) - 0 channels, 2 musicians
+EnhancedTechnicalRider.tsx:2385 🎛️ GROUP: percussion (PERCUSSION) - 0 channels, 1 musicians
+EnhancedTechnicalRider.tsx:2385 🎛️ GROUP: keyboards (KEYBOARD) - 0 channels, 1 musicians
+EnhancedTechnicalRider.tsx:2385 🎛️ GROUP: brass (BRASS) - 8 channels, 0 musicians
+EnhancedTechnicalRider.tsx:2385 🎛️ GROUP: vocals (VOCALS) - 0 channels, 3 musicians
+EnhancedTechnicalRider.tsx:2470 🎛️ PHASE 2: Flexible assignment for remaining musicians
+EnhancedTechnicalRider.tsx:2475 🎛️ UNASSIGNED MEMBERS: (8) ['Lí-Lí Octave (Lead Vocal, Backing Vocal)', 'Maya Bass (Bass Guitar, Electric Bass)', 'Alex Drummer (Drums, Percussion)', 'Sam Guitar (Electric Guitar, Acoustic Guitar)', 'Jordan Keys (Piano, Synthesizer)', 'Taylor Vocal (Backing Vocal, Harmony Vocal)', 'Riley Guitar (Rhythm Guitar, Lead Guitar)', 'Casey Vocal (Vocal, Singer)']
+EnhancedTechnicalRider.tsx:2476 🎛️ Strategy: Try to maximize existing channel group usage before creating new groups
+EnhancedTechnicalRider.tsx:2481 🎛️ FLEXIBLE OPTION: Lí-Lí Octave could be manually assigned to appropriate channels based on: Lead Vocal, Backing Vocal
+EnhancedTechnicalRider.tsx:2481 🎛️ FLEXIBLE OPTION: Maya Bass could be manually assigned to appropriate channels based on: Bass Guitar, Electric Bass
+EnhancedTechnicalRider.tsx:2481 🎛️ FLEXIBLE OPTION: Alex Drummer could be manually assigned to appropriate channels based on: Drums, Percussion
+EnhancedTechnicalRider.tsx:2481 🎛️ FLEXIBLE OPTION: Sam Guitar could be manually assigned to appropriate channels based on: Electric Guitar, Acoustic Guitar
+EnhancedTechnicalRider.tsx:2481 🎛️ FLEXIBLE OPTION: Jordan Keys could be manually assigned to appropriate channels based on: Piano, Synthesizer
+EnhancedTechnicalRider.tsx:2481 🎛️ FLEXIBLE OPTION: Taylor Vocal could be manually assigned to appropriate channels based on: Backing Vocal, Harmony Vocal
+EnhancedTechnicalRider.tsx:2481 🎛️ FLEXIBLE OPTION: Riley Guitar could be manually assigned to appropriate channels based on: Rhythm Guitar, Lead Guitar
+EnhancedTechnicalRider.tsx:2481 🎛️ FLEXIBLE OPTION: Casey Vocal could be manually assigned to appropriate channels based on: Vocal, Singer
+EnhancedTechnicalRider.tsx:2493 🎛️ AUTO-ASSIGNMENT: Completed mixer channel assignments
+EnhancedTechnicalRider.tsx:1748 🎭 STAGE PLOT: Band member added to stage, triggering mixer auto-assignment
+EnhancedTechnicalRider.tsx:2288 🎛️ FLEXIBLE AUTO-ASSIGNMENT: Starting demonstration with test musicians
+EnhancedTechnicalRider.tsx:2302 🎛️ Test musicians for flexible assignment: (8) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
+EnhancedTechnicalRider.tsx:2315 🎛️ FLEXIBLE ASSIGNMENT: Analyzing all groups and musicians
+EnhancedTechnicalRider.tsx:2385 🎛️ GROUP: drums (DRUMS) - 0 channels, 1 musicians
+EnhancedTechnicalRider.tsx:2385 🎛️ GROUP: bass (BASS) - 0 channels, 1 musicians
+EnhancedTechnicalRider.tsx:2385 🎛️ GROUP: guitar (GUITAR) - 0 channels, 2 musicians
+EnhancedTechnicalRider.tsx:2385 🎛️ GROUP: percussion (PERCUSSION) - 0 channels, 1 musicians
+EnhancedTechnicalRider.tsx:2385 🎛️ GROUP: keyboards (KEYBOARD) - 0 channels, 1 musicians
+EnhancedTechnicalRider.tsx:2385 🎛️ GROUP: brass (BRASS) - 8 channels, 0 musicians
+EnhancedTechnicalRider.tsx:2385 🎛️ GROUP: vocals (VOCALS) - 0 channels, 3 musicians
+EnhancedTechnicalRider.tsx:2470 🎛️ PHASE 2: Flexible assignment for remaining musicians
+EnhancedTechnicalRider.tsx:2475 🎛️ UNASSIGNED MEMBERS: (8) ['Lí-Lí Octave (Lead Vocal, Backing Vocal)', 'Maya Bass (Bass Guitar, Electric Bass)', 'Alex Drummer (Drums, Percussion)', 'Sam Guitar (Electric Guitar, Acoustic Guitar)', 'Jordan Keys (Piano, Synthesizer)', 'Taylor Vocal (Backing Vocal, Harmony Vocal)', 'Riley Guitar (Rhythm Guitar, Lead Guitar)', 'Casey Vocal (Vocal, Singer)']
+EnhancedTechnicalRider.tsx:2476 🎛️ Strategy: Try to maximize existing channel group usage before creating new groups
+EnhancedTechnicalRider.tsx:2481 🎛️ FLEXIBLE OPTION: Lí-Lí Octave could be manually assigned to appropriate channels based on: Lead Vocal, Backing Vocal
+EnhancedTechnicalRider.tsx:2481 🎛️ FLEXIBLE OPTION: Maya Bass could be manually assigned to appropriate channels based on: Bass Guitar, Electric Bass
+EnhancedTechnicalRider.tsx:2481 🎛️ FLEXIBLE OPTION: Alex Drummer could be manually assigned to appropriate channels based on: Drums, Percussion
+EnhancedTechnicalRider.tsx:2481 🎛️ FLEXIBLE OPTION: Sam Guitar could be manually assigned to appropriate channels based on: Electric Guitar, Acoustic Guitar
+EnhancedTechnicalRider.tsx:2481 🎛️ FLEXIBLE OPTION: Jordan Keys could be manually assigned to appropriate channels based on: Piano, Synthesizer
+EnhancedTechnicalRider.tsx:2481 🎛️ FLEXIBLE OPTION: Taylor Vocal could be manually assigned to appropriate channels based on: Backing Vocal, Harmony Vocal
+EnhancedTechnicalRider.tsx:2481 🎛️ FLEXIBLE OPTION: Riley Guitar could be manually assigned to appropriate channels based on: Rhythm Guitar, Lead Guitar
+EnhancedTechnicalRider.tsx:2481 🎛️ FLEXIBLE OPTION: Casey Vocal could be manually assigned to appropriate channels based on: Vocal, Singer
+EnhancedTechnicalRider.tsx:2493 🎛️ AUTO-ASSIGNMENT: Completed mixer channel assignments
+EnhancedTechnicalRider.tsx:1748 🎭 STAGE PLOT: Band member added to stage, triggering mixer auto-assignment
+EnhancedTechnicalRider.tsx:2288 🎛️ FLEXIBLE AUTO-ASSIGNMENT: Starting demonstration with test musicians
+EnhancedTechnicalRider.tsx:2302 🎛️ Test musicians for flexible assignment: (8) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
+EnhancedTechnicalRider.tsx:2315 🎛️ FLEXIBLE ASSIGNMENT: Analyzing all groups and musicians
+EnhancedTechnicalRider.tsx:2385 🎛️ GROUP: drums (DRUMS) - 0 channels, 1 musicians
+EnhancedTechnicalRider.tsx:2385 🎛️ GROUP: bass (BASS) - 0 channels, 1 musicians
+EnhancedTechnicalRider.tsx:2385 🎛️ GROUP: guitar (GUITAR) - 0 channels, 2 musicians
+EnhancedTechnicalRider.tsx:2385 🎛️ GROUP: percussion (PERCUSSION) - 0 channels, 1 musicians
+EnhancedTechnicalRider.tsx:2385 🎛️ GROUP: keyboards (KEYBOARD) - 0 channels, 1 musicians
+EnhancedTechnicalRider.tsx:2385 🎛️ GROUP: brass (BRASS) - 8 channels, 0 musicians
+EnhancedTechnicalRider.tsx:2385 🎛️ GROUP: vocals (VOCALS) - 0 channels, 3 musicians
+EnhancedTechnicalRider.tsx:2470 🎛️ PHASE 2: Flexible assignment for remaining musicians
+EnhancedTechnicalRider.tsx:2475 🎛️ UNASSIGNED MEMBERS: (8) ['Lí-Lí Octave (Lead Vocal, Backing Vocal)', 'Maya Bass (Bass Guitar, Electric Bass)', 'Alex Drummer (Drums, Percussion)', 'Sam Guitar (Electric Guitar, Acoustic Guitar)', 'Jordan Keys (Piano, Synthesizer)', 'Taylor Vocal (Backing Vocal, Harmony Vocal)', 'Riley Guitar (Rhythm Guitar, Lead Guitar)', 'Casey Vocal (Vocal, Singer)']
+EnhancedTechnicalRider.tsx:2476 🎛️ Strategy: Try to maximize existing channel group usage before creating new groups
+EnhancedTechnicalRider.tsx:2481 🎛️ FLEXIBLE OPTION: Lí-Lí Octave could be manually assigned to appropriate channels based on: Lead Vocal, Backing Vocal
+EnhancedTechnicalRider.tsx:2481 🎛️ FLEXIBLE OPTION: Maya Bass could be manually assigned to appropriate channels based on: Bass Guitar, Electric Bass
+EnhancedTechnicalRider.tsx:2481 🎛️ FLEXIBLE OPTION: Alex Drummer could be manually assigned to appropriate channels based on: Drums, Percussion
+EnhancedTechnicalRider.tsx:2481 🎛️ FLEXIBLE OPTION: Sam Guitar could be manually assigned to appropriate channels based on: Electric Guitar, Acoustic Guitar
+EnhancedTechnicalRider.tsx:2481 🎛️ FLEXIBLE OPTION: Jordan Keys could be manually assigned to appropriate channels based on: Piano, Synthesizer
+EnhancedTechnicalRider.tsx:2481 🎛️ FLEXIBLE OPTION: Taylor Vocal could be manually assigned to appropriate channels based on: Backing Vocal, Harmony Vocal
+EnhancedTechnicalRider.tsx:2481 🎛️ FLEXIBLE OPTION: Riley Guitar could be manually assigned to appropriate channels based on: Rhythm Guitar, Lead Guitar
+EnhancedTechnicalRider.tsx:2481 🎛️ FLEXIBLE OPTION: Casey Vocal could be manually assigned to appropriate channels based on: Vocal, Singer
+EnhancedTechnicalRider.tsx:2493 🎛️ AUTO-ASSIGNMENT: Completed mixer channel assignments
+EnhancedTechnicalRider.tsx:1748 🎭 STAGE PLOT: Band member added to stage, triggering mixer auto-assignment
+EnhancedTechnicalRider.tsx:2288 🎛️ FLEXIBLE AUTO-ASSIGNMENT: Starting demonstration with test musicians
+EnhancedTechnicalRider.tsx:2302 🎛️ Test musicians for flexible assignment: (8) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
+EnhancedTechnicalRider.tsx:2315 🎛️ FLEXIBLE ASSIGNMENT: Analyzing all groups and musicians
+EnhancedTechnicalRider.tsx:2385 🎛️ GROUP: drums (DRUMS) - 0 channels, 1 musicians
+EnhancedTechnicalRider.tsx:2385 🎛️ GROUP: bass (BASS) - 0 channels, 1 musicians
+EnhancedTechnicalRider.tsx:2385 🎛️ GROUP: guitar (GUITAR) - 0 channels, 2 musicians
+EnhancedTechnicalRider.tsx:2385 🎛️ GROUP: percussion (PERCUSSION) - 0 channels, 1 musicians
+EnhancedTechnicalRider.tsx:2385 🎛️ GROUP: keyboards (KEYBOARD) - 0 channels, 1 musicians
+EnhancedTechnicalRider.tsx:2385 🎛️ GROUP: brass (BRASS) - 8 channels, 0 musicians
+EnhancedTechnicalRider.tsx:2385 🎛️ GROUP: vocals (VOCALS) - 0 channels, 3 musicians
+EnhancedTechnicalRider.tsx:2470 🎛️ PHASE 2: Flexible assignment for remaining musicians
+EnhancedTechnicalRider.tsx:2475 🎛️ UNASSIGNED MEMBERS: (8) ['Lí-Lí Octave (Lead Vocal, Backing Vocal)', 'Maya Bass (Bass Guitar, Electric Bass)', 'Alex Drummer (Drums, Percussion)', 'Sam Guitar (Electric Guitar, Acoustic Guitar)', 'Jordan Keys (Piano, Synthesizer)', 'Taylor Vocal (Backing Vocal, Harmony Vocal)', 'Riley Guitar (Rhythm Guitar, Lead Guitar)', 'Casey Vocal (Vocal, Singer)']
+EnhancedTechnicalRider.tsx:2476 🎛️ Strategy: Try to maximize existing channel group usage before creating new groups
+EnhancedTechnicalRider.tsx:2481 🎛️ FLEXIBLE OPTION: Lí-Lí Octave could be manually assigned to appropriate channels based on: Lead Vocal, Backing Vocal
+EnhancedTechnicalRider.tsx:2481 🎛️ FLEXIBLE OPTION: Maya Bass could be manually assigned to appropriate channels based on: Bass Guitar, Electric Bass
+EnhancedTechnicalRider.tsx:2481 🎛️ FLEXIBLE OPTION: Alex Drummer could be manually assigned to appropriate channels based on: Drums, Percussion
+EnhancedTechnicalRider.tsx:2481 🎛️ FLEXIBLE OPTION: Sam Guitar could be manually assigned to appropriate channels based on: Electric Guitar, Acoustic Guitar
+EnhancedTechnicalRider.tsx:2481 🎛️ FLEXIBLE OPTION: Jordan Keys could be manually assigned to appropriate channels based on: Piano, Synthesizer
+EnhancedTechnicalRider.tsx:2481 🎛️ FLEXIBLE OPTION: Taylor Vocal could be manually assigned to appropriate channels based on: Backing Vocal, Harmony Vocal
+EnhancedTechnicalRider.tsx:2481 🎛️ FLEXIBLE OPTION: Riley Guitar could be manually assigned to appropriate channels based on: Rhythm Guitar, Lead Guitar
+EnhancedTechnicalRider.tsx:2481 🎛️ FLEXIBLE OPTION: Casey Vocal could be manually assigned to appropriate channels based on: Vocal, Singer
+EnhancedTechnicalRider.tsx:2493 🎛️ AUTO-ASSIGNMENT: Completed mixer channel assignments
+EnhancedTechnicalRider.tsx:1748 🎭 STAGE PLOT: Band member added to stage, triggering mixer auto-assignment
+EnhancedTechnicalRider.tsx:2288 🎛️ FLEXIBLE AUTO-ASSIGNMENT: Starting demonstration with test musicians
+EnhancedTechnicalRider.tsx:2302 🎛️ Test musicians for flexible assignment: (8) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
+EnhancedTechnicalRider.tsx:2493 🎛️ AUTO-ASSIGNMENT: Completed mixer channel assignments
+EnhancedTechnicalRider.tsx:2315 🎛️ FLEXIBLE ASSIGNMENT: Analyzing all groups and musicians
+EnhancedTechnicalRider.tsx:2385 🎛️ GROUP: drums (DRUMS) - 0 channels, 1 musicians
+EnhancedTechnicalRider.tsx:2385 🎛️ GROUP: bass (BASS) - 0 channels, 1 musicians
+EnhancedTechnicalRider.tsx:2385 🎛️ GROUP: guitar (GUITAR) - 0 channels, 2 musicians
+EnhancedTechnicalRider.tsx:2385 🎛️ GROUP: percussion (PERCUSSION) - 0 channels, 1 musicians
+EnhancedTechnicalRider.tsx:2385 🎛️ GROUP: keyboards (KEYBOARD) - 0 channels, 1 musicians
+EnhancedTechnicalRider.tsx:2385 🎛️ GROUP: brass (BRASS) - 8 channels, 0 musicians
+EnhancedTechnicalRider.tsx:2385 🎛️ GROUP: vocals (VOCALS) - 0 channels, 3 musicians
+EnhancedTechnicalRider.tsx:2470 🎛️ PHASE 2: Flexible assignment for remaining musicians
+EnhancedTechnicalRider.tsx:2475 🎛️ UNASSIGNED MEMBERS: (8) ['Lí-Lí Octave (Lead Vocal, Backing Vocal)', 'Maya Bass (Bass Guitar, Electric Bass)', 'Alex Drummer (Drums, Percussion)', 'Sam Guitar (Electric Guitar, Acoustic Guitar)', 'Jordan Keys (Piano, Synthesizer)', 'Taylor Vocal (Backing Vocal, Harmony Vocal)', 'Riley Guitar (Rhythm Guitar, Lead Guitar)', 'Casey Vocal (Vocal, Singer)']
+EnhancedTechnicalRider.tsx:2476 🎛️ Strategy: Try to maximize existing channel group usage before creating new groups
+EnhancedTechnicalRider.tsx:2481 🎛️ FLEXIBLE OPTION: Lí-Lí Octave could be manually assigned to appropriate channels based on: Lead Vocal, Backing Vocal
+EnhancedTechnicalRider.tsx:2481 🎛️ FLEXIBLE OPTION: Maya Bass could be manually assigned to appropriate channels based on: Bass Guitar, Electric Bass
+EnhancedTechnicalRider.tsx:2481 🎛️ FLEXIBLE OPTION: Alex Drummer could be manually assigned to appropriate channels based on: Drums, Percussion
+EnhancedTechnicalRider.tsx:2481 🎛️ FLEXIBLE OPTION: Sam Guitar could be manually assigned to appropriate channels based on: Electric Guitar, Acoustic Guitar
+EnhancedTechnicalRider.tsx:2481 🎛️ FLEXIBLE OPTION: Jordan Keys could be manually assigned to appropriate channels based on: Piano, Synthesizer
+EnhancedTechnicalRider.tsx:2481 🎛️ FLEXIBLE OPTION: Taylor Vocal could be manually assigned to appropriate channels based on: Backing Vocal, Harmony Vocal
+EnhancedTechnicalRider.tsx:2481 🎛️ FLEXIBLE OPTION: Riley Guitar could be manually assigned to appropriate channels based on: Rhythm Guitar, Lead Guitar
+EnhancedTechnicalRider.tsx:2481 🎛️ FLEXIBLE OPTION: Casey Vocal could be manually assigned to appropriate channels based on: Vocal, Singer
+EnhancedTechnicalRider.tsx:1748 🎭 STAGE PLOT: Band member added to stage, triggering mixer auto-assignment
+EnhancedTechnicalRider.tsx:2288 🎛️ FLEXIBLE AUTO-ASSIGNMENT: Starting demonstration with test musicians
+EnhancedTechnicalRider.tsx:2302 🎛️ Test musicians for flexible assignment: (8) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
+EnhancedTechnicalRider.tsx:2315 🎛️ FLEXIBLE ASSIGNMENT: Analyzing all groups and musicians
+EnhancedTechnicalRider.tsx:2385 🎛️ GROUP: drums (DRUMS) - 0 channels, 1 musicians
+EnhancedTechnicalRider.tsx:2385 🎛️ GROUP: bass (BASS) - 0 channels, 1 musicians
+EnhancedTechnicalRider.tsx:2385 🎛️ GROUP: guitar (GUITAR) - 0 channels, 2 musicians
+EnhancedTechnicalRider.tsx:2385 🎛️ GROUP: percussion (PERCUSSION) - 0 channels, 1 musicians
+EnhancedTechnicalRider.tsx:2385 🎛️ GROUP: keyboards (KEYBOARD) - 0 channels, 1 musicians
+EnhancedTechnicalRider.tsx:2385 🎛️ GROUP: brass (BRASS) - 8 channels, 0 musicians
+EnhancedTechnicalRider.tsx:2385 🎛️ GROUP: vocals (VOCALS) - 0 channels, 3 musicians
+EnhancedTechnicalRider.tsx:2470 🎛️ PHASE 2: Flexible assignment for remaining musicians
+EnhancedTechnicalRider.tsx:2475 🎛️ UNASSIGNED MEMBERS: (8) ['Lí-Lí Octave (Lead Vocal, Backing Vocal)', 'Maya Bass (Bass Guitar, Electric Bass)', 'Alex Drummer (Drums, Percussion)', 'Sam Guitar (Electric Guitar, Acoustic Guitar)', 'Jordan Keys (Piano, Synthesizer)', 'Taylor Vocal (Backing Vocal, Harmony Vocal)', 'Riley Guitar (Rhythm Guitar, Lead Guitar)', 'Casey Vocal (Vocal, Singer)']
+EnhancedTechnicalRider.tsx:2476 🎛️ Strategy: Try to maximize existing channel group usage before creating new groups
+EnhancedTechnicalRider.tsx:2481 🎛️ FLEXIBLE OPTION: Lí-Lí Octave could be manually assigned to appropriate channels based on: Lead Vocal, Backing Vocal
+EnhancedTechnicalRider.tsx:2481 🎛️ FLEXIBLE OPTION: Maya Bass could be manually assigned to appropriate channels based on: Bass Guitar, Electric Bass
+EnhancedTechnicalRider.tsx:2481 🎛️ FLEXIBLE OPTION: Alex Drummer could be manually assigned to appropriate channels based on: Drums, Percussion
+EnhancedTechnicalRider.tsx:2481 🎛️ FLEXIBLE OPTION: Sam Guitar could be manually assigned to appropriate channels based on: Electric Guitar, Acoustic Guitar
+EnhancedTechnicalRider.tsx:2481 🎛️ FLEXIBLE OPTION: Jordan Keys could be manually assigned to appropriate channels based on: Piano, Synthesizer
+EnhancedTechnicalRider.tsx:2481 🎛️ FLEXIBLE OPTION: Taylor Vocal could be manually assigned to appropriate channels based on: Backing Vocal, Harmony Vocal
+EnhancedTechnicalRider.tsx:2481 🎛️ FLEXIBLE OPTION: Riley Guitar could be manually assigned to appropriate channels based on: Rhythm Guitar, Lead Guitar
+EnhancedTechnicalRider.tsx:2481 🎛️ FLEXIBLE OPTION: Casey Vocal could be manually assigned to appropriate channels based on: Vocal, Singer
+EnhancedTechnicalRider.tsx:2493 🎛️ AUTO-ASSIGNMENT: Completed mixer channel assignments
+EnhancedTechnicalRider.tsx:123 🍽️ HOSPITALITY: Member Lí-Lí Octave (ID: 6) - Found 0 requirements
+EnhancedTechnicalRider.tsx:123 🍽️ HOSPITALITY: Member Maya Bass (ID: 12) - Found 0 requirements
+EnhancedTechnicalRider.tsx:123 🍽️ HOSPITALITY: Member Nova Williams (ID: 16) - Found 0 requirements
+EnhancedTechnicalRider.tsx:123 🍽️ HOSPITALITY: Member Echo Davis (ID: 17) - Found 0 requirements
+EnhancedTechnicalRider.tsx:123 🍽️ HOSPITALITY: Member Cosmic Taylor (ID: 22) - Found 0 requirements
+EnhancedTechnicalRider.tsx:123 🍽️ HOSPITALITY: Member Phoenix Chen (ID: 13) - Found 0 requirements
+EnhancedTechnicalRider.tsx:123 🍽️ HOSPITALITY: Member Indie Stone (ID: 25) - Found 0 requirements
+EnhancedTechnicalRider.tsx:123 🍽️ HOSPITALITY: Member Storm Johnson (ID: 18) - Found 0 requirements
+EnhancedTechnicalRider.tsx:123 🍽️ HOSPITALITY: Member Wave Anderson (ID: 19) - Found 0 requirements
+EnhancedTechnicalRider.tsx:123 🍽️ HOSPITALITY: Member Ocean Park (ID: 23) - Found 0 requirements
+EnhancedTechnicalRider.tsx:123 🍽️ HOSPITALITY: Member Session Brooks (ID: 26) - Found 0 requirements
+EnhancedTechnicalRider.tsx:123 🍽️ HOSPITALITY: Member Lí-Lí Octave (ID: 6) - Found 0 requirements
+EnhancedTechnicalRider.tsx:123 🍽️ HOSPITALITY: Member Cosmic Taylor (ID: 22) - Found 4 requirements
+EnhancedTechnicalRider.tsx:123 🍽️ HOSPITALITY: Member Echo Davis (ID: 17) - Found 4 requirements
+EnhancedTechnicalRider.tsx:123 🍽️ HOSPITALITY: Member Maya Bass (ID: 12) - Found 3 requirements
+EnhancedTechnicalRider.tsx:123 🍽️ HOSPITALITY: Member Nova Williams (ID: 16) - Found 4 requirements
+EnhancedTechnicalRider.tsx:123 🍽️ HOSPITALITY: Member Phoenix Chen (ID: 13) - Found 3 requirements
+EnhancedTechnicalRider.tsx:186   GET https://e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/api/users/6/hospitality-requirements 401 (Unauthorized)
+fetchAllDressingRoomRequirements @ EnhancedTechnicalRider.tsx:186
+(anonymous) @ EnhancedTechnicalRider.tsx:202
+commitHookEffectListMount @ react-dom.development.js:23189
+commitPassiveMountOnFiber @ react-dom.development.js:24965
+commitPassiveMountEffects_complete @ react-dom.development.js:24930
+commitPassiveMountEffects_begin @ react-dom.development.js:24917
+commitPassiveMountEffects @ react-dom.development.js:24905
+flushPassiveEffectsImpl @ react-dom.development.js:27078
+flushPassiveEffects @ react-dom.development.js:27023
+commitRootImpl @ react-dom.development.js:26974
+commitRoot @ react-dom.development.js:26721
+performSyncWorkOnRoot @ react-dom.development.js:26156
+flushSyncCallbacks @ react-dom.development.js:12042
+(anonymous) @ react-dom.development.js:25690
+EnhancedTechnicalRider.tsx:123 🍽️ HOSPITALITY: Member Storm Johnson (ID: 18) - Found 3 requirements
+EnhancedTechnicalRider.tsx:123 🍽️ HOSPITALITY: Member Indie Stone (ID: 25) - Found 4 requirements
+[NEW] Explain Console errors by using Copilot in Edge: click
+         
+         to explain an error. 
+        Learn more
+        Don't show again
+EnhancedTechnicalRider.tsx:123 🍽️ HOSPITALITY: Member Wave Anderson (ID: 19) - Found 3 requirements
+EnhancedTechnicalRider.tsx:123 🍽️ HOSPITALITY: Member Ocean Park (ID: 23) - Found 3 requirements
+EnhancedTechnicalRider.tsx:123 🍽️ HOSPITALITY: Member Session Brooks (ID: 26) - Found 3 requirements
+EnhancedTechnicalRider.tsx:234   GET https://e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/api/users/6/hospitality-requirements 401 (Unauthorized)
+fetchAllRefreshmentRequirements @ EnhancedTechnicalRider.tsx:234
+(anonymous) @ EnhancedTechnicalRider.tsx:250
+commitHookEffectListMount @ react-dom.development.js:23189
+commitPassiveMountOnFiber @ react-dom.development.js:24965
+commitPassiveMountEffects_complete @ react-dom.development.js:24930
+commitPassiveMountEffects_begin @ react-dom.development.js:24917
+commitPassiveMountEffects @ react-dom.development.js:24905
+flushPassiveEffectsImpl @ react-dom.development.js:27078
+flushPassiveEffects @ react-dom.development.js:27023
+commitRootImpl @ react-dom.development.js:26974
+commitRoot @ react-dom.development.js:26721
+performSyncWorkOnRoot @ react-dom.development.js:26156
+flushSyncCallbacks @ react-dom.development.js:12042
+(anonymous) @ react-dom.development.js:25690
+EnhancedTechnicalRider.tsx:186   GET https://e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/api/users/12/hospitality-requirements 401 (Unauthorized)
+fetchAllDressingRoomRequirements @ EnhancedTechnicalRider.tsx:186
+await in fetchAllDressingRoomRequirements
+(anonymous) @ EnhancedTechnicalRider.tsx:202
+commitHookEffectListMount @ react-dom.development.js:23189
+commitPassiveMountOnFiber @ react-dom.development.js:24965
+commitPassiveMountEffects_complete @ react-dom.development.js:24930
+commitPassiveMountEffects_begin @ react-dom.development.js:24917
+commitPassiveMountEffects @ react-dom.development.js:24905
+flushPassiveEffectsImpl @ react-dom.development.js:27078
+flushPassiveEffects @ react-dom.development.js:27023
+commitRootImpl @ react-dom.development.js:26974
+commitRoot @ react-dom.development.js:26721
+performSyncWorkOnRoot @ react-dom.development.js:26156
+flushSyncCallbacks @ react-dom.development.js:12042
+(anonymous) @ react-dom.development.js:25690
+EnhancedTechnicalRider.tsx:234   GET https://e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/api/users/12/hospitality-requirements 401 (Unauthorized)
+fetchAllRefreshmentRequirements @ EnhancedTechnicalRider.tsx:234
+await in fetchAllRefreshmentRequirements
+(anonymous) @ EnhancedTechnicalRider.tsx:250
+commitHookEffectListMount @ react-dom.development.js:23189
+commitPassiveMountOnFiber @ react-dom.development.js:24965
+commitPassiveMountEffects_complete @ react-dom.development.js:24930
+commitPassiveMountEffects_begin @ react-dom.development.js:24917
+commitPassiveMountEffects @ react-dom.development.js:24905
+flushPassiveEffectsImpl @ react-dom.development.js:27078
+flushPassiveEffects @ react-dom.development.js:27023
+commitRootImpl @ react-dom.development.js:26974
+commitRoot @ react-dom.development.js:26721
+performSyncWorkOnRoot @ react-dom.development.js:26156
+flushSyncCallbacks @ react-dom.development.js:12042
+(anonymous) @ react-dom.development.js:25690
+EnhancedTechnicalRider.tsx:186   GET https://e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/api/users/16/hospitality-requirements 401 (Unauthorized)
+fetchAllDressingRoomRequirements @ EnhancedTechnicalRider.tsx:186
+await in fetchAllDressingRoomRequirements
+(anonymous) @ EnhancedTechnicalRider.tsx:202
+commitHookEffectListMount @ react-dom.development.js:23189
+commitPassiveMountOnFiber @ react-dom.development.js:24965
+commitPassiveMountEffects_complete @ react-dom.development.js:24930
+commitPassiveMountEffects_begin @ react-dom.development.js:24917
+commitPassiveMountEffects @ react-dom.development.js:24905
+flushPassiveEffectsImpl @ react-dom.development.js:27078
+flushPassiveEffects @ react-dom.development.js:27023
+commitRootImpl @ react-dom.development.js:26974
+commitRoot @ react-dom.development.js:26721
+performSyncWorkOnRoot @ react-dom.development.js:26156
+flushSyncCallbacks @ react-dom.development.js:12042
+(anonymous) @ react-dom.development.js:25690
+EnhancedTechnicalRider.tsx:186   GET https://e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/api/users/17/hospitality-requirements 401 (Unauthorized)
+fetchAllDressingRoomRequirements @ EnhancedTechnicalRider.tsx:186
+await in fetchAllDressingRoomRequirements
+(anonymous) @ EnhancedTechnicalRider.tsx:202
+commitHookEffectListMount @ react-dom.development.js:23189
+commitPassiveMountOnFiber @ react-dom.development.js:24965
+commitPassiveMountEffects_complete @ react-dom.development.js:24930
+commitPassiveMountEffects_begin @ react-dom.development.js:24917
+commitPassiveMountEffects @ react-dom.development.js:24905
+flushPassiveEffectsImpl @ react-dom.development.js:27078
+flushPassiveEffects @ react-dom.development.js:27023
+commitRootImpl @ react-dom.development.js:26974
+commitRoot @ react-dom.development.js:26721
+performSyncWorkOnRoot @ react-dom.development.js:26156
+flushSyncCallbacks @ react-dom.development.js:12042
+(anonymous) @ react-dom.development.js:25690
+EnhancedTechnicalRider.tsx:234   GET https://e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/api/users/16/hospitality-requirements 401 (Unauthorized)
+fetchAllRefreshmentRequirements @ EnhancedTechnicalRider.tsx:234
+await in fetchAllRefreshmentRequirements
+(anonymous) @ EnhancedTechnicalRider.tsx:250
+commitHookEffectListMount @ react-dom.development.js:23189
+commitPassiveMountOnFiber @ react-dom.development.js:24965
+commitPassiveMountEffects_complete @ react-dom.development.js:24930
+commitPassiveMountEffects_begin @ react-dom.development.js:24917
+commitPassiveMountEffects @ react-dom.development.js:24905
+flushPassiveEffectsImpl @ react-dom.development.js:27078
+flushPassiveEffects @ react-dom.development.js:27023
+commitRootImpl @ react-dom.development.js:26974
+commitRoot @ react-dom.development.js:26721
+performSyncWorkOnRoot @ react-dom.development.js:26156
+flushSyncCallbacks @ react-dom.development.js:12042
+(anonymous) @ react-dom.development.js:25690
+EnhancedTechnicalRider.tsx:186   GET https://e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/api/users/22/hospitality-requirements 401 (Unauthorized)
+fetchAllDressingRoomRequirements @ EnhancedTechnicalRider.tsx:186
+await in fetchAllDressingRoomRequirements
+(anonymous) @ EnhancedTechnicalRider.tsx:202
+commitHookEffectListMount @ react-dom.development.js:23189
+commitPassiveMountOnFiber @ react-dom.development.js:24965
+commitPassiveMountEffects_complete @ react-dom.development.js:24930
+commitPassiveMountEffects_begin @ react-dom.development.js:24917
+commitPassiveMountEffects @ react-dom.development.js:24905
+flushPassiveEffectsImpl @ react-dom.development.js:27078
+flushPassiveEffects @ react-dom.development.js:27023
+commitRootImpl @ react-dom.development.js:26974
+commitRoot @ react-dom.development.js:26721
+performSyncWorkOnRoot @ react-dom.development.js:26156
+flushSyncCallbacks @ react-dom.development.js:12042
+(anonymous) @ react-dom.development.js:25690
+EnhancedTechnicalRider.tsx:234   GET https://e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/api/users/17/hospitality-requirements 401 (Unauthorized)
+fetchAllRefreshmentRequirements @ EnhancedTechnicalRider.tsx:234
+await in fetchAllRefreshmentRequirements
+(anonymous) @ EnhancedTechnicalRider.tsx:250
+commitHookEffectListMount @ react-dom.development.js:23189
+commitPassiveMountOnFiber @ react-dom.development.js:24965
+commitPassiveMountEffects_complete @ react-dom.development.js:24930
+commitPassiveMountEffects_begin @ react-dom.development.js:24917
+commitPassiveMountEffects @ react-dom.development.js:24905
+flushPassiveEffectsImpl @ react-dom.development.js:27078
+flushPassiveEffects @ react-dom.development.js:27023
+commitRootImpl @ react-dom.development.js:26974
+commitRoot @ react-dom.development.js:26721
+performSyncWorkOnRoot @ react-dom.development.js:26156
+flushSyncCallbacks @ react-dom.development.js:12042
+(anonymous) @ react-dom.development.js:25690
+EnhancedTechnicalRider.tsx:186   GET https://e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/api/users/13/hospitality-requirements 401 (Unauthorized)
+fetchAllDressingRoomRequirements @ EnhancedTechnicalRider.tsx:186
+await in fetchAllDressingRoomRequirements
+(anonymous) @ EnhancedTechnicalRider.tsx:202
+commitHookEffectListMount @ react-dom.development.js:23189
+commitPassiveMountOnFiber @ react-dom.development.js:24965
+commitPassiveMountEffects_complete @ react-dom.development.js:24930
+commitPassiveMountEffects_begin @ react-dom.development.js:24917
+commitPassiveMountEffects @ react-dom.development.js:24905
+flushPassiveEffectsImpl @ react-dom.development.js:27078
+flushPassiveEffects @ react-dom.development.js:27023
+commitRootImpl @ react-dom.development.js:26974
+commitRoot @ react-dom.development.js:26721
+performSyncWorkOnRoot @ react-dom.development.js:26156
+flushSyncCallbacks @ react-dom.development.js:12042
+(anonymous) @ react-dom.development.js:25690
+EnhancedTechnicalRider.tsx:234   GET https://e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/api/users/22/hospitality-requirements 401 (Unauthorized)
+fetchAllRefreshmentRequirements @ EnhancedTechnicalRider.tsx:234
+await in fetchAllRefreshmentRequirements
+(anonymous) @ EnhancedTechnicalRider.tsx:250
+commitHookEffectListMount @ react-dom.development.js:23189
+commitPassiveMountOnFiber @ react-dom.development.js:24965
+commitPassiveMountEffects_complete @ react-dom.development.js:24930
+commitPassiveMountEffects_begin @ react-dom.development.js:24917
+commitPassiveMountEffects @ react-dom.development.js:24905
+flushPassiveEffectsImpl @ react-dom.development.js:27078
+flushPassiveEffects @ react-dom.development.js:27023
+commitRootImpl @ react-dom.development.js:26974
+commitRoot @ react-dom.development.js:26721
+performSyncWorkOnRoot @ react-dom.development.js:26156
+flushSyncCallbacks @ react-dom.development.js:12042
+(anonymous) @ react-dom.development.js:25690
+EnhancedTechnicalRider.tsx:234   GET https://e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/api/users/13/hospitality-requirements 401 (Unauthorized)
+fetchAllRefreshmentRequirements @ EnhancedTechnicalRider.tsx:234
+await in fetchAllRefreshmentRequirements
+(anonymous) @ EnhancedTechnicalRider.tsx:250
+commitHookEffectListMount @ react-dom.development.js:23189
+commitPassiveMountOnFiber @ react-dom.development.js:24965
+commitPassiveMountEffects_complete @ react-dom.development.js:24930
+commitPassiveMountEffects_begin @ react-dom.development.js:24917
+commitPassiveMountEffects @ react-dom.development.js:24905
+flushPassiveEffectsImpl @ react-dom.development.js:27078
+flushPassiveEffects @ react-dom.development.js:27023
+commitRootImpl @ react-dom.development.js:26974
+commitRoot @ react-dom.development.js:26721
+performSyncWorkOnRoot @ react-dom.development.js:26156
+flushSyncCallbacks @ react-dom.development.js:12042
+(anonymous) @ react-dom.development.js:25690
+EnhancedTechnicalRider.tsx:186   GET https://e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/api/users/25/hospitality-requirements 401 (Unauthorized)
+fetchAllDressingRoomRequirements @ EnhancedTechnicalRider.tsx:186
+await in fetchAllDressingRoomRequirements
+(anonymous) @ EnhancedTechnicalRider.tsx:202
+commitHookEffectListMount @ react-dom.development.js:23189
+commitPassiveMountOnFiber @ react-dom.development.js:24965
+commitPassiveMountEffects_complete @ react-dom.development.js:24930
+commitPassiveMountEffects_begin @ react-dom.development.js:24917
+commitPassiveMountEffects @ react-dom.development.js:24905
+flushPassiveEffectsImpl @ react-dom.development.js:27078
+flushPassiveEffects @ react-dom.development.js:27023
+commitRootImpl @ react-dom.development.js:26974
+commitRoot @ react-dom.development.js:26721
+performSyncWorkOnRoot @ react-dom.development.js:26156
+flushSyncCallbacks @ react-dom.development.js:12042
+(anonymous) @ react-dom.development.js:25690
+EnhancedTechnicalRider.tsx:186   GET https://e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/api/users/18/hospitality-requirements 401 (Unauthorized)
+fetchAllDressingRoomRequirements @ EnhancedTechnicalRider.tsx:186
+await in fetchAllDressingRoomRequirements
+(anonymous) @ EnhancedTechnicalRider.tsx:202
+commitHookEffectListMount @ react-dom.development.js:23189
+commitPassiveMountOnFiber @ react-dom.development.js:24965
+commitPassiveMountEffects_complete @ react-dom.development.js:24930
+commitPassiveMountEffects_begin @ react-dom.development.js:24917
+commitPassiveMountEffects @ react-dom.development.js:24905
+flushPassiveEffectsImpl @ react-dom.development.js:27078
+flushPassiveEffects @ react-dom.development.js:27023
+commitRootImpl @ react-dom.development.js:26974
+commitRoot @ react-dom.development.js:26721
+performSyncWorkOnRoot @ react-dom.development.js:26156
+flushSyncCallbacks @ react-dom.development.js:12042
+(anonymous) @ react-dom.development.js:25690
+EnhancedTechnicalRider.tsx:234   GET https://e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/api/users/25/hospitality-requirements 401 (Unauthorized)
+fetchAllRefreshmentRequirements @ EnhancedTechnicalRider.tsx:234
+await in fetchAllRefreshmentRequirements
+(anonymous) @ EnhancedTechnicalRider.tsx:250
+commitHookEffectListMount @ react-dom.development.js:23189
+commitPassiveMountOnFiber @ react-dom.development.js:24965
+commitPassiveMountEffects_complete @ react-dom.development.js:24930
+commitPassiveMountEffects_begin @ react-dom.development.js:24917
+commitPassiveMountEffects @ react-dom.development.js:24905
+flushPassiveEffectsImpl @ react-dom.development.js:27078
+flushPassiveEffects @ react-dom.development.js:27023
+commitRootImpl @ react-dom.development.js:26974
+commitRoot @ react-dom.development.js:26721
+performSyncWorkOnRoot @ react-dom.development.js:26156
+flushSyncCallbacks @ react-dom.development.js:12042
+(anonymous) @ react-dom.development.js:25690
+EnhancedTechnicalRider.tsx:186   GET https://e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/api/users/19/hospitality-requirements 401 (Unauthorized)
+fetchAllDressingRoomRequirements @ EnhancedTechnicalRider.tsx:186
+await in fetchAllDressingRoomRequirements
+(anonymous) @ EnhancedTechnicalRider.tsx:202
+commitHookEffectListMount @ react-dom.development.js:23189
+commitPassiveMountOnFiber @ react-dom.development.js:24965
+commitPassiveMountEffects_complete @ react-dom.development.js:24930
+commitPassiveMountEffects_begin @ react-dom.development.js:24917
+commitPassiveMountEffects @ react-dom.development.js:24905
+flushPassiveEffectsImpl @ react-dom.development.js:27078
+flushPassiveEffects @ react-dom.development.js:27023
+commitRootImpl @ react-dom.development.js:26974
+commitRoot @ react-dom.development.js:26721
+performSyncWorkOnRoot @ react-dom.development.js:26156
+flushSyncCallbacks @ react-dom.development.js:12042
+(anonymous) @ react-dom.development.js:25690
+EnhancedTechnicalRider.tsx:234   GET https://e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/api/users/18/hospitality-requirements 401 (Unauthorized)
+fetchAllRefreshmentRequirements @ EnhancedTechnicalRider.tsx:234
+await in fetchAllRefreshmentRequirements
+(anonymous) @ EnhancedTechnicalRider.tsx:250
+commitHookEffectListMount @ react-dom.development.js:23189
+commitPassiveMountOnFiber @ react-dom.development.js:24965
+commitPassiveMountEffects_complete @ react-dom.development.js:24930
+commitPassiveMountEffects_begin @ react-dom.development.js:24917
+commitPassiveMountEffects @ react-dom.development.js:24905
+flushPassiveEffectsImpl @ react-dom.development.js:27078
+flushPassiveEffects @ react-dom.development.js:27023
+commitRootImpl @ react-dom.development.js:26974
+commitRoot @ react-dom.development.js:26721
+performSyncWorkOnRoot @ react-dom.development.js:26156
+flushSyncCallbacks @ react-dom.development.js:12042
+(anonymous) @ react-dom.development.js:25690
+EnhancedTechnicalRider.tsx:186   GET https://e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/api/users/23/hospitality-requirements 401 (Unauthorized)
+fetchAllDressingRoomRequirements @ EnhancedTechnicalRider.tsx:186
+await in fetchAllDressingRoomRequirements
+(anonymous) @ EnhancedTechnicalRider.tsx:202
+commitHookEffectListMount @ react-dom.development.js:23189
+commitPassiveMountOnFiber @ react-dom.development.js:24965
+commitPassiveMountEffects_complete @ react-dom.development.js:24930
+commitPassiveMountEffects_begin @ react-dom.development.js:24917
+commitPassiveMountEffects @ react-dom.development.js:24905
+flushPassiveEffectsImpl @ react-dom.development.js:27078
+flushPassiveEffects @ react-dom.development.js:27023
+commitRootImpl @ react-dom.development.js:26974
+commitRoot @ react-dom.development.js:26721
+performSyncWorkOnRoot @ react-dom.development.js:26156
+flushSyncCallbacks @ react-dom.development.js:12042
+(anonymous) @ react-dom.development.js:25690
+EnhancedTechnicalRider.tsx:234   GET https://e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/api/users/19/hospitality-requirements 401 (Unauthorized)
+fetchAllRefreshmentRequirements @ EnhancedTechnicalRider.tsx:234
+await in fetchAllRefreshmentRequirements
+(anonymous) @ EnhancedTechnicalRider.tsx:250
+commitHookEffectListMount @ react-dom.development.js:23189
+commitPassiveMountOnFiber @ react-dom.development.js:24965
+commitPassiveMountEffects_complete @ react-dom.development.js:24930
+commitPassiveMountEffects_begin @ react-dom.development.js:24917
+commitPassiveMountEffects @ react-dom.development.js:24905
+flushPassiveEffectsImpl @ react-dom.development.js:27078
+flushPassiveEffects @ react-dom.development.js:27023
+commitRootImpl @ react-dom.development.js:26974
+commitRoot @ react-dom.development.js:26721
+performSyncWorkOnRoot @ react-dom.development.js:26156
+flushSyncCallbacks @ react-dom.development.js:12042
+(anonymous) @ react-dom.development.js:25690
+EnhancedTechnicalRider.tsx:234   GET https://e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/api/users/23/hospitality-requirements 401 (Unauthorized)
+fetchAllRefreshmentRequirements @ EnhancedTechnicalRider.tsx:234
+await in fetchAllRefreshmentRequirements
+(anonymous) @ EnhancedTechnicalRider.tsx:250
+commitHookEffectListMount @ react-dom.development.js:23189
+commitPassiveMountOnFiber @ react-dom.development.js:24965
+commitPassiveMountEffects_complete @ react-dom.development.js:24930
+commitPassiveMountEffects_begin @ react-dom.development.js:24917
+commitPassiveMountEffects @ react-dom.development.js:24905
+flushPassiveEffectsImpl @ react-dom.development.js:27078
+flushPassiveEffects @ react-dom.development.js:27023
+commitRootImpl @ react-dom.development.js:26974
+commitRoot @ react-dom.development.js:26721
+performSyncWorkOnRoot @ react-dom.development.js:26156
+flushSyncCallbacks @ react-dom.development.js:12042
+(anonymous) @ react-dom.development.js:25690
+EnhancedTechnicalRider.tsx:186   GET https://e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/api/users/26/hospitality-requirements 401 (Unauthorized)
+fetchAllDressingRoomRequirements @ EnhancedTechnicalRider.tsx:186
+await in fetchAllDressingRoomRequirements
+(anonymous) @ EnhancedTechnicalRider.tsx:202
+commitHookEffectListMount @ react-dom.development.js:23189
+commitPassiveMountOnFiber @ react-dom.development.js:24965
+commitPassiveMountEffects_complete @ react-dom.development.js:24930
+commitPassiveMountEffects_begin @ react-dom.development.js:24917
+commitPassiveMountEffects @ react-dom.development.js:24905
+flushPassiveEffectsImpl @ react-dom.development.js:27078
+flushPassiveEffects @ react-dom.development.js:27023
+commitRootImpl @ react-dom.development.js:26974
+commitRoot @ react-dom.development.js:26721
+performSyncWorkOnRoot @ react-dom.development.js:26156
+flushSyncCallbacks @ react-dom.development.js:12042
+(anonymous) @ react-dom.development.js:25690
+EnhancedTechnicalRider.tsx:234   GET https://e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/api/users/26/hospitality-requirements 401 (Unauthorized)
+fetchAllRefreshmentRequirements @ EnhancedTechnicalRider.tsx:234
+await in fetchAllRefreshmentRequirements
+(anonymous) @ EnhancedTechnicalRider.tsx:250
+commitHookEffectListMount @ react-dom.development.js:23189
+commitPassiveMountOnFiber @ react-dom.development.js:24965
+commitPassiveMountEffects_complete @ react-dom.development.js:24930
+commitPassiveMountEffects_begin @ react-dom.development.js:24917
+commitPassiveMountEffects @ react-dom.development.js:24905
+flushPassiveEffectsImpl @ react-dom.development.js:27078
+flushPassiveEffects @ react-dom.development.js:27023
+commitRootImpl @ react-dom.development.js:26974
+commitRoot @ react-dom.development.js:26721
+performSyncWorkOnRoot @ react-dom.development.js:26156
+flushSyncCallbacks @ react-dom.development.js:12042
+(anonymous) @ react-dom.development.js:25690

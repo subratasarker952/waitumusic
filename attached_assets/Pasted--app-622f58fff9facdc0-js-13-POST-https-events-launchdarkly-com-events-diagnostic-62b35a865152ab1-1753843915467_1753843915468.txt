@@ -1,0 +1,463 @@
+_app-622f58fff9facdc0.js:13   POST https://events.launchdarkly.com/events/diagnostic/62b35a865152ab14c5942820 net::ERR_BLOCKED_BY_CLIENT
+(anonymous) @ _app-622f58fff9facdc0.js:13
+(anonymous) @ _app-622f58fff9facdc0.js:13
+(anonymous) @ _app-622f58fff9facdc0.js:40
+(anonymous) @ _app-622f58fff9facdc0.js:40
+(anonymous) @ _app-622f58fff9facdc0.js:40
+t @ _app-622f58fff9facdc0.js:40
+(anonymous) @ _app-622f58fff9facdc0.js:40
+(anonymous) @ _app-622f58fff9facdc0.js:40
+m @ _app-622f58fff9facdc0.js:40
+b @ _app-622f58fff9facdc0.js:40
+n @ _app-622f58fff9facdc0.js:13
+[NEW] Explain Console errors by using Copilot in Edge: click
+         
+         to explain an error. 
+        Learn more
+        Don't show again
+_app-622f58fff9facdc0.js:13   POST https://events.launchdarkly.com/events/diagnostic/62b35a865152ab14c5942820 net::ERR_BLOCKED_BY_CLIENT
+(anonymous) @ _app-622f58fff9facdc0.js:13
+(anonymous) @ _app-622f58fff9facdc0.js:13
+(anonymous) @ _app-622f58fff9facdc0.js:40
+(anonymous) @ _app-622f58fff9facdc0.js:40
+(anonymous) @ _app-622f58fff9facdc0.js:40
+t @ _app-622f58fff9facdc0.js:40
+(anonymous) @ _app-622f58fff9facdc0.js:40
+Promise.catch
+t @ _app-622f58fff9facdc0.js:40
+(anonymous) @ _app-622f58fff9facdc0.js:40
+(anonymous) @ _app-622f58fff9facdc0.js:40
+m @ _app-622f58fff9facdc0.js:40
+b @ _app-622f58fff9facdc0.js:40
+n @ _app-622f58fff9facdc0.js:13
+_app-622f58fff9facdc0.js:13   POST https://events.launchdarkly.com/events/bulk/62b35a865152ab14c5942820 net::ERR_BLOCKED_BY_CLIENT
+(anonymous) @ _app-622f58fff9facdc0.js:13
+(anonymous) @ _app-622f58fff9facdc0.js:13
+(anonymous) @ _app-622f58fff9facdc0.js:40
+(anonymous) @ _app-622f58fff9facdc0.js:40
+(anonymous) @ _app-622f58fff9facdc0.js:40
+t @ _app-622f58fff9facdc0.js:40
+(anonymous) @ _app-622f58fff9facdc0.js:40
+(anonymous) @ _app-622f58fff9facdc0.js:40
+(anonymous) @ _app-622f58fff9facdc0.js:40
+e @ _app-622f58fff9facdc0.js:40
+n @ _app-622f58fff9facdc0.js:13
+setTimeout
+(anonymous) @ _app-622f58fff9facdc0.js:13
+e @ _app-622f58fff9facdc0.js:40
+n @ _app-622f58fff9facdc0.js:13
+setTimeout
+(anonymous) @ _app-622f58fff9facdc0.js:13
+e @ _app-622f58fff9facdc0.js:40
+n @ _app-622f58fff9facdc0.js:13
+setTimeout
+(anonymous) @ _app-622f58fff9facdc0.js:13
+e @ _app-622f58fff9facdc0.js:40
+n @ _app-622f58fff9facdc0.js:13
+setTimeout
+(anonymous) @ _app-622f58fff9facdc0.js:13
+e @ _app-622f58fff9facdc0.js:40
+n @ _app-622f58fff9facdc0.js:13
+setTimeout
+(anonymous) @ _app-622f58fff9facdc0.js:13
+e @ _app-622f58fff9facdc0.js:40
+n @ _app-622f58fff9facdc0.js:13
+setTimeout
+(anonymous) @ _app-622f58fff9facdc0.js:13
+e @ _app-622f58fff9facdc0.js:40
+n @ _app-622f58fff9facdc0.js:13
+setTimeout
+(anonymous) @ _app-622f58fff9facdc0.js:13
+e @ _app-622f58fff9facdc0.js:40
+n @ _app-622f58fff9facdc0.js:13
+setTimeout
+(anonymous) @ _app-622f58fff9facdc0.js:13
+e @ _app-622f58fff9facdc0.js:40
+n @ _app-622f58fff9facdc0.js:13
+setTimeout
+(anonymous) @ _app-622f58fff9facdc0.js:13
+e @ _app-622f58fff9facdc0.js:40
+n @ _app-622f58fff9facdc0.js:13
+setTimeout
+(anonymous) @ _app-622f58fff9facdc0.js:13
+e @ _app-622f58fff9facdc0.js:40
+n @ _app-622f58fff9facdc0.js:13
+setTimeout
+(anonymous) @ _app-622f58fff9facdc0.js:13
+e @ _app-622f58fff9facdc0.js:40
+n @ _app-622f58fff9facdc0.js:13
+setTimeout
+(anonymous) @ _app-622f58fff9facdc0.js:13
+e @ _app-622f58fff9facdc0.js:40
+n @ _app-622f58fff9facdc0.js:13
+setTimeout
+(anonymous) @ _app-622f58fff9facdc0.js:13
+e @ _app-622f58fff9facdc0.js:40
+n @ _app-622f58fff9facdc0.js:13
+setTimeout
+(anonymous) @ _app-622f58fff9facdc0.js:13
+e @ _app-622f58fff9facdc0.js:40
+n @ _app-622f58fff9facdc0.js:13
+setTimeout
+(anonymous) @ _app-622f58fff9facdc0.js:13
+e @ _app-622f58fff9facdc0.js:40
+n @ _app-622f58fff9facdc0.js:13
+setTimeout
+(anonymous) @ _app-622f58fff9facdc0.js:13
+e @ _app-622f58fff9facdc0.js:40
+n @ _app-622f58fff9facdc0.js:13
+setTimeout
+(anonymous) @ _app-622f58fff9facdc0.js:13
+e @ _app-622f58fff9facdc0.js:40
+n @ _app-622f58fff9facdc0.js:13
+_app-622f58fff9facdc0.js:13   POST https://events.launchdarkly.com/events/bulk/62b35a865152ab14c5942820 net::ERR_BLOCKED_BY_CLIENT
+(anonymous) @ _app-622f58fff9facdc0.js:13
+(anonymous) @ _app-622f58fff9facdc0.js:13
+(anonymous) @ _app-622f58fff9facdc0.js:40
+(anonymous) @ _app-622f58fff9facdc0.js:40
+(anonymous) @ _app-622f58fff9facdc0.js:40
+t @ _app-622f58fff9facdc0.js:40
+(anonymous) @ _app-622f58fff9facdc0.js:40
+Promise.catch
+t @ _app-622f58fff9facdc0.js:40
+(anonymous) @ _app-622f58fff9facdc0.js:40
+(anonymous) @ _app-622f58fff9facdc0.js:40
+(anonymous) @ _app-622f58fff9facdc0.js:40
+e @ _app-622f58fff9facdc0.js:40
+n @ _app-622f58fff9facdc0.js:13
+setTimeout
+(anonymous) @ _app-622f58fff9facdc0.js:13
+e @ _app-622f58fff9facdc0.js:40
+n @ _app-622f58fff9facdc0.js:13
+setTimeout
+(anonymous) @ _app-622f58fff9facdc0.js:13
+e @ _app-622f58fff9facdc0.js:40
+n @ _app-622f58fff9facdc0.js:13
+setTimeout
+(anonymous) @ _app-622f58fff9facdc0.js:13
+e @ _app-622f58fff9facdc0.js:40
+n @ _app-622f58fff9facdc0.js:13
+setTimeout
+(anonymous) @ _app-622f58fff9facdc0.js:13
+e @ _app-622f58fff9facdc0.js:40
+n @ _app-622f58fff9facdc0.js:13
+setTimeout
+(anonymous) @ _app-622f58fff9facdc0.js:13
+e @ _app-622f58fff9facdc0.js:40
+n @ _app-622f58fff9facdc0.js:13
+setTimeout
+(anonymous) @ _app-622f58fff9facdc0.js:13
+e @ _app-622f58fff9facdc0.js:40
+n @ _app-622f58fff9facdc0.js:13
+setTimeout
+(anonymous) @ _app-622f58fff9facdc0.js:13
+e @ _app-622f58fff9facdc0.js:40
+n @ _app-622f58fff9facdc0.js:13
+setTimeout
+(anonymous) @ _app-622f58fff9facdc0.js:13
+e @ _app-622f58fff9facdc0.js:40
+n @ _app-622f58fff9facdc0.js:13
+setTimeout
+(anonymous) @ _app-622f58fff9facdc0.js:13
+e @ _app-622f58fff9facdc0.js:40
+n @ _app-622f58fff9facdc0.js:13
+setTimeout
+(anonymous) @ _app-622f58fff9facdc0.js:13
+e @ _app-622f58fff9facdc0.js:40
+n @ _app-622f58fff9facdc0.js:13
+setTimeout
+(anonymous) @ _app-622f58fff9facdc0.js:13
+e @ _app-622f58fff9facdc0.js:40
+n @ _app-622f58fff9facdc0.js:13
+setTimeout
+(anonymous) @ _app-622f58fff9facdc0.js:13
+e @ _app-622f58fff9facdc0.js:40
+n @ _app-622f58fff9facdc0.js:13
+setTimeout
+(anonymous) @ _app-622f58fff9facdc0.js:13
+e @ _app-622f58fff9facdc0.js:40
+n @ _app-622f58fff9facdc0.js:13
+setTimeout
+(anonymous) @ _app-622f58fff9facdc0.js:13
+e @ _app-622f58fff9facdc0.js:40
+n @ _app-622f58fff9facdc0.js:13
+setTimeout
+(anonymous) @ _app-622f58fff9facdc0.js:13
+e @ _app-622f58fff9facdc0.js:40
+n @ _app-622f58fff9facdc0.js:13
+setTimeout
+(anonymous) @ _app-622f58fff9facdc0.js:13
+e @ _app-622f58fff9facdc0.js:40
+n @ _app-622f58fff9facdc0.js:13
+setTimeout
+(anonymous) @ _app-622f58fff9facdc0.js:13
+e @ _app-622f58fff9facdc0.js:40
+n @ _app-622f58fff9facdc0.js:13
+EnhancedTechnicalRider.tsx:382 DEBUG: Syncing stage legend roles with band members
+ 🔄 TECHNICAL RIDER: Initializing band members
+ 🔄 Assigned musicians (props) count: 4
+ 🔄 Final assigned musicians (API) count: 4
+ 🔄 Will use: assignedMusicians (props)
+ 🔄 Using musician data source: assignedMusicians (props)
+ 🔄 Processing musician 1: Princess Trinidad
+ 🔄 Full musician data: {id: 19, userId: 19, name: 'Princess Trinidad', fullName: 'Princess Trinidad', stageName: 'Princess Trinidad', …}
+ 🔄 Musician roleId: undefined talentType: Artist
+ 🔄 Membership determination: roleId undefined talentType: Artist type: Managed Artist isProfessional: false Result: BAND
+ 🔄 Role badge: Artist
+ 🔄 Membership: BAND
+ 🔄 Primary role: Lead Vocalist
+ 🎯 Building dropdown options for: Princess Trinidad
+ 🎯 Available profile data: {assignedRole: 'Main Booked Talent', primaryRole: 'Lead Vocalist', skillsAndInstruments: Array(1), performanceRoles: undefined, professionalRoles: undefined, …}
+ 🎯 Generated dropdown options: (2) [{…}, {…}]
+ 🔄 Adding member 1: Princess Trinidad Membership: BAND
+ 🔄 Processing musician 2: Michael Rodriguez
+ 🔄 Full musician data: {id: 21, userId: 21, name: 'Michael Rodriguez', fullName: 'Michael Rodriguez', stageName: '', …}
+ 🔄 Musician roleId: undefined talentType: Artist
+ 🔄 Membership determination: roleId undefined talentType: Artist type: Musician isProfessional: false Result: BAND
+ 🔄 Role badge: Artist
+ 🔄 Membership: BAND
+ 🔄 Primary role: Drummer
+ 🎯 Building dropdown options for: Michael Rodriguez
+ 🎯 Available profile data: {assignedRole: 'Drummer', primaryRole: 'Drummer', skillsAndInstruments: Array(2), performanceRoles: undefined, professionalRoles: undefined, …}
+ 🎯 Generated dropdown options: [{…}]
+ 🔄 Adding member 2: Michael Rodriguez Membership: BAND
+EnhancedTechnicalRider.tsx:550 🔄 Processing musician 3: Sarah Martinez
+EnhancedTechnicalRider.tsx:551 🔄 Full musician data: {id: 34, userId: 34, name: 'Sarah Martinez', fullName: 'Sarah Martinez', stageName: '', …}
+EnhancedTechnicalRider.tsx:552 🔄 Musician roleId: undefined talentType: Artist
+EnhancedTechnicalRider.tsx:571 🔄 Membership determination: roleId undefined talentType: Artist type: Musician isProfessional: false Result: BAND
+EnhancedTechnicalRider.tsx:576 🔄 Role badge: Artist
+EnhancedTechnicalRider.tsx:577 🔄 Membership: BAND
+EnhancedTechnicalRider.tsx:578 🔄 Primary role: Musician
+EnhancedTechnicalRider.tsx:406 🎯 Building dropdown options for: Sarah Martinez
+EnhancedTechnicalRider.tsx:407 🎯 Available profile data: {assignedRole: 'Musician', primaryRole: 'Musician', skillsAndInstruments: Array(1), performanceRoles: undefined, professionalRoles: undefined, …}
+EnhancedTechnicalRider.tsx:506 🎯 Generated dropdown options: [{…}]
+EnhancedTechnicalRider.tsx:605 🔄 Adding member 3: Sarah Martinez Membership: BAND
+EnhancedTechnicalRider.tsx:550 🔄 Processing musician 4: Alex Thompson
+EnhancedTechnicalRider.tsx:551 🔄 Full musician data: {id: 23, userId: 23, name: 'Alex Thompson', fullName: 'Alex Thompson', stageName: '', …}
+EnhancedTechnicalRider.tsx:552 🔄 Musician roleId: undefined talentType: Artist
+EnhancedTechnicalRider.tsx:571 🔄 Membership determination: roleId undefined talentType: Artist type: Professional isProfessional: true Result: TEAM
+EnhancedTechnicalRider.tsx:576 🔄 Role badge: Artist
+EnhancedTechnicalRider.tsx:577 🔄 Membership: TEAM
+EnhancedTechnicalRider.tsx:578 🔄 Primary role: Musician
+EnhancedTechnicalRider.tsx:406 🎯 Building dropdown options for: Alex Thompson
+EnhancedTechnicalRider.tsx:407 🎯 Available profile data: {assignedRole: 'Audio Engineer', primaryRole: 'Musician', skillsAndInstruments: Array(1), performanceRoles: undefined, professionalRoles: undefined, …}
+EnhancedTechnicalRider.tsx:506 🎯 Generated dropdown options: (3) [{…}, {…}, {…}]
+EnhancedTechnicalRider.tsx:605 🔄 Adding member 4: Alex Thompson Membership: TEAM
+EnhancedTechnicalRider.tsx:612 🔄 Total members added from API: 4
+EnhancedTechnicalRider.tsx:676 Sorting: Sarah Martinez badge: Artist order: 7 vs Michael Rodriguez badge: Artist order: 7
+EnhancedTechnicalRider.tsx:676 Sorting: Alex Thompson badge: Artist order: 7 vs Sarah Martinez badge: Artist order: 7
+EnhancedTechnicalRider.tsx:676 Sorting: Mr Lindsay George badge: MANAGEMENT order: 999 vs Alex Thompson badge: Artist order: 7
+EnhancedTechnicalRider.tsx:676 Sorting: Ms Joyette Pascal badge: MANAGEMENT order: 999 vs Mr Lindsay George badge: MANAGEMENT order: 999
+EnhancedTechnicalRider.tsx:681 🔄 FINAL: Setting 6 band members
+EnhancedTechnicalRider.tsx:682 🔄 Band members breakdown: {total: 6, band: 3, team: 1, management: 2}
+The specified value "2025-07-28T04:00:00.000Z" does not conform to the required format, "yyyy-MM-dd".
+The specified value "2025-07-28T04:00:00.000Z" does not conform to the required format, "yyyy-MM-dd".
+The specified value "2025-07-28T04:00:00.000Z" does not conform to the required format, "yyyy-MM-dd".
+The specified value "2025-07-28T04:00:00.000Z" does not conform to the required format, "yyyy-MM-dd".
+The specified value "2025-07-28T04:00:00.000Z" does not conform to the required format, "yyyy-MM-dd".
+The specified value "2025-07-28T04:00:00.000Z" does not conform to the required format, "yyyy-MM-dd".
+EnhancedTechnicalRider.tsx:382 DEBUG: Syncing stage legend roles with band members
+EnhancedTechnicalRider.tsx:537 🔄 TECHNICAL RIDER: Initializing band members
+EnhancedTechnicalRider.tsx:538 🔄 Assigned musicians (props) count: 4
+EnhancedTechnicalRider.tsx:539 🔄 Final assigned musicians (API) count: 1
+EnhancedTechnicalRider.tsx:540 🔄 Will use: assignedMusicians (props)
+EnhancedTechnicalRider.tsx:546 🔄 Using musician data source: assignedMusicians (props)
+EnhancedTechnicalRider.tsx:550 🔄 Processing musician 1: Princess Trinidad
+EnhancedTechnicalRider.tsx:551 🔄 Full musician data: {id: 19, userId: 19, name: 'Princess Trinidad', fullName: 'Princess Trinidad', stageName: 'Princess Trinidad', …}
+EnhancedTechnicalRider.tsx:552 🔄 Musician roleId: undefined talentType: Artist
+EnhancedTechnicalRider.tsx:571 🔄 Membership determination: roleId undefined talentType: Artist type: Managed Artist isProfessional: false Result: BAND
+EnhancedTechnicalRider.tsx:576 🔄 Role badge: Artist
+EnhancedTechnicalRider.tsx:577 🔄 Membership: BAND
+EnhancedTechnicalRider.tsx:578 🔄 Primary role: Lead Vocalist
+EnhancedTechnicalRider.tsx:406 🎯 Building dropdown options for: Princess Trinidad
+EnhancedTechnicalRider.tsx:407 🎯 Available profile data: {assignedRole: 'Main Booked Talent', primaryRole: 'Lead Vocalist', skillsAndInstruments: Array(1), performanceRoles: undefined, professionalRoles: undefined, …}
+EnhancedTechnicalRider.tsx:506 🎯 Generated dropdown options: (2) [{…}, {…}]
+EnhancedTechnicalRider.tsx:605 🔄 Adding member 1: Princess Trinidad Membership: BAND
+EnhancedTechnicalRider.tsx:550 🔄 Processing musician 2: Michael Rodriguez
+EnhancedTechnicalRider.tsx:551 🔄 Full musician data: {id: 21, userId: 21, name: 'Michael Rodriguez', fullName: 'Michael Rodriguez', stageName: '', …}assignedRole: "Drummer"assignmentRole: "Musician"availableRoles: []fullName: "Michael Rodriguez"id: 21instruments: (3) ['Drums', 'Percussion', 'Congas']isMainBookedTalent: falsename: "Michael Rodriguez"primaryRole: "Drummer"role: "Drummer"selectedRoles: ['Drummer']skillsAndInstruments: (2) ['Drums', 'Percussion']stageName: ""talentType: "Artist"type: "Musician"userId: 21[[Prototype]]: Object
+EnhancedTechnicalRider.tsx:552 🔄 Musician roleId: undefined talentType: Artist
+EnhancedTechnicalRider.tsx:571 🔄 Membership determination: roleId undefined talentType: Artist type: Musician isProfessional: false Result: BAND
+EnhancedTechnicalRider.tsx:576 🔄 Role badge: Artist
+EnhancedTechnicalRider.tsx:577 🔄 Membership: BAND
+EnhancedTechnicalRider.tsx:578 🔄 Primary role: Drummer
+EnhancedTechnicalRider.tsx:406 🎯 Building dropdown options for: Michael Rodriguez
+EnhancedTechnicalRider.tsx:407 🎯 Available profile data: {assignedRole: 'Drummer', primaryRole: 'Drummer', skillsAndInstruments: Array(2), performanceRoles: undefined, professionalRoles: undefined, …}
+EnhancedTechnicalRider.tsx:506 🎯 Generated dropdown options: [{…}]
+EnhancedTechnicalRider.tsx:605 🔄 Adding member 2: Michael Rodriguez Membership: BAND
+EnhancedTechnicalRider.tsx:550 🔄 Processing musician 3: Sarah Martinez
+EnhancedTechnicalRider.tsx:551 🔄 Full musician data: {id: 34, userId: 34, name: 'Sarah Martinez', fullName: 'Sarah Martinez', stageName: '', …}assignedRole: "Musician"assignmentRole: "Musician"availableRoles: []fullName: "Sarah Martinez"id: 34instruments: []isMainBookedTalent: falsename: "Sarah Martinez"primaryRole: "Musician"role: "Musician"selectedRoles: ['Musician']skillsAndInstruments: ['Performance']stageName: ""talentType: "Artist"type: "Musician"userId: 34[[Prototype]]: Object
+EnhancedTechnicalRider.tsx:552 🔄 Musician roleId: undefined talentType: Artist
+EnhancedTechnicalRider.tsx:571 🔄 Membership determination: roleId undefined talentType: Artist type: Musician isProfessional: false Result: BAND
+EnhancedTechnicalRider.tsx:576 🔄 Role badge: Artist
+EnhancedTechnicalRider.tsx:577 🔄 Membership: BAND
+EnhancedTechnicalRider.tsx:578 🔄 Primary role: Musician
+EnhancedTechnicalRider.tsx:406 🎯 Building dropdown options for: Sarah Martinez
+EnhancedTechnicalRider.tsx:407 🎯 Available profile data: {assignedRole: 'Musician', primaryRole: 'Musician', skillsAndInstruments: Array(1), performanceRoles: undefined, professionalRoles: undefined, …}
+EnhancedTechnicalRider.tsx:506 🎯 Generated dropdown options: [{…}]
+EnhancedTechnicalRider.tsx:605 🔄 Adding member 3: Sarah Martinez Membership: BAND
+EnhancedTechnicalRider.tsx:550 🔄 Processing musician 4: Alex Thompson
+EnhancedTechnicalRider.tsx:551 🔄 Full musician data: {id: 23, userId: 23, name: 'Alex Thompson', fullName: 'Alex Thompson', stageName: '', …}
+EnhancedTechnicalRider.tsx:552 🔄 Musician roleId: undefined talentType: Artist
+EnhancedTechnicalRider.tsx:571 🔄 Membership determination: roleId undefined talentType: Artist type: Professional isProfessional: true Result: TEAM
+EnhancedTechnicalRider.tsx:576 🔄 Role badge: Artist
+EnhancedTechnicalRider.tsx:577 🔄 Membership: TEAM
+EnhancedTechnicalRider.tsx:578 🔄 Primary role: Musician
+EnhancedTechnicalRider.tsx:406 🎯 Building dropdown options for: Alex Thompson
+EnhancedTechnicalRider.tsx:407 🎯 Available profile data: {assignedRole: 'Audio Engineer', primaryRole: 'Musician', skillsAndInstruments: Array(1), performanceRoles: undefined, professionalRoles: undefined, …}
+EnhancedTechnicalRider.tsx:506 🎯 Generated dropdown options: (3) [{…}, {…}, {…}]
+EnhancedTechnicalRider.tsx:605 🔄 Adding member 4: Alex Thompson Membership: TEAM
+EnhancedTechnicalRider.tsx:612 🔄 Total members added from API: 4
+EnhancedTechnicalRider.tsx:676 Sorting: Sarah Martinez badge: Artist order: 7 vs Michael Rodriguez badge: Artist order: 7
+EnhancedTechnicalRider.tsx:676 Sorting: Alex Thompson badge: Artist order: 7 vs Sarah Martinez badge: Artist order: 7
+EnhancedTechnicalRider.tsx:676 Sorting: Mr Lindsay George badge: MANAGEMENT order: 999 vs Alex Thompson badge: Artist order: 7
+EnhancedTechnicalRider.tsx:676 Sorting: Ms Joyette Pascal badge: MANAGEMENT order: 999 vs Mr Lindsay George badge: MANAGEMENT order: 999
+EnhancedTechnicalRider.tsx:681 🔄 FINAL: Setting 6 band members
+EnhancedTechnicalRider.tsx:682 🔄 Band members breakdown: {total: 6, band: 3, team: 1, management: 2}
+EnhancedTechnicalRider.tsx:382 DEBUG: Syncing stage legend roles with band members
+   POST https://events.launchdarkly.com/events/bulk/62b35a865152ab14c5942820 net::ERR_BLOCKED_BY_CLIENT
+(anonymous) @ _app-622f58fff9facdc0.js:13
+(anonymous) @ _app-622f58fff9facdc0.js:13
+(anonymous) @ _app-622f58fff9facdc0.js:40
+(anonymous) @ _app-622f58fff9facdc0.js:40
+(anonymous) @ _app-622f58fff9facdc0.js:40
+t @ _app-622f58fff9facdc0.js:40
+(anonymous) @ _app-622f58fff9facdc0.js:40
+(anonymous) @ _app-622f58fff9facdc0.js:40
+(anonymous) @ _app-622f58fff9facdc0.js:40
+e @ _app-622f58fff9facdc0.js:40
+n @ _app-622f58fff9facdc0.js:13
+setTimeout
+(anonymous) @ _app-622f58fff9facdc0.js:13
+e @ _app-622f58fff9facdc0.js:40
+n @ _app-622f58fff9facdc0.js:13
+setTimeout
+(anonymous) @ _app-622f58fff9facdc0.js:13
+e @ _app-622f58fff9facdc0.js:40
+n @ _app-622f58fff9facdc0.js:13
+setTimeout
+(anonymous) @ _app-622f58fff9facdc0.js:13
+e @ _app-622f58fff9facdc0.js:40
+n @ _app-622f58fff9facdc0.js:13
+setTimeout
+(anonymous) @ _app-622f58fff9facdc0.js:13
+e @ _app-622f58fff9facdc0.js:40
+n @ _app-622f58fff9facdc0.js:13
+setTimeout
+(anonymous) @ _app-622f58fff9facdc0.js:13
+e @ _app-622f58fff9facdc0.js:40
+n @ _app-622f58fff9facdc0.js:13
+setTimeout
+(anonymous) @ _app-622f58fff9facdc0.js:13
+e @ _app-622f58fff9facdc0.js:40
+n @ _app-622f58fff9facdc0.js:13
+setTimeout
+(anonymous) @ _app-622f58fff9facdc0.js:13
+e @ _app-622f58fff9facdc0.js:40
+n @ _app-622f58fff9facdc0.js:13
+setTimeout
+(anonymous) @ _app-622f58fff9facdc0.js:13
+e @ _app-622f58fff9facdc0.js:40
+n @ _app-622f58fff9facdc0.js:13
+setTimeout
+(anonymous) @ _app-622f58fff9facdc0.js:13
+e @ _app-622f58fff9facdc0.js:40
+n @ _app-622f58fff9facdc0.js:13
+setTimeout
+(anonymous) @ _app-622f58fff9facdc0.js:13
+e @ _app-622f58fff9facdc0.js:40
+n @ _app-622f58fff9facdc0.js:13
+setTimeout
+(anonymous) @ _app-622f58fff9facdc0.js:13
+e @ _app-622f58fff9facdc0.js:40
+n @ _app-622f58fff9facdc0.js:13
+setTimeout
+(anonymous) @ _app-622f58fff9facdc0.js:13
+e @ _app-622f58fff9facdc0.js:40
+n @ _app-622f58fff9facdc0.js:13
+setTimeout
+(anonymous) @ _app-622f58fff9facdc0.js:13
+e @ _app-622f58fff9facdc0.js:40
+n @ _app-622f58fff9facdc0.js:13
+setTimeout
+(anonymous) @ _app-622f58fff9facdc0.js:13
+e @ _app-622f58fff9facdc0.js:40
+n @ _app-622f58fff9facdc0.js:13
+setTimeout
+(anonymous) @ _app-622f58fff9facdc0.js:13
+e @ _app-622f58fff9facdc0.js:40
+n @ _app-622f58fff9facdc0.js:13
+   POST https://events.launchdarkly.com/events/bulk/62b35a865152ab14c5942820 net::ERR_BLOCKED_BY_CLIENT
+(anonymous) @ _app-622f58fff9facdc0.js:13
+(anonymous) @ _app-622f58fff9facdc0.js:13
+(anonymous) @ _app-622f58fff9facdc0.js:40
+(anonymous) @ _app-622f58fff9facdc0.js:40
+(anonymous) @ _app-622f58fff9facdc0.js:40
+t @ _app-622f58fff9facdc0.js:40
+(anonymous) @ _app-622f58fff9facdc0.js:40
+Promise.catch
+t @ _app-622f58fff9facdc0.js:40
+(anonymous) @ _app-622f58fff9facdc0.js:40
+(anonymous) @ _app-622f58fff9facdc0.js:40
+(anonymous) @ _app-622f58fff9facdc0.js:40
+e @ _app-622f58fff9facdc0.js:40
+n @ _app-622f58fff9facdc0.js:13
+setTimeout
+(anonymous) @ _app-622f58fff9facdc0.js:13
+e @ _app-622f58fff9facdc0.js:40
+n @ _app-622f58fff9facdc0.js:13
+setTimeout
+(anonymous) @ _app-622f58fff9facdc0.js:13
+e @ _app-622f58fff9facdc0.js:40
+n @ _app-622f58fff9facdc0.js:13
+setTimeout
+(anonymous) @ _app-622f58fff9facdc0.js:13
+e @ _app-622f58fff9facdc0.js:40
+n @ _app-622f58fff9facdc0.js:13
+setTimeout
+(anonymous) @ _app-622f58fff9facdc0.js:13
+e @ _app-622f58fff9facdc0.js:40
+n @ _app-622f58fff9facdc0.js:13
+setTimeout
+(anonymous) @ _app-622f58fff9facdc0.js:13
+e @ _app-622f58fff9facdc0.js:40
+n @ _app-622f58fff9facdc0.js:13
+setTimeout
+(anonymous) @ _app-622f58fff9facdc0.js:13
+e @ _app-622f58fff9facdc0.js:40
+n @ _app-622f58fff9facdc0.js:13
+setTimeout
+(anonymous) @ _app-622f58fff9facdc0.js:13
+e @ _app-622f58fff9facdc0.js:40
+n @ _app-622f58fff9facdc0.js:13
+setTimeout
+(anonymous) @ _app-622f58fff9facdc0.js:13
+e @ _app-622f58fff9facdc0.js:40
+n @ _app-622f58fff9facdc0.js:13
+setTimeout
+(anonymous) @ _app-622f58fff9facdc0.js:13
+e @ _app-622f58fff9facdc0.js:40
+n @ _app-622f58fff9facdc0.js:13
+setTimeout
+(anonymous) @ _app-622f58fff9facdc0.js:13
+e @ _app-622f58fff9facdc0.js:40
+n @ _app-622f58fff9facdc0.js:13
+setTimeout
+(anonymous) @ _app-622f58fff9facdc0.js:13
+e @ _app-622f58fff9facdc0.js:40
+n @ _app-622f58fff9facdc0.js:13
+setTimeout
+(anonymous) @ _app-622f58fff9facdc0.js:13
+e @ _app-622f58fff9facdc0.js:40
+n @ _app-622f58fff9facdc0.js:13
+setTimeout
+(anonymous) @ _app-622f58fff9facdc0.js:13
+e @ _app-622f58fff9facdc0.js:40
+n @ _app-622f58fff9facdc0.js:13
+setTimeout
+(anonymous) @ _app-622f58fff9facdc0.js:13
+e @ _app-622f58fff9facdc0.js:40
+n @ _app-622f58fff9facdc0.js:13
+setTimeout
+(anonymous) @ _app-622f58fff9facdc0.js:13
+e @ _app-622f58fff9facdc0.js:40
+n @ _app-622f58fff9facdc0.js:13

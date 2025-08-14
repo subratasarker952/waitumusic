@@ -1,0 +1,1323 @@
+ComprehensiveBookingWorkflow.tsx:172 🔍 FRONTEND: Fetching assigned talent for booking ID: 1
+ComprehensiveBookingWorkflow.tsx:174 📋 FRONTEND: Received assigned talent data: (2) [{…}, {…}]
+ComprehensiveBookingWorkflow.tsx:208 📋 UPDATING assigned talent state: (2) [{…}, {…}]
+_app-790adb1aecb43abf.js:13   POST https://events.launchdarkly.com/events/bulk/62b35a865152ab14c5942820 net::ERR_BLOCKED_BY_CLIENT
+(anonymous) @ _app-790adb1aecb43abf.js:13
+(anonymous) @ _app-790adb1aecb43abf.js:13
+promise @ _app-790adb1aecb43abf.js:40
+(anonymous) @ _app-790adb1aecb43abf.js:40
+r.httpRequest @ _app-790adb1aecb43abf.js:40
+t @ _app-790adb1aecb43abf.js:40
+a.sendChunk @ _app-790adb1aecb43abf.js:40
+a.sendEvents @ _app-790adb1aecb43abf.js:40
+a.flush @ _app-790adb1aecb43abf.js:40
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+setTimeout
+(anonymous) @ _app-790adb1aecb43abf.js:13
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+setTimeout
+(anonymous) @ _app-790adb1aecb43abf.js:13
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+setTimeout
+(anonymous) @ _app-790adb1aecb43abf.js:13
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+setTimeout
+(anonymous) @ _app-790adb1aecb43abf.js:13
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+setTimeout
+(anonymous) @ _app-790adb1aecb43abf.js:13
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+setTimeout
+(anonymous) @ _app-790adb1aecb43abf.js:13
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+setTimeout
+(anonymous) @ _app-790adb1aecb43abf.js:13
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+setTimeout
+(anonymous) @ _app-790adb1aecb43abf.js:13
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+setTimeout
+(anonymous) @ _app-790adb1aecb43abf.js:13
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+setTimeout
+(anonymous) @ _app-790adb1aecb43abf.js:13
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+setTimeout
+(anonymous) @ _app-790adb1aecb43abf.js:13
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+setTimeout
+(anonymous) @ _app-790adb1aecb43abf.js:13
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+setTimeout
+(anonymous) @ _app-790adb1aecb43abf.js:13
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+setTimeout
+(anonymous) @ _app-790adb1aecb43abf.js:13
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+setTimeout
+(anonymous) @ _app-790adb1aecb43abf.js:13
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+setTimeout
+(anonymous) @ _app-790adb1aecb43abf.js:13
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+setTimeout
+(anonymous) @ _app-790adb1aecb43abf.js:13
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+setTimeout
+(anonymous) @ _app-790adb1aecb43abf.js:13
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+setTimeout
+(anonymous) @ _app-790adb1aecb43abf.js:13
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+setTimeout
+(anonymous) @ _app-790adb1aecb43abf.js:13
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+[NEW] Explain Console errors by using Copilot in Edge: click
+         
+         to explain an error. 
+        Learn more
+        Don't show again
+_app-790adb1aecb43abf.js:13   POST https://events.launchdarkly.com/events/bulk/62b35a865152ab14c5942820 net::ERR_BLOCKED_BY_CLIENT
+(anonymous) @ _app-790adb1aecb43abf.js:13
+(anonymous) @ _app-790adb1aecb43abf.js:13
+promise @ _app-790adb1aecb43abf.js:40
+(anonymous) @ _app-790adb1aecb43abf.js:40
+r.httpRequest @ _app-790adb1aecb43abf.js:40
+t @ _app-790adb1aecb43abf.js:40
+(anonymous) @ _app-790adb1aecb43abf.js:40
+Promise.catch
+t @ _app-790adb1aecb43abf.js:40
+a.sendChunk @ _app-790adb1aecb43abf.js:40
+a.sendEvents @ _app-790adb1aecb43abf.js:40
+a.flush @ _app-790adb1aecb43abf.js:40
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+setTimeout
+(anonymous) @ _app-790adb1aecb43abf.js:13
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+setTimeout
+(anonymous) @ _app-790adb1aecb43abf.js:13
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+setTimeout
+(anonymous) @ _app-790adb1aecb43abf.js:13
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+setTimeout
+(anonymous) @ _app-790adb1aecb43abf.js:13
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+setTimeout
+(anonymous) @ _app-790adb1aecb43abf.js:13
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+setTimeout
+(anonymous) @ _app-790adb1aecb43abf.js:13
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+setTimeout
+(anonymous) @ _app-790adb1aecb43abf.js:13
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+setTimeout
+(anonymous) @ _app-790adb1aecb43abf.js:13
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+setTimeout
+(anonymous) @ _app-790adb1aecb43abf.js:13
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+setTimeout
+(anonymous) @ _app-790adb1aecb43abf.js:13
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+setTimeout
+(anonymous) @ _app-790adb1aecb43abf.js:13
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+setTimeout
+(anonymous) @ _app-790adb1aecb43abf.js:13
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+setTimeout
+(anonymous) @ _app-790adb1aecb43abf.js:13
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+setTimeout
+(anonymous) @ _app-790adb1aecb43abf.js:13
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+setTimeout
+(anonymous) @ _app-790adb1aecb43abf.js:13
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+setTimeout
+(anonymous) @ _app-790adb1aecb43abf.js:13
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+setTimeout
+(anonymous) @ _app-790adb1aecb43abf.js:13
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+setTimeout
+(anonymous) @ _app-790adb1aecb43abf.js:13
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+setTimeout
+(anonymous) @ _app-790adb1aecb43abf.js:13
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+setTimeout
+(anonymous) @ _app-790adb1aecb43abf.js:13
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+EnhancedTechnicalRider.tsx:570 DEBUG: Syncing stage legend talent/skills with band members
+EnhancedTechnicalRider.tsx:733 🔄 TECHNICAL RIDER: Initializing band members
+EnhancedTechnicalRider.tsx:734 🔄 Assigned musicians (props) count: 5
+EnhancedTechnicalRider.tsx:735 🔄 Final assigned musicians (API) count: 5
+EnhancedTechnicalRider.tsx:736 🔄 Will use: assignedMusicians (props)
+EnhancedTechnicalRider.tsx:739 🔄 Using musician data source: assignedMusicians (props)
+EnhancedTechnicalRider.tsx:742 🔄 Processing musician 1: Lí-Lí Octave
+EnhancedTechnicalRider.tsx:743 🔄 Full musician data: {id: 6, userId: 6, name: 'Lí-Lí Octave', fullName: 'Lianne Letang', stageName: 'Lí-Lí Octave', …}
+EnhancedTechnicalRider.tsx:744 🔄 Musician roleId: undefined talentType: managed_artist
+EnhancedTechnicalRider.tsx:745 🔄 Database talents - Primary: undefined Secondary: undefined
+EnhancedTechnicalRider.tsx:746 🔄 Raw musician object keys: (16) ['id', 'userId', 'name', 'fullName', 'stageName', 'role', 'primaryRole', 'skillsAndInstruments', 'availableRoles', 'instruments', 'selectedRoles', 'isMainBookedTalent', 'assignedRole', 'type', 'talentType', 'assignmentRole']
+EnhancedTechnicalRider.tsx:750 🔄 Membership determination: roleId undefined talentType: managed_artist type: Main Booked Talent isProfessional: false Result: BAND
+EnhancedTechnicalRider.tsx:752 🔄 Role badge: managed_artist
+EnhancedTechnicalRider.tsx:753 🔄 Membership: BAND
+EnhancedTechnicalRider.tsx:754 🔄 Primary role: null
+EnhancedTechnicalRider.tsx:577 🎯 Building dropdown options for: Lí-Lí Octave
+EnhancedTechnicalRider.tsx:578 🎯 Available profile data: {assignedRole: 'Lead Vocalist', primaryRole: 'Lead Vocalist', primaryTalent: undefined, secondaryTalents: undefined, skillsAndInstruments: Array(0), …}
+EnhancedTechnicalRider.tsx:590 🎯 Skills array contents: []
+EnhancedTechnicalRider.tsx:622 🎯 SKILLS DEBUG: Processing skillsAndInstruments for Lí-Lí Octave: []
+EnhancedTechnicalRider.tsx:689 🎯 Generated dropdown options: [{…}]
+EnhancedTechnicalRider.tsx:690 🎯 Expected dropdown selection: Lead Vocalist
+EnhancedTechnicalRider.tsx:786 🔄 Adding member 1: Lí-Lí Octave Membership: BAND
+EnhancedTechnicalRider.tsx:742 🔄 Processing musician 2: Maya Bass
+EnhancedTechnicalRider.tsx:743 🔄 Full musician data: {id: 12, userId: 12, name: 'Maya Bass', fullName: 'Maya Thompson', stageName: 'Maya Bass', …}
+EnhancedTechnicalRider.tsx:744 🔄 Musician roleId: undefined talentType: managed_musician
+EnhancedTechnicalRider.tsx:745 🔄 Database talents - Primary: undefined Secondary: undefined
+EnhancedTechnicalRider.tsx:746 🔄 Raw musician object keys: (16) ['id', 'userId', 'name', 'fullName', 'stageName', 'role', 'primaryRole', 'skillsAndInstruments', 'availableRoles', 'instruments', 'selectedRoles', 'isMainBookedTalent', 'assignedRole', 'type', 'talentType', 'assignmentRole']
+EnhancedTechnicalRider.tsx:750 🔄 Membership determination: roleId undefined talentType: managed_musician type: Main Booked Talent isProfessional: false Result: BAND
+EnhancedTechnicalRider.tsx:752 🔄 Role badge: managed_musician
+EnhancedTechnicalRider.tsx:753 🔄 Membership: BAND
+EnhancedTechnicalRider.tsx:754 🔄 Primary role: null
+EnhancedTechnicalRider.tsx:577 🎯 Building dropdown options for: Maya Bass
+EnhancedTechnicalRider.tsx:578 🎯 Available profile data: {assignedRole: 'Lead Vocalist', primaryRole: 'Lead Vocalist', primaryTalent: undefined, secondaryTalents: undefined, skillsAndInstruments: Array(0), …}
+EnhancedTechnicalRider.tsx:590 🎯 Skills array contents: []
+EnhancedTechnicalRider.tsx:622 🎯 SKILLS DEBUG: Processing skillsAndInstruments for Maya Bass: []
+EnhancedTechnicalRider.tsx:689 🎯 Generated dropdown options: [{…}]
+EnhancedTechnicalRider.tsx:690 🎯 Expected dropdown selection: Lead Vocalist
+EnhancedTechnicalRider.tsx:786 🔄 Adding member 2: Maya Bass Membership: BAND
+EnhancedTechnicalRider.tsx:742 🔄 Processing musician 3: Phoenix Chen
+EnhancedTechnicalRider.tsx:743 🔄 Full musician data: {id: 13, userId: 13, name: 'Phoenix Chen', fullName: undefined, stageName: '', …}
+EnhancedTechnicalRider.tsx:744 🔄 Musician roleId: undefined talentType: Artist
+EnhancedTechnicalRider.tsx:745 🔄 Database talents - Primary: undefined Secondary: undefined
+EnhancedTechnicalRider.tsx:746 🔄 Raw musician object keys: (16) ['id', 'userId', 'name', 'fullName', 'stageName', 'role', 'primaryRole', 'skillsAndInstruments', 'availableRoles', 'instruments', 'selectedRoles', 'isMainBookedTalent', 'assignedRole', 'type', 'talentType', 'assignmentRole']
+EnhancedTechnicalRider.tsx:750 🔄 Membership determination: roleId undefined talentType: Artist type: Musician isProfessional: false Result: BAND
+EnhancedTechnicalRider.tsx:752 🔄 Role badge: Artist
+EnhancedTechnicalRider.tsx:753 🔄 Membership: BAND
+EnhancedTechnicalRider.tsx:754 🔄 Primary role: null
+EnhancedTechnicalRider.tsx:577 🎯 Building dropdown options for: Phoenix Chen
+EnhancedTechnicalRider.tsx:578 🎯 Available profile data: {assignedRole: 'Lead Vocalist', primaryRole: 'Lead Vocalist', primaryTalent: undefined, secondaryTalents: undefined, skillsAndInstruments: Array(0), …}
+EnhancedTechnicalRider.tsx:590 🎯 Skills array contents: []
+EnhancedTechnicalRider.tsx:622 🎯 SKILLS DEBUG: Processing skillsAndInstruments for Phoenix Chen: []
+EnhancedTechnicalRider.tsx:689 🎯 Generated dropdown options: [{…}]
+EnhancedTechnicalRider.tsx:690 🎯 Expected dropdown selection: Lead Vocalist
+EnhancedTechnicalRider.tsx:786 🔄 Adding member 3: Phoenix Chen Membership: BAND
+EnhancedTechnicalRider.tsx:742 🔄 Processing musician 4: Storm Johnson
+EnhancedTechnicalRider.tsx:743 🔄 Full musician data: {id: 18, userId: 18, name: 'Storm Johnson', fullName: undefined, stageName: '', …}
+EnhancedTechnicalRider.tsx:744 🔄 Musician roleId: undefined talentType: Artist
+EnhancedTechnicalRider.tsx:745 🔄 Database talents - Primary: undefined Secondary: undefined
+EnhancedTechnicalRider.tsx:746 🔄 Raw musician object keys: (16) ['id', 'userId', 'name', 'fullName', 'stageName', 'role', 'primaryRole', 'skillsAndInstruments', 'availableRoles', 'instruments', 'selectedRoles', 'isMainBookedTalent', 'assignedRole', 'type', 'talentType', 'assignmentRole']
+EnhancedTechnicalRider.tsx:750 🔄 Membership determination: roleId undefined talentType: Artist type: Musician isProfessional: false Result: BAND
+EnhancedTechnicalRider.tsx:752 🔄 Role badge: Artist
+EnhancedTechnicalRider.tsx:753 🔄 Membership: BAND
+EnhancedTechnicalRider.tsx:754 🔄 Primary role: null
+EnhancedTechnicalRider.tsx:577 🎯 Building dropdown options for: Storm Johnson
+EnhancedTechnicalRider.tsx:578 🎯 Available profile data: {assignedRole: 'Lead Vocalist', primaryRole: 'Lead Vocalist', primaryTalent: undefined, secondaryTalents: undefined, skillsAndInstruments: Array(0), …}
+EnhancedTechnicalRider.tsx:590 🎯 Skills array contents: []
+EnhancedTechnicalRider.tsx:622 🎯 SKILLS DEBUG: Processing skillsAndInstruments for Storm Johnson: []
+EnhancedTechnicalRider.tsx:689 🎯 Generated dropdown options: [{…}]
+EnhancedTechnicalRider.tsx:690 🎯 Expected dropdown selection: Lead Vocalist
+EnhancedTechnicalRider.tsx:786 🔄 Adding member 4: Storm Johnson Membership: BAND
+EnhancedTechnicalRider.tsx:742 🔄 Processing musician 5: Indie Stone
+EnhancedTechnicalRider.tsx:743 🔄 Full musician data: {id: 25, userId: 25, name: 'Indie Stone', fullName: undefined, stageName: '', …}
+EnhancedTechnicalRider.tsx:744 🔄 Musician roleId: undefined talentType: Artist
+EnhancedTechnicalRider.tsx:745 🔄 Database talents - Primary: undefined Secondary: undefined
+EnhancedTechnicalRider.tsx:746 🔄 Raw musician object keys: (16) ['id', 'userId', 'name', 'fullName', 'stageName', 'role', 'primaryRole', 'skillsAndInstruments', 'availableRoles', 'instruments', 'selectedRoles', 'isMainBookedTalent', 'assignedRole', 'type', 'talentType', 'assignmentRole']
+EnhancedTechnicalRider.tsx:750 🔄 Membership determination: roleId undefined talentType: Artist type: Artist isProfessional: false Result: BAND
+EnhancedTechnicalRider.tsx:752 🔄 Role badge: Artist
+EnhancedTechnicalRider.tsx:753 🔄 Membership: BAND
+EnhancedTechnicalRider.tsx:754 🔄 Primary role: null
+EnhancedTechnicalRider.tsx:577 🎯 Building dropdown options for: Indie Stone
+EnhancedTechnicalRider.tsx:578 🎯 Available profile data: {assignedRole: 'Lead Vocalist', primaryRole: 'Lead Vocalist', primaryTalent: undefined, secondaryTalents: undefined, skillsAndInstruments: Array(0), …}
+EnhancedTechnicalRider.tsx:590 🎯 Skills array contents: []
+EnhancedTechnicalRider.tsx:622 🎯 SKILLS DEBUG: Processing skillsAndInstruments for Indie Stone: []
+EnhancedTechnicalRider.tsx:689 🎯 Generated dropdown options: [{…}]
+EnhancedTechnicalRider.tsx:690 🎯 Expected dropdown selection: Lead Vocalist
+EnhancedTechnicalRider.tsx:786 🔄 Adding member 5: Indie Stone Membership: BAND
+EnhancedTechnicalRider.tsx:792 🔄 Total members added from API: 5
+EnhancedTechnicalRider.tsx:844 Sorting: Maya Bass badge: managed_musician order: 7 vs Lí-Lí Octave badge: managed_artist order: 7
+EnhancedTechnicalRider.tsx:844 Sorting: Phoenix Chen badge: Artist order: 7 vs Maya Bass badge: managed_musician order: 7
+EnhancedTechnicalRider.tsx:844 Sorting: Storm Johnson badge: Artist order: 7 vs Phoenix Chen badge: Artist order: 7
+EnhancedTechnicalRider.tsx:844 Sorting: Indie Stone badge: Artist order: 7 vs Storm Johnson badge: Artist order: 7
+EnhancedTechnicalRider.tsx:844 Sorting: Mr Lindsay George badge: MANAGEMENT order: 999 vs Indie Stone badge: Artist order: 7
+EnhancedTechnicalRider.tsx:844 Sorting: Ms Joyette Pascal badge: MANAGEMENT order: 999 vs Mr Lindsay George badge: MANAGEMENT order: 999
+EnhancedTechnicalRider.tsx:847 🔄 FINAL: Setting 7 band members
+EnhancedTechnicalRider.tsx:570 DEBUG: Syncing stage legend talent/skills with band members
+EnhancedTechnicalRider.tsx:733 🔄 TECHNICAL RIDER: Initializing band members
+EnhancedTechnicalRider.tsx:734 🔄 Assigned musicians (props) count: 5
+EnhancedTechnicalRider.tsx:735 🔄 Final assigned musicians (API) count: 2
+EnhancedTechnicalRider.tsx:736 🔄 Will use: assignedMusicians (props)
+EnhancedTechnicalRider.tsx:739 🔄 Using musician data source: assignedMusicians (props)
+EnhancedTechnicalRider.tsx:742 🔄 Processing musician 1: Lí-Lí Octave
+EnhancedTechnicalRider.tsx:743 🔄 Full musician data: {id: 6, userId: 6, name: 'Lí-Lí Octave', fullName: 'Lianne Letang', stageName: 'Lí-Lí Octave', …}
+EnhancedTechnicalRider.tsx:744 🔄 Musician roleId: undefined talentType: managed_artist
+EnhancedTechnicalRider.tsx:745 🔄 Database talents - Primary: undefined Secondary: undefined
+EnhancedTechnicalRider.tsx:746 🔄 Raw musician object keys: (16) ['id', 'userId', 'name', 'fullName', 'stageName', 'role', 'primaryRole', 'skillsAndInstruments', 'availableRoles', 'instruments', 'selectedRoles', 'isMainBookedTalent', 'assignedRole', 'type', 'talentType', 'assignmentRole']
+EnhancedTechnicalRider.tsx:750 🔄 Membership determination: roleId undefined talentType: managed_artist type: Main Booked Talent isProfessional: false Result: BAND
+EnhancedTechnicalRider.tsx:752 🔄 Role badge: managed_artist
+EnhancedTechnicalRider.tsx:753 🔄 Membership: BAND
+EnhancedTechnicalRider.tsx:754 🔄 Primary role: null
+EnhancedTechnicalRider.tsx:577 🎯 Building dropdown options for: Lí-Lí Octave
+EnhancedTechnicalRider.tsx:578 🎯 Available profile data: {assignedRole: 'Lead Vocalist', primaryRole: 'Lead Vocalist', primaryTalent: undefined, secondaryTalents: undefined, skillsAndInstruments: Array(0), …}
+EnhancedTechnicalRider.tsx:590 🎯 Skills array contents: []
+EnhancedTechnicalRider.tsx:622 🎯 SKILLS DEBUG: Processing skillsAndInstruments for Lí-Lí Octave: []
+EnhancedTechnicalRider.tsx:689 🎯 Generated dropdown options: [{…}]
+EnhancedTechnicalRider.tsx:690 🎯 Expected dropdown selection: Lead Vocalist
+EnhancedTechnicalRider.tsx:786 🔄 Adding member 1: Lí-Lí Octave Membership: BAND
+EnhancedTechnicalRider.tsx:742 🔄 Processing musician 2: Maya Bass
+EnhancedTechnicalRider.tsx:743 🔄 Full musician data: {id: 12, userId: 12, name: 'Maya Bass', fullName: 'Maya Thompson', stageName: 'Maya Bass', …}
+EnhancedTechnicalRider.tsx:744 🔄 Musician roleId: undefined talentType: managed_musician
+EnhancedTechnicalRider.tsx:745 🔄 Database talents - Primary: undefined Secondary: undefined
+EnhancedTechnicalRider.tsx:746 🔄 Raw musician object keys: (16) ['id', 'userId', 'name', 'fullName', 'stageName', 'role', 'primaryRole', 'skillsAndInstruments', 'availableRoles', 'instruments', 'selectedRoles', 'isMainBookedTalent', 'assignedRole', 'type', 'talentType', 'assignmentRole']
+EnhancedTechnicalRider.tsx:750 🔄 Membership determination: roleId undefined talentType: managed_musician type: Main Booked Talent isProfessional: false Result: BAND
+EnhancedTechnicalRider.tsx:752 🔄 Role badge: managed_musician
+EnhancedTechnicalRider.tsx:753 🔄 Membership: BAND
+EnhancedTechnicalRider.tsx:754 🔄 Primary role: null
+EnhancedTechnicalRider.tsx:577 🎯 Building dropdown options for: Maya Bass
+EnhancedTechnicalRider.tsx:578 🎯 Available profile data: {assignedRole: 'Lead Vocalist', primaryRole: 'Lead Vocalist', primaryTalent: undefined, secondaryTalents: undefined, skillsAndInstruments: Array(0), …}
+EnhancedTechnicalRider.tsx:590 🎯 Skills array contents: []
+EnhancedTechnicalRider.tsx:622 🎯 SKILLS DEBUG: Processing skillsAndInstruments for Maya Bass: []
+EnhancedTechnicalRider.tsx:689 🎯 Generated dropdown options: [{…}]
+EnhancedTechnicalRider.tsx:690 🎯 Expected dropdown selection: Lead Vocalist
+EnhancedTechnicalRider.tsx:786 🔄 Adding member 2: Maya Bass Membership: BAND
+EnhancedTechnicalRider.tsx:742 🔄 Processing musician 3: Phoenix Chen
+EnhancedTechnicalRider.tsx:743 🔄 Full musician data: {id: 13, userId: 13, name: 'Phoenix Chen', fullName: undefined, stageName: '', …}
+EnhancedTechnicalRider.tsx:744 🔄 Musician roleId: undefined talentType: Artist
+EnhancedTechnicalRider.tsx:745 🔄 Database talents - Primary: undefined Secondary: undefined
+EnhancedTechnicalRider.tsx:746 🔄 Raw musician object keys: (16) ['id', 'userId', 'name', 'fullName', 'stageName', 'role', 'primaryRole', 'skillsAndInstruments', 'availableRoles', 'instruments', 'selectedRoles', 'isMainBookedTalent', 'assignedRole', 'type', 'talentType', 'assignmentRole']
+EnhancedTechnicalRider.tsx:750 🔄 Membership determination: roleId undefined talentType: Artist type: Musician isProfessional: false Result: BAND
+EnhancedTechnicalRider.tsx:752 🔄 Role badge: Artist
+EnhancedTechnicalRider.tsx:753 🔄 Membership: BAND
+EnhancedTechnicalRider.tsx:754 🔄 Primary role: null
+EnhancedTechnicalRider.tsx:577 🎯 Building dropdown options for: Phoenix Chen
+EnhancedTechnicalRider.tsx:578 🎯 Available profile data: {assignedRole: 'Lead Vocalist', primaryRole: 'Lead Vocalist', primaryTalent: undefined, secondaryTalents: undefined, skillsAndInstruments: Array(0), …}
+EnhancedTechnicalRider.tsx:590 🎯 Skills array contents: []
+EnhancedTechnicalRider.tsx:622 🎯 SKILLS DEBUG: Processing skillsAndInstruments for Phoenix Chen: []
+EnhancedTechnicalRider.tsx:689 🎯 Generated dropdown options: [{…}]
+EnhancedTechnicalRider.tsx:690 🎯 Expected dropdown selection: Lead Vocalist
+EnhancedTechnicalRider.tsx:786 🔄 Adding member 3: Phoenix Chen Membership: BAND
+EnhancedTechnicalRider.tsx:742 🔄 Processing musician 4: Storm Johnson
+EnhancedTechnicalRider.tsx:743 🔄 Full musician data: {id: 18, userId: 18, name: 'Storm Johnson', fullName: undefined, stageName: '', …}
+EnhancedTechnicalRider.tsx:744 🔄 Musician roleId: undefined talentType: Artist
+EnhancedTechnicalRider.tsx:745 🔄 Database talents - Primary: undefined Secondary: undefined
+EnhancedTechnicalRider.tsx:746 🔄 Raw musician object keys: (16) ['id', 'userId', 'name', 'fullName', 'stageName', 'role', 'primaryRole', 'skillsAndInstruments', 'availableRoles', 'instruments', 'selectedRoles', 'isMainBookedTalent', 'assignedRole', 'type', 'talentType', 'assignmentRole']
+EnhancedTechnicalRider.tsx:750 🔄 Membership determination: roleId undefined talentType: Artist type: Musician isProfessional: false Result: BAND
+EnhancedTechnicalRider.tsx:752 🔄 Role badge: Artist
+EnhancedTechnicalRider.tsx:753 🔄 Membership: BAND
+EnhancedTechnicalRider.tsx:754 🔄 Primary role: null
+EnhancedTechnicalRider.tsx:577 🎯 Building dropdown options for: Storm Johnson
+EnhancedTechnicalRider.tsx:578 🎯 Available profile data: {assignedRole: 'Lead Vocalist', primaryRole: 'Lead Vocalist', primaryTalent: undefined, secondaryTalents: undefined, skillsAndInstruments: Array(0), …}
+EnhancedTechnicalRider.tsx:590 🎯 Skills array contents: []
+EnhancedTechnicalRider.tsx:622 🎯 SKILLS DEBUG: Processing skillsAndInstruments for Storm Johnson: []
+EnhancedTechnicalRider.tsx:689 🎯 Generated dropdown options: [{…}]
+EnhancedTechnicalRider.tsx:690 🎯 Expected dropdown selection: Lead Vocalist
+EnhancedTechnicalRider.tsx:786 🔄 Adding member 4: Storm Johnson Membership: BAND
+EnhancedTechnicalRider.tsx:742 🔄 Processing musician 5: Indie Stone
+EnhancedTechnicalRider.tsx:743 🔄 Full musician data: {id: 25, userId: 25, name: 'Indie Stone', fullName: undefined, stageName: '', …}
+EnhancedTechnicalRider.tsx:744 🔄 Musician roleId: undefined talentType: Artist
+EnhancedTechnicalRider.tsx:745 🔄 Database talents - Primary: undefined Secondary: undefined
+EnhancedTechnicalRider.tsx:746 🔄 Raw musician object keys: (16) ['id', 'userId', 'name', 'fullName', 'stageName', 'role', 'primaryRole', 'skillsAndInstruments', 'availableRoles', 'instruments', 'selectedRoles', 'isMainBookedTalent', 'assignedRole', 'type', 'talentType', 'assignmentRole']
+EnhancedTechnicalRider.tsx:750 🔄 Membership determination: roleId undefined talentType: Artist type: Artist isProfessional: false Result: BAND
+EnhancedTechnicalRider.tsx:752 🔄 Role badge: Artist
+EnhancedTechnicalRider.tsx:753 🔄 Membership: BAND
+EnhancedTechnicalRider.tsx:754 🔄 Primary role: null
+EnhancedTechnicalRider.tsx:577 🎯 Building dropdown options for: Indie Stone
+EnhancedTechnicalRider.tsx:578 🎯 Available profile data: {assignedRole: 'Lead Vocalist', primaryRole: 'Lead Vocalist', primaryTalent: undefined, secondaryTalents: undefined, skillsAndInstruments: Array(0), …}
+EnhancedTechnicalRider.tsx:590 🎯 Skills array contents: []
+EnhancedTechnicalRider.tsx:622 🎯 SKILLS DEBUG: Processing skillsAndInstruments for Indie Stone: []
+EnhancedTechnicalRider.tsx:689 🎯 Generated dropdown options: [{…}]
+EnhancedTechnicalRider.tsx:690 🎯 Expected dropdown selection: Lead Vocalist
+EnhancedTechnicalRider.tsx:786 🔄 Adding member 5: Indie Stone Membership: BAND
+EnhancedTechnicalRider.tsx:792 🔄 Total members added from API: 5
+EnhancedTechnicalRider.tsx:844 Sorting: Maya Bass badge: managed_musician order: 7 vs Lí-Lí Octave badge: managed_artist order: 7
+EnhancedTechnicalRider.tsx:844 Sorting: Phoenix Chen badge: Artist order: 7 vs Maya Bass badge: managed_musician order: 7
+EnhancedTechnicalRider.tsx:844 Sorting: Storm Johnson badge: Artist order: 7 vs Phoenix Chen badge: Artist order: 7
+EnhancedTechnicalRider.tsx:844 Sorting: Indie Stone badge: Artist order: 7 vs Storm Johnson badge: Artist order: 7
+EnhancedTechnicalRider.tsx:844 Sorting: Mr Lindsay George badge: MANAGEMENT order: 999 vs Indie Stone badge: Artist order: 7
+EnhancedTechnicalRider.tsx:844 Sorting: Ms Joyette Pascal badge: MANAGEMENT order: 999 vs Mr Lindsay George badge: MANAGEMENT order: 999
+EnhancedTechnicalRider.tsx:847 🔄 FINAL: Setting 7 band members
+EnhancedTechnicalRider.tsx:570 DEBUG: Syncing stage legend talent/skills with band members
+_app-790adb1aecb43abf.js:13   POST https://events.launchdarkly.com/events/bulk/62b35a865152ab14c5942820 net::ERR_BLOCKED_BY_CLIENT
+(anonymous) @ _app-790adb1aecb43abf.js:13
+(anonymous) @ _app-790adb1aecb43abf.js:13
+promise @ _app-790adb1aecb43abf.js:40
+(anonymous) @ _app-790adb1aecb43abf.js:40
+r.httpRequest @ _app-790adb1aecb43abf.js:40
+t @ _app-790adb1aecb43abf.js:40
+a.sendChunk @ _app-790adb1aecb43abf.js:40
+a.sendEvents @ _app-790adb1aecb43abf.js:40
+a.flush @ _app-790adb1aecb43abf.js:40
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+setTimeout
+(anonymous) @ _app-790adb1aecb43abf.js:13
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+setTimeout
+(anonymous) @ _app-790adb1aecb43abf.js:13
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+setTimeout
+(anonymous) @ _app-790adb1aecb43abf.js:13
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+setTimeout
+(anonymous) @ _app-790adb1aecb43abf.js:13
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+setTimeout
+(anonymous) @ _app-790adb1aecb43abf.js:13
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+setTimeout
+(anonymous) @ _app-790adb1aecb43abf.js:13
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+setTimeout
+(anonymous) @ _app-790adb1aecb43abf.js:13
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+setTimeout
+(anonymous) @ _app-790adb1aecb43abf.js:13
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+_app-790adb1aecb43abf.js:13   POST https://events.launchdarkly.com/events/bulk/62b35a865152ab14c5942820 net::ERR_BLOCKED_BY_CLIENT
+(anonymous) @ _app-790adb1aecb43abf.js:13
+(anonymous) @ _app-790adb1aecb43abf.js:13
+promise @ _app-790adb1aecb43abf.js:40
+(anonymous) @ _app-790adb1aecb43abf.js:40
+r.httpRequest @ _app-790adb1aecb43abf.js:40
+t @ _app-790adb1aecb43abf.js:40
+(anonymous) @ _app-790adb1aecb43abf.js:40
+Promise.catch
+t @ _app-790adb1aecb43abf.js:40
+a.sendChunk @ _app-790adb1aecb43abf.js:40
+a.sendEvents @ _app-790adb1aecb43abf.js:40
+a.flush @ _app-790adb1aecb43abf.js:40
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+setTimeout
+(anonymous) @ _app-790adb1aecb43abf.js:13
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+setTimeout
+(anonymous) @ _app-790adb1aecb43abf.js:13
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+setTimeout
+(anonymous) @ _app-790adb1aecb43abf.js:13
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+setTimeout
+(anonymous) @ _app-790adb1aecb43abf.js:13
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+setTimeout
+(anonymous) @ _app-790adb1aecb43abf.js:13
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+setTimeout
+(anonymous) @ _app-790adb1aecb43abf.js:13
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+setTimeout
+(anonymous) @ _app-790adb1aecb43abf.js:13
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+setTimeout
+(anonymous) @ _app-790adb1aecb43abf.js:13
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+framework-18b9a454cfe433a1.js:1  Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+_ @ framework-18b9a454cfe433a1.js:1
+(anonymous) @ framework-18b9a454cfe433a1.js:1
+uD @ framework-18b9a454cfe433a1.js:1
+uI @ framework-18b9a454cfe433a1.js:1
+uM @ framework-18b9a454cfe433a1.js:1
+uS @ framework-18b9a454cfe433a1.js:1
+C @ framework-18b9a454cfe433a1.js:1
+z @ framework-18b9a454cfe433a1.js:1
+framework-18b9a454cfe433a1.js:1  Unrecognized feature: 'ambient-light-sensor'.
+_ @ framework-18b9a454cfe433a1.js:1
+(anonymous) @ framework-18b9a454cfe433a1.js:1
+uD @ framework-18b9a454cfe433a1.js:1
+uI @ framework-18b9a454cfe433a1.js:1
+uM @ framework-18b9a454cfe433a1.js:1
+uS @ framework-18b9a454cfe433a1.js:1
+C @ framework-18b9a454cfe433a1.js:1
+z @ framework-18b9a454cfe433a1.js:1
+framework-18b9a454cfe433a1.js:1  Unrecognized feature: 'battery'.
+_ @ framework-18b9a454cfe433a1.js:1
+(anonymous) @ framework-18b9a454cfe433a1.js:1
+uD @ framework-18b9a454cfe433a1.js:1
+uI @ framework-18b9a454cfe433a1.js:1
+uM @ framework-18b9a454cfe433a1.js:1
+uS @ framework-18b9a454cfe433a1.js:1
+C @ framework-18b9a454cfe433a1.js:1
+z @ framework-18b9a454cfe433a1.js:1
+framework-18b9a454cfe433a1.js:1  Unrecognized feature: 'execution-while-not-rendered'.
+_ @ framework-18b9a454cfe433a1.js:1
+(anonymous) @ framework-18b9a454cfe433a1.js:1
+uD @ framework-18b9a454cfe433a1.js:1
+uI @ framework-18b9a454cfe433a1.js:1
+uM @ framework-18b9a454cfe433a1.js:1
+uS @ framework-18b9a454cfe433a1.js:1
+C @ framework-18b9a454cfe433a1.js:1
+z @ framework-18b9a454cfe433a1.js:1
+framework-18b9a454cfe433a1.js:1  Unrecognized feature: 'execution-while-out-of-viewport'.
+_ @ framework-18b9a454cfe433a1.js:1
+(anonymous) @ framework-18b9a454cfe433a1.js:1
+uD @ framework-18b9a454cfe433a1.js:1
+uI @ framework-18b9a454cfe433a1.js:1
+uM @ framework-18b9a454cfe433a1.js:1
+uS @ framework-18b9a454cfe433a1.js:1
+C @ framework-18b9a454cfe433a1.js:1
+z @ framework-18b9a454cfe433a1.js:1
+framework-18b9a454cfe433a1.js:1  Unrecognized feature: 'layout-animations'.
+_ @ framework-18b9a454cfe433a1.js:1
+(anonymous) @ framework-18b9a454cfe433a1.js:1
+uD @ framework-18b9a454cfe433a1.js:1
+uI @ framework-18b9a454cfe433a1.js:1
+uM @ framework-18b9a454cfe433a1.js:1
+uS @ framework-18b9a454cfe433a1.js:1
+C @ framework-18b9a454cfe433a1.js:1
+z @ framework-18b9a454cfe433a1.js:1
+framework-18b9a454cfe433a1.js:1  Unrecognized feature: 'legacy-image-formats'.
+_ @ framework-18b9a454cfe433a1.js:1
+(anonymous) @ framework-18b9a454cfe433a1.js:1
+uD @ framework-18b9a454cfe433a1.js:1
+uI @ framework-18b9a454cfe433a1.js:1
+uM @ framework-18b9a454cfe433a1.js:1
+uS @ framework-18b9a454cfe433a1.js:1
+C @ framework-18b9a454cfe433a1.js:1
+z @ framework-18b9a454cfe433a1.js:1
+framework-18b9a454cfe433a1.js:1  Unrecognized feature: 'navigation-override'.
+_ @ framework-18b9a454cfe433a1.js:1
+(anonymous) @ framework-18b9a454cfe433a1.js:1
+uD @ framework-18b9a454cfe433a1.js:1
+uI @ framework-18b9a454cfe433a1.js:1
+uM @ framework-18b9a454cfe433a1.js:1
+uS @ framework-18b9a454cfe433a1.js:1
+C @ framework-18b9a454cfe433a1.js:1
+z @ framework-18b9a454cfe433a1.js:1
+framework-18b9a454cfe433a1.js:1  Unrecognized feature: 'oversized-images'.
+_ @ framework-18b9a454cfe433a1.js:1
+(anonymous) @ framework-18b9a454cfe433a1.js:1
+uD @ framework-18b9a454cfe433a1.js:1
+uI @ framework-18b9a454cfe433a1.js:1
+uM @ framework-18b9a454cfe433a1.js:1
+uS @ framework-18b9a454cfe433a1.js:1
+C @ framework-18b9a454cfe433a1.js:1
+z @ framework-18b9a454cfe433a1.js:1
+framework-18b9a454cfe433a1.js:1  Unrecognized feature: 'publickey-credentials'.
+_ @ framework-18b9a454cfe433a1.js:1
+(anonymous) @ framework-18b9a454cfe433a1.js:1
+uD @ framework-18b9a454cfe433a1.js:1
+uI @ framework-18b9a454cfe433a1.js:1
+uM @ framework-18b9a454cfe433a1.js:1
+uS @ framework-18b9a454cfe433a1.js:1
+C @ framework-18b9a454cfe433a1.js:1
+z @ framework-18b9a454cfe433a1.js:1
+framework-18b9a454cfe433a1.js:1  Unrecognized feature: 'speaker-selection'.
+_ @ framework-18b9a454cfe433a1.js:1
+(anonymous) @ framework-18b9a454cfe433a1.js:1
+uD @ framework-18b9a454cfe433a1.js:1
+uI @ framework-18b9a454cfe433a1.js:1
+uM @ framework-18b9a454cfe433a1.js:1
+uS @ framework-18b9a454cfe433a1.js:1
+C @ framework-18b9a454cfe433a1.js:1
+z @ framework-18b9a454cfe433a1.js:1
+framework-18b9a454cfe433a1.js:1  Unrecognized feature: 'unoptimized-images'.
+_ @ framework-18b9a454cfe433a1.js:1
+(anonymous) @ framework-18b9a454cfe433a1.js:1
+uD @ framework-18b9a454cfe433a1.js:1
+uI @ framework-18b9a454cfe433a1.js:1
+uM @ framework-18b9a454cfe433a1.js:1
+uS @ framework-18b9a454cfe433a1.js:1
+C @ framework-18b9a454cfe433a1.js:1
+z @ framework-18b9a454cfe433a1.js:1
+framework-18b9a454cfe433a1.js:1  Unrecognized feature: 'unsized-media'.
+_ @ framework-18b9a454cfe433a1.js:1
+(anonymous) @ framework-18b9a454cfe433a1.js:1
+uD @ framework-18b9a454cfe433a1.js:1
+uI @ framework-18b9a454cfe433a1.js:1
+uM @ framework-18b9a454cfe433a1.js:1
+uS @ framework-18b9a454cfe433a1.js:1
+C @ framework-18b9a454cfe433a1.js:1
+z @ framework-18b9a454cfe433a1.js:1
+framework-18b9a454cfe433a1.js:1  Unrecognized feature: 'pointer-lock'.
+_ @ framework-18b9a454cfe433a1.js:1
+(anonymous) @ framework-18b9a454cfe433a1.js:1
+uD @ framework-18b9a454cfe433a1.js:1
+uI @ framework-18b9a454cfe433a1.js:1
+uM @ framework-18b9a454cfe433a1.js:1
+uS @ framework-18b9a454cfe433a1.js:1
+C @ framework-18b9a454cfe433a1.js:1
+z @ framework-18b9a454cfe433a1.js:1
+  Allow attribute will take precedence over 'allowfullscreen'.
+_ @ framework-18b9a454cfe433a1.js:1
+(anonymous) @ framework-18b9a454cfe433a1.js:1
+uD @ framework-18b9a454cfe433a1.js:1
+uI @ framework-18b9a454cfe433a1.js:1
+uM @ framework-18b9a454cfe433a1.js:1
+uS @ framework-18b9a454cfe433a1.js:1
+C @ framework-18b9a454cfe433a1.js:1
+z @ framework-18b9a454cfe433a1.js:1
+  Allow attribute will take precedence over 'allowpaymentrequest'.
+_ @ framework-18b9a454cfe433a1.js:1
+(anonymous) @ framework-18b9a454cfe433a1.js:1
+uD @ framework-18b9a454cfe433a1.js:1
+uI @ framework-18b9a454cfe433a1.js:1
+uM @ framework-18b9a454cfe433a1.js:1
+uS @ framework-18b9a454cfe433a1.js:1
+C @ framework-18b9a454cfe433a1.js:1
+z @ framework-18b9a454cfe433a1.js:1
+e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/__replco/workspace_iframe.html?initialPath=%2F&id=%3Ardv%3A:32  Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/__replco/workspace_iframe.html?initialPath=%2F&id=%3Ardv%3A:32  Unrecognized feature: 'ambient-light-sensor'.
+e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/__replco/workspace_iframe.html?initialPath=%2F&id=%3Ardv%3A:32  Unrecognized feature: 'battery'.
+e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/__replco/workspace_iframe.html?initialPath=%2F&id=%3Ardv%3A:32  Unrecognized feature: 'execution-while-not-rendered'.
+e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/__replco/workspace_iframe.html?initialPath=%2F&id=%3Ardv%3A:32  Unrecognized feature: 'execution-while-out-of-viewport'.
+e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/__replco/workspace_iframe.html?initialPath=%2F&id=%3Ardv%3A:32  Unrecognized feature: 'layout-animations'.
+e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/__replco/workspace_iframe.html?initialPath=%2F&id=%3Ardv%3A:32  Unrecognized feature: 'legacy-image-formats'.
+e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/__replco/workspace_iframe.html?initialPath=%2F&id=%3Ardv%3A:32  Unrecognized feature: 'navigation-override'.
+e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/__replco/workspace_iframe.html?initialPath=%2F&id=%3Ardv%3A:32  Unrecognized feature: 'oversized-images'.
+e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/__replco/workspace_iframe.html?initialPath=%2F&id=%3Ardv%3A:32  Unrecognized feature: 'publickey-credentials'.
+e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/__replco/workspace_iframe.html?initialPath=%2F&id=%3Ardv%3A:32  Unrecognized feature: 'speaker-selection'.
+e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/__replco/workspace_iframe.html?initialPath=%2F&id=%3Ardv%3A:32  Unrecognized feature: 'unoptimized-images'.
+e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/__replco/workspace_iframe.html?initialPath=%2F&id=%3Ardv%3A:32  Unrecognized feature: 'unsized-media'.
+e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/__replco/workspace_iframe.html?initialPath=%2F&id=%3Ardv%3A:32  Allow attribute will take precedence over 'allowfullscreen'.
+e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/__replco/workspace_iframe.html?initialPath=%2F&id=%3Ardv%3A:32  Allow attribute will take precedence over 'allowpaymentrequest'.
+injection-topics.js:1 Browsing Topics API removed from https://e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/__replco/workspace_iframe.html?initialPath=%2F&id=%3Ardv%3A which is iframe
+injection-topics.js:1 Browsing Topics API removed from about:blank which is iframe
+injection-topics.js:1 Browsing Topics API removed from https://e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/ which is iframe
+client:536  WebSocket connection to 'wss://e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/?token=p9KTr8Fo5y1V' failed: 
+setupWebSocket @ client:536
+(anonymous) @ client:531
+client:536  Uncaught (in promise) 
+setupWebSocket @ client:536
+fallback @ client:509
+(anonymous) @ client:555
+main.tsx:40 ✅ React app mounted successfully
+   POST https://events.launchdarkly.com/events/bulk/62b35a865152ab14c5942820 net::ERR_BLOCKED_BY_CLIENT
+(anonymous) @ _app-790adb1aecb43abf.js:13
+(anonymous) @ _app-790adb1aecb43abf.js:13
+promise @ _app-790adb1aecb43abf.js:40
+(anonymous) @ _app-790adb1aecb43abf.js:40
+r.httpRequest @ _app-790adb1aecb43abf.js:40
+t @ _app-790adb1aecb43abf.js:40
+a.sendChunk @ _app-790adb1aecb43abf.js:40
+a.sendEvents @ _app-790adb1aecb43abf.js:40
+a.flush @ _app-790adb1aecb43abf.js:40
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+setTimeout
+(anonymous) @ _app-790adb1aecb43abf.js:13
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+setTimeout
+(anonymous) @ _app-790adb1aecb43abf.js:13
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+setTimeout
+(anonymous) @ _app-790adb1aecb43abf.js:13
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+setTimeout
+(anonymous) @ _app-790adb1aecb43abf.js:13
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+setTimeout
+(anonymous) @ _app-790adb1aecb43abf.js:13
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+setTimeout
+(anonymous) @ _app-790adb1aecb43abf.js:13
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+setTimeout
+(anonymous) @ _app-790adb1aecb43abf.js:13
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+setTimeout
+(anonymous) @ _app-790adb1aecb43abf.js:13
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+setTimeout
+(anonymous) @ _app-790adb1aecb43abf.js:13
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+setTimeout
+(anonymous) @ _app-790adb1aecb43abf.js:13
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+setTimeout
+(anonymous) @ _app-790adb1aecb43abf.js:13
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+setTimeout
+(anonymous) @ _app-790adb1aecb43abf.js:13
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+setTimeout
+(anonymous) @ _app-790adb1aecb43abf.js:13
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+setTimeout
+(anonymous) @ _app-790adb1aecb43abf.js:13
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+setTimeout
+(anonymous) @ _app-790adb1aecb43abf.js:13
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+setTimeout
+(anonymous) @ _app-790adb1aecb43abf.js:13
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+setTimeout
+(anonymous) @ _app-790adb1aecb43abf.js:13
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+setTimeout
+(anonymous) @ _app-790adb1aecb43abf.js:13
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+setTimeout
+(anonymous) @ _app-790adb1aecb43abf.js:13
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+setTimeout
+(anonymous) @ _app-790adb1aecb43abf.js:13
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+setTimeout
+(anonymous) @ _app-790adb1aecb43abf.js:13
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+setTimeout
+(anonymous) @ _app-790adb1aecb43abf.js:13
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+setTimeout
+(anonymous) @ _app-790adb1aecb43abf.js:13
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+setTimeout
+(anonymous) @ _app-790adb1aecb43abf.js:13
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+setTimeout
+(anonymous) @ _app-790adb1aecb43abf.js:13
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+setTimeout
+(anonymous) @ _app-790adb1aecb43abf.js:13
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+setTimeout
+(anonymous) @ _app-790adb1aecb43abf.js:13
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+setTimeout
+(anonymous) @ _app-790adb1aecb43abf.js:13
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+setTimeout
+(anonymous) @ _app-790adb1aecb43abf.js:13
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+   POST https://events.launchdarkly.com/events/bulk/62b35a865152ab14c5942820 net::ERR_BLOCKED_BY_CLIENT
+(anonymous) @ _app-790adb1aecb43abf.js:13
+(anonymous) @ _app-790adb1aecb43abf.js:13
+promise @ _app-790adb1aecb43abf.js:40
+(anonymous) @ _app-790adb1aecb43abf.js:40
+r.httpRequest @ _app-790adb1aecb43abf.js:40
+t @ _app-790adb1aecb43abf.js:40
+(anonymous) @ _app-790adb1aecb43abf.js:40
+Promise.catch
+t @ _app-790adb1aecb43abf.js:40
+a.sendChunk @ _app-790adb1aecb43abf.js:40
+a.sendEvents @ _app-790adb1aecb43abf.js:40
+a.flush @ _app-790adb1aecb43abf.js:40
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+setTimeout
+(anonymous) @ _app-790adb1aecb43abf.js:13
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+setTimeout
+(anonymous) @ _app-790adb1aecb43abf.js:13
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+setTimeout
+(anonymous) @ _app-790adb1aecb43abf.js:13
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+setTimeout
+(anonymous) @ _app-790adb1aecb43abf.js:13
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+setTimeout
+(anonymous) @ _app-790adb1aecb43abf.js:13
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+setTimeout
+(anonymous) @ _app-790adb1aecb43abf.js:13
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+setTimeout
+(anonymous) @ _app-790adb1aecb43abf.js:13
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+setTimeout
+(anonymous) @ _app-790adb1aecb43abf.js:13
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+setTimeout
+(anonymous) @ _app-790adb1aecb43abf.js:13
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+setTimeout
+(anonymous) @ _app-790adb1aecb43abf.js:13
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+setTimeout
+(anonymous) @ _app-790adb1aecb43abf.js:13
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+setTimeout
+(anonymous) @ _app-790adb1aecb43abf.js:13
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+setTimeout
+(anonymous) @ _app-790adb1aecb43abf.js:13
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+setTimeout
+(anonymous) @ _app-790adb1aecb43abf.js:13
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+setTimeout
+(anonymous) @ _app-790adb1aecb43abf.js:13
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+setTimeout
+(anonymous) @ _app-790adb1aecb43abf.js:13
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+setTimeout
+(anonymous) @ _app-790adb1aecb43abf.js:13
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+setTimeout
+(anonymous) @ _app-790adb1aecb43abf.js:13
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+setTimeout
+(anonymous) @ _app-790adb1aecb43abf.js:13
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+setTimeout
+(anonymous) @ _app-790adb1aecb43abf.js:13
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+setTimeout
+(anonymous) @ _app-790adb1aecb43abf.js:13
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+setTimeout
+(anonymous) @ _app-790adb1aecb43abf.js:13
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+setTimeout
+(anonymous) @ _app-790adb1aecb43abf.js:13
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+setTimeout
+(anonymous) @ _app-790adb1aecb43abf.js:13
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+setTimeout
+(anonymous) @ _app-790adb1aecb43abf.js:13
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+setTimeout
+(anonymous) @ _app-790adb1aecb43abf.js:13
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+setTimeout
+(anonymous) @ _app-790adb1aecb43abf.js:13
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+setTimeout
+(anonymous) @ _app-790adb1aecb43abf.js:13
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+setTimeout
+(anonymous) @ _app-790adb1aecb43abf.js:13
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+   POST https://events.launchdarkly.com/events/diagnostic/62b35a865152ab14c5942820 net::ERR_BLOCKED_BY_CLIENT
+(anonymous) @ _app-790adb1aecb43abf.js:13
+(anonymous) @ _app-790adb1aecb43abf.js:13
+promise @ _app-790adb1aecb43abf.js:40
+(anonymous) @ _app-790adb1aecb43abf.js:40
+r.httpRequest @ _app-790adb1aecb43abf.js:40
+t @ _app-790adb1aecb43abf.js:40
+a.sendChunk @ _app-790adb1aecb43abf.js:40
+a.sendEvents @ _app-790adb1aecb43abf.js:40
+m @ _app-790adb1aecb43abf.js:40
+b @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+   POST https://events.launchdarkly.com/events/diagnostic/62b35a865152ab14c5942820 net::ERR_BLOCKED_BY_CLIENT
+(anonymous) @ _app-790adb1aecb43abf.js:13
+(anonymous) @ _app-790adb1aecb43abf.js:13
+promise @ _app-790adb1aecb43abf.js:40
+(anonymous) @ _app-790adb1aecb43abf.js:40
+r.httpRequest @ _app-790adb1aecb43abf.js:40
+t @ _app-790adb1aecb43abf.js:40
+(anonymous) @ _app-790adb1aecb43abf.js:40
+Promise.catch
+t @ _app-790adb1aecb43abf.js:40
+a.sendChunk @ _app-790adb1aecb43abf.js:40
+a.sendEvents @ _app-790adb1aecb43abf.js:40
+m @ _app-790adb1aecb43abf.js:40
+b @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+  WebSocket is already in CLOSING or CLOSED state.
+send @ 6546-bf23e0a1a578ccac.js:1
+M @ 6546-bf23e0a1a578ccac.js:1
+send @ 6546-bf23e0a1a578ccac.js:1
+(anonymous) @ 6546-bf23e0a1a578ccac.js:1
+w @ 6546-bf23e0a1a578ccac.js:1
+n @ _app-790adb1aecb43abf.js:13
+(anonymous) @ 5798-c9a276f1d0a84841.js:1
+oM @ framework-18b9a454cfe433a1.js:1
+oD @ framework-18b9a454cfe433a1.js:1
+uB @ framework-18b9a454cfe433a1.js:1
+u_ @ framework-18b9a454cfe433a1.js:1
+r6 @ framework-18b9a454cfe433a1.js:1
+(anonymous) @ framework-18b9a454cfe433a1.js:1
+uO @ framework-18b9a454cfe433a1.js:1
+uS @ framework-18b9a454cfe433a1.js:1
+C @ framework-18b9a454cfe433a1.js:1
+z @ framework-18b9a454cfe433a1.js:1
+  WebSocket connection to 'wss://eval.picard.platform.replit.com/wsv2/v2.public.Q2dZSTdPQ3d4QVlTQmdpTC9iREVCaUlHY0dsallYSmtNQUE2amdJS0pHVTJNV05sWmpobExUUTNNRFV0TkRoa055MDRZVEU0TFRaaU1UZzBNR1EzTVRaaFpSSURibWw0R2hoeVpYQnNhWFF0Y21Wd2JDMW1hV3hsY3kxd2FXTmhjbVFpRVZkaGFYUjFUWFZ6YVdOTllXNWhaMlZ5S2dwM1lXbDBkVzExYzJsalFsUUtHWEpsY0d4cGRDMXlaWEJzTFdKc2IyTnJjeTF3YVdOaGNtUVNGM0psY0d4cGRDMXlaWEJzTFcxbGRHRXRjR2xqWVhKa0doNXlaWEJzYVhRdGJXRnlaMkZ5YVc1bExXSnNiMk5yY3kxd2FXTmhjbVJLQndpZDRib1ZFQUZRQUZvUGFXNTBaVzUwWDJKMWMybHVaWE56V2hkdmJtSnZZWEprYVc1blgzSnZiR1ZmYldGdVlXZGxjbG9iYjI1aWIyRnlaR2x1WjE5cWIySmZaVzUwY21Wd2NtVnVaWFZ5ZUFCU0l3Z0JFSUNBZ0lBZ0dRQUFBQUFBQUJCQUlRQUFBQUFBQUJCQUtJQ0FnSURJQVRBQ1lBQnFFUWlkNGJvVkVncDNZV2wwZFcxMWMybGpnZ0VDS2dDYUFRb0tDREF1TUM0eE5UYzNvQUVCYsl-wDUHhe6LBdz-zYlGo0kTriW9Jq4yIpoVNrjGNpOiILaDphPvnX5OEiFGrAtaUq2hpJNCIPCxf99Z_rduDA.Q2dad2NtOWtPak1pQ25KbGNHeHBkQzVqYjIwPQ' failed: WebSocket is closed before the connection is established.
+cleanupSocket @ 3635-d78b045d343c8a4b.js:1
+y @ 3635-d78b045d343c8a4b.js:1
+(anonymous) @ 3635-d78b045d343c8a4b.js:1
+n @ _app-790adb1aecb43abf.js:13
+setTimeout
+(anonymous) @ _app-790adb1aecb43abf.js:13
+b @ 3635-d78b045d343c8a4b.js:1
+connect @ 3635-d78b045d343c8a4b.js:1
+handleClose @ 3635-d78b045d343c8a4b.js:1
+t @ 3635-d78b045d343c8a4b.js:1
+   POST https://events.launchdarkly.com/events/bulk/62b35a865152ab14c5942820 net::ERR_BLOCKED_BY_CLIENT
+(anonymous) @ _app-790adb1aecb43abf.js:13
+(anonymous) @ _app-790adb1aecb43abf.js:13
+promise @ _app-790adb1aecb43abf.js:40
+(anonymous) @ _app-790adb1aecb43abf.js:40
+r.httpRequest @ _app-790adb1aecb43abf.js:40
+t @ _app-790adb1aecb43abf.js:40
+a.sendChunk @ _app-790adb1aecb43abf.js:40
+a.sendEvents @ _app-790adb1aecb43abf.js:40
+a.flush @ _app-790adb1aecb43abf.js:40
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+setTimeout
+(anonymous) @ _app-790adb1aecb43abf.js:13
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+setTimeout
+(anonymous) @ _app-790adb1aecb43abf.js:13
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+setTimeout
+(anonymous) @ _app-790adb1aecb43abf.js:13
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+setTimeout
+(anonymous) @ _app-790adb1aecb43abf.js:13
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+setTimeout
+(anonymous) @ _app-790adb1aecb43abf.js:13
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+setTimeout
+(anonymous) @ _app-790adb1aecb43abf.js:13
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+setTimeout
+(anonymous) @ _app-790adb1aecb43abf.js:13
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+setTimeout
+(anonymous) @ _app-790adb1aecb43abf.js:13
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+setTimeout
+(anonymous) @ _app-790adb1aecb43abf.js:13
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+setTimeout
+(anonymous) @ _app-790adb1aecb43abf.js:13
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+setTimeout
+(anonymous) @ _app-790adb1aecb43abf.js:13
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+setTimeout
+(anonymous) @ _app-790adb1aecb43abf.js:13
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+setTimeout
+(anonymous) @ _app-790adb1aecb43abf.js:13
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+setTimeout
+(anonymous) @ _app-790adb1aecb43abf.js:13
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+   POST https://events.launchdarkly.com/events/bulk/62b35a865152ab14c5942820 net::ERR_BLOCKED_BY_CLIENT
+(anonymous) @ _app-790adb1aecb43abf.js:13
+(anonymous) @ _app-790adb1aecb43abf.js:13
+promise @ _app-790adb1aecb43abf.js:40
+(anonymous) @ _app-790adb1aecb43abf.js:40
+r.httpRequest @ _app-790adb1aecb43abf.js:40
+t @ _app-790adb1aecb43abf.js:40
+(anonymous) @ _app-790adb1aecb43abf.js:40
+Promise.catch
+t @ _app-790adb1aecb43abf.js:40
+a.sendChunk @ _app-790adb1aecb43abf.js:40
+a.sendEvents @ _app-790adb1aecb43abf.js:40
+a.flush @ _app-790adb1aecb43abf.js:40
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+setTimeout
+(anonymous) @ _app-790adb1aecb43abf.js:13
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+setTimeout
+(anonymous) @ _app-790adb1aecb43abf.js:13
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+setTimeout
+(anonymous) @ _app-790adb1aecb43abf.js:13
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+setTimeout
+(anonymous) @ _app-790adb1aecb43abf.js:13
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+setTimeout
+(anonymous) @ _app-790adb1aecb43abf.js:13
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+setTimeout
+(anonymous) @ _app-790adb1aecb43abf.js:13
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+setTimeout
+(anonymous) @ _app-790adb1aecb43abf.js:13
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+setTimeout
+(anonymous) @ _app-790adb1aecb43abf.js:13
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+setTimeout
+(anonymous) @ _app-790adb1aecb43abf.js:13
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+setTimeout
+(anonymous) @ _app-790adb1aecb43abf.js:13
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+setTimeout
+(anonymous) @ _app-790adb1aecb43abf.js:13
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+setTimeout
+(anonymous) @ _app-790adb1aecb43abf.js:13
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+setTimeout
+(anonymous) @ _app-790adb1aecb43abf.js:13
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+setTimeout
+(anonymous) @ _app-790adb1aecb43abf.js:13
+e @ _app-790adb1aecb43abf.js:40
+n @ _app-790adb1aecb43abf.js:13
+  Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+_ @ framework-18b9a454cfe433a1.js:1
+(anonymous) @ framework-18b9a454cfe433a1.js:1
+uD @ framework-18b9a454cfe433a1.js:1
+uI @ framework-18b9a454cfe433a1.js:1
+uM @ framework-18b9a454cfe433a1.js:1
+uS @ framework-18b9a454cfe433a1.js:1
+C @ framework-18b9a454cfe433a1.js:1
+z @ framework-18b9a454cfe433a1.js:1
+workspace_iframe.html:32  Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+workspace_iframe.html:32  Unrecognized feature: 'ambient-light-sensor'.
+workspace_iframe.html:32  Unrecognized feature: 'battery'.
+workspace_iframe.html:32  Unrecognized feature: 'execution-while-not-rendered'.
+workspace_iframe.html:32  Unrecognized feature: 'execution-while-out-of-viewport'.
+workspace_iframe.html:32  Unrecognized feature: 'layout-animations'.
+workspace_iframe.html:32  Unrecognized feature: 'legacy-image-formats'.
+workspace_iframe.html:32  Unrecognized feature: 'navigation-override'.
+workspace_iframe.html:32  Unrecognized feature: 'oversized-images'.
+workspace_iframe.html:32  Unrecognized feature: 'publickey-credentials'.
+workspace_iframe.html:32  Unrecognized feature: 'speaker-selection'.
+workspace_iframe.html:32  Unrecognized feature: 'unoptimized-images'.
+workspace_iframe.html:32  Unrecognized feature: 'unsized-media'.
+workspace_iframe.html:32  Allow attribute will take precedence over 'allowfullscreen'.
+workspace_iframe.html:32  Allow attribute will take precedence over 'allowpaymentrequest'.
+ Browsing Topics API removed from https://e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/__replco/workspace_iframe.html?initialPath=%2F&id=%3Arfo%3A which is iframe
+ Browsing Topics API removed from https://e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/ which is iframe
+  WebSocket connection to 'wss://e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/?token=p9KTr8Fo5y1V' failed: 
+setupWebSocket @ client:536
+(anonymous) @ client:531
+client:536  Uncaught (in promise) 
+setupWebSocket @ client:536
+fallback @ client:509
+(anonymous) @ client:555
+ ✅ React app mounted successfully
+ 🔍 FRONTEND: Fetching assigned talent for booking ID: 1
+ 📋 FRONTEND: Received assigned talent data: (2) [{…}, {…}]
+ 📋 UPDATING assigned talent state: (2) [{…}, {…}]
+ DEBUG: Syncing stage legend talent/skills with band members
+ 🔄 TECHNICAL RIDER: Initializing band members
+ 🔄 Assigned musicians (props) count: 5
+ 🔄 Final assigned musicians (API) count: 5
+ 🔄 Will use: assignedMusicians (props)
+ 🔄 Using musician data source: assignedMusicians (props)
+ 🔄 Processing musician 1: Lí-Lí Octave
+ 🔄 Full musician data: {id: 6, userId: 6, name: 'Lí-Lí Octave', fullName: 'Lianne Letang', stageName: 'Lí-Lí Octave', …}
+ 🔄 Musician roleId: undefined talentType: managed_artist
+ 🔄 Database talents - Primary: undefined Secondary: undefined
+ 🔄 Raw musician object keys: (16) ['id', 'userId', 'name', 'fullName', 'stageName', 'role', 'primaryRole', 'skillsAndInstruments', 'availableRoles', 'instruments', 'selectedRoles', 'isMainBookedTalent', 'assignedRole', 'type', 'talentType', 'assignmentRole']
+ 🔄 Membership determination: roleId undefined talentType: managed_artist type: Main Booked Talent isProfessional: false Result: BAND
+ 🔄 Role badge: managed_artist
+ 🔄 Membership: BAND
+ 🔄 Primary role: null
+ 🎯 Building dropdown options for: Lí-Lí Octave
+ 🎯 Available profile data: {assignedRole: 'Main Booked Talent', primaryRole: 'Lead Vocalist', primaryTalent: undefined, secondaryTalents: undefined, skillsAndInstruments: Array(0), …}
+ 🎯 Skills array contents: []
+ 🎯 SKILLS DEBUG: Processing skillsAndInstruments for Lí-Lí Octave: []
+ 🎯 Generated dropdown options: [{…}]
+ 🎯 Expected dropdown selection: Main Booked Talent
+ 🔄 Adding member 1: Lí-Lí Octave Membership: BAND
+ 🔄 Processing musician 2: Maya Bass
+ 🔄 Full musician data: {id: 12, userId: 12, name: 'Maya Bass', fullName: 'Maya Thompson', stageName: 'Maya Bass', …}
+ 🔄 Musician roleId: undefined talentType: managed_musician
+ 🔄 Database talents - Primary: undefined Secondary: undefined
+ 🔄 Raw musician object keys: (16) ['id', 'userId', 'name', 'fullName', 'stageName', 'role', 'primaryRole', 'skillsAndInstruments', 'availableRoles', 'instruments', 'selectedRoles', 'isMainBookedTalent', 'assignedRole', 'type', 'talentType', 'assignmentRole']
+ 🔄 Membership determination: roleId undefined talentType: managed_musician type: Main Booked Talent isProfessional: false Result: BAND
+ 🔄 Role badge: managed_musician
+ 🔄 Membership: BAND
+ 🔄 Primary role: null
+ 🎯 Building dropdown options for: Maya Bass
+ 🎯 Available profile data: {assignedRole: 'Main Booked Talent', primaryRole: 'Lead Vocalist', primaryTalent: undefined, secondaryTalents: undefined, skillsAndInstruments: Array(0), …}
+ 🎯 Skills array contents: []
+ 🎯 SKILLS DEBUG: Processing skillsAndInstruments for Maya Bass: []
+ 🎯 Generated dropdown options: [{…}]
+ 🎯 Expected dropdown selection: Main Booked Talent
+ 🔄 Adding member 2: Maya Bass Membership: BAND
+ 🔄 Processing musician 3: Phoenix Chen
+ 🔄 Full musician data: {id: 13, userId: 13, name: 'Phoenix Chen', fullName: undefined, stageName: '', …}
+ 🔄 Musician roleId: undefined talentType: Artist
+ 🔄 Database talents - Primary: undefined Secondary: undefined
+ 🔄 Raw musician object keys: (16) ['id', 'userId', 'name', 'fullName', 'stageName', 'role', 'primaryRole', 'skillsAndInstruments', 'availableRoles', 'instruments', 'selectedRoles', 'isMainBookedTalent', 'assignedRole', 'type', 'talentType', 'assignmentRole']
+ 🔄 Membership determination: roleId undefined talentType: Artist type: Musician isProfessional: false Result: BAND
+ 🔄 Role badge: Artist
+ 🔄 Membership: BAND
+ 🔄 Primary role: null
+ 🎯 Building dropdown options for: Phoenix Chen
+ 🎯 Available profile data: {assignedRole: 'Lead Vocalist', primaryRole: 'Lead Vocalist', primaryTalent: undefined, secondaryTalents: undefined, skillsAndInstruments: Array(0), …}
+ 🎯 Skills array contents: []
+ 🎯 SKILLS DEBUG: Processing skillsAndInstruments for Phoenix Chen: []
+ 🎯 Generated dropdown options: [{…}]
+ 🎯 Expected dropdown selection: Lead Vocalist
+ 🔄 Adding member 3: Phoenix Chen Membership: BAND
+ 🔄 Processing musician 4: Indie Stone
+ 🔄 Full musician data: {id: 25, userId: 25, name: 'Indie Stone', fullName: undefined, stageName: '', …}
+ 🔄 Musician roleId: undefined talentType: Artist
+ 🔄 Database talents - Primary: undefined Secondary: undefined
+ 🔄 Raw musician object keys: (16) ['id', 'userId', 'name', 'fullName', 'stageName', 'role', 'primaryRole', 'skillsAndInstruments', 'availableRoles', 'instruments', 'selectedRoles', 'isMainBookedTalent', 'assignedRole', 'type', 'talentType', 'assignmentRole']
+ 🔄 Membership determination: roleId undefined talentType: Artist type: Artist isProfessional: false Result: BAND
+ 🔄 Role badge: Artist
+ 🔄 Membership: BAND
+ 🔄 Primary role: null
+ 🎯 Building dropdown options for: Indie Stone
+ 🎯 Available profile data: {assignedRole: 'Lead Vocalist', primaryRole: 'Lead Vocalist', primaryTalent: undefined, secondaryTalents: undefined, skillsAndInstruments: Array(0), …}
+ 🎯 Skills array contents: []
+ 🎯 SKILLS DEBUG: Processing skillsAndInstruments for Indie Stone: []
+ 🎯 Generated dropdown options: [{…}]
+ 🎯 Expected dropdown selection: Lead Vocalist
+ 🔄 Adding member 4: Indie Stone Membership: BAND
+ 🔄 Processing musician 5: Demo OppAgent Professional
+ 🔄 Full musician data: {id: 31, userId: 31, name: 'Demo OppAgent Professional', fullName: undefined, stageName: '', …}
+ 🔄 Musician roleId: undefined talentType: Artist
+ 🔄 Database talents - Primary: undefined Secondary: undefined
+ 🔄 Raw musician object keys: (16) ['id', 'userId', 'name', 'fullName', 'stageName', 'role', 'primaryRole', 'skillsAndInstruments', 'availableRoles', 'instruments', 'selectedRoles', 'isMainBookedTalent', 'assignedRole', 'type', 'talentType', 'assignmentRole']
+ 🔄 Membership determination: roleId undefined talentType: Artist type: Professional isProfessional: true Result: TEAM
+ 🔄 Role badge: Artist
+ 🔄 Membership: TEAM
+ 🔄 Primary role: null
+ 🎯 Building dropdown options for: Demo OppAgent Professional
+ 🎯 Available profile data: {assignedRole: 'Professional', primaryRole: 'Lead Vocalist', primaryTalent: undefined, secondaryTalents: undefined, skillsAndInstruments: Array(0), …}
+ 🎯 Skills array contents: []
+ 🎯 SKILLS DEBUG: Processing skillsAndInstruments for Demo OppAgent Professional: []
+ 🎯 Generated dropdown options: [{…}]
+ 🎯 Expected dropdown selection: Professional
+ 🔄 Adding member 5: Demo OppAgent Professional Membership: TEAM
+ 🔄 Total members added from API: 5
+ Sorting: Maya Bass badge: managed_musician order: 7 vs Lí-Lí Octave badge: managed_artist order: 7
+ Sorting: Indie Stone badge: Artist order: 7 vs Phoenix Chen badge: Artist order: 7
+ Sorting: Demo OppAgent Professional badge: Artist order: 7 vs Indie Stone badge: Artist order: 7
+ Sorting: Mr Lindsay George badge: MANAGEMENT order: 999 vs Demo OppAgent Professional badge: Artist order: 7
+ Sorting: Ms Joyette Pascal badge: MANAGEMENT order: 999 vs Mr Lindsay George badge: MANAGEMENT order: 999
+ 🔄 FINAL: Setting 7 band members
+ DEBUG: Syncing stage legend talent/skills with band members
+ 🔄 TECHNICAL RIDER: Initializing band members
+ 🔄 Assigned musicians (props) count: 5
+ 🔄 Final assigned musicians (API) count: 2
+ 🔄 Will use: assignedMusicians (props)
+ 🔄 Using musician data source: assignedMusicians (props)
+ 🔄 Processing musician 1: Lí-Lí Octave
+ 🔄 Full musician data: {id: 6, userId: 6, name: 'Lí-Lí Octave', fullName: 'Lianne Letang', stageName: 'Lí-Lí Octave', …}
+ 🔄 Musician roleId: undefined talentType: managed_artist
+ 🔄 Database talents - Primary: undefined Secondary: undefined
+ 🔄 Raw musician object keys: (16) ['id', 'userId', 'name', 'fullName', 'stageName', 'role', 'primaryRole', 'skillsAndInstruments', 'availableRoles', 'instruments', 'selectedRoles', 'isMainBookedTalent', 'assignedRole', 'type', 'talentType', 'assignmentRole']
+ 🔄 Membership determination: roleId undefined talentType: managed_artist type: Main Booked Talent isProfessional: false Result: BAND
+ 🔄 Role badge: managed_artist
+ 🔄 Membership: BAND
+ 🔄 Primary role: null
+ 🎯 Building dropdown options for: Lí-Lí Octave
+ 🎯 Available profile data: {assignedRole: 'Main Booked Talent', primaryRole: 'Lead Vocalist', primaryTalent: undefined, secondaryTalents: undefined, skillsAndInstruments: Array(0), …}
+ 🎯 Skills array contents: []
+ 🎯 SKILLS DEBUG: Processing skillsAndInstruments for Lí-Lí Octave: []
+ 🎯 Generated dropdown options: [{…}]
+ 🎯 Expected dropdown selection: Main Booked Talent
+ 🔄 Adding member 1: Lí-Lí Octave Membership: BAND
+ 🔄 Processing musician 2: Maya Bass
+ 🔄 Full musician data: {id: 12, userId: 12, name: 'Maya Bass', fullName: 'Maya Thompson', stageName: 'Maya Bass', …}
+ 🔄 Musician roleId: undefined talentType: managed_musician
+ 🔄 Database talents - Primary: undefined Secondary: undefined
+ 🔄 Raw musician object keys: (16) ['id', 'userId', 'name', 'fullName', 'stageName', 'role', 'primaryRole', 'skillsAndInstruments', 'availableRoles', 'instruments', 'selectedRoles', 'isMainBookedTalent', 'assignedRole', 'type', 'talentType', 'assignmentRole']
+ 🔄 Membership determination: roleId undefined talentType: managed_musician type: Main Booked Talent isProfessional: false Result: BAND
+ 🔄 Role badge: managed_musician
+ 🔄 Membership: BAND
+ 🔄 Primary role: null
+ 🎯 Building dropdown options for: Maya Bass
+ 🎯 Available profile data: {assignedRole: 'Main Booked Talent', primaryRole: 'Lead Vocalist', primaryTalent: undefined, secondaryTalents: undefined, skillsAndInstruments: Array(0), …}
+ 🎯 Skills array contents: []
+ 🎯 SKILLS DEBUG: Processing skillsAndInstruments for Maya Bass: []
+ 🎯 Generated dropdown options: [{…}]
+ 🎯 Expected dropdown selection: Main Booked Talent
+ 🔄 Adding member 2: Maya Bass Membership: BAND
+ 🔄 Processing musician 3: Phoenix Chen
+ 🔄 Full musician data: {id: 13, userId: 13, name: 'Phoenix Chen', fullName: undefined, stageName: '', …}
+ 🔄 Musician roleId: undefined talentType: Artist
+ 🔄 Database talents - Primary: undefined Secondary: undefined
+ 🔄 Raw musician object keys: (16) ['id', 'userId', 'name', 'fullName', 'stageName', 'role', 'primaryRole', 'skillsAndInstruments', 'availableRoles', 'instruments', 'selectedRoles', 'isMainBookedTalent', 'assignedRole', 'type', 'talentType', 'assignmentRole']
+ 🔄 Membership determination: roleId undefined talentType: Artist type: Musician isProfessional: false Result: BAND
+ 🔄 Role badge: Artist
+ 🔄 Membership: BAND
+ 🔄 Primary role: null
+ 🎯 Building dropdown options for: Phoenix Chen
+ 🎯 Available profile data: {assignedRole: 'Lead Vocalist', primaryRole: 'Lead Vocalist', primaryTalent: undefined, secondaryTalents: undefined, skillsAndInstruments: Array(0), …}
+ 🎯 Skills array contents: []
+ 🎯 SKILLS DEBUG: Processing skillsAndInstruments for Phoenix Chen: []
+ 🎯 Generated dropdown options: [{…}]
+ 🎯 Expected dropdown selection: Lead Vocalist
+ 🔄 Adding member 3: Phoenix Chen Membership: BAND
+ 🔄 Processing musician 4: Indie Stone
+ 🔄 Full musician data: {id: 25, userId: 25, name: 'Indie Stone', fullName: undefined, stageName: '', …}
+ 🔄 Musician roleId: undefined talentType: Artist
+ 🔄 Database talents - Primary: undefined Secondary: undefined
+ 🔄 Raw musician object keys: (16) ['id', 'userId', 'name', 'fullName', 'stageName', 'role', 'primaryRole', 'skillsAndInstruments', 'availableRoles', 'instruments', 'selectedRoles', 'isMainBookedTalent', 'assignedRole', 'type', 'talentType', 'assignmentRole']
+ 🔄 Membership determination: roleId undefined talentType: Artist type: Artist isProfessional: false Result: BAND
+ 🔄 Role badge: Artist
+ 🔄 Membership: BAND
+ 🔄 Primary role: null
+ 🎯 Building dropdown options for: Indie Stone
+ 🎯 Available profile data: {assignedRole: 'Lead Vocalist', primaryRole: 'Lead Vocalist', primaryTalent: undefined, secondaryTalents: undefined, skillsAndInstruments: Array(0), …}
+ 🎯 Skills array contents: []
+ 🎯 SKILLS DEBUG: Processing skillsAndInstruments for Indie Stone: []
+ 🎯 Generated dropdown options: [{…}]
+ 🎯 Expected dropdown selection: Lead Vocalist
+ 🔄 Adding member 4: Indie Stone Membership: BAND
+ 🔄 Processing musician 5: Demo OppAgent Professional
+ 🔄 Full musician data: {id: 31, userId: 31, name: 'Demo OppAgent Professional', fullName: undefined, stageName: '', …}
+ 🔄 Musician roleId: undefined talentType: Artist
+ 🔄 Database talents - Primary: undefined Secondary: undefined
+ 🔄 Raw musician object keys: (16) ['id', 'userId', 'name', 'fullName', 'stageName', 'role', 'primaryRole', 'skillsAndInstruments', 'availableRoles', 'instruments', 'selectedRoles', 'isMainBookedTalent', 'assignedRole', 'type', 'talentType', 'assignmentRole']
+ 🔄 Membership determination: roleId undefined talentType: Artist type: Professional isProfessional: true Result: TEAM
+ 🔄 Role badge: Artist
+ 🔄 Membership: TEAM
+ 🔄 Primary role: null
+ 🎯 Building dropdown options for: Demo OppAgent Professional
+ 🎯 Available profile data: {assignedRole: 'Professional', primaryRole: 'Lead Vocalist', primaryTalent: undefined, secondaryTalents: undefined, skillsAndInstruments: Array(0), …}
+ 🎯 Skills array contents: []
+ 🎯 SKILLS DEBUG: Processing skillsAndInstruments for Demo OppAgent Professional: []
+ 🎯 Generated dropdown options: [{…}]
+ 🎯 Expected dropdown selection: Professional
+ 🔄 Adding member 5: Demo OppAgent Professional Membership: TEAM
+ 🔄 Total members added from API: 5
+ Sorting: Maya Bass badge: managed_musician order: 7 vs Lí-Lí Octave badge: managed_artist order: 7
+ Sorting: Indie Stone badge: Artist order: 7 vs Phoenix Chen badge: Artist order: 7
+ Sorting: Demo OppAgent Professional badge: Artist order: 7 vs Indie Stone badge: Artist order: 7
+ Sorting: Mr Lindsay George badge: MANAGEMENT order: 999 vs Demo OppAgent Professional badge: Artist order: 7
+ Sorting: Ms Joyette Pascal badge: MANAGEMENT order: 999 vs Mr Lindsay George badge: MANAGEMENT order: 999
+ 🔄 FINAL: Setting 7 band members
+ DEBUG: Syncing stage legend talent/skills with band members

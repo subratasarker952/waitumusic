@@ -1,0 +1,94 @@
+->Users(Main user table)
+id - Primary key
+created_at - Registration timestamp
+role_id - Role (1=superadmin, 2=admin, 3=artist, 4=musician, 5=professional, 6=fan)
+phone_number - Contact number
+email - User email address
+full_name - User's full name
+password_hash - Encrypted password
+status - Account status (active, inactive)
+privacy_setting - Privacy setting (public/private)
+avatar_url - Profile picture URL (in media hub)
+cover_image_url - Cover/banner image (in media hub)
+last_login - Last login timestamp
+is_demo - Boolean flag for demo accounts
+
+
+->artists (Artist-specific data)
+user_id - Links to users table
+stage_name - Primary stage name
+bio - User biography
+epk_url - link to uploaded epk pdf (in media hub)
+primary_genre - Primary music genre
+base_price - Base booking price
+ideal_performance_rate - Preferred performance fee
+minimum_acceptable_rate - Minimum booking fee
+is_managed - Management status
+management_tier_id - Management level
+booking_form_picture_url - Booking form image (in media bub)
+is_registered_with_pro - PRO registration status
+performing_rights_organization - PRO affiliation
+ipi_number - IPI number
+primary_role - Main performance role (required)
+
+
+->musicians (Musician-specific data)
+user_id - Links to users table
+primary_genre - Main genre
+base_price - Base session price
+ideal_performance_rate - Preferred session fee
+minimum_acceptable_rate - Minimum acceptable fee
+is_managed - Management status
+management_tier_id - Management level
+booking_form_picture_url - Booking image (in media hub)
+is_registered_with_pro - PRO status
+performing_rights_organization - PRO affiliation
+ipi_number - IPI number
+primary_role - Main role (required)
+
+->professionals (Professional service providers)
+user_id - Links to users table
+base_price - Base service price
+ideal_service_rate - Preferred service rate
+minimum_acceptable_rate - Minimum rate
+is_managed - Management status
+management_tier_id - Management level
+booking_form_picture_url - Booking image (in media hub)
+primary_role - Main professional role
+
+
+*->user_secondary_roles (For Secondary Roles like artist, musician, or professional, linked to Users Table by user_id)
+
+*->user_secondary_performance_roles (For Secondary Performance Roles, linked to Users Table by user_id)
+
+*->user_secondary_professinal_roles (For Secondary Performance Roles, linked to Users Table by user_id)
+
+*->user_professional_services (For Service offerings, linked to Users Table by user_id) [based on user_services table]
+
+*->user_professional_services_features (For Service features, linked to Users Table by user_id) 
+
+*->user_professional_service_capabilities - (For Service capabilities, linked to Users Table by user_id)
+
+*->user_professional_specializations (For Specialization areas, linked to Users Table by user_id)
+
+*->user_professional_top_specializations (For Top specialization areas, linked to Users Table by user_id)
+
+*->user_social_links - (For social media links and websites, linked to Users Table by user_id)
+
+*->user_stage_names - (For stage names, linked to Users Table by user_id)
+
+*->user_secondary_genres - (For top performing genres, linked to Users Table by user_id)
+
+*->user_top_genres - (For additional, linked to Users Table by user_id)
+
+*->user_technical_requirements - (For Technical specs, linked to Users Table by user_id)
+
+*->user_skills_and_instruments - (For skills/instruments, linked to Users Table by user_id)
+
+*->user_hospitality_requirements - (For Hospitality needs, linked to Users Table by user_id)
+
+*->user_performance_specs - (For Performance specifications, linked to Users Table by user_id)
+
+*->user_availability - (For availability schedule, linked to Users Table by user_id)
+
+*-)>user_profiles (Extended profile information) [no longer necessary]

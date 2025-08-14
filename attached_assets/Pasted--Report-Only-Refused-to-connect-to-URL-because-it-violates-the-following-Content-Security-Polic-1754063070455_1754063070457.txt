@@ -1,0 +1,607 @@
+[Report Only] Refused to connect to '<URL>' because it violates the following Content Security Policy directive: "connect-src 'none'".
+
+[Report Only] Refused to connect to '<URL>' because it violates the following Content Security Policy directive: "connect-src 'none'".
+
+[Report Only] Refused to connect to '<URL>' because it violates the following Content Security Policy directive: "connect-src 'none'".
+
+[Report Only] Refused to connect to '<URL>' because it violates the following Content Security Policy directive: "connect-src 'none'".
+
+[Report Only] Refused to connect to '<URL>' because it violates the following Content Security Policy directive: "connect-src 'none'".
+
+[Report Only] Refused to connect to '<URL>' because it violates the following Content Security Policy directive: "connect-src 'none'".
+
+[Report Only] Refused to connect to '<URL>' because it violates the following Content Security Policy directive: "connect-src 'none'".
+
+[Report Only] Refused to connect to '<URL>' because it violates the following Content Security Policy directive: "connect-src 'none'".
+
+[Report Only] Refused to connect to '<URL>' because it violates the following Content Security Policy directive: "connect-src 'none'".
+
+[Report Only] Refused to connect to '<URL>' because it violates the following Content Security Policy directive: "connect-src 'none'".
+
+[Report Only] Refused to connect to '<URL>' because it violates the following Content Security Policy directive: "connect-src 'none'".
+
+[Report Only] Refused to connect to '<URL>' because it violates the following Content Security Policy directive: "connect-src 'none'".
+
+[Report Only] Refused to connect to '<URL>' because it violates the following Content Security Policy directive: "connect-src 'none'".
+
+[Report Only] Refused to connect to '<URL>' because it violates the following Content Security Policy directive: "connect-src 'none'".
+
+[Report Only] Refused to connect to '<URL>' because it violates the following Content Security Policy directive: "connect-src 'none'".
+
+[Report Only] Refused to connect to '<URL>' because it violates the following Content Security Policy directive: "connect-src 'none'".
+
+[Report Only] Refused to connect to '<URL>' because it violates the following Content Security Policy directive: "connect-src 'none'".
+
+[Report Only] Refused to connect to '<URL>' because it violates the following Content Security Policy directive: "connect-src 'none'".
+
+[Report Only] Refused to connect to '<URL>' because it violates the following Content Security Policy directive: "connect-src 'none'".
+
+[Report Only] Refused to connect to '<URL>' because it violates the following Content Security Policy directive: "connect-src 'none'".
+
+[Report Only] Refused to connect to '<URL>' because it violates the following Content Security Policy directive: "connect-src 'none'".
+
+[Report Only] Refused to connect to '<URL>' because it violates the following Content Security Policy directive: "connect-src 'none'".
+
+[Report Only] Refused to connect to '<URL>' because it violates the following Content Security Policy directive: "connect-src 'none'".
+
+[Report Only] Refused to connect to '<URL>' because it violates the following Content Security Policy directive: "connect-src 'none'".
+
+[Report Only] Refused to connect to '<URL>' because it violates the following Content Security Policy directive: "connect-src 'none'".
+
+[Report Only] Refused to connect to '<URL>' because it violates the following Content Security Policy directive: "connect-src 'none'".
+
+[Report Only] Refused to connect to '<URL>' because it violates the following Content Security Policy directive: "connect-src 'none'".
+
+[Report Only] Refused to connect to '<URL>' because it violates the following Content Security Policy directive: "connect-src 'none'".
+
+[Report Only] Refused to connect to '<URL>' because it violates the following Content Security Policy directive: "connect-src 'none'".
+
+[Report Only] Refused to connect to '<URL>' because it violates the following Content Security Policy directive: "connect-src 'none'".
+
+[Report Only] Refused to connect to '<URL>' because it violates the following Content Security Policy directive: "connect-src 'none'".
+
+[Report Only] Refused to connect to '<URL>' because it violates the following Content Security Policy directive: "connect-src 'none'".
+
+[Report Only] Refused to connect to '<URL>' because it violates the following Content Security Policy directive: "connect-src 'none'".
+
+[Report Only] Refused to connect to '<URL>' because it violates the following Content Security Policy directive: "connect-src 'none'".
+
+[Report Only] Refused to connect to '<URL>' because it violates the following Content Security Policy directive: "connect-src 'none'".
+
+[Report Only] Refused to connect to '<URL>' because it violates the following Content Security Policy directive: "connect-src 'none'".
+
+[Report Only] Refused to connect to '<URL>' because it violates the following Content Security Policy directive: "connect-src 'none'".
+
+[Report Only] Refused to connect to '<URL>' because it violates the following Content Security Policy directive: "connect-src 'none'".
+
+[Report Only] Refused to connect to '<URL>' because it violates the following Content Security Policy directive: "connect-src 'none'".
+
+[Report Only] Refused to connect to '<URL>' because it violates the following Content Security Policy directive: "connect-src 'none'".
+
+[Report Only] Refused to connect to '<URL>' because it violates the following Content Security Policy directive: "connect-src 'none'".
+
+[Report Only] Refused to connect to '<URL>' because it violates the following Content Security Policy directive: "connect-src 'none'".
+
+[Report Only] Refused to connect to '<URL>' because it violates the following Content Security Policy directive: "connect-src 'none'".
+
+[Report Only] Refused to connect to '<URL>' because it violates the following Content Security Policy directive: "connect-src 'none'".
+
+[Report Only] Refused to connect to '<URL>' because it violates the following Content Security Policy directive: "connect-src 'none'".
+
+[Report Only] Refused to connect to '<URL>' because it violates the following Content Security Policy directive: "connect-src 'none'".
+
+[Report Only] Refused to connect to '<URL>' because it violates the following Content Security Policy directive: "connect-src 'none'".
+
+[Report Only] Refused to connect to '<URL>' because it violates the following Content Security Policy directive: "connect-src 'none'".
+
+[Report Only] Refused to connect to '<URL>' because it violates the following Content Security Policy directive: "connect-src 'none'".
+
+[Report Only] Refused to connect to '<URL>' because it violates the following Content Security Policy directive: "connect-src 'none'".
+
+[Report Only] Refused to connect to '<URL>' because it violates the following Content Security Policy directive: "connect-src 'none'".
+
+[Report Only] Refused to connect to '<URL>' because it violates the following Content Security Policy directive: "connect-src 'none'".
+
+[Report Only] Refused to connect to '<URL>' because it violates the following Content Security Policy directive: "connect-src 'none'".
+
+[Report Only] Refused to connect to '<URL>' because it violates the following Content Security Policy directive: "connect-src 'none'".
+
+[Report Only] Refused to connect to '<URL>' because it violates the following Content Security Policy directive: "connect-src 'none'".
+
+[Report Only] Refused to connect to '<URL>' because it violates the following Content Security Policy directive: "connect-src 'none'".
+
+[Report Only] Refused to connect to '<URL>' because it violates the following Content Security Policy directive: "connect-src 'none'".
+
+[Report Only] Refused to connect to '<URL>' because it violates the following Content Security Policy directive: "connect-src 'none'".
+
+[Report Only] Refused to connect to '<URL>' because it violates the following Content Security Policy directive: "connect-src 'none'".
+
+[Report Only] Refused to connect to '<URL>' because it violates the following Content Security Policy directive: "connect-src 'none'".
+
+[Report Only] Refused to connect to '<URL>' because it violates the following Content Security Policy directive: "connect-src 'none'".
+
+[Report Only] Refused to connect to '<URL>' because it violates the following Content Security Policy directive: "connect-src 'none'".
+
+[Report Only] Refused to connect to '<URL>' because it violates the following Content Security Policy directive: "connect-src 'none'".
+
+[Report Only] Refused to connect to '<URL>' because it violates the following Content Security Policy directive: "connect-src 'none'".
+
+[Report Only] Refused to connect to '<URL>' because it violates the following Content Security Policy directive: "connect-src 'none'".
+
+[Report Only] Refused to connect to '<URL>' because it violates the following Content Security Policy directive: "connect-src 'none'".
+
+[Report Only] Refused to connect to '<URL>' because it violates the following Content Security Policy directive: "connect-src 'none'".
+
+[Report Only] Refused to connect to '<URL>' because it violates the following Content Security Policy directive: "connect-src 'none'".
+
+[Report Only] Refused to connect to '<URL>' because it violates the following Content Security Policy directive: "connect-src 'none'".
+
+[Report Only] Refused to connect to '<URL>' because it violates the following Content Security Policy directive: "connect-src 'none'".
+
+[Report Only] Refused to connect to '<URL>' because it violates the following Content Security Policy directive: "connect-src 'none'".
+
+[Report Only] Refused to connect to '<URL>' because it violates the following Content Security Policy directive: "connect-src 'none'".
+
+[Report Only] Refused to connect to '<URL>' because it violates the following Content Security Policy directive: "connect-src 'none'".
+
+[Report Only] Refused to connect to '<URL>' because it violates the following Content Security Policy directive: "connect-src 'none'".
+
+[Report Only] Refused to connect to '<URL>' because it violates the following Content Security Policy directive: "connect-src 'none'".
+
+[Report Only] Refused to connect to '<URL>' because it violates the following Content Security Policy directive: "connect-src 'none'".
+
+[Report Only] Refused to connect to '<URL>' because it violates the following Content Security Policy directive: "connect-src 'none'".
+
+[Report Only] Refused to connect to '<URL>' because it violates the following Content Security Policy directive: "connect-src 'none'".
+
+[Report Only] Refused to connect to '<URL>' because it violates the following Content Security Policy directive: "connect-src 'none'".
+
+[Report Only] Refused to connect to '<URL>' because it violates the following Content Security Policy directive: "connect-src 'none'".
+
+[Report Only] Refused to connect to '<URL>' because it violates the following Content Security Policy directive: "connect-src 'none'".
+
+[Report Only] Refused to connect to '<URL>' because it violates the following Content Security Policy directive: "connect-src 'none'".
+
+[Report Only] Refused to connect to '<URL>' because it violates the following Content Security Policy directive: "connect-src 'none'".
+
+[Report Only] Refused to connect to '<URL>' because it violates the following Content Security Policy directive: "connect-src 'none'".
+
+[Report Only] Refused to connect to '<URL>' because it violates the following Content Security Policy directive: "connect-src 'none'".
+
+[Report Only] Refused to connect to '<URL>' because it violates the following Content Security Policy directive: "connect-src 'none'".
+
+[Report Only] Refused to connect to '<URL>' because it violates the following Content Security Policy directive: "connect-src 'none'".
+
+[Report Only] Refused to connect to '<URL>' because it violates the following Content Security Policy directive: "connect-src 'none'".
+
+[Report Only] Refused to connect to '<URL>' because it violates the following Content Security Policy directive: "connect-src 'none'".
+
+[Report Only] Refused to connect to '<URL>' because it violates the following Content Security Policy directive: "connect-src 'none'".
+
+[Report Only] Refused to connect to '<URL>' because it violates the following Content Security Policy directive: "connect-src 'none'".
+
+[Report Only] Refused to connect to '<URL>' because it violates the following Content Security Policy directive: "connect-src 'none'".
+
+[Report Only] Refused to connect to '<URL>' because it violates the following Content Security Policy directive: "connect-src 'none'".
+
+[Report Only] Refused to connect to '<URL>' because it violates the following Content Security Policy directive: "connect-src 'none'".
+
+[Report Only] Refused to connect to '<URL>' because it violates the following Content Security Policy directive: "connect-src 'none'".
+
+[Report Only] Refused to connect to '<URL>' because it violates the following Content Security Policy directive: "connect-src 'none'".
+
+[Report Only] Refused to connect to '<URL>' because it violates the following Content Security Policy directive: "connect-src 'none'".
+
+[Report Only] Refused to connect to '<URL>' because it violates the following Content Security Policy directive: "connect-src 'none'".
+
+[Report Only] Refused to connect to '<URL>' because it violates the following Content Security Policy directive: "connect-src 'none'".
+
+webpack-515d5927bc75b1aa.js:1 [Report Only] Refused to load the script 'https://cdn.replit.com/_next/static/chunks/1979.ea34ca7c69be9b39.js' because it violates the following Content Security Policy directive: "script-src 'none'". Note that 'script-src-elem' was not explicitly set, so 'script-src' is used as a fallback.
+
+framework-23b7efb68fbb9bc3.js:1  Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+_ @ framework-23b7efb68fbb9bc3.js:1
+(anonymous) @ framework-23b7efb68fbb9bc3.js:1
+uD @ framework-23b7efb68fbb9bc3.js:1
+uI @ framework-23b7efb68fbb9bc3.js:1
+uM @ framework-23b7efb68fbb9bc3.js:1
+uS @ framework-23b7efb68fbb9bc3.js:1
+C @ framework-23b7efb68fbb9bc3.js:1
+z @ framework-23b7efb68fbb9bc3.js:1
+framework-23b7efb68fbb9bc3.js:1  Unrecognized feature: 'ambient-light-sensor'.
+_ @ framework-23b7efb68fbb9bc3.js:1
+(anonymous) @ framework-23b7efb68fbb9bc3.js:1
+uD @ framework-23b7efb68fbb9bc3.js:1
+uI @ framework-23b7efb68fbb9bc3.js:1
+uM @ framework-23b7efb68fbb9bc3.js:1
+uS @ framework-23b7efb68fbb9bc3.js:1
+C @ framework-23b7efb68fbb9bc3.js:1
+z @ framework-23b7efb68fbb9bc3.js:1
+framework-23b7efb68fbb9bc3.js:1  Unrecognized feature: 'battery'.
+_ @ framework-23b7efb68fbb9bc3.js:1
+(anonymous) @ framework-23b7efb68fbb9bc3.js:1
+uD @ framework-23b7efb68fbb9bc3.js:1
+uI @ framework-23b7efb68fbb9bc3.js:1
+uM @ framework-23b7efb68fbb9bc3.js:1
+uS @ framework-23b7efb68fbb9bc3.js:1
+C @ framework-23b7efb68fbb9bc3.js:1
+z @ framework-23b7efb68fbb9bc3.js:1
+[NEW] Explain Console errors by using Copilot in Edge: click
+         
+         to explain an error. 
+        Learn more
+        Don't show again
+framework-23b7efb68fbb9bc3.js:1  Unrecognized feature: 'execution-while-not-rendered'.
+_ @ framework-23b7efb68fbb9bc3.js:1
+(anonymous) @ framework-23b7efb68fbb9bc3.js:1
+uD @ framework-23b7efb68fbb9bc3.js:1
+uI @ framework-23b7efb68fbb9bc3.js:1
+uM @ framework-23b7efb68fbb9bc3.js:1
+uS @ framework-23b7efb68fbb9bc3.js:1
+C @ framework-23b7efb68fbb9bc3.js:1
+z @ framework-23b7efb68fbb9bc3.js:1
+framework-23b7efb68fbb9bc3.js:1  Unrecognized feature: 'execution-while-out-of-viewport'.
+_ @ framework-23b7efb68fbb9bc3.js:1
+(anonymous) @ framework-23b7efb68fbb9bc3.js:1
+uD @ framework-23b7efb68fbb9bc3.js:1
+uI @ framework-23b7efb68fbb9bc3.js:1
+uM @ framework-23b7efb68fbb9bc3.js:1
+uS @ framework-23b7efb68fbb9bc3.js:1
+C @ framework-23b7efb68fbb9bc3.js:1
+z @ framework-23b7efb68fbb9bc3.js:1
+framework-23b7efb68fbb9bc3.js:1  Unrecognized feature: 'layout-animations'.
+_ @ framework-23b7efb68fbb9bc3.js:1
+(anonymous) @ framework-23b7efb68fbb9bc3.js:1
+uD @ framework-23b7efb68fbb9bc3.js:1
+uI @ framework-23b7efb68fbb9bc3.js:1
+uM @ framework-23b7efb68fbb9bc3.js:1
+uS @ framework-23b7efb68fbb9bc3.js:1
+C @ framework-23b7efb68fbb9bc3.js:1
+z @ framework-23b7efb68fbb9bc3.js:1
+framework-23b7efb68fbb9bc3.js:1  Unrecognized feature: 'legacy-image-formats'.
+_ @ framework-23b7efb68fbb9bc3.js:1
+(anonymous) @ framework-23b7efb68fbb9bc3.js:1
+uD @ framework-23b7efb68fbb9bc3.js:1
+uI @ framework-23b7efb68fbb9bc3.js:1
+uM @ framework-23b7efb68fbb9bc3.js:1
+uS @ framework-23b7efb68fbb9bc3.js:1
+C @ framework-23b7efb68fbb9bc3.js:1
+z @ framework-23b7efb68fbb9bc3.js:1
+framework-23b7efb68fbb9bc3.js:1  Unrecognized feature: 'navigation-override'.
+_ @ framework-23b7efb68fbb9bc3.js:1
+(anonymous) @ framework-23b7efb68fbb9bc3.js:1
+uD @ framework-23b7efb68fbb9bc3.js:1
+uI @ framework-23b7efb68fbb9bc3.js:1
+uM @ framework-23b7efb68fbb9bc3.js:1
+uS @ framework-23b7efb68fbb9bc3.js:1
+C @ framework-23b7efb68fbb9bc3.js:1
+z @ framework-23b7efb68fbb9bc3.js:1
+framework-23b7efb68fbb9bc3.js:1  Unrecognized feature: 'oversized-images'.
+_ @ framework-23b7efb68fbb9bc3.js:1
+(anonymous) @ framework-23b7efb68fbb9bc3.js:1
+uD @ framework-23b7efb68fbb9bc3.js:1
+uI @ framework-23b7efb68fbb9bc3.js:1
+uM @ framework-23b7efb68fbb9bc3.js:1
+uS @ framework-23b7efb68fbb9bc3.js:1
+C @ framework-23b7efb68fbb9bc3.js:1
+z @ framework-23b7efb68fbb9bc3.js:1
+framework-23b7efb68fbb9bc3.js:1  Unrecognized feature: 'publickey-credentials'.
+_ @ framework-23b7efb68fbb9bc3.js:1
+(anonymous) @ framework-23b7efb68fbb9bc3.js:1
+uD @ framework-23b7efb68fbb9bc3.js:1
+uI @ framework-23b7efb68fbb9bc3.js:1
+uM @ framework-23b7efb68fbb9bc3.js:1
+uS @ framework-23b7efb68fbb9bc3.js:1
+C @ framework-23b7efb68fbb9bc3.js:1
+z @ framework-23b7efb68fbb9bc3.js:1
+framework-23b7efb68fbb9bc3.js:1  Unrecognized feature: 'speaker-selection'.
+_ @ framework-23b7efb68fbb9bc3.js:1
+(anonymous) @ framework-23b7efb68fbb9bc3.js:1
+uD @ framework-23b7efb68fbb9bc3.js:1
+uI @ framework-23b7efb68fbb9bc3.js:1
+uM @ framework-23b7efb68fbb9bc3.js:1
+uS @ framework-23b7efb68fbb9bc3.js:1
+C @ framework-23b7efb68fbb9bc3.js:1
+z @ framework-23b7efb68fbb9bc3.js:1
+framework-23b7efb68fbb9bc3.js:1  Unrecognized feature: 'unoptimized-images'.
+_ @ framework-23b7efb68fbb9bc3.js:1
+(anonymous) @ framework-23b7efb68fbb9bc3.js:1
+uD @ framework-23b7efb68fbb9bc3.js:1
+uI @ framework-23b7efb68fbb9bc3.js:1
+uM @ framework-23b7efb68fbb9bc3.js:1
+uS @ framework-23b7efb68fbb9bc3.js:1
+C @ framework-23b7efb68fbb9bc3.js:1
+z @ framework-23b7efb68fbb9bc3.js:1
+framework-23b7efb68fbb9bc3.js:1  Unrecognized feature: 'unsized-media'.
+_ @ framework-23b7efb68fbb9bc3.js:1
+(anonymous) @ framework-23b7efb68fbb9bc3.js:1
+uD @ framework-23b7efb68fbb9bc3.js:1
+uI @ framework-23b7efb68fbb9bc3.js:1
+uM @ framework-23b7efb68fbb9bc3.js:1
+uS @ framework-23b7efb68fbb9bc3.js:1
+C @ framework-23b7efb68fbb9bc3.js:1
+z @ framework-23b7efb68fbb9bc3.js:1
+framework-23b7efb68fbb9bc3.js:1  Unrecognized feature: 'pointer-lock'.
+_ @ framework-23b7efb68fbb9bc3.js:1
+(anonymous) @ framework-23b7efb68fbb9bc3.js:1
+uD @ framework-23b7efb68fbb9bc3.js:1
+uI @ framework-23b7efb68fbb9bc3.js:1
+uM @ framework-23b7efb68fbb9bc3.js:1
+uS @ framework-23b7efb68fbb9bc3.js:1
+C @ framework-23b7efb68fbb9bc3.js:1
+z @ framework-23b7efb68fbb9bc3.js:1
+framework-23b7efb68fbb9bc3.js:1  Allow attribute will take precedence over 'allowfullscreen'.
+_ @ framework-23b7efb68fbb9bc3.js:1
+(anonymous) @ framework-23b7efb68fbb9bc3.js:1
+uD @ framework-23b7efb68fbb9bc3.js:1
+uI @ framework-23b7efb68fbb9bc3.js:1
+uM @ framework-23b7efb68fbb9bc3.js:1
+uS @ framework-23b7efb68fbb9bc3.js:1
+C @ framework-23b7efb68fbb9bc3.js:1
+z @ framework-23b7efb68fbb9bc3.js:1
+framework-23b7efb68fbb9bc3.js:1  Allow attribute will take precedence over 'allowpaymentrequest'.
+_ @ framework-23b7efb68fbb9bc3.js:1
+(anonymous) @ framework-23b7efb68fbb9bc3.js:1
+uD @ framework-23b7efb68fbb9bc3.js:1
+uI @ framework-23b7efb68fbb9bc3.js:1
+uM @ framework-23b7efb68fbb9bc3.js:1
+uS @ framework-23b7efb68fbb9bc3.js:1
+C @ framework-23b7efb68fbb9bc3.js:1
+z @ framework-23b7efb68fbb9bc3.js:1
+workspace_iframe.html:32  Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+workspace_iframe.html:32  Unrecognized feature: 'ambient-light-sensor'.
+workspace_iframe.html:32  Unrecognized feature: 'battery'.
+workspace_iframe.html:32  Unrecognized feature: 'execution-while-not-rendered'.
+workspace_iframe.html:32  Unrecognized feature: 'execution-while-out-of-viewport'.
+workspace_iframe.html:32  Unrecognized feature: 'layout-animations'.
+workspace_iframe.html:32  Unrecognized feature: 'legacy-image-formats'.
+workspace_iframe.html:32  Unrecognized feature: 'navigation-override'.
+workspace_iframe.html:32  Unrecognized feature: 'oversized-images'.
+workspace_iframe.html:32  Unrecognized feature: 'publickey-credentials'.
+workspace_iframe.html:32  Unrecognized feature: 'speaker-selection'.
+workspace_iframe.html:32  Unrecognized feature: 'unoptimized-images'.
+workspace_iframe.html:32  Unrecognized feature: 'unsized-media'.
+workspace_iframe.html:32  Allow attribute will take precedence over 'allowfullscreen'.
+workspace_iframe.html:32  Allow attribute will take precedence over 'allowpaymentrequest'.
+client:536  WebSocket connection to 'wss://e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/?token=OeOD7ZlOgWKB' failed: Error during WebSocket handshake: Unexpected response code: 400
+setupWebSocket @ client:536
+(anonymous) @ client:531
+client:536  Uncaught (in promise) SyntaxError: Failed to construct 'WebSocket': The URL 'wss://localhost:undefined/?token=OeOD7ZlOgWKB' is invalid.
+    at setupWebSocket (client:536:19)
+    at fallback (client:509:16)
+    at WebSocket.<anonymous> (client:555:7)
+setupWebSocket @ client:536
+fallback @ client:509
+(anonymous) @ client:555
+main.tsx:35 ✅ React app mounted successfully
+ComprehensiveBookingWorkflow.tsx:605 🎯 TALENT GROUPED BY ROLE_ID: {totalTalent: 10, roleGroups: Array(2), categorizedCounts: {…}}
+ComprehensiveBookingWorkflow.tsx:180 🔍 FRONTEND: Fetching assigned talent for booking ID: 1
+ComprehensiveBookingWorkflow.tsx:605 🎯 TALENT GROUPED BY ROLE_ID: {totalTalent: 10, roleGroups: Array(2), categorizedCounts: {…}}
+ComprehensiveBookingWorkflow.tsx:182 📋 FRONTEND: Received assigned talent data: (2) [{…}, {…}]
+ComprehensiveBookingWorkflow.tsx:605 🎯 TALENT GROUPED BY ROLE_ID: {totalTalent: 10, roleGroups: Array(2), categorizedCounts: {…}}
+ComprehensiveBookingWorkflow.tsx:224 📋 UPDATING assigned talent state: (2) [{…}, {…}]
+ComprehensiveBookingWorkflow.tsx:225 🔍 DETAILED DATA CHECK - First talent object: {id: 'assignment-2', userId: 6, name: 'Lí-Lí Octave', assignmentName: 'Lianne Letang(Lí-Lí Octave)', fullName: 'Lianne Letang', …}
+ComprehensiveBookingWorkflow.tsx:226 🔍 KEYS in first talent: (17) ['id', 'userId', 'name', 'assignmentName', 'fullName', 'stageName', 'type', 'role', 'isMainBookedTalent', 'isPrimary', 'talentType', 'primaryTalent', 'secondaryTalents', 'assignmentId', 'isOriginallyBooked', 'showAcceptDecline', 'showRemove']
+ComprehensiveBookingWorkflow.tsx:227 🔍 PRIMARY TALENT field: Lead Vocalist
+ComprehensiveBookingWorkflow.tsx:228 🔍 SECONDARY TALENTS field: []
+ComprehensiveBookingWorkflow.tsx:605 🎯 TALENT GROUPED BY ROLE_ID: {totalTalent: 10, roleGroups: Array(2), categorizedCounts: {…}}
+ComprehensiveBookingWorkflow.tsx:605 🎯 TALENT GROUPED BY ROLE_ID: {totalTalent: 16, roleGroups: Array(4), categorizedCounts: {…}}
+ComprehensiveBookingWorkflow.tsx:605 🎯 TALENT GROUPED BY ROLE_ID: {totalTalent: 23, roleGroups: Array(6), categorizedCounts: {…}}
+ComprehensiveBookingWorkflow.tsx:605 🎯 TALENT GROUPED BY ROLE_ID: {totalTalent: 23, roleGroups: Array(6), categorizedCounts: {…}}
+ComprehensiveBookingWorkflow.tsx:605 🎯 TALENT GROUPED BY ROLE_ID: {totalTalent: 23, roleGroups: Array(6), categorizedCounts: {…}}
+ComprehensiveBookingWorkflow.tsx:605 🎯 TALENT GROUPED BY ROLE_ID: {totalTalent: 23, roleGroups: Array(6), categorizedCounts: {…}}
+ComprehensiveBookingWorkflow.tsx:605 🎯 TALENT GROUPED BY ROLE_ID: {totalTalent: 23, roleGroups: Array(6), categorizedCounts: {…}}
+ComprehensiveBookingWorkflow.tsx:605 🎯 TALENT GROUPED BY ROLE_ID: {totalTalent: 23, roleGroups: Array(6), categorizedCounts: {…}}
+ComprehensiveBookingWorkflow.tsx:605 🎯 TALENT GROUPED BY ROLE_ID: {totalTalent: 23, roleGroups: Array(6), categorizedCounts: {…}}
+ComprehensiveBookingWorkflow.tsx:605 🎯 TALENT GROUPED BY ROLE_ID: {totalTalent: 23, roleGroups: Array(6), categorizedCounts: {…}}
+ComprehensiveBookingWorkflow.tsx:605 🎯 TALENT GROUPED BY ROLE_ID: {totalTalent: 23, roleGroups: Array(6), categorizedCounts: {…}}
+ComprehensiveBookingWorkflow.tsx:605 🎯 TALENT GROUPED BY ROLE_ID: {totalTalent: 23, roleGroups: Array(6), categorizedCounts: {…}}
+ComprehensiveBookingWorkflow.tsx:605 🎯 TALENT GROUPED BY ROLE_ID: {totalTalent: 23, roleGroups: Array(6), categorizedCounts: {…}}
+ComprehensiveBookingWorkflow.tsx:605 🎯 TALENT GROUPED BY ROLE_ID: {totalTalent: 23, roleGroups: Array(6), categorizedCounts: {…}}
+ComprehensiveBookingWorkflow.tsx:605 🎯 TALENT GROUPED BY ROLE_ID: {totalTalent: 23, roleGroups: Array(6), categorizedCounts: {…}}
+ComprehensiveBookingWorkflow.tsx:605 🎯 TALENT GROUPED BY ROLE_ID: {totalTalent: 23, roleGroups: Array(6), categorizedCounts: {…}}
+ComprehensiveBookingWorkflow.tsx:605 🎯 TALENT GROUPED BY ROLE_ID: {totalTalent: 23, roleGroups: Array(6), categorizedCounts: {…}}
+ComprehensiveBookingWorkflow.tsx:605 🎯 TALENT GROUPED BY ROLE_ID: {totalTalent: 23, roleGroups: Array(6), categorizedCounts: {…}}
+ComprehensiveBookingWorkflow.tsx:605 🎯 TALENT GROUPED BY ROLE_ID: {totalTalent: 23, roleGroups: Array(6), categorizedCounts: {…}}
+EnhancedTechnicalRider.tsx:1415 DEBUG: Syncing stage legend talent/skills with band members
+EnhancedTechnicalRider.tsx:1461 🔄 TECHNICAL RIDER: Initializing band members
+EnhancedTechnicalRider.tsx:1462 🔄 Assigned musicians (props) count: 7
+EnhancedTechnicalRider.tsx:1463 🔄 Final assigned musicians (API) count: 7
+EnhancedTechnicalRider.tsx:1464 🔄 Will use: assignedMusicians (props)
+EnhancedTechnicalRider.tsx:1470 🔄 Using musician data source: assignedMusicians (props)
+EnhancedTechnicalRider.tsx:1530 🔄 Total members added from API: 7
+EnhancedTechnicalRider.tsx:1594 Sorting: Maya Bass badge: managed_musician order: 7 vs Lí-Lí Octave badge: managed_artist order: 7
+EnhancedTechnicalRider.tsx:1594 Sorting: Storm Johnson badge: Artist order: 7 vs Phoenix Chen badge: Artist order: 7
+EnhancedTechnicalRider.tsx:1594 Sorting: Wave Anderson badge: Artist order: 7 vs Storm Johnson badge: Artist order: 7
+EnhancedTechnicalRider.tsx:1594 Sorting: Ocean Park badge: Artist order: 7 vs Wave Anderson badge: Artist order: 7
+EnhancedTechnicalRider.tsx:1594 Sorting: Session Brooks badge: Artist order: 7 vs Ocean Park badge: Artist order: 7
+EnhancedTechnicalRider.tsx:1594 Sorting: Mr Lindsay George badge: MANAGEMENT order: 999 vs Session Brooks badge: Artist order: 7
+EnhancedTechnicalRider.tsx:1594 Sorting: Ms Joyette Pascal badge: MANAGEMENT order: 999 vs Mr Lindsay George badge: MANAGEMENT order: 999
+EnhancedTechnicalRider.tsx:1599 🔄 FINAL: Setting 9 band members
+EnhancedTechnicalRider.tsx:1415 DEBUG: Syncing stage legend talent/skills with band members
+EnhancedTechnicalRider.tsx:1461 🔄 TECHNICAL RIDER: Initializing band members
+EnhancedTechnicalRider.tsx:1462 🔄 Assigned musicians (props) count: 7
+EnhancedTechnicalRider.tsx:1463 🔄 Final assigned musicians (API) count: 2
+EnhancedTechnicalRider.tsx:1464 🔄 Will use: assignedMusicians (props)
+EnhancedTechnicalRider.tsx:1470 🔄 Using musician data source: assignedMusicians (props)
+EnhancedTechnicalRider.tsx:1530 🔄 Total members added from API: 7
+EnhancedTechnicalRider.tsx:1594 Sorting: Maya Bass badge: managed_musician order: 7 vs Lí-Lí Octave badge: managed_artist order: 7
+EnhancedTechnicalRider.tsx:1594 Sorting: Storm Johnson badge: Artist order: 7 vs Phoenix Chen badge: Artist order: 7
+EnhancedTechnicalRider.tsx:1594 Sorting: Wave Anderson badge: Artist order: 7 vs Storm Johnson badge: Artist order: 7
+EnhancedTechnicalRider.tsx:1594 Sorting: Ocean Park badge: Artist order: 7 vs Wave Anderson badge: Artist order: 7
+EnhancedTechnicalRider.tsx:1594 Sorting: Session Brooks badge: Artist order: 7 vs Ocean Park badge: Artist order: 7
+EnhancedTechnicalRider.tsx:1594 Sorting: Mr Lindsay George badge: MANAGEMENT order: 999 vs Session Brooks badge: Artist order: 7
+EnhancedTechnicalRider.tsx:1594 Sorting: Ms Joyette Pascal badge: MANAGEMENT order: 999 vs Mr Lindsay George badge: MANAGEMENT order: 999
+EnhancedTechnicalRider.tsx:1599 🔄 FINAL: Setting 9 band members
+EnhancedTechnicalRider.tsx:1415 DEBUG: Syncing stage legend talent/skills with band members
+EnhancedTechnicalRider.tsx:2133 🎭 STAGE PLOT: Band member added to stage, triggering mixer auto-assignment
+EnhancedTechnicalRider.tsx:2671 🎛️ FLEXIBLE AUTO-ASSIGNMENT: Starting assignment with real band members
+EnhancedTechnicalRider.tsx:2706 🎛️ Real musicians for assignment: (7) [{…}, {…}, {…}, {…}, {…}, {…}, {…}]
+EnhancedTechnicalRider.tsx:2728 🎛️ FLEXIBLE ASSIGNMENT: Analyzing all groups and musicians
+EnhancedTechnicalRider.tsx:2798 🎛️ GROUP: drums (DRUMS) - 10 channels, 1 musicians
+EnhancedTechnicalRider.tsx:2798 🎛️ GROUP: bass (BASS) - 2 channels, 1 musicians
+EnhancedTechnicalRider.tsx:2798 🎛️ GROUP: guitar (GUITAR) - 2 channels, 1 musicians
+EnhancedTechnicalRider.tsx:2798 🎛️ GROUP: percussion (PERCUSSION) - 2 channels, 0 musicians
+EnhancedTechnicalRider.tsx:2798 🎛️ GROUP: keyboards (KEYBOARD) - 8 channels, 1 musicians
+EnhancedTechnicalRider.tsx:2798 🎛️ GROUP: brass (BRASS) - 8 channels, 1 musicians
+EnhancedTechnicalRider.tsx:2798 🎛️ GROUP: vocals (VOCALS) - 5 channels, 1 musicians
+EnhancedTechnicalRider.tsx:2820 🎯 DRUMS SPECIAL RULE: Phoenix Chen → ALL 10 channels (Kick In, Kick Out, Snare Top, Snare Bottom, Hi Hat, Rack Tom 1, Rack Tom 2, Rack Tom 3 / Floor Tom, Over Head Left, Over Head Right)
+EnhancedTechnicalRider.tsx:2824 🎯 FLEXIBLE DISTRIBUTION for BASS: 1 musicians → 2 channels
+EnhancedTechnicalRider.tsx:2843 ✅ BASS: Maya Bass → "Bass DI"
+EnhancedTechnicalRider.tsx:2857 🎯 EXTRA CHANNELS: Maya Bass gets 1 additional channels (Bass Mic)
+EnhancedTechnicalRider.tsx:2824 🎯 FLEXIBLE DISTRIBUTION for GUITAR: 1 musicians → 2 channels
+EnhancedTechnicalRider.tsx:2843 ✅ GUITAR: Storm Johnson → "Guitar 1"
+EnhancedTechnicalRider.tsx:2857 🎯 EXTRA CHANNELS: Storm Johnson gets 1 additional channels (Guitar 2)
+EnhancedTechnicalRider.tsx:2824 🎯 FLEXIBLE DISTRIBUTION for KEYBOARD: 1 musicians → 8 channels
+EnhancedTechnicalRider.tsx:2843 ✅ KEYBOARD: Wave Anderson → "Keyboard 1 – Left"
+EnhancedTechnicalRider.tsx:2857 🎯 EXTRA CHANNELS: Wave Anderson gets 7 additional channels (Keyboard 1 – Right, Keyboard 2 – Left, Keyboard 2 – Right, Keyboard 3 – Left, Keyboard 3 – Right, Keyboard 4 – Left, Keyboard 4 – Right)
+EnhancedTechnicalRider.tsx:2824 🎯 FLEXIBLE DISTRIBUTION for BRASS: 1 musicians → 8 channels
+EnhancedTechnicalRider.tsx:2843 ✅ BRASS: Session Brooks → "Brass"
+EnhancedTechnicalRider.tsx:2857 🎯 EXTRA CHANNELS: Session Brooks gets 7 additional channels (Brass, Brass, Brass, Brass, Brass, Brass, Brass)
+EnhancedTechnicalRider.tsx:2824 🎯 FLEXIBLE DISTRIBUTION for VOCALS: 1 musicians → 5 channels
+EnhancedTechnicalRider.tsx:2843 ✅ VOCALS: Lí-Lí Octave → "Background Vocals 1"
+EnhancedTechnicalRider.tsx:2857 🎯 EXTRA CHANNELS: Lí-Lí Octave gets 4 additional channels (Background Vocals 2, Background Vocals 3, Lead Vox – Spare, Lead Vox)
+EnhancedTechnicalRider.tsx:2883 🎛️ PHASE 2: Flexible assignment for remaining musicians
+EnhancedTechnicalRider.tsx:2888 🎛️ UNASSIGNED MEMBERS: (2) ['Phoenix Chen (Drummer)', 'Ocean Park (Violinist)']
+EnhancedTechnicalRider.tsx:2889 🎛️ Strategy: Try to maximize existing channel group usage before creating new groups
+EnhancedTechnicalRider.tsx:2894 🎛️ FLEXIBLE OPTION: Phoenix Chen could be manually assigned to appropriate channels based on: Drummer
+EnhancedTechnicalRider.tsx:2894 🎛️ FLEXIBLE OPTION: Ocean Park could be manually assigned to appropriate channels based on: Violinist
+EnhancedTechnicalRider.tsx:2934 🎯 ASSIGNMENT VERIFICATION: 35/35 valid assignments
+EnhancedTechnicalRider.tsx:2947 🎛️ AUTO-ASSIGNMENT: Completed mixer channel assignments with verification
+EnhancedTechnicalRider.tsx:2133 🎭 STAGE PLOT: Band member added to stage, triggering mixer auto-assignment
+EnhancedTechnicalRider.tsx:2671 🎛️ FLEXIBLE AUTO-ASSIGNMENT: Starting assignment with real band members
+EnhancedTechnicalRider.tsx:2706 🎛️ Real musicians for assignment: (7) [{…}, {…}, {…}, {…}, {…}, {…}, {…}]
+EnhancedTechnicalRider.tsx:2728 🎛️ FLEXIBLE ASSIGNMENT: Analyzing all groups and musicians
+EnhancedTechnicalRider.tsx:2798 🎛️ GROUP: drums (DRUMS) - 0 channels, 1 musicians
+EnhancedTechnicalRider.tsx:2798 🎛️ GROUP: bass (BASS) - 0 channels, 1 musicians
+EnhancedTechnicalRider.tsx:2798 🎛️ GROUP: guitar (GUITAR) - 0 channels, 1 musicians
+EnhancedTechnicalRider.tsx:2798 🎛️ GROUP: percussion (PERCUSSION) - 2 channels, 0 musicians
+EnhancedTechnicalRider.tsx:2798 🎛️ GROUP: keyboards (KEYBOARD) - 0 channels, 1 musicians
+EnhancedTechnicalRider.tsx:2798 🎛️ GROUP: brass (BRASS) - 0 channels, 1 musicians
+EnhancedTechnicalRider.tsx:2798 🎛️ GROUP: vocals (VOCALS) - 0 channels, 1 musicians
+EnhancedTechnicalRider.tsx:2883 🎛️ PHASE 2: Flexible assignment for remaining musicians
+EnhancedTechnicalRider.tsx:2888 🎛️ UNASSIGNED MEMBERS: (7) ['Lí-Lí Octave (Lead Vocalist)', 'Maya Bass (Bass Player)', 'Phoenix Chen (Drummer)', 'Storm Johnson (Lead Guitarist)', 'Wave Anderson (Keyboardist)', 'Ocean Park (Violinist)', 'Session Brooks (Saxophonist)']
+EnhancedTechnicalRider.tsx:2889 🎛️ Strategy: Try to maximize existing channel group usage before creating new groups
+EnhancedTechnicalRider.tsx:2894 🎛️ FLEXIBLE OPTION: Lí-Lí Octave could be manually assigned to appropriate channels based on: Lead Vocalist
+EnhancedTechnicalRider.tsx:2894 🎛️ FLEXIBLE OPTION: Maya Bass could be manually assigned to appropriate channels based on: Bass Player
+EnhancedTechnicalRider.tsx:2894 🎛️ FLEXIBLE OPTION: Phoenix Chen could be manually assigned to appropriate channels based on: Drummer
+EnhancedTechnicalRider.tsx:2894 🎛️ FLEXIBLE OPTION: Storm Johnson could be manually assigned to appropriate channels based on: Lead Guitarist
+EnhancedTechnicalRider.tsx:2894 🎛️ FLEXIBLE OPTION: Wave Anderson could be manually assigned to appropriate channels based on: Keyboardist
+EnhancedTechnicalRider.tsx:2894 🎛️ FLEXIBLE OPTION: Ocean Park could be manually assigned to appropriate channels based on: Violinist
+EnhancedTechnicalRider.tsx:2894 🎛️ FLEXIBLE OPTION: Session Brooks could be manually assigned to appropriate channels based on: Saxophonist
+EnhancedTechnicalRider.tsx:2934 🎯 ASSIGNMENT VERIFICATION: 35/35 valid assignments
+EnhancedTechnicalRider.tsx:2947 🎛️ AUTO-ASSIGNMENT: Completed mixer channel assignments with verification
+EnhancedTechnicalRider.tsx:2133 🎭 STAGE PLOT: Band member added to stage, triggering mixer auto-assignment
+EnhancedTechnicalRider.tsx:2671 🎛️ FLEXIBLE AUTO-ASSIGNMENT: Starting assignment with real band members
+EnhancedTechnicalRider.tsx:2706 🎛️ Real musicians for assignment: (7) [{…}, {…}, {…}, {…}, {…}, {…}, {…}]
+EnhancedTechnicalRider.tsx:2728 🎛️ FLEXIBLE ASSIGNMENT: Analyzing all groups and musicians
+EnhancedTechnicalRider.tsx:2798 🎛️ GROUP: drums (DRUMS) - 0 channels, 1 musicians
+EnhancedTechnicalRider.tsx:2798 🎛️ GROUP: bass (BASS) - 0 channels, 1 musicians
+EnhancedTechnicalRider.tsx:2798 🎛️ GROUP: guitar (GUITAR) - 0 channels, 1 musicians
+EnhancedTechnicalRider.tsx:2798 🎛️ GROUP: percussion (PERCUSSION) - 2 channels, 0 musicians
+EnhancedTechnicalRider.tsx:2798 🎛️ GROUP: keyboards (KEYBOARD) - 0 channels, 1 musicians
+EnhancedTechnicalRider.tsx:2798 🎛️ GROUP: brass (BRASS) - 0 channels, 1 musicians
+EnhancedTechnicalRider.tsx:2798 🎛️ GROUP: vocals (VOCALS) - 0 channels, 1 musicians
+EnhancedTechnicalRider.tsx:2883 🎛️ PHASE 2: Flexible assignment for remaining musicians
+EnhancedTechnicalRider.tsx:2888 🎛️ UNASSIGNED MEMBERS: (7) ['Lí-Lí Octave (Lead Vocalist)', 'Maya Bass (Bass Player)', 'Phoenix Chen (Drummer)', 'Storm Johnson (Lead Guitarist)', 'Wave Anderson (Keyboardist)', 'Ocean Park (Violinist)', 'Session Brooks (Saxophonist)']
+EnhancedTechnicalRider.tsx:2889 🎛️ Strategy: Try to maximize existing channel group usage before creating new groups
+EnhancedTechnicalRider.tsx:2894 🎛️ FLEXIBLE OPTION: Lí-Lí Octave could be manually assigned to appropriate channels based on: Lead Vocalist
+EnhancedTechnicalRider.tsx:2894 🎛️ FLEXIBLE OPTION: Maya Bass could be manually assigned to appropriate channels based on: Bass Player
+EnhancedTechnicalRider.tsx:2894 🎛️ FLEXIBLE OPTION: Phoenix Chen could be manually assigned to appropriate channels based on: Drummer
+EnhancedTechnicalRider.tsx:2894 🎛️ FLEXIBLE OPTION: Storm Johnson could be manually assigned to appropriate channels based on: Lead Guitarist
+EnhancedTechnicalRider.tsx:2894 🎛️ FLEXIBLE OPTION: Wave Anderson could be manually assigned to appropriate channels based on: Keyboardist
+EnhancedTechnicalRider.tsx:2894 🎛️ FLEXIBLE OPTION: Ocean Park could be manually assigned to appropriate channels based on: Violinist
+EnhancedTechnicalRider.tsx:2894 🎛️ FLEXIBLE OPTION: Session Brooks could be manually assigned to appropriate channels based on: Saxophonist
+EnhancedTechnicalRider.tsx:2934 🎯 ASSIGNMENT VERIFICATION: 35/35 valid assignments
+EnhancedTechnicalRider.tsx:2947 🎛️ AUTO-ASSIGNMENT: Completed mixer channel assignments with verification
+EnhancedTechnicalRider.tsx:2133 🎭 STAGE PLOT: Band member added to stage, triggering mixer auto-assignment
+EnhancedTechnicalRider.tsx:2671 🎛️ FLEXIBLE AUTO-ASSIGNMENT: Starting assignment with real band members
+EnhancedTechnicalRider.tsx:2706 🎛️ Real musicians for assignment: (7) [{…}, {…}, {…}, {…}, {…}, {…}, {…}]
+EnhancedTechnicalRider.tsx:2728 🎛️ FLEXIBLE ASSIGNMENT: Analyzing all groups and musicians
+EnhancedTechnicalRider.tsx:2798 🎛️ GROUP: drums (DRUMS) - 0 channels, 1 musicians
+EnhancedTechnicalRider.tsx:2798 🎛️ GROUP: bass (BASS) - 0 channels, 1 musicians
+EnhancedTechnicalRider.tsx:2798 🎛️ GROUP: guitar (GUITAR) - 0 channels, 1 musicians
+EnhancedTechnicalRider.tsx:2798 🎛️ GROUP: percussion (PERCUSSION) - 2 channels, 0 musicians
+EnhancedTechnicalRider.tsx:2798 🎛️ GROUP: keyboards (KEYBOARD) - 0 channels, 1 musicians
+EnhancedTechnicalRider.tsx:2798 🎛️ GROUP: brass (BRASS) - 0 channels, 1 musicians
+EnhancedTechnicalRider.tsx:2798 🎛️ GROUP: vocals (VOCALS) - 0 channels, 1 musicians
+EnhancedTechnicalRider.tsx:2883 🎛️ PHASE 2: Flexible assignment for remaining musicians
+EnhancedTechnicalRider.tsx:2888 🎛️ UNASSIGNED MEMBERS: (7) ['Lí-Lí Octave (Lead Vocalist)', 'Maya Bass (Bass Player)', 'Phoenix Chen (Drummer)', 'Storm Johnson (Lead Guitarist)', 'Wave Anderson (Keyboardist)', 'Ocean Park (Violinist)', 'Session Brooks (Saxophonist)']
+EnhancedTechnicalRider.tsx:2889 🎛️ Strategy: Try to maximize existing channel group usage before creating new groups
+EnhancedTechnicalRider.tsx:2894 🎛️ FLEXIBLE OPTION: Lí-Lí Octave could be manually assigned to appropriate channels based on: Lead Vocalist
+EnhancedTechnicalRider.tsx:2894 🎛️ FLEXIBLE OPTION: Maya Bass could be manually assigned to appropriate channels based on: Bass Player
+EnhancedTechnicalRider.tsx:2894 🎛️ FLEXIBLE OPTION: Phoenix Chen could be manually assigned to appropriate channels based on: Drummer
+EnhancedTechnicalRider.tsx:2894 🎛️ FLEXIBLE OPTION: Storm Johnson could be manually assigned to appropriate channels based on: Lead Guitarist
+EnhancedTechnicalRider.tsx:2894 🎛️ FLEXIBLE OPTION: Wave Anderson could be manually assigned to appropriate channels based on: Keyboardist
+EnhancedTechnicalRider.tsx:2894 🎛️ FLEXIBLE OPTION: Ocean Park could be manually assigned to appropriate channels based on: Violinist
+EnhancedTechnicalRider.tsx:2894 🎛️ FLEXIBLE OPTION: Session Brooks could be manually assigned to appropriate channels based on: Saxophonist
+EnhancedTechnicalRider.tsx:2934 🎯 ASSIGNMENT VERIFICATION: 35/35 valid assignments
+EnhancedTechnicalRider.tsx:2947 🎛️ AUTO-ASSIGNMENT: Completed mixer channel assignments with verification
+EnhancedTechnicalRider.tsx:2133 🎭 STAGE PLOT: Band member added to stage, triggering mixer auto-assignment
+EnhancedTechnicalRider.tsx:2671 🎛️ FLEXIBLE AUTO-ASSIGNMENT: Starting assignment with real band members
+EnhancedTechnicalRider.tsx:2706 🎛️ Real musicians for assignment: (7) [{…}, {…}, {…}, {…}, {…}, {…}, {…}]
+EnhancedTechnicalRider.tsx:2728 🎛️ FLEXIBLE ASSIGNMENT: Analyzing all groups and musicians
+EnhancedTechnicalRider.tsx:2798 🎛️ GROUP: drums (DRUMS) - 0 channels, 1 musicians
+EnhancedTechnicalRider.tsx:2798 🎛️ GROUP: bass (BASS) - 0 channels, 1 musicians
+EnhancedTechnicalRider.tsx:2798 🎛️ GROUP: guitar (GUITAR) - 0 channels, 1 musicians
+EnhancedTechnicalRider.tsx:2798 🎛️ GROUP: percussion (PERCUSSION) - 2 channels, 0 musicians
+EnhancedTechnicalRider.tsx:2798 🎛️ GROUP: keyboards (KEYBOARD) - 0 channels, 1 musicians
+EnhancedTechnicalRider.tsx:2798 🎛️ GROUP: brass (BRASS) - 0 channels, 1 musicians
+EnhancedTechnicalRider.tsx:2798 🎛️ GROUP: vocals (VOCALS) - 0 channels, 1 musicians
+EnhancedTechnicalRider.tsx:2883 🎛️ PHASE 2: Flexible assignment for remaining musicians
+EnhancedTechnicalRider.tsx:2888 🎛️ UNASSIGNED MEMBERS: (7) ['Lí-Lí Octave (Lead Vocalist)', 'Maya Bass (Bass Player)', 'Phoenix Chen (Drummer)', 'Storm Johnson (Lead Guitarist)', 'Wave Anderson (Keyboardist)', 'Ocean Park (Violinist)', 'Session Brooks (Saxophonist)']
+EnhancedTechnicalRider.tsx:2889 🎛️ Strategy: Try to maximize existing channel group usage before creating new groups
+EnhancedTechnicalRider.tsx:2894 🎛️ FLEXIBLE OPTION: Lí-Lí Octave could be manually assigned to appropriate channels based on: Lead Vocalist
+EnhancedTechnicalRider.tsx:2894 🎛️ FLEXIBLE OPTION: Maya Bass could be manually assigned to appropriate channels based on: Bass Player
+EnhancedTechnicalRider.tsx:2894 🎛️ FLEXIBLE OPTION: Phoenix Chen could be manually assigned to appropriate channels based on: Drummer
+EnhancedTechnicalRider.tsx:2894 🎛️ FLEXIBLE OPTION: Storm Johnson could be manually assigned to appropriate channels based on: Lead Guitarist
+EnhancedTechnicalRider.tsx:2894 🎛️ FLEXIBLE OPTION: Wave Anderson could be manually assigned to appropriate channels based on: Keyboardist
+EnhancedTechnicalRider.tsx:2894 🎛️ FLEXIBLE OPTION: Ocean Park could be manually assigned to appropriate channels based on: Violinist
+EnhancedTechnicalRider.tsx:2894 🎛️ FLEXIBLE OPTION: Session Brooks could be manually assigned to appropriate channels based on: Saxophonist
+EnhancedTechnicalRider.tsx:2934 🎯 ASSIGNMENT VERIFICATION: 35/35 valid assignments
+EnhancedTechnicalRider.tsx:2947 🎛️ AUTO-ASSIGNMENT: Completed mixer channel assignments with verification
+EnhancedTechnicalRider.tsx:2133 🎭 STAGE PLOT: Band member added to stage, triggering mixer auto-assignment
+EnhancedTechnicalRider.tsx:2671 🎛️ FLEXIBLE AUTO-ASSIGNMENT: Starting assignment with real band members
+EnhancedTechnicalRider.tsx:2706 🎛️ Real musicians for assignment: (7) [{…}, {…}, {…}, {…}, {…}, {…}, {…}]
+EnhancedTechnicalRider.tsx:2728 🎛️ FLEXIBLE ASSIGNMENT: Analyzing all groups and musicians
+EnhancedTechnicalRider.tsx:2798 🎛️ GROUP: drums (DRUMS) - 0 channels, 1 musicians
+EnhancedTechnicalRider.tsx:2798 🎛️ GROUP: bass (BASS) - 0 channels, 1 musicians
+EnhancedTechnicalRider.tsx:2798 🎛️ GROUP: guitar (GUITAR) - 0 channels, 1 musicians
+EnhancedTechnicalRider.tsx:2798 🎛️ GROUP: percussion (PERCUSSION) - 2 channels, 0 musicians
+EnhancedTechnicalRider.tsx:2798 🎛️ GROUP: keyboards (KEYBOARD) - 0 channels, 1 musicians
+EnhancedTechnicalRider.tsx:2798 🎛️ GROUP: brass (BRASS) - 0 channels, 1 musicians
+EnhancedTechnicalRider.tsx:2798 🎛️ GROUP: vocals (VOCALS) - 0 channels, 1 musicians
+EnhancedTechnicalRider.tsx:2883 🎛️ PHASE 2: Flexible assignment for remaining musicians
+EnhancedTechnicalRider.tsx:2888 🎛️ UNASSIGNED MEMBERS: (7) ['Lí-Lí Octave (Lead Vocalist)', 'Maya Bass (Bass Player)', 'Phoenix Chen (Drummer)', 'Storm Johnson (Lead Guitarist)', 'Wave Anderson (Keyboardist)', 'Ocean Park (Violinist)', 'Session Brooks (Saxophonist)']
+EnhancedTechnicalRider.tsx:2889 🎛️ Strategy: Try to maximize existing channel group usage before creating new groups
+EnhancedTechnicalRider.tsx:2894 🎛️ FLEXIBLE OPTION: Lí-Lí Octave could be manually assigned to appropriate channels based on: Lead Vocalist
+EnhancedTechnicalRider.tsx:2894 🎛️ FLEXIBLE OPTION: Maya Bass could be manually assigned to appropriate channels based on: Bass Player
+EnhancedTechnicalRider.tsx:2894 🎛️ FLEXIBLE OPTION: Phoenix Chen could be manually assigned to appropriate channels based on: Drummer
+EnhancedTechnicalRider.tsx:2894 🎛️ FLEXIBLE OPTION: Storm Johnson could be manually assigned to appropriate channels based on: Lead Guitarist
+EnhancedTechnicalRider.tsx:2894 🎛️ FLEXIBLE OPTION: Wave Anderson could be manually assigned to appropriate channels based on: Keyboardist
+EnhancedTechnicalRider.tsx:2894 🎛️ FLEXIBLE OPTION: Ocean Park could be manually assigned to appropriate channels based on: Violinist
+EnhancedTechnicalRider.tsx:2894 🎛️ FLEXIBLE OPTION: Session Brooks could be manually assigned to appropriate channels based on: Saxophonist
+EnhancedTechnicalRider.tsx:2934 🎯 ASSIGNMENT VERIFICATION: 35/35 valid assignments
+EnhancedTechnicalRider.tsx:2947 🎛️ AUTO-ASSIGNMENT: Completed mixer channel assignments with verification
+EnhancedTechnicalRider.tsx:2133 🎭 STAGE PLOT: Band member added to stage, triggering mixer auto-assignment
+EnhancedTechnicalRider.tsx:2671 🎛️ FLEXIBLE AUTO-ASSIGNMENT: Starting assignment with real band members
+EnhancedTechnicalRider.tsx:2706 🎛️ Real musicians for assignment: (7) [{…}, {…}, {…}, {…}, {…}, {…}, {…}]
+EnhancedTechnicalRider.tsx:2728 🎛️ FLEXIBLE ASSIGNMENT: Analyzing all groups and musicians
+EnhancedTechnicalRider.tsx:2798 🎛️ GROUP: drums (DRUMS) - 0 channels, 1 musicians
+EnhancedTechnicalRider.tsx:2798 🎛️ GROUP: bass (BASS) - 0 channels, 1 musicians
+EnhancedTechnicalRider.tsx:2798 🎛️ GROUP: guitar (GUITAR) - 0 channels, 1 musicians
+EnhancedTechnicalRider.tsx:2798 🎛️ GROUP: percussion (PERCUSSION) - 2 channels, 0 musicians
+EnhancedTechnicalRider.tsx:2798 🎛️ GROUP: keyboards (KEYBOARD) - 0 channels, 1 musicians
+EnhancedTechnicalRider.tsx:2798 🎛️ GROUP: brass (BRASS) - 0 channels, 1 musicians
+EnhancedTechnicalRider.tsx:2798 🎛️ GROUP: vocals (VOCALS) - 0 channels, 1 musicians
+EnhancedTechnicalRider.tsx:2883 🎛️ PHASE 2: Flexible assignment for remaining musicians
+EnhancedTechnicalRider.tsx:2888 🎛️ UNASSIGNED MEMBERS: (7) ['Lí-Lí Octave (Lead Vocalist)', 'Maya Bass (Bass Player)', 'Phoenix Chen (Drummer)', 'Storm Johnson (Lead Guitarist)', 'Wave Anderson (Keyboardist)', 'Ocean Park (Violinist)', 'Session Brooks (Saxophonist)']
+EnhancedTechnicalRider.tsx:2889 🎛️ Strategy: Try to maximize existing channel group usage before creating new groups
+EnhancedTechnicalRider.tsx:2894 🎛️ FLEXIBLE OPTION: Lí-Lí Octave could be manually assigned to appropriate channels based on: Lead Vocalist
+EnhancedTechnicalRider.tsx:2894 🎛️ FLEXIBLE OPTION: Maya Bass could be manually assigned to appropriate channels based on: Bass Player
+EnhancedTechnicalRider.tsx:2894 🎛️ FLEXIBLE OPTION: Phoenix Chen could be manually assigned to appropriate channels based on: Drummer
+EnhancedTechnicalRider.tsx:2894 🎛️ FLEXIBLE OPTION: Storm Johnson could be manually assigned to appropriate channels based on: Lead Guitarist
+EnhancedTechnicalRider.tsx:2894 🎛️ FLEXIBLE OPTION: Wave Anderson could be manually assigned to appropriate channels based on: Keyboardist
+EnhancedTechnicalRider.tsx:2894 🎛️ FLEXIBLE OPTION: Ocean Park could be manually assigned to appropriate channels based on: Violinist
+EnhancedTechnicalRider.tsx:2894 🎛️ FLEXIBLE OPTION: Session Brooks could be manually assigned to appropriate channels based on: Saxophonist
+EnhancedTechnicalRider.tsx:2934 🎯 ASSIGNMENT VERIFICATION: 35/35 valid assignments
+EnhancedTechnicalRider.tsx:2947 🎛️ AUTO-ASSIGNMENT: Completed mixer channel assignments with verification

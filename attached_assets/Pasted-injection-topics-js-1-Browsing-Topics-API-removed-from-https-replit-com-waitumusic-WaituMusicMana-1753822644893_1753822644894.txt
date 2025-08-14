@@ -1,0 +1,440 @@
+injection-topics.js:1 Browsing Topics API removed from https://replit.com/@waitumusic/WaituMusicManager which is main frame
+cdn.segment.com/v1/projects/dMePKGC4BqfBivpe0Hvl8IoPpzSHgjdX/settings:1   Failed to load resource: net::ERR_BLOCKED_BY_CLIENT
+index.ts:46  Failed to fetch
+(anonymous) @ index.ts:46
+standalone.ts:45  [analytics.js] Failed to load Analytics.js TypeError: Failed to fetch
+    at o (sdk.min.js:1:23763)
+    at index.ts:34:26
+    at tslib.es6.js:103:23
+    at Object.next (tslib.es6.js:108:37)
+    at tslib.es6.js:80:8
+    at new Promise (<anonymous>)
+    at u (tslib.es6.js:72:27)
+    at re (index.ts:239:4)
+    at index.ts:338:7
+(anonymous) @ standalone.ts:45
+api.segment.io/v1/m:1   Failed to load resource: net::ERR_BLOCKED_BY_CLIENT
+remote-metrics.ts:53  Error sending segment performance metrics TypeError: Failed to fetch
+    at o (sdk.min.js:1:23763)
+    at t.<anonymous> (remote-metrics.ts:138:12)
+    at tslib.es6.js:103:23
+    at Object.next (tslib.es6.js:108:37)
+    at tslib.es6.js:80:8
+    at new Promise (<anonymous>)
+    at u (tslib.es6.js:72:27)
+    at t.send (sdk.min.js:1:22021)
+    at t.<anonymous> (remote-metrics.ts:125:16)
+    at tslib.es6.js:103:23
+a @ remote-metrics.ts:53
+ stallwart: failed ping 1
+_app-7b69e9316cdff632.js:13 
+      /////////////////////
+   ///////////////////////////
+  ////////@@@@@@@//////////////
+  ////////@@@@@@@//////////////
+  ////////@@@@@@@//////////////        Curious and driven?
+  ///////////////@@@@@@@///////        Work with us!
+  ///////////////@@@@@@@///////
+  ///////////////@@@@@@@///////        https://join.replit.com/hack.with.us
+  ////////@@@@@@@//////////////
+  ////////@@@@@@@//////////////
+  ////////@@@@@@#//////////////
+   ///////////////////////////
+      /////////////////////
+      
+_app-7b69e9316cdff632.js:13 [LaunchDarkly] LaunchDarkly client initialized
+ Browsing Topics API removed from https://js.stripe.com/v3/controller-with-preconnect-4092cf06a62a84a5ed4e86a7dbd9571b.html#__shared_params__[version]=acacia&apiKey=pk_live_515YpNsJAmnYVOvfnsBqRdATWS6SzbNAslOz1z2tujdKuvRMDAwWMeFXp6dJL1YKRrQjB0WAp0UDGwlFYL7hxw7Fc00QkfxBFsL&apiVersion=2025-01-27.acacia&stripeJsId=de5ca1a9-342c-42dd-9fc0-af5bee7b425f&stripeObjId=sobj-2610965e-3cd9-4a4d-a842-077e9f17b03c&firstStripeInstanceCreatedLatency=76&controllerCount=1&isCheckout=false&stripeJsLoadTime=1753822513431&manualBrowserDeprecationRollout=false&mids[guid]=NA&mids[muid]=ca9a3c25-0f65-4f56-98d2-91061691de398de85f&mids[sid]=NA&referrer=https%3A%2F%2Freplit.com%2F%40waitumusic%2FWaituMusicManager&controllerId=__privateStripeController4521 which is iframe
+WaituMusicManager:1  Tracking Prevention blocked access to storage for https://www.gravatar.com/avatar/a3be3e59cb36da8a00d29fe26d1575a9?d=blank&s=256.
+WaituMusicManager:1  Tracking Prevention blocked access to storage for https://www.gravatar.com/avatar/a3be3e59cb36da8a00d29fe26d1575a9?d=blank&s=256.
+WaituMusicManager:1  Tracking Prevention blocked access to storage for https://www.gravatar.com/avatar/a3be3e59cb36da8a00d29fe26d1575a9?d=blank&s=256.
+WaituMusicManager:1  Tracking Prevention blocked access to storage for https://www.gravatar.com/avatar/a3be3e59cb36da8a00d29fe26d1575a9?d=blank&s=256.
+ Browsing Topics API removed from https://www.google.com/recaptcha/enterprise/anchor?ar=1&k=6LdqhwwoAAAAAFPdw8jCuvY3PaHQItGj3RzOS4fW&co=aHR0cHM6Ly9yZXBsaXQuY29tOjQ0Mw..&hl=en&v=ngcIAHyEnHQZZIKkyKneDTW3&size=invisible&anchor-ms=20000&execute-ms=15000&cb=7b58bh4jyduy which is iframe
+  Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+_ @ framework-dc2afbd5e27ed5e9.js:1
+  Unrecognized feature: 'ambient-light-sensor'.
+_ @ framework-dc2afbd5e27ed5e9.js:1
+  Unrecognized feature: 'battery'.
+_ @ framework-dc2afbd5e27ed5e9.js:1
+  Unrecognized feature: 'execution-while-not-rendered'.
+_ @ framework-dc2afbd5e27ed5e9.js:1
+  Unrecognized feature: 'execution-while-out-of-viewport'.
+_ @ framework-dc2afbd5e27ed5e9.js:1
+  Unrecognized feature: 'layout-animations'.
+_ @ framework-dc2afbd5e27ed5e9.js:1
+  Unrecognized feature: 'legacy-image-formats'.
+_ @ framework-dc2afbd5e27ed5e9.js:1
+  Unrecognized feature: 'navigation-override'.
+_ @ framework-dc2afbd5e27ed5e9.js:1
+  Unrecognized feature: 'oversized-images'.
+_ @ framework-dc2afbd5e27ed5e9.js:1
+  Unrecognized feature: 'publickey-credentials'.
+_ @ framework-dc2afbd5e27ed5e9.js:1
+  Unrecognized feature: 'speaker-selection'.
+_ @ framework-dc2afbd5e27ed5e9.js:1
+  Unrecognized feature: 'unoptimized-images'.
+_ @ framework-dc2afbd5e27ed5e9.js:1
+  Unrecognized feature: 'unsized-media'.
+_ @ framework-dc2afbd5e27ed5e9.js:1
+  Unrecognized feature: 'pointer-lock'.
+_ @ framework-dc2afbd5e27ed5e9.js:1
+  Allow attribute will take precedence over 'allowfullscreen'.
+_ @ framework-dc2afbd5e27ed5e9.js:1
+  Allow attribute will take precedence over 'allowpaymentrequest'.
+_ @ framework-dc2afbd5e27ed5e9.js:1
+workspace_iframe.html:32  Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+workspace_iframe.html:32  Unrecognized feature: 'ambient-light-sensor'.
+workspace_iframe.html:32  Unrecognized feature: 'battery'.
+workspace_iframe.html:32  Unrecognized feature: 'execution-while-not-rendered'.
+workspace_iframe.html:32  Unrecognized feature: 'execution-while-out-of-viewport'.
+workspace_iframe.html:32  Unrecognized feature: 'layout-animations'.
+workspace_iframe.html:32  Unrecognized feature: 'legacy-image-formats'.
+workspace_iframe.html:32  Unrecognized feature: 'navigation-override'.
+workspace_iframe.html:32  Unrecognized feature: 'oversized-images'.
+workspace_iframe.html:32  Unrecognized feature: 'publickey-credentials'.
+workspace_iframe.html:32  Unrecognized feature: 'speaker-selection'.
+workspace_iframe.html:32  Unrecognized feature: 'unoptimized-images'.
+workspace_iframe.html:32  Unrecognized feature: 'unsized-media'.
+workspace_iframe.html:32  Allow attribute will take precedence over 'allowfullscreen'.
+workspace_iframe.html:32  Allow attribute will take precedence over 'allowpaymentrequest'.
+ Browsing Topics API removed from https://e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/__replco/workspace_iframe.html?initialPath=%2F&id=%3Ar25%3A which is iframe
+ Browsing Topics API removed from about:blank which is iframe
+ Browsing Topics API removed from https://e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/ which is iframe
+injection-topics.js:1 Browsing Topics API removed from about:blank which is iframe
+ Browsing Topics API removed from about:blank which is iframe
+  WebSocket connection to 'wss://e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/?token=jyXrT7q0tEq6' failed: 
+setupWebSocket @ client:536
+client:536  Uncaught (in promise) 
+ Browsing Topics API removed from https://js.stripe.com/v3/m-outer-3437aaddcdf6922d623e172c2d6f9278.html#url=https%3A%2F%2Freplit.com%2F%40waitumusic%2FWaituMusicManager&title=WaituMusicManager%20-%20Replit&referrer=https%3A%2F%2Freplit.com%2F%40waitumusic%2FWaituMusicManager&muid=ca9a3c25-0f65-4f56-98d2-91061691de398de85f&sid=NA&version=6&preview=false&__shared_params__[version]=acacia which is iframe
+ Browsing Topics API removed from https://m.stripe.network/inner.html#url=https%3A%2F%2Freplit.com%2F%40waitumusic%2FWaituMusicManager&title=WaituMusicManager%20-%20Replit&referrer=https%3A%2F%2Freplit.com%2F%40waitumusic%2FWaituMusicManager&muid=ca9a3c25-0f65-4f56-98d2-91061691de398de85f&sid=NA&version=6&preview=false&__shared_params__[version]=acacia which is iframe
+ ✅ React app mounted successfully
+WaituMusicManager:1 Banner not shown: beforeinstallpromptevent.preventDefault() called. The page must call beforeinstallpromptevent.prompt() to show the banner.
+events.launchdarkly.com/events/bulk/62b35a865152ab14c5942820:1   Failed to load resource: net::ERR_BLOCKED_BY_CLIENT
+events.launchdarkly.com/events/bulk/62b35a865152ab14c5942820:1   Failed to load resource: net::ERR_BLOCKED_BY_CLIENT
+e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/api/user/profile:1   Failed to load resource: the server responded with a status of 500 (Internal Server Error)
+  Auth check failed: 
+checkAuthStatus @ AuthContext.tsx:47
+ FRONTEND: Fetching booking workflow for ID 22
+ FRONTEND: Received booking data with primaryArtist: Object
+ USEEFFECT: Processing booking data: Object
+ USEEFFECT: Primary artist data: Object
+ USEEFFECT: Determined artist type: Managed Artist from userType: Managed Artist isManaged: true
+ USEEFFECT: Creating primary talent assignment: Object
+ DEBUG: Syncing stage legend roles with band members
+ 🔄 TECHNICAL RIDER: Initializing band members
+ 🔄 Assigned musicians (props) count: 12
+ 🔄 Final assigned musicians (API) count: 12
+ 🔄 Will use: assignedMusicians (props)
+ 🔄 Using musician data source: assignedMusicians (props)
+ 🔄 Processing musician 1: Princess Trinidad
+ 🔄 Full musician data: Object
+ 🔄 Musician roleId: undefined talentType: Artist
+ 🔄 Membership determination: roleId undefined includes Professional? false Result: BAND
+ 🔄 Role badge: Artist
+ 🔄 Membership: BAND
+ 🔄 Primary role: Lead Vocalist
+ 🎯 Building dropdown options for: Princess Trinidad
+ 🎯 Available profile data: Object
+ 🎯 Generated dropdown options: Array(2)
+ 🔄 Adding member 1: Princess Trinidad Membership: BAND
+ 🔄 Processing musician 2: Alex Thompson
+ 🔄 Full musician data: Object
+ 🔄 Musician roleId: undefined talentType: Artist
+ 🔄 Membership determination: roleId undefined includes Professional? false Result: BAND
+ 🔄 Role badge: Artist
+ 🔄 Membership: BAND
+ 🔄 Primary role: Musician
+ 🎯 Building dropdown options for: Alex Thompson
+ 🎯 Available profile data: Object
+ 🎯 Generated dropdown options: Array(2)
+ 🔄 Adding member 2: Alex Thompson Membership: BAND
+ 🔄 Processing musician 3: Sarah Martinez
+ 🔄 Full musician data: Object
+ 🔄 Musician roleId: undefined talentType: Artist
+ 🔄 Membership determination: roleId undefined includes Professional? false Result: BAND
+ 🔄 Role badge: Artist
+ 🔄 Membership: BAND
+ 🔄 Primary role: Musician
+ 🎯 Building dropdown options for: Sarah Martinez
+ 🎯 Available profile data: Object
+ 🎯 Generated dropdown options: Array(2)
+ 🔄 Adding member 3: Sarah Martinez Membership: BAND
+ 🔄 Processing musician 4: David Chen
+ 🔄 Full musician data: Object
+ 🔄 Musician roleId: undefined talentType: Artist
+ 🔄 Membership determination: roleId undefined includes Professional? false Result: BAND
+ 🔄 Role badge: Artist
+ 🔄 Membership: BAND
+ 🔄 Primary role: Musician
+ 🎯 Building dropdown options for: David Chen
+ 🎯 Available profile data: Object
+ 🎯 Generated dropdown options: Array(2)
+ 🔄 Adding member 4: David Chen Membership: BAND
+ 🔄 Processing musician 5: Maria Rodriguez
+ 🔄 Full musician data: Object
+ 🔄 Musician roleId: undefined talentType: Artist
+ 🔄 Membership determination: roleId undefined includes Professional? false Result: BAND
+ 🔄 Role badge: Artist
+ 🔄 Membership: BAND
+ 🔄 Primary role: Musician
+ 🎯 Building dropdown options for: Maria Rodriguez
+ 🎯 Available profile data: Object
+ 🎯 Generated dropdown options: Array(2)
+ 🔄 Adding member 5: Maria Rodriguez Membership: BAND
+ 🔄 Processing musician 6: James Wilson
+ 🔄 Full musician data: Object
+ 🔄 Musician roleId: undefined talentType: Artist
+ 🔄 Membership determination: roleId undefined includes Professional? false Result: BAND
+ 🔄 Role badge: Artist
+ 🔄 Membership: BAND
+ 🔄 Primary role: Musician
+ 🎯 Building dropdown options for: James Wilson
+ 🎯 Available profile data: Object
+ 🎯 Generated dropdown options: Array(2)
+ 🔄 Adding member 6: James Wilson Membership: BAND
+ 🔄 Processing musician 7: Lisa Thompson
+ 🔄 Full musician data: Object
+ 🔄 Musician roleId: undefined talentType: Artist
+ 🔄 Membership determination: roleId undefined includes Professional? false Result: BAND
+ 🔄 Role badge: Artist
+ 🔄 Membership: BAND
+ 🔄 Primary role: Musician
+ 🎯 Building dropdown options for: Lisa Thompson
+ 🎯 Available profile data: Object
+ 🎯 Generated dropdown options: Array(2)
+ 🔄 Adding member 7: Lisa Thompson Membership: BAND
+ 🔄 Processing musician 8: Independent Professional Two
+ 🔄 Full musician data: Object
+ 🔄 Musician roleId: undefined talentType: Artist
+ 🔄 Membership determination: roleId undefined includes Professional? false Result: BAND
+ 🔄 Role badge: Artist
+ 🔄 Membership: BAND
+ 🔄 Primary role: Music Producer
+ 🎯 Building dropdown options for: Independent Professional Two
+ 🎯 Available profile data: Object
+ 🎯 Generated dropdown options: Array(1)
+ 🔄 Adding member 8: Independent Professional Two Membership: BAND
+ 🔄 Processing musician 9: Managed Professional Two
+ 🔄 Full musician data: Object
+ 🔄 Musician roleId: undefined talentType: Artist
+ 🔄 Membership determination: roleId undefined includes Professional? false Result: BAND
+ 🔄 Role badge: Artist
+ 🔄 Membership: BAND
+ 🔄 Primary role: Musician
+ 🎯 Building dropdown options for: Managed Professional Two
+ 🎯 Available profile data: Object
+ 🎯 Generated dropdown options: Array(2)
+ 🔄 Adding member 9: Managed Professional Two Membership: BAND
+ 🔄 Processing musician 10: Sophia Chen
+ 🔄 Full musician data: Object
+ 🔄 Musician roleId: undefined talentType: Artist
+ 🔄 Membership determination: roleId undefined includes Professional? false Result: BAND
+ 🔄 Role badge: Artist
+ 🔄 Membership: BAND
+ 🔄 Primary role: Bass Player
+ 🎯 Building dropdown options for: Sophia Chen
+ 🎯 Available profile data: Object
+ 🎯 Generated dropdown options: Array(2)
+ 🔄 Adding member 10: Sophia Chen Membership: BAND
+ 🔄 Processing musician 11: Michael Rodriguez
+ 🔄 Full musician data: Object
+ 🔄 Musician roleId: undefined talentType: Artist
+ 🔄 Membership determination: roleId undefined includes Professional? false Result: BAND
+ 🔄 Role badge: Artist
+ 🔄 Membership: BAND
+ 🔄 Primary role: Drummer
+ 🎯 Building dropdown options for: Michael Rodriguez
+ 🎯 Available profile data: Object
+ 🎯 Generated dropdown options: Array(2)
+ 🔄 Adding member 11: Michael Rodriguez Membership: BAND
+ 🔄 Processing musician 12: Regular User
+ 🔄 Full musician data: Object
+ 🔄 Musician roleId: undefined talentType: Artist
+ 🔄 Membership determination: roleId undefined includes Professional? false Result: BAND
+ 🔄 Role badge: Artist
+ 🔄 Membership: BAND
+ 🔄 Primary role: Musician
+ 🎯 Building dropdown options for: Regular User
+ 🎯 Available profile data: Object
+ 🎯 Generated dropdown options: Array(2)
+ 🔄 Adding member 12: Regular User Membership: BAND
+ 🔄 Total members added from API: 12
+ Sorting: Sarah Martinez badge: Artist order: 7 vs Alex Thompson badge: Artist order: 7
+ Sorting: David Chen badge: Artist order: 7 vs Sarah Martinez badge: Artist order: 7
+ Sorting: Maria Rodriguez badge: Artist order: 7 vs David Chen badge: Artist order: 7
+ Sorting: James Wilson badge: Artist order: 7 vs Maria Rodriguez badge: Artist order: 7
+ Sorting: Lisa Thompson badge: Artist order: 7 vs James Wilson badge: Artist order: 7
+ Sorting: Independent Professional Two badge: Artist order: 7 vs Lisa Thompson badge: Artist order: 7
+ Sorting: Managed Professional Two badge: Artist order: 7 vs Independent Professional Two badge: Artist order: 7
+ Sorting: Sophia Chen badge: Artist order: 7 vs Managed Professional Two badge: Artist order: 7
+ Sorting: Michael Rodriguez badge: Artist order: 7 vs Sophia Chen badge: Artist order: 7
+ Sorting: Regular User badge: Artist order: 7 vs Michael Rodriguez badge: Artist order: 7
+ Sorting: Mr Lindsay George badge: MANAGEMENT order: 999 vs Regular User badge: Artist order: 7
+ Sorting: Ms Joyette Pascal badge: MANAGEMENT order: 999 vs Mr Lindsay George badge: MANAGEMENT order: 999
+ 🔄 FINAL: Setting 14 band members
+ 🔄 Band members breakdown: Object
+The specified value "2025-07-28T04:00:00.000Z" does not conform to the required format, "yyyy-MM-dd".
+The specified value "2025-07-28T04:00:00.000Z" does not conform to the required format, "yyyy-MM-dd".
+The specified value "2025-07-28T04:00:00.000Z" does not conform to the required format, "yyyy-MM-dd".
+The specified value "2025-07-28T04:00:00.000Z" does not conform to the required format, "yyyy-MM-dd".
+The specified value "2025-07-28T04:00:00.000Z" does not conform to the required format, "yyyy-MM-dd".
+The specified value "2025-07-28T04:00:00.000Z" does not conform to the required format, "yyyy-MM-dd".
+ DEBUG: Syncing stage legend roles with band members
+ 🔄 TECHNICAL RIDER: Initializing band members
+ 🔄 Assigned musicians (props) count: 12
+ 🔄 Final assigned musicians (API) count: 1
+ 🔄 Will use: assignedMusicians (props)
+ 🔄 Using musician data source: assignedMusicians (props)
+ 🔄 Processing musician 1: Princess Trinidad
+ 🔄 Full musician data: Object
+ 🔄 Musician roleId: undefined talentType: Artist
+ 🔄 Membership determination: roleId undefined includes Professional? false Result: BAND
+ 🔄 Role badge: Artist
+ 🔄 Membership: BAND
+ 🔄 Primary role: Lead Vocalist
+ 🎯 Building dropdown options for: Princess Trinidad
+ 🎯 Available profile data: Object
+ 🎯 Generated dropdown options: Array(2)
+ 🔄 Adding member 1: Princess Trinidad Membership: BAND
+ 🔄 Processing musician 2: Alex Thompson
+ 🔄 Full musician data: Object
+ 🔄 Musician roleId: undefined talentType: Artist
+ 🔄 Membership determination: roleId undefined includes Professional? false Result: BAND
+ 🔄 Role badge: Artist
+ 🔄 Membership: BAND
+ 🔄 Primary role: Musician
+ 🎯 Building dropdown options for: Alex Thompson
+ 🎯 Available profile data: Object
+ 🎯 Generated dropdown options: Array(2)
+ 🔄 Adding member 2: Alex Thompson Membership: BAND
+ 🔄 Processing musician 3: Sarah Martinez
+ 🔄 Full musician data: Object
+ 🔄 Musician roleId: undefined talentType: Artist
+ 🔄 Membership determination: roleId undefined includes Professional? false Result: BAND
+ 🔄 Role badge: Artist
+ 🔄 Membership: BAND
+ 🔄 Primary role: Musician
+ 🎯 Building dropdown options for: Sarah Martinez
+ 🎯 Available profile data: Object
+ 🎯 Generated dropdown options: Array(2)
+ 🔄 Adding member 3: Sarah Martinez Membership: BAND
+ 🔄 Processing musician 4: David Chen
+ 🔄 Full musician data: Object
+ 🔄 Musician roleId: undefined talentType: Artist
+ 🔄 Membership determination: roleId undefined includes Professional? false Result: BAND
+ 🔄 Role badge: Artist
+ 🔄 Membership: BAND
+ 🔄 Primary role: Musician
+ 🎯 Building dropdown options for: David Chen
+ 🎯 Available profile data: Object
+ 🎯 Generated dropdown options: Array(2)
+ 🔄 Adding member 4: David Chen Membership: BAND
+ 🔄 Processing musician 5: Maria Rodriguez
+ 🔄 Full musician data: Object
+ 🔄 Musician roleId: undefined talentType: Artist
+ 🔄 Membership determination: roleId undefined includes Professional? false Result: BAND
+ 🔄 Role badge: Artist
+ 🔄 Membership: BAND
+ 🔄 Primary role: Musician
+ 🎯 Building dropdown options for: Maria Rodriguez
+ 🎯 Available profile data: Object
+ 🎯 Generated dropdown options: Array(2)
+ 🔄 Adding member 5: Maria Rodriguez Membership: BAND
+ 🔄 Processing musician 6: James Wilson
+ 🔄 Full musician data: Object
+ 🔄 Musician roleId: undefined talentType: Artist
+ 🔄 Membership determination: roleId undefined includes Professional? false Result: BAND
+ 🔄 Role badge: Artist
+ 🔄 Membership: BAND
+ 🔄 Primary role: Musician
+ 🎯 Building dropdown options for: James Wilson
+ 🎯 Available profile data: Object
+ 🎯 Generated dropdown options: Array(2)
+ 🔄 Adding member 6: James Wilson Membership: BAND
+ 🔄 Processing musician 7: Lisa Thompson
+ 🔄 Full musician data: Object
+ 🔄 Musician roleId: undefined talentType: Artist
+ 🔄 Membership determination: roleId undefined includes Professional? false Result: BAND
+ 🔄 Role badge: Artist
+ 🔄 Membership: BAND
+ 🔄 Primary role: Musician
+ 🎯 Building dropdown options for: Lisa Thompson
+ 🎯 Available profile data: Object
+ 🎯 Generated dropdown options: Array(2)
+ 🔄 Adding member 7: Lisa Thompson Membership: BAND
+ 🔄 Processing musician 8: Independent Professional Two
+ 🔄 Full musician data: Object
+ 🔄 Musician roleId: undefined talentType: Artist
+ 🔄 Membership determination: roleId undefined includes Professional? false Result: BAND
+ 🔄 Role badge: Artist
+ 🔄 Membership: BAND
+ 🔄 Primary role: Music Producer
+ 🎯 Building dropdown options for: Independent Professional Two
+ 🎯 Available profile data: Object
+ 🎯 Generated dropdown options: Array(1)
+ 🔄 Adding member 8: Independent Professional Two Membership: BAND
+ 🔄 Processing musician 9: Managed Professional Two
+ 🔄 Full musician data: Object
+ 🔄 Musician roleId: undefined talentType: Artist
+ 🔄 Membership determination: roleId undefined includes Professional? false Result: BAND
+ 🔄 Role badge: Artist
+ 🔄 Membership: BAND
+ 🔄 Primary role: Musician
+ 🎯 Building dropdown options for: Managed Professional Two
+ 🎯 Available profile data: Object
+ 🎯 Generated dropdown options: Array(2)
+ 🔄 Adding member 9: Managed Professional Two Membership: BAND
+ 🔄 Processing musician 10: Sophia Chen
+ 🔄 Full musician data: Object
+ 🔄 Musician roleId: undefined talentType: Artist
+ 🔄 Membership determination: roleId undefined includes Professional? false Result: BAND
+ 🔄 Role badge: Artist
+ 🔄 Membership: BAND
+ 🔄 Primary role: Bass Player
+ 🎯 Building dropdown options for: Sophia Chen
+ 🎯 Available profile data: Object
+ 🎯 Generated dropdown options: Array(2)
+ 🔄 Adding member 10: Sophia Chen Membership: BAND
+ 🔄 Processing musician 11: Michael Rodriguez
+ 🔄 Full musician data: Object
+ 🔄 Musician roleId: undefined talentType: Artist
+ 🔄 Membership determination: roleId undefined includes Professional? false Result: BAND
+ 🔄 Role badge: Artist
+ 🔄 Membership: BAND
+ 🔄 Primary role: Drummer
+EnhancedTechnicalRider.tsx:403 🎯 Building dropdown options for: Michael Rodriguez
+EnhancedTechnicalRider.tsx:404 🎯 Available profile data: Object
+EnhancedTechnicalRider.tsx:485 🎯 Generated dropdown options: Array(2)
+EnhancedTechnicalRider.tsx:570 🔄 Adding member 11: Michael Rodriguez Membership: BAND
+EnhancedTechnicalRider.tsx:529 🔄 Processing musician 12: Regular User
+EnhancedTechnicalRider.tsx:530 🔄 Full musician data: Object
+EnhancedTechnicalRider.tsx:531 🔄 Musician roleId: undefined talentType: Artist
+EnhancedTechnicalRider.tsx:538 🔄 Membership determination: roleId undefined includes Professional? false Result: BAND
+EnhancedTechnicalRider.tsx:543 🔄 Role badge: Artist
+EnhancedTechnicalRider.tsx:544 🔄 Membership: BAND
+EnhancedTechnicalRider.tsx:545 🔄 Primary role: Musician
+EnhancedTechnicalRider.tsx:403 🎯 Building dropdown options for: Regular User
+EnhancedTechnicalRider.tsx:404 🎯 Available profile data: Object
+EnhancedTechnicalRider.tsx:485 🎯 Generated dropdown options: Array(2)
+EnhancedTechnicalRider.tsx:570 🔄 Adding member 12: Regular User Membership: BAND
+EnhancedTechnicalRider.tsx:577 🔄 Total members added from API: 12
+EnhancedTechnicalRider.tsx:637 Sorting: Sarah Martinez badge: Artist order: 7 vs Alex Thompson badge: Artist order: 7
+EnhancedTechnicalRider.tsx:637 Sorting: David Chen badge: Artist order: 7 vs Sarah Martinez badge: Artist order: 7
+EnhancedTechnicalRider.tsx:637 Sorting: Maria Rodriguez badge: Artist order: 7 vs David Chen badge: Artist order: 7
+EnhancedTechnicalRider.tsx:637 Sorting: James Wilson badge: Artist order: 7 vs Maria Rodriguez badge: Artist order: 7
+EnhancedTechnicalRider.tsx:637 Sorting: Lisa Thompson badge: Artist order: 7 vs James Wilson badge: Artist order: 7
+EnhancedTechnicalRider.tsx:637 Sorting: Independent Professional Two badge: Artist order: 7 vs Lisa Thompson badge: Artist order: 7
+EnhancedTechnicalRider.tsx:637 Sorting: Managed Professional Two badge: Artist order: 7 vs Independent Professional Two badge: Artist order: 7
+EnhancedTechnicalRider.tsx:637 Sorting: Sophia Chen badge: Artist order: 7 vs Managed Professional Two badge: Artist order: 7
+EnhancedTechnicalRider.tsx:637 Sorting: Michael Rodriguez badge: Artist order: 7 vs Sophia Chen badge: Artist order: 7
+EnhancedTechnicalRider.tsx:637 Sorting: Regular User badge: Artist order: 7 vs Michael Rodriguez badge: Artist order: 7
+EnhancedTechnicalRider.tsx:637 Sorting: Mr Lindsay George badge: MANAGEMENT order: 999 vs Regular User badge: Artist order: 7
+EnhancedTechnicalRider.tsx:637 Sorting: Ms Joyette Pascal badge: MANAGEMENT order: 999 vs Mr Lindsay George badge: MANAGEMENT order: 999
+EnhancedTechnicalRider.tsx:642 🔄 FINAL: Setting 14 band members
+EnhancedTechnicalRider.tsx:643 🔄 Band members breakdown: Object
+EnhancedTechnicalRider.tsx:379 DEBUG: Syncing stage legend roles with band members
+[NEW] Explain Console errors by using Copilot in Edge: click
+         
+         to explain an error. 
+        Learn more
+        Don't show again
+stallwart.build.js:1 stallwart: failed ping 1

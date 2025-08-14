@@ -1,0 +1,73 @@
+▲ [WARNING] Duplicate member "getArtist" in class body [duplicate-class-member]
+
+    server/storage.ts:1778:8:
+      1778 │   async getArtist(userId: number): Promise<Artist | undefined> {
+           ╵         ~~~~~~~~~
+
+  The original member "getArtist" is here:
+
+    server/storage.ts:1658:8:
+      1658 │   async getArtist(userId: number): Promise<any | undefined> {
+           ╵         ~~~~~~~~~
+
+▲ [WARNING] Duplicate member "createArtist" in class body [duplicate-class-member]
+
+    server/storage.ts:1787:8:
+      1787 │   async createArtist(artist: InsertArtist): Promise<Artist> {
+           ╵         ~~~~~~~~~~~~
+
+  The original member "createArtist" is here:
+
+    server/storage.ts:1688:8:
+      1688 │   async createArtist(artistData: any): Promise<any> {
+           ╵         ~~~~~~~~~~~~
+
+▲ [WARNING] Duplicate member "getMusician" in class body [duplicate-class-member]
+
+    server/storage.ts:1810:8:
+      1810 │   async getMusician(userId: number): Promise<Musician | undefined> {
+           ╵         ~~~~~~~~~~~
+
+  The original member "getMusician" is here:
+
+    server/storage.ts:1668:8:
+      1668 │   async getMusician(userId: number): Promise<any | undefined> {
+           ╵         ~~~~~~~~~~~
+
+▲ [WARNING] Duplicate member "createMusician" in class body [duplicate-class-member]
+
+    server/storage.ts:1819:8:
+      1819 │   async createMusician(musician: InsertMusician): Promise<Musician> {
+           ╵         ~~~~~~~~~~~~~~
+
+  The original member "createMusician" is here:
+
+    server/storage.ts:1701:8:
+      1701 │   async createMusician(musicianData: any): Promise<any> {
+           ╵         ~~~~~~~~~~~~~~
+
+▲ [WARNING] Duplicate member "getProfessional" in class body [duplicate-class-member]
+
+    server/storage.ts:1826:8:
+      1826 │   async getProfessional(userId: number): Promise<Professional | undefined> {
+           ╵         ~~~~~~~~~~~~~~~
+
+  The original member "getProfessional" is here:
+
+    server/storage.ts:1678:8:
+      1678 │   async getProfessional(userId: number): Promise<any | undefined> {
+           ╵         ~~~~~~~~~~~~~~~
+
+▲ [WARNING] Duplicate member "createProfessional" in class body [duplicate-class-member]
+
+    server/storage.ts:1889:8:
+      1889 │   async createProfessional(professional: InsertProfessional): Promise<Professional> {
+           ╵         ~~~~~~~~~~~~~~~~~~
+
+  The original member "createProfessional" is here:
+
+    server/storage.ts:1714:8:
+      1714 │   async createProfessional(professionalData: any): Promise<any> {
+           ╵         ~~~~~~~~~~~~~~~~~~
+
+6 of 36 warnings shown (disable the message limit with --log-limit=0)

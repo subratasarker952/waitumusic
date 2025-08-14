@@ -1,0 +1,36 @@
+RoleBasedRoute Debug: {user: {…}, role: 'superadmin', roleType: 'string', roleName: 'superadmin', allowedRoles: Array(2), …}
+ComprehensiveWorkflow.tsx:23 ComprehensiveWorkflow - Auth Debug: {user: {…}, authLoading: false, userRoleId: 1, hasAccess: true}
+ComprehensiveWorkflow.tsx:37 ComprehensiveWorkflow - Bookings Debug: {availableBookings: 11, bookingsLoading: false, bookingsError: null, queryEnabled: true}
+RoleBasedRoute.tsx:47 RoleBasedRoute Debug: {user: {…}, role: 'superadmin', roleType: 'string', roleName: 'superadmin', allowedRoles: Array(2), …}
+RoleBasedRoute.tsx:47 RoleBasedRoute Debug: {user: {…}, role: 'superadmin', roleType: 'string', roleName: 'superadmin', allowedRoles: Array(2), …}
+ComprehensiveWorkflow.tsx:23 ComprehensiveWorkflow - Auth Debug: {user: {…}, authLoading: false, userRoleId: 1, hasAccess: true}
+ComprehensiveWorkflow.tsx:37 ComprehensiveWorkflow - Bookings Debug: {availableBookings: 11, bookingsLoading: false, bookingsError: null, queryEnabled: true}
+RoleBasedRoute.tsx:47 RoleBasedRoute Debug: {user: {…}, role: 'superadmin', roleType: 'string', roleName: 'superadmin', allowedRoles: Array(2), …}
+RoleBasedRoute.tsx:47 RoleBasedRoute Debug: {user: {…}, role: 'superadmin', roleType: 'string', roleName: 'superadmin', allowedRoles: Array(2), …}
+ComprehensiveWorkflow.tsx:23 ComprehensiveWorkflow - Auth Debug: {user: {…}, authLoading: false, userRoleId: 1, hasAccess: true}
+ComprehensiveWorkflow.tsx:37 ComprehensiveWorkflow - Bookings Debug: {availableBookings: 11, bookingsLoading: false, bookingsError: null, queryEnabled: true}
+RoleBasedRoute.tsx:47 RoleBasedRoute Debug: {user: {…}, role: 'superadmin', roleType: 'string', roleName: 'superadmin', allowedRoles: Array(2), …}
+RoleBasedRoute.tsx:47 RoleBasedRoute Debug: {user: {…}, role: 'superadmin', roleType: 'string', roleName: 'superadmin', allowedRoles: Array(2), …}
+ComprehensiveWorkflow.tsx:23 ComprehensiveWorkflow - Auth Debug: {user: {…}, authLoading: false, userRoleId: 1, hasAccess: true}
+ComprehensiveWorkflow.tsx:37 ComprehensiveWorkflow - Bookings Debug: {availableBookings: 11, bookingsLoading: false, bookingsError: null, queryEnabled: true}
+RoleBasedRoute.tsx:47 RoleBasedRoute Debug: {user: {…}, role: 'superadmin', roleType: 'string', roleName: 'superadmin', allowedRoles: Array(2), …}
+RoleBasedRoute.tsx:47 RoleBasedRoute Debug: {user: {…}, role: 'superadmin', roleType: 'string', roleName: 'superadmin', allowedRoles: Array(2), …}
+ComprehensiveWorkflow.tsx:23 ComprehensiveWorkflow - Auth Debug: {user: {…}, authLoading: false, userRoleId: 1, hasAccess: true}
+ComprehensiveWorkflow.tsx:37 ComprehensiveWorkflow - Bookings Debug: {availableBookings: 11, bookingsLoading: false, bookingsError: null, queryEnabled: true}
+RoleBasedRoute.tsx:47 RoleBasedRoute Debug: {user: {…}, role: 'superadmin', roleType: 'string', roleName: 'superadmin', allowedRoles: Array(2), …}
+RoleBasedRoute.tsx:47 RoleBasedRoute Debug: {user: {…}, role: 'superadmin', roleType: 'string', roleName: 'superadmin', allowedRoles: Array(2), …}
+ComprehensiveWorkflow.tsx:23 ComprehensiveWorkflow - Auth Debug: {user: {…}, authLoading: false, userRoleId: 1, hasAccess: true}
+ComprehensiveWorkflow.tsx:37 ComprehensiveWorkflow - Bookings Debug: {availableBookings: 11, bookingsLoading: false, bookingsError: null, queryEnabled: true}
+RoleBasedRoute.tsx:47 RoleBasedRoute Debug: {user: {…}, role: 'superadmin', roleType: 'string', roleName: 'superadmin', allowedRoles: Array(2), …}
+RoleBasedRoute.tsx:47 RoleBasedRoute Debug: {user: {…}, role: 'superadmin', roleType: 'string', roleName: 'superadmin', allowedRoles: Array(2), …}
+ComprehensiveWorkflow.tsx:23 ComprehensiveWorkflow - Auth Debug: {user: {…}, authLoading: false, userRoleId: 1, hasAccess: true}
+ComprehensiveWorkflow.tsx:37 ComprehensiveWorkflow - Bookings Debug: {availableBookings: 11, bookingsLoading: false, bookingsError: null, queryEnabled: true}
+RoleBasedRoute.tsx:47 RoleBasedRoute Debug: {user: {…}, role: 'superadmin', roleType: 'string', roleName: 'superadmin', allowedRoles: Array(2), …}
+RoleBasedRoute.tsx:47 RoleBasedRoute Debug: {user: {…}, role: 'superadmin', roleType: 'string', roleName: 'superadmin', allowedRoles: Array(2), …}
+ComprehensiveWorkflow.tsx:23 ComprehensiveWorkflow - Auth Debug: {user: {…}, authLoading: false, userRoleId: 1, hasAccess: true}
+ComprehensiveWorkflow.tsx:37 ComprehensiveWorkflow - Bookings Debug: {availableBookings: 11, bookingsLoading: false, bookingsError: null, queryEnabled: true}
+RoleBasedRoute.tsx:47 RoleBasedRoute Debug: {user: {…}, role: 'superadmin', roleType: 'string', roleName: 'superadmin', allowedRoles: Array(2), …}
+RoleBasedRoute.tsx:47 RoleBasedRoute Debug: {user: {…}, role: 'superadmin', roleType: 'string', roleName: 'superadmin', allowedRoles: Array(2), …}
+ComprehensiveWorkflow.tsx:23 ComprehensiveWorkflow - Auth Debug: {user: {…}, authLoading: false, userRoleId: 1, hasAccess: true}
+ComprehensiveWorkflow.tsx:37 ComprehensiveWorkflow - Bookings Debug: {availableBookings: 11, bookingsLoading: false, bookingsError: null, queryEnabled: true}
+RoleBasedRoute.tsx:47 RoleBasedRoute Debug: {user: {…}, role: 'superadmin', roleType: 'string', roleName: 'superadmin', allowedRoles: Array(2), …}

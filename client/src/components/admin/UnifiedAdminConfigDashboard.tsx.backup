@@ -1,0 +1,625 @@
+import React, { useState, useEffect } from 'react';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Switch } from '@/components/ui/switch';
+import { Slider } from '@/components/ui/slider';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Separator } from '@/components/ui/separator';
+import { useEnhancedToast } from '@/lib/toast-utils';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { apiRequest } from '@/lib/queryClient';
+import { useAuth } from '@/contexts/AuthContext';
+import { 
+  Settings, Palette, Save, RotateCcw, Shield, Type, Layout, 
+  Brush, Eye, Clock, Bell, Globe, Monitor, Zap
+} from 'lucide-react';
+import { 
+  AdminConfigType, 
+  DEFAULT_ADMIN_CONFIG
+} from '@shared/admin-config';
+import { useConfiguration } from '@/contexts/ConfigurationProvider';
+import { WYSIWYGConfigControls } from './WYSIWYGConfigControls';
+
+export default function UnifiedAdminConfigDashboard() {
+  const { toast } = useEnhancedToast();
+  const queryClient = useQueryClient();
+  const { user, role, isLoading: authLoading } = useAuth();
+  const {
+    config: configuration,
+    isLoading,
+    updateConfig: updateConfigContext,
+    error
+  } = useConfiguration();
+
+  const [config, setConfig] = useState<AdminConfigType>(DEFAULT_ADMIN_CONFIG);
+
+  // Check if user is authenticated and has proper permissions
+  if (authLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-primary"></div>
+      </div>
+    );
+  }
+
+  if (!user) {
+    return (
+      <Card className="w-full max-w-md mx-auto mt-8">
+        <CardContent className="pt-6">
+          <div className="text-center">
+            <Shield className="h-12 w-12 mx-auto mb-4 text-red-500" />
+            <h2 className="text-xl font-semibold mb-2">Authentication Required</h2>
+            <p className="text-muted-foreground">Please log in to access the admin dashboard.</p>
+          </div>
+        </CardContent>
+      </Card>
+    );
+  }
+
+  const userRoleId = user.roleId || role?.id || role;
+  const isAdmin = userRoleId === 1 || userRoleId === 2; // SuperAdmin or Admin
+
+  if (!isAdmin) {
+    return (
+      <Card className="w-full max-w-md mx-auto mt-8">
+        <CardContent className="pt-6">
+          <div className="text-center">
+            <Shield className="h-12 w-12 mx-auto mb-4 text-yellow-500" />
+            <h2 className="text-xl font-semibold mb-2">Access Restricted</h2>
+            <p className="text-muted-foreground">Only administrators can access this dashboard.</p>
+          </div>
+        </CardContent>
+      </Card>
+    );
+  }
+
+  if (userRoleId !== 1) {
+    return (
+      <Card>
+        <CardContent className="p-6">
+          <div className="text-center text-muted-foreground">
+            <Shield className="h-12 w-12 mx-auto mb-4 opacity-50" />
+            <p>Access Denied: Only superadmin can access configuration settings</p>
+          </div>
+        </CardContent>
+      </Card>
+    );
+  }
+
+  // Load configuration from API
+  useEffect(() => {
+    if (configuration) {
+      setConfig(configuration);
+    }
+  }, [configuration]);
+
+  // Save configuration changes
+  const handleSave = async () => {
+    await updateConfigContext(config);
+  };
+
+  // Reset to defaults
+  const handleReset = async () => {
+    setConfig(DEFAULT_ADMIN_CONFIG);
+    await updateConfigContext(DEFAULT_ADMIN_CONFIG);
+  };
+
+  // Safe config access helper
+  const getConfigValue = (path: string, defaultValue: any) => {
+    const keys = path.split('.');
+    let current: any = config;
+    for (const key of keys) {
+      if (current && typeof current === 'object' && key in current) {
+        current = current[key];
+      } else {
+        return defaultValue;
+      }
+    }
+    return current !== undefined ? current : defaultValue;
+  };
+
+  // Update config helper function
+  const updateConfigValue = (path: string, value: any) => {
+    const keys = path.split('.');
+    const newConfig = { ...config };
+    let current: any = newConfig;
+    
+    // Navigate to the parent object
+    for (let i = 0; i < keys.length - 1; i++) {
+      if (!current[keys[i]]) {
+        current[keys[i]] = {};
+      }
+      current = current[keys[i]];
+    }
+    
+    // Set the final value
+    current[keys[keys.length - 1]] = value;
+    setConfig(newConfig);
+  };
+
+  if (isLoading) {
+    return (
+      <Card>
+        <CardContent className="p-6">
+          <div className="text-center">
+            <div className="animate-spin h-8 w-8 border-4 border-blue-500 border-t-transparent rounded-full mx-auto mb-4"></div>
+            <p>Loading configuration...</p>
+          </div>
+        </CardContent>
+      </Card>
+    );
+  }
+
+  return (
+    <div className="space-y-6">
+      <div className="flex items-center justify-between">
+        <div>
+          <h2 className="text-2xl font-bold flex items-center gap-2">
+            <Settings className="h-6 w-6" />
+            Unified Platform Configuration
+          </h2>
+          <p className="text-muted-foreground mt-1">
+            Control all platform settings, UI behavior, and system configurations from this central dashboard
+          </p>
+        </div>
+        <div className="flex gap-2">
+          <Button 
+            variant="outline" 
+            onClick={handleReset}
+            className="flex items-center gap-2"
+          >
+            <RotateCcw className="h-4 w-4" />
+            Reset to Defaults
+          </Button>
+          <Button 
+            onClick={handleSave}
+            disabled={isLoading}
+            className="flex items-center gap-2"
+          >
+            <Save className="h-4 w-4" />
+            {isLoading ? 'Saving...' : 'Save All Changes'}
+          </Button>
+        </div>
+      </div>
+
+      {/* Platform Configuration - WYSIWYG UI Controls */}
+      <WYSIWYGConfigControls onSave={handleSave} isLoading={isLoading} />
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Palette className="h-5 w-5" />
+                Color Scheme & Theme Settings
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="space-y-4">
+                  <Label className="text-base font-medium">Primary Colors</Label>
+                  <div className="space-y-3">
+                    <div className="flex items-center justify-between">
+                      <Label htmlFor="primary-color">Primary Brand Color</Label>
+                      <div className="flex items-center gap-2">
+                        <Input 
+                          id="primary-color"
+                          type="color" 
+                          value={(config as any)?.ui?.colors?.primary || "#3b82f6"}
+                          onChange={(e) => updateConfigValue('ui.colors.primary', e.target.value)}
+                          className="w-12 h-8 p-1 border rounded"
+                        />
+                        <Input 
+                          value={(config as any)?.ui?.colors?.primary || "#3b82f6"}
+                          onChange={(e) => updateConfigValue('ui.colors.primary', e.target.value)}
+                          className="w-20 text-xs"
+                          placeholder="#3b82f6"
+                        />
+                      </div>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <Label htmlFor="secondary-color">Secondary Color</Label>
+                      <div className="flex items-center gap-2">
+                        <Input 
+                          id="secondary-color"
+                          type="color" 
+                          value={(config as any)?.ui?.colors?.secondary || "#64748b"}
+                          onChange={(e) => updateConfigValue('ui.colors.secondary', e.target.value)}
+                          className="w-12 h-8 p-1 border rounded"
+                        />
+                        <Input 
+                          value={(config as any)?.ui?.colors?.secondary || "#64748b"}
+                          onChange={(e) => updateConfigValue('ui.colors.secondary', e.target.value)}
+                          className="w-20 text-xs"
+                          placeholder="#64748b"
+                        />
+                      </div>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <Label htmlFor="accent-color">Accent Color</Label>
+                      <div className="flex items-center gap-2">
+                        <Input 
+                          id="accent-color"
+                          type="color" 
+                          value={(config as any)?.ui?.colors?.accent || "#f59e0b"}
+                          onChange={(e) => updateConfigValue('ui.colors.accent', e.target.value)}
+                          className="w-12 h-8 p-1 border rounded"
+                        />
+                        <Input 
+                          value={(config as any)?.ui?.colors?.accent || "#f59e0b"}
+                          onChange={(e) => updateConfigValue('ui.colors.accent', e.target.value)}
+                          className="w-20 text-xs"
+                          placeholder="#f59e0b"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="space-y-4">
+                  <Label className="text-base font-medium">Background & Surface</Label>
+                  <div className="space-y-3">
+                    <div className="flex items-center justify-between">
+                      <Label htmlFor="bg-color">Background Color</Label>
+                      <div className="flex items-center gap-2">
+                        <Input 
+                          id="bg-color"
+                          type="color" 
+                          value={config.ui?.colors?.background || "#ffffff"}
+                          onChange={(e) => updateConfigValue('ui.colors.background', e.target.value)}
+                          className="w-12 h-8 p-1 border rounded"
+                        />
+                        <Input 
+                          value={config.ui?.colors?.background || "#ffffff"}
+                          onChange={(e) => updateConfigValue('ui.colors.background', e.target.value)}
+                          className="w-20 text-xs"
+                          placeholder="#ffffff"
+                        />
+                      </div>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <Label htmlFor="card-color">Card Background</Label>
+                      <div className="flex items-center gap-2">
+                        <Input 
+                          id="card-color"
+                          type="color" 
+                          value={config.ui?.colors?.card || "#f8fafc"}
+                          onChange={(e) => updateConfigValue('ui.colors.card', e.target.value)}
+                          className="w-12 h-8 p-1 border rounded"
+                        />
+                        <Input 
+                          value={config.ui?.colors?.card || "#f8fafc"}
+                          onChange={(e) => updateConfigValue('ui.colors.card', e.target.value)}
+                          className="w-20 text-xs"
+                          placeholder="#f8fafc"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <Separator />
+
+              <div className="space-y-4">
+                <Label className="text-base font-medium">Theme Mode</Label>
+                <div className="flex items-center space-x-4">
+                  <div className="flex items-center space-x-2">
+                    <Switch
+                      checked={config.ui?.theme?.darkMode || false}
+                      onCheckedChange={(checked) => updateConfigValue('ui.theme.darkMode', checked)}
+                    />
+                    <Label>Enable Dark Mode</Label>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <Switch
+                      checked={config.ui?.theme?.autoTheme || false}
+                      onCheckedChange={(checked) => updateConfigValue('ui.theme.autoTheme', checked)}
+                    />
+                    <Label>Auto Theme (System Preference)</Label>
+                  </div>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        {/* Typography Tab */}
+        <TabsContent value="typography" className="space-y-6">
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Type className="h-5 w-5" />
+                Typography & Font Settings
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="space-y-4">
+                  <Label className="text-base font-medium">Font Families</Label>
+                  <div className="space-y-3">
+                    <div>
+                      <Label htmlFor="heading-font">Heading Font</Label>
+                      <Select 
+                        value={config.ui?.typography?.headingFont || "Inter"}
+                        onValueChange={(value) => updateConfigValue('ui.typography.headingFont', value)}
+                      >
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select heading font" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="Inter">Inter</SelectItem>
+                          <SelectItem value="Roboto">Roboto</SelectItem>
+                          <SelectItem value="Open Sans">Open Sans</SelectItem>
+                          <SelectItem value="Poppins">Poppins</SelectItem>
+                          <SelectItem value="Montserrat">Montserrat</SelectItem>
+                          <SelectItem value="Playfair Display">Playfair Display</SelectItem>
+                          <SelectItem value="Merriweather">Merriweather</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    <div>
+                      <Label htmlFor="body-font">Body Font</Label>
+                      <Select 
+                        value={config.ui?.typography?.bodyFont || "Inter"}
+                        onValueChange={(value) => updateConfigValue('ui.typography.bodyFont', value)}
+                      >
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select body font" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="Inter">Inter</SelectItem>
+                          <SelectItem value="Roboto">Roboto</SelectItem>
+                          <SelectItem value="Open Sans">Open Sans</SelectItem>
+                          <SelectItem value="Source Sans Pro">Source Sans Pro</SelectItem>
+                          <SelectItem value="Lato">Lato</SelectItem>
+                          <SelectItem value="Nunito">Nunito</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="space-y-4">
+                  <Label className="text-base font-medium">Font Sizes</Label>
+                  <div className="space-y-3">
+                    <div>
+                      <Label>Base Font Size: {config.ui?.typography?.baseFontSize || 16}px</Label>
+                      <Slider
+                        value={[config.ui?.typography?.baseFontSize || 16]}
+                        onValueChange={([value]) => updateConfigValue('ui.typography.baseFontSize', value)}
+                        max={24}
+                        min={12}
+                        step={1}
+                        className="mt-2"
+                      />
+                    </div>
+                    <div>
+                      <Label>Line Height: {config.ui?.typography?.lineHeight || 1.5}</Label>
+                      <Slider
+                        value={[config.ui?.typography?.lineHeight || 1.5]}
+                        onValueChange={([value]) => updateConfigValue('ui.typography.lineHeight', value)}
+                        max={2.5}
+                        min={1}
+                        step={0.1}
+                        className="mt-2"
+                      />
+                    </div>
+                    <div>
+                      <Label>Letter Spacing: {config.ui?.typography?.letterSpacing || 0}px</Label>
+                      <Slider
+                        value={[config.ui?.typography?.letterSpacing || 0]}
+                        onValueChange={([value]) => updateConfigValue('ui.typography.letterSpacing', value)}
+                        max={3}
+                        min={-1}
+                        step={0.1}
+                        className="mt-2"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        {/* Layout & Spacing Tab */}
+        <TabsContent value="layout" className="space-y-6">
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Layout className="h-5 w-5" />
+                Layout & Spacing Controls
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="space-y-4">
+                  <Label className="text-base font-medium">Container & Spacing</Label>
+                  <div className="space-y-3">
+                    <div>
+                      <Label>Max Content Width: {config.ui?.layout?.maxWidth || 1200}px</Label>
+                      <Slider
+                        value={[config.ui?.layout?.maxWidth || 1200]}
+                        onValueChange={([value]) => updateConfigValue('ui.layout.maxWidth', value)}
+                        max={1600}
+                        min={800}
+                        step={50}
+                        className="mt-2"
+                      />
+                    </div>
+                    <div>
+                      <Label>Section Padding: {config.ui?.layout?.sectionPadding || 24}px</Label>
+                      <Slider
+                        value={[config.ui?.layout?.sectionPadding || 24]}
+                        onValueChange={([value]) => updateConfigValue('ui.layout.sectionPadding', value)}
+                        max={64}
+                        min={8}
+                        step={4}
+                        className="mt-2"
+                      />
+                    </div>
+                    <div>
+                      <Label>Card Border Radius: {config.ui?.layout?.borderRadius || 8}px</Label>
+                      <Slider
+                        value={[config.ui?.layout?.borderRadius || 8]}
+                        onValueChange={([value]) => updateConfigValue('ui.layout.borderRadius', value)}
+                        max={24}
+                        min={0}
+                        step={2}
+                        className="mt-2"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <div className="space-y-4">
+                  <Label className="text-base font-medium">UI Behavior</Label>
+                  <div className="space-y-3">
+                    <div>
+                      <Label>Toast Duration: {config.ui?.toast?.duration || 5000}ms</Label>
+                      <Slider
+                        value={[config.ui?.toast?.duration || 5000]}
+                        onValueChange={([value]) => updateConfigValue('ui.toast.duration', value)}
+                        max={10000}
+                        min={1000}
+                        step={500}
+                        className="mt-2"
+                      />
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <Switch
+                        checked={config.ui?.animations?.enabled || true}
+                        onCheckedChange={(checked) => updateConfigValue('ui.animations.enabled', checked)}
+                      />
+                      <Label>Enable Animations</Label>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <Switch
+                        checked={config.ui?.layout?.stickyHeader || false}
+                        onCheckedChange={(checked) => updateConfigValue('ui.layout.stickyHeader', checked)}
+                      />
+                      <Label>Sticky Navigation Header</Label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        {/* Branding Tab */}
+        <TabsContent value="branding" className="space-y-6">
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Brush className="h-5 w-5" />
+                Platform Branding & Identity
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-6">
+              <div className="space-y-4">
+                <Label className="text-base font-medium">Brand Identity</Label>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <Label htmlFor="platform-name">Platform Name</Label>
+                    <Input
+                      id="platform-name"
+                      value={config.branding?.platformName || "Wai'tuMusic"}
+                      onChange={(e) => updateConfigValue('branding.platformName', e.target.value)}
+                      placeholder="Enter platform name"
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="tagline">Tagline</Label>
+                    <Input
+                      id="tagline"
+                      value={config.branding?.tagline || "Music Industry Management Platform"}
+                      onChange={(e) => updateConfigValue('branding.tagline', e.target.value)}
+                      placeholder="Enter platform tagline"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <Separator />
+
+              <div className="space-y-4">
+                <Label className="text-base font-medium">Logo & Assets</Label>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <Label htmlFor="logo-url">Logo URL</Label>
+                    <Input
+                      id="logo-url"
+                      value={config.branding?.logoUrl || ""}
+                      onChange={(e) => updateConfigValue('branding.logoUrl', e.target.value)}
+                      placeholder="https://example.com/logo.png"
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="favicon-url">Favicon URL</Label>
+                    <Input
+                      id="favicon-url"
+                      value={config.branding?.faviconUrl || ""}
+                      onChange={(e) => updateConfigValue('branding.faviconUrl', e.target.value)}
+                      placeholder="https://example.com/favicon.ico"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <Separator />
+
+              <div className="space-y-4">
+                <Label className="text-base font-medium">Footer Settings</Label>
+                <div className="space-y-3">
+                  <div>
+                    <Label htmlFor="copyright">Copyright Text</Label>
+                    <Input
+                      id="copyright"
+                      value={config.branding?.copyright || "© 2025 Wai'tuMusic. All rights reserved."}
+                      onChange={(e) => updateConfigValue('branding.copyright', e.target.value)}
+                      placeholder="Enter copyright text"
+                    />
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <Switch
+                      checked={config.branding?.showPoweredBy || false}
+                      onCheckedChange={(checked) => updateConfigValue('branding.showPoweredBy', checked)}
+                    />
+                    <Label>Show "Powered by" Attribution</Label>
+                  </div>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </TabsContent>
+      </Tabs>
+
+      <div className="flex justify-between items-center">
+        <Badge variant="outline" className="text-sm">
+          Configuration changes take effect immediately after saving
+        </Badge>
+        <div className="flex gap-2">
+          <Button 
+            variant="outline" 
+            onClick={handleReset}
+            className="flex items-center gap-2"
+          >
+            <RotateCcw className="h-4 w-4" />
+            Reset All
+          </Button>
+          <Button 
+            onClick={handleSave}
+            disabled={isLoading}
+            className="flex items-center gap-2"
+          >
+            <Save className="h-4 w-4" />
+            {isLoading ? 'Saving Changes...' : 'Apply Configuration'}
+          </Button>
+        </div>
+      </div>
+    </div>
+  );
+}

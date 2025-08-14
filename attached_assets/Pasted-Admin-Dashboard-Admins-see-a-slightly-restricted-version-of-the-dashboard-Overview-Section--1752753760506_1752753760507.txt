@@ -1,0 +1,190 @@
+Admin Dashboard
+Admins see a slightly restricted version of the dashboard:
+Overview Section:
+    • Platform metrics focused on active users, bookings, and revenue
+    • Recent activity log for areas under their management
+    • Pending approval requests for bookings, artists, and content
+    • Performance metrics for managed entities
+User Management:
+    • User directory with filtering by role
+    • Ability to create and edit user accounts (but not superadmins)
+    • Limited role assignment capabilities
+    • User activity monitoring for managed users
+Artist Management:
+    • Artist profile management for assigned artists
+    • Ability to approve artist content updates
+    • Performance tracking and analytics
+    • Booking management for artist events
+Booking Management:
+    • Comprehensive booking request queue
+    • Approval/rejection workflow
+    • Musician assignment interface
+    • Contract generation for approved bookings
+    • Technical rider management
+Contract System:
+    • Contract template access and usage
+    • Document generation from templates
+    • Electronic signature workflow management
+    • Contract status tracking and notifications
+Form Management:
+    • Form template creation and editing
+    • Submission review and processing
+    • Field configuration and validation rules
+    • Anti-spam protection settings
+Admins can modify most system aspects except for core configuration settings reserved for superadmins. Their changes affect their assigned areas of responsibility, with some actions requiring superadmin approval for sensitive operations.
+Artist Dashboard
+Artists see a dashboard focused on their professional activities:
+Overview Section:
+    • Personal performance metrics (bookings, revenue, fan engagement)
+    • Upcoming performances and events
+    • Recent activity related to their bookings and content
+    • Quick access to performance analytics
+Profile Management:
+    • Artist profile editing (bio, genre, images)
+    • Social media links management
+    • Base price configuration
+    • Tier options management for bookings
+Calendar Management:
+    • Availability calendar showing booked and blocked dates
+    • Date blocking functionality to mark unavailable periods
+    • Upcoming performance schedule
+    • Booking request review interface
+Music Management:
+    • Song upload and metadata management
+    • Album creation and organization
+    • Music analytics (plays, revenue)
+    • Preview configuration for song samples
+Merchandise Management:
+    • Product creation with images and descriptions
+    • Inventory tracking and low stock alerts
+    • Pricing configuration and discounts
+    • Sales analytics and performance metrics
+    • Cross-linking with songs for promotion
+Booking Management:
+    • Incoming booking request review
+    • Technical rider customization
+    • Performance contract review and signing
+    • Event details and requirements management
+Contracts:
+    • Contract review and electronic signing
+    • Technical rider customization
+    • Document storage and access
+    • Contract history and status tracking
+Artists can modify their own content, availability, and offerings at any time. Changes to profile information may require admin approval depending on their management tier. They cannot access other artists' data or system configuration settings.
+Musician Dashboard
+Session musicians see a specialized dashboard:
+Overview Section:
+    • Performance metrics (sessions, revenue, ratings)
+    • Upcoming gigs and sessions
+    • Recent booking activity
+    • Payment status tracking
+Profile Management:
+    • Instrument proficiency settings
+    • Experience and rate configuration
+    • Availability management
+    • Verification status tracking
+Calendar Management:
+    • Availability calendar for session work
+    • Date blocking functionality
+    • Upcoming gig schedule
+    • Conflict detection with warnings
+Booking Management:
+    • Assigned bookings review
+    • Technical requirements specification
+    • Contract review and signing
+    • Payment tracking and history
+Equipment Management:
+    • Gear inventory tracking
+    • Technical specifications documentation
+    • Equipment requirements for bookings
+    • Maintenance scheduling
+Musicians can update their profile, availability, and equipment information at any time. They can accept or decline booking assignments but cannot modify booking details created by others. Their visibility is limited to their own assignments and relevant booking information.
+Professional Dashboard
+Industry professionals see a service-oriented dashboard:
+Overview Section:
+    • Service metrics (consultations, clients, revenue)
+    • Upcoming consultations and appointments
+    • Recent client activity
+    • Performance analytics
+Profile Management:
+    • Professional profile editing
+    • Service offering configuration
+    • Rate management and pricing
+    • Availability settings
+Calendar Management:
+    • Availability calendar for consultations
+    • Time slot configuration
+    • Appointment scheduling
+    • Conflict prevention
+Service Management:
+    • Service request review
+    • Client communication tools
+    • Deliverable tracking
+    • Payment status monitoring
+Knowledge Base:
+    • Resource library for clients
+    • Template documents
+    • Industry guides
+    • Reference materials
+Professionals can modify their service offerings, availability, and rates at any time. They manage their own client relationships and deliverables but cannot access system settings or other professionals' data.
+Fan Dashboard
+Regular users (fans) see a simplified dashboard:
+Overview Section:
+    • Activity summary (purchases, bookings)
+    • Upcoming events for followed artists
+    • Recent platform activity
+    • Personalized recommendations
+Profile Management:
+    • Basic profile editing
+    • Notification preferences
+    • Privacy settings
+    • Payment method management
+Bookings:
+    • Past and upcoming bookings
+    • Booking request status
+    • Event details and tickets
+    • Booking history
+Favorites:
+    • Followed artists list
+    • Saved events calendar
+    • Wishlist items
+    • Recently viewed content
+Purchase History:
+    • Order tracking
+    • Digital downloads
+    • Receipt access
+    • Reorder functionality
+Fans can update their personal information, preferences, and followed artists. They can make purchases and bookings but cannot modify content or system settings. Their access is limited to public-facing features and their own data.
+Relationships Between Dashboard Elements
+The dashboard elements are interconnected through several key relationships:
+User-Role Relationship:
+    • Each dashboard is dynamically generated based on user role
+    • Role determines available features and permissions
+    • Role changes (promotion/demotion) immediately affect dashboard access
+    • Superadmins can impersonate other roles for testing
+Artist-Admin Relationship:
+    • Admins manage artist profiles and approve changes
+    • Artists submit content that admins review
+    • Management tiers determine approval requirements
+    • Commission structures link financial aspects
+Booking-Calendar Relationship:
+    • Calendar availability affects booking options
+    • Bookings block calendar dates automatically
+    • Conflicts are prevented through calendar integration
+    • Multi-date bookings span multiple calendar entries
+Contract-Booking Relationship:
+    • Approved bookings generate contracts
+    • Contracts require signatures from relevant parties
+    • Signed contracts confirm bookings
+    • Contract status affects booking status
+Music-Merchandise Relationship:
+    • Songs can be linked to merchandise items
+    • Album releases can trigger merchandise promotions
+    • Sales data is connected across both categories
+    • Cross-promotion is managed through these connections
+Service-Consultation Relationship:
+    • Consultations can lead to service bookings
+    • Service categories align with consultation types
+    • Pricing structures are connected
+    • Professional availability affects both offerings
+The dashboard system is designed to provide role-specific functionality while maintaining a consistent user experience. Each user type sees only what's relevant to their role, with appropriate access controls and feature limitations. The relationships between dashboard elements ensure that actions in one area appropriately affect related areas, creating a cohesive and intuitive platform experience.

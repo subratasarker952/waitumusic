@@ -1,0 +1,77 @@
+rror creating opportunity: error: invalid input syntax for type numeric: "varies"
+    at file:///home/runner/workspace/node_modules/@neondatabase/serverless/index.mjs:1087:33
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async DatabaseStorage.createOpportunity (/home/runner/workspace/server/storage.ts:5020:22)
+    at async OppHubScanner.getVerifiedOpportunities2025 (/home/runner/workspace/server/oppHubScanner.ts:1134:9)
+    at async OppHubScanner.fetchRealOpportunitiesFromVerifiedSources (/home/runner/workspace/server/oppHubScanner.ts:990:37)
+    at async OppHubScanner.scanRespectfully (/home/runner/workspace/server/oppHubScanner.ts:968:31) {
+  length: 140,
+  severity: 'ERROR',
+  code: '22P02',
+  detail: undefined,
+  hint: undefined,
+  position: undefined,
+  internalPosition: undefined,
+  internalQuery: undefined,
+  where: "unnamed portal parameter $6 = '...'",
+  schema: undefined,
+  table: undefined,
+  column: undefined,
+  dataType: undefined,
+  constraint: undefined,
+  file: 'numeric.c',
+  line: '800',
+  routine: 'numeric_in'
+}
+📋 Opportunity already exists: ASCAP Plus Awards 2025
+Error creating opportunity: error: invalid input syntax for type numeric: "up to $400,000 total pool"
+    at file:///home/runner/workspace/node_modules/@neondatabase/serverless/index.mjs:1087:33
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async DatabaseStorage.createOpportunity (/home/runner/workspace/server/storage.ts:5020:22)
+    at async OppHubScanner.getVerifiedOpportunities2025 (/home/runner/workspace/server/oppHubScanner.ts:1134:9)
+    at async OppHubScanner.fetchRealOpportunitiesFromVerifiedSources (/home/runner/workspace/server/oppHubScanner.ts:990:37)
+    at async OppHubScanner.scanRespectfully (/home/runner/workspace/server/oppHubScanner.ts:968:31) {
+  length: 159,
+  severity: 'ERROR',
+  code: '22P02',
+  detail: undefined,
+  hint: undefined,
+  position: undefined,
+  internalPosition: undefined,
+  internalQuery: undefined,
+  where: "unnamed portal parameter $6 = '...'",
+  schema: undefined,
+  table: undefined,
+  column: undefined,
+  dataType: undefined,
+  constraint: undefined,
+  file: 'numeric.c',
+  line: '800',
+  routine: 'numeric_in'
+}
+📋 Opportunity already exists: Grammy Museum Grant Program 2025
+Error creating opportunity: error: invalid input syntax for type numeric: "$5,000 per grant"
+    at file:///home/runner/workspace/node_modules/@neondatabase/serverless/index.mjs:1087:33
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async DatabaseStorage.createOpportunity (/home/runner/workspace/server/storage.ts:5020:22)
+    at async OppHubScanner.getVerifiedOpportunities2025 (/home/runner/workspace/server/oppHubScanner.ts:1134:9)
+    at async OppHubScanner.fetchRealOpportunitiesFromVerifiedSources (/home/runner/workspace/server/oppHubScanner.ts:990:37)
+    at async OppHubScanner.scanRespectfully (/home/runner/workspace/server/oppHubScanner.ts:968:31) {
+  length: 150,
+  severity: 'ERROR',
+  code: '22P02',
+  detail: undefined,
+  hint: undefined,
+  position: undefined,
+  internalPosition: undefined,
+  internalQuery: undefined,
+  where: "unnamed portal parameter $6 = '...'",
+  schema: undefined,
+  table: undefined,
+  column: undefined,
+  dataType: undefined,
+  constraint: undefined,
+  file: 'numeric.c',
+  line: '800',
+  routine: 'numeric_in'
+}

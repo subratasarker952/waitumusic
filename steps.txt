@@ -1,0 +1,218 @@
+ssh -p 1122 waitu8821@www.waitumusic.com
+SubrataS1!
+psql -U waitumusic_user -d waitumusic_production
+NewPassword123!
+scp -P 1122 E:\file.sql waitu8821@15.235.112.215:~
+scp -P 1122 E:\file2.sql waitu8821@15.235.112.215:~
+
+ls -l ~/file.sql
+ls -l ~/file2.sql
+
+ssh -p 1122 waitu8821@15.235.112.215
+
+psql -U waitumusic_user -d waitumusic_production -f ~/file.sql
+psql -U waitumusic_user -d waitumusic_production -f ~/file2.sql
+psql -U waitumusic_user -d waitumusic_production -f ~/file3.sql
+
+psql -U waitumusic_user -d waitumusic_production
+
+
+
+
+DO $$
+DECLARE
+  rec RECORD;
+  row_count BIGINT;
+BEGIN
+  RAISE NOTICE 'Table Name | Row Count';
+  FOR rec IN
+    SELECT table_name FROM information_schema.tables
+    WHERE table_schema = 'public' AND table_type = 'BASE TABLE'
+  LOOP
+    EXECUTE format('SELECT count(*) FROM public.%I', rec.table_name) INTO row_count;
+    RAISE NOTICE '% | %', rec.table_name, row_count;
+  END LOOP;
+END $$;
+
+
+  Table Name | Row Count
+NOTICE:  user_secondary_roles | 0
+NOTICE:  roles | 9
+NOTICE:  role_permissions | 12
+NOTICE:  user_professional_primary_talents | 8
+NOTICE:  users | 5
+NOTICE:  management_tiers | 3
+NOTICE:  all_instruments | 8
+NOTICE:  user_secondary_performance_talents | 0
+NOTICE:  user_secondary_professional_talents | 0
+NOTICE:  user_professional_services | 0
+NOTICE:  user_professional_service_features | 0
+NOTICE:  user_professional_service_capabilities | 0
+NOTICE:  user_specializations | 0
+NOTICE:  user_social_links | 0
+NOTICE:  user_stage_names | 0
+NOTICE:  user_hospitality_requirements | 0
+NOTICE:  user_genres | 0
+NOTICE:  user_technical_requirements | 0
+NOTICE:  user_skills_and_instruments | 0
+NOTICE:  user_performance_specs | 0
+NOTICE:  user_availability | 0
+NOTICE:  artists | 1
+NOTICE:  musicians | 2
+NOTICE:  professionals | 0
+NOTICE:  bookings | 4
+NOTICE:  booking_dates | 0
+NOTICE:  booking_assignments_members | 0
+NOTICE:  albums | 0
+NOTICE:  songs | 0
+NOTICE:  album_songs | 0
+NOTICE:  discount_conditions | 0
+NOTICE:  merchandise | 0
+NOTICE:  merchandise_categories | 4
+NOTICE:  song_merchandise | 0
+NOTICE:  bundles | 0
+NOTICE:  bundle_items | 0
+NOTICE:  store_currencies | 1
+NOTICE:  fan_engagement | 0
+NOTICE:  enhanced_splitsheets | 0
+NOTICE:  service_categories | 0
+NOTICE:  services | 0
+NOTICE:  service_assignments | 0
+NOTICE:  opportunity_categories | 0
+NOTICE:  opportunities | 0
+NOTICE:  service_reviews | 0
+NOTICE:  user_favorites | 0
+NOTICE:  booking_assignments | 3
+NOTICE:  user_services | 0
+NOTICE:  admin_configurations | 0
+NOTICE:  all_links_penalties | 0
+NOTICE:  all_links_subscriptions | 0
+NOTICE:  application_legal_assignments | 0
+NOTICE:  artist_band_members | 0
+NOTICE:  artist_catalog | 0
+NOTICE:  admin_assignments | 0
+NOTICE:  artist_musician_assignments | 0
+NOTICE:  booking_attachments | 0
+NOTICE:  booking_documents | 0
+NOTICE:  booking_messages | 0
+NOTICE:  booking_media_categories | 0
+NOTICE:  booking_musicians | 0
+NOTICE:  booking_professional_assignments | 0
+NOTICE:  artist_similarities | 0
+NOTICE:  audio_file_metadata | 0
+NOTICE:  booking_media_files | 0
+NOTICE:  collaboration_files | 0
+NOTICE:  collaboration_projects | 0
+NOTICE:  collaboration_participants | 0
+NOTICE:  collaboration_tasks | 0
+NOTICE:  collaboration_messages | 0
+NOTICE:  comeseetv_artist_programs | 0
+NOTICE:  cart_items | 0
+NOTICE:  collaboration_rooms | 0
+NOTICE:  comeseetv_financial_packages | 0
+NOTICE:  configuration_history | 0
+NOTICE:  content_distribution | 0
+NOTICE:  contract_signatures | 0
+NOTICE:  contracts | 0
+NOTICE:  cross_promotion_campaigns | 0
+NOTICE:  curator_email_campaigns | 0
+NOTICE:  cross_upsell_relationships | 0
+NOTICE:  configuration_delegations | 0
+NOTICE:  dj_access | 0
+NOTICE:  currencies | 0
+NOTICE:  document_linkages | 0
+NOTICE:  dj_song_access | 0
+NOTICE:  document_permissions | 0
+NOTICE:  curators | 0
+NOTICE:  documents | 0
+NOTICE:  enhanced_splitsheet_notifications | 0
+NOTICE:  financial_audit_log | 0
+NOTICE:  hospitality_requirements | 0
+NOTICE:  global_genres | 0
+NOTICE:  global_professions | 0
+NOTICE:  individual_discount_permissions | 0
+NOTICE:  industry_recipients | 0
+NOTICE:  events | 0
+NOTICE:  invoices | 0
+NOTICE:  fan_subscriptions | 0
+NOTICE:  legal_assignments | 0
+NOTICE:  isrc_service_pricing | 0
+NOTICE:  link_access_logs | 0
+NOTICE:  management_application_reviews | 0
+NOTICE:  management_application_signatures | 0
+NOTICE:  management_transitions | 0
+NOTICE:  isrc_codes | 0
+NOTICE:  market_intelligence | 0
+NOTICE:  management_applications | 0
+NOTICE:  market_trends | 0
+NOTICE:  mixer_patch_lists | 0
+NOTICE:  music_recommendations | 0
+NOTICE:  music_genres | 0
+NOTICE:  musician_instrument_preferences | 0
+NOTICE:  newsletter_engagements | 0
+NOTICE:  newsletter_subscriptions | 0
+NOTICE:  mediahub_documents | 0
+NOTICE:  oauth_accounts | 0
+NOTICE:  opphub_application_analytics | 0
+NOTICE:  opphub_application_guidance | 0
+NOTICE:  opphub_deadline_tracking | 0
+NOTICE:  opphub_professional_guidance | 0
+NOTICE:  opphub_subscriptions | 0
+NOTICE:  opphub_success_stories | 0
+NOTICE:  opportunity_applications | 0
+NOTICE:  newsletters | 0
+NOTICE:  opportunity_sources | 0
+NOTICE:  payment_transactions | 0
+NOTICE:  payout_requests | 0
+NOTICE:  playback_tracks | 0
+NOTICE:  payments | 0
+NOTICE:  press_release_analytics | 0
+NOTICE:  opportunity_matches | 0
+NOTICE:  press_release_media | 0
+NOTICE:  pro_eligibility_assessments | 0
+NOTICE:  press_release_assignments | 0
+NOTICE:  pro_registrations | 0
+NOTICE:  pro_works | 0
+NOTICE:  professional_availability | 0
+NOTICE:  receipts | 0
+NOTICE:  press_releases | 0
+NOTICE:  press_release_distribution | 0
+NOTICE:  release_contracts | 0
+NOTICE:  release_contract_signatures | 0
+NOTICE:  revenue_forecasts | 0
+NOTICE:  recipient_engagements | 0
+NOTICE:  revenue_goals | 0
+NOTICE:  revenue_optimizations | 0
+NOTICE:  revenue_streams | 0
+NOTICE:  recipient_categories | 0
+NOTICE:  stage_plots | 0
+NOTICE:  service_discount_overrides | 0
+NOTICE:  song_submissions | 0
+NOTICE:  splitsheet_notifications | 0
+NOTICE:  splitsheet_signatures | 0
+NOTICE:  technical_rider_stages | 0
+NOTICE:  system_settings | 0
+NOTICE:  shareable_links | 0
+NOTICE:  setlist_templates | 0
+NOTICE:  trending_metrics | 0
+NOTICE:  user_interactions | 0
+NOTICE:  user_preferences | 0
+NOTICE:  videos | 0
+NOTICE:  waitu_service_discount_limits | 0
+NOTICE:  website_blocklist | 0
+NOTICE:  technical_riders | 0
+NOTICE:  website_integrations | 0
+NOTICE:  platform_themes | 0
+NOTICE:  platform_component_styles | 0
+NOTICE:  platform_layout_controls | 0
+NOTICE:  platform_text_content | 0
+NOTICE:  platform_typography | 0
+NOTICE:  website_integrations_embedded | 0
+NOTICE:  platform_color_schemes | 0
+NOTICE:  booking_media_access | 0
+NOTICE:  collaboration_comments | 0
+NOTICE:  curator_submissions | 0
+NOTICE:  playback_track_downloads | 0
+NOTICE:  platform_colors | 0
+DO
+waitumusic_production=>

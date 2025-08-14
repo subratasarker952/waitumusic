@@ -1,0 +1,222 @@
+ ✅ WaituMusic app mounted successfully
+workspace_iframe.html:1  Unrecognized feature: 'ambient-light-sensor'.
+workspace_iframe.html:1  Unrecognized feature: 'battery'.
+workspace_iframe.html:1  Unrecognized feature: 'execution-while-not-rendered'.
+workspace_iframe.html:1  Unrecognized feature: 'execution-while-out-of-viewport'.
+workspace_iframe.html:1  Unrecognized feature: 'layout-animations'.
+workspace_iframe.html:1  Unrecognized feature: 'legacy-image-formats'.
+workspace_iframe.html:1  Unrecognized feature: 'navigation-override'.
+workspace_iframe.html:1  Unrecognized feature: 'oversized-images'.
+workspace_iframe.html:1  Unrecognized feature: 'publickey-credentials'.
+workspace_iframe.html:1  Unrecognized feature: 'speaker-selection'.
+workspace_iframe.html:1  Unrecognized feature: 'unoptimized-images'.
+workspace_iframe.html:1  Unrecognized feature: 'unsized-media'.
+workspace_iframe.html:1  Allow attribute will take precedence over 'allowfullscreen'.
+workspace_iframe.html:1  Allow attribute will take precedence over 'allowpaymentrequest'.
+App.tsx:443 ✅ React app mounted successfully
+WaituMusicManager:1  Unrecognized feature: 'ambient-light-sensor'.
+WaituMusicManager:1  Unrecognized feature: 'battery'.
+WaituMusicManager:1  Unrecognized feature: 'execution-while-not-rendered'.
+WaituMusicManager:1  Unrecognized feature: 'execution-while-out-of-viewport'.
+WaituMusicManager:1  Unrecognized feature: 'layout-animations'.
+WaituMusicManager:1  Unrecognized feature: 'legacy-image-formats'.
+WaituMusicManager:1  Unrecognized feature: 'navigation-override'.
+WaituMusicManager:1  Unrecognized feature: 'oversized-images'.
+WaituMusicManager:1  Unrecognized feature: 'publickey-credentials'.
+WaituMusicManager:1  Unrecognized feature: 'speaker-selection'.
+WaituMusicManager:1  Unrecognized feature: 'unoptimized-images'.
+WaituMusicManager:1  Unrecognized feature: 'unsized-media'.
+WaituMusicManager:1  Unrecognized feature: 'pointer-lock'.
+WaituMusicManager:1  Allow attribute will take precedence over 'allowfullscreen'.
+WaituMusicManager:1  Allow attribute will take precedence over 'allowpaymentrequest'.
+queryClient.ts:20   GET https://e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/api/admin/config 403 (Forbidden)
+apiRequest @ queryClient.ts:20
+queryFn @ ConfigurationProvider.tsx:35
+fetchFn @ query.ts:429
+run @ retryer.ts:153
+start @ retryer.ts:218
+fetch @ query.ts:540
+executeFetch_fn @ queryObserver.ts:346
+onSubscribe @ queryObserver.ts:108
+subscribe @ subscribable.ts:11
+(anonymous) @ useBaseQuery.ts:92
+subscribeToStore @ react-dom.development.js:16139
+commitHookEffectListMount @ react-dom.development.js:23189
+commitPassiveMountOnFiber @ react-dom.development.js:24965
+commitPassiveMountEffects_complete @ react-dom.development.js:24930
+commitPassiveMountEffects_begin @ react-dom.development.js:24917
+commitPassiveMountEffects @ react-dom.development.js:24905
+flushPassiveEffectsImpl @ react-dom.development.js:27078
+flushPassiveEffects @ react-dom.development.js:27023
+performSyncWorkOnRoot @ react-dom.development.js:26115
+flushSyncCallbacks @ react-dom.development.js:12042
+commitRootImpl @ react-dom.development.js:26998
+commitRoot @ react-dom.development.js:26721
+finishConcurrentRender @ react-dom.development.js:26020
+performConcurrentWorkOnRoot @ react-dom.development.js:25848
+workLoop @ scheduler.development.js:266
+flushWork @ scheduler.development.js:239
+performWorkUntilDeadline @ scheduler.development.js:533
+[NEW] Explain Console errors by using Copilot in Edge: click
+         
+         to explain an error. 
+        Learn more
+        Don't show again
+queryClient.ts:20   GET https://e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/api/admin/config 403 (Forbidden)
+apiRequest @ queryClient.ts:20
+queryFn @ ConfigurationProvider.tsx:35
+fetchFn @ query.ts:429
+run @ retryer.ts:153
+(anonymous) @ retryer.ts:199
+Promise.then
+(anonymous) @ retryer.ts:195
+Promise.catch
+run @ retryer.ts:160
+start @ retryer.ts:218
+fetch @ query.ts:540
+executeFetch_fn @ queryObserver.ts:346
+onSubscribe @ queryObserver.ts:108
+subscribe @ subscribable.ts:11
+(anonymous) @ useBaseQuery.ts:92
+subscribeToStore @ react-dom.development.js:16139
+commitHookEffectListMount @ react-dom.development.js:23189
+commitPassiveMountOnFiber @ react-dom.development.js:24965
+commitPassiveMountEffects_complete @ react-dom.development.js:24930
+commitPassiveMountEffects_begin @ react-dom.development.js:24917
+commitPassiveMountEffects @ react-dom.development.js:24905
+flushPassiveEffectsImpl @ react-dom.development.js:27078
+flushPassiveEffects @ react-dom.development.js:27023
+performSyncWorkOnRoot @ react-dom.development.js:26115
+flushSyncCallbacks @ react-dom.development.js:12042
+commitRootImpl @ react-dom.development.js:26998
+commitRoot @ react-dom.development.js:26721
+finishConcurrentRender @ react-dom.development.js:26020
+performConcurrentWorkOnRoot @ react-dom.development.js:25848
+workLoop @ scheduler.development.js:266
+flushWork @ scheduler.development.js:239
+performWorkUntilDeadline @ scheduler.development.js:533
+queryClient.ts:20   GET https://e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/api/admin/config 403 (Forbidden)
+apiRequest @ queryClient.ts:20
+queryFn @ ConfigurationProvider.tsx:35
+fetchFn @ query.ts:429
+run @ retryer.ts:153
+(anonymous) @ retryer.ts:199
+Promise.then
+(anonymous) @ retryer.ts:195
+Promise.catch
+run @ retryer.ts:160
+(anonymous) @ retryer.ts:199
+Promise.then
+(anonymous) @ retryer.ts:195
+Promise.catch
+run @ retryer.ts:160
+start @ retryer.ts:218
+fetch @ query.ts:540
+executeFetch_fn @ queryObserver.ts:346
+onSubscribe @ queryObserver.ts:108
+subscribe @ subscribable.ts:11
+(anonymous) @ useBaseQuery.ts:92
+subscribeToStore @ react-dom.development.js:16139
+commitHookEffectListMount @ react-dom.development.js:23189
+commitPassiveMountOnFiber @ react-dom.development.js:24965
+commitPassiveMountEffects_complete @ react-dom.development.js:24930
+commitPassiveMountEffects_begin @ react-dom.development.js:24917
+commitPassiveMountEffects @ react-dom.development.js:24905
+flushPassiveEffectsImpl @ react-dom.development.js:27078
+flushPassiveEffects @ react-dom.development.js:27023
+performSyncWorkOnRoot @ react-dom.development.js:26115
+flushSyncCallbacks @ react-dom.development.js:12042
+commitRootImpl @ react-dom.development.js:26998
+commitRoot @ react-dom.development.js:26721
+finishConcurrentRender @ react-dom.development.js:26020
+performConcurrentWorkOnRoot @ react-dom.development.js:25848
+workLoop @ scheduler.development.js:266
+flushWork @ scheduler.development.js:239
+performWorkUntilDeadline @ scheduler.development.js:533
+queryClient.ts:20   GET https://e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/api/bookings/1/talent-view 500 (Internal Server Error)
+apiRequest @ queryClient.ts:20
+queryFn @ GigHub.tsx:81
+fetchFn @ query.ts:429
+run @ retryer.ts:153
+start @ retryer.ts:218
+fetch @ query.ts:540
+executeFetch_fn @ queryObserver.ts:346
+onSubscribe @ queryObserver.ts:108
+subscribe @ subscribable.ts:11
+(anonymous) @ useBaseQuery.ts:92
+subscribeToStore @ react-dom.development.js:16139
+commitHookEffectListMount @ react-dom.development.js:23189
+commitPassiveMountOnFiber @ react-dom.development.js:24965
+commitPassiveMountEffects_complete @ react-dom.development.js:24930
+commitPassiveMountEffects_begin @ react-dom.development.js:24917
+commitPassiveMountEffects @ react-dom.development.js:24905
+flushPassiveEffectsImpl @ react-dom.development.js:27078
+flushPassiveEffects @ react-dom.development.js:27023
+commitRootImpl @ react-dom.development.js:26974
+commitRoot @ react-dom.development.js:26721
+performSyncWorkOnRoot @ react-dom.development.js:26156
+flushSyncCallbacks @ react-dom.development.js:12042
+(anonymous) @ react-dom.development.js:25690
+queryClient.ts:20   GET https://e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/api/bookings/1/talent-view 500 (Internal Server Error)
+apiRequest @ queryClient.ts:20
+queryFn @ GigHub.tsx:81
+fetchFn @ query.ts:429
+run @ retryer.ts:153
+(anonymous) @ retryer.ts:199
+Promise.then
+(anonymous) @ retryer.ts:195
+Promise.catch
+run @ retryer.ts:160
+start @ retryer.ts:218
+fetch @ query.ts:540
+executeFetch_fn @ queryObserver.ts:346
+onSubscribe @ queryObserver.ts:108
+subscribe @ subscribable.ts:11
+(anonymous) @ useBaseQuery.ts:92
+subscribeToStore @ react-dom.development.js:16139
+commitHookEffectListMount @ react-dom.development.js:23189
+commitPassiveMountOnFiber @ react-dom.development.js:24965
+commitPassiveMountEffects_complete @ react-dom.development.js:24930
+commitPassiveMountEffects_begin @ react-dom.development.js:24917
+commitPassiveMountEffects @ react-dom.development.js:24905
+flushPassiveEffectsImpl @ react-dom.development.js:27078
+flushPassiveEffects @ react-dom.development.js:27023
+commitRootImpl @ react-dom.development.js:26974
+commitRoot @ react-dom.development.js:26721
+performSyncWorkOnRoot @ react-dom.development.js:26156
+flushSyncCallbacks @ react-dom.development.js:12042
+(anonymous) @ react-dom.development.js:25690
+queryClient.ts:20   GET https://e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/api/bookings/1/talent-view 500 (Internal Server Error)
+apiRequest @ queryClient.ts:20
+queryFn @ GigHub.tsx:81
+fetchFn @ query.ts:429
+run @ retryer.ts:153
+(anonymous) @ retryer.ts:199
+Promise.then
+(anonymous) @ retryer.ts:195
+Promise.catch
+run @ retryer.ts:160
+(anonymous) @ retryer.ts:199
+Promise.then
+(anonymous) @ retryer.ts:195
+Promise.catch
+run @ retryer.ts:160
+start @ retryer.ts:218
+fetch @ query.ts:540
+executeFetch_fn @ queryObserver.ts:346
+onSubscribe @ queryObserver.ts:108
+subscribe @ subscribable.ts:11
+(anonymous) @ useBaseQuery.ts:92
+subscribeToStore @ react-dom.development.js:16139
+commitHookEffectListMount @ react-dom.development.js:23189
+commitPassiveMountOnFiber @ react-dom.development.js:24965
+commitPassiveMountEffects_complete @ react-dom.development.js:24930
+commitPassiveMountEffects_begin @ react-dom.development.js:24917
+commitPassiveMountEffects @ react-dom.development.js:24905
+flushPassiveEffectsImpl @ react-dom.development.js:27078
+flushPassiveEffects @ react-dom.development.js:27023
+commitRootImpl @ react-dom.development.js:26974
+commitRoot @ react-dom.development.js:26721
+performSyncWorkOnRoot @ react-dom.development.js:26156
+flushSyncCallbacks @ react-dom.development.js:12042
+(anonymous) @ react-dom.development.js:25690

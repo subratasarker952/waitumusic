@@ -1,0 +1,353 @@
+ComprehensiveBookingWorkflow.tsx:148 FRONTEND: Fetching booking workflow for ID 22
+ComprehensiveBookingWorkflow.tsx:150 FRONTEND: Received booking data with primaryArtist: {id: 19, email: 'princesstrinidad@waitumusic.com', passwordHash: '$2b$10$nHLHyp4RpLss45EqMnrCh.yCGgHFmsZgY82r3snuVobM8hkQTjZP.', fullName: 'Joanna Davis (Princess Trinidad)', roleId: 3, …}
+ComprehensiveBookingWorkflow.tsx:190 USEEFFECT: Processing booking data: {id: 22, bookerUserId: null, primaryArtistUserId: 19, eventName: 'dffdfdfdfdfd', eventType: 'wedding', …}
+ComprehensiveBookingWorkflow.tsx:191 USEEFFECT: Primary artist data: {id: 19, email: 'princesstrinidad@waitumusic.com', passwordHash: '$2b$10$nHLHyp4RpLss45EqMnrCh.yCGgHFmsZgY82r3snuVobM8hkQTjZP.', fullName: 'Joanna Davis (Princess Trinidad)', roleId: 3, …}
+ComprehensiveBookingWorkflow.tsx:199 USEEFFECT: Determined artist type: Managed Artist from userType: Managed Artist isManaged: true
+ComprehensiveBookingWorkflow.tsx:211 USEEFFECT: Creating primary talent assignment: {id: 'primary-19', userId: 19, name: 'Princess Trinidad', type: 'Managed Artist', role: 'Main Booked Talent', …}
+_app-424ade17f85111cf.js:18   POST https://events.launchdarkly.com/events/bulk/62b35a865152ab14c5942820 net::ERR_BLOCKED_BY_CLIENT
+(anonymous) @ _app-424ade17f85111cf.js:18
+(anonymous) @ _app-424ade17f85111cf.js:18
+promise @ _app-424ade17f85111cf.js:40
+(anonymous) @ _app-424ade17f85111cf.js:40
+r.httpRequest @ _app-424ade17f85111cf.js:40
+t @ _app-424ade17f85111cf.js:40
+a.sendChunk @ _app-424ade17f85111cf.js:40
+a.sendEvents @ _app-424ade17f85111cf.js:40
+a.flush @ _app-424ade17f85111cf.js:40
+e @ _app-424ade17f85111cf.js:40
+n @ _app-424ade17f85111cf.js:18
+setTimeout
+(anonymous) @ _app-424ade17f85111cf.js:18
+e @ _app-424ade17f85111cf.js:40
+n @ _app-424ade17f85111cf.js:18
+setTimeout
+(anonymous) @ _app-424ade17f85111cf.js:18
+e @ _app-424ade17f85111cf.js:40
+n @ _app-424ade17f85111cf.js:18
+setTimeout
+(anonymous) @ _app-424ade17f85111cf.js:18
+e @ _app-424ade17f85111cf.js:40
+n @ _app-424ade17f85111cf.js:18
+setTimeout
+(anonymous) @ _app-424ade17f85111cf.js:18
+e @ _app-424ade17f85111cf.js:40
+n @ _app-424ade17f85111cf.js:18
+setTimeout
+(anonymous) @ _app-424ade17f85111cf.js:18
+e @ _app-424ade17f85111cf.js:40
+n @ _app-424ade17f85111cf.js:18
+setTimeout
+(anonymous) @ _app-424ade17f85111cf.js:18
+e @ _app-424ade17f85111cf.js:40
+n @ _app-424ade17f85111cf.js:18
+setTimeout
+(anonymous) @ _app-424ade17f85111cf.js:18
+e @ _app-424ade17f85111cf.js:40
+n @ _app-424ade17f85111cf.js:18
+setTimeout
+(anonymous) @ _app-424ade17f85111cf.js:18
+e @ _app-424ade17f85111cf.js:40
+n @ _app-424ade17f85111cf.js:18
+setTimeout
+(anonymous) @ _app-424ade17f85111cf.js:18
+e @ _app-424ade17f85111cf.js:40
+n @ _app-424ade17f85111cf.js:18
+setTimeout
+(anonymous) @ _app-424ade17f85111cf.js:18
+e @ _app-424ade17f85111cf.js:40
+n @ _app-424ade17f85111cf.js:18
+[NEW] Explain Console errors by using Copilot in Edge: click
+         
+         to explain an error. 
+        Learn more
+        Don't show again
+_app-424ade17f85111cf.js:18   POST https://events.launchdarkly.com/events/bulk/62b35a865152ab14c5942820 net::ERR_BLOCKED_BY_CLIENT
+(anonymous) @ _app-424ade17f85111cf.js:18
+(anonymous) @ _app-424ade17f85111cf.js:18
+promise @ _app-424ade17f85111cf.js:40
+(anonymous) @ _app-424ade17f85111cf.js:40
+r.httpRequest @ _app-424ade17f85111cf.js:40
+t @ _app-424ade17f85111cf.js:40
+(anonymous) @ _app-424ade17f85111cf.js:40
+Promise.catch
+t @ _app-424ade17f85111cf.js:40
+a.sendChunk @ _app-424ade17f85111cf.js:40
+a.sendEvents @ _app-424ade17f85111cf.js:40
+a.flush @ _app-424ade17f85111cf.js:40
+e @ _app-424ade17f85111cf.js:40
+n @ _app-424ade17f85111cf.js:18
+setTimeout
+(anonymous) @ _app-424ade17f85111cf.js:18
+e @ _app-424ade17f85111cf.js:40
+n @ _app-424ade17f85111cf.js:18
+setTimeout
+(anonymous) @ _app-424ade17f85111cf.js:18
+e @ _app-424ade17f85111cf.js:40
+n @ _app-424ade17f85111cf.js:18
+setTimeout
+(anonymous) @ _app-424ade17f85111cf.js:18
+e @ _app-424ade17f85111cf.js:40
+n @ _app-424ade17f85111cf.js:18
+setTimeout
+(anonymous) @ _app-424ade17f85111cf.js:18
+e @ _app-424ade17f85111cf.js:40
+n @ _app-424ade17f85111cf.js:18
+setTimeout
+(anonymous) @ _app-424ade17f85111cf.js:18
+e @ _app-424ade17f85111cf.js:40
+n @ _app-424ade17f85111cf.js:18
+setTimeout
+(anonymous) @ _app-424ade17f85111cf.js:18
+e @ _app-424ade17f85111cf.js:40
+n @ _app-424ade17f85111cf.js:18
+setTimeout
+(anonymous) @ _app-424ade17f85111cf.js:18
+e @ _app-424ade17f85111cf.js:40
+n @ _app-424ade17f85111cf.js:18
+setTimeout
+(anonymous) @ _app-424ade17f85111cf.js:18
+e @ _app-424ade17f85111cf.js:40
+n @ _app-424ade17f85111cf.js:18
+setTimeout
+(anonymous) @ _app-424ade17f85111cf.js:18
+e @ _app-424ade17f85111cf.js:40
+n @ _app-424ade17f85111cf.js:18
+setTimeout
+(anonymous) @ _app-424ade17f85111cf.js:18
+e @ _app-424ade17f85111cf.js:40
+n @ _app-424ade17f85111cf.js:18
+EnhancedTechnicalRider.tsx:450 DEBUG: Syncing stage legend roles with band members
+EnhancedTechnicalRider.tsx:456 🔄 TECHNICAL RIDER: Initializing band members
+EnhancedTechnicalRider.tsx:457 🔄 Final assigned musicians count: 19
+EnhancedTechnicalRider.tsx:458 🔄 Final assigned musicians data: (19) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
+EnhancedTechnicalRider.tsx:465 🔄 Processing musician 1: Princess Trinidad
+EnhancedTechnicalRider.tsx:466 🔄 Full musician data: {id: 19, userId: 19, name: 'Princess Trinidad', fullName: 'Princess Trinidad', stageName: 'Princess Trinidad', …}
+EnhancedTechnicalRider.tsx:477 🔄 Assignment source: undefined
+EnhancedTechnicalRider.tsx:478 🔄 Role badge: Artist
+EnhancedTechnicalRider.tsx:479 🔄 Membership: BAND
+EnhancedTechnicalRider.tsx:480 🔄 Assignment source role (blue default): Lead Vocalist
+EnhancedTechnicalRider.tsx:506 🔄 Adding member 1: Princess Trinidad Membership: BAND
+EnhancedTechnicalRider.tsx:465 🔄 Processing musician 2: Lí-Lí Octave
+EnhancedTechnicalRider.tsx:466 🔄 Full musician data: {id: 16, userId: 16, name: 'Lí-Lí Octave', fullName: 'Lí-Lí Octave', stageName: {…}, …}
+EnhancedTechnicalRider.tsx:477 🔄 Assignment source: undefined
+EnhancedTechnicalRider.tsx:478 🔄 Role badge: Artist
+EnhancedTechnicalRider.tsx:479 🔄 Membership: BAND
+EnhancedTechnicalRider.tsx:480 🔄 Assignment source role (blue default): Lead Vocalist
+EnhancedTechnicalRider.tsx:506 🔄 Adding member 2: Lí-Lí Octave Membership: BAND
+EnhancedTechnicalRider.tsx:465 🔄 Processing musician 3: Janet Azzouz
+EnhancedTechnicalRider.tsx:466 🔄 Full musician data: {id: 18, userId: 18, name: 'Janet Azzouz', fullName: 'Janet Azzouz', stageName: 'Janet Azzouz', …}
+EnhancedTechnicalRider.tsx:477 🔄 Assignment source: undefined
+EnhancedTechnicalRider.tsx:478 🔄 Role badge: Artist
+EnhancedTechnicalRider.tsx:479 🔄 Membership: BAND
+EnhancedTechnicalRider.tsx:480 🔄 Assignment source role (blue default): Lead Vocalist
+EnhancedTechnicalRider.tsx:506 🔄 Adding member 3: Janet Azzouz Membership: BAND
+EnhancedTechnicalRider.tsx:465 🔄 Processing musician 4: Managed Artist Two
+EnhancedTechnicalRider.tsx:466 🔄 Full musician data: {id: 27, userId: 27, name: 'Managed Artist Two', fullName: 'Managed Artist Two', stageName: 'Managed Artist Two', …}
+EnhancedTechnicalRider.tsx:477 🔄 Assignment source: undefined
+EnhancedTechnicalRider.tsx:478 🔄 Role badge: Artist
+EnhancedTechnicalRider.tsx:479 🔄 Membership: BAND
+EnhancedTechnicalRider.tsx:480 🔄 Assignment source role (blue default): Lead Vocalist
+EnhancedTechnicalRider.tsx:506 🔄 Adding member 4: Managed Artist Two Membership: BAND
+EnhancedTechnicalRider.tsx:465 🔄 Processing musician 5: Karlvin Deravariere
+EnhancedTechnicalRider.tsx:466 🔄 Full musician data: {id: 17, userId: 17, name: 'Karlvin Deravariere', fullName: 'Karlvin Deravariere', stageName: 'JCro', …}
+EnhancedTechnicalRider.tsx:477 🔄 Assignment source: undefined
+EnhancedTechnicalRider.tsx:478 🔄 Role badge: Artist
+EnhancedTechnicalRider.tsx:479 🔄 Membership: BAND
+EnhancedTechnicalRider.tsx:480 🔄 Assignment source role (blue default): Lead Vocalist
+EnhancedTechnicalRider.tsx:506 🔄 Adding member 5: Karlvin Deravariere Membership: BAND
+EnhancedTechnicalRider.tsx:465 🔄 Processing musician 6: Independent Artist Two
+EnhancedTechnicalRider.tsx:466 🔄 Full musician data: {id: 30, userId: 30, name: 'Independent Artist Two', fullName: 'Independent Artist Two', stageName: 'Sarah J', …}
+EnhancedTechnicalRider.tsx:477 🔄 Assignment source: undefined
+EnhancedTechnicalRider.tsx:478 🔄 Role badge: Artist
+EnhancedTechnicalRider.tsx:479 🔄 Membership: BAND
+EnhancedTechnicalRider.tsx:480 🔄 Assignment source role (blue default): Lead Vocalist
+EnhancedTechnicalRider.tsx:506 🔄 Adding member 6: Independent Artist Two Membership: BAND
+EnhancedTechnicalRider.tsx:465 🔄 Processing musician 7: Managed Musician Two
+EnhancedTechnicalRider.tsx:466 🔄 Full musician data: {id: 28, userId: 28, name: 'Managed Musician Two', fullName: 'Managed Musician Two', stageName: '', …}
+EnhancedTechnicalRider.tsx:477 🔄 Assignment source: undefined
+EnhancedTechnicalRider.tsx:478 🔄 Role badge: Artist
+EnhancedTechnicalRider.tsx:479 🔄 Membership: BAND
+EnhancedTechnicalRider.tsx:480 🔄 Assignment source role (blue default): Keyboardist
+EnhancedTechnicalRider.tsx:506 🔄 Adding member 7: Managed Musician Two Membership: BAND
+EnhancedTechnicalRider.tsx:465 🔄 Processing musician 8: Sophia Chen
+EnhancedTechnicalRider.tsx:466 🔄 Full musician data: {id: 22, userId: 22, name: 'Sophia Chen', fullName: 'Sophia Chen', stageName: '', …}
+EnhancedTechnicalRider.tsx:477 🔄 Assignment source: undefined
+EnhancedTechnicalRider.tsx:478 🔄 Role badge: Artist
+EnhancedTechnicalRider.tsx:479 🔄 Membership: BAND
+EnhancedTechnicalRider.tsx:480 🔄 Assignment source role (blue default): Bass Player
+EnhancedTechnicalRider.tsx:506 🔄 Adding member 8: Sophia Chen Membership: BAND
+EnhancedTechnicalRider.tsx:465 🔄 Processing musician 9: Michael Rodriguez
+EnhancedTechnicalRider.tsx:466 🔄 Full musician data: {id: 21, userId: 21, name: 'Michael Rodriguez', fullName: 'Michael Rodriguez', stageName: '', …}
+EnhancedTechnicalRider.tsx:477 🔄 Assignment source: undefined
+EnhancedTechnicalRider.tsx:478 🔄 Role badge: Artist
+EnhancedTechnicalRider.tsx:479 🔄 Membership: BAND
+EnhancedTechnicalRider.tsx:480 🔄 Assignment source role (blue default): Drummer
+EnhancedTechnicalRider.tsx:506 🔄 Adding member 9: Michael Rodriguez Membership: BAND
+EnhancedTechnicalRider.tsx:465 🔄 Processing musician 10: Session Musician Two
+EnhancedTechnicalRider.tsx:466 🔄 Full musician data: {id: 31, userId: 31, name: 'Session Musician Two', fullName: 'Session Musician Two', stageName: '', …}
+EnhancedTechnicalRider.tsx:477 🔄 Assignment source: undefined
+EnhancedTechnicalRider.tsx:478 🔄 Role badge: Artist
+EnhancedTechnicalRider.tsx:479 🔄 Membership: BAND
+EnhancedTechnicalRider.tsx:480 🔄 Assignment source role (blue default): Lead Vocalist
+EnhancedTechnicalRider.tsx:506 🔄 Adding member 10: Session Musician Two Membership: BAND
+EnhancedTechnicalRider.tsx:465 🔄 Processing musician 11: Regular User
+EnhancedTechnicalRider.tsx:466 🔄 Full musician data: {id: 15, userId: 15, name: 'Regular User', fullName: 'Regular User', stageName: '', …}
+EnhancedTechnicalRider.tsx:477 🔄 Assignment source: undefined
+EnhancedTechnicalRider.tsx:478 🔄 Role badge: Artist
+EnhancedTechnicalRider.tsx:479 🔄 Membership: BAND
+EnhancedTechnicalRider.tsx:480 🔄 Assignment source role (blue default): Musician
+EnhancedTechnicalRider.tsx:506 🔄 Adding member 11: Regular User Membership: BAND
+EnhancedTechnicalRider.tsx:465 🔄 Processing musician 12: Alex Thompson
+EnhancedTechnicalRider.tsx:466 🔄 Full musician data: {id: 23, userId: 23, name: 'Alex Thompson', fullName: 'Alex Thompson', stageName: '', …}
+EnhancedTechnicalRider.tsx:477 🔄 Assignment source: undefined
+EnhancedTechnicalRider.tsx:478 🔄 Role badge: Artist
+EnhancedTechnicalRider.tsx:479 🔄 Membership: BAND
+EnhancedTechnicalRider.tsx:480 🔄 Assignment source role (blue default): Musician
+EnhancedTechnicalRider.tsx:506 🔄 Adding member 12: Alex Thompson Membership: BAND
+EnhancedTechnicalRider.tsx:465 🔄 Processing musician 13: Sarah Martinez
+EnhancedTechnicalRider.tsx:466 🔄 Full musician data: {id: 34, userId: 34, name: 'Sarah Martinez', fullName: 'Sarah Martinez', stageName: '', …}
+EnhancedTechnicalRider.tsx:477 🔄 Assignment source: undefined
+EnhancedTechnicalRider.tsx:478 🔄 Role badge: Artist
+EnhancedTechnicalRider.tsx:479 🔄 Membership: BAND
+EnhancedTechnicalRider.tsx:480 🔄 Assignment source role (blue default): Musician
+EnhancedTechnicalRider.tsx:506 🔄 Adding member 13: Sarah Martinez Membership: BAND
+EnhancedTechnicalRider.tsx:465 🔄 Processing musician 14: David Chen
+EnhancedTechnicalRider.tsx:466 🔄 Full musician data: {id: 35, userId: 35, name: 'David Chen', fullName: 'David Chen', stageName: '', …}
+EnhancedTechnicalRider.tsx:477 🔄 Assignment source: undefined
+EnhancedTechnicalRider.tsx:478 🔄 Role badge: Artist
+EnhancedTechnicalRider.tsx:479 🔄 Membership: BAND
+EnhancedTechnicalRider.tsx:480 🔄 Assignment source role (blue default): Musician
+EnhancedTechnicalRider.tsx:506 🔄 Adding member 14: David Chen Membership: BAND
+EnhancedTechnicalRider.tsx:465 🔄 Processing musician 15: Maria Rodriguez
+EnhancedTechnicalRider.tsx:466 🔄 Full musician data: {id: 36, userId: 36, name: 'Maria Rodriguez', fullName: 'Maria Rodriguez', stageName: '', …}
+EnhancedTechnicalRider.tsx:477 🔄 Assignment source: undefined
+EnhancedTechnicalRider.tsx:478 🔄 Role badge: Artist
+EnhancedTechnicalRider.tsx:479 🔄 Membership: BAND
+EnhancedTechnicalRider.tsx:480 🔄 Assignment source role (blue default): Musician
+EnhancedTechnicalRider.tsx:506 🔄 Adding member 15: Maria Rodriguez Membership: BAND
+EnhancedTechnicalRider.tsx:465 🔄 Processing musician 16: James Wilson
+EnhancedTechnicalRider.tsx:466 🔄 Full musician data: {id: 37, userId: 37, name: 'James Wilson', fullName: 'James Wilson', stageName: '', …}
+EnhancedTechnicalRider.tsx:477 🔄 Assignment source: undefined
+EnhancedTechnicalRider.tsx:478 🔄 Role badge: Artist
+EnhancedTechnicalRider.tsx:479 🔄 Membership: BAND
+EnhancedTechnicalRider.tsx:480 🔄 Assignment source role (blue default): Musician
+EnhancedTechnicalRider.tsx:506 🔄 Adding member 16: James Wilson Membership: BAND
+EnhancedTechnicalRider.tsx:465 🔄 Processing musician 17: Lisa Thompson
+EnhancedTechnicalRider.tsx:466 🔄 Full musician data: {id: 38, userId: 38, name: 'Lisa Thompson', fullName: 'Lisa Thompson', stageName: '', …}
+EnhancedTechnicalRider.tsx:477 🔄 Assignment source: undefined
+EnhancedTechnicalRider.tsx:478 🔄 Role badge: Artist
+EnhancedTechnicalRider.tsx:479 🔄 Membership: BAND
+EnhancedTechnicalRider.tsx:480 🔄 Assignment source role (blue default): Musician
+EnhancedTechnicalRider.tsx:506 🔄 Adding member 17: Lisa Thompson Membership: BAND
+EnhancedTechnicalRider.tsx:465 🔄 Processing musician 18: Managed Professional Two
+EnhancedTechnicalRider.tsx:466 🔄 Full musician data: {id: 29, userId: 29, name: 'Managed Professional Two', fullName: 'Managed Professional Two', stageName: '', …}
+EnhancedTechnicalRider.tsx:477 🔄 Assignment source: undefined
+EnhancedTechnicalRider.tsx:478 🔄 Role badge: Artist
+EnhancedTechnicalRider.tsx:479 🔄 Membership: BAND
+EnhancedTechnicalRider.tsx:480 🔄 Assignment source role (blue default): Musician
+EnhancedTechnicalRider.tsx:506 🔄 Adding member 18: Managed Professional Two Membership: BAND
+EnhancedTechnicalRider.tsx:465 🔄 Processing musician 19: Independent Professional Two
+EnhancedTechnicalRider.tsx:466 🔄 Full musician data: {id: 32, userId: 32, name: 'Independent Professional Two', fullName: 'Independent Professional Two', stageName: '', …}
+EnhancedTechnicalRider.tsx:477 🔄 Assignment source: undefined
+EnhancedTechnicalRider.tsx:478 🔄 Role badge: Artist
+EnhancedTechnicalRider.tsx:479 🔄 Membership: BAND
+EnhancedTechnicalRider.tsx:480 🔄 Assignment source role (blue default): Music Producer
+EnhancedTechnicalRider.tsx:506 🔄 Adding member 19: Independent Professional Two Membership: BAND
+EnhancedTechnicalRider.tsx:513 🔄 Total members added from API: 19
+EnhancedTechnicalRider.tsx:561 Sorting: Janet Azzouz badge: Artist order: 2 vs Lí-Lí Octave badge: Artist order: 2
+EnhancedTechnicalRider.tsx:561 Sorting: Managed Artist Two badge: Artist order: 2 vs Janet Azzouz badge: Artist order: 2
+EnhancedTechnicalRider.tsx:561 Sorting: Karlvin Deravariere badge: Artist order: 2 vs Managed Artist Two badge: Artist order: 2
+EnhancedTechnicalRider.tsx:561 Sorting: Independent Artist Two badge: Artist order: 2 vs Karlvin Deravariere badge: Artist order: 2
+EnhancedTechnicalRider.tsx:561 Sorting: Managed Musician Two badge: Artist order: 2 vs Independent Artist Two badge: Artist order: 2
+EnhancedTechnicalRider.tsx:561 Sorting: Sophia Chen badge: Artist order: 2 vs Managed Musician Two badge: Artist order: 2
+EnhancedTechnicalRider.tsx:561 Sorting: Michael Rodriguez badge: Artist order: 2 vs Sophia Chen badge: Artist order: 2
+EnhancedTechnicalRider.tsx:561 Sorting: Session Musician Two badge: Artist order: 2 vs Michael Rodriguez badge: Artist order: 2
+EnhancedTechnicalRider.tsx:561 Sorting: Regular User badge: Artist order: 2 vs Session Musician Two badge: Artist order: 2
+EnhancedTechnicalRider.tsx:561 Sorting: Alex Thompson badge: Artist order: 2 vs Regular User badge: Artist order: 2
+EnhancedTechnicalRider.tsx:561 Sorting: Sarah Martinez badge: Artist order: 2 vs Alex Thompson badge: Artist order: 2
+EnhancedTechnicalRider.tsx:561 Sorting: David Chen badge: Artist order: 2 vs Sarah Martinez badge: Artist order: 2
+EnhancedTechnicalRider.tsx:561 Sorting: Maria Rodriguez badge: Artist order: 2 vs David Chen badge: Artist order: 2
+EnhancedTechnicalRider.tsx:561 Sorting: James Wilson badge: Artist order: 2 vs Maria Rodriguez badge: Artist order: 2
+EnhancedTechnicalRider.tsx:561 Sorting: Lisa Thompson badge: Artist order: 2 vs James Wilson badge: Artist order: 2
+EnhancedTechnicalRider.tsx:561 Sorting: Managed Professional Two badge: Artist order: 2 vs Lisa Thompson badge: Artist order: 2
+EnhancedTechnicalRider.tsx:561 Sorting: Independent Professional Two badge: Artist order: 2 vs Managed Professional Two badge: Artist order: 2
+EnhancedTechnicalRider.tsx:561 Sorting: Mr Lindsay George badge: undefined order: 999 vs Independent Professional Two badge: Artist order: 2
+EnhancedTechnicalRider.tsx:561 Sorting: Ms Joyette Pascal badge: undefined order: 999 vs Mr Lindsay George badge: undefined order: 999
+EnhancedTechnicalRider.tsx:566 🔄 FINAL: Setting 21 band members
+EnhancedTechnicalRider.tsx:567 🔄 Band members breakdown: {total: 21, band: 19, team: 0, management: 2}
+The specified value "2025-07-28T04:00:00.000Z" does not conform to the required format, "yyyy-MM-dd".
+The specified value "2025-07-28T04:00:00.000Z" does not conform to the required format, "yyyy-MM-dd".
+The specified value "2025-07-28T04:00:00.000Z" does not conform to the required format, "yyyy-MM-dd".
+The specified value "2025-07-28T04:00:00.000Z" does not conform to the required format, "yyyy-MM-dd".
+The specified value "2025-07-28T04:00:00.000Z" does not conform to the required format, "yyyy-MM-dd".
+The specified value "2025-07-28T04:00:00.000Z" does not conform to the required format, "yyyy-MM-dd".
+EnhancedTechnicalRider.tsx:450 DEBUG: Syncing stage legend roles with band members
+EnhancedTechnicalRider.tsx:456 🔄 TECHNICAL RIDER: Initializing band members
+EnhancedTechnicalRider.tsx:457 🔄 Final assigned musicians count: 4
+EnhancedTechnicalRider.tsx:458 🔄 Final assigned musicians data: (4) [{…}, {…}, {…}, {…}]
+EnhancedTechnicalRider.tsx:465 🔄 Processing musician 1: Princess Trinidad
+EnhancedTechnicalRider.tsx:466 🔄 Full musician data: {id: 'primary-19', userId: 19, name: 'Princess Trinidad', fullName: 'Joanna Davis (Princess Trinidad)', stageName: 'Princess Trinidad', …}
+EnhancedTechnicalRider.tsx:477 🔄 Assignment source: managed_artists
+EnhancedTechnicalRider.tsx:478 🔄 Role badge: Managed Artist
+EnhancedTechnicalRider.tsx:479 🔄 Membership: BAND
+EnhancedTechnicalRider.tsx:480 🔄 Assignment source role (blue default): Lead Vocalist
+EnhancedTechnicalRider.tsx:506 🔄 Adding member 1: Princess Trinidad Membership: BAND
+EnhancedTechnicalRider.tsx:465 🔄 Processing musician 2: Michael Rodriguez
+EnhancedTechnicalRider.tsx:466 🔄 Full musician data: {id: 'assigned-25', userId: 21, name: 'Michael Rodriguez', fullName: 'Michael Rodriguez', stageName: 'Michael Rodriguez', …}
+EnhancedTechnicalRider.tsx:477 🔄 Assignment source: musicians
+EnhancedTechnicalRider.tsx:478 🔄 Role badge: Musician
+EnhancedTechnicalRider.tsx:479 🔄 Membership: BAND
+EnhancedTechnicalRider.tsx:480 🔄 Assignment source role (blue default): Drummer
+EnhancedTechnicalRider.tsx:506 🔄 Adding member 2: Michael Rodriguez Membership: BAND
+EnhancedTechnicalRider.tsx:465 🔄 Processing musician 3: Regular User
+EnhancedTechnicalRider.tsx:466 🔄 Full musician data: {id: 'assigned-26', userId: 15, name: 'Regular User', fullName: 'Regular User', stageName: 'Regular User', …}
+EnhancedTechnicalRider.tsx:477 🔄 Assignment source: professionals
+EnhancedTechnicalRider.tsx:478 🔄 Role badge: Managed Professional
+EnhancedTechnicalRider.tsx:479 🔄 Membership: TEAM
+EnhancedTechnicalRider.tsx:480 🔄 Assignment source role (blue default): Music Business Consultant
+EnhancedTechnicalRider.tsx:506 🔄 Adding member 3: Regular User Membership: TEAM
+EnhancedTechnicalRider.tsx:465 🔄 Processing musician 4: Managed Musician Two
+EnhancedTechnicalRider.tsx:466 🔄 Full musician data: {id: 'assigned-27', userId: 28, name: 'Managed Musician Two', fullName: 'Managed Musician Two', stageName: 'Managed Musician Two', …}
+EnhancedTechnicalRider.tsx:477 🔄 Assignment source: managed_musicians
+EnhancedTechnicalRider.tsx:478 🔄 Role badge: Managed Musician
+EnhancedTechnicalRider.tsx:479 🔄 Membership: BAND
+EnhancedTechnicalRider.tsx:480 🔄 Assignment source role (blue default): Keyboardist
+EnhancedTechnicalRider.tsx:506 🔄 Adding member 4: Managed Musician Two Membership: BAND
+EnhancedTechnicalRider.tsx:513 🔄 Total members added from API: 4
+EnhancedTechnicalRider.tsx:561 Sorting: Regular User badge: Managed Professional order: 5 vs Michael Rodriguez badge: Musician order: 4
+EnhancedTechnicalRider.tsx:561 Sorting: Managed Musician Two badge: Managed Musician order: 3 vs Regular User badge: Managed Professional order: 5
+EnhancedTechnicalRider.tsx:561 Sorting: Managed Musician Two badge: Managed Musician order: 3 vs Michael Rodriguez badge: Musician order: 4
+EnhancedTechnicalRider.tsx:561 Sorting: Mr Lindsay George badge: undefined order: 999 vs Michael Rodriguez badge: Musician order: 4
+EnhancedTechnicalRider.tsx:561 Sorting: Mr Lindsay George badge: undefined order: 999 vs Regular User badge: Managed Professional order: 5
+EnhancedTechnicalRider.tsx:561 Sorting: Ms Joyette Pascal badge: undefined order: 999 vs Michael Rodriguez badge: Musician order: 4
+EnhancedTechnicalRider.tsx:561 Sorting: Ms Joyette Pascal badge: undefined order: 999 vs Mr Lindsay George badge: undefined order: 999
+EnhancedTechnicalRider.tsx:566 🔄 FINAL: Setting 6 band members
+EnhancedTechnicalRider.tsx:567 🔄 Band members breakdown: {total: 6, band: 3, team: 1, management: 2}
+EnhancedTechnicalRider.tsx:450 DEBUG: Syncing stage legend roles with band members
+   POST https://events.launchdarkly.com/events/diagnostic/62b35a865152ab14c5942820 net::ERR_BLOCKED_BY_CLIENT
+(anonymous) @ _app-424ade17f85111cf.js:18
+(anonymous) @ _app-424ade17f85111cf.js:18
+promise @ _app-424ade17f85111cf.js:40
+(anonymous) @ _app-424ade17f85111cf.js:40
+r.httpRequest @ _app-424ade17f85111cf.js:40
+t @ _app-424ade17f85111cf.js:40
+a.sendChunk @ _app-424ade17f85111cf.js:40
+a.sendEvents @ _app-424ade17f85111cf.js:40
+m @ _app-424ade17f85111cf.js:40
+b @ _app-424ade17f85111cf.js:40
+n @ _app-424ade17f85111cf.js:18
+   POST https://events.launchdarkly.com/events/diagnostic/62b35a865152ab14c5942820 net::ERR_BLOCKED_BY_CLIENT
+(anonymous) @ _app-424ade17f85111cf.js:18
+(anonymous) @ _app-424ade17f85111cf.js:18
+promise @ _app-424ade17f85111cf.js:40
+(anonymous) @ _app-424ade17f85111cf.js:40
+r.httpRequest @ _app-424ade17f85111cf.js:40
+t @ _app-424ade17f85111cf.js:40
+(anonymous) @ _app-424ade17f85111cf.js:40
+Promise.catch
+t @ _app-424ade17f85111cf.js:40
+a.sendChunk @ _app-424ade17f85111cf.js:40
+a.sendEvents @ _app-424ade17f85111cf.js:40
+m @ _app-424ade17f85111cf.js:40
+b @ _app-424ade17f85111cf.js:40
+n @ _app-424ade17f85111cf.js:18

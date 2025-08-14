@@ -1,0 +1,156 @@
+The Wai'tuMusic platform offers two distinct booking processes: Artist Booking and Consultation Booking. Both processes are designed to be user-friendly while capturing all necessary information for successful bookings.
+
+Book an Artist Process
+The "Book an Artist" process is a comprehensive workflow that allows users to book musical talent for events:
+
+Artist Selection
+Users begin by selecting an artist from the available roster. This can be initiated from multiple entry points:
+
+The main Booking page (/booking)
+An artist's profile page via the "Book Now" button
+The homepage via the "Book an Artist" CTA
+Calendar Interaction
+After selecting an artist, users interact with a dynamic calendar that displays:
+
+Available dates (green)
+Unavailable dates (red)
+Booked dates (orange, visible for reference)
+Past dates (gray, disabled)
+The calendar component checks the artist's availability in real-time, preventing double-bookings and conflicts.
+
+Date Selection
+Users can select dates in three modes:
+
+Single date selection (default)
+Multiple date selection (for series or tours)
+Date range selection (for residencies)
+When multiple dates are selected, the system prompts for additional information about the series or tour.
+
+Package Customization
+After date selection, users can customize their booking with tier options:
+
+Base package (standard performance)
+Additional musicians (backup band, etc.)
+Equipment options (lighting, sound, etc.)
+Extra services (merchandise sales, meet & greet)
+Each selection dynamically updates the total price calculation.
+
+Booking Form Completion
+A multi-step form collects essential information:
+
+Event details (name, type, venue, address)
+Time and duration
+Expected attendees
+Budget range
+Contact information
+Technical requirements
+Additional notes
+For multiple dates, users can specify different venues or custom event names per date.
+
+Supporting Documents
+Users can upload relevant documents:
+
+Venue layouts
+Event schedules
+Technical specifications
+Reference materials
+These documents are stored securely and associated with the booking.
+
+Submission and Confirmation
+Upon submission:
+
+The booking request is saved to the database
+A confirmation notification appears
+An email confirmation is sent to the user
+The booking appears in the user's dashboard
+The artist and admin receive notifications
+Post-Submission Process
+After submission:
+
+Admin reviews the booking request
+Artist is notified of the pending booking
+Admin can approve or reject the booking
+Upon approval, contracts are generated
+Electronic signatures are collected
+Final confirmation is sent to all parties
+The entire process is designed to be intuitive while collecting all necessary information for successful event planning. The system prevents conflicts, ensures proper pricing, and maintains clear communication between all parties.
+
+Book a Consultation Process
+The "Book a Consultation" process allows users to schedule professional consultations with industry experts:
+
+Consultation Type Selection
+Users begin by selecting from different consultation types:
+
+General Consultation (career advice, industry insights)
+Music Production Consultation (technical guidance)
+Marketing Strategy Consultation (promotion planning)
+Legal & Business Consultation (contracts, rights management)
+Each consultation type has specific pricing, duration, and consultant information.
+
+Calendar Interaction
+The consultation calendar displays:
+
+Available weekdays (green)
+Unavailable dates (red)
+Weekends (gray, automatically unavailable)
+Past dates (gray, disabled)
+The calendar enforces business hours and consultant availability.
+
+Date Selection
+Users select a single date for their consultation. Unlike artist bookings, consultations:
+
+Are limited to business days (Monday-Friday)
+Have fixed duration based on consultation type
+Are scheduled with specific time slots
+Time Slot Selection
+After selecting a date, users choose from available time slots:
+
+Morning slots (9:00 AM - 12:00 PM)
+Afternoon slots (1:00 PM - 5:00 PM)
+Time slots are in the consultant's local time zone
+Unavailable slots are hidden or disabled
+Consultation Form Completion
+Users complete a form with:
+
+Contact information (name, email, phone)
+Consultation topic details
+Specific questions or concerns
+Background information
+Preferred communication method
+The form adapts based on the selected consultation type.
+
+Payment Information
+For paid consultations:
+
+Price is clearly displayed based on consultation type
+Payment method selection
+Secure payment processing
+Receipt generation
+Some consultations may require payment upfront, while others bill after the session.
+
+Submission and Confirmation
+Upon submission:
+
+The consultation request is saved to the database
+A confirmation notification appears
+A calendar invitation is sent to the user's email
+The booking appears in the user's dashboard
+The consultant receives a notification
+Pre-Consultation Process
+Before the consultation:
+
+Reminder notifications are sent (24 hours, 1 hour before)
+Preparation materials may be shared
+Video conference links are provided (if applicable)
+Users can submit additional information
+Post-Consultation Follow-up
+After the consultation:
+
+Summary notes are provided
+Recommended next steps are outlined
+Additional resources are shared
+Follow-up consultations can be scheduled
+Feedback is requested
+The consultation booking process is streamlined for efficiency while ensuring all necessary information is collected. The system manages consultant availability, prevents double-bookings, and facilitates clear communication between users and consultants.
+
+Both booking processes integrate seamlessly with the platform's other features, including the dashboard, notification system, calendar management, and contract generation. The user experience is consistent across both workflows, with specific adaptations for the unique requirements of artist bookings versus professional consultations.

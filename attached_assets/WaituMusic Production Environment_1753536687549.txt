@@ -1,0 +1,63 @@
+# WaituMusic Production Environment Configuration
+# Update these values for your production server
+
+# Database Configuration
+DATABASE_URL=postgresql://waitumusic_user:H187GHEU0jedqWdh@waitumusic.com:5432/waitumusic_production
+PGHOST=localhost
+PGPORT=5432
+PGUSER=waitumusic_user
+PGPASSWORD=H187GHEU0jedqWdh
+PGDATABASE=waitumusic_production
+
+# Server Configuration
+NODE_ENV=production
+PORT=3000
+BASE_URL=https://www.waitumusic.com
+
+# Session Security
+SESSION_SECRET=your-super-secure-session-secret-here-change-this-in-production1
+
+# JWT Configuration
+JWT_SECRET=your-jwt-secret-key-change-this-in-production1
+JWT_EXPIRES_IN=7d
+
+# Email Configuration (SendGrid)
+#SENDGRID_API_KEY=your-sendgrid-api-key
+#FROM_EMAIL=noreply@waitumusic.com
+#ADMIN_EMAIL=admin@waitumusic.com
+
+# Email Configuration (mail.comeseetv.com)
+SMTP_HOST=mail.comeseetv.com
+SMTP_PORT=587
+EMAIL_USER=info@waitumusic.com
+EMAIL_PASS=1V-8ppon0+1FtsEmail
+ADMIN_EMAIL=info@waitumusic.com
+
+# File Upload Configuration
+UPLOAD_PATH=/home/waitumusic.com/uploads
+MAX_FILE_SIZE=50mb
+
+# Demo Mode Configuration
+DEMO_MODE_ENABLED=false
+
+# Payment Processing (Stripe)
+STRIPE_SECRET_KEY=sk_live_your_stripe_secret_key
+STRIPE_PUBLISHABLE_KEY=pk_live_your_stripe_publishable_key
+STRIPE_WEBHOOK_SECRET=whsec_your_webhook_secret
+
+# AI Services (Optional)
+OPENAI_API_KEY=your-openai-api-key
+ANTHROPIC_API_KEY=your-anthropic-api-key
+
+# Logging
+LOG_LEVEL=info
+LOG_FILE=/home/waitumusic.com/logs/app.log
+
+# Security
+CORS_ORIGIN=https://www.waitumusic.com
+RATE_LIMIT_WINDOW=15
+RATE_LIMIT_MAX=100
+
+# SSL Configuration
+SSL_CERT_PATH=/etc/letsencrypt/live/waitumusic.com/fullchain.pem
+SSL_KEY_PATH=/etc/letsencrypt/live/waitumusic.com/privkey.pem

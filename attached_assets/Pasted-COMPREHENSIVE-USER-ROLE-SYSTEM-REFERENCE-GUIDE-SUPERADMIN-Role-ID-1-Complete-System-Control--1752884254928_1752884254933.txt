@@ -1,0 +1,182 @@
+COMPREHENSIVE USER ROLE SYSTEM REFERENCE GUIDE
+
+SUPERADMIN (Role ID: 1) - Complete System Control
+Exclusive Superadmin Features
+    • System Administration
+    • User Role Management: Only Superadmins can assign Admin (2) or Superadmin (1) roles.
+    • Database Management: Full database backup, optimization, health checks, security scanning.
+    • System Configuration: Email server configuration, database settings, global preferences.
+    • Release Contract Authority: Create, approve, and manage release contracts for Managed User (Artist, Musician, Professional) transitions.
+    • Management Application Oversight: Final approval authority for all management tier applications.
+Dashboard Tabs (8 Total)
+    • Overview: Complete system metrics, user counts, revenue tracking, active assignments.
+    • Users: Full user management with create, edit, delete capabilities for all user types.
+    • Managed Users: Exclusive management of all Managed Artists (3), Musicians (5), Professionals (7).
+    • Assignments: Admin assignments, booking assignments, artist-musician assignments, service assignments.
+    • Applications: Management applications, release contracts, professional assignments.
+    • System: Feature toggles, system settings, security controls, performance monitoring.
+    • Activity: Complete activity logs, system events, user actions across all roles.
+    • Media: Media management, security scanning, content optimization, storage management.
+Content & Media Management
+    • ClamAV Security Scanning: Real virus scanning of all system files and uploads.
+    • Media Optimization: File compression, storage management, performance optimization.
+    • Content Management: Logo uploads, color scheme changes, font configurations.
+    • Export Capabilities: System-wide data export with email notifications.
+Financial & Legal Authority
+    • Commission Configuration: Set platform fees and commission structures.
+    • Service Discount Overrides: Custom discount management beyond standard tier percentages.
+    • Contract Generation: Multi-party signature workflows with legal documentation.
+    • Currency Management: Add new currencies, update exchange rates globally.
+
+ADMIN (Role ID: 2) - Platform Management
+Admin Capabilities
+    • Limited User Management: Can manage all users EXCEPT cannot assign Admin/Superadmin roles.
+    • Booking Oversight: Review, approve, and manage all platform bookings.
+    • Artist Management: Approve artist profile changes and content submissions.
+    • Contract Generation: Create booking agreements, performance contracts, technical riders.
+    • Assignment Management: Manage admin assignments and user oversight responsibilities.
+Dashboard Tabs (6 Total)
+    • Overview: Platform metrics, pending approvals, managed user statistics.
+    • Users: User management (excluding Admin/Superadmin role assignments).
+    • Artists: Artist oversight, profile approvals, content management.
+    • Bookings: Booking approvals, contract generation, workflow management.
+    • Contracts: Document management, signature workflows, legal compliance.
+    • Forms: Custom forms, booking configurations, administrative workflows.
+Restrictions
+    • Cannot assign Admin or Superadmin roles to any users.
+    • Limited system configuration access.
+    • Cannot approve management applications (view only).
+    • No access to system-level security features.
+
+MANAGED ARTIST (Role ID: 3) - Full Management Benefits
+Enhanced Artist Features
+    • AI Insights Access: Exclusive access to AI-powered career recommendations and analytics.
+    • Management Support: Dedicated management team with strategic planning.
+    • Service Discounts: Tier-based discounts (Publisher (up to 10%), Representation (up to 50%), Full Management (up to 100%)).
+    • Premium Profile Features: Enhanced stage name management, social media integration.
+    • Advanced Music Catalog: Flexible preview lengths (15 seconds to full track).
+Dashboard Tabs (6 Total)
+    • Overview
+    • Profile
+    • Calendar
+    • Music
+    • Merchandise
+    • Bookings
+Secondary Role Capabilities
+    • Can add Managed Musician (5) or Managed Professional (7) secondary roles but this requires going through the application process for each.
+    • Can add regular Musician (6) or Professional (8) roles.
+    • Inherits management benefits for all secondary roles.
+
+ARTIST (Role ID: 4) - Independent Artist
+Standard Artist Features
+    • Basic Profile Management
+    • Music Catalog with 30-second preview limitations
+    • Booking System
+    • Store Integration
+Dashboard Tabs (6 Total)
+    • Overview
+    • Profile
+    • Calendar
+    • Music
+    • Merchandise
+    • Bookings
+Secondary Role Capabilities
+    • Can add Musician (6) or Professional (8) secondary roles.
+    • Cannot add managed tier roles without application process.
+
+MANAGED MUSICIAN (Role ID: 5) - Premium Session Services
+Enhanced Musician Features
+    • AI Insights Access
+    • Management Support
+    • Service Discounts
+    • Advanced Equipment Management
+Dashboard Tabs (5 Total)
+    • Overview
+    • Profile
+    • Calendar
+    • Bookings
+    • Equipment
+Professional Tab Features
+    • Instrument Specializations
+    • Availability Preferences
+    • Rate Structure
+    • Experience Display
+
+MUSICIAN (Role ID: 6) - Independent Session Work
+Standard Musician Features
+    • Basic Equipment Management
+    • Session or Live Booking
+    • Rate Management
+Dashboard Tabs (5 Total)
+    • Overview
+    • Profile
+    • Calendar
+    • Bookings
+    • Equipment
+
+MANAGED PROFESSIONAL (Role ID: 7) - Premium Services
+Enhanced Professional Features
+    • AI Insights Access
+    • Management Support
+    • Service Discounts (Representation (up to 50%), Full Management (up to 100%)).
+    • Advanced Service Management
+Dashboard Tabs (5 Total)
+    • Overview
+    • Profile
+    • Calendar
+    • Services
+    • Knowledge Base
+Management Tier Access
+    • Cannot Apply for Publisher Tier.
+    • Professional Assignment Capabilities.
+
+PROFESSIONAL (Role ID: 8) - Independent Services
+Standard Professional Features
+    • Service Catalog
+    • Client Management
+    • Professional Networking
+Dashboard Tabs (5 Total)
+    • Overview
+    • Profile
+    • Calendar
+    • Services
+    • Knowledge Base
+Management Tier Access
+    • Cannot Apply for Publisher Tier.
+
+FAN (Role ID: 9) - General Platform Access
+Fan Features
+    • Music Discovery
+    • Artist Following
+    • Event Booking
+    • Store Access
+Dashboard Tabs (5 Total)
+    • Overview
+    • My Bookings
+    • Favorites
+    • Purchases
+    • Profile
+Guest Capabilities
+    • No Account Required
+    • Optional Registration
+
+KEY DIFFERENTIATION SUMMARY
+Access Hierarchy
+    • AI Insights: Superadmin → Admin → Managed Users Only
+    • Management Support: Superadmin → Admin → Managed Users Only
+    • System Configuration: Superadmin Only
+    • Role Assignment: Superadmin (all roles) → Admin (except Admin/Superadmin)
+    • Management Applications: Superadmin (approve) → Admin (view/review) → Users (apply)
+Service Discount Tiers
+    • Publisher: (up to 10%) discounts (Managed Artists/Managed Musicians only)
+    • Representation: (up to 50%) discounts (All Managed user types)
+    • Full Management: (up to 100%) discounts (All Managed user types)
+Secondary Role Rules
+    • Managed Artists: Can add Managed Musician/Managed Professional but must go through application process for each; and regular Musician/Professional
+    • Managed Musician: Can add Managed Artist/Managed Professional but must go through application process for each; and regular Artist/Professional
+    • Managed Professional: Can add Managed Artist/Managed Musician but must go through application process for each; and regular Artist/Musician
+    • Artists: Can add regular Musician/Professional.  Can add Managed Musician/Managed Professional but must go through application process for each.
+    • Musicians: Can add regular Artist/Professional.  Can add Managed Artist/Managed Professional but must go through application process for each.
+    • Professionals: Can add regular Artist/Musician.  Can add Managed Artist/Managed Musician but must go through application process for each.
+
+This comprehensive system ensures clear role separation while providing upgrade paths through the management application process, with appropriate benefits and restrictions for each tier.

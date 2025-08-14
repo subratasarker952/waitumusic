@@ -1,0 +1,327 @@
+Error updating source stats for Bandsintown: error: relation "opportunity_sources" does not exist
+    at file:///home/runner/workspace/node_modules/@neondatabase/serverless/index.mjs:1087:33
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async NeonPreparedQuery.execute (/home/runner/workspace/node_modules/src/neon-serverless/session.ts:102:18)
+    at async DatabaseStorage.createOpportunitySource (/home/runner/workspace/server/storage.ts:5290:20)
+    at async OppHubScanner.updateSourceStats (/home/runner/workspace/server/oppHubScanner.ts:752:7)
+    at async OppHubScanner.scanAllSources (/home/runner/workspace/server/oppHubScanner.ts:686:9) {
+  length: 118,
+  severity: 'ERROR',
+  code: '42P01',
+  detail: undefined,
+  hint: undefined,
+  position: '13',
+  internalPosition: undefined,
+  internalQuery: undefined,
+  where: undefined,
+  schema: undefined,
+  table: undefined,
+  column: undefined,
+  dataType: undefined,
+  constraint: undefined,
+  file: 'parse_relation.c',
+  line: '1449',
+  routine: 'parserOpenTable'
+}
+📝 OppHub AI learned from error: DATABASE_TABLE_MISSING in database_storage
+Scanning Festival Sherpa (Global)...
+Scanning: https://www.festivalsherpa.com/festivals
+📊 Found 0 potential opportunities from Festival Sherpa
+Error updating source stats for Festival Sherpa: error: relation "opportunity_sources" does not exist
+    at file:///home/runner/workspace/node_modules/@neondatabase/serverless/index.mjs:1087:33
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async NeonPreparedQuery.execute (/home/runner/workspace/node_modules/src/neon-serverless/session.ts:102:18)
+    at async DatabaseStorage.createOpportunitySource (/home/runner/workspace/server/storage.ts:5290:20)
+    at async OppHubScanner.updateSourceStats (/home/runner/workspace/server/oppHubScanner.ts:752:7)
+    at async OppHubScanner.scanAllSources (/home/runner/workspace/server/oppHubScanner.ts:686:9) {
+  length: 118,
+  severity: 'ERROR',
+  code: '42P01',
+  detail: undefined,
+  hint: undefined,
+  position: '13',
+  internalPosition: undefined,
+  internalQuery: undefined,
+  where: undefined,
+  schema: undefined,
+  table: undefined,
+  column: undefined,
+  dataType: undefined,
+  constraint: undefined,
+  file: 'parse_relation.c',
+  line: '1449',
+  routine: 'parserOpenTable'
+}
+📝 OppHub AI learned from error: DATABASE_TABLE_MISSING in database_storage
+Scanning Eventbrite Music (Global)...
+Scanning: https://www.eventbrite.com/d/online/music-festivals/
+Failed to fetch https://www.eventbrite.com/d/online/music-festivals/: 405 Not Allowed
+Scanning Grants.gov (United States)...
+Scanning: https://www.grants.gov/search-grants.html
+📊 Found 0 potential opportunities from Grants.gov
+Error updating source stats for Grants.gov: error: relation "opportunity_sources" does not exist
+    at file:///home/runner/workspace/node_modules/@neondatabase/serverless/index.mjs:1087:33
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async NeonPreparedQuery.execute (/home/runner/workspace/node_modules/src/neon-serverless/session.ts:102:18)
+    at async DatabaseStorage.createOpportunitySource (/home/runner/workspace/server/storage.ts:5290:20)
+    at async OppHubScanner.updateSourceStats (/home/runner/workspace/server/oppHubScanner.ts:752:7)
+    at async OppHubScanner.scanAllSources (/home/runner/workspace/server/oppHubScanner.ts:686:9) {
+  length: 118,
+  severity: 'ERROR',
+  code: '42P01',
+  detail: undefined,
+  hint: undefined,
+  position: '13',
+  internalPosition: undefined,
+  internalQuery: undefined,
+  where: undefined,
+  schema: undefined,
+  table: undefined,
+  column: undefined,
+  dataType: undefined,
+  constraint: undefined,
+  file: 'parse_relation.c',
+  line: '1449',
+  routine: 'parserOpenTable'
+}
+📝 OppHub AI learned from error: DATABASE_TABLE_MISSING in database_storage
+Scanning ASCAP Foundation (United States)...
+Scanning: https://www.ascapfoundation.org/grants-scholarships
+Failed to fetch https://www.ascapfoundation.org/grants-scholarships: 404 Not Found
+Scanning BMI Foundation (United States)...
+Scanning: https://www.bmifoundation.org/programs
+📊 Found 0 potential opportunities from BMI Foundation
+Error updating source stats for BMI Foundation: error: relation "opportunity_sources" does not exist
+    at file:///home/runner/workspace/node_modules/@neondatabase/serverless/index.mjs:1087:33
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async NeonPreparedQuery.execute (/home/runner/workspace/node_modules/src/neon-serverless/session.ts:102:18)
+    at async DatabaseStorage.createOpportunitySource (/home/runner/workspace/server/storage.ts:5290:20)
+    at async OppHubScanner.updateSourceStats (/home/runner/workspace/server/oppHubScanner.ts:752:7)
+    at async OppHubScanner.scanAllSources (/home/runner/workspace/server/oppHubScanner.ts:686:9) {
+  length: 118,
+  severity: 'ERROR',
+  code: '42P01',
+  detail: undefined,
+  hint: undefined,
+  position: '13',
+  internalPosition: undefined,
+  internalQuery: undefined,
+  where: undefined,
+  schema: undefined,
+  table: undefined,
+  column: undefined,
+  dataType: undefined,
+  constraint: undefined,
+  file: 'parse_relation.c',
+  line: '1449',
+  routine: 'parserOpenTable'
+}
+📝 OppHub AI learned from error: DATABASE_TABLE_MISSING in database_storage
+Scanning Canada Council (Canada)...
+Scanning: https://canadacouncil.ca/funding
+📊 Found 0 potential opportunities from Canada Council
+Error updating source stats for Canada Council: error: relation "opportunity_sources" does not exist
+    at file:///home/runner/workspace/node_modules/@neondatabase/serverless/index.mjs:1087:33
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async NeonPreparedQuery.execute (/home/runner/workspace/node_modules/src/neon-serverless/session.ts:102:18)
+    at async DatabaseStorage.createOpportunitySource (/home/runner/workspace/server/storage.ts:5290:20)
+    at async OppHubScanner.updateSourceStats (/home/runner/workspace/server/oppHubScanner.ts:752:7)
+    at async OppHubScanner.scanAllSources (/home/runner/workspace/server/oppHubScanner.ts:686:9) {
+  length: 118,
+  severity: 'ERROR',
+  code: '42P01',
+  detail: undefined,
+  hint: undefined,
+  position: '13',
+  internalPosition: undefined,
+  internalQuery: undefined,
+  where: undefined,
+  schema: undefined,
+  table: undefined,
+  column: undefined,
+  dataType: undefined,
+  constraint: undefined,
+  file: 'parse_relation.c',
+  line: '1449',
+  routine: 'parserOpenTable'
+}
+📝 OppHub AI learned from error: DATABASE_TABLE_MISSING in database_storage
+Scanning FACTOR Canada (Canada)...
+Scanning: https://www.factor.ca/funding/
+📊 Found 0 potential opportunities from FACTOR Canada
+Error updating source stats for FACTOR Canada: error: relation "opportunity_sources" does not exist
+    at file:///home/runner/workspace/node_modules/@neondatabase/serverless/index.mjs:1087:33
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async NeonPreparedQuery.execute (/home/runner/workspace/node_modules/src/neon-serverless/session.ts:102:18)
+    at async DatabaseStorage.createOpportunitySource (/home/runner/workspace/server/storage.ts:5290:20)
+    at async OppHubScanner.updateSourceStats (/home/runner/workspace/server/oppHubScanner.ts:752:7)
+    at async OppHubScanner.scanAllSources (/home/runner/workspace/server/oppHubScanner.ts:686:9) {
+  length: 118,
+  severity: 'ERROR',
+  code: '42P01',
+  detail: undefined,
+  hint: undefined,
+  position: '13',
+  internalPosition: undefined,
+  internalQuery: undefined,
+  where: undefined,
+  schema: undefined,
+  table: undefined,
+  column: undefined,
+  dataType: undefined,
+  constraint: undefined,
+  file: 'parse_relation.c',
+  line: '1449',
+  routine: 'parserOpenTable'
+}
+📝 OppHub AI learned from error: DATABASE_TABLE_MISSING in database_storage
+Scanning SOCAN Foundation (Canada)...
+Scanning: https://www.socan.ca/members/member-services/awards-grants
+Failed to fetch https://www.socan.ca/members/member-services/awards-grants: 404 Not Found
+Scanning Arts Council England (United Kingdom)...
+Scanning: https://www.artscouncil.org.uk/funding
+Failed to fetch https://www.artscouncil.org.uk/funding: 404 Not Found
+Scanning PRS Foundation (United Kingdom)...
+Scanning: https://www.prsformusic.com/what-we-do/prs-foundation
+Failed to fetch https://www.prsformusic.com/what-we-do/prs-foundation: 404 Not Found
+Scanning Creative Scotland (Scotland)...
+Scanning: https://www.creativescotland.com/funding
+📊 Found 0 potential opportunities from Creative Scotland
+Error updating source stats for Creative Scotland: error: relation "opportunity_sources" does not exist
+    at file:///home/runner/workspace/node_modules/@neondatabase/serverless/index.mjs:1087:33
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async NeonPreparedQuery.execute (/home/runner/workspace/node_modules/src/neon-serverless/session.ts:102:18)
+    at async DatabaseStorage.createOpportunitySource (/home/runner/workspace/server/storage.ts:5290:20)
+    at async OppHubScanner.updateSourceStats (/home/runner/workspace/server/oppHubScanner.ts:752:7)
+    at async OppHubScanner.scanAllSources (/home/runner/workspace/server/oppHubScanner.ts:686:9) {
+  length: 118,
+  severity: 'ERROR',
+  code: '42P01',
+  detail: undefined,
+  hint: undefined,
+  position: '13',
+  internalPosition: undefined,
+  internalQuery: undefined,
+  where: undefined,
+  schema: undefined,
+  table: undefined,
+  column: undefined,
+  dataType: undefined,
+  constraint: undefined,
+  file: 'parse_relation.c',
+  line: '1449',
+  routine: 'parserOpenTable'
+}
+📝 OppHub AI learned from error: DATABASE_TABLE_MISSING in database_storage
+Scanning Arts Council Ireland (Ireland)...
+Scanning: https://artscouncil.ie/funding/
+📊 Found 0 potential opportunities from Arts Council Ireland
+Error updating source stats for Arts Council Ireland: error: relation "opportunity_sources" does not exist
+    at file:///home/runner/workspace/node_modules/@neondatabase/serverless/index.mjs:1087:33
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async NeonPreparedQuery.execute (/home/runner/workspace/node_modules/src/neon-serverless/session.ts:102:18)
+    at async DatabaseStorage.createOpportunitySource (/home/runner/workspace/server/storage.ts:5290:20)
+    at async OppHubScanner.updateSourceStats (/home/runner/workspace/server/oppHubScanner.ts:752:7)
+    at async OppHubScanner.scanAllSources (/home/runner/workspace/server/oppHubScanner.ts:686:9) {
+  length: 118,
+  severity: 'ERROR',
+  code: '42P01',
+  detail: undefined,
+  hint: undefined,
+  position: '13',
+  internalPosition: undefined,
+  internalQuery: undefined,
+  where: undefined,
+  schema: undefined,
+  table: undefined,
+  column: undefined,
+  dataType: undefined,
+  constraint: undefined,
+  file: 'parse_relation.c',
+  line: '1449',
+  routine: 'parserOpenTable'
+}
+📝 OppHub AI learned from error: DATABASE_TABLE_MISSING in database_storage
+Scanning GEMA Foundation (Germany)...
+Scanning: https://www.gema.de/en/musikurheber/foerderung/
+Failed to fetch https://www.gema.de/en/musikurheber/foerderung/: 404 Not Found
+Scanning Caribbean Development Fund (Caribbean)...
+Scanning: https://www.caricom.org/institutions/caricom-development-fund/
+📊 Found 0 potential opportunities from Caribbean Development Fund
+Error updating source stats for Caribbean Development Fund: error: relation "opportunity_sources" does not exist
+    at file:///home/runner/workspace/node_modules/@neondatabase/serverless/index.mjs:1087:33
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async NeonPreparedQuery.execute (/home/runner/workspace/node_modules/src/neon-serverless/session.ts:102:18)
+    at async DatabaseStorage.createOpportunitySource (/home/runner/workspace/server/storage.ts:5290:20)
+    at async OppHubScanner.updateSourceStats (/home/runner/workspace/server/oppHubScanner.ts:752:7)
+    at async OppHubScanner.scanAllSources (/home/runner/workspace/server/oppHubScanner.ts:686:9) {
+  length: 118,
+  severity: 'ERROR',
+  code: '42P01',
+  detail: undefined,
+  hint: undefined,
+  position: '13',
+  internalPosition: undefined,
+  internalQuery: undefined,
+  where: undefined,
+  schema: undefined,
+  table: undefined,
+  column: undefined,
+  dataType: undefined,
+  constraint: undefined,
+  file: 'parse_relation.c',
+  line: '1449',
+  routine: 'parserOpenTable'
+}
+📝 OppHub AI learned from error: DATABASE_TABLE_MISSING in database_storage
+Scanning Trinidad & Tobago Music Industry Company (Caribbean)...
+Scanning: https://www.ttmic.co.tt/funding-opportunities
+Error fetching https://www.ttmic.co.tt/funding-opportunities: TypeError: fetch failed
+    at node:internal/deps/undici/undici:13510:13
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async OppHubScanner.makeWebRequest (/home/runner/workspace/server/oppHubScanner.ts:116:24)
+    at async OppHubScanner.scanAllSources (/home/runner/workspace/server/oppHubScanner.ts:652:22) {
+  [cause]: Error: getaddrinfo ENOTFOUND www.ttmic.co.tt
+      at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:120:26) {
+    errno: -3008,
+    code: 'ENOTFOUND',
+    syscall: 'getaddrinfo',
+    hostname: 'www.ttmic.co.tt'
+  }
+}
+Scanning Jamaica Cultural Development Commission (Caribbean)...
+Scanning: https://jcdc.gov.jm/programmes/grant-opportunities/
+Failed to fetch https://jcdc.gov.jm/programmes/grant-opportunities/: 404 Not Found
+Scanning National Arts Council Singapore (Singapore)...
+Scanning: https://www.nac.gov.sg/support/funding-opportunities
+Failed to fetch https://www.nac.gov.sg/support/funding-opportunities: 404 Not Found
+Scanning Hong Kong Arts Development Council (Hong Kong)...
+Scanning: https://www.hkadc.org.hk/?lang=en
+📊 Found 0 potential opportunities from Hong Kong Arts Development Council
+Error updating source stats for Hong Kong Arts Development Council: error: relation "opportunity_sources" does not exist
+    at file:///home/runner/workspace/node_modules/@neondatabase/serverless/index.mjs:1087:33
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async NeonPreparedQuery.execute (/home/runner/workspace/node_modules/src/neon-serverless/session.ts:102:18)
+    at async DatabaseStorage.createOpportunitySource (/home/runner/workspace/server/storage.ts:5290:20)
+    at async OppHubScanner.updateSourceStats (/home/runner/workspace/server/oppHubScanner.ts:752:7)
+    at async OppHubScanner.scanAllSources (/home/runner/workspace/server/oppHubScanner.ts:686:9) {
+  length: 118,
+  severity: 'ERROR',
+  code: '42P01',
+  detail: undefined,
+  hint: undefined,
+  position: '13',
+  internalPosition: undefined,
+  internalQuery: undefined,
+  where: undefined,
+  schema: undefined,
+  table: undefined,
+  column: undefined,
+  dataType: undefined,
+  constraint: undefined,
+  file: 'parse_relation.c',
+  line: '1449',
+  routine: 'parserOpenTable'
+}
+📝 OppHub AI learned from error: DATABASE_TABLE_MISSING in database_storage
+Scanning Korea Creative Content Agency (South Korea)...

@@ -1,0 +1,103 @@
+RoleBasedRoute Debug: {user: {…}, role: 'managed_artist', roleType: 'string', roleName: 'managed_artist', allowedRoles: Array(9), …}
+WebsiteIntegrationModal.tsx:117 Auto-switch useEffect triggered: {integrations: undefined, integrationsArray: undefined, integrationsLoading: false, integrationsError: null, userRole: 'managed_artist', …}
+WebsiteIntegrationModal.tsx:141 Switch decision: {hasIntegrations: undefined, isCreateTab: true, isModalOpen: false, adminCase: false, ownPageCase: true, …}
+WebsiteIntegrationModal.tsx:64 Query function called: {artistId: 16, isAdminType: false, open: true}
+WebsiteIntegrationModal.tsx:73 Fetching integrations for current user: /api/website-integrations
+WebsiteIntegrationModal.tsx:76 Making API request to: /api/website-integrations
+WebsiteIntegrationModal.tsx:113 Still loading integrations, waiting...
+WebsiteIntegrationModal.tsx:78 Response received: undefined undefined
+WebsiteIntegrationModal.tsx:88  Query function error: Error: HTTP error! status: undefined
+    at queryFn (WebsiteIntegrationModal.tsx:81:17)
+queryFn @ WebsiteIntegrationModal.tsx:88
+await in queryFn
+fetchFn @ query.ts:429
+run @ retryer.ts:153
+start @ retryer.ts:218
+fetch @ query.ts:540
+executeFetch_fn @ queryObserver.ts:346
+setOptions @ queryObserver.ts:199
+(anonymous) @ useBaseQuery.ts:109
+commitHookEffectListMount @ react-dom.development.js:23189
+commitPassiveMountOnFiber @ react-dom.development.js:24965
+commitPassiveMountEffects_complete @ react-dom.development.js:24930
+commitPassiveMountEffects_begin @ react-dom.development.js:24917
+commitPassiveMountEffects @ react-dom.development.js:24905
+flushPassiveEffectsImpl @ react-dom.development.js:27078
+flushPassiveEffects @ react-dom.development.js:27023
+commitRootImpl @ react-dom.development.js:26974
+commitRoot @ react-dom.development.js:26721
+performSyncWorkOnRoot @ react-dom.development.js:26156
+flushSyncCallbacks @ react-dom.development.js:12042
+(anonymous) @ react-dom.development.js:25690
+WebsiteIntegrationModal.tsx:64 Query function called: {artistId: 16, isAdminType: false, open: true}
+WebsiteIntegrationModal.tsx:73 Fetching integrations for current user: /api/website-integrations
+WebsiteIntegrationModal.tsx:76 Making API request to: /api/website-integrations
+WebsiteIntegrationModal.tsx:78 Response received: undefined undefined
+WebsiteIntegrationModal.tsx:88  Query function error: Error: HTTP error! status: undefined
+    at queryFn (WebsiteIntegrationModal.tsx:81:17)
+queryFn @ WebsiteIntegrationModal.tsx:88
+await in queryFn
+fetchFn @ query.ts:429
+run @ retryer.ts:153
+(anonymous) @ retryer.ts:199
+Promise.then
+(anonymous) @ retryer.ts:195
+Promise.catch
+run @ retryer.ts:160
+start @ retryer.ts:218
+fetch @ query.ts:540
+executeFetch_fn @ queryObserver.ts:346
+setOptions @ queryObserver.ts:199
+(anonymous) @ useBaseQuery.ts:109
+commitHookEffectListMount @ react-dom.development.js:23189
+commitPassiveMountOnFiber @ react-dom.development.js:24965
+commitPassiveMountEffects_complete @ react-dom.development.js:24930
+commitPassiveMountEffects_begin @ react-dom.development.js:24917
+commitPassiveMountEffects @ react-dom.development.js:24905
+flushPassiveEffectsImpl @ react-dom.development.js:27078
+flushPassiveEffects @ react-dom.development.js:27023
+commitRootImpl @ react-dom.development.js:26974
+commitRoot @ react-dom.development.js:26721
+performSyncWorkOnRoot @ react-dom.development.js:26156
+flushSyncCallbacks @ react-dom.development.js:12042
+(anonymous) @ react-dom.development.js:25690
+WebsiteIntegrationModal.tsx:64 Query function called: {artistId: 16, isAdminType: false, open: true}
+WebsiteIntegrationModal.tsx:73 Fetching integrations for current user: /api/website-integrations
+WebsiteIntegrationModal.tsx:76 Making API request to: /api/website-integrations
+WebsiteIntegrationModal.tsx:78 Response received: undefined undefined
+WebsiteIntegrationModal.tsx:88  Query function error: Error: HTTP error! status: undefined
+    at queryFn (WebsiteIntegrationModal.tsx:81:17)
+queryFn @ WebsiteIntegrationModal.tsx:88
+await in queryFn
+fetchFn @ query.ts:429
+run @ retryer.ts:153
+(anonymous) @ retryer.ts:199
+Promise.then
+(anonymous) @ retryer.ts:195
+Promise.catch
+run @ retryer.ts:160
+(anonymous) @ retryer.ts:199
+Promise.then
+(anonymous) @ retryer.ts:195
+Promise.catch
+run @ retryer.ts:160
+start @ retryer.ts:218
+fetch @ query.ts:540
+executeFetch_fn @ queryObserver.ts:346
+setOptions @ queryObserver.ts:199
+(anonymous) @ useBaseQuery.ts:109
+commitHookEffectListMount @ react-dom.development.js:23189
+commitPassiveMountOnFiber @ react-dom.development.js:24965
+commitPassiveMountEffects_complete @ react-dom.development.js:24930
+commitPassiveMountEffects_begin @ react-dom.development.js:24917
+commitPassiveMountEffects @ react-dom.development.js:24905
+flushPassiveEffectsImpl @ react-dom.development.js:27078
+flushPassiveEffects @ react-dom.development.js:27023
+commitRootImpl @ react-dom.development.js:26974
+commitRoot @ react-dom.development.js:26721
+performSyncWorkOnRoot @ react-dom.development.js:26156
+flushSyncCallbacks @ react-dom.development.js:12042
+(anonymous) @ react-dom.development.js:25690
+WebsiteIntegrationModal.tsx:117 Auto-switch useEffect triggered: {integrations: undefined, integrationsArray: undefined, integrationsLoading: false, integrationsError: Error: HTTP error! status: undefined
+    at queryFn (https://e61cef8e-4705-48d7-8a18-6b1840d716ae-0…, userRole: 'managed_artist', …}
+WebsiteIntegrationModal.tsx:141 Switch decision: {hasIntegrations: undefined, isCreateTab: true, isModalOpen: true, adminCase: false, ownPageCase: true, …}

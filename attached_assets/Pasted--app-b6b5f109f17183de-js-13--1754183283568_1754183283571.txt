@@ -1,0 +1,269 @@
+_app-b6b5f109f17183de.js:13 
+      /////////////////////
+   ///////////////////////////
+  ////////@@@@@@@//////////////
+  ////////@@@@@@@//////////////
+  ////////@@@@@@@//////////////        Curious and driven?
+  ///////////////@@@@@@@///////        Work with us!
+  ///////////////@@@@@@@///////
+  ///////////////@@@@@@@///////        https://join.replit.com/hack.with.us
+  ////////@@@@@@@//////////////
+  ////////@@@@@@@//////////////
+  ////////@@@@@@#//////////////
+   ///////////////////////////
+      /////////////////////
+      
+_app-b6b5f109f17183de.js:13 [LaunchDarkly] LaunchDarkly client initialized
+/~:1  Tracking Prevention blocked access to storage for https://www.gravatar.com/avatar/a3be3e59cb36da8a00d29fe26d1575a9?d=blank&s=256.
+/~:1  Tracking Prevention blocked access to storage for https://www.gravatar.com/avatar/a3be3e59cb36da8a00d29fe26d1575a9?d=blank&s=256.
+/~:1  Tracking Prevention blocked access to storage for https://www.gravatar.com/avatar/a3be3e59cb36da8a00d29fe26d1575a9?d=blank&s=256.
+/~:1  Tracking Prevention blocked access to storage for https://www.gravatar.com/avatar/a3be3e59cb36da8a00d29fe26d1575a9?d=blank&s=256.
+[Report Only] Refused to frame 'https://www.google.com/' because an ancestor violates the following Content Security Policy directive: "frame-ancestors 'self'".
+
+/~:1 Banner not shown: beforeinstallpromptevent.preventDefault() called. The page must call beforeinstallpromptevent.prompt() to show the banner.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+  Unrecognized feature: 'ambient-light-sensor'.
+_ @ framework-9bfc368571c1b99b.js:1
+  Unrecognized feature: 'battery'.
+_ @ framework-9bfc368571c1b99b.js:1
+  Unrecognized feature: 'execution-while-not-rendered'.
+_ @ framework-9bfc368571c1b99b.js:1
+  Unrecognized feature: 'execution-while-out-of-viewport'.
+_ @ framework-9bfc368571c1b99b.js:1
+  Unrecognized feature: 'layout-animations'.
+_ @ framework-9bfc368571c1b99b.js:1
+  Unrecognized feature: 'legacy-image-formats'.
+_ @ framework-9bfc368571c1b99b.js:1
+  Unrecognized feature: 'navigation-override'.
+_ @ framework-9bfc368571c1b99b.js:1
+  Unrecognized feature: 'oversized-images'.
+_ @ framework-9bfc368571c1b99b.js:1
+  Unrecognized feature: 'publickey-credentials'.
+_ @ framework-9bfc368571c1b99b.js:1
+  Unrecognized feature: 'speaker-selection'.
+_ @ framework-9bfc368571c1b99b.js:1
+  Unrecognized feature: 'unoptimized-images'.
+_ @ framework-9bfc368571c1b99b.js:1
+  Unrecognized feature: 'unsized-media'.
+_ @ framework-9bfc368571c1b99b.js:1
+  Unrecognized feature: 'pointer-lock'.
+_ @ framework-9bfc368571c1b99b.js:1
+  Allow attribute will take precedence over 'allowfullscreen'.
+_ @ framework-9bfc368571c1b99b.js:1
+  Allow attribute will take precedence over 'allowpaymentrequest'.
+_ @ framework-9bfc368571c1b99b.js:1
+e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/__replco/workspace_iframe.html?initialPath=%2F&id=%3Ari9%3A:32  Unrecognized feature: 'ambient-light-sensor'.
+e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/__replco/workspace_iframe.html?initialPath=%2F&id=%3Ari9%3A:32  Unrecognized feature: 'battery'.
+e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/__replco/workspace_iframe.html?initialPath=%2F&id=%3Ari9%3A:32  Unrecognized feature: 'execution-while-not-rendered'.
+e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/__replco/workspace_iframe.html?initialPath=%2F&id=%3Ari9%3A:32  Unrecognized feature: 'execution-while-out-of-viewport'.
+e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/__replco/workspace_iframe.html?initialPath=%2F&id=%3Ari9%3A:32  Unrecognized feature: 'layout-animations'.
+e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/__replco/workspace_iframe.html?initialPath=%2F&id=%3Ari9%3A:32  Unrecognized feature: 'legacy-image-formats'.
+e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/__replco/workspace_iframe.html?initialPath=%2F&id=%3Ari9%3A:32  Unrecognized feature: 'navigation-override'.
+e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/__replco/workspace_iframe.html?initialPath=%2F&id=%3Ari9%3A:32  Unrecognized feature: 'oversized-images'.
+e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/__replco/workspace_iframe.html?initialPath=%2F&id=%3Ari9%3A:32  Unrecognized feature: 'publickey-credentials'.
+e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/__replco/workspace_iframe.html?initialPath=%2F&id=%3Ari9%3A:32  Unrecognized feature: 'speaker-selection'.
+e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/__replco/workspace_iframe.html?initialPath=%2F&id=%3Ari9%3A:32  Unrecognized feature: 'unoptimized-images'.
+e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/__replco/workspace_iframe.html?initialPath=%2F&id=%3Ari9%3A:32  Unrecognized feature: 'unsized-media'.
+e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/__replco/workspace_iframe.html?initialPath=%2F&id=%3Ari9%3A:32  Allow attribute will take precedence over 'allowfullscreen'.
+e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/__replco/workspace_iframe.html?initialPath=%2F&id=%3Ari9%3A:32  Allow attribute will take precedence over 'allowpaymentrequest'.
+e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/@vite/client:536  WebSocket connection to 'wss://e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/?token=GeN__AplsGTo' failed: Error during WebSocket handshake: Unexpected response code: 400
+setupWebSocket @ e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/@vite/client:536
+e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/@vite/client:536  Uncaught (in promise) 
+main.tsx:28 🚀 Loading full WaituMusic application
+main.tsx:41 ✅ React app mounted successfully
+App.tsx:857 ✅ React app mounted successfully
+ stallwart: failed ping 1
+e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/src/components/booking/ComprehensiveBookingWorkflow.tsx:698 🎯 TALENT GROUPED BY ROLE_ID: Object
+e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/src/components/booking/ComprehensiveBookingWorkflow.tsx:175 🔍 FRONTEND: Fetching assigned talent for booking ID: 1
+e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/src/components/booking/ComprehensiveBookingWorkflow.tsx:698 🎯 TALENT GROUPED BY ROLE_ID: Object
+e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/src/components/booking/ComprehensiveBookingWorkflow.tsx:698 🎯 TALENT GROUPED BY ROLE_ID: Object
+e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/src/components/booking/ComprehensiveBookingWorkflow.tsx:698 🎯 TALENT GROUPED BY ROLE_ID: Object
+e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/src/components/booking/ComprehensiveBookingWorkflow.tsx:177 📋 FRONTEND: Received assigned talent data: Array(2)
+e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/src/components/booking/ComprehensiveBookingWorkflow.tsx:698 🎯 TALENT GROUPED BY ROLE_ID: Object
+e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/src/components/booking/ComprehensiveBookingWorkflow.tsx:211 📋 UPDATING assigned talent state: Array(2)
+e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/src/components/booking/ComprehensiveBookingWorkflow.tsx:212 🔍 DETAILED DATA CHECK - First talent object: Object
+e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/src/components/booking/ComprehensiveBookingWorkflow.tsx:213 🔍 KEYS in first talent: Array(17)
+e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/src/components/booking/ComprehensiveBookingWorkflow.tsx:214 🔍 PRIMARY TALENT field: Lead Vocalist
+e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/src/components/booking/ComprehensiveBookingWorkflow.tsx:215 🔍 SECONDARY TALENTS field: Array(0)
+e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/src/components/booking/ComprehensiveBookingWorkflow.tsx:698 🎯 TALENT GROUPED BY ROLE_ID: Object
+e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/src/components/booking/ComprehensiveBookingWorkflow.tsx:698 🎯 TALENT GROUPED BY ROLE_ID: Object
+e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/src/components/booking/ComprehensiveBookingWorkflow.tsx:698 🎯 TALENT GROUPED BY ROLE_ID: Object
+e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/src/components/booking/ComprehensiveBookingWorkflow.tsx:698 🎯 TALENT GROUPED BY ROLE_ID: Object
+e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/src/components/booking/ComprehensiveBookingWorkflow.tsx:698 🎯 TALENT GROUPED BY ROLE_ID: Object
+e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/src/components/booking/ComprehensiveBookingWorkflow.tsx:698 🎯 TALENT GROUPED BY ROLE_ID: Object
+e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/src/components/booking/ComprehensiveBookingWorkflow.tsx:698 🎯 TALENT GROUPED BY ROLE_ID: Object
+e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/src/components/booking/ComprehensiveBookingWorkflow.tsx:698 🎯 TALENT GROUPED BY ROLE_ID: Object
+e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/src/components/booking/ComprehensiveBookingWorkflow.tsx:698 🎯 TALENT GROUPED BY ROLE_ID: Object
+e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/src/components/booking/ComprehensiveBookingWorkflow.tsx:698 🎯 TALENT GROUPED BY ROLE_ID: Object
+e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/src/components/booking/ComprehensiveBookingWorkflow.tsx:698 🎯 TALENT GROUPED BY ROLE_ID: Object
+e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/src/components/booking/ComprehensiveBookingWorkflow.tsx:698 🎯 TALENT GROUPED BY ROLE_ID: Object
+e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/src/components/booking/ComprehensiveBookingWorkflow.tsx:698 🎯 TALENT GROUPED BY ROLE_ID: Object
+e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/src/components/booking/ComprehensiveBookingWorkflow.tsx:698 🎯 TALENT GROUPED BY ROLE_ID: Object
+e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/src/components/booking/ComprehensiveBookingWorkflow.tsx:698 🎯 TALENT GROUPED BY ROLE_ID: Object
+e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/src/components/booking/ComprehensiveBookingWorkflow.tsx:698 🎯 TALENT GROUPED BY ROLE_ID: Object
+e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/src/components/booking/ComprehensiveBookingWorkflow.tsx:698 🎯 TALENT GROUPED BY ROLE_ID: Object
+e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/src/components/booking/ComprehensiveBookingWorkflow.tsx:698 🎯 TALENT GROUPED BY ROLE_ID: Object
+e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/src/components/booking/ComprehensiveBookingWorkflow.tsx:698 🎯 TALENT GROUPED BY ROLE_ID: Object
+e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/src/components/booking/ComprehensiveBookingWorkflow.tsx:698 🎯 TALENT GROUPED BY ROLE_ID: Object
+e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/src/components/booking/ComprehensiveBookingWorkflow.tsx:698 🎯 TALENT GROUPED BY ROLE_ID: Object
+e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/src/components/technical-rider/EnhancedTechnicalRider.tsx:1886 DEBUG: Syncing stage legend talent/skills with band members
+e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/src/components/technical-rider/EnhancedTechnicalRider.tsx:1925 🔄 TECHNICAL RIDER: Initializing band members
+e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/src/components/technical-rider/EnhancedTechnicalRider.tsx:1926 🔄 Assigned musicians (props) count: 8
+e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/src/components/technical-rider/EnhancedTechnicalRider.tsx:1927 🔄 Final assigned musicians (API) count: 8
+e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/src/components/technical-rider/EnhancedTechnicalRider.tsx:1928 🔄 Will use: assignedMusicians (props)
+e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/src/components/technical-rider/EnhancedTechnicalRider.tsx:1931 🔄 Using musician data source: assignedMusicians (props)
+e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/src/components/technical-rider/EnhancedTechnicalRider.tsx:1939 🔍 PHOENIX CHEN DEBUG - Raw musician data: Object
+e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/src/components/technical-rider/EnhancedTechnicalRider.tsx:1995 🔄 Total members added from API: 8
+e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/src/components/technical-rider/EnhancedTechnicalRider.tsx:2045 Sorting: Maya Bass badge: managed_musician order: 7 vs Lí-Lí Octave badge: managed_artist order: 7
+e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/src/components/technical-rider/EnhancedTechnicalRider.tsx:2045 Sorting: Phoenix Chen badge: Artist order: 7 vs Maya Bass badge: managed_musician order: 7
+e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/src/components/technical-rider/EnhancedTechnicalRider.tsx:2045 Sorting: Storm Johnson badge: Artist order: 7 vs Phoenix Chen badge: Artist order: 7
+e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/src/components/technical-rider/EnhancedTechnicalRider.tsx:2045 Sorting: Wave Anderson badge: Artist order: 7 vs Storm Johnson badge: Artist order: 7
+e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/src/components/technical-rider/EnhancedTechnicalRider.tsx:2045 Sorting: Ocean Park badge: Artist order: 7 vs Wave Anderson badge: Artist order: 7
+e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/src/components/technical-rider/EnhancedTechnicalRider.tsx:2045 Sorting: Session Brooks badge: Artist order: 7 vs Ocean Park badge: Artist order: 7
+e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/src/components/technical-rider/EnhancedTechnicalRider.tsx:2045 Sorting: Indie Stone badge: Artist order: 7 vs Session Brooks badge: Artist order: 7
+e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/src/components/technical-rider/EnhancedTechnicalRider.tsx:2045 Sorting: Mr Lindsay George badge: MANAGEMENT order: 999 vs Indie Stone badge: Artist order: 7
+e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/src/components/technical-rider/EnhancedTechnicalRider.tsx:2045 Sorting: Ms Joyette Pascal badge: MANAGEMENT order: 999 vs Mr Lindsay George badge: MANAGEMENT order: 999
+e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/src/components/technical-rider/EnhancedTechnicalRider.tsx:2048 🔄 FINAL: Setting 10 band members
+e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/src/components/technical-rider/EnhancedTechnicalRider.tsx:2051 🎛️ REBUILDING MIXER for 10 band members on page load
+e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/src/components/technical-rider/EnhancedTechnicalRider.tsx:1886 DEBUG: Syncing stage legend talent/skills with band members
+e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/src/components/technical-rider/EnhancedTechnicalRider.tsx:2963 🎼 Band members changed with assigned instruments, rebuilding mixer...
+e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/src/components/technical-rider/EnhancedTechnicalRider.tsx:1303 🎛️ REBUILDING MIXER - QUERYING DATABASE DIRECTLY
+e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/src/components/technical-rider/EnhancedTechnicalRider.tsx:1304 🎛️ Current band members count: 10
+e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/src/components/technical-rider/EnhancedTechnicalRider.tsx:1325 🎛️ Processing: Lí-Lí Octave with instrument ID: Lead Vocalist
+e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/api/instruments/Lead%20Vocalist:1   Failed to load resource: the server responded with a status of 500 (Internal Server Error)
+e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/src/components/technical-rider/EnhancedTechnicalRider.tsx:1328 ❌ Could not find instrument with ID Lead Vocalist for Lí-Lí Octave
+e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/src/components/technical-rider/EnhancedTechnicalRider.tsx:1325 🎛️ Processing: Maya Bass with instrument ID: Bass Player
+e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/src/components/technical-rider/EnhancedTechnicalRider.tsx:1303 🎛️ REBUILDING MIXER - QUERYING DATABASE DIRECTLY
+e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/src/components/technical-rider/EnhancedTechnicalRider.tsx:1304 🎛️ Current band members count: 0
+e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/src/components/technical-rider/EnhancedTechnicalRider.tsx:1427 🎛️ Current channels: 0, Need 37 more to reach 37
+e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/src/components/technical-rider/EnhancedTechnicalRider.tsx:1454 🎛️ MIXER REBUILT: 37 total channels created (database-driven, stage plot aware)
+e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/src/components/technical-rider/EnhancedTechnicalRider.tsx:1458 🎛️ Set correct group order: drums → percussion → bass → guitars → keyboards → brass → strings → woodwind → world → electronic → technical → vocals
+e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/api/instruments/Bass%20Player:1   Failed to load resource: the server responded with a status of 500 (Internal Server Error)
+e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/src/components/technical-rider/EnhancedTechnicalRider.tsx:1328 ❌ Could not find instrument with ID Bass Player for Maya Bass
+e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/src/components/technical-rider/EnhancedTechnicalRider.tsx:1325 🎛️ Processing: Phoenix Chen with instrument ID: Drummer
+e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/src/components/technical-rider/EnhancedTechnicalRider.tsx:1925 🔄 TECHNICAL RIDER: Initializing band members
+e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/src/components/technical-rider/EnhancedTechnicalRider.tsx:1926 🔄 Assigned musicians (props) count: 8
+e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/src/components/technical-rider/EnhancedTechnicalRider.tsx:1927 🔄 Final assigned musicians (API) count: 2
+e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/src/components/technical-rider/EnhancedTechnicalRider.tsx:1928 🔄 Will use: assignedMusicians (props)
+e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/src/components/technical-rider/EnhancedTechnicalRider.tsx:1931 🔄 Using musician data source: assignedMusicians (props)
+e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/src/components/technical-rider/EnhancedTechnicalRider.tsx:1939 🔍 PHOENIX CHEN DEBUG - Raw musician data: Object
+e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/src/components/technical-rider/EnhancedTechnicalRider.tsx:1995 🔄 Total members added from API: 8
+e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/src/components/technical-rider/EnhancedTechnicalRider.tsx:2045 Sorting: Maya Bass badge: managed_musician order: 7 vs Lí-Lí Octave badge: managed_artist order: 7
+e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/src/components/technical-rider/EnhancedTechnicalRider.tsx:2045 Sorting: Phoenix Chen badge: Artist order: 7 vs Maya Bass badge: managed_musician order: 7
+e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/src/components/technical-rider/EnhancedTechnicalRider.tsx:2045 Sorting: Storm Johnson badge: Artist order: 7 vs Phoenix Chen badge: Artist order: 7
+e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/src/components/technical-rider/EnhancedTechnicalRider.tsx:2045 Sorting: Wave Anderson badge: Artist order: 7 vs Storm Johnson badge: Artist order: 7
+e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/src/components/technical-rider/EnhancedTechnicalRider.tsx:2045 Sorting: Ocean Park badge: Artist order: 7 vs Wave Anderson badge: Artist order: 7
+e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/src/components/technical-rider/EnhancedTechnicalRider.tsx:2045 Sorting: Session Brooks badge: Artist order: 7 vs Ocean Park badge: Artist order: 7
+e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/src/components/technical-rider/EnhancedTechnicalRider.tsx:2045 Sorting: Indie Stone badge: Artist order: 7 vs Session Brooks badge: Artist order: 7
+e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/src/components/technical-rider/EnhancedTechnicalRider.tsx:2045 Sorting: Mr Lindsay George badge: MANAGEMENT order: 999 vs Indie Stone badge: Artist order: 7
+e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/src/components/technical-rider/EnhancedTechnicalRider.tsx:2045 Sorting: Ms Joyette Pascal badge: MANAGEMENT order: 999 vs Mr Lindsay George badge: MANAGEMENT order: 999
+e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/src/components/technical-rider/EnhancedTechnicalRider.tsx:2048 🔄 FINAL: Setting 10 band members
+e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/src/components/technical-rider/EnhancedTechnicalRider.tsx:2051 🎛️ REBUILDING MIXER for 10 band members on page load
+e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/api/instruments/Drummer:1   Failed to load resource: the server responded with a status of 500 (Internal Server Error)
+e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/src/components/technical-rider/EnhancedTechnicalRider.tsx:1328 ❌ Could not find instrument with ID Drummer for Phoenix Chen
+e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/src/components/technical-rider/EnhancedTechnicalRider.tsx:1325 🎛️ Processing: Storm Johnson with instrument ID: Lead Guitarist
+e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/src/components/technical-rider/EnhancedTechnicalRider.tsx:1886 DEBUG: Syncing stage legend talent/skills with band members
+e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/src/components/technical-rider/EnhancedTechnicalRider.tsx:2963 🎼 Band members changed with assigned instruments, rebuilding mixer...
+e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/src/components/technical-rider/EnhancedTechnicalRider.tsx:1303 🎛️ REBUILDING MIXER - QUERYING DATABASE DIRECTLY
+e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/src/components/technical-rider/EnhancedTechnicalRider.tsx:1304 🎛️ Current band members count: 10
+e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/src/components/technical-rider/EnhancedTechnicalRider.tsx:1325 🎛️ Processing: Lí-Lí Octave with instrument ID: Lead Vocalist
+e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/api/instruments/Lead%20Guitarist:1   Failed to load resource: the server responded with a status of 500 (Internal Server Error)
+e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/src/components/technical-rider/EnhancedTechnicalRider.tsx:1328 ❌ Could not find instrument with ID Lead Guitarist for Storm Johnson
+e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/src/components/technical-rider/EnhancedTechnicalRider.tsx:1325 🎛️ Processing: Wave Anderson with instrument ID: Keyboardist
+e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/api/instruments/Lead%20Vocalist:1   Failed to load resource: the server responded with a status of 500 (Internal Server Error)
+e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/src/components/technical-rider/EnhancedTechnicalRider.tsx:1328 ❌ Could not find instrument with ID Lead Vocalist for Lí-Lí Octave
+e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/src/components/technical-rider/EnhancedTechnicalRider.tsx:1325 🎛️ Processing: Maya Bass with instrument ID: Bass Player
+e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/api/instruments/Keyboardist:1   Failed to load resource: the server responded with a status of 500 (Internal Server Error)
+e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/src/components/technical-rider/EnhancedTechnicalRider.tsx:1328 ❌ Could not find instrument with ID Keyboardist for Wave Anderson
+e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/src/components/technical-rider/EnhancedTechnicalRider.tsx:1325 🎛️ Processing: Ocean Park with instrument ID: Violinist
+e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/src/components/technical-rider/EnhancedTechnicalRider.tsx:1303 🎛️ REBUILDING MIXER - QUERYING DATABASE DIRECTLY
+e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/src/components/technical-rider/EnhancedTechnicalRider.tsx:1304 🎛️ Current band members count: 10
+e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/src/components/technical-rider/EnhancedTechnicalRider.tsx:1325 🎛️ Processing: Lí-Lí Octave with instrument ID: Lead Vocalist
+e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/api/instruments/Bass%20Player:1   Failed to load resource: the server responded with a status of 500 (Internal Server Error)
+e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/src/components/technical-rider/EnhancedTechnicalRider.tsx:1328 ❌ Could not find instrument with ID Bass Player for Maya Bass
+e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/src/components/technical-rider/EnhancedTechnicalRider.tsx:1325 🎛️ Processing: Phoenix Chen with instrument ID: Drummer
+e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/api/instruments/Violinist:1   Failed to load resource: the server responded with a status of 500 (Internal Server Error)
+e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/src/components/technical-rider/EnhancedTechnicalRider.tsx:1328 ❌ Could not find instrument with ID Violinist for Ocean Park
+e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/src/components/technical-rider/EnhancedTechnicalRider.tsx:1325 🎛️ Processing: Session Brooks with instrument ID: Saxophonist
+e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/api/instruments/Lead%20Vocalist:1   Failed to load resource: the server responded with a status of 500 (Internal Server Error)
+e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/src/components/technical-rider/EnhancedTechnicalRider.tsx:1328 ❌ Could not find instrument with ID Lead Vocalist for Lí-Lí Octave
+e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/src/components/technical-rider/EnhancedTechnicalRider.tsx:1325 🎛️ Processing: Maya Bass with instrument ID: Bass Player
+e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/api/instruments/Saxophonist:1   Failed to load resource: the server responded with a status of 500 (Internal Server Error)
+e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/src/components/technical-rider/EnhancedTechnicalRider.tsx:1328 ❌ Could not find instrument with ID Saxophonist for Session Brooks
+e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/src/components/technical-rider/EnhancedTechnicalRider.tsx:1325 🎛️ Processing: Indie Stone with instrument ID: Singer-Songwriter
+e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/api/instruments/Drummer:1   Failed to load resource: the server responded with a status of 500 (Internal Server Error)
+e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/src/components/technical-rider/EnhancedTechnicalRider.tsx:1328 ❌ Could not find instrument with ID Drummer for Phoenix Chen
+e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/src/components/technical-rider/EnhancedTechnicalRider.tsx:1325 🎛️ Processing: Storm Johnson with instrument ID: Lead Guitarist
+e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/api/instruments/Bass%20Player:1   Failed to load resource: the server responded with a status of 500 (Internal Server Error)
+e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/src/components/technical-rider/EnhancedTechnicalRider.tsx:1328 ❌ Could not find instrument with ID Bass Player for Maya Bass
+e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/src/components/technical-rider/EnhancedTechnicalRider.tsx:1325 🎛️ Processing: Phoenix Chen with instrument ID: Drummer
+e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/api/instruments/Singer-Songwriter:1   Failed to load resource: the server responded with a status of 500 (Internal Server Error)
+e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/src/components/technical-rider/EnhancedTechnicalRider.tsx:1328 ❌ Could not find instrument with ID Singer-Songwriter for Indie Stone
+e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/src/components/technical-rider/EnhancedTechnicalRider.tsx:1427 🎛️ Current channels: 0, Need 37 more to reach 37
+e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/src/components/technical-rider/EnhancedTechnicalRider.tsx:1454 🎛️ MIXER REBUILT: 37 total channels created (database-driven, stage plot aware)
+e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/src/components/technical-rider/EnhancedTechnicalRider.tsx:1458 🎛️ Set correct group order: drums → percussion → bass → guitars → keyboards → brass → strings → woodwind → world → electronic → technical → vocals
+e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/api/instruments/Lead%20Guitarist:1   Failed to load resource: the server responded with a status of 500 (Internal Server Error)
+e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/src/components/technical-rider/EnhancedTechnicalRider.tsx:1328 ❌ Could not find instrument with ID Lead Guitarist for Storm Johnson
+e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/src/components/technical-rider/EnhancedTechnicalRider.tsx:1325 🎛️ Processing: Wave Anderson with instrument ID: Keyboardist
+e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/api/instruments/Drummer:1   Failed to load resource: the server responded with a status of 500 (Internal Server Error)
+e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/src/components/technical-rider/EnhancedTechnicalRider.tsx:1328 ❌ Could not find instrument with ID Drummer for Phoenix Chen
+e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/src/components/technical-rider/EnhancedTechnicalRider.tsx:1325 🎛️ Processing: Storm Johnson with instrument ID: Lead Guitarist
+e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/api/instruments/Keyboardist:1   Failed to load resource: the server responded with a status of 500 (Internal Server Error)
+e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/src/components/technical-rider/EnhancedTechnicalRider.tsx:1328 ❌ Could not find instrument with ID Keyboardist for Wave Anderson
+e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/src/components/technical-rider/EnhancedTechnicalRider.tsx:1325 🎛️ Processing: Ocean Park with instrument ID: Violinist
+e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/api/instruments/Lead%20Guitarist:1   Failed to load resource: the server responded with a status of 500 (Internal Server Error)
+e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/src/components/technical-rider/EnhancedTechnicalRider.tsx:1328 ❌ Could not find instrument with ID Lead Guitarist for Storm Johnson
+e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/src/components/technical-rider/EnhancedTechnicalRider.tsx:1325 🎛️ Processing: Wave Anderson with instrument ID: Keyboardist
+e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/api/instruments/Violinist:1   Failed to load resource: the server responded with a status of 500 (Internal Server Error)
+e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/src/components/technical-rider/EnhancedTechnicalRider.tsx:1328 ❌ Could not find instrument with ID Violinist for Ocean Park
+e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/src/components/technical-rider/EnhancedTechnicalRider.tsx:1325 🎛️ Processing: Session Brooks with instrument ID: Saxophonist
+e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/api/instruments/Keyboardist:1   Failed to load resource: the server responded with a status of 500 (Internal Server Error)
+e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/src/components/technical-rider/EnhancedTechnicalRider.tsx:1328 ❌ Could not find instrument with ID Keyboardist for Wave Anderson
+e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/src/components/technical-rider/EnhancedTechnicalRider.tsx:1325 🎛️ Processing: Ocean Park with instrument ID: Violinist
+e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/api/instruments/Saxophonist:1   Failed to load resource: the server responded with a status of 500 (Internal Server Error)
+e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/src/components/technical-rider/EnhancedTechnicalRider.tsx:1328 ❌ Could not find instrument with ID Saxophonist for Session Brooks
+e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/src/components/technical-rider/EnhancedTechnicalRider.tsx:1325 🎛️ Processing: Indie Stone with instrument ID: Singer-Songwriter
+e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/api/instruments/Violinist:1   Failed to load resource: the server responded with a status of 500 (Internal Server Error)
+e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/src/components/technical-rider/EnhancedTechnicalRider.tsx:1328 ❌ Could not find instrument with ID Violinist for Ocean Park
+e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/src/components/technical-rider/EnhancedTechnicalRider.tsx:1325 🎛️ Processing: Session Brooks with instrument ID: Saxophonist
+e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/api/instruments/Singer-Songwriter:1   Failed to load resource: the server responded with a status of 500 (Internal Server Error)
+e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/src/components/technical-rider/EnhancedTechnicalRider.tsx:1328 ❌ Could not find instrument with ID Singer-Songwriter for Indie Stone
+e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/src/components/technical-rider/EnhancedTechnicalRider.tsx:1427 🎛️ Current channels: 0, Need 37 more to reach 37
+e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/src/components/technical-rider/EnhancedTechnicalRider.tsx:1454 🎛️ MIXER REBUILT: 37 total channels created (database-driven, stage plot aware)
+e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/src/components/technical-rider/EnhancedTechnicalRider.tsx:1458 🎛️ Set correct group order: drums → percussion → bass → guitars → keyboards → brass → strings → woodwind → world → electronic → technical → vocals
+e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/api/instruments/Saxophonist:1   Failed to load resource: the server responded with a status of 500 (Internal Server Error)
+e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/src/components/technical-rider/EnhancedTechnicalRider.tsx:1328 ❌ Could not find instrument with ID Saxophonist for Session Brooks
+e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/src/components/technical-rider/EnhancedTechnicalRider.tsx:1325 🎛️ Processing: Indie Stone with instrument ID: Singer-Songwriter
+e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/api/instruments/Singer-Songwriter:1   Failed to load resource: the server responded with a status of 500 (Internal Server Error)
+e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/src/components/technical-rider/EnhancedTechnicalRider.tsx:1328 ❌ Could not find instrument with ID Singer-Songwriter for Indie Stone
+e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/src/components/technical-rider/EnhancedTechnicalRider.tsx:1427 🎛️ Current channels: 0, Need 37 more to reach 37
+e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/src/components/technical-rider/EnhancedTechnicalRider.tsx:1454 🎛️ MIXER REBUILT: 37 total channels created (database-driven, stage plot aware)
+e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/src/components/technical-rider/EnhancedTechnicalRider.tsx:1458 🎛️ Set correct group order: drums → percussion → bass → guitars → keyboards → brass → strings → woodwind → world → electronic → technical → vocals
+[NEW] Explain Console errors by using Copilot in Edge: click
+         
+         to explain an error. 
+        Learn more
+        Don't show again
+stallwart.build.js:1 stallwart: failed ping 1
+workspace_iframe.html:32  Unrecognized feature: 'ambient-light-sensor'.
+workspace_iframe.html:32  Unrecognized feature: 'battery'.
+workspace_iframe.html:32  Unrecognized feature: 'execution-while-not-rendered'.
+workspace_iframe.html:32  Unrecognized feature: 'execution-while-out-of-viewport'.
+workspace_iframe.html:32  Unrecognized feature: 'layout-animations'.
+workspace_iframe.html:32  Unrecognized feature: 'legacy-image-formats'.
+workspace_iframe.html:32  Unrecognized feature: 'navigation-override'.
+workspace_iframe.html:32  Unrecognized feature: 'oversized-images'.
+workspace_iframe.html:32  Unrecognized feature: 'publickey-credentials'.
+workspace_iframe.html:32  Unrecognized feature: 'speaker-selection'.
+workspace_iframe.html:32  Unrecognized feature: 'unoptimized-images'.
+workspace_iframe.html:32  Unrecognized feature: 'unsized-media'.
+workspace_iframe.html:32  Allow attribute will take precedence over 'allowfullscreen'.
+workspace_iframe.html:32  Allow attribute will take precedence over 'allowpaymentrequest'.

@@ -1,0 +1,282 @@
+👤 Module 1: Artist & Music Management
+This module focuses on user profiles, music uploads, and collaboration.
+    • User Tiers & Profiles
+        ◦ Managed Artists: In-house artists with full management or administration and expanded feature access.
+        ◦ Independent Artists: Publicly registered artists with standard feature access.
+        ◦ Managed artists or managed musicians have two tiers of management - full management and administration. This will enable them to access the services offered by WaituMusic as follows: full management-up to 100% discount and administration - up to maximum 50% discount. The superadmin can override this per managed musician or artist.
+        ◦ Core Profile Components:
+            ▪ EPK (Electronic Press Kit): A dedicated section for their official EPK.
+            ▪ Gallery: To provide access to a booker interested in promoting the managed artist or managed musician. Only managed artists or managed musicians can upload graphics, documents and videos to the media gallery. Approval by artist-assigned admin or superadmin will allow the graphics, documents or videos to remain in the gallery after 30 days
+            ▪ Link Aggregation: Fields for their official website, streaming platforms (Spotify, Apple Music), and all social media accounts.
+            ▪ Stats Integration: The system will pull and display key public metrics (e.g., YouTube subscribers, top video views, Spotify monthly listeners).
+    • 🎵 Music Catalog System
+        ◦ Upload Requirements (Validation):
+            ▪ A valid ISRC code must be provided for each track.
+            ▪ Cover art must be 3000x3000px or larger. Uploads that don't meet these criteria will be rejected.
+        ◦ Track Access & Monetization: Artists can set tracks to be free for access/download or require payment.
+        ◦ Preview Generation (Audio Slider):
+            ▪ Independent Artists: Can select a 30-second preview snippet from any part of the uploaded track.
+            ▪ Managed Artists: Have a flexible slider to set a preview duration from 15 seconds up to the full length of the song.
+    • Collaboration Hub
+        ◦ The primary goal is to facilitate collaboration between Independent Artists and your Managed Artists.
+        ◦ The platform will also support and facilitate collaboration between any two artists registered on the system.
+
+📄 Module 2: Booking & Document Workflow
+This module outlines the complex booking process, automated contract generation, and the permission-based media system.
+    • Core Booking & Automated Contracts
+        ◦ When a booking is initiated, the system automatically generates and attaches the following base documents:
+            1. Booking Agreement: The main contract for the engagement between the booker and WaituMusic.
+            2. Technical Rider: The standard technical requirements for the booked artist/service.
+            3. Musicians and artists assigned to the booking will be able to add information to their respective section in the technical rider, as the technical rider document will make two sections available: technical requirements and hospitality requirements and considerations. Under technical requirements there should be an add button which allows an itemized list of requirements to be created. Similarly in the Hospitality area, there will be the ability to add things like water, coffee, present any medical conditions or allergies. Only the assigned admins, superadmin and booker will be able to see what the managed artist or managed musician puts in their respective sections, other musicians or artists cannot see what other musicians or artists have put. Also, these specifications for the technical rider should be a private part of the artist or musician or professional profile such that they can auto-fill that itemized list into the technical rider as it will save to their profile. They can also modify the information in the technical rider without modifying it in their profile private area and the default behavior is to auto-fill that information (technical requirements and hospitality requirements) from their profile private area into the technical rider and from the technical rider they can choose to leave as is or modify. Professionals will also be able to add their requirements in the same way if the superadmin indicates that their type of role is technical rider approved
+        ◦ Additional contracts are auto-generated and assigned based on who is attached to the booking:
+            1. Performance Agreement: For the Managed Artist or any directly booked Musician.
+            2. Performance Engagement Contract: For all other attached Professionals (e.g., dancers, background vocalists, security, tour managers).
+    • User Roles & Information Flow
+        ◦ Booker: Can attach additional information via a WYSIWYG editor (which saves as a document) and direct file uploads (PDF, DOCX, JPG, MP4, AI, etc.).
+        ◦ Notification & Approval:
+            1. When a Booker adds information, an Admin/Superadmin receives a notification.
+            2. The Admin reviews the information and then assigns it to the relevant Artist, Musician, or Professional.
+            3. Only after being assigned can that user view the information.
+        ◦ Collaborative Uploads: Any authenticated user (Artist, Musician, Professional, etc.) assigned to a booking or assigned to a managed artist or managed musician, can upload documents/media to a booking and suggest who it should be assigned to. However, an Admin/Superadmin must approve the upload and the assignment before it becomes visible to the target user.
+    • Central Media & Document Hub
+        ◦ A foundational gallery/document management system will power all uploads and attachments.
+        ◦ This system will manage all role-based permissions, tracking who can upload, who can view, and who can assign information within a booking.
+    • User Role Progression
+        ◦ The default user account is a Fan.
+        ◦ A Fan can submit an application (with verification materials) to upgrade their account to another role (e.g., Musician, Dancer, Sound Engineer), which requires Admin approval.
+
+📅 Module 3: Calendars & Dynamic Pricing
+This section details the scheduling interface and the flexible pricing engine.
+    • Dual Calendar System
+        1. Booking Calendar: For scheduling artist and musician performances.
+        2. Consultation Calendar: For scheduling other professional services offered by WaituMusic.
+    • Calendar UI/UX
+        1. Color Coding: Green for available dates, Grey for past dates, Red for totally unavailable dates which the managed artist or managed musician will be able to set either one by one or as multi-select or as a range, Orange for dates that the artist is already booked for (Time clashes are possible but should be communicated to the booker in case time permits, and the booking still has to be accepted or declined by either the artist,with approval from an assigned admin or superadmin, or by the assigned admin or superadmin, with confirmation by the artist), and Purple for the currently being-selected date(s).
+        2. Functionality: Users can multi-select dates for tour booking and use a button to unselect all chosen dates.
+    • 💰 Dynamic Pricing Engine (Add-ons)
+        1. Applicable To: Managed Artists and Managed Musicians.
+        2. Functionality: They can create "add-on packages" that modify their base booking price. Add-ons can increase or decrease the final price.
+        3. Example: A Managed Artist creating a booking package can select an available Managed Musician as an add-on. The system will automatically add that musician's fee to the total engagement price presented to the booker.
+        4. We will use stripe and paypal as payment gateways. Managed Artists and Managed musicians will have a merch store. So part from being able to sell their music direct to the public, they will also be able to sell their merch. The key feature/difference is that merch will be able to be assigned to a song or album and that merch or multiple merch will be upsold whenever someone shows interest in that particular song or album. Also if a viewer goes to the merch store and searches for the merch of a specific managed artist or managed musician then any songs assigned to that merch will also be upsold to the viewer or potential buyer (fan). More importantly, the system should allow the system admin to implement a fee (fixed and percentage) structure such that the admin fee and the payment processing fee/s are all added on to the base price of the song, merch, service or booking etc such that after these are deducted that at least 100% of the base price is remnant and sent to the bank account. This way an artist can get more for their services. Plus we are able to create any number of services and assign that service to any artist, musician or professional such that that user gets a set price, set in the creation of the service and the price of the service. Essentially if the base price of the service is 100 and we attach a professional and we set that the professional should receive 50 then the total price of the service (the new base price will now be 150) and then the admin fee (percentage + fixed) is added to this  and on top of that will be calculated and added the payment processing fee/s. This way 100% of the base price can be accrued thereby really helping the artist, musician or professional financially.
+        5. The different user types will see different things when they sign in. default users (fans) will be able to see their profile, the purchases or even bookings they have made. The Wai'tuMusic platform offers different dashboard experiences based on user roles. Here's a detailed breakdown of what each user type sees when they log in:
+Superadmin Dashboard
+Overview Tab
+    • Dashboard summary with key metrics (total bookings, satisfaction rate, average booking value)
+    • Upcoming events list showing event name, date, venue, and status
+    • Recent activity feed tracking booking requests, contract signings, and payments
+    • Quick access to performance analytics and system health
+User Management
+    • Complete user directory with filtering by role
+    • User creation, editing, and suspension controls
+    • Role assignment capabilities
+    • Access to user activity logs and login history
+    • Assign admins to managed artists or managed musicians or bookings
+    • Assign non-fan users to bookings or managed artists or musician
+Artist Management
+    • Artist profile management for all managed artists
+    • Ability to designate users as "Managed Artists"
+    • Two-tier management system (Administration/Full Management)
+    • Commission configuration per artist
+    • Performance analytics for each artist
+Musician Management
+    • Session musician profiles and availability
+    • Musician verification system
+    • Assignment of musicians to bookings
+    • Rate management and payment tracking
+Booking Management
+    • Comprehensive booking request queue
+    • Approval/rejection workflow
+    • Musician assignment interface
+    • Calendar view of all bookings
+    • Conflict detection system
+Contract System
+    • Contract template management
+    • Electronic signature workflow
+    • Document version control
+    • Legal compliance features
+    • Contract status tracking
+Form Management
+    • Form template builder with 25+ field types
+    • Submission management
+    • Anti-spam protection configuration
+    • Role-based field visibility settings
+System Settings
+    • Email server configuration (mail.comeseetv.com)
+    • Payment gateway integration (Stripe/PayPal)
+    • Social login configuration
+    • Security settings
+    • Database configuration
+API Integrations
+    • Social media API connections (Instagram, YouTube, TikTok, Twitter)
+    • Streaming platform integrations (ComeSeeTV, YouTube Live)
+    • Payment processor connections
+    • Email service configuration
+Admin Dashboard
+Overview Tab
+    • Dashboard summary with key metrics (total bookings, satisfaction rate, average booking value)
+    • Upcoming events list showing event name, date, venue, and status
+    • Recent activity feed tracking booking requests, contract signings, and payments
+    • Quick access to performance analytics and system health
+User Management (if permitted by superadmin)
+    • Complete user directory with filtering by role
+    • User creation, editing, and suspension controls
+    • Role assignment capabilities
+    • Access to user activity logs and login history
+Artist Management
+    • Artist profile management for all managed artists
+    • Ability to designate users as "Managed Artists"
+    • Two-tier management system (Administration/Full Management)
+    • Commission configuration per artist
+    • Performance analytics for each artist
+Musician Management
+    • Session musician profiles and availability
+    • Musician verification system
+    • Assignment of musicians to bookings
+    • Rate management and payment tracking
+Booking Management
+    • Comprehensive booking request queue
+    • Approval/rejection workflow
+    • Musician assignment interface
+    • Calendar view of all bookings
+    • Conflict detection system
+Contract System
+    • Contract template management
+    • Electronic signature workflow
+    • Document version control
+    • Legal compliance features
+    • Contract status tracking
+Form Management
+    • Form template builder with 25+ field types
+    • Submission management
+    • Anti-spam protection configuration
+    • Role-based field visibility settings
+System Settings
+    • Email server configuration (mail.comeseetv.com)
+    • Payment gateway integration (Stripe/PayPal)
+    • Social login configuration
+    • Security settings
+    • Database configuration
+Artist Dashboard
+Overview Tab
+    • Artist-specific metrics (bookings, satisfaction rate, average booking value)
+    • Upcoming performances and events
+    • Recent activity related to the artist's bookings and contracts
+    • Quick access to performance analytics
+Profile Management
+    • Artist profile editing (bio, genre, images)
+    • Social media links management
+    • Base price configuration
+    • Tier options management for bookings
+Calendar Management
+    • Artist availability calendar
+    • Date blocking functionality
+    • Booking request review
+    • Upcoming performance schedule
+Music Management
+    • Song upload and management
+    • Album creation and organization
+    • Music analytics (plays, revenue)
+    • Preview configuration
+Merchandise Management
+    • Product creation and inventory tracking
+    • Pricing configuration
+    • Cross-linking with songs
+    • Sales analytics
+Booking Management
+    • Incoming booking request review
+    • Technical rider management
+    • Performance contract review
+    • Event details and requirements
+Contracts
+    • Contract review and electronic signing
+    • Technical rider customization
+    • Document storage and access
+    • Contract history
+Musician Dashboard
+Overview Tab
+    • Session musician metrics (bookings, satisfaction rate, average booking value)
+    • Upcoming gigs and sessions
+    • Recent activity related to bookings and contracts
+    • Performance analytics
+Profile Management
+    • Instrument proficiency settings
+    • Experience and rate configuration
+    • Availability management
+    • Verification status
+Calendar Management
+    • Availability calendar
+    • Date blocking functionality
+    • Upcoming gig schedule
+    • Conflict detection
+Booking Management
+    • Assigned bookings review
+    • Technical requirements management
+    • Contract review and signing
+    • Payment tracking
+Equipment Management
+    • Gear inventory tracking
+    • Technical specifications
+    • Equipment requirements for bookings
+Professional Dashboard
+Overview Tab
+    • Professional service metrics
+    • Upcoming consultations
+    • Recent activity related to service bookings
+    • Performance analytics
+Profile Management
+    • Professional profile editing
+    • Service offering configuration
+    • Rate management
+    • Availability settings
+Calendar Management
+    • Availability calendar
+    • Consultation scheduling
+    • Service delivery tracking
+Service Management
+    • Service request review
+    • Client communication
+    • Deliverable tracking
+    • Payment status
+Fan Dashboard
+Overview Tab
+    • Basic user metrics
+    • Upcoming events for followed artists
+    • Recent activity
+    • Quick access to merchandise store
+Profile Management
+    • Basic profile editing
+    • Notification preferences
+    • Privacy settings
+Bookings
+    • Past and upcoming bookings
+    • Booking request status
+    • Event details
+Favorites
+    • Followed artists
+    • Saved events
+    • Wishlist items
+Differences Between Managed Artists and Managed Musicians
+Managed Artists
+    • Full profile management with public-facing presence
+    • Music catalog management (songs, albums)
+    • Merchandise store capabilities
+    • Booking calendar with pricing tiers
+    • Revenue tracking across multiple streams (bookings, music, merchandise)
+    • Marketing and promotional tools
+    • Live streaming management
+Managed Musicians
+    • Session musician profile focused on bookings
+    • Instrument proficiency matrix
+    • Hourly rate configuration
+    • Availability for session work
+    • Technical rider specifications
+    • Equipment inventory
+    • Performance history tracking
+Management Relationship
+    • Artists have a comprehensive management agreement with commission structure
+    • Musicians have a more focused booking relationship
+    • Different commission rates apply to each type
+    • Artists receive marketing and promotional support
+    • Musicians receive booking coordination and payment processing
+The dashboard system is designed to provide role-specific functionality while maintaining a consistent user experience across all user types. Each dashboard is tailored to the specific needs and permissions of the user role, with appropriate access controls and feature limitations.
+        6. 

@@ -1,0 +1,525 @@
+ComprehensiveBookingWorkflow.tsx:727 🎯 TALENT GROUPED BY PRIMARY_TALENT_ID: {totalTalent: 10, talentTypes: Array(10), categorizedCounts: {…}}
+ComprehensiveBookingWorkflow.tsx:178 🔍 FRONTEND: Fetching assigned talent for booking ID: 1
+ComprehensiveBookingWorkflow.tsx:727 🎯 TALENT GROUPED BY PRIMARY_TALENT_ID: {totalTalent: 10, talentTypes: Array(10), categorizedCounts: {…}}
+ComprehensiveBookingWorkflow.tsx:727 🎯 TALENT GROUPED BY PRIMARY_TALENT_ID: {totalTalent: 16, talentTypes: Array(16), categorizedCounts: {…}}
+ComprehensiveBookingWorkflow.tsx:727 🎯 TALENT GROUPED BY PRIMARY_TALENT_ID: {totalTalent: 23, talentTypes: Array(23), categorizedCounts: {…}}
+ComprehensiveBookingWorkflow.tsx:180 📋 FRONTEND: Received assigned talent data: (2) [{…}, {…}]
+ComprehensiveBookingWorkflow.tsx:727 🎯 TALENT GROUPED BY PRIMARY_TALENT_ID: {totalTalent: 23, talentTypes: Array(23), categorizedCounts: {…}}
+ComprehensiveBookingWorkflow.tsx:214 📋 UPDATING assigned talent state: (2) [{…}, {…}]
+ComprehensiveBookingWorkflow.tsx:215 🔍 DETAILED DATA CHECK - First talent object: {id: 'assignment-2', userId: 6, name: 'Lí-Lí Octave', assignmentName: 'Lianne Letang(Lí-Lí Octave)', fullName: 'Lianne Letang', …}
+ComprehensiveBookingWorkflow.tsx:216 🔍 KEYS in first talent: (17) ['id', 'userId', 'name', 'assignmentName', 'fullName', 'stageName', 'type', 'role', 'isMainBookedTalent', 'isPrimary', 'talentType', 'primaryTalent', 'secondaryTalents', 'assignmentId', 'isOriginallyBooked', 'showAcceptDecline', 'showRemove']
+ComprehensiveBookingWorkflow.tsx:217 🔍 PRIMARY TALENT field: Lead Vocalist
+ComprehensiveBookingWorkflow.tsx:218 🔍 SECONDARY TALENTS field: []
+ComprehensiveBookingWorkflow.tsx:727 🎯 TALENT GROUPED BY PRIMARY_TALENT_ID: {totalTalent: 23, talentTypes: Array(23), categorizedCounts: {…}}
+ComprehensiveBookingWorkflow.tsx:727 🎯 TALENT GROUPED BY PRIMARY_TALENT_ID: {totalTalent: 23, talentTypes: Array(23), categorizedCounts: {…}}
+chunk-3CQLX5M7.js:341  Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+(anonymous) @ dialog.tsx:542
+commitHookEffectListMount @ react-dom.development.js:23189
+commitPassiveMountOnFiber @ react-dom.development.js:24965
+commitPassiveMountEffects_complete @ react-dom.development.js:24930
+commitPassiveMountEffects_begin @ react-dom.development.js:24917
+commitPassiveMountEffects @ react-dom.development.js:24905
+flushPassiveEffectsImpl @ react-dom.development.js:27078
+flushPassiveEffects @ react-dom.development.js:27023
+commitRootImpl @ react-dom.development.js:26974
+commitRoot @ react-dom.development.js:26721
+performSyncWorkOnRoot @ react-dom.development.js:26156
+flushSyncCallbacks @ react-dom.development.js:12042
+(anonymous) @ react-dom.development.js:25690
+[NEW] Explain Console errors by using Copilot in Edge: click
+         
+         to explain an error. 
+        Learn more
+        Don't show again
+ComprehensiveBookingWorkflow.tsx:727 🎯 TALENT GROUPED BY PRIMARY_TALENT_ID: {totalTalent: 23, talentTypes: Array(23), categorizedCounts: {…}}
+chunk-3CQLX5M7.js:341  Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+(anonymous) @ dialog.tsx:542
+commitHookEffectListMount @ react-dom.development.js:23189
+commitPassiveMountOnFiber @ react-dom.development.js:24965
+commitPassiveMountEffects_complete @ react-dom.development.js:24930
+commitPassiveMountEffects_begin @ react-dom.development.js:24917
+commitPassiveMountEffects @ react-dom.development.js:24905
+flushPassiveEffectsImpl @ react-dom.development.js:27078
+flushPassiveEffects @ react-dom.development.js:27023
+commitRootImpl @ react-dom.development.js:26974
+commitRoot @ react-dom.development.js:26721
+performSyncWorkOnRoot @ react-dom.development.js:26156
+flushSyncCallbacks @ react-dom.development.js:12042
+(anonymous) @ react-dom.development.js:25690
+ComprehensiveBookingWorkflow.tsx:1954 🎯 Fetched personalized talent dropdown for user 19: (15) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
+ComprehensiveBookingWorkflow.tsx:727 🎯 TALENT GROUPED BY PRIMARY_TALENT_ID: {totalTalent: 23, talentTypes: Array(23), categorizedCounts: {…}}
+ComprehensiveBookingWorkflow.tsx:727 🎯 TALENT GROUPED BY PRIMARY_TALENT_ID: {totalTalent: 23, talentTypes: Array(23), categorizedCounts: {…}}
+chunk-3CQLX5M7.js:341  Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+(anonymous) @ dialog.tsx:542
+commitHookEffectListMount @ react-dom.development.js:23189
+commitPassiveMountOnFiber @ react-dom.development.js:24965
+commitPassiveMountEffects_complete @ react-dom.development.js:24930
+commitPassiveMountEffects_begin @ react-dom.development.js:24917
+commitPassiveMountEffects @ react-dom.development.js:24905
+flushPassiveEffectsImpl @ react-dom.development.js:27078
+flushPassiveEffects @ react-dom.development.js:27023
+commitRootImpl @ react-dom.development.js:26974
+commitRoot @ react-dom.development.js:26721
+performSyncWorkOnRoot @ react-dom.development.js:26156
+flushSyncCallbacks @ react-dom.development.js:12042
+(anonymous) @ react-dom.development.js:25690
+ComprehensiveBookingWorkflow.tsx:1954 🎯 Fetched personalized talent dropdown for user 26: (35) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
+ComprehensiveBookingWorkflow.tsx:727 🎯 TALENT GROUPED BY PRIMARY_TALENT_ID: {totalTalent: 23, talentTypes: Array(23), categorizedCounts: {…}}
+ComprehensiveBookingWorkflow.tsx:727 🎯 TALENT GROUPED BY PRIMARY_TALENT_ID: {totalTalent: 23, talentTypes: Array(23), categorizedCounts: {…}}
+chunk-3CQLX5M7.js:341  Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+(anonymous) @ dialog.tsx:542
+commitHookEffectListMount @ react-dom.development.js:23189
+commitPassiveMountOnFiber @ react-dom.development.js:24965
+commitPassiveMountEffects_complete @ react-dom.development.js:24930
+commitPassiveMountEffects_begin @ react-dom.development.js:24917
+commitPassiveMountEffects @ react-dom.development.js:24905
+flushPassiveEffectsImpl @ react-dom.development.js:27078
+flushPassiveEffects @ react-dom.development.js:27023
+commitRootImpl @ react-dom.development.js:26974
+commitRoot @ react-dom.development.js:26721
+performSyncWorkOnRoot @ react-dom.development.js:26156
+flushSyncCallbacks @ react-dom.development.js:12042
+(anonymous) @ react-dom.development.js:25690
+ComprehensiveBookingWorkflow.tsx:1954 🎯 Fetched personalized talent dropdown for user 26: (35) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
+ComprehensiveBookingWorkflow.tsx:727 🎯 TALENT GROUPED BY PRIMARY_TALENT_ID: {totalTalent: 23, talentTypes: Array(23), categorizedCounts: {…}}
+framework-9bfc368571c1b99b.js:1  Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+_ @ framework-9bfc368571c1b99b.js:1
+(anonymous) @ framework-9bfc368571c1b99b.js:1
+uD @ framework-9bfc368571c1b99b.js:1
+uI @ framework-9bfc368571c1b99b.js:1
+uM @ framework-9bfc368571c1b99b.js:1
+uS @ framework-9bfc368571c1b99b.js:1
+C @ framework-9bfc368571c1b99b.js:1
+z @ framework-9bfc368571c1b99b.js:1
+framework-9bfc368571c1b99b.js:1  Unrecognized feature: 'ambient-light-sensor'.
+_ @ framework-9bfc368571c1b99b.js:1
+(anonymous) @ framework-9bfc368571c1b99b.js:1
+uD @ framework-9bfc368571c1b99b.js:1
+uI @ framework-9bfc368571c1b99b.js:1
+uM @ framework-9bfc368571c1b99b.js:1
+uS @ framework-9bfc368571c1b99b.js:1
+C @ framework-9bfc368571c1b99b.js:1
+z @ framework-9bfc368571c1b99b.js:1
+framework-9bfc368571c1b99b.js:1  Unrecognized feature: 'battery'.
+_ @ framework-9bfc368571c1b99b.js:1
+(anonymous) @ framework-9bfc368571c1b99b.js:1
+uD @ framework-9bfc368571c1b99b.js:1
+uI @ framework-9bfc368571c1b99b.js:1
+uM @ framework-9bfc368571c1b99b.js:1
+uS @ framework-9bfc368571c1b99b.js:1
+C @ framework-9bfc368571c1b99b.js:1
+z @ framework-9bfc368571c1b99b.js:1
+framework-9bfc368571c1b99b.js:1  Unrecognized feature: 'execution-while-not-rendered'.
+_ @ framework-9bfc368571c1b99b.js:1
+(anonymous) @ framework-9bfc368571c1b99b.js:1
+uD @ framework-9bfc368571c1b99b.js:1
+uI @ framework-9bfc368571c1b99b.js:1
+uM @ framework-9bfc368571c1b99b.js:1
+uS @ framework-9bfc368571c1b99b.js:1
+C @ framework-9bfc368571c1b99b.js:1
+z @ framework-9bfc368571c1b99b.js:1
+framework-9bfc368571c1b99b.js:1  Unrecognized feature: 'execution-while-out-of-viewport'.
+_ @ framework-9bfc368571c1b99b.js:1
+(anonymous) @ framework-9bfc368571c1b99b.js:1
+uD @ framework-9bfc368571c1b99b.js:1
+uI @ framework-9bfc368571c1b99b.js:1
+uM @ framework-9bfc368571c1b99b.js:1
+uS @ framework-9bfc368571c1b99b.js:1
+C @ framework-9bfc368571c1b99b.js:1
+z @ framework-9bfc368571c1b99b.js:1
+framework-9bfc368571c1b99b.js:1  Unrecognized feature: 'layout-animations'.
+_ @ framework-9bfc368571c1b99b.js:1
+(anonymous) @ framework-9bfc368571c1b99b.js:1
+uD @ framework-9bfc368571c1b99b.js:1
+uI @ framework-9bfc368571c1b99b.js:1
+uM @ framework-9bfc368571c1b99b.js:1
+uS @ framework-9bfc368571c1b99b.js:1
+C @ framework-9bfc368571c1b99b.js:1
+z @ framework-9bfc368571c1b99b.js:1
+framework-9bfc368571c1b99b.js:1  Unrecognized feature: 'legacy-image-formats'.
+_ @ framework-9bfc368571c1b99b.js:1
+(anonymous) @ framework-9bfc368571c1b99b.js:1
+uD @ framework-9bfc368571c1b99b.js:1
+uI @ framework-9bfc368571c1b99b.js:1
+uM @ framework-9bfc368571c1b99b.js:1
+uS @ framework-9bfc368571c1b99b.js:1
+C @ framework-9bfc368571c1b99b.js:1
+z @ framework-9bfc368571c1b99b.js:1
+framework-9bfc368571c1b99b.js:1  Unrecognized feature: 'navigation-override'.
+_ @ framework-9bfc368571c1b99b.js:1
+(anonymous) @ framework-9bfc368571c1b99b.js:1
+uD @ framework-9bfc368571c1b99b.js:1
+uI @ framework-9bfc368571c1b99b.js:1
+uM @ framework-9bfc368571c1b99b.js:1
+uS @ framework-9bfc368571c1b99b.js:1
+C @ framework-9bfc368571c1b99b.js:1
+z @ framework-9bfc368571c1b99b.js:1
+framework-9bfc368571c1b99b.js:1  Unrecognized feature: 'oversized-images'.
+_ @ framework-9bfc368571c1b99b.js:1
+(anonymous) @ framework-9bfc368571c1b99b.js:1
+uD @ framework-9bfc368571c1b99b.js:1
+uI @ framework-9bfc368571c1b99b.js:1
+uM @ framework-9bfc368571c1b99b.js:1
+uS @ framework-9bfc368571c1b99b.js:1
+C @ framework-9bfc368571c1b99b.js:1
+z @ framework-9bfc368571c1b99b.js:1
+framework-9bfc368571c1b99b.js:1  Unrecognized feature: 'publickey-credentials'.
+_ @ framework-9bfc368571c1b99b.js:1
+(anonymous) @ framework-9bfc368571c1b99b.js:1
+uD @ framework-9bfc368571c1b99b.js:1
+uI @ framework-9bfc368571c1b99b.js:1
+uM @ framework-9bfc368571c1b99b.js:1
+uS @ framework-9bfc368571c1b99b.js:1
+C @ framework-9bfc368571c1b99b.js:1
+z @ framework-9bfc368571c1b99b.js:1
+framework-9bfc368571c1b99b.js:1  Unrecognized feature: 'speaker-selection'.
+_ @ framework-9bfc368571c1b99b.js:1
+(anonymous) @ framework-9bfc368571c1b99b.js:1
+uD @ framework-9bfc368571c1b99b.js:1
+uI @ framework-9bfc368571c1b99b.js:1
+uM @ framework-9bfc368571c1b99b.js:1
+uS @ framework-9bfc368571c1b99b.js:1
+C @ framework-9bfc368571c1b99b.js:1
+z @ framework-9bfc368571c1b99b.js:1
+framework-9bfc368571c1b99b.js:1  Unrecognized feature: 'unoptimized-images'.
+_ @ framework-9bfc368571c1b99b.js:1
+(anonymous) @ framework-9bfc368571c1b99b.js:1
+uD @ framework-9bfc368571c1b99b.js:1
+uI @ framework-9bfc368571c1b99b.js:1
+uM @ framework-9bfc368571c1b99b.js:1
+uS @ framework-9bfc368571c1b99b.js:1
+C @ framework-9bfc368571c1b99b.js:1
+z @ framework-9bfc368571c1b99b.js:1
+framework-9bfc368571c1b99b.js:1  Unrecognized feature: 'unsized-media'.
+_ @ framework-9bfc368571c1b99b.js:1
+(anonymous) @ framework-9bfc368571c1b99b.js:1
+uD @ framework-9bfc368571c1b99b.js:1
+uI @ framework-9bfc368571c1b99b.js:1
+uM @ framework-9bfc368571c1b99b.js:1
+uS @ framework-9bfc368571c1b99b.js:1
+C @ framework-9bfc368571c1b99b.js:1
+z @ framework-9bfc368571c1b99b.js:1
+framework-9bfc368571c1b99b.js:1  Unrecognized feature: 'pointer-lock'.
+_ @ framework-9bfc368571c1b99b.js:1
+(anonymous) @ framework-9bfc368571c1b99b.js:1
+uD @ framework-9bfc368571c1b99b.js:1
+uI @ framework-9bfc368571c1b99b.js:1
+uM @ framework-9bfc368571c1b99b.js:1
+uS @ framework-9bfc368571c1b99b.js:1
+C @ framework-9bfc368571c1b99b.js:1
+z @ framework-9bfc368571c1b99b.js:1
+framework-9bfc368571c1b99b.js:1  Allow attribute will take precedence over 'allowfullscreen'.
+_ @ framework-9bfc368571c1b99b.js:1
+(anonymous) @ framework-9bfc368571c1b99b.js:1
+uD @ framework-9bfc368571c1b99b.js:1
+uI @ framework-9bfc368571c1b99b.js:1
+uM @ framework-9bfc368571c1b99b.js:1
+uS @ framework-9bfc368571c1b99b.js:1
+C @ framework-9bfc368571c1b99b.js:1
+z @ framework-9bfc368571c1b99b.js:1
+framework-9bfc368571c1b99b.js:1  Allow attribute will take precedence over 'allowpaymentrequest'.
+_ @ framework-9bfc368571c1b99b.js:1
+(anonymous) @ framework-9bfc368571c1b99b.js:1
+uD @ framework-9bfc368571c1b99b.js:1
+uI @ framework-9bfc368571c1b99b.js:1
+uM @ framework-9bfc368571c1b99b.js:1
+uS @ framework-9bfc368571c1b99b.js:1
+C @ framework-9bfc368571c1b99b.js:1
+z @ framework-9bfc368571c1b99b.js:1
+workspace_iframe.html:32  Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+workspace_iframe.html:32  Unrecognized feature: 'ambient-light-sensor'.
+workspace_iframe.html:32  Unrecognized feature: 'battery'.
+workspace_iframe.html:32  Unrecognized feature: 'execution-while-not-rendered'.
+workspace_iframe.html:32  Unrecognized feature: 'execution-while-out-of-viewport'.
+workspace_iframe.html:32  Unrecognized feature: 'layout-animations'.
+workspace_iframe.html:32  Unrecognized feature: 'legacy-image-formats'.
+workspace_iframe.html:32  Unrecognized feature: 'navigation-override'.
+workspace_iframe.html:32  Unrecognized feature: 'oversized-images'.
+workspace_iframe.html:32  Unrecognized feature: 'publickey-credentials'.
+workspace_iframe.html:32  Unrecognized feature: 'speaker-selection'.
+workspace_iframe.html:32  Unrecognized feature: 'unoptimized-images'.
+workspace_iframe.html:32  Unrecognized feature: 'unsized-media'.
+workspace_iframe.html:32  Allow attribute will take precedence over 'allowfullscreen'.
+workspace_iframe.html:32  Allow attribute will take precedence over 'allowpaymentrequest'.
+client:536  WebSocket connection to 'wss://e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/?token=P01IW0CxVZVP' failed: Error during WebSocket handshake: Unexpected response code: 400
+setupWebSocket @ client:536
+(anonymous) @ client:531
+client:536  Uncaught (in promise) SyntaxError: Failed to construct 'WebSocket': The URL 'wss://localhost:undefined/?token=P01IW0CxVZVP' is invalid.
+    at setupWebSocket (client:536:19)
+    at fallback (client:509:16)
+    at WebSocket.<anonymous> (client:555:7)
+setupWebSocket @ client:536
+fallback @ client:509
+(anonymous) @ client:555
+main.tsx:29 🚀 Loading full WaituMusic application
+main.tsx:37 ✅ React app mounted successfully
+App.tsx:433 ✅ React app mounted successfully
+queryClient.ts:20   GET https://e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/api/user/profile 500 (Internal Server Error)
+apiRequest @ queryClient.ts:20
+checkAuthStatus @ AuthContext.tsx:59
+(anonymous) @ AuthContext.tsx:48
+commitHookEffectListMount @ react-dom.development.js:23189
+commitPassiveMountOnFiber @ react-dom.development.js:24965
+commitPassiveMountEffects_complete @ react-dom.development.js:24930
+commitPassiveMountEffects_begin @ react-dom.development.js:24917
+commitPassiveMountEffects @ react-dom.development.js:24905
+flushPassiveEffectsImpl @ react-dom.development.js:27078
+flushPassiveEffects @ react-dom.development.js:27023
+performSyncWorkOnRoot @ react-dom.development.js:26115
+flushSyncCallbacks @ react-dom.development.js:12042
+commitRootImpl @ react-dom.development.js:26998
+commitRoot @ react-dom.development.js:26721
+finishConcurrentRender @ react-dom.development.js:26020
+performConcurrentWorkOnRoot @ react-dom.development.js:25848
+workLoop @ scheduler.development.js:266
+flushWork @ scheduler.development.js:239
+performWorkUntilDeadline @ scheduler.development.js:533
+AuthContext.tsx:65  Auth check failed: Error: 500: {"message":"Internal server error"}
+    at throwIfResNotOk (queryClient.ts:6:11)
+    at async apiRequest (queryClient.ts:30:3)
+    at async checkAuthStatus (AuthContext.tsx:59:20)
+checkAuthStatus @ AuthContext.tsx:65
+await in checkAuthStatus
+(anonymous) @ AuthContext.tsx:48
+commitHookEffectListMount @ react-dom.development.js:23189
+commitPassiveMountOnFiber @ react-dom.development.js:24965
+commitPassiveMountEffects_complete @ react-dom.development.js:24930
+commitPassiveMountEffects_begin @ react-dom.development.js:24917
+commitPassiveMountEffects @ react-dom.development.js:24905
+flushPassiveEffectsImpl @ react-dom.development.js:27078
+flushPassiveEffects @ react-dom.development.js:27023
+performSyncWorkOnRoot @ react-dom.development.js:26115
+flushSyncCallbacks @ react-dom.development.js:12042
+commitRootImpl @ react-dom.development.js:26998
+commitRoot @ react-dom.development.js:26721
+finishConcurrentRender @ react-dom.development.js:26020
+performConcurrentWorkOnRoot @ react-dom.development.js:25848
+workLoop @ scheduler.development.js:266
+flushWork @ scheduler.development.js:239
+performWorkUntilDeadline @ scheduler.development.js:533
+ComprehensiveBookingWorkflow.tsx:734 🎯 TALENT GROUPED BY PRIMARY_TALENT_ID: {totalTalent: 10, talentTypes: Array(10), categorizedCounts: {…}}
+ComprehensiveBookingWorkflow.tsx:186 🔍 FRONTEND: Fetching assigned talent for booking ID: 1
+ComprehensiveBookingWorkflow.tsx:734 🎯 TALENT GROUPED BY PRIMARY_TALENT_ID: {totalTalent: 10, talentTypes: Array(10), categorizedCounts: {…}}
+ComprehensiveBookingWorkflow.tsx:734 🎯 TALENT GROUPED BY PRIMARY_TALENT_ID: {totalTalent: 16, talentTypes: Array(16), categorizedCounts: {…}}
+ComprehensiveBookingWorkflow.tsx:734 🎯 TALENT GROUPED BY PRIMARY_TALENT_ID: {totalTalent: 23, talentTypes: Array(23), categorizedCounts: {…}}
+ComprehensiveBookingWorkflow.tsx:188 📋 FRONTEND: Received assigned talent data: (2) [{…}, {…}]
+ComprehensiveBookingWorkflow.tsx:734 🎯 TALENT GROUPED BY PRIMARY_TALENT_ID: {totalTalent: 23, talentTypes: Array(23), categorizedCounts: {…}}
+ComprehensiveBookingWorkflow.tsx:230 📋 UPDATING assigned talent state: (2) [{…}, {…}]
+ComprehensiveBookingWorkflow.tsx:231 🔍 DETAILED DATA CHECK - First talent object: {id: 'assignment-2', userId: 6, name: 'Lí-Lí Octave', assignmentName: 'Lianne Letang(Lí-Lí Octave)', fullName: 'Lianne Letang', …}
+ComprehensiveBookingWorkflow.tsx:232 🔍 KEYS in first talent: (17) ['id', 'userId', 'name', 'assignmentName', 'fullName', 'stageName', 'type', 'role', 'isMainBookedTalent', 'isPrimary', 'talentType', 'primaryTalent', 'secondaryTalents', 'assignmentId', 'isOriginallyBooked', 'showAcceptDecline', 'showRemove']
+ComprehensiveBookingWorkflow.tsx:233 🔍 PRIMARY TALENT field: Lead Vocalist
+ComprehensiveBookingWorkflow.tsx:234 🔍 SECONDARY TALENTS field: []
+ComprehensiveBookingWorkflow.tsx:734 🎯 TALENT GROUPED BY PRIMARY_TALENT_ID: {totalTalent: 23, talentTypes: Array(23), categorizedCounts: {…}}
+ComprehensiveBookingWorkflow.tsx:734 🎯 TALENT GROUPED BY PRIMARY_TALENT_ID: {totalTalent: 23, talentTypes: Array(23), categorizedCounts: {…}}
+dialog.tsx:542  Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+(anonymous) @ dialog.tsx:542
+commitHookEffectListMount @ react-dom.development.js:23189
+commitPassiveMountOnFiber @ react-dom.development.js:24965
+commitPassiveMountEffects_complete @ react-dom.development.js:24930
+commitPassiveMountEffects_begin @ react-dom.development.js:24917
+commitPassiveMountEffects @ react-dom.development.js:24905
+flushPassiveEffectsImpl @ react-dom.development.js:27078
+flushPassiveEffects @ react-dom.development.js:27023
+commitRootImpl @ react-dom.development.js:26974
+commitRoot @ react-dom.development.js:26721
+performSyncWorkOnRoot @ react-dom.development.js:26156
+flushSyncCallbacks @ react-dom.development.js:12042
+(anonymous) @ react-dom.development.js:25690
+ComprehensiveBookingWorkflow.tsx:734 🎯 TALENT GROUPED BY PRIMARY_TALENT_ID: {totalTalent: 23, talentTypes: Array(23), categorizedCounts: {…}}
+dialog.tsx:542  Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+(anonymous) @ dialog.tsx:542
+commitHookEffectListMount @ react-dom.development.js:23189
+commitPassiveMountOnFiber @ react-dom.development.js:24965
+commitPassiveMountEffects_complete @ react-dom.development.js:24930
+commitPassiveMountEffects_begin @ react-dom.development.js:24917
+commitPassiveMountEffects @ react-dom.development.js:24905
+flushPassiveEffectsImpl @ react-dom.development.js:27078
+flushPassiveEffects @ react-dom.development.js:27023
+commitRootImpl @ react-dom.development.js:26974
+commitRoot @ react-dom.development.js:26721
+performSyncWorkOnRoot @ react-dom.development.js:26156
+flushSyncCallbacks @ react-dom.development.js:12042
+(anonymous) @ react-dom.development.js:25690
+ComprehensiveBookingWorkflow.tsx:1259 🎯 Fetched personalized talent dropdown for user 18: (15) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
+ComprehensiveBookingWorkflow.tsx:734 🎯 TALENT GROUPED BY PRIMARY_TALENT_ID: {totalTalent: 23, talentTypes: Array(23), categorizedCounts: {…}}
+ComprehensiveBookingWorkflow.tsx:734 🎯 TALENT GROUPED BY PRIMARY_TALENT_ID: {totalTalent: 23, talentTypes: Array(23), categorizedCounts: {…}}
+dialog.tsx:542  Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+(anonymous) @ dialog.tsx:542
+commitHookEffectListMount @ react-dom.development.js:23189
+commitPassiveMountOnFiber @ react-dom.development.js:24965
+commitPassiveMountEffects_complete @ react-dom.development.js:24930
+commitPassiveMountEffects_begin @ react-dom.development.js:24917
+commitPassiveMountEffects @ react-dom.development.js:24905
+flushPassiveEffectsImpl @ react-dom.development.js:27078
+flushPassiveEffects @ react-dom.development.js:27023
+commitRootImpl @ react-dom.development.js:26974
+commitRoot @ react-dom.development.js:26721
+performSyncWorkOnRoot @ react-dom.development.js:26156
+flushSyncCallbacks @ react-dom.development.js:12042
+(anonymous) @ react-dom.development.js:25690
+ComprehensiveBookingWorkflow.tsx:1259 🎯 Fetched personalized talent dropdown for user 18: (15) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
+ComprehensiveBookingWorkflow.tsx:734 🎯 TALENT GROUPED BY PRIMARY_TALENT_ID: {totalTalent: 23, talentTypes: Array(23), categorizedCounts: {…}}
+ComprehensiveBookingWorkflow.tsx:734 🎯 TALENT GROUPED BY PRIMARY_TALENT_ID: {totalTalent: 23, talentTypes: Array(23), categorizedCounts: {…}}
+dialog.tsx:542  Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+(anonymous) @ dialog.tsx:542
+commitHookEffectListMount @ react-dom.development.js:23189
+commitPassiveMountOnFiber @ react-dom.development.js:24965
+commitPassiveMountEffects_complete @ react-dom.development.js:24930
+commitPassiveMountEffects_begin @ react-dom.development.js:24917
+commitPassiveMountEffects @ react-dom.development.js:24905
+flushPassiveEffectsImpl @ react-dom.development.js:27078
+flushPassiveEffects @ react-dom.development.js:27023
+commitRootImpl @ react-dom.development.js:26974
+commitRoot @ react-dom.development.js:26721
+performSyncWorkOnRoot @ react-dom.development.js:26156
+flushSyncCallbacks @ react-dom.development.js:12042
+(anonymous) @ react-dom.development.js:25690
+ComprehensiveBookingWorkflow.tsx:1259 🎯 Fetched personalized talent dropdown for user 23: (18) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
+ComprehensiveBookingWorkflow.tsx:734 🎯 TALENT GROUPED BY PRIMARY_TALENT_ID: {totalTalent: 23, talentTypes: Array(23), categorizedCounts: {…}}
+ComprehensiveBookingWorkflow.tsx:734 🎯 TALENT GROUPED BY PRIMARY_TALENT_ID: {totalTalent: 23, talentTypes: Array(23), categorizedCounts: {…}}
+dialog.tsx:542  Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+(anonymous) @ dialog.tsx:542
+commitHookEffectListMount @ react-dom.development.js:23189
+commitPassiveMountOnFiber @ react-dom.development.js:24965
+commitPassiveMountEffects_complete @ react-dom.development.js:24930
+commitPassiveMountEffects_begin @ react-dom.development.js:24917
+commitPassiveMountEffects @ react-dom.development.js:24905
+flushPassiveEffectsImpl @ react-dom.development.js:27078
+flushPassiveEffects @ react-dom.development.js:27023
+commitRootImpl @ react-dom.development.js:26974
+commitRoot @ react-dom.development.js:26721
+performSyncWorkOnRoot @ react-dom.development.js:26156
+flushSyncCallbacks @ react-dom.development.js:12042
+(anonymous) @ react-dom.development.js:25690
+ComprehensiveBookingWorkflow.tsx:1259 🎯 Fetched personalized talent dropdown for user 23: (18) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
+ComprehensiveBookingWorkflow.tsx:734 🎯 TALENT GROUPED BY PRIMARY_TALENT_ID: {totalTalent: 23, talentTypes: Array(23), categorizedCounts: {…}}
+dialog.tsx:542  Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+(anonymous) @ dialog.tsx:542
+commitHookEffectListMount @ react-dom.development.js:23189
+commitPassiveMountOnFiber @ react-dom.development.js:24965
+commitPassiveMountEffects_complete @ react-dom.development.js:24930
+commitPassiveMountEffects_begin @ react-dom.development.js:24917
+commitPassiveMountEffects @ react-dom.development.js:24905
+flushPassiveEffectsImpl @ react-dom.development.js:27078
+flushPassiveEffects @ react-dom.development.js:27023
+commitRootImpl @ react-dom.development.js:26974
+commitRoot @ react-dom.development.js:26721
+performSyncWorkOnRoot @ react-dom.development.js:26156
+flushSyncCallbacks @ react-dom.development.js:12042
+(anonymous) @ react-dom.development.js:25690
+dialog.tsx:542  Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+(anonymous) @ dialog.tsx:542
+commitHookEffectListMount @ react-dom.development.js:23189
+commitPassiveMountOnFiber @ react-dom.development.js:24965
+commitPassiveMountEffects_complete @ react-dom.development.js:24930
+commitPassiveMountEffects_begin @ react-dom.development.js:24917
+commitPassiveMountEffects @ react-dom.development.js:24905
+flushPassiveEffectsImpl @ react-dom.development.js:27078
+flushPassiveEffects @ react-dom.development.js:27023
+commitRootImpl @ react-dom.development.js:26974
+commitRoot @ react-dom.development.js:26721
+performSyncWorkOnRoot @ react-dom.development.js:26156
+flushSyncCallbacks @ react-dom.development.js:12042
+(anonymous) @ react-dom.development.js:25690
+ComprehensiveBookingWorkflow.tsx:734 🎯 TALENT GROUPED BY PRIMARY_TALENT_ID: {totalTalent: 23, talentTypes: Array(23), categorizedCounts: {…}}
+dialog.tsx:542  Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+(anonymous) @ dialog.tsx:542
+commitHookEffectListMount @ react-dom.development.js:23189
+commitPassiveMountOnFiber @ react-dom.development.js:24965
+commitPassiveMountEffects_complete @ react-dom.development.js:24930
+commitPassiveMountEffects_begin @ react-dom.development.js:24917
+commitPassiveMountEffects @ react-dom.development.js:24905
+flushPassiveEffectsImpl @ react-dom.development.js:27078
+flushPassiveEffects @ react-dom.development.js:27023
+commitRootImpl @ react-dom.development.js:26974
+commitRoot @ react-dom.development.js:26721
+performSyncWorkOnRoot @ react-dom.development.js:26156
+flushSyncCallbacks @ react-dom.development.js:12042
+(anonymous) @ react-dom.development.js:25690
+ComprehensiveBookingWorkflow.tsx:1259 🎯 Fetched personalized talent dropdown for user 18: (15) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
+ComprehensiveBookingWorkflow.tsx:734 🎯 TALENT GROUPED BY PRIMARY_TALENT_ID: {totalTalent: 23, talentTypes: Array(23), categorizedCounts: {…}}
+ComprehensiveBookingWorkflow.tsx:734 🎯 TALENT GROUPED BY PRIMARY_TALENT_ID: {totalTalent: 23, talentTypes: Array(23), categorizedCounts: {…}}
+dialog.tsx:542  Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+(anonymous) @ dialog.tsx:542
+commitHookEffectListMount @ react-dom.development.js:23189
+commitPassiveMountOnFiber @ react-dom.development.js:24965
+commitPassiveMountEffects_complete @ react-dom.development.js:24930
+commitPassiveMountEffects_begin @ react-dom.development.js:24917
+commitPassiveMountEffects @ react-dom.development.js:24905
+flushPassiveEffectsImpl @ react-dom.development.js:27078
+flushPassiveEffects @ react-dom.development.js:27023
+commitRootImpl @ react-dom.development.js:26974
+commitRoot @ react-dom.development.js:26721
+performSyncWorkOnRoot @ react-dom.development.js:26156
+flushSyncCallbacks @ react-dom.development.js:12042
+(anonymous) @ react-dom.development.js:25690
+ComprehensiveBookingWorkflow.tsx:1259 🎯 Fetched personalized talent dropdown for user 18: (15) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
+ComprehensiveBookingWorkflow.tsx:734 🎯 TALENT GROUPED BY PRIMARY_TALENT_ID: {totalTalent: 23, talentTypes: Array(23), categorizedCounts: {…}}
+ComprehensiveBookingWorkflow.tsx:734 🎯 TALENT GROUPED BY PRIMARY_TALENT_ID: {totalTalent: 23, talentTypes: Array(23), categorizedCounts: {…}}
+dialog.tsx:542  Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+(anonymous) @ dialog.tsx:542
+commitHookEffectListMount @ react-dom.development.js:23189
+commitPassiveMountOnFiber @ react-dom.development.js:24965
+commitPassiveMountEffects_complete @ react-dom.development.js:24930
+commitPassiveMountEffects_begin @ react-dom.development.js:24917
+commitPassiveMountEffects @ react-dom.development.js:24905
+flushPassiveEffectsImpl @ react-dom.development.js:27078
+flushPassiveEffects @ react-dom.development.js:27023
+commitRootImpl @ react-dom.development.js:26974
+commitRoot @ react-dom.development.js:26721
+performSyncWorkOnRoot @ react-dom.development.js:26156
+flushSyncCallbacks @ react-dom.development.js:12042
+(anonymous) @ react-dom.development.js:25690
+ComprehensiveBookingWorkflow.tsx:1259 🎯 Fetched personalized talent dropdown for user 26: (35) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
+ComprehensiveBookingWorkflow.tsx:734 🎯 TALENT GROUPED BY PRIMARY_TALENT_ID: {totalTalent: 23, talentTypes: Array(23), categorizedCounts: {…}}
+ComprehensiveBookingWorkflow.tsx:734 🎯 TALENT GROUPED BY PRIMARY_TALENT_ID: {totalTalent: 23, talentTypes: Array(23), categorizedCounts: {…}}
+dialog.tsx:542  Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+(anonymous) @ dialog.tsx:542
+commitHookEffectListMount @ react-dom.development.js:23189
+commitPassiveMountOnFiber @ react-dom.development.js:24965
+commitPassiveMountEffects_complete @ react-dom.development.js:24930
+commitPassiveMountEffects_begin @ react-dom.development.js:24917
+commitPassiveMountEffects @ react-dom.development.js:24905
+flushPassiveEffectsImpl @ react-dom.development.js:27078
+flushPassiveEffects @ react-dom.development.js:27023
+commitRootImpl @ react-dom.development.js:26974
+commitRoot @ react-dom.development.js:26721
+performSyncWorkOnRoot @ react-dom.development.js:26156
+flushSyncCallbacks @ react-dom.development.js:12042
+(anonymous) @ react-dom.development.js:25690
+ComprehensiveBookingWorkflow.tsx:1259 🎯 Fetched personalized talent dropdown for user 26: (35) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
+ComprehensiveBookingWorkflow.tsx:734 🎯 TALENT GROUPED BY PRIMARY_TALENT_ID: {totalTalent: 23, talentTypes: Array(23), categorizedCounts: {…}}
+ComprehensiveBookingWorkflow.tsx:734 🎯 TALENT GROUPED BY PRIMARY_TALENT_ID: {totalTalent: 23, talentTypes: Array(23), categorizedCounts: {…}}
+dialog.tsx:542  Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+(anonymous) @ dialog.tsx:542
+commitHookEffectListMount @ react-dom.development.js:23189
+commitPassiveMountOnFiber @ react-dom.development.js:24965
+commitPassiveMountEffects_complete @ react-dom.development.js:24930
+commitPassiveMountEffects_begin @ react-dom.development.js:24917
+commitPassiveMountEffects @ react-dom.development.js:24905
+flushPassiveEffectsImpl @ react-dom.development.js:27078
+flushPassiveEffects @ react-dom.development.js:27023
+commitRootImpl @ react-dom.development.js:26974
+commitRoot @ react-dom.development.js:26721
+performSyncWorkOnRoot @ react-dom.development.js:26156
+flushSyncCallbacks @ react-dom.development.js:12042
+(anonymous) @ react-dom.development.js:25690
+ComprehensiveBookingWorkflow.tsx:1259 🎯 Fetched personalized talent dropdown for user 19: (15) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
+ComprehensiveBookingWorkflow.tsx:734 🎯 TALENT GROUPED BY PRIMARY_TALENT_ID: {totalTalent: 23, talentTypes: Array(23), categorizedCounts: {…}}
+ComprehensiveBookingWorkflow.tsx:734 🎯 TALENT GROUPED BY PRIMARY_TALENT_ID: {totalTalent: 23, talentTypes: Array(23), categorizedCounts: {…}}
+dialog.tsx:542  Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+(anonymous) @ dialog.tsx:542
+commitHookEffectListMount @ react-dom.development.js:23189
+commitPassiveMountOnFiber @ react-dom.development.js:24965
+commitPassiveMountEffects_complete @ react-dom.development.js:24930
+commitPassiveMountEffects_begin @ react-dom.development.js:24917
+commitPassiveMountEffects @ react-dom.development.js:24905
+flushPassiveEffectsImpl @ react-dom.development.js:27078
+flushPassiveEffects @ react-dom.development.js:27023
+commitRootImpl @ react-dom.development.js:26974
+commitRoot @ react-dom.development.js:26721
+performSyncWorkOnRoot @ react-dom.development.js:26156
+flushSyncCallbacks @ react-dom.development.js:12042
+(anonymous) @ react-dom.development.js:25690
+ComprehensiveBookingWorkflow.tsx:1259 🎯 Fetched personalized talent dropdown for user 19: (15) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
+ComprehensiveBookingWorkflow.tsx:734 🎯 TALENT GROUPED BY PRIMARY_TALENT_ID: {totalTalent: 23, talentTypes: Array(23), categorizedCounts: {…}}

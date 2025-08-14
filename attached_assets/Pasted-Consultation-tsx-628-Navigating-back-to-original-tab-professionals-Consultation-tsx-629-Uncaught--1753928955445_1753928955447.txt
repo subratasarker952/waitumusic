@@ -1,0 +1,221 @@
+Consultation.tsx:628 Navigating back to original tab: professionals
+Consultation.tsx:629  Uncaught TypeError: router.navigate is not a function
+    at onClick (Consultation.tsx:629:22)
+    at HTMLUnknownElement.callCallback2 (chunk-RPCDYKBN.js:3674:22)
+    at Object.invokeGuardedCallbackDev (chunk-RPCDYKBN.js:3699:24)
+    at invokeGuardedCallback (chunk-RPCDYKBN.js:3733:39)
+    at invokeGuardedCallbackAndCatchFirstError (chunk-RPCDYKBN.js:3736:33)
+    at executeDispatch (chunk-RPCDYKBN.js:7014:11)
+    at processDispatchQueueItemsInOrder (chunk-RPCDYKBN.js:7034:15)
+    at processDispatchQueue (chunk-RPCDYKBN.js:7043:13)
+    at dispatchEventsForPlugins (chunk-RPCDYKBN.js:7051:11)
+    at chunk-RPCDYKBN.js:7174:20
+onClick @ Consultation.tsx:661
+callCallback2 @ react-dom.development.js:4164
+invokeGuardedCallbackDev @ react-dom.development.js:4213
+invokeGuardedCallback @ react-dom.development.js:4277
+invokeGuardedCallbackAndCatchFirstError @ react-dom.development.js:4291
+executeDispatch @ react-dom.development.js:9041
+processDispatchQueueItemsInOrder @ react-dom.development.js:9073
+processDispatchQueue @ react-dom.development.js:9086
+dispatchEventsForPlugins @ react-dom.development.js:9097
+(anonymous) @ react-dom.development.js:9288
+batchedUpdates$1 @ react-dom.development.js:26179
+batchedUpdates @ react-dom.development.js:3991
+dispatchEventForPluginEventSystem @ react-dom.development.js:9287
+dispatchEventWithEnableCapturePhaseSelectiveHydrationWithoutDiscreteEventReplay @ react-dom.development.js:6465
+dispatchEvent @ react-dom.development.js:6457
+dispatchDiscreteEvent @ react-dom.development.js:6430
+chunk-RPCDYKBN.js:3750  Uncaught TypeError: router.navigate is not a function
+    at onClick (Consultation.tsx:629:22)
+    at HTMLUnknownElement.callCallback2 (chunk-RPCDYKBN.js:3674:22)
+    at Object.invokeGuardedCallbackDev (chunk-RPCDYKBN.js:3699:24)
+    at invokeGuardedCallback (chunk-RPCDYKBN.js:3733:39)
+    at invokeGuardedCallbackAndCatchFirstError (chunk-RPCDYKBN.js:3736:33)
+    at executeDispatch (chunk-RPCDYKBN.js:7014:11)
+    at processDispatchQueueItemsInOrder (chunk-RPCDYKBN.js:7034:15)
+    at processDispatchQueue (chunk-RPCDYKBN.js:7043:13)
+    at dispatchEventsForPlugins (chunk-RPCDYKBN.js:7051:11)
+    at chunk-RPCDYKBN.js:7174:20
+onClick @ Consultation.tsx:661
+callCallback2 @ react-dom.development.js:4164
+invokeGuardedCallbackDev @ react-dom.development.js:4213
+invokeGuardedCallback @ react-dom.development.js:4277
+invokeGuardedCallbackAndCatchFirstError @ react-dom.development.js:4291
+executeDispatch @ react-dom.development.js:9041
+processDispatchQueueItemsInOrder @ react-dom.development.js:9073
+processDispatchQueue @ react-dom.development.js:9086
+dispatchEventsForPlugins @ react-dom.development.js:9097
+(anonymous) @ react-dom.development.js:9288
+batchedUpdates$1 @ react-dom.development.js:26179
+batchedUpdates @ react-dom.development.js:3991
+dispatchEventForPluginEventSystem @ react-dom.development.js:9287
+dispatchEventWithEnableCapturePhaseSelectiveHydrationWithoutDiscreteEventReplay @ react-dom.development.js:6465
+dispatchEvent @ react-dom.development.js:6457
+dispatchDiscreteEvent @ react-dom.development.js:6430
+[NEW] Explain Console errors by using Copilot in Edge: click
+         
+         to explain an error. 
+        Learn more
+        Don't show again
+framework-e1b567c21f2ffb0e.js:1  Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+_ @ framework-e1b567c21f2ffb0e.js:1
+(anonymous) @ framework-e1b567c21f2ffb0e.js:1
+uD @ framework-e1b567c21f2ffb0e.js:1
+uI @ framework-e1b567c21f2ffb0e.js:1
+uM @ framework-e1b567c21f2ffb0e.js:1
+uS @ framework-e1b567c21f2ffb0e.js:1
+C @ framework-e1b567c21f2ffb0e.js:1
+z @ framework-e1b567c21f2ffb0e.js:1
+framework-e1b567c21f2ffb0e.js:1  Unrecognized feature: 'ambient-light-sensor'.
+_ @ framework-e1b567c21f2ffb0e.js:1
+(anonymous) @ framework-e1b567c21f2ffb0e.js:1
+uD @ framework-e1b567c21f2ffb0e.js:1
+uI @ framework-e1b567c21f2ffb0e.js:1
+uM @ framework-e1b567c21f2ffb0e.js:1
+uS @ framework-e1b567c21f2ffb0e.js:1
+C @ framework-e1b567c21f2ffb0e.js:1
+z @ framework-e1b567c21f2ffb0e.js:1
+framework-e1b567c21f2ffb0e.js:1  Unrecognized feature: 'battery'.
+_ @ framework-e1b567c21f2ffb0e.js:1
+(anonymous) @ framework-e1b567c21f2ffb0e.js:1
+uD @ framework-e1b567c21f2ffb0e.js:1
+uI @ framework-e1b567c21f2ffb0e.js:1
+uM @ framework-e1b567c21f2ffb0e.js:1
+uS @ framework-e1b567c21f2ffb0e.js:1
+C @ framework-e1b567c21f2ffb0e.js:1
+z @ framework-e1b567c21f2ffb0e.js:1
+framework-e1b567c21f2ffb0e.js:1  Unrecognized feature: 'execution-while-not-rendered'.
+_ @ framework-e1b567c21f2ffb0e.js:1
+(anonymous) @ framework-e1b567c21f2ffb0e.js:1
+uD @ framework-e1b567c21f2ffb0e.js:1
+uI @ framework-e1b567c21f2ffb0e.js:1
+uM @ framework-e1b567c21f2ffb0e.js:1
+uS @ framework-e1b567c21f2ffb0e.js:1
+C @ framework-e1b567c21f2ffb0e.js:1
+z @ framework-e1b567c21f2ffb0e.js:1
+framework-e1b567c21f2ffb0e.js:1  Unrecognized feature: 'execution-while-out-of-viewport'.
+_ @ framework-e1b567c21f2ffb0e.js:1
+(anonymous) @ framework-e1b567c21f2ffb0e.js:1
+uD @ framework-e1b567c21f2ffb0e.js:1
+uI @ framework-e1b567c21f2ffb0e.js:1
+uM @ framework-e1b567c21f2ffb0e.js:1
+uS @ framework-e1b567c21f2ffb0e.js:1
+C @ framework-e1b567c21f2ffb0e.js:1
+z @ framework-e1b567c21f2ffb0e.js:1
+framework-e1b567c21f2ffb0e.js:1  Unrecognized feature: 'layout-animations'.
+_ @ framework-e1b567c21f2ffb0e.js:1
+(anonymous) @ framework-e1b567c21f2ffb0e.js:1
+uD @ framework-e1b567c21f2ffb0e.js:1
+uI @ framework-e1b567c21f2ffb0e.js:1
+uM @ framework-e1b567c21f2ffb0e.js:1
+uS @ framework-e1b567c21f2ffb0e.js:1
+C @ framework-e1b567c21f2ffb0e.js:1
+z @ framework-e1b567c21f2ffb0e.js:1
+framework-e1b567c21f2ffb0e.js:1  Unrecognized feature: 'legacy-image-formats'.
+_ @ framework-e1b567c21f2ffb0e.js:1
+(anonymous) @ framework-e1b567c21f2ffb0e.js:1
+uD @ framework-e1b567c21f2ffb0e.js:1
+uI @ framework-e1b567c21f2ffb0e.js:1
+uM @ framework-e1b567c21f2ffb0e.js:1
+uS @ framework-e1b567c21f2ffb0e.js:1
+C @ framework-e1b567c21f2ffb0e.js:1
+z @ framework-e1b567c21f2ffb0e.js:1
+framework-e1b567c21f2ffb0e.js:1  Unrecognized feature: 'navigation-override'.
+_ @ framework-e1b567c21f2ffb0e.js:1
+(anonymous) @ framework-e1b567c21f2ffb0e.js:1
+uD @ framework-e1b567c21f2ffb0e.js:1
+uI @ framework-e1b567c21f2ffb0e.js:1
+uM @ framework-e1b567c21f2ffb0e.js:1
+uS @ framework-e1b567c21f2ffb0e.js:1
+C @ framework-e1b567c21f2ffb0e.js:1
+z @ framework-e1b567c21f2ffb0e.js:1
+framework-e1b567c21f2ffb0e.js:1  Unrecognized feature: 'oversized-images'.
+_ @ framework-e1b567c21f2ffb0e.js:1
+(anonymous) @ framework-e1b567c21f2ffb0e.js:1
+uD @ framework-e1b567c21f2ffb0e.js:1
+uI @ framework-e1b567c21f2ffb0e.js:1
+uM @ framework-e1b567c21f2ffb0e.js:1
+uS @ framework-e1b567c21f2ffb0e.js:1
+C @ framework-e1b567c21f2ffb0e.js:1
+z @ framework-e1b567c21f2ffb0e.js:1
+framework-e1b567c21f2ffb0e.js:1  Unrecognized feature: 'publickey-credentials'.
+_ @ framework-e1b567c21f2ffb0e.js:1
+(anonymous) @ framework-e1b567c21f2ffb0e.js:1
+uD @ framework-e1b567c21f2ffb0e.js:1
+uI @ framework-e1b567c21f2ffb0e.js:1
+uM @ framework-e1b567c21f2ffb0e.js:1
+uS @ framework-e1b567c21f2ffb0e.js:1
+C @ framework-e1b567c21f2ffb0e.js:1
+z @ framework-e1b567c21f2ffb0e.js:1
+framework-e1b567c21f2ffb0e.js:1  Unrecognized feature: 'speaker-selection'.
+_ @ framework-e1b567c21f2ffb0e.js:1
+(anonymous) @ framework-e1b567c21f2ffb0e.js:1
+uD @ framework-e1b567c21f2ffb0e.js:1
+uI @ framework-e1b567c21f2ffb0e.js:1
+uM @ framework-e1b567c21f2ffb0e.js:1
+uS @ framework-e1b567c21f2ffb0e.js:1
+C @ framework-e1b567c21f2ffb0e.js:1
+z @ framework-e1b567c21f2ffb0e.js:1
+framework-e1b567c21f2ffb0e.js:1  Unrecognized feature: 'unoptimized-images'.
+_ @ framework-e1b567c21f2ffb0e.js:1
+(anonymous) @ framework-e1b567c21f2ffb0e.js:1
+uD @ framework-e1b567c21f2ffb0e.js:1
+uI @ framework-e1b567c21f2ffb0e.js:1
+uM @ framework-e1b567c21f2ffb0e.js:1
+uS @ framework-e1b567c21f2ffb0e.js:1
+C @ framework-e1b567c21f2ffb0e.js:1
+z @ framework-e1b567c21f2ffb0e.js:1
+framework-e1b567c21f2ffb0e.js:1  Unrecognized feature: 'unsized-media'.
+_ @ framework-e1b567c21f2ffb0e.js:1
+(anonymous) @ framework-e1b567c21f2ffb0e.js:1
+uD @ framework-e1b567c21f2ffb0e.js:1
+uI @ framework-e1b567c21f2ffb0e.js:1
+uM @ framework-e1b567c21f2ffb0e.js:1
+uS @ framework-e1b567c21f2ffb0e.js:1
+C @ framework-e1b567c21f2ffb0e.js:1
+z @ framework-e1b567c21f2ffb0e.js:1
+framework-e1b567c21f2ffb0e.js:1  Unrecognized feature: 'pointer-lock'.
+_ @ framework-e1b567c21f2ffb0e.js:1
+(anonymous) @ framework-e1b567c21f2ffb0e.js:1
+uD @ framework-e1b567c21f2ffb0e.js:1
+uI @ framework-e1b567c21f2ffb0e.js:1
+uM @ framework-e1b567c21f2ffb0e.js:1
+uS @ framework-e1b567c21f2ffb0e.js:1
+C @ framework-e1b567c21f2ffb0e.js:1
+z @ framework-e1b567c21f2ffb0e.js:1
+framework-e1b567c21f2ffb0e.js:1  Allow attribute will take precedence over 'allowfullscreen'.
+_ @ framework-e1b567c21f2ffb0e.js:1
+(anonymous) @ framework-e1b567c21f2ffb0e.js:1
+uD @ framework-e1b567c21f2ffb0e.js:1
+uI @ framework-e1b567c21f2ffb0e.js:1
+uM @ framework-e1b567c21f2ffb0e.js:1
+uS @ framework-e1b567c21f2ffb0e.js:1
+C @ framework-e1b567c21f2ffb0e.js:1
+z @ framework-e1b567c21f2ffb0e.js:1
+framework-e1b567c21f2ffb0e.js:1  Allow attribute will take precedence over 'allowpaymentrequest'.
+_ @ framework-e1b567c21f2ffb0e.js:1
+(anonymous) @ framework-e1b567c21f2ffb0e.js:1
+uD @ framework-e1b567c21f2ffb0e.js:1
+uI @ framework-e1b567c21f2ffb0e.js:1
+uM @ framework-e1b567c21f2ffb0e.js:1
+uS @ framework-e1b567c21f2ffb0e.js:1
+C @ framework-e1b567c21f2ffb0e.js:1
+z @ framework-e1b567c21f2ffb0e.js:1
+workspace_iframe.html:32  Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+workspace_iframe.html:32  Unrecognized feature: 'ambient-light-sensor'.
+workspace_iframe.html:32  Unrecognized feature: 'battery'.
+workspace_iframe.html:32  Unrecognized feature: 'execution-while-not-rendered'.
+workspace_iframe.html:32  Unrecognized feature: 'execution-while-out-of-viewport'.
+workspace_iframe.html:32  Unrecognized feature: 'layout-animations'.
+workspace_iframe.html:32  Unrecognized feature: 'legacy-image-formats'.
+workspace_iframe.html:32  Unrecognized feature: 'navigation-override'.
+workspace_iframe.html:32  Unrecognized feature: 'oversized-images'.
+workspace_iframe.html:32  Unrecognized feature: 'publickey-credentials'.
+workspace_iframe.html:32  Unrecognized feature: 'speaker-selection'.
+workspace_iframe.html:32  Unrecognized feature: 'unoptimized-images'.
+workspace_iframe.html:32  Unrecognized feature: 'unsized-media'.
+workspace_iframe.html:32  Allow attribute will take precedence over 'allowfullscreen'.
+workspace_iframe.html:32  Allow attribute will take precedence over 'allowpaymentrequest'.
+ Browsing Topics API removed from https://e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/__replco/workspace_iframe.html?initialPath=%2F&id=%3Areo%3A which is iframe
+ Browsing Topics API removed from https://e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/ which is iframe

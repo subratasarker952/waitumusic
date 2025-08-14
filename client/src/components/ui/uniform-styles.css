@@ -1,0 +1,88 @@
+/* Uniform styling across all platform components */
+
+/* Consistent card styling */
+.card-uniform {
+  @apply bg-card text-card-foreground shadow-sm hover:shadow-md transition-shadow duration-200;
+}
+
+/* Consistent button styling */
+.button-uniform {
+  @apply inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50;
+}
+
+/* Consistent loading states */
+.loading-uniform {
+  @apply animate-pulse bg-muted rounded;
+}
+
+/* Consistent error states */
+.error-uniform {
+  @apply text-destructive border-destructive focus:ring-destructive;
+}
+
+/* Consistent success states */
+.success-uniform {
+  @apply text-green-600 border-green-600 focus:ring-green-600;
+}
+
+/* Consistent warning states */
+.warning-uniform {
+  @apply text-yellow-600 border-yellow-600 focus:ring-yellow-600;
+}
+
+/* Consistent form field styling */
+.form-field-uniform {
+  @apply flex w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50;
+}
+
+/* Consistent modal styling */
+.modal-uniform {
+  @apply fixed left-[50%] top-[50%] z-50 grid w-full max-w-lg translate-x-[-50%] translate-y-[-50%] gap-4 border bg-background p-6 shadow-lg duration-200 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[state=closed]:slide-out-to-left-1/2 data-[state=closed]:slide-out-to-top-[48%] data-[state=open]:slide-in-from-left-1/2 data-[state=open]:slide-in-from-top-[48%] sm:rounded-lg md:w-full;
+}
+
+/* Consistent table styling */
+.table-uniform {
+  @apply w-full caption-bottom text-sm;
+}
+
+.table-uniform thead {
+  @apply border-b;
+}
+
+.table-uniform th {
+  @apply h-12 px-4 text-left align-middle font-medium text-muted-foreground;
+}
+
+.table-uniform td {
+  @apply p-4 align-middle;
+}
+
+.table-uniform tbody tr {
+  @apply border-b transition-colors hover:bg-muted/50;
+}
+
+/* Consistent badge styling */
+.badge-uniform {
+  @apply inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2;
+}
+
+/* Consistent tooltip styling */
+.tooltip-uniform {
+  @apply z-50 overflow-hidden rounded-md border bg-popover px-3 py-1.5 text-sm text-popover-foreground shadow-md animate-in fade-in-0 zoom-in-95 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2;
+}
+
+/* Consistent dropdown styling */
+.dropdown-uniform {
+  @apply z-50 min-w-[8rem] overflow-hidden rounded-md border bg-popover p-1 text-popover-foreground shadow-md data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2;
+}
+
+/* Mobile responsive touch targets */
+@media (max-width: 640px) {
+  .button-uniform {
+    @apply min-h-[44px] min-w-[44px];
+  }
+  
+  .form-field-uniform {
+    @apply min-h-[44px];
+  }
+}

@@ -1,0 +1,439 @@
+events.launchdarkly.com/events/bulk/62b35a865152ab14c5942820:1   Failed to load resource: net::ERR_BLOCKED_BY_CLIENT
+events.launchdarkly.com/events/bulk/62b35a865152ab14c5942820:1   Failed to load resource: net::ERR_BLOCKED_BY_CLIENT
+events.launchdarkly.com/events/bulk/62b35a865152ab14c5942820:1   Failed to load resource: net::ERR_BLOCKED_BY_CLIENT
+events.launchdarkly.com/events/bulk/62b35a865152ab14c5942820:1   Failed to load resource: net::ERR_BLOCKED_BY_CLIENT
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+  Unrecognized feature: 'ambient-light-sensor'.
+_ @ framework-117cba9fbcf2ecdb.js:1
+(anonymous) @ framework-117cba9fbcf2ecdb.js:1
+uD @ framework-117cba9fbcf2ecdb.js:1
+uI @ framework-117cba9fbcf2ecdb.js:1
+uM @ framework-117cba9fbcf2ecdb.js:1
+uS @ framework-117cba9fbcf2ecdb.js:1
+C @ framework-117cba9fbcf2ecdb.js:1
+z @ framework-117cba9fbcf2ecdb.js:1
+  Unrecognized feature: 'battery'.
+_ @ framework-117cba9fbcf2ecdb.js:1
+(anonymous) @ framework-117cba9fbcf2ecdb.js:1
+uD @ framework-117cba9fbcf2ecdb.js:1
+uI @ framework-117cba9fbcf2ecdb.js:1
+uM @ framework-117cba9fbcf2ecdb.js:1
+uS @ framework-117cba9fbcf2ecdb.js:1
+C @ framework-117cba9fbcf2ecdb.js:1
+z @ framework-117cba9fbcf2ecdb.js:1
+  Unrecognized feature: 'execution-while-not-rendered'.
+_ @ framework-117cba9fbcf2ecdb.js:1
+(anonymous) @ framework-117cba9fbcf2ecdb.js:1
+uD @ framework-117cba9fbcf2ecdb.js:1
+uI @ framework-117cba9fbcf2ecdb.js:1
+uM @ framework-117cba9fbcf2ecdb.js:1
+uS @ framework-117cba9fbcf2ecdb.js:1
+C @ framework-117cba9fbcf2ecdb.js:1
+z @ framework-117cba9fbcf2ecdb.js:1
+  Unrecognized feature: 'execution-while-out-of-viewport'.
+_ @ framework-117cba9fbcf2ecdb.js:1
+(anonymous) @ framework-117cba9fbcf2ecdb.js:1
+uD @ framework-117cba9fbcf2ecdb.js:1
+uI @ framework-117cba9fbcf2ecdb.js:1
+uM @ framework-117cba9fbcf2ecdb.js:1
+uS @ framework-117cba9fbcf2ecdb.js:1
+C @ framework-117cba9fbcf2ecdb.js:1
+z @ framework-117cba9fbcf2ecdb.js:1
+  Unrecognized feature: 'layout-animations'.
+_ @ framework-117cba9fbcf2ecdb.js:1
+(anonymous) @ framework-117cba9fbcf2ecdb.js:1
+uD @ framework-117cba9fbcf2ecdb.js:1
+uI @ framework-117cba9fbcf2ecdb.js:1
+uM @ framework-117cba9fbcf2ecdb.js:1
+uS @ framework-117cba9fbcf2ecdb.js:1
+C @ framework-117cba9fbcf2ecdb.js:1
+z @ framework-117cba9fbcf2ecdb.js:1
+  Unrecognized feature: 'legacy-image-formats'.
+_ @ framework-117cba9fbcf2ecdb.js:1
+(anonymous) @ framework-117cba9fbcf2ecdb.js:1
+uD @ framework-117cba9fbcf2ecdb.js:1
+uI @ framework-117cba9fbcf2ecdb.js:1
+uM @ framework-117cba9fbcf2ecdb.js:1
+uS @ framework-117cba9fbcf2ecdb.js:1
+C @ framework-117cba9fbcf2ecdb.js:1
+z @ framework-117cba9fbcf2ecdb.js:1
+  Unrecognized feature: 'navigation-override'.
+_ @ framework-117cba9fbcf2ecdb.js:1
+(anonymous) @ framework-117cba9fbcf2ecdb.js:1
+uD @ framework-117cba9fbcf2ecdb.js:1
+uI @ framework-117cba9fbcf2ecdb.js:1
+uM @ framework-117cba9fbcf2ecdb.js:1
+uS @ framework-117cba9fbcf2ecdb.js:1
+C @ framework-117cba9fbcf2ecdb.js:1
+z @ framework-117cba9fbcf2ecdb.js:1
+  Unrecognized feature: 'oversized-images'.
+_ @ framework-117cba9fbcf2ecdb.js:1
+(anonymous) @ framework-117cba9fbcf2ecdb.js:1
+uD @ framework-117cba9fbcf2ecdb.js:1
+uI @ framework-117cba9fbcf2ecdb.js:1
+uM @ framework-117cba9fbcf2ecdb.js:1
+uS @ framework-117cba9fbcf2ecdb.js:1
+C @ framework-117cba9fbcf2ecdb.js:1
+z @ framework-117cba9fbcf2ecdb.js:1
+  Unrecognized feature: 'publickey-credentials'.
+_ @ framework-117cba9fbcf2ecdb.js:1
+(anonymous) @ framework-117cba9fbcf2ecdb.js:1
+uD @ framework-117cba9fbcf2ecdb.js:1
+uI @ framework-117cba9fbcf2ecdb.js:1
+uM @ framework-117cba9fbcf2ecdb.js:1
+uS @ framework-117cba9fbcf2ecdb.js:1
+C @ framework-117cba9fbcf2ecdb.js:1
+z @ framework-117cba9fbcf2ecdb.js:1
+  Unrecognized feature: 'speaker-selection'.
+_ @ framework-117cba9fbcf2ecdb.js:1
+(anonymous) @ framework-117cba9fbcf2ecdb.js:1
+uD @ framework-117cba9fbcf2ecdb.js:1
+uI @ framework-117cba9fbcf2ecdb.js:1
+uM @ framework-117cba9fbcf2ecdb.js:1
+uS @ framework-117cba9fbcf2ecdb.js:1
+C @ framework-117cba9fbcf2ecdb.js:1
+z @ framework-117cba9fbcf2ecdb.js:1
+  Unrecognized feature: 'unoptimized-images'.
+_ @ framework-117cba9fbcf2ecdb.js:1
+(anonymous) @ framework-117cba9fbcf2ecdb.js:1
+uD @ framework-117cba9fbcf2ecdb.js:1
+uI @ framework-117cba9fbcf2ecdb.js:1
+uM @ framework-117cba9fbcf2ecdb.js:1
+uS @ framework-117cba9fbcf2ecdb.js:1
+C @ framework-117cba9fbcf2ecdb.js:1
+z @ framework-117cba9fbcf2ecdb.js:1
+  Unrecognized feature: 'unsized-media'.
+_ @ framework-117cba9fbcf2ecdb.js:1
+(anonymous) @ framework-117cba9fbcf2ecdb.js:1
+uD @ framework-117cba9fbcf2ecdb.js:1
+uI @ framework-117cba9fbcf2ecdb.js:1
+uM @ framework-117cba9fbcf2ecdb.js:1
+uS @ framework-117cba9fbcf2ecdb.js:1
+C @ framework-117cba9fbcf2ecdb.js:1
+z @ framework-117cba9fbcf2ecdb.js:1
+  Unrecognized feature: 'pointer-lock'.
+_ @ framework-117cba9fbcf2ecdb.js:1
+(anonymous) @ framework-117cba9fbcf2ecdb.js:1
+uD @ framework-117cba9fbcf2ecdb.js:1
+uI @ framework-117cba9fbcf2ecdb.js:1
+uM @ framework-117cba9fbcf2ecdb.js:1
+uS @ framework-117cba9fbcf2ecdb.js:1
+C @ framework-117cba9fbcf2ecdb.js:1
+z @ framework-117cba9fbcf2ecdb.js:1
+  Allow attribute will take precedence over 'allowfullscreen'.
+_ @ framework-117cba9fbcf2ecdb.js:1
+(anonymous) @ framework-117cba9fbcf2ecdb.js:1
+uD @ framework-117cba9fbcf2ecdb.js:1
+uI @ framework-117cba9fbcf2ecdb.js:1
+uM @ framework-117cba9fbcf2ecdb.js:1
+uS @ framework-117cba9fbcf2ecdb.js:1
+C @ framework-117cba9fbcf2ecdb.js:1
+z @ framework-117cba9fbcf2ecdb.js:1
+  Allow attribute will take precedence over 'allowpaymentrequest'.
+_ @ framework-117cba9fbcf2ecdb.js:1
+(anonymous) @ framework-117cba9fbcf2ecdb.js:1
+uD @ framework-117cba9fbcf2ecdb.js:1
+uI @ framework-117cba9fbcf2ecdb.js:1
+uM @ framework-117cba9fbcf2ecdb.js:1
+uS @ framework-117cba9fbcf2ecdb.js:1
+C @ framework-117cba9fbcf2ecdb.js:1
+z @ framework-117cba9fbcf2ecdb.js:1
+events.launchdarkly.com/events/bulk/62b35a865152ab14c5942820:1   Failed to load resource: net::ERR_BLOCKED_BY_CLIENT
+events.launchdarkly.com/events/bulk/62b35a865152ab14c5942820:1   Failed to load resource: net::ERR_BLOCKED_BY_CLIENT
+events.launchdarkly.com/events/diagnostic/62b35a865152ab14c5942820:1   Failed to load resource: net::ERR_BLOCKED_BY_CLIENT
+events.launchdarkly.com/events/diagnostic/62b35a865152ab14c5942820:1   Failed to load resource: net::ERR_BLOCKED_BY_CLIENT
+events.launchdarkly.com/events/bulk/62b35a865152ab14c5942820:1   Failed to load resource: net::ERR_BLOCKED_BY_CLIENT
+events.launchdarkly.com/events/bulk/62b35a865152ab14c5942820:1   Failed to load resource: net::ERR_BLOCKED_BY_CLIENT
+events.launchdarkly.com/events/bulk/62b35a865152ab14c5942820:1   Failed to load resource: net::ERR_BLOCKED_BY_CLIENT
+events.launchdarkly.com/events/bulk/62b35a865152ab14c5942820:1   Failed to load resource: net::ERR_BLOCKED_BY_CLIENT
+events.launchdarkly.com/events/bulk/62b35a865152ab14c5942820:1   Failed to load resource: net::ERR_BLOCKED_BY_CLIENT
+events.launchdarkly.com/events/bulk/62b35a865152ab14c5942820:1   Failed to load resource: net::ERR_BLOCKED_BY_CLIENT
+events.launchdarkly.com/events/bulk/62b35a865152ab14c5942820:1   Failed to load resource: net::ERR_BLOCKED_BY_CLIENT
+events.launchdarkly.com/events/bulk/62b35a865152ab14c5942820:1   Failed to load resource: net::ERR_BLOCKED_BY_CLIENT
+events.launchdarkly.com/events/bulk/62b35a865152ab14c5942820:1   Failed to load resource: net::ERR_BLOCKED_BY_CLIENT
+events.launchdarkly.com/events/bulk/62b35a865152ab14c5942820:1   Failed to load resource: net::ERR_BLOCKED_BY_CLIENT
+events.launchdarkly.com/events/bulk/62b35a865152ab14c5942820:1   Failed to load resource: net::ERR_BLOCKED_BY_CLIENT
+events.launchdarkly.com/events/bulk/62b35a865152ab14c5942820:1   Failed to load resource: net::ERR_BLOCKED_BY_CLIENT
+events.launchdarkly.com/events/diagnostic/62b35a865152ab14c5942820:1   Failed to load resource: net::ERR_BLOCKED_BY_CLIENT
+events.launchdarkly.com/events/diagnostic/62b35a865152ab14c5942820:1   Failed to load resource: net::ERR_BLOCKED_BY_CLIENT
+events.launchdarkly.com/events/bulk/62b35a865152ab14c5942820:1   Failed to load resource: net::ERR_BLOCKED_BY_CLIENT
+events.launchdarkly.com/events/bulk/62b35a865152ab14c5942820:1   Failed to load resource: net::ERR_BLOCKED_BY_CLIENT
+events.launchdarkly.com/events/bulk/62b35a865152ab14c5942820:1   Failed to load resource: net::ERR_BLOCKED_BY_CLIENT
+events.launchdarkly.com/events/bulk/62b35a865152ab14c5942820:1   Failed to load resource: net::ERR_BLOCKED_BY_CLIENT
+events.launchdarkly.com/events/bulk/62b35a865152ab14c5942820:1   Failed to load resource: net::ERR_BLOCKED_BY_CLIENT
+events.launchdarkly.com/events/bulk/62b35a865152ab14c5942820:1   Failed to load resource: net::ERR_BLOCKED_BY_CLIENT
+events.launchdarkly.com/events/bulk/62b35a865152ab14c5942820:1   Failed to load resource: net::ERR_BLOCKED_BY_CLIENT
+events.launchdarkly.com/events/bulk/62b35a865152ab14c5942820:1   Failed to load resource: net::ERR_BLOCKED_BY_CLIENT
+  WebSocket is already in CLOSING or CLOSED state.
+send @ 6546-38eef19477a34f25.js:1
+  WebSocket connection to 'wss://eval.picard.platform.replit.com/wsv2/v2.public.Q2dZSW1yU2x4QVlTQmdpNTBLWEVCaUlHY0dsallYSmtNQUE2amdJS0pHVTJNV05sWmpobExUUTNNRFV0TkRoa055MDRZVEU0TFRaaU1UZzBNR1EzTVRaaFpSSURibWw0R2hoeVpYQnNhWFF0Y21Wd2JDMW1hV3hsY3kxd2FXTmhjbVFpRVZkaGFYUjFUWFZ6YVdOTllXNWhaMlZ5S2dwM1lXbDBkVzExYzJsalFsUUtHWEpsY0d4cGRDMXlaWEJzTFdKc2IyTnJjeTF3YVdOaGNtUVNGM0psY0d4cGRDMXlaWEJzTFcxbGRHRXRjR2xqWVhKa0doNXlaWEJzYVhRdGJXRnlaMkZ5YVc1bExXSnNiMk5yY3kxd2FXTmhjbVJLQndpZDRib1ZFQUZRQUZvUGFXNTBaVzUwWDJKMWMybHVaWE56V2hkdmJtSnZZWEprYVc1blgzSnZiR1ZmYldGdVlXZGxjbG9iYjI1aWIyRnlaR2x1WjE5cWIySmZaVzUwY21Wd2NtVnVaWFZ5ZUFCU0l3Z0JFSUNBZ0lBZ0dRQUFBQUFBQUJCQUlRQUFBQUFBQUJCQUtJQ0FnSURJQVRBQ1lBQnFFUWlkNGJvVkVncDNZV2wwZFcxMWMybGpnZ0VDS2dDYUFRb0tDREF1TUM0eE5UWTVvQUVCxEHKc7beF2z7WeqrIWn2N62NSE1ljdO4aoswKJ8Lcam5i50gy_TZamLPDkk8eoPJYO2DOKoCJNlEUFtLV72CDg.Q2dad2NtOWtPak1pQ25KbGNHeHBkQzVqYjIwPQ' failed: WebSocket is closed before the connection is established.
+push.57395.constructor.cleanupSocket @ 5802-2540ff979875bd08.js:1
+events.launchdarkly.com/events/bulk/62b35a865152ab14c5942820:1   Failed to load resource: net::ERR_BLOCKED_BY_CLIENT
+events.launchdarkly.com/events/bulk/62b35a865152ab14c5942820:1   Failed to load resource: net::ERR_BLOCKED_BY_CLIENT
+events.launchdarkly.com/events/bulk/62b35a865152ab14c5942820:1   Failed to load resource: net::ERR_BLOCKED_BY_CLIENT
+events.launchdarkly.com/events/bulk/62b35a865152ab14c5942820:1   Failed to load resource: net::ERR_BLOCKED_BY_CLIENT
+events.launchdarkly.com/events/bulk/62b35a865152ab14c5942820:1   Failed to load resource: net::ERR_BLOCKED_BY_CLIENT
+events.launchdarkly.com/events/bulk/62b35a865152ab14c5942820:1   Failed to load resource: net::ERR_BLOCKED_BY_CLIENT
+events.launchdarkly.com/events/bulk/62b35a865152ab14c5942820:1   Failed to load resource: net::ERR_BLOCKED_BY_CLIENT
+events.launchdarkly.com/events/bulk/62b35a865152ab14c5942820:1   Failed to load resource: net::ERR_BLOCKED_BY_CLIENT
+events.launchdarkly.com/events/diagnostic/62b35a865152ab14c5942820:1   Failed to load resource: net::ERR_BLOCKED_BY_CLIENT
+events.launchdarkly.com/events/diagnostic/62b35a865152ab14c5942820:1   Failed to load resource: net::ERR_BLOCKED_BY_CLIENT
+ Browsing Topics API removed from about:blank which is iframe
+ Browsing Topics API removed from https://www.google.com/recaptcha/enterprise/anchor?ar=2&k=6LdqhwwoAAAAAFPdw8jCuvY3PaHQItGj3RzOS4fW&co=aHR0cHM6Ly9yZXBsaXQuY29tOjQ0Mw..&hl=en&v=ngcIAHyEnHQZZIKkyKneDTW3&size=invisible&anchor-ms=20000&execute-ms=15000&cb=26uyg0qjzg0u which is iframe
+ Browsing Topics API removed from about:blank which is iframe
+events.launchdarkly.com/events/bulk/62b35a865152ab14c5942820:1   Failed to load resource: net::ERR_BLOCKED_BY_CLIENT
+events.launchdarkly.com/events/bulk/62b35a865152ab14c5942820:1   Failed to load resource: net::ERR_BLOCKED_BY_CLIENT
+events.launchdarkly.com/events/bulk/62b35a865152ab14c5942820:1   Failed to load resource: net::ERR_BLOCKED_BY_CLIENT
+events.launchdarkly.com/events/bulk/62b35a865152ab14c5942820:1   Failed to load resource: net::ERR_BLOCKED_BY_CLIENT
+events.launchdarkly.com/events/bulk/62b35a865152ab14c5942820:1   Failed to load resource: net::ERR_BLOCKED_BY_CLIENT
+events.launchdarkly.com/events/bulk/62b35a865152ab14c5942820:1   Failed to load resource: net::ERR_BLOCKED_BY_CLIENT
+events.launchdarkly.com/events/bulk/62b35a865152ab14c5942820:1   Failed to load resource: net::ERR_BLOCKED_BY_CLIENT
+events.launchdarkly.com/events/bulk/62b35a865152ab14c5942820:1   Failed to load resource: net::ERR_BLOCKED_BY_CLIENT
+events.launchdarkly.com/events/bulk/62b35a865152ab14c5942820:1   Failed to load resource: net::ERR_BLOCKED_BY_CLIENT
+events.launchdarkly.com/events/bulk/62b35a865152ab14c5942820:1   Failed to load resource: net::ERR_BLOCKED_BY_CLIENT
+events.launchdarkly.com/events/bulk/62b35a865152ab14c5942820:1   Failed to load resource: net::ERR_BLOCKED_BY_CLIENT
+events.launchdarkly.com/events/bulk/62b35a865152ab14c5942820:1   Failed to load resource: net::ERR_BLOCKED_BY_CLIENT
+events.launchdarkly.com/events/diagnostic/62b35a865152ab14c5942820:1   Failed to load resource: net::ERR_BLOCKED_BY_CLIENT
+events.launchdarkly.com/events/diagnostic/62b35a865152ab14c5942820:1   Failed to load resource: net::ERR_BLOCKED_BY_CLIENT
+events.launchdarkly.com/events/bulk/62b35a865152ab14c5942820:1   Failed to load resource: net::ERR_BLOCKED_BY_CLIENT
+events.launchdarkly.com/events/bulk/62b35a865152ab14c5942820:1   Failed to load resource: net::ERR_BLOCKED_BY_CLIENT
+events.launchdarkly.com/events/bulk/62b35a865152ab14c5942820:1   Failed to load resource: net::ERR_BLOCKED_BY_CLIENT
+events.launchdarkly.com/events/bulk/62b35a865152ab14c5942820:1   Failed to load resource: net::ERR_BLOCKED_BY_CLIENT
+events.launchdarkly.com/events/bulk/62b35a865152ab14c5942820:1   Failed to load resource: net::ERR_BLOCKED_BY_CLIENT
+events.launchdarkly.com/events/bulk/62b35a865152ab14c5942820:1   Failed to load resource: net::ERR_BLOCKED_BY_CLIENT
+events.launchdarkly.com/events/bulk/62b35a865152ab14c5942820:1   Failed to load resource: net::ERR_BLOCKED_BY_CLIENT
+events.launchdarkly.com/events/bulk/62b35a865152ab14c5942820:1   Failed to load resource: net::ERR_BLOCKED_BY_CLIENT
+events.launchdarkly.com/events/bulk/62b35a865152ab14c5942820:1   Failed to load resource: net::ERR_BLOCKED_BY_CLIENT
+events.launchdarkly.com/events/bulk/62b35a865152ab14c5942820:1   Failed to load resource: net::ERR_BLOCKED_BY_CLIENT
+events.launchdarkly.com/events/bulk/62b35a865152ab14c5942820:1   Failed to load resource: net::ERR_BLOCKED_BY_CLIENT
+events.launchdarkly.com/events/bulk/62b35a865152ab14c5942820:1   Failed to load resource: net::ERR_BLOCKED_BY_CLIENT
+events.launchdarkly.com/events/diagnostic/62b35a865152ab14c5942820:1   Failed to load resource: net::ERR_BLOCKED_BY_CLIENT
+events.launchdarkly.com/events/diagnostic/62b35a865152ab14c5942820:1   Failed to load resource: net::ERR_BLOCKED_BY_CLIENT
+events.launchdarkly.com/events/bulk/62b35a865152ab14c5942820:1   Failed to load resource: net::ERR_BLOCKED_BY_CLIENT
+events.launchdarkly.com/events/bulk/62b35a865152ab14c5942820:1   Failed to load resource: net::ERR_BLOCKED_BY_CLIENT
+events.launchdarkly.com/events/bulk/62b35a865152ab14c5942820:1   Failed to load resource: net::ERR_BLOCKED_BY_CLIENT
+events.launchdarkly.com/events/bulk/62b35a865152ab14c5942820:1   Failed to load resource: net::ERR_BLOCKED_BY_CLIENT
+events.launchdarkly.com/events/bulk/62b35a865152ab14c5942820:1   Failed to load resource: net::ERR_BLOCKED_BY_CLIENT
+events.launchdarkly.com/events/bulk/62b35a865152ab14c5942820:1   Failed to load resource: net::ERR_BLOCKED_BY_CLIENT
+events.launchdarkly.com/events/bulk/62b35a865152ab14c5942820:1   Failed to load resource: net::ERR_BLOCKED_BY_CLIENT
+events.launchdarkly.com/events/bulk/62b35a865152ab14c5942820:1   Failed to load resource: net::ERR_BLOCKED_BY_CLIENT
+events.launchdarkly.com/events/bulk/62b35a865152ab14c5942820:1   Failed to load resource: net::ERR_BLOCKED_BY_CLIENT
+events.launchdarkly.com/events/bulk/62b35a865152ab14c5942820:1   Failed to load resource: net::ERR_BLOCKED_BY_CLIENT
+events.launchdarkly.com/events/bulk/62b35a865152ab14c5942820:1   Failed to load resource: net::ERR_BLOCKED_BY_CLIENT
+events.launchdarkly.com/events/bulk/62b35a865152ab14c5942820:1   Failed to load resource: net::ERR_BLOCKED_BY_CLIENT
+workspace_iframe.html:32  Unrecognized feature: 'ambient-light-sensor'.
+workspace_iframe.html:32  Unrecognized feature: 'battery'.
+workspace_iframe.html:32  Unrecognized feature: 'execution-while-not-rendered'.
+workspace_iframe.html:32  Unrecognized feature: 'execution-while-out-of-viewport'.
+workspace_iframe.html:32  Unrecognized feature: 'layout-animations'.
+workspace_iframe.html:32  Unrecognized feature: 'legacy-image-formats'.
+workspace_iframe.html:32  Unrecognized feature: 'navigation-override'.
+workspace_iframe.html:32  Unrecognized feature: 'oversized-images'.
+workspace_iframe.html:32  Unrecognized feature: 'publickey-credentials'.
+workspace_iframe.html:32  Unrecognized feature: 'speaker-selection'.
+workspace_iframe.html:32  Unrecognized feature: 'unoptimized-images'.
+workspace_iframe.html:32  Unrecognized feature: 'unsized-media'.
+workspace_iframe.html:32  Allow attribute will take precedence over 'allowfullscreen'.
+workspace_iframe.html:32  Allow attribute will take precedence over 'allowpaymentrequest'.
+ Browsing Topics API removed from https://e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/__replco/workspace_iframe.html?initialPath=%2F&id=%3Ar15k%3A which is iframe
+ Browsing Topics API removed from https://e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/ which is iframe
+  WebSocket connection to 'wss://e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/?token=PkRDqokf8ijF' failed: 
+setupWebSocket @ client:536
+client:536  Uncaught (in promise) 
+ ✅ React app mounted successfully
+ 🔍 HIERARCHICAL DASHBOARD: User role debugging
+ 🔍 User object: Object
+ 🔍 user.roleId: 1
+ 🔍 Detected role: superadmin
+ 🔍 Accessible sections: 4
+ FRONTEND: Fetching booking workflow for ID 22
+ FRONTEND: Received booking data with primaryArtist: Object
+ USEEFFECT: Processing booking data: Object
+ USEEFFECT: Primary artist data: Object
+ USEEFFECT: Determined artist type: Managed Artist from userType: Managed Artist isManaged: true
+ USEEFFECT: Creating primary talent assignment: Object
+ DEBUG: Syncing stage legend talent/skills with band members
+ 🔄 TECHNICAL RIDER: Initializing band members
+ 🔄 Assigned musicians (props) count: 5
+ 🔄 Final assigned musicians (API) count: 5
+ 🔄 Will use: assignedMusicians (props)
+ 🔄 Using musician data source: assignedMusicians (props)
+ 🔄 Processing musician 1: Princess Trinidad
+ 🔄 Full musician data: Object
+ 🔄 Musician roleId: undefined talentType: Artist
+ 🔄 Membership determination: roleId undefined talentType: Artist type: Managed Artist isProfessional: false Result: BAND
+ 🔄 Role badge: Artist
+ 🔄 Membership: BAND
+ 🔄 Primary role: Lead Vocalist
+ 🎯 Building dropdown options for: Princess Trinidad
+ 🎯 Available profile data: Object
+ 🎯 Skills array contents: Array(1)
+ 🎯 Generated dropdown options: Array(4)
+ 🎯 Expected dropdown selection: Lead Vocalist
+ 🔄 Adding member 1: Princess Trinidad Membership: BAND
+ 🔄 Processing musician 2: Michael Rodriguez
+ 🔄 Full musician data: Object
+ 🔄 Musician roleId: undefined talentType: Artist
+ 🔄 Membership determination: roleId undefined talentType: Artist type: Musician isProfessional: false Result: BAND
+ 🔄 Role badge: Artist
+ 🔄 Membership: BAND
+ 🔄 Primary role: Drummer
+ 🎯 Building dropdown options for: Michael Rodriguez
+ 🎯 Available profile data: Object
+ 🎯 Skills array contents: Array(2)
+ 🎯 Generated dropdown options: Array(4)
+ 🎯 Expected dropdown selection: Drummer
+ 🔄 Adding member 2: Michael Rodriguez Membership: BAND
+ 🔄 Processing musician 3: Managed Musician Two
+ 🔄 Full musician data: Object
+ 🔄 Musician roleId: undefined talentType: Artist
+ 🔄 Membership determination: roleId undefined talentType: Artist type: Musician isProfessional: false Result: BAND
+ 🔄 Role badge: Artist
+ 🔄 Membership: BAND
+ 🔄 Primary role: Keyboardist
+ 🎯 Building dropdown options for: Managed Musician Two
+ 🎯 Available profile data: Object
+ 🎯 Skills array contents: Array(3)
+ 🎯 Generated dropdown options: Array(5)
+ 🎯 Expected dropdown selection: Keyboardist
+ 🔄 Adding member 3: Managed Musician Two Membership: BAND
+ 🔄 Processing musician 4: Lisa Thompson
+ 🔄 Full musician data: Object
+ 🔄 Musician roleId: undefined talentType: Artist
+ 🔄 Membership determination: roleId undefined talentType: Artist type: Musician isProfessional: false Result: BAND
+ 🔄 Role badge: Artist
+ 🔄 Membership: BAND
+ 🔄 Primary role: Musician
+ 🎯 Building dropdown options for: Lisa Thompson
+ 🎯 Available profile data: Object
+ 🎯 Skills array contents: Array(1)
+ 🎯 Generated dropdown options: Array(2)
+ 🎯 Expected dropdown selection: Musician
+ 🔄 Adding member 4: Lisa Thompson Membership: BAND
+ 🔄 Processing musician 5: James Wilson
+ 🔄 Full musician data: Object
+ 🔄 Musician roleId: undefined talentType: Artist
+ 🔄 Membership determination: roleId undefined talentType: Artist type: Professional isProfessional: true Result: TEAM
+ 🔄 Role badge: Artist
+ 🔄 Membership: TEAM
+ 🔄 Primary role: Musician
+ 🎯 Building dropdown options for: James Wilson
+ 🎯 Available profile data: Object
+ 🎯 Skills array contents: Array(1)
+ 🎯 Generated dropdown options: Array(3)
+ 🎯 Expected dropdown selection: Financial Consultant
+ 🔄 Adding member 5: James Wilson Membership: TEAM
+ 🔄 Total members added from API: 5
+ Sorting: Managed Musician Two badge: Artist order: 7 vs Michael Rodriguez badge: Artist order: 7
+ Sorting: Lisa Thompson badge: Artist order: 7 vs Managed Musician Two badge: Artist order: 7
+ Sorting: James Wilson badge: Artist order: 7 vs Lisa Thompson badge: Artist order: 7
+ Sorting: Mr Lindsay George badge: MANAGEMENT order: 999 vs James Wilson badge: Artist order: 7
+ Sorting: Ms Joyette Pascal badge: MANAGEMENT order: 999 vs Mr Lindsay George badge: MANAGEMENT order: 999
+ 🔄 FINAL: Setting 7 band members
+ 🔄 Band members breakdown: Object
+The specified value "2025-07-28T04:00:00.000Z" does not conform to the required format, "yyyy-MM-dd".
+The specified value "2025-07-28T04:00:00.000Z" does not conform to the required format, "yyyy-MM-dd".
+The specified value "2025-07-28T04:00:00.000Z" does not conform to the required format, "yyyy-MM-dd".
+The specified value "2025-07-28T04:00:00.000Z" does not conform to the required format, "yyyy-MM-dd".
+The specified value "2025-07-28T04:00:00.000Z" does not conform to the required format, "yyyy-MM-dd".
+The specified value "2025-07-28T04:00:00.000Z" does not conform to the required format, "yyyy-MM-dd".
+ DEBUG: Syncing stage legend talent/skills with band members
+ 🔄 TECHNICAL RIDER: Initializing band members
+ 🔄 Assigned musicians (props) count: 5
+ 🔄 Final assigned musicians (API) count: 1
+ 🔄 Will use: assignedMusicians (props)
+ 🔄 Using musician data source: assignedMusicians (props)
+ 🔄 Processing musician 1: Princess Trinidad
+ 🔄 Full musician data: Object
+ 🔄 Musician roleId: undefined talentType: Artist
+ 🔄 Membership determination: roleId undefined talentType: Artist type: Managed Artist isProfessional: false Result: BAND
+ 🔄 Role badge: Artist
+ 🔄 Membership: BAND
+ 🔄 Primary role: Lead Vocalist
+ 🎯 Building dropdown options for: Princess Trinidad
+ 🎯 Available profile data: Object
+ 🎯 Skills array contents: Array(1)
+ 🎯 Generated dropdown options: Array(4)
+ 🎯 Expected dropdown selection: Lead Vocalist
+ 🔄 Adding member 1: Princess Trinidad Membership: BAND
+ 🔄 Processing musician 2: Michael Rodriguez
+ 🔄 Full musician data: Object
+ 🔄 Musician roleId: undefined talentType: Artist
+ 🔄 Membership determination: roleId undefined talentType: Artist type: Musician isProfessional: false Result: BAND
+ 🔄 Role badge: Artist
+ 🔄 Membership: BAND
+ 🔄 Primary role: Drummer
+ 🎯 Building dropdown options for: Michael Rodriguez
+ 🎯 Available profile data: Object
+ 🎯 Skills array contents: Array(2)
+ 🎯 Generated dropdown options: Array(4)
+ 🎯 Expected dropdown selection: Drummer
+ 🔄 Adding member 2: Michael Rodriguez Membership: BAND
+ 🔄 Processing musician 3: Managed Musician Two
+ 🔄 Full musician data: Object
+ 🔄 Musician roleId: undefined talentType: Artist
+ 🔄 Membership determination: roleId undefined talentType: Artist type: Musician isProfessional: false Result: BAND
+ 🔄 Role badge: Artist
+ 🔄 Membership: BAND
+ 🔄 Primary role: Keyboardist
+ 🎯 Building dropdown options for: Managed Musician Two
+ 🎯 Available profile data: Object
+ 🎯 Skills array contents: Array(3)
+ 🎯 Generated dropdown options: Array(5)
+ 🎯 Expected dropdown selection: Keyboardist
+ 🔄 Adding member 3: Managed Musician Two Membership: BAND
+ 🔄 Processing musician 4: Lisa Thompson
+ 🔄 Full musician data: Object
+ 🔄 Musician roleId: undefined talentType: Artist
+ 🔄 Membership determination: roleId undefined talentType: Artist type: Musician isProfessional: false Result: BAND
+ 🔄 Role badge: Artist
+ 🔄 Membership: BAND
+ 🔄 Primary role: Musician
+ 🎯 Building dropdown options for: Lisa Thompson
+ 🎯 Available profile data: Object
+ 🎯 Skills array contents: Array(1)
+ 🎯 Generated dropdown options: Array(2)
+ 🎯 Expected dropdown selection: Musician
+ 🔄 Adding member 4: Lisa Thompson Membership: BAND
+EnhancedTechnicalRider.tsx:565 🔄 Processing musician 5: James Wilson
+EnhancedTechnicalRider.tsx:566 🔄 Full musician data: Object
+EnhancedTechnicalRider.tsx:567 🔄 Musician roleId: undefined talentType: Artist
+EnhancedTechnicalRider.tsx:586 🔄 Membership determination: roleId undefined talentType: Artist type: Professional isProfessional: true Result: TEAM
+EnhancedTechnicalRider.tsx:591 🔄 Role badge: Artist
+EnhancedTechnicalRider.tsx:592 🔄 Membership: TEAM
+EnhancedTechnicalRider.tsx:593 🔄 Primary role: Musician
+EnhancedTechnicalRider.tsx:410 🎯 Building dropdown options for: James Wilson
+EnhancedTechnicalRider.tsx:411 🎯 Available profile data: Object
+EnhancedTechnicalRider.tsx:421 🎯 Skills array contents: Array(1)
+EnhancedTechnicalRider.tsx:518 🎯 Generated dropdown options: Array(3)
+EnhancedTechnicalRider.tsx:519 🎯 Expected dropdown selection: Financial Consultant
+EnhancedTechnicalRider.tsx:620 🔄 Adding member 5: James Wilson Membership: TEAM
+EnhancedTechnicalRider.tsx:627 🔄 Total members added from API: 5
+EnhancedTechnicalRider.tsx:691 Sorting: Managed Musician Two badge: Artist order: 7 vs Michael Rodriguez badge: Artist order: 7
+EnhancedTechnicalRider.tsx:691 Sorting: Lisa Thompson badge: Artist order: 7 vs Managed Musician Two badge: Artist order: 7
+EnhancedTechnicalRider.tsx:691 Sorting: James Wilson badge: Artist order: 7 vs Lisa Thompson badge: Artist order: 7
+EnhancedTechnicalRider.tsx:691 Sorting: Mr Lindsay George badge: MANAGEMENT order: 999 vs James Wilson badge: Artist order: 7
+EnhancedTechnicalRider.tsx:691 Sorting: Ms Joyette Pascal badge: MANAGEMENT order: 999 vs Mr Lindsay George badge: MANAGEMENT order: 999
+EnhancedTechnicalRider.tsx:696 🔄 FINAL: Setting 7 band members
+EnhancedTechnicalRider.tsx:697 🔄 Band members breakdown: Object
+EnhancedTechnicalRider.tsx:386 DEBUG: Syncing stage legend talent/skills with band members
+EnhancedTechnicalRider.tsx:1931 🎯 TALENT/SKILL CHANGE: Managed Musician Two selected "Pianist"
+EnhancedTechnicalRider.tsx:1936 🎯 Updated band member musician-28 with selectedTalent: Pianist
+EnhancedTechnicalRider.tsx:1963 🎯 Talent/skill synchronization complete for Managed Musician Two
+EnhancedTechnicalRider.tsx:1959 🎯 Stage legend after update: Array(0)
+EnhancedTechnicalRider.tsx:386 DEBUG: Syncing stage legend talent/skills with band members
+events.launchdarkly.com/events/bulk/62b35a865152ab14c5942820:1   Failed to load resource: net::ERR_BLOCKED_BY_CLIENT
+events.launchdarkly.com/events/bulk/62b35a865152ab14c5942820:1   Failed to load resource: net::ERR_BLOCKED_BY_CLIENT
+events.launchdarkly.com/events/diagnostic/62b35a865152ab14c5942820:1   Failed to load resource: net::ERR_BLOCKED_BY_CLIENT
+events.launchdarkly.com/events/diagnostic/62b35a865152ab14c5942820:1   Failed to load resource: net::ERR_BLOCKED_BY_CLIENT
+[NEW] Explain Console errors by using Copilot in Edge: click
+         
+         to explain an error. 
+        Learn more
+        Don't show again

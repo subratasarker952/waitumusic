@@ -1,0 +1,144 @@
+_app-8c58cb0c4d279fca.js:13 
+      /////////////////////
+   ///////////////////////////
+  ////////@@@@@@@//////////////
+  ////////@@@@@@@//////////////
+  ////////@@@@@@@//////////////        Curious and driven?
+  ///////////////@@@@@@@///////        Work with us!
+  ///////////////@@@@@@@///////
+  ///////////////@@@@@@@///////        https://join.replit.com/hack.with.us
+  ////////@@@@@@@//////////////
+  ////////@@@@@@@//////////////
+  ////////@@@@@@#//////////////
+   ///////////////////////////
+      /////////////////////
+      
+_app-8c58cb0c4d279fca.js:13 [LaunchDarkly] LaunchDarkly client initialized
+WaituMusicManager:1  Tracking Prevention blocked access to storage for https://www.gravatar.com/avatar/a3be3e59cb36da8a00d29fe26d1575a9?d=blank&s=256.
+WaituMusicManager:1  Tracking Prevention blocked access to storage for https://www.gravatar.com/avatar/a3be3e59cb36da8a00d29fe26d1575a9?d=blank&s=256.
+WaituMusicManager:1  Tracking Prevention blocked access to storage for https://www.gravatar.com/avatar/a3be3e59cb36da8a00d29fe26d1575a9?d=blank&s=256.
+WaituMusicManager:1  Tracking Prevention blocked access to storage for https://www.gravatar.com/avatar/a3be3e59cb36da8a00d29fe26d1575a9?d=blank&s=256.
+WaituMusicManager:1 Banner not shown: beforeinstallpromptevent.preventDefault() called. The page must call beforeinstallpromptevent.prompt() to show the banner.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+  Unrecognized feature: 'ambient-light-sensor'.
+_ @ framework-4a72ed022b0cbee4.js:1
+  Unrecognized feature: 'battery'.
+_ @ framework-4a72ed022b0cbee4.js:1
+  Unrecognized feature: 'execution-while-not-rendered'.
+_ @ framework-4a72ed022b0cbee4.js:1
+  Unrecognized feature: 'execution-while-out-of-viewport'.
+_ @ framework-4a72ed022b0cbee4.js:1
+  Unrecognized feature: 'layout-animations'.
+_ @ framework-4a72ed022b0cbee4.js:1
+  Unrecognized feature: 'legacy-image-formats'.
+_ @ framework-4a72ed022b0cbee4.js:1
+  Unrecognized feature: 'navigation-override'.
+_ @ framework-4a72ed022b0cbee4.js:1
+  Unrecognized feature: 'oversized-images'.
+_ @ framework-4a72ed022b0cbee4.js:1
+  Unrecognized feature: 'publickey-credentials'.
+_ @ framework-4a72ed022b0cbee4.js:1
+framework-4a72ed022b0cbee4.js:1  Unrecognized feature: 'speaker-selection'.
+_ @ framework-4a72ed022b0cbee4.js:1
+framework-4a72ed022b0cbee4.js:1  Unrecognized feature: 'unoptimized-images'.
+_ @ framework-4a72ed022b0cbee4.js:1
+framework-4a72ed022b0cbee4.js:1  Unrecognized feature: 'unsized-media'.
+_ @ framework-4a72ed022b0cbee4.js:1
+framework-4a72ed022b0cbee4.js:1  Unrecognized feature: 'pointer-lock'.
+_ @ framework-4a72ed022b0cbee4.js:1
+framework-4a72ed022b0cbee4.js:1  Allow attribute will take precedence over 'allowfullscreen'.
+_ @ framework-4a72ed022b0cbee4.js:1
+framework-4a72ed022b0cbee4.js:1  Allow attribute will take precedence over 'allowpaymentrequest'.
+_ @ framework-4a72ed022b0cbee4.js:1
+_app-8c58cb0c4d279fca.js:13  task queue exceeded allotted deadline by 28ms
+(anonymous) @ _app-8c58cb0c4d279fca.js:13
+_app-8c58cb0c4d279fca.js:13  task queue exceeded allotted deadline by 59ms
+(anonymous) @ _app-8c58cb0c4d279fca.js:13
+3635-2ea2bd49fa9e11fc.js:1  WebSocket connection to 'wss://eval.picard.platform.replit.com/wsv2/v2.public.Q2dZSXNNMit4QVlTQmdqUDZiN0VCaUlHY0dsallYSmtNQUE2amdJS0pHVTJNV05sWmpobExUUTNNRFV0TkRoa055MDRZVEU0TFRaaU1UZzBNR1EzTVRaaFpSSURibWw0R2hoeVpYQnNhWFF0Y21Wd2JDMW1hV3hsY3kxd2FXTmhjbVFpRVZkaGFYUjFUWFZ6YVdOTllXNWhaMlZ5S2dwM1lXbDBkVzExYzJsalFsUUtHWEpsY0d4cGRDMXlaWEJzTFdKc2IyTnJjeTF3YVdOaGNtUVNGM0psY0d4cGRDMXlaWEJzTFcxbGRHRXRjR2xqWVhKa0doNXlaWEJzYVhRdGJXRnlaMkZ5YVc1bExXSnNiMk5yY3kxd2FXTmhjbVJLQndpZDRib1ZFQUZRQUZvUGFXNTBaVzUwWDJKMWMybHVaWE56V2hkdmJtSnZZWEprYVc1blgzSn...mxWVlUwVkhneE4wWTVjblpsVWxSQ1VuZFRVbWRJZGxsbllYUldkRTFTZFZCUlIwczVkVGswUkhWQmJYTnJObmxJYkZCdmRrWmFXV1IwUTFWVmRUaFRUSE40ZW5JbE1rSkVRekZWUkdSSmJVWlhVVUZVTjA5WlVrRnBUamRMZVdkd2ExSTJiMDFxYldSbEpUSkNhV05sT0VaSGIwbDJRekJVVWpOQk1XOWpaekYyV2sxSkpUSkNTVEZNYnpscmMxQnRNMEpxTUZGdlIwMHhVbVJ4ZDFWekpUSkdTVlYzTWtveFZXeHdSRFp1TVRkUldqa3pUR1kyUlVkRlpXeFpXVkZGU0d0b09YRlVVbWxPWWxZNE9FSlBUMGxSSlRORUpUTkUtPh3ce3zfMJaLo6uJURQHBm5ppgxzYmrEh0sHf6869k7tfh9QmRC1XXyilneh9FiY_3hui2Bo8PYvIL3y9t0H.Q2dad2NtOWtPak1pQ25KbGNHeHBkQzVqYjIwPQ' failed: Error during WebSocket handshake: Unexpected response code: 502
+connect @ 3635-2ea2bd49fa9e11fc.js:1
+workspace_iframe.html:32  Unrecognized feature: 'ambient-light-sensor'.
+workspace_iframe.html:32  Unrecognized feature: 'battery'.
+workspace_iframe.html:32  Unrecognized feature: 'execution-while-not-rendered'.
+workspace_iframe.html:32  Unrecognized feature: 'execution-while-out-of-viewport'.
+workspace_iframe.html:32  Unrecognized feature: 'layout-animations'.
+workspace_iframe.html:32  Unrecognized feature: 'legacy-image-formats'.
+workspace_iframe.html:32  Unrecognized feature: 'navigation-override'.
+workspace_iframe.html:32  Unrecognized feature: 'oversized-images'.
+workspace_iframe.html:32  Unrecognized feature: 'publickey-credentials'.
+workspace_iframe.html:32  Unrecognized feature: 'speaker-selection'.
+workspace_iframe.html:32  Unrecognized feature: 'unoptimized-images'.
+workspace_iframe.html:32  Unrecognized feature: 'unsized-media'.
+workspace_iframe.html:32  Allow attribute will take precedence over 'allowfullscreen'.
+workspace_iframe.html:32  Allow attribute will take precedence over 'allowpaymentrequest'.
+client:536  WebSocket connection to 'wss://e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/?token=xtOiiPoQQBXM' failed: Error during WebSocket handshake: Unexpected response code: 400
+setupWebSocket @ client:536
+client:536  WebSocket connection to 'wss://e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/?token=xtOiiPoQQBXM' failed: Error during WebSocket handshake: Unexpected response code: 400
+setupWebSocket @ client:536
+client:536  WebSocket connection to 'wss://e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/?token=xtOiiPoQQBXM' failed: Error during WebSocket handshake: Unexpected response code: 400
+setupWebSocket @ client:536
+client:536  Uncaught (in promise) SyntaxError: Failed to construct 'WebSocket': The URL 'wss://localhost:undefined/?token=xtOiiPoQQBXM' is invalid.
+    at setupWebSocket (client:536:19)
+    at fallback (client:509:16)
+    at WebSocket.<anonymous> (client:555:7)
+main.tsx:25 ✅ WaituMusic app mounted successfully
+App.tsx:435 ✅ React app mounted successfully
+ComprehensiveBookingWorkflow.tsx:760 🎯 TALENT GROUPED BY PRIMARY_TALENT_ID: Object
+ComprehensiveBookingWorkflow.tsx:186 🔍 FRONTEND: Fetching assigned talent for booking ID: 1
+ComprehensiveBookingWorkflow.tsx:760 🎯 TALENT GROUPED BY PRIMARY_TALENT_ID: Object
+ComprehensiveBookingWorkflow.tsx:760 🎯 TALENT GROUPED BY PRIMARY_TALENT_ID: Object
+ComprehensiveBookingWorkflow.tsx:760 🎯 TALENT GROUPED BY PRIMARY_TALENT_ID: Object
+ComprehensiveBookingWorkflow.tsx:188 📋 FRONTEND: Received assigned talent data: Array(2)
+ComprehensiveBookingWorkflow.tsx:760 🎯 TALENT GROUPED BY PRIMARY_TALENT_ID: Object
+ComprehensiveBookingWorkflow.tsx:230 📋 UPDATING assigned talent state: Array(2)
+ComprehensiveBookingWorkflow.tsx:231 🔍 DETAILED DATA CHECK - First talent object: Object
+ComprehensiveBookingWorkflow.tsx:232 🔍 KEYS in first talent: Array(17)
+ComprehensiveBookingWorkflow.tsx:233 🔍 PRIMARY TALENT field: Lead Vocals
+ComprehensiveBookingWorkflow.tsx:234 🔍 SECONDARY TALENTS field: Array(1)
+ComprehensiveBookingWorkflow.tsx:760 🎯 TALENT GROUPED BY PRIMARY_TALENT_ID: Object
+ComprehensiveBookingWorkflow.tsx:760 🎯 TALENT GROUPED BY PRIMARY_TALENT_ID: Object
+ComprehensiveBookingWorkflow.tsx:760 🎯 TALENT GROUPED BY PRIMARY_TALENT_ID: Object
+ComprehensiveBookingWorkflow.tsx:311 💾 SAVING TO DATABASE - Backend payload: Object
+e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/api/bookings/1/assign:1   Failed to load resource: the server responded with a status of 400 (Bad Request)
+ComprehensiveBookingWorkflow.tsx:343  Assignment mutation error: Error: 400: {"error":"Validation failed","details":[{"path":"selectedTalent","message":"Expected number, received null"},{"path":"assignmentType","message":"Invalid enum value. Expected 'manual' | 'automatic', received 'workflow'"}]}
+    at throwIfResNotOk (queryClient.ts:6:11)
+    at async apiRequest (queryClient.ts:30:3)
+    at async Object.mutationFn (ComprehensiveBookingWorkflow.tsx:313:24)
+onError @ ComprehensiveBookingWorkflow.tsx:343
+ComprehensiveBookingWorkflow.tsx:1248  ❌ Failed to save musician assignment: Error: 400: {"error":"Validation failed","details":[{"path":"selectedTalent","message":"Expected number, received null"},{"path":"assignmentType","message":"Invalid enum value. Expected 'manual' | 'automatic', received 'workflow'"}]}
+    at throwIfResNotOk (queryClient.ts:6:11)
+    at async apiRequest (queryClient.ts:30:3)
+    at async Object.mutationFn (ComprehensiveBookingWorkflow.tsx:313:24)
+onClick @ ComprehensiveBookingWorkflow.tsx:1248
+ComprehensiveBookingWorkflow.tsx:760 🎯 TALENT GROUPED BY PRIMARY_TALENT_ID: Object
+[NEW] Explain Console errors by using Copilot in Edge: click
+         
+         to explain an error. 
+        Learn more
+        Don't show again
+stallwart.build.js:1 stallwart: failed ping 1

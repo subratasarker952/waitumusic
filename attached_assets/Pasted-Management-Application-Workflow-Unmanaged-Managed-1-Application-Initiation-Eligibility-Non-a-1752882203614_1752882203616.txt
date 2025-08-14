@@ -1,0 +1,44 @@
+Management Application Workflow (Unmanaged → Managed)
+1. Application Initiation
+Eligibility: Non-admin users (Artist, Musician, Professional, Fan) can apply
+Access Point: "Apply for Management" option in user dropdown menu
+Target Role: Apply to become Managed Artist (roleId 3)
+2. Application Form & Contract Generation
+Two-Tier System Selection:
+Full Management: Up to 100% service discounts, dedicated team, comprehensive marketing
+Administration: Up to 50% service discounts, shared resources, basic support
+Automatic Contract Generation: System creates management contract with tier-specific terms
+Application Data: Stored in management_applications table with detailed request information
+3. Review Process
+Initial Review: Submitted applications appear in SuperadminDashboard Applications tab
+Reviewer Assignment: Applications reviewed by assigned admin or superadmin
+Professional Assignment: Non-performance professionals can be assigned to represent Wai'tuMusic
+Conflict Prevention: Only managed professionals can represent Wai'tuMusic without conflicts
+4. Approval Workflow
+Review Decision: Applications can be approved or denied with detailed reasoning
+Professional Representation: Legal/business professionals assigned with specific authority levels:
+Full authority, review-only, or advisory-only
+Contract signing permissions
+waitumusic_representative, applicant_counsel, or neutral_advisor roles
+5. Multi-Party Signature Process
+Signature Sequence: Applicant → Assigned Professional → Superadmin Confirmation
+Contract Authority: Assigned professionals can sign contracts and modify terms based on permissions
+Signature Storage: All signatures stored in management_application_signatures table
+Legal Documentation: Complete audit trail of all approvals and signatures
+6. Role Transition & Implementation
+Automatic Upgrade: Upon completion, user automatically transitions to Managed Artist (roleId 3)
+Artist Record Creation: System creates appropriate artist/musician/professional records
+Service Discount Application: Discounts applied based on management tier selection
+Custom Discount Overrides: Superadmins can customize discounts beyond tier defaults via service_discount_overrides
+7. Management Benefits Activation
+Tier-Specific Benefits: Full Management vs Administration tier benefits activated
+Management Team Assignment: Users assigned to management oversight
+Enhanced Platform Access: Managed users gain access to premium features and AI insights
+Audit Trail: Complete transition history stored in management_transitions table
+Key Database Tables:
+management_applications - Application data and status
+management_application_signatures - Multi-party signature tracking
+application_legal_assignments - Professional representation assignments
+service_discount_overrides - Custom discount configurations
+management_transitions - Complete role change audit trail
+This workflow ensures proper legal documentation, conflict prevention, and comprehensive management tier implementation with full audit trails for regulatory compliance.

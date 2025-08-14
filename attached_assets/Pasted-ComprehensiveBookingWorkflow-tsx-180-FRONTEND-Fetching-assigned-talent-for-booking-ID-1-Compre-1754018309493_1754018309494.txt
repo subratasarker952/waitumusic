@@ -1,0 +1,150 @@
+ComprehensiveBookingWorkflow.tsx:180 🔍 FRONTEND: Fetching assigned talent for booking ID: 1
+ComprehensiveBookingWorkflow.tsx:182 📋 FRONTEND: Received assigned talent data: (2) [{…}, {…}]
+ComprehensiveBookingWorkflow.tsx:224 📋 UPDATING assigned talent state: (2) [{…}, {…}]
+EnhancedTechnicalRider.tsx:789 DEBUG: Syncing stage legend talent/skills with band members
+EnhancedTechnicalRider.tsx:975 🔄 TECHNICAL RIDER: Initializing band members
+EnhancedTechnicalRider.tsx:976 🔄 Assigned musicians (props) count: 4
+EnhancedTechnicalRider.tsx:977 🔄 Final assigned musicians (API) count: 4
+EnhancedTechnicalRider.tsx:978 🔄 Will use: assignedMusicians (props)
+EnhancedTechnicalRider.tsx:984 🔄 Using musician data source: assignedMusicians (props)
+ 🔄 Processing musician 1: Lí-Lí Octave
+ 🔄 Full musician data: {id: 6, userId: 6, name: 'Lí-Lí Octave', fullName: 'Lianne Letang', stageName: 'Lí-Lí Octave', …}
+ 🔄 Musician roleId: undefined talentType: managed_artist
+ 🔄 Database talents - Primary: undefined Secondary: undefined
+ 🔄 Membership determination: roleId undefined talentType: managed_artist type: Main Booked Talent isProfessional: false Result: BAND
+ 🔄 Role badge: managed_artist
+ 🔄 Membership: BAND
+ 🔄 Primary role: null
+ 🎯 Building dropdown options for: Lí-Lí Octave
+ 🎯 Available profile data: {assignedRole: 'Lead Vocalist', primaryRole: 'Lead Vocalist', skillsAndInstruments: Array(0), performanceRoles: undefined, professionalRoles: undefined, …}
+ 🎯 Skills array contents: []
+ 🎯 SKILLS DEBUG: Processing skillsAndInstruments for Lí-Lí Octave: []
+ 🎯 Generated dropdown options: [{…}]
+ 🎯 Expected dropdown selection: Lead Vocalist
+ 🔄 Adding member 1: Lí-Lí Octave Membership: BAND
+ 🔄 Processing musician 2: Maya Bass
+ 🔄 Full musician data: {id: 12, userId: 12, name: 'Maya Bass', fullName: 'Maya Thompson', stageName: 'Maya Bass', …}
+ 🔄 Musician roleId: undefined talentType: managed_musician
+ 🔄 Database talents - Primary: undefined Secondary: undefined
+ 🔄 Membership determination: roleId undefined talentType: managed_musician type: Main Booked Talent isProfessional: false Result: BAND
+ 🔄 Role badge: managed_musician
+ 🔄 Membership: BAND
+ 🔄 Primary role: null
+ 🎯 Building dropdown options for: Maya Bass
+ 🎯 Available profile data: {assignedRole: 'Lead Vocalist', primaryRole: 'Lead Vocalist', skillsAndInstruments: Array(0), performanceRoles: undefined, professionalRoles: undefined, …}
+ 🎯 Skills array contents: []
+ 🎯 SKILLS DEBUG: Processing skillsAndInstruments for Maya Bass: []
+ 🎯 Generated dropdown options: [{…}]
+ 🎯 Expected dropdown selection: Lead Vocalist
+ 🔄 Adding member 2: Maya Bass Membership: BAND
+ 🔄 Processing musician 3: Indie Stone
+ 🔄 Full musician data: {id: 25, userId: 25, name: 'Indie Stone', fullName: undefined, stageName: '', …}
+ 🔄 Musician roleId: undefined talentType: Artist
+ 🔄 Database talents - Primary: undefined Secondary: undefined
+ 🔄 Membership determination: roleId undefined talentType: Artist type: Artist isProfessional: false Result: BAND
+ 🔄 Role badge: Artist
+EnhancedTechnicalRider.tsx:1016 🔄 Membership: BAND
+EnhancedTechnicalRider.tsx:1017 🔄 Primary role: null
+EnhancedTechnicalRider.tsx:813 🎯 Building dropdown options for: Indie Stone
+EnhancedTechnicalRider.tsx:814 🎯 Available profile data: {assignedRole: 'Lead Vocalist', primaryRole: 'Lead Vocalist', skillsAndInstruments: Array(0), performanceRoles: undefined, professionalRoles: undefined, …}
+EnhancedTechnicalRider.tsx:824 🎯 Skills array contents: []
+EnhancedTechnicalRider.tsx:849 🎯 SKILLS DEBUG: Processing skillsAndInstruments for Indie Stone: []
+EnhancedTechnicalRider.tsx:928 🎯 Generated dropdown options: [{…}]
+EnhancedTechnicalRider.tsx:929 🎯 Expected dropdown selection: Lead Vocalist
+EnhancedTechnicalRider.tsx:1045 🔄 Adding member 3: Indie Stone Membership: BAND
+EnhancedTechnicalRider.tsx:988 🔄 Processing musician 4: Phoenix Chen
+EnhancedTechnicalRider.tsx:989 🔄 Full musician data: {id: 13, userId: 13, name: 'Phoenix Chen', fullName: undefined, stageName: '', …}
+EnhancedTechnicalRider.tsx:990 🔄 Musician roleId: undefined talentType: Artist
+EnhancedTechnicalRider.tsx:991 🔄 Database talents - Primary: undefined Secondary: undefined
+EnhancedTechnicalRider.tsx:1010 🔄 Membership determination: roleId undefined talentType: Artist type: Musician isProfessional: false Result: BAND
+EnhancedTechnicalRider.tsx:1015 🔄 Role badge: Artist
+EnhancedTechnicalRider.tsx:1016 🔄 Membership: BAND
+EnhancedTechnicalRider.tsx:1017 🔄 Primary role: null
+EnhancedTechnicalRider.tsx:813 🎯 Building dropdown options for: Phoenix Chen
+EnhancedTechnicalRider.tsx:814 🎯 Available profile data: {assignedRole: 'Lead Vocalist', primaryRole: 'Lead Vocalist', skillsAndInstruments: Array(0), performanceRoles: undefined, professionalRoles: undefined, …}
+EnhancedTechnicalRider.tsx:824 🎯 Skills array contents: []
+EnhancedTechnicalRider.tsx:849 🎯 SKILLS DEBUG: Processing skillsAndInstruments for Phoenix Chen: []
+EnhancedTechnicalRider.tsx:928 🎯 Generated dropdown options: [{…}]
+EnhancedTechnicalRider.tsx:929 🎯 Expected dropdown selection: Lead Vocalist
+EnhancedTechnicalRider.tsx:1045 🔄 Adding member 4: Phoenix Chen Membership: BAND
+EnhancedTechnicalRider.tsx:1052 🔄 Total members added from API: 4
+EnhancedTechnicalRider.tsx:1116 Sorting: Maya Bass badge: managed_musician order: 7 vs Lí-Lí Octave badge: managed_artist order: 7
+EnhancedTechnicalRider.tsx:1116 Sorting: Indie Stone badge: Artist order: 7 vs Maya Bass badge: managed_musician order: 7
+EnhancedTechnicalRider.tsx:1116 Sorting: Phoenix Chen badge: Artist order: 7 vs Indie Stone badge: Artist order: 7
+EnhancedTechnicalRider.tsx:1116 Sorting: Mr Lindsay George badge: MANAGEMENT order: 999 vs Phoenix Chen badge: Artist order: 7
+EnhancedTechnicalRider.tsx:1116 Sorting: Ms Joyette Pascal badge: MANAGEMENT order: 999 vs Mr Lindsay George badge: MANAGEMENT order: 999
+EnhancedTechnicalRider.tsx:1121 🔄 FINAL: Setting 6 band members
+EnhancedTechnicalRider.tsx:789 DEBUG: Syncing stage legend talent/skills with band members
+EnhancedTechnicalRider.tsx:975 🔄 TECHNICAL RIDER: Initializing band members
+EnhancedTechnicalRider.tsx:976 🔄 Assigned musicians (props) count: 4
+EnhancedTechnicalRider.tsx:977 🔄 Final assigned musicians (API) count: 2
+EnhancedTechnicalRider.tsx:978 🔄 Will use: assignedMusicians (props)
+ 🔄 Using musician data source: assignedMusicians (props)
+ 🔄 Processing musician 1: Lí-Lí Octave
+ 🔄 Full musician data: {id: 6, userId: 6, name: 'Lí-Lí Octave', fullName: 'Lianne Letang', stageName: 'Lí-Lí Octave', …}
+ 🔄 Musician roleId: undefined talentType: managed_artist
+ 🔄 Database talents - Primary: undefined Secondary: undefined
+ 🔄 Membership determination: roleId undefined talentType: managed_artist type: Main Booked Talent isProfessional: false Result: BAND
+ 🔄 Role badge: managed_artist
+ 🔄 Membership: BAND
+ 🔄 Primary role: null
+ 🎯 Building dropdown options for: Lí-Lí Octave
+ 🎯 Available profile data: {assignedRole: 'Lead Vocalist', primaryRole: 'Lead Vocalist', skillsAndInstruments: Array(0), performanceRoles: undefined, professionalRoles: undefined, …}
+ 🎯 Skills array contents: []
+ 🎯 SKILLS DEBUG: Processing skillsAndInstruments for Lí-Lí Octave: []
+ 🎯 Generated dropdown options: [{…}]
+ 🎯 Expected dropdown selection: Lead Vocalist
+ 🔄 Adding member 1: Lí-Lí Octave Membership: BAND
+ 🔄 Processing musician 2: Maya Bass
+ 🔄 Full musician data: {id: 12, userId: 12, name: 'Maya Bass', fullName: 'Maya Thompson', stageName: 'Maya Bass', …}
+ 🔄 Musician roleId: undefined talentType: managed_musician
+ 🔄 Database talents - Primary: undefined Secondary: undefined
+ 🔄 Membership determination: roleId undefined talentType: managed_musician type: Main Booked Talent isProfessional: false Result: BAND
+ 🔄 Role badge: managed_musician
+ 🔄 Membership: BAND
+ 🔄 Primary role: null
+ 🎯 Building dropdown options for: Maya Bass
+ 🎯 Available profile data: {assignedRole: 'Lead Vocalist', primaryRole: 'Lead Vocalist', skillsAndInstruments: Array(0), performanceRoles: undefined, professionalRoles: undefined, …}
+ 🎯 Skills array contents: []
+ 🎯 SKILLS DEBUG: Processing skillsAndInstruments for Maya Bass: []
+ 🎯 Generated dropdown options: [{…}]
+ 🎯 Expected dropdown selection: Lead Vocalist
+ 🔄 Adding member 2: Maya Bass Membership: BAND
+ 🔄 Processing musician 3: Indie Stone
+ 🔄 Full musician data: {id: 25, userId: 25, name: 'Indie Stone', fullName: undefined, stageName: '', …}
+ 🔄 Musician roleId: undefined talentType: Artist
+ 🔄 Database talents - Primary: undefined Secondary: undefined
+ 🔄 Membership determination: roleId undefined talentType: Artist type: Artist isProfessional: false Result: BAND
+ 🔄 Role badge: Artist
+EnhancedTechnicalRider.tsx:1016 🔄 Membership: BAND
+EnhancedTechnicalRider.tsx:1017 🔄 Primary role: null
+EnhancedTechnicalRider.tsx:813 🎯 Building dropdown options for: Indie Stone
+EnhancedTechnicalRider.tsx:814 🎯 Available profile data: {assignedRole: 'Lead Vocalist', primaryRole: 'Lead Vocalist', skillsAndInstruments: Array(0), performanceRoles: undefined, professionalRoles: undefined, …}
+EnhancedTechnicalRider.tsx:824 🎯 Skills array contents: []
+EnhancedTechnicalRider.tsx:849 🎯 SKILLS DEBUG: Processing skillsAndInstruments for Indie Stone: []
+EnhancedTechnicalRider.tsx:928 🎯 Generated dropdown options: [{…}]
+EnhancedTechnicalRider.tsx:929 🎯 Expected dropdown selection: Lead Vocalist
+EnhancedTechnicalRider.tsx:1045 🔄 Adding member 3: Indie Stone Membership: BAND
+EnhancedTechnicalRider.tsx:988 🔄 Processing musician 4: Phoenix Chen
+EnhancedTechnicalRider.tsx:989 🔄 Full musician data: {id: 13, userId: 13, name: 'Phoenix Chen', fullName: undefined, stageName: '', …}
+EnhancedTechnicalRider.tsx:990 🔄 Musician roleId: undefined talentType: Artist
+EnhancedTechnicalRider.tsx:991 🔄 Database talents - Primary: undefined Secondary: undefined
+EnhancedTechnicalRider.tsx:1010 🔄 Membership determination: roleId undefined talentType: Artist type: Musician isProfessional: false Result: BAND
+EnhancedTechnicalRider.tsx:1015 🔄 Role badge: Artist
+EnhancedTechnicalRider.tsx:1016 🔄 Membership: BAND
+EnhancedTechnicalRider.tsx:1017 🔄 Primary role: null
+EnhancedTechnicalRider.tsx:813 🎯 Building dropdown options for: Phoenix Chen
+EnhancedTechnicalRider.tsx:814 🎯 Available profile data: {assignedRole: 'Lead Vocalist', primaryRole: 'Lead Vocalist', skillsAndInstruments: Array(0), performanceRoles: undefined, professionalRoles: undefined, …}
+EnhancedTechnicalRider.tsx:824 🎯 Skills array contents: []
+EnhancedTechnicalRider.tsx:849 🎯 SKILLS DEBUG: Processing skillsAndInstruments for Phoenix Chen: []
+EnhancedTechnicalRider.tsx:928 🎯 Generated dropdown options: [{…}]
+EnhancedTechnicalRider.tsx:929 🎯 Expected dropdown selection: Lead Vocalist
+EnhancedTechnicalRider.tsx:1045 🔄 Adding member 4: Phoenix Chen Membership: BAND
+EnhancedTechnicalRider.tsx:1052 🔄 Total members added from API: 4
+EnhancedTechnicalRider.tsx:1116 Sorting: Maya Bass badge: managed_musician order: 7 vs Lí-Lí Octave badge: managed_artist order: 7
+EnhancedTechnicalRider.tsx:1116 Sorting: Indie Stone badge: Artist order: 7 vs Maya Bass badge: managed_musician order: 7
+EnhancedTechnicalRider.tsx:1116 Sorting: Phoenix Chen badge: Artist order: 7 vs Indie Stone badge: Artist order: 7
+EnhancedTechnicalRider.tsx:1116 Sorting: Mr Lindsay George badge: MANAGEMENT order: 999 vs Phoenix Chen badge: Artist order: 7
+EnhancedTechnicalRider.tsx:1116 Sorting: Ms Joyette Pascal badge: MANAGEMENT order: 999 vs Mr Lindsay George badge: MANAGEMENT order: 999
+EnhancedTechnicalRider.tsx:1121 🔄 FINAL: Setting 6 band members
+EnhancedTechnicalRider.tsx:789 DEBUG: Syncing stage legend talent/skills with band members

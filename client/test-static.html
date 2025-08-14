@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WaituMusic Test</title>
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+</head>
+<body>
+    <div id="root"></div>
+    <script>
+        const { createElement } = React;
+        const { createRoot } = ReactDOM;
+        
+        function App() {
+            return createElement('div', { 
+                style: { 
+                    padding: '40px', 
+                    fontSize: '24px', 
+                    color: 'green',
+                    textAlign: 'center'
+                } 
+            }, 
+            createElement('h1', null, '🎵 WaituMusic Platform'),
+            createElement('p', null, 'React is working!'),
+            createElement('p', null, 'Time: ' + new Date().toLocaleTimeString())
+            );
+        }
+        
+        const root = createRoot(document.getElementById('root'));
+        root.render(createElement(App));
+        
+        console.log('Static React app loaded successfully');
+    </script>
+</body>
+</html>

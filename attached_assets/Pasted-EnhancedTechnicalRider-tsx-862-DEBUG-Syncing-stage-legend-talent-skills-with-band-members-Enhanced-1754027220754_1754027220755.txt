@@ -1,0 +1,332 @@
+EnhancedTechnicalRider.tsx:862 DEBUG: Syncing stage legend talent/skills with band members
+EnhancedTechnicalRider.tsx:908 🔄 TECHNICAL RIDER: Initializing band members
+EnhancedTechnicalRider.tsx:909 🔄 Assigned musicians (props) count: 14
+EnhancedTechnicalRider.tsx:910 🔄 Final assigned musicians (API) count: 14
+EnhancedTechnicalRider.tsx:911 🔄 Will use: assignedMusicians (props)
+EnhancedTechnicalRider.tsx:917 🔄 Using musician data source: assignedMusicians (props)
+EnhancedTechnicalRider.tsx:977 🔄 Total members added from API: 14
+EnhancedTechnicalRider.tsx:1041 Sorting: Maya Bass badge: managed_musician order: 7 vs Lí-Lí Octave badge: managed_artist order: 7
+EnhancedTechnicalRider.tsx:1041 Sorting: Cosmic Taylor badge: Artist order: 7 vs Indie Stone badge: Artist order: 7
+EnhancedTechnicalRider.tsx:1041 Sorting: Echo Davis badge: Artist order: 7 vs Cosmic Taylor badge: Artist order: 7
+EnhancedTechnicalRider.tsx:1041 Sorting: Nova Williams badge: Artist order: 7 vs Echo Davis badge: Artist order: 7
+EnhancedTechnicalRider.tsx:1041 Sorting: Phoenix Chen badge: Artist order: 7 vs Nova Williams badge: Artist order: 7
+EnhancedTechnicalRider.tsx:1041 Sorting: Storm Johnson badge: Artist order: 7 vs Phoenix Chen badge: Artist order: 7
+EnhancedTechnicalRider.tsx:1041 Sorting: Wave Anderson badge: Artist order: 7 vs Storm Johnson badge: Artist order: 7
+EnhancedTechnicalRider.tsx:1041 Sorting: Ocean Park badge: Artist order: 7 vs Wave Anderson badge: Artist order: 7
+EnhancedTechnicalRider.tsx:1041 Sorting: Session Brooks badge: Artist order: 7 vs Ocean Park badge: Artist order: 7
+EnhancedTechnicalRider.tsx:1041 Sorting: Sage Rodriguez badge: Artist order: 7 vs Session Brooks badge: Artist order: 7
+EnhancedTechnicalRider.tsx:1041 Sorting: River Martinez badge: Artist order: 7 vs Sage Rodriguez badge: Artist order: 7
+EnhancedTechnicalRider.tsx:1041 Sorting: Freelance Gray badge: Artist order: 7 vs River Martinez badge: Artist order: 7
+EnhancedTechnicalRider.tsx:1041 Sorting: Mr Lindsay George badge: MANAGEMENT order: 999 vs Freelance Gray badge: Artist order: 7
+EnhancedTechnicalRider.tsx:1041 Sorting: Ms Joyette Pascal badge: MANAGEMENT order: 999 vs Mr Lindsay George badge: MANAGEMENT order: 999
+EnhancedTechnicalRider.tsx:1046 🔄 FINAL: Setting 16 band members
+EnhancedTechnicalRider.tsx:862 DEBUG: Syncing stage legend talent/skills with band members
+EnhancedTechnicalRider.tsx:908 🔄 TECHNICAL RIDER: Initializing band members
+EnhancedTechnicalRider.tsx:909 🔄 Assigned musicians (props) count: 14
+EnhancedTechnicalRider.tsx:910 🔄 Final assigned musicians (API) count: 2
+EnhancedTechnicalRider.tsx:911 🔄 Will use: assignedMusicians (props)
+EnhancedTechnicalRider.tsx:917 🔄 Using musician data source: assignedMusicians (props)
+EnhancedTechnicalRider.tsx:977 🔄 Total members added from API: 14
+EnhancedTechnicalRider.tsx:1041 Sorting: Maya Bass badge: managed_musician order: 7 vs Lí-Lí Octave badge: managed_artist order: 7
+EnhancedTechnicalRider.tsx:1041 Sorting: Cosmic Taylor badge: Artist order: 7 vs Indie Stone badge: Artist order: 7
+EnhancedTechnicalRider.tsx:1041 Sorting: Echo Davis badge: Artist order: 7 vs Cosmic Taylor badge: Artist order: 7
+EnhancedTechnicalRider.tsx:1041 Sorting: Nova Williams badge: Artist order: 7 vs Echo Davis badge: Artist order: 7
+EnhancedTechnicalRider.tsx:1041 Sorting: Phoenix Chen badge: Artist order: 7 vs Nova Williams badge: Artist order: 7
+EnhancedTechnicalRider.tsx:1041 Sorting: Storm Johnson badge: Artist order: 7 vs Phoenix Chen badge: Artist order: 7
+EnhancedTechnicalRider.tsx:1041 Sorting: Wave Anderson badge: Artist order: 7 vs Storm Johnson badge: Artist order: 7
+EnhancedTechnicalRider.tsx:1041 Sorting: Ocean Park badge: Artist order: 7 vs Wave Anderson badge: Artist order: 7
+EnhancedTechnicalRider.tsx:1041 Sorting: Session Brooks badge: Artist order: 7 vs Ocean Park badge: Artist order: 7
+EnhancedTechnicalRider.tsx:1041 Sorting: Sage Rodriguez badge: Artist order: 7 vs Session Brooks badge: Artist order: 7
+EnhancedTechnicalRider.tsx:1041 Sorting: River Martinez badge: Artist order: 7 vs Sage Rodriguez badge: Artist order: 7
+EnhancedTechnicalRider.tsx:1041 Sorting: Freelance Gray badge: Artist order: 7 vs River Martinez badge: Artist order: 7
+EnhancedTechnicalRider.tsx:1041 Sorting: Mr Lindsay George badge: MANAGEMENT order: 999 vs Freelance Gray badge: Artist order: 7
+EnhancedTechnicalRider.tsx:1041 Sorting: Ms Joyette Pascal badge: MANAGEMENT order: 999 vs Mr Lindsay George badge: MANAGEMENT order: 999
+EnhancedTechnicalRider.tsx:1046 🔄 FINAL: Setting 16 band members
+EnhancedTechnicalRider.tsx:862 DEBUG: Syncing stage legend talent/skills with band members
+_app-887b064411aad558.js:13   POST https://events.launchdarkly.com/events/bulk/62b35a865152ab14c5942820 net::ERR_BLOCKED_BY_CLIENT
+(anonymous) @ _app-887b064411aad558.js:13
+(anonymous) @ _app-887b064411aad558.js:13
+promise @ _app-887b064411aad558.js:40
+(anonymous) @ _app-887b064411aad558.js:40
+r.httpRequest @ _app-887b064411aad558.js:40
+t @ _app-887b064411aad558.js:40
+a.sendChunk @ _app-887b064411aad558.js:40
+a.sendEvents @ _app-887b064411aad558.js:40
+a.flush @ _app-887b064411aad558.js:40
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+_app-887b064411aad558.js:13   POST https://events.launchdarkly.com/events/bulk/62b35a865152ab14c5942820 net::ERR_BLOCKED_BY_CLIENT
+(anonymous) @ _app-887b064411aad558.js:13
+(anonymous) @ _app-887b064411aad558.js:13
+promise @ _app-887b064411aad558.js:40
+(anonymous) @ _app-887b064411aad558.js:40
+r.httpRequest @ _app-887b064411aad558.js:40
+t @ _app-887b064411aad558.js:40
+(anonymous) @ _app-887b064411aad558.js:40
+Promise.catch
+t @ _app-887b064411aad558.js:40
+a.sendChunk @ _app-887b064411aad558.js:40
+a.sendEvents @ _app-887b064411aad558.js:40
+a.flush @ _app-887b064411aad558.js:40
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+[NEW] Explain Console errors by using Copilot in Edge: click
+         
+         to explain an error. 
+        Learn more
+        Don't show again
+EnhancedTechnicalRider.tsx:2096 🎛️ AUTO-ASSIGNING: Starting mixer channel auto-assignment
+EnhancedTechnicalRider.tsx:2107 🎛️ Stage plot members for auto-assignment: (12) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
+EnhancedTechnicalRider.tsx:2216 🎛️ AUTO-ASSIGNMENT: Completed mixer channel assignments

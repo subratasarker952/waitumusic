@@ -1,0 +1,221 @@
+EnhancedTechnicalRider.tsx:759 DEBUG: Syncing stage legend talent/skills with band members
+EnhancedTechnicalRider.tsx:949 🔄 TECHNICAL RIDER: Initializing band members
+EnhancedTechnicalRider.tsx:950 🔄 Assigned musicians (props) count: 5
+EnhancedTechnicalRider.tsx:951 🔄 Final assigned musicians (API) count: 5
+EnhancedTechnicalRider.tsx:952 🔄 Will use: assignedMusicians (props)
+ 🔄 Using musician data source: assignedMusicians (props)
+ 🔄 Processing musician 1: Ocean Park
+ 🔄 Full musician data: {id: 23, userId: 23, name: 'Ocean Park', fullName: 'Ocean Park', stageName: '', …}
+ 🔄 Musician roleId: undefined talentType: Artist
+ 🔄 Membership determination: roleId undefined talentType: Artist type: Main Booked Talent isProfessional: false Result: BAND
+ 🔄 Role badge: Artist
+ 🔄 Membership: BAND
+ 🔄 Primary role: Lead Vocalist
+ 🎯 Building dropdown options for: Ocean Park
+ 🎯 Available profile data: {assignedRole: 'Lead Vocalist', primaryRole: 'Lead Vocalist', skillsAndInstruments: Array(0), performanceRoles: undefined, professionalRoles: undefined, …}
+ 🎯 Skills array contents: []
+ 🎯 SKILLS DEBUG: Processing skillsAndInstruments for Ocean Park: []
+ 🎯 Generated dropdown options: [{…}]
+ 🎯 Expected dropdown selection: Lead Vocalist
+ 🔄 Adding member 1: Ocean Park Membership: BAND
+ 🔄 Processing musician 2: Wave Anderson
+ 🔄 Full musician data: {id: 19, userId: 19, name: 'Wave Anderson', fullName: 'Wave Anderson', stageName: '', …}
+ 🔄 Musician roleId: undefined talentType: Artist
+ 🔄 Membership determination: roleId undefined talentType: Artist type: Musician isProfessional: false Result: BAND
+ 🔄 Role badge: Artist
+ 🔄 Membership: BAND
+ 🔄 Primary role: Lead Vocalist
+ 🎯 Building dropdown options for: Wave Anderson
+ 🎯 Available profile data: {assignedRole: 'Lead Vocalist', primaryRole: 'Lead Vocalist', skillsAndInstruments: Array(0), performanceRoles: undefined, professionalRoles: undefined, …}
+ 🎯 Skills array contents: []
+ 🎯 SKILLS DEBUG: Processing skillsAndInstruments for Wave Anderson: []
+ 🎯 Generated dropdown options: [{…}]
+ 🎯 Expected dropdown selection: Lead Vocalist
+ 🔄 Adding member 2: Wave Anderson Membership: BAND
+ 🔄 Processing musician 3: Storm Johnson
+ 🔄 Full musician data: {id: 18, userId: 18, name: 'Storm Johnson', fullName: 'Storm Johnson', stageName: '', …}
+ 🔄 Musician roleId: undefined talentType: Artist
+ 🔄 Membership determination: roleId undefined talentType: Artist type: Musician isProfessional: false Result: BAND
+ 🔄 Role badge: Artist
+ 🔄 Membership: BAND
+ 🔄 Primary role: Lead Vocalist
+ 🎯 Building dropdown options for: Storm Johnson
+ 🎯 Available profile data: {assignedRole: 'Lead Vocalist', primaryRole: 'Lead Vocalist', skillsAndInstruments: Array(0), performanceRoles: undefined, professionalRoles: undefined, …}
+ 🎯 Skills array contents: []
+ 🎯 SKILLS DEBUG: Processing skillsAndInstruments for Storm Johnson: []
+ 🎯 Generated dropdown options: [{…}]
+ 🎯 Expected dropdown selection: Lead Vocalist
+ 🔄 Adding member 3: Storm Johnson Membership: BAND
+ 🔄 Processing musician 4: Phoenix Chen
+ 🔄 Full musician data: {id: 13, userId: 13, name: 'Phoenix Chen', fullName: 'Phoenix Chen', stageName: '', …}
+ 🔄 Musician roleId: undefined talentType: Artist
+EnhancedTechnicalRider.tsx:983 🔄 Membership determination: roleId undefined talentType: Artist type: Musician isProfessional: false Result: BAND
+EnhancedTechnicalRider.tsx:988 🔄 Role badge: Artist
+EnhancedTechnicalRider.tsx:989 🔄 Membership: BAND
+EnhancedTechnicalRider.tsx:990 🔄 Primary role: Lead Vocalist
+EnhancedTechnicalRider.tsx:786 🎯 Building dropdown options for: Phoenix Chen
+EnhancedTechnicalRider.tsx:787 🎯 Available profile data: {assignedRole: 'Lead Vocalist', primaryRole: 'Lead Vocalist', skillsAndInstruments: Array(0), performanceRoles: undefined, professionalRoles: undefined, …}
+EnhancedTechnicalRider.tsx:797 🎯 Skills array contents: []
+EnhancedTechnicalRider.tsx:822 🎯 SKILLS DEBUG: Processing skillsAndInstruments for Phoenix Chen: []
+EnhancedTechnicalRider.tsx:901 🎯 Generated dropdown options: [{…}]
+EnhancedTechnicalRider.tsx:902 🎯 Expected dropdown selection: Lead Vocalist
+EnhancedTechnicalRider.tsx:1017 🔄 Adding member 4: Phoenix Chen Membership: BAND
+EnhancedTechnicalRider.tsx:962 🔄 Processing musician 5: Session Brooks
+EnhancedTechnicalRider.tsx:963 🔄 Full musician data: {id: 26, userId: 26, name: 'Session Brooks', fullName: 'Session Brooks', stageName: '', …}
+EnhancedTechnicalRider.tsx:964 🔄 Musician roleId: undefined talentType: Artist
+EnhancedTechnicalRider.tsx:983 🔄 Membership determination: roleId undefined talentType: Artist type: Musician isProfessional: false Result: BAND
+EnhancedTechnicalRider.tsx:988 🔄 Role badge: Artist
+EnhancedTechnicalRider.tsx:989 🔄 Membership: BAND
+EnhancedTechnicalRider.tsx:990 🔄 Primary role: Lead Vocalist
+EnhancedTechnicalRider.tsx:786 🎯 Building dropdown options for: Session Brooks
+EnhancedTechnicalRider.tsx:787 🎯 Available profile data: {assignedRole: 'Musician', primaryRole: 'Lead Vocalist', skillsAndInstruments: Array(0), performanceRoles: undefined, professionalRoles: undefined, …}
+EnhancedTechnicalRider.tsx:797 🎯 Skills array contents: []
+EnhancedTechnicalRider.tsx:822 🎯 SKILLS DEBUG: Processing skillsAndInstruments for Session Brooks: []
+EnhancedTechnicalRider.tsx:901 🎯 Generated dropdown options: (2) [{…}, {…}]
+EnhancedTechnicalRider.tsx:902 🎯 Expected dropdown selection: Musician
+EnhancedTechnicalRider.tsx:1017 🔄 Adding member 5: Session Brooks Membership: BAND
+EnhancedTechnicalRider.tsx:1024 🔄 Total members added from API: 5
+EnhancedTechnicalRider.tsx:1088 Sorting: Storm Johnson badge: Artist order: 7 vs Wave Anderson badge: Artist order: 7
+EnhancedTechnicalRider.tsx:1088 Sorting: Phoenix Chen badge: Artist order: 7 vs Storm Johnson badge: Artist order: 7
+EnhancedTechnicalRider.tsx:1088 Sorting: Session Brooks badge: Artist order: 7 vs Phoenix Chen badge: Artist order: 7
+EnhancedTechnicalRider.tsx:1088 Sorting: Mr Lindsay George badge: MANAGEMENT order: 999 vs Session Brooks badge: Artist order: 7
+EnhancedTechnicalRider.tsx:1088 Sorting: Ms Joyette Pascal badge: MANAGEMENT order: 999 vs Mr Lindsay George badge: MANAGEMENT order: 999
+EnhancedTechnicalRider.tsx:1093 🔄 FINAL: Setting 7 band members
+EnhancedTechnicalRider.tsx:722  Warning: The final argument passed to useEffect changed size between renders. The order and size of this array must remain constant.
+
+Previous: []
+Incoming: [[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object], Lead Vocalist, Lead Vocalist, Lead Vocalist, Lead Vocalist, Lead Vocalist, CEO, CFO]
+    at EnhancedTechnicalRider (https://e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/src/components/technical-rider/EnhancedTechnicalRider.tsx:52:3)
+    at div
+    at div
+    at div
+    at BookingWorkflow (https://e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/src/components/booking/ComprehensiveBookingWorkflow.tsx:53:3)
+    at div
+    at div
+    at AuthorizedRoute (https://e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/src/components/AuthorizedRoute.tsx:24:3)
+    at ComprehensiveWorkflow (https://e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/src/pages/ComprehensiveWorkflow.tsx:40:27)
+    at AuthorizedRoute (https://e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/src/components/AuthorizedRoute.tsx:24:3)
+    at Route (https://e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/wouter.js?v=d63d4fac:323:16)
+    at Switch (https://e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/wouter.js?v=d63d4fac:379:17)
+    at main
+    at div
+    at Layout (https://e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/src/components/Layout.tsx:21:34)
+    at Router
+    at div
+    at ConfigurationProvider (https://e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/src/contexts/ConfigurationProvider.tsx:33:41)
+    at MediaPlayerProvider (https://e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/src/contexts/MediaPlayerContext.tsx:29:39)
+    at CartProvider (https://e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/src/contexts/CartContext.tsx:20:32)
+    at AuthProvider (https://e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/src/contexts/AuthContext.tsx:23:32)
+    at Provider (https://e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-OXZDJRWN.js?v=d63d4fac:38:15)
+    at TooltipProvider (https://e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/@radix-ui_react-tooltip.js?v=d63d4fac:66:5)
+    at QueryClientProvider (https://e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/@tanstack_react-query.js?v=d63d4fac:2805:3)
+    at App (https://e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/src/App.tsx?t=1753978753964&v=w1qrnUskT3Wk25F6R-cp0:758:9)
+    at ErrorBoundary (https://e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/src/components/ErrorBoundary.tsx?v=w1qrnUskT3Wk25F6R-cp0:7:5)
+printWarning @ react-dom.development.js:86
+error @ react-dom.development.js:60
+areHookInputsEqual @ react-dom.development.js:15431
+updateEffectImpl @ react-dom.development.js:16259
+updateEffect @ react-dom.development.js:16279
+useEffect @ react-dom.development.js:17043
+useEffect @ react.development.js:1634
+EnhancedTechnicalRider @ EnhancedTechnicalRider.tsx:722
+renderWithHooks @ react-dom.development.js:15486
+updateFunctionComponent @ react-dom.development.js:19617
+beginWork @ react-dom.development.js:21640
+beginWork$1 @ react-dom.development.js:27465
+performUnitOfWork @ react-dom.development.js:26596
+workLoopSync @ react-dom.development.js:26505
+renderRootSync @ react-dom.development.js:26473
+performConcurrentWorkOnRoot @ react-dom.development.js:25777
+workLoop @ scheduler.development.js:266
+flushWork @ scheduler.development.js:239
+performWorkUntilDeadline @ scheduler.development.js:533
+EnhancedTechnicalRider.tsx:759 DEBUG: Syncing stage legend talent/skills with band members
+[NEW] Explain Console errors by using Copilot in Edge: click
+         
+         to explain an error. 
+        Learn more
+        Don't show again
+ 🔄 TECHNICAL RIDER: Initializing band members
+ 🔄 Assigned musicians (props) count: 5
+ 🔄 Final assigned musicians (API) count: 2
+ 🔄 Will use: assignedMusicians (props)
+ 🔄 Using musician data source: assignedMusicians (props)
+ 🔄 Processing musician 1: Ocean Park
+ 🔄 Full musician data: {id: 23, userId: 23, name: 'Ocean Park', fullName: 'Ocean Park', stageName: '', …}
+ 🔄 Musician roleId: undefined talentType: Artist
+ 🔄 Membership determination: roleId undefined talentType: Artist type: Main Booked Talent isProfessional: false Result: BAND
+ 🔄 Role badge: Artist
+ 🔄 Membership: BAND
+ 🔄 Primary role: Lead Vocalist
+ 🎯 Building dropdown options for: Ocean Park
+ 🎯 Available profile data: {assignedRole: 'Lead Vocalist', primaryRole: 'Lead Vocalist', skillsAndInstruments: Array(0), performanceRoles: undefined, professionalRoles: undefined, …}
+ 🎯 Skills array contents: []
+ 🎯 SKILLS DEBUG: Processing skillsAndInstruments for Ocean Park: []
+ 🎯 Generated dropdown options: [{…}]
+ 🎯 Expected dropdown selection: Lead Vocalist
+ 🔄 Adding member 1: Ocean Park Membership: BAND
+ 🔄 Processing musician 2: Wave Anderson
+ 🔄 Full musician data: {id: 19, userId: 19, name: 'Wave Anderson', fullName: 'Wave Anderson', stageName: '', …}
+ 🔄 Musician roleId: undefined talentType: Artist
+ 🔄 Membership determination: roleId undefined talentType: Artist type: Musician isProfessional: false Result: BAND
+ 🔄 Role badge: Artist
+ 🔄 Membership: BAND
+ 🔄 Primary role: Lead Vocalist
+ 🎯 Building dropdown options for: Wave Anderson
+ 🎯 Available profile data: {assignedRole: 'Lead Vocalist', primaryRole: 'Lead Vocalist', skillsAndInstruments: Array(0), performanceRoles: undefined, professionalRoles: undefined, …}
+ 🎯 Skills array contents: []
+ 🎯 SKILLS DEBUG: Processing skillsAndInstruments for Wave Anderson: []
+ 🎯 Generated dropdown options: [{…}]
+ 🎯 Expected dropdown selection: Lead Vocalist
+ 🔄 Adding member 2: Wave Anderson Membership: BAND
+ 🔄 Processing musician 3: Storm Johnson
+ 🔄 Full musician data: {id: 18, userId: 18, name: 'Storm Johnson', fullName: 'Storm Johnson', stageName: '', …}
+ 🔄 Musician roleId: undefined talentType: Artist
+ 🔄 Membership determination: roleId undefined talentType: Artist type: Musician isProfessional: false Result: BAND
+ 🔄 Role badge: Artist
+ 🔄 Membership: BAND
+ 🔄 Primary role: Lead Vocalist
+ 🎯 Building dropdown options for: Storm Johnson
+ 🎯 Available profile data: {assignedRole: 'Lead Vocalist', primaryRole: 'Lead Vocalist', skillsAndInstruments: Array(0), performanceRoles: undefined, professionalRoles: undefined, …}
+ 🎯 Skills array contents: []
+ 🎯 SKILLS DEBUG: Processing skillsAndInstruments for Storm Johnson: []
+ 🎯 Generated dropdown options: [{…}]
+ 🎯 Expected dropdown selection: Lead Vocalist
+ 🔄 Adding member 3: Storm Johnson Membership: BAND
+ 🔄 Processing musician 4: Phoenix Chen
+ 🔄 Full musician data: {id: 13, userId: 13, name: 'Phoenix Chen', fullName: 'Phoenix Chen', stageName: '', …}
+ 🔄 Musician roleId: undefined talentType: Artist
+ 🔄 Membership determination: roleId undefined talentType: Artist type: Musician isProfessional: false Result: BAND
+EnhancedTechnicalRider.tsx:988 🔄 Role badge: Artist
+EnhancedTechnicalRider.tsx:989 🔄 Membership: BAND
+EnhancedTechnicalRider.tsx:990 🔄 Primary role: Lead Vocalist
+EnhancedTechnicalRider.tsx:786 🎯 Building dropdown options for: Phoenix Chen
+EnhancedTechnicalRider.tsx:787 🎯 Available profile data: {assignedRole: 'Lead Vocalist', primaryRole: 'Lead Vocalist', skillsAndInstruments: Array(0), performanceRoles: undefined, professionalRoles: undefined, …}
+EnhancedTechnicalRider.tsx:797 🎯 Skills array contents: []
+EnhancedTechnicalRider.tsx:822 🎯 SKILLS DEBUG: Processing skillsAndInstruments for Phoenix Chen: []
+EnhancedTechnicalRider.tsx:901 🎯 Generated dropdown options: [{…}]
+EnhancedTechnicalRider.tsx:902 🎯 Expected dropdown selection: Lead Vocalist
+EnhancedTechnicalRider.tsx:1017 🔄 Adding member 4: Phoenix Chen Membership: BAND
+EnhancedTechnicalRider.tsx:962 🔄 Processing musician 5: Session Brooks
+EnhancedTechnicalRider.tsx:963 🔄 Full musician data: {id: 26, userId: 26, name: 'Session Brooks', fullName: 'Session Brooks', stageName: '', …}
+EnhancedTechnicalRider.tsx:964 🔄 Musician roleId: undefined talentType: Artist
+EnhancedTechnicalRider.tsx:983 🔄 Membership determination: roleId undefined talentType: Artist type: Musician isProfessional: false Result: BAND
+EnhancedTechnicalRider.tsx:988 🔄 Role badge: Artist
+EnhancedTechnicalRider.tsx:989 🔄 Membership: BAND
+EnhancedTechnicalRider.tsx:990 🔄 Primary role: Lead Vocalist
+EnhancedTechnicalRider.tsx:786 🎯 Building dropdown options for: Session Brooks
+EnhancedTechnicalRider.tsx:787 🎯 Available profile data: {assignedRole: 'Musician', primaryRole: 'Lead Vocalist', skillsAndInstruments: Array(0), performanceRoles: undefined, professionalRoles: undefined, …}
+EnhancedTechnicalRider.tsx:797 🎯 Skills array contents: []
+EnhancedTechnicalRider.tsx:822 🎯 SKILLS DEBUG: Processing skillsAndInstruments for Session Brooks: []
+EnhancedTechnicalRider.tsx:901 🎯 Generated dropdown options: (2) [{…}, {…}]
+EnhancedTechnicalRider.tsx:902 🎯 Expected dropdown selection: Musician
+EnhancedTechnicalRider.tsx:1017 🔄 Adding member 5: Session Brooks Membership: BAND
+EnhancedTechnicalRider.tsx:1024 🔄 Total members added from API: 5
+EnhancedTechnicalRider.tsx:1088 Sorting: Storm Johnson badge: Artist order: 7 vs Wave Anderson badge: Artist order: 7
+EnhancedTechnicalRider.tsx:1088 Sorting: Phoenix Chen badge: Artist order: 7 vs Storm Johnson badge: Artist order: 7
+EnhancedTechnicalRider.tsx:1088 Sorting: Session Brooks badge: Artist order: 7 vs Phoenix Chen badge: Artist order: 7
+EnhancedTechnicalRider.tsx:1088 Sorting: Mr Lindsay George badge: MANAGEMENT order: 999 vs Session Brooks badge: Artist order: 7
+EnhancedTechnicalRider.tsx:1088 Sorting: Ms Joyette Pascal badge: MANAGEMENT order: 999 vs Mr Lindsay George badge: MANAGEMENT order: 999
+EnhancedTechnicalRider.tsx:1093 🔄 FINAL: Setting 7 band members
+EnhancedTechnicalRider.tsx:759 DEBUG: Syncing stage legend talent/skills with band members

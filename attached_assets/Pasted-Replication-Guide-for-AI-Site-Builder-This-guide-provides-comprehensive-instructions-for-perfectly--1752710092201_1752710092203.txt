@@ -1,0 +1,308 @@
+Replication Guide for AI Site Builder
+This guide provides comprehensive instructions for perfectly replicating the Wai'tuMusic platform without the errors in the current implementation.
+
+System Architecture
+Frontend Framework:
+
+Use React 18.3.1 with TypeScript 5.5.3
+Implement Vite 5.4.2 for build tooling
+Use React Router DOM 7.6.3 for routing
+Implement Tailwind CSS 3.4.1 for styling
+Use Lucide React 0.344.0 for icons
+State Management:
+
+Implement React Context API for global state
+Create separate context providers for:
+Authentication (user state, login/logout)
+Shopping Cart (items, add/remove)
+Notifications (toast system)
+Text Management (content editing)
+Backend Services:
+
+Create Node.js Express server
+Implement Sequelize ORM for database interactions
+Use JWT for authentication
+Implement Multer for file uploads
+Configure email integration with mail.comeseetv.com
+Database Schema:
+
+Create tables for:
+Users (id, email, password_hash, full_name, role_id, status, created_at, last_login)
+Roles (id, name)
+UserProfiles (user_id, bio, avatar_url, cover_image_url, social_links)
+Artists (user_id, stage_name, genre, base_price, management_tier_id)
+Songs (id, artist_user_id, title, mp3_url, cover_art_url, isrc_code, price, is_free, duration_seconds, preview_start_seconds, created_at)
+Albums (id, artist_user_id, title, cover_art_url, price, release_date)
+AlbumSongs (album_id, song_id, track_number)
+Merchandise (id, artist_user_id, name, description, price, inventory, image_url)
+SongMerchandise (song_id, merchandise_id)
+Bookings (id, booker_user_id, primary_artist_user_id, event_name, event_type, total_budget, status, created_at)
+BookingDates (id, booking_id, event_date, venue_name, venue_address, custom_event_name)
+BookingMusicians (booking_id, musician_user_id, role)
+TechnicalRiders (booking_id, content, last_updated_by, last_updated_at)
+Documents (id, file_name, file_path, file_type, uploaded_by_user_id, created_at)
+BookingDocuments (booking_id, document_id, is_promotional)
+DocumentTemplates (id, name, content, type)
+FormTemplates (id, name, fields, created_at)
+FormSubmissions (id, form_template_id, submitter_user_id, data, status, submitted_at)
+Events (id, artist_user_id, title, event_type, event_datetime, ticket_url, stream_url)
+OAuthProviders (id, user_id, provider, provider_user_id)
+SystemSettings (setting_key, setting_value, description)
+ManagementTiers (id, name, max_discount_percentage)
+Component Implementation
+Authentication System:
+
+Create AuthContext.tsx with:
+User state management
+Login/logout functionality
+Registration process
+JWT token handling
+Role-based access control
+Demo account system for testing
+Shopping Cart System:
+
+Create CartContext.tsx with:
+Cart item management
+Add/remove functionality
+Quantity updates
+Price calculations
+Local storage persistence
+Notification System:
+
+Create NotificationContext.tsx with:
+Toast notification display
+Multiple notification types
+Auto-dismiss functionality
+Notification queue management
+Text Management System:
+
+Create TextManagementContext.tsx with:
+Content editing capabilities
+Language file export/import
+Style management
+Default text loading
+Calendar Component:
+
+Implement interactive date selection
+Add availability checking
+Create visual indicators for different date states
+Implement date range selection
+Add multiple date selection mode
+Ensure mobile responsiveness
+Booking Modal:
+
+Create multi-step form process
+Implement dynamic field validation
+Add file upload support
+Create artist-specific customization
+Implement consultation mode
+Contract Signature Component:
+
+Implement three signature methods:
+Draw (canvas-based)
+Type (font selection)
+Upload (image file)
+Add legal compliance features
+Implement signature validation
+Document Viewer:
+
+Create multi-format support
+Implement version control interface
+Add access control based on user role
+Create download functionality
+Integrate with signature system
+Form Builder:
+
+Implement 25+ field types
+Create conditional logic system
+Add anti-spam protection
+Implement role-based field visibility
+Add real-time validation
+Admin Dashboard:
+
+Create comprehensive booking management
+Implement user administration
+Add contract generation
+Create document management
+Implement analytics overview
+Add system settings
+Artist Dashboard:
+
+Create profile management
+Implement music catalog management
+Add merchandise management
+Create booking review system
+Implement calendar management
+Musician Dashboard:
+
+Create profile management
+Implement booking assignment review
+Add availability management
+Create equipment inventory
+Implement payment tracking
+Page Implementation
+Home Page:
+
+Create hero section with gradient background
+Implement featured artists carousel
+Add popular services showcase
+Create statistics section
+Add call-to-action areas
+Artists Page:
+
+Implement artist grid layout
+Add search and filtering
+Create genre-based filtering
+Add availability status indicators
+Implement direct booking links
+Artist Detail Page:
+
+Create comprehensive artist profile
+Implement music catalog with play buttons
+Add social media integration
+Create merchandise showcase
+Implement booking integration
+Add event listings
+Booking Page:
+
+Create artist selection interface
+Implement interactive calendar
+Add availability checking
+Create booking form integration
+Implement requirements documentation
+Services Page:
+
+Create service catalog with filtering
+Implement detailed service descriptions
+Add pricing information
+Create cart integration
+Implement consultation booking
+Consultation Page:
+
+Create consultation type selection
+Implement calendar booking
+Add professional profiles
+Create consultation form
+Implement payment integration
+Cart Page:
+
+Create item listing with quantity controls
+Implement price calculations
+Add checkout process
+Create payment method selection
+Implement order confirmation
+Login/Register Pages:
+
+Create form validation
+Implement social login options
+Add demo account access
+Create password recovery
+Implement account creation
+API Implementation
+Authentication API:
+
+Create login endpoint
+Implement registration endpoint
+Add social login handling
+Create JWT token generation
+Implement user profile retrieval
+Artist API:
+
+Create artist profile endpoints
+Implement music management
+Add merchandise management
+Create event management
+Implement availability settings
+Booking API:
+
+Create booking request handling
+Implement approval workflow
+Add musician assignment
+Create technical rider management
+Implement contract generation
+Form API:
+
+Create template management
+Implement form submission handling
+Add field validation
+Create submission processing
+Implement notification triggers
+Document API:
+
+Create document upload handling
+Implement template management
+Add document generation
+Create sharing permissions
+Implement version control
+Payment API:
+
+Create Stripe integration
+Implement PayPal integration
+Add commission calculation
+Create receipt generation
+Implement payment tracking
+Database Implementation
+User Tables:
+
+Create users table with authentication fields
+Implement roles table for access control
+Add user_profiles table for extended information
+Create oauth_providers table for social login
+Artist Tables:
+
+Create artists table linked to users
+Implement songs table for music catalog
+Add albums table for collections
+Create album_songs junction table
+Implement merchandise table for products
+Add song_merchandise junction table
+Booking Tables:
+
+Create bookings table for main booking data
+Implement booking_dates table for multi-date events
+Add booking_musicians table for assignments
+Create technical_riders table for requirements
+Implement booking_documents junction table
+Document Tables:
+
+Create documents table for file storage
+Implement document_templates table for reusable formats
+Add form_templates table for dynamic forms
+Create form_submissions table for responses
+System Tables:
+
+Create system_settings table for configuration
+Implement management_tiers table for artist management
+Add events table for performances and streams
+Error Prevention
+Authentication Errors:
+
+Implement proper JWT token validation
+Add error handling for failed login attempts
+Create session timeout management
+Implement secure password storage with bcrypt
+Component Errors:
+
+Ensure all Lucide icons are properly imported
+Implement proper prop type checking with TypeScript
+Add error boundaries around complex components
+Create fallback UI for error states
+API Errors:
+
+Implement comprehensive error handling
+Add request validation with express-validator
+Create consistent error response format
+Implement logging for debugging
+Database Errors:
+
+Add transaction support for multi-step operations
+Implement foreign key constraints
+Create indexes for performance
+Add validation at the database level
+UI Errors:
+
+Ensure responsive design works on all screen sizes
+Implement proper form validation
+Add loading states for asynchronous operations
+Create error messages for user feedback
+By following this comprehensive guide, you can create a perfect replica of the Wai'tuMusic platform without the errors present in the current implementation. The system architecture, component structure, and database schema are designed to work together seamlessly, providing a robust and feature-rich music label management platform.

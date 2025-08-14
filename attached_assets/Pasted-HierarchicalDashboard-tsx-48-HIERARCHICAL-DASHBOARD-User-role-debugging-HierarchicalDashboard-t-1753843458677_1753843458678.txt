@@ -1,0 +1,244 @@
+HierarchicalDashboard.tsx:48 🔍 HIERARCHICAL DASHBOARD: User role debugging
+HierarchicalDashboard.tsx:49 🔍 User object: {id: 24, email: 'superadmin@waitumusic.com', fullName: 'Super Admin', roleId: 1, status: 'active', …}
+HierarchicalDashboard.tsx:50 🔍 user.roleId: 1
+HierarchicalDashboard.tsx:94 🔍 Detected role: superadmin
+HierarchicalDashboard.tsx:101 🔍 Accessible sections: 4
+ComprehensiveBookingWorkflow.tsx:149 FRONTEND: Fetching booking workflow for ID 22
+ComprehensiveBookingWorkflow.tsx:151 FRONTEND: Received booking data with primaryArtist: {id: 19, email: 'princesstrinidad@waitumusic.com', passwordHash: '$2b$10$nHLHyp4RpLss45EqMnrCh.yCGgHFmsZgY82r3snuVobM8hkQTjZP.', fullName: 'Joanna Davis (Princess Trinidad)', roleId: 3, …}
+ComprehensiveBookingWorkflow.tsx:191 USEEFFECT: Processing booking data: {id: 22, bookerUserId: null, primaryArtistUserId: 19, eventName: 'dffdfdfdfdfd', eventType: 'wedding', …}
+ComprehensiveBookingWorkflow.tsx:192 USEEFFECT: Primary artist data: {id: 19, email: 'princesstrinidad@waitumusic.com', passwordHash: '$2b$10$nHLHyp4RpLss45EqMnrCh.yCGgHFmsZgY82r3snuVobM8hkQTjZP.', fullName: 'Joanna Davis (Princess Trinidad)', roleId: 3, …}
+ComprehensiveBookingWorkflow.tsx:200 USEEFFECT: Determined artist type: Managed Artist from userType: Managed Artist isManaged: true
+ComprehensiveBookingWorkflow.tsx:227 USEEFFECT: Creating primary talent assignment: {id: 'primary-19', userId: 19, name: 'Princess Trinidad', type: 'Managed Artist', role: 'Main Booked Talent', …}
+_app-622f58fff9facdc0.js:13   POST https://events.launchdarkly.com/events/bulk/62b35a865152ab14c5942820 net::ERR_BLOCKED_BY_CLIENT
+(anonymous) @ _app-622f58fff9facdc0.js:13
+(anonymous) @ _app-622f58fff9facdc0.js:13
+(anonymous) @ _app-622f58fff9facdc0.js:40
+(anonymous) @ _app-622f58fff9facdc0.js:40
+(anonymous) @ _app-622f58fff9facdc0.js:40
+t @ _app-622f58fff9facdc0.js:40
+(anonymous) @ _app-622f58fff9facdc0.js:40
+(anonymous) @ _app-622f58fff9facdc0.js:40
+(anonymous) @ _app-622f58fff9facdc0.js:40
+e @ _app-622f58fff9facdc0.js:40
+n @ _app-622f58fff9facdc0.js:13
+setTimeout
+(anonymous) @ _app-622f58fff9facdc0.js:13
+e @ _app-622f58fff9facdc0.js:40
+n @ _app-622f58fff9facdc0.js:13
+setTimeout
+(anonymous) @ _app-622f58fff9facdc0.js:13
+e @ _app-622f58fff9facdc0.js:40
+n @ _app-622f58fff9facdc0.js:13
+setTimeout
+(anonymous) @ _app-622f58fff9facdc0.js:13
+e @ _app-622f58fff9facdc0.js:40
+n @ _app-622f58fff9facdc0.js:13
+setTimeout
+(anonymous) @ _app-622f58fff9facdc0.js:13
+e @ _app-622f58fff9facdc0.js:40
+n @ _app-622f58fff9facdc0.js:13
+setTimeout
+(anonymous) @ _app-622f58fff9facdc0.js:13
+e @ _app-622f58fff9facdc0.js:40
+n @ _app-622f58fff9facdc0.js:13
+setTimeout
+(anonymous) @ _app-622f58fff9facdc0.js:13
+e @ _app-622f58fff9facdc0.js:40
+n @ _app-622f58fff9facdc0.js:13
+setTimeout
+(anonymous) @ _app-622f58fff9facdc0.js:13
+e @ _app-622f58fff9facdc0.js:40
+n @ _app-622f58fff9facdc0.js:13
+setTimeout
+(anonymous) @ _app-622f58fff9facdc0.js:13
+e @ _app-622f58fff9facdc0.js:40
+n @ _app-622f58fff9facdc0.js:13
+setTimeout
+(anonymous) @ _app-622f58fff9facdc0.js:13
+e @ _app-622f58fff9facdc0.js:40
+n @ _app-622f58fff9facdc0.js:13
+setTimeout
+(anonymous) @ _app-622f58fff9facdc0.js:13
+e @ _app-622f58fff9facdc0.js:40
+n @ _app-622f58fff9facdc0.js:13
+setTimeout
+(anonymous) @ _app-622f58fff9facdc0.js:13
+e @ _app-622f58fff9facdc0.js:40
+n @ _app-622f58fff9facdc0.js:13
+setTimeout
+(anonymous) @ _app-622f58fff9facdc0.js:13
+e @ _app-622f58fff9facdc0.js:40
+n @ _app-622f58fff9facdc0.js:13
+setTimeout
+(anonymous) @ _app-622f58fff9facdc0.js:13
+e @ _app-622f58fff9facdc0.js:40
+n @ _app-622f58fff9facdc0.js:13
+[NEW] Explain Console errors by using Copilot in Edge: click
+         
+         to explain an error. 
+        Learn more
+        Don't show again
+_app-622f58fff9facdc0.js:13   POST https://events.launchdarkly.com/events/bulk/62b35a865152ab14c5942820 net::ERR_BLOCKED_BY_CLIENT
+(anonymous) @ _app-622f58fff9facdc0.js:13
+(anonymous) @ _app-622f58fff9facdc0.js:13
+(anonymous) @ _app-622f58fff9facdc0.js:40
+(anonymous) @ _app-622f58fff9facdc0.js:40
+(anonymous) @ _app-622f58fff9facdc0.js:40
+t @ _app-622f58fff9facdc0.js:40
+(anonymous) @ _app-622f58fff9facdc0.js:40
+Promise.catch
+t @ _app-622f58fff9facdc0.js:40
+(anonymous) @ _app-622f58fff9facdc0.js:40
+(anonymous) @ _app-622f58fff9facdc0.js:40
+(anonymous) @ _app-622f58fff9facdc0.js:40
+e @ _app-622f58fff9facdc0.js:40
+n @ _app-622f58fff9facdc0.js:13
+setTimeout
+(anonymous) @ _app-622f58fff9facdc0.js:13
+e @ _app-622f58fff9facdc0.js:40
+n @ _app-622f58fff9facdc0.js:13
+setTimeout
+(anonymous) @ _app-622f58fff9facdc0.js:13
+e @ _app-622f58fff9facdc0.js:40
+n @ _app-622f58fff9facdc0.js:13
+setTimeout
+(anonymous) @ _app-622f58fff9facdc0.js:13
+e @ _app-622f58fff9facdc0.js:40
+n @ _app-622f58fff9facdc0.js:13
+setTimeout
+(anonymous) @ _app-622f58fff9facdc0.js:13
+e @ _app-622f58fff9facdc0.js:40
+n @ _app-622f58fff9facdc0.js:13
+setTimeout
+(anonymous) @ _app-622f58fff9facdc0.js:13
+e @ _app-622f58fff9facdc0.js:40
+n @ _app-622f58fff9facdc0.js:13
+setTimeout
+(anonymous) @ _app-622f58fff9facdc0.js:13
+e @ _app-622f58fff9facdc0.js:40
+n @ _app-622f58fff9facdc0.js:13
+setTimeout
+(anonymous) @ _app-622f58fff9facdc0.js:13
+e @ _app-622f58fff9facdc0.js:40
+n @ _app-622f58fff9facdc0.js:13
+setTimeout
+(anonymous) @ _app-622f58fff9facdc0.js:13
+e @ _app-622f58fff9facdc0.js:40
+n @ _app-622f58fff9facdc0.js:13
+setTimeout
+(anonymous) @ _app-622f58fff9facdc0.js:13
+e @ _app-622f58fff9facdc0.js:40
+n @ _app-622f58fff9facdc0.js:13
+setTimeout
+(anonymous) @ _app-622f58fff9facdc0.js:13
+e @ _app-622f58fff9facdc0.js:40
+n @ _app-622f58fff9facdc0.js:13
+setTimeout
+(anonymous) @ _app-622f58fff9facdc0.js:13
+e @ _app-622f58fff9facdc0.js:40
+n @ _app-622f58fff9facdc0.js:13
+setTimeout
+(anonymous) @ _app-622f58fff9facdc0.js:13
+e @ _app-622f58fff9facdc0.js:40
+n @ _app-622f58fff9facdc0.js:13
+setTimeout
+(anonymous) @ _app-622f58fff9facdc0.js:13
+e @ _app-622f58fff9facdc0.js:40
+n @ _app-622f58fff9facdc0.js:13
+EnhancedTechnicalRider.tsx:382 DEBUG: Syncing stage legend roles with band members
+ 🔄 TECHNICAL RIDER: Initializing band members
+ 🔄 Assigned musicians (props) count: 3
+ 🔄 Final assigned musicians (API) count: 3
+ 🔄 Will use: assignedMusicians (props)
+ 🔄 Using musician data source: assignedMusicians (props)
+ 🔄 Processing musician 1: Princess Trinidad
+ 🔄 Full musician data: {id: 19, userId: 19, name: 'Princess Trinidad', fullName: 'Princess Trinidad', stageName: 'Princess Trinidad', …}
+ 🔄 Musician roleId: undefined talentType: Artist
+ 🔄 Membership determination: roleId undefined talentType: Artist type: Managed Artist isProfessional: false Result: BAND
+ 🔄 Role badge: Artist
+ 🔄 Membership: BAND
+ 🔄 Primary role: Lead Vocalist
+ 🎯 Building dropdown options for: Princess Trinidad
+ 🎯 Available profile data: {assignedRole: 'Main Booked Talent', primaryRole: 'Lead Vocalist', skillsAndInstruments: Array(1), performanceRoles: undefined, professionalRoles: undefined, …}
+ 🎯 Generated dropdown options: (2) [{…}, {…}]
+EnhancedTechnicalRider.tsx:605 🔄 Adding member 1: Princess Trinidad Membership: BAND
+EnhancedTechnicalRider.tsx:550 🔄 Processing musician 2: Michael Rodriguez
+EnhancedTechnicalRider.tsx:551 🔄 Full musician data: {id: 21, userId: 21, name: 'Michael Rodriguez', fullName: 'Michael Rodriguez', stageName: '', …}
+EnhancedTechnicalRider.tsx:552 🔄 Musician roleId: undefined talentType: Artist
+EnhancedTechnicalRider.tsx:571 🔄 Membership determination: roleId undefined talentType: Artist type: Musician isProfessional: false Result: BAND
+EnhancedTechnicalRider.tsx:576 🔄 Role badge: Artist
+EnhancedTechnicalRider.tsx:577 🔄 Membership: BAND
+EnhancedTechnicalRider.tsx:578 🔄 Primary role: Drummer
+EnhancedTechnicalRider.tsx:406 🎯 Building dropdown options for: Michael Rodriguez
+EnhancedTechnicalRider.tsx:407 🎯 Available profile data: {assignedRole: 'Drummer', primaryRole: 'Drummer', skillsAndInstruments: Array(2), performanceRoles: undefined, professionalRoles: undefined, …}
+EnhancedTechnicalRider.tsx:506 🎯 Generated dropdown options: [{…}]
+EnhancedTechnicalRider.tsx:605 🔄 Adding member 2: Michael Rodriguez Membership: BAND
+EnhancedTechnicalRider.tsx:550 🔄 Processing musician 3: Sarah Martinez
+EnhancedTechnicalRider.tsx:551 🔄 Full musician data: {id: 34, userId: 34, name: 'Sarah Martinez', fullName: 'Sarah Martinez', stageName: '', …}
+EnhancedTechnicalRider.tsx:552 🔄 Musician roleId: undefined talentType: Artist
+EnhancedTechnicalRider.tsx:571 🔄 Membership determination: roleId undefined talentType: Artist type: Professional isProfessional: true Result: TEAM
+EnhancedTechnicalRider.tsx:576 🔄 Role badge: Artist
+EnhancedTechnicalRider.tsx:577 🔄 Membership: TEAM
+EnhancedTechnicalRider.tsx:578 🔄 Primary role: Musician
+EnhancedTechnicalRider.tsx:406 🎯 Building dropdown options for: Sarah Martinez
+EnhancedTechnicalRider.tsx:407 🎯 Available profile data: {assignedRole: 'Legal Counsel', primaryRole: 'Musician', skillsAndInstruments: Array(1), performanceRoles: undefined, professionalRoles: undefined, …}
+EnhancedTechnicalRider.tsx:506 🎯 Generated dropdown options: (3) [{…}, {…}, {…}]
+EnhancedTechnicalRider.tsx:605 🔄 Adding member 3: Sarah Martinez Membership: TEAM
+EnhancedTechnicalRider.tsx:612 🔄 Total members added from API: 3
+EnhancedTechnicalRider.tsx:676 Sorting: Sarah Martinez badge: Artist order: 7 vs Michael Rodriguez badge: Artist order: 7
+EnhancedTechnicalRider.tsx:676 Sorting: Mr Lindsay George badge: MANAGEMENT order: 999 vs Sarah Martinez badge: Artist order: 7
+EnhancedTechnicalRider.tsx:676 Sorting: Ms Joyette Pascal badge: MANAGEMENT order: 999 vs Mr Lindsay George badge: MANAGEMENT order: 999
+EnhancedTechnicalRider.tsx:681 🔄 FINAL: Setting 5 band members
+EnhancedTechnicalRider.tsx:682 🔄 Band members breakdown: {total: 5, band: 2, team: 1, management: 2}
+The specified value "2025-07-28T04:00:00.000Z" does not conform to the required format, "yyyy-MM-dd".
+The specified value "2025-07-28T04:00:00.000Z" does not conform to the required format, "yyyy-MM-dd".
+The specified value "2025-07-28T04:00:00.000Z" does not conform to the required format, "yyyy-MM-dd".
+The specified value "2025-07-28T04:00:00.000Z" does not conform to the required format, "yyyy-MM-dd".
+The specified value "2025-07-28T04:00:00.000Z" does not conform to the required format, "yyyy-MM-dd".
+The specified value "2025-07-28T04:00:00.000Z" does not conform to the required format, "yyyy-MM-dd".
+EnhancedTechnicalRider.tsx:382 DEBUG: Syncing stage legend roles with band members
+EnhancedTechnicalRider.tsx:537 🔄 TECHNICAL RIDER: Initializing band members
+EnhancedTechnicalRider.tsx:538 🔄 Assigned musicians (props) count: 3
+EnhancedTechnicalRider.tsx:539 🔄 Final assigned musicians (API) count: 1
+EnhancedTechnicalRider.tsx:540 🔄 Will use: assignedMusicians (props)
+EnhancedTechnicalRider.tsx:546 🔄 Using musician data source: assignedMusicians (props)
+EnhancedTechnicalRider.tsx:550 🔄 Processing musician 1: Princess Trinidad
+EnhancedTechnicalRider.tsx:551 🔄 Full musician data: {id: 19, userId: 19, name: 'Princess Trinidad', fullName: 'Princess Trinidad', stageName: 'Princess Trinidad', …}
+EnhancedTechnicalRider.tsx:552 🔄 Musician roleId: undefined talentType: Artist
+ 🔄 Membership determination: roleId undefined talentType: Artist type: Managed Artist isProfessional: false Result: BAND
+ 🔄 Role badge: Artist
+ 🔄 Membership: BAND
+ 🔄 Primary role: Lead Vocalist
+ 🎯 Building dropdown options for: Princess Trinidad
+EnhancedTechnicalRider.tsx:407 🎯 Available profile data: {assignedRole: 'Main Booked Talent', primaryRole: 'Lead Vocalist', skillsAndInstruments: Array(1), performanceRoles: undefined, professionalRoles: undefined, …}
+EnhancedTechnicalRider.tsx:506 🎯 Generated dropdown options: (2) [{…}, {…}]
+EnhancedTechnicalRider.tsx:605 🔄 Adding member 1: Princess Trinidad Membership: BAND
+EnhancedTechnicalRider.tsx:550 🔄 Processing musician 2: Michael Rodriguez
+EnhancedTechnicalRider.tsx:551 🔄 Full musician data: {id: 21, userId: 21, name: 'Michael Rodriguez', fullName: 'Michael Rodriguez', stageName: '', …}
+EnhancedTechnicalRider.tsx:552 🔄 Musician roleId: undefined talentType: Artist
+EnhancedTechnicalRider.tsx:571 🔄 Membership determination: roleId undefined talentType: Artist type: Musician isProfessional: false Result: BAND
+EnhancedTechnicalRider.tsx:576 🔄 Role badge: Artist
+EnhancedTechnicalRider.tsx:577 🔄 Membership: BAND
+EnhancedTechnicalRider.tsx:578 🔄 Primary role: Drummer
+EnhancedTechnicalRider.tsx:406 🎯 Building dropdown options for: Michael Rodriguez
+EnhancedTechnicalRider.tsx:407 🎯 Available profile data: {assignedRole: 'Drummer', primaryRole: 'Drummer', skillsAndInstruments: Array(2), performanceRoles: undefined, professionalRoles: undefined, …}
+EnhancedTechnicalRider.tsx:506 🎯 Generated dropdown options: [{…}]
+EnhancedTechnicalRider.tsx:605 🔄 Adding member 2: Michael Rodriguez Membership: BAND
+EnhancedTechnicalRider.tsx:550 🔄 Processing musician 3: Sarah Martinez
+EnhancedTechnicalRider.tsx:551 🔄 Full musician data: {id: 34, userId: 34, name: 'Sarah Martinez', fullName: 'Sarah Martinez', stageName: '', …}
+EnhancedTechnicalRider.tsx:552 🔄 Musician roleId: undefined talentType: Artist
+EnhancedTechnicalRider.tsx:571 🔄 Membership determination: roleId undefined talentType: Artist type: Professional isProfessional: true Result: TEAM
+EnhancedTechnicalRider.tsx:576 🔄 Role badge: Artist
+EnhancedTechnicalRider.tsx:577 🔄 Membership: TEAM
+EnhancedTechnicalRider.tsx:578 🔄 Primary role: Musician
+EnhancedTechnicalRider.tsx:406 🎯 Building dropdown options for: Sarah Martinez
+EnhancedTechnicalRider.tsx:407 🎯 Available profile data: {assignedRole: 'Legal Counsel', primaryRole: 'Musician', skillsAndInstruments: Array(1), performanceRoles: undefined, professionalRoles: undefined, …}
+EnhancedTechnicalRider.tsx:506 🎯 Generated dropdown options: (3) [{…}, {…}, {…}]
+EnhancedTechnicalRider.tsx:605 🔄 Adding member 3: Sarah Martinez Membership: TEAM
+EnhancedTechnicalRider.tsx:612 🔄 Total members added from API: 3
+EnhancedTechnicalRider.tsx:676 Sorting: Sarah Martinez badge: Artist order: 7 vs Michael Rodriguez badge: Artist order: 7
+EnhancedTechnicalRider.tsx:676 Sorting: Mr Lindsay George badge: MANAGEMENT order: 999 vs Sarah Martinez badge: Artist order: 7
+EnhancedTechnicalRider.tsx:676 Sorting: Ms Joyette Pascal badge: MANAGEMENT order: 999 vs Mr Lindsay George badge: MANAGEMENT order: 999
+EnhancedTechnicalRider.tsx:681 🔄 FINAL: Setting 5 band members
+EnhancedTechnicalRider.tsx:682 🔄 Band members breakdown: {total: 5, band: 2, team: 1, management: 2}
+EnhancedTechnicalRider.tsx:382 DEBUG: Syncing stage legend roles with band members

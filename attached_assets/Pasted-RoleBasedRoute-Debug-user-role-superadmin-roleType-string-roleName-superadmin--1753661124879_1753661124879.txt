@@ -1,0 +1,54 @@
+RoleBasedRoute Debug: 
+{user: {…}, role: 'superadmin', roleType: 'string', roleName: 'superadmin', allowedRoles: Array(9), …}
+RoleBasedRoute.tsx:47 RoleBasedRoute Debug: 
+{user: {…}, role: 'superadmin', roleType: 'string', roleName: 'superadmin', allowedRoles: Array(2), …}
+ComprehensiveWorkflow.tsx:23 ComprehensiveWorkflow - Auth Debug: 
+{user: {…}, authLoading: false, userRoleId: 1, hasAccess: true}
+ComprehensiveWorkflow.tsx:37 ComprehensiveWorkflow - Bookings Debug: 
+{availableBookings: 17, bookingsLoading: false, bookingsError: null, queryEnabled: true}
+RoleBasedRoute.tsx:47 RoleBasedRoute Debug: 
+{user: {…}, role: 'superadmin', roleType: 'string', roleName: 'superadmin', allowedRoles: Array(2), …}
+ComprehensiveWorkflow.tsx:23 ComprehensiveWorkflow - Auth Debug: 
+{user: {…}, authLoading: false, userRoleId: 1, hasAccess: true}
+ComprehensiveWorkflow.tsx:37 ComprehensiveWorkflow - Bookings Debug: 
+{availableBookings: 17, bookingsLoading: false, bookingsError: null, queryEnabled: true}
+RoleBasedRoute.tsx:47 RoleBasedRoute Debug: 
+{user: {…}, role: 'superadmin', roleType: 'string', roleName: 'superadmin', allowedRoles: Array(2), …}
+RoleBasedRoute.tsx:47 RoleBasedRoute Debug: 
+{user: {…}, role: 'superadmin', roleType: 'string', roleName: 'superadmin', allowedRoles: Array(4), …}
+TechnicalRiderDesigner.tsx:259 
+ Uncaught ReferenceError: professionalRequirements is not defined
+    at TechnicalRiderDesigner (TechnicalRiderDesigner.tsx:259:22)
+[NEW] Explain Console errors by using Copilot in Edge: click 
+ to explain an error. Learn more
+Don't show again
+RoleBasedRoute.tsx:47 RoleBasedRoute Debug: 
+{user: {…}, role: 'superadmin', roleType: 'string', roleName: 'superadmin', allowedRoles: Array(4), …}
+TechnicalRiderDesigner.tsx:259 
+ Uncaught ReferenceError: professionalRequirements is not defined
+    at TechnicalRiderDesigner (TechnicalRiderDesigner.tsx:259:22)
+react-dom.development.js:18704 
+ The above error occurred in the <TechnicalRiderDesigner> component:
+
+    at TechnicalRiderDesigner (https://e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/src/pages/TechnicalRiderDesigner.tsx:43:21)
+    at RoleBasedRoute (https://e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/src/components/RoleBasedRoute.tsx:22:3)
+    at Route (https://e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.…/home/runner/workspace/node_modules/.vite/deps/wouter.js?v=a9e8ae1c:323:16)
+    at Switch (https://e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.…/home/runner/workspace/node_modules/.vite/deps/wouter.js?v=a9e8ae1c:379:17)
+    at main
+    at div
+    at Layout (https://e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/src/components/Layout.tsx:21:34)
+    at Router
+    at div
+    at MediaPlayerProvider (https://e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/src/contexts/MediaPlayerContext.tsx:29:39)
+    at CartProvider (https://e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/src/contexts/CartContext.tsx:20:32)
+    at AuthProvider (https://e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/src/contexts/AuthContext.tsx:23:32)
+    at Provider (https://e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.…unner/workspace/node_modules/.vite/deps/chunk-OXZDJRWN.js?v=a9e8ae1c:38:15)
+    at TooltipProvider (https://e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.…rkspace/node_modules/.vite/deps/@radix-ui_react-tooltip.js?v=a9e8ae1c:66:5)
+    at QueryClientProvider (https://e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.…rkspace/node_modules/.vite/deps/@tanstack_react-query.js?v=a9e8ae1c:2805:3)
+    at App (https://e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/src/App.tsx?v=w1qrnUskT3Wk25F6R-cp0:852:9)
+
+Consider adding an error boundary to your tree to customize error handling behavior.
+Visit https://reactjs.org/link/error-boundaries to learn more about error boundaries.
+react-dom.development.js:12056 
+ Uncaught ReferenceError: professionalRequirements is not defined
+    at TechnicalRiderDesigner (TechnicalRiderDesigner.tsx:259:22)

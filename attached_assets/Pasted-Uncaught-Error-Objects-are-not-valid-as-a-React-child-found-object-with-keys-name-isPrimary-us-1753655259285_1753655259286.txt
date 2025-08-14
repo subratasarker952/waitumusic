@@ -1,0 +1,74 @@
+Uncaught Error: Objects are not valid as a React child (found: object with keys {name, isPrimary, usageType, isForBookings}). If you meant to render a collection of children, use an array instead.
+    at throwOnInvalidObjectType (react-dom.development.js:13123:9)
+    at reconcileChildFibers2 (react-dom.development.js:14064:7)
+    at reconcileChildren (react-dom.development.js:19186:28)
+    at updateHostComponent (react-dom.development.js:19953:3)
+    at beginWork (react-dom.development.js:21657:14)
+    at HTMLUnknownElement.callCallback2 (react-dom.development.js:4164:14)
+    at Object.invokeGuardedCallbackDev (react-dom.development.js:4213:16)
+    at invokeGuardedCallback (react-dom.development.js:4277:31)
+    at beginWork$1 (react-dom.development.js:27490:7)
+    at performUnitOfWork (react-dom.development.js:26596:12)
+RoleBasedRoute.tsx:47 RoleBasedRoute Debug: Object
+ComprehensiveWorkflow.tsx:23 ComprehensiveWorkflow - Auth Debug: Object
+ComprehensiveWorkflow.tsx:37 ComprehensiveWorkflow - Bookings Debug: Object
+RoleBasedRoute.tsx:47 RoleBasedRoute Debug: Object
+8react-dom.development.js:13123  Uncaught Error: Objects are not valid as a React child (found: object with keys {name, isPrimary, usageType, isForBookings}). If you meant to render a collection of children, use an array instead.
+    at throwOnInvalidObjectType (react-dom.development.js:13123:9)
+    at reconcileChildFibers2 (react-dom.development.js:14064:7)
+    at reconcileChildren (react-dom.development.js:19186:28)
+    at updateHostComponent (react-dom.development.js:19953:3)
+    at beginWork (react-dom.development.js:21657:14)
+    at HTMLUnknownElement.callCallback2 (react-dom.development.js:4164:14)
+    at Object.invokeGuardedCallbackDev (react-dom.development.js:4213:16)
+    at invokeGuardedCallback (react-dom.development.js:4277:31)
+    at beginWork$1 (react-dom.development.js:27490:7)
+    at performUnitOfWork (react-dom.development.js:26596:12)
+8react-dom.development.js:18704  The above error occurred in the <p> component:
+
+    at p
+    at div
+    at div
+    at div
+    at div
+    at _c9 (https://e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/src/components/ui/card.tsx:114:12)
+    at div
+    at _c (https://e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/src/components/ui/card.tsx:20:11)
+    at div
+    at div
+    at _c9 (https://e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/src/components/ui/card.tsx:114:12)
+    at div
+    at _c (https://e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/src/components/ui/card.tsx:20:11)
+    at div
+    at RoleBasedRoute (https://e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/src/components/RoleBasedRoute.tsx:22:3)
+    at ComprehensiveWorkflow (https://e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/src/pages/ComprehensiveWorkflow.tsx:40:27)
+    at RoleBasedRoute (https://e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/src/components/RoleBasedRoute.tsx:22:3)
+    at Route (https://e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/wouter.js?v=a9e8ae1c:323:16)
+    at Switch (https://e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/wouter.js?v=a9e8ae1c:379:17)
+    at main
+    at div
+    at Layout (https://e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/src/components/Layout.tsx:21:34)
+    at Router
+    at div
+    at MediaPlayerProvider (https://e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/src/contexts/MediaPlayerContext.tsx:29:39)
+    at CartProvider (https://e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/src/contexts/CartContext.tsx:20:32)
+    at AuthProvider (https://e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/src/contexts/AuthContext.tsx:23:32)
+    at Provider (https://e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-OXZDJRWN.js?v=a9e8ae1c:38:15)
+    at TooltipProvider (https://e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/@radix-ui_react-tooltip.js?v=a9e8ae1c:66:5)
+    at QueryClientProvider (https://e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/@tanstack_react-query.js?v=a9e8ae1c:2805:3)
+    at App (https://e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/src/App.tsx?v=w1qrnUskT3Wk25F6R-cp0:852:9)
+
+Consider adding an error boundary to your tree to customize error handling behavior.
+Visit https://reactjs.org/link/error-boundaries to learn more about error boundaries.
+logCapturedError @ react-dom.development.js:18704
+react-dom.development.js:12056  Uncaught Error: Objects are not valid as a React child (found: object with keys {name, isPrimary, usageType, isForBookings}). If you meant to render a collection of children, use an array instead.
+    at throwOnInvalidObjectType (react-dom.development.js:13123:9)
+    at reconcileChildFibers2 (react-dom.development.js:14064:7)
+    at reconcileChildren (react-dom.development.js:19186:28)
+    at updateHostComponent (react-dom.development.js:19953:3)
+    at beginWork (react-dom.development.js:21657:14)
+    at beginWork$1 (react-dom.development.js:27465:14)
+    at performUnitOfWork (react-dom.development.js:26596:12)
+    at workLoopSync (react-dom.development.js:26505:5)
+    at renderRootSync (react-dom.development.js:26473:7)
+    at recoverFromConcurrentError (react-dom.development.js:25889:20)

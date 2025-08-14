@@ -1,0 +1,71 @@
+ [WARNING] Duplicate member "createOpportunity" in class body [duplicate-class-member]
+
+    server/storage.ts:6089:8:
+      6089 │   async createOpportunity(opportunity: InsertOpportunity): Promise<Opportunity> {
+           ╵         ~~~~~~~~~~~~~~~~~
+
+  The original member "createOpportunity" is here:
+
+    server/storage.ts:5253:8:
+      5253 │   async createOpportunity(opportunity: any): Promise<any> {
+           ╵         ~~~~~~~~~~~~~~~~~
+
+▲ [WARNING] Duplicate member "updateOpportunity" in class body [duplicate-class-member]
+
+    server/storage.ts:6094:8:
+      6094 │   async updateOpportunity(id: number, updates: Partial<InsertOpportunity>): Promise<Opportunity | null> {
+           ╵         ~~~~~~~~~~~~~~~~~
+
+  The original member "updateOpportunity" is here:
+
+    server/storage.ts:5298:8:
+      5298 │   async updateOpportunity(id: number, updates: Partial<InsertOpportunity>): Promise<Opportunity | null> {
+           ╵         ~~~~~~~~~~~~~~~~~
+
+▲ [WARNING] Duplicate member "deleteOpportunity" in class body [duplicate-class-member]
+
+    server/storage.ts:6103:8:
+      6103 │   async deleteOpportunity(id: number): Promise<boolean> {
+           ╵         ~~~~~~~~~~~~~~~~~
+
+  The original member "deleteOpportunity" is here:
+
+    server/storage.ts:5306:8:
+      5306 │   async deleteOpportunity(id: number): Promise<boolean> {
+           ╵         ~~~~~~~~~~~~~~~~~
+
+▲ [WARNING] Duplicate member "incrementOpportunityViews" in class body [duplicate-class-member]
+
+    server/storage.ts:6108:8:
+      6108 │   async incrementOpportunityViews(id: number): Promise<void> {
+           ╵         ~~~~~~~~~~~~~~~~~~~~~~~~~
+
+  The original member "incrementOpportunityViews" is here:
+
+    server/storage.ts:5487:8:
+      5487 │   async incrementOpportunityViews(id: number): Promise<void> {
+           ╵         ~~~~~~~~~~~~~~~~~~~~~~~~~
+
+▲ [WARNING] Duplicate member "getOpportunityApplications" in class body [duplicate-class-member]
+
+    server/storage.ts:6115:8:
+      6115 │   async getOpportunityApplications(filters?: { opportunityId?: number; applicantUserId?: number }): Promise<OpportunityApplication[]> {
+           ╵         ~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+  The original member "getOpportunityApplications" is here:
+
+    server/storage.ts:5500:8:
+      5500 │   async getOpportunityApplications(filters?: { opportunityId?: number; applicantUserId?: number }): Promise<OpportunityApplication[]> {
+           ╵         ~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+▲ [WARNING] Duplicate member "createOpportunityApplication" in class body [duplicate-class-member]
+
+    server/storage.ts:6128:8:
+      6128 │   async createOpportunityApplication(application: InsertOpportunityApplication): Promise<OpportunityApplication> {
+           ╵         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+  The original member "createOpportunityApplication" is here:
+
+    server/storage.ts:5528:8:
+      5528 │   async createOpportunityApplication(application: InsertOpportunityApplication): Promise<OpportunityApplication> {
+           ╵         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~

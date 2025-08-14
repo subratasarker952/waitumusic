@@ -1,0 +1,225 @@
+0|waitumusic-production  | 2025-07-26T00:36:21: Error fetching artists: ErrorEvent {
+0|waitumusic-production  | 2025-07-26T00:36:21:   [Symbol(kTarget)]: WebSocket {
+0|waitumusic-production  | 2025-07-26T00:36:21:     _events: [Object: null prototype] {
+0|waitumusic-production  | 2025-07-26T00:36:21:       error: [Function],
+0|waitumusic-production  | 2025-07-26T00:36:21:       message: [Function],
+0|waitumusic-production  | 2025-07-26T00:36:21:       close: [Function],
+0|waitumusic-production  | 2025-07-26T00:36:21:       open: [Function]
+0|waitumusic-production  | 2025-07-26T00:36:21:     },
+0|waitumusic-production  | 2025-07-26T00:36:21:     _eventsCount: 4,
+0|waitumusic-production  | 2025-07-26T00:36:21:     _maxListeners: undefined,
+0|waitumusic-production  | 2025-07-26T00:36:21:     _binaryType: 'arraybuffer',
+0|waitumusic-production  | 2025-07-26T00:36:21:     _closeCode: 1006,
+0|waitumusic-production  | 2025-07-26T00:36:21:     _closeFrameReceived: false,
+0|waitumusic-production  | 2025-07-26T00:36:21:     _closeFrameSent: false,
+0|waitumusic-production  | 2025-07-26T00:36:21:     _closeMessage: <Buffer >,
+0|waitumusic-production  | 2025-07-26T00:36:21:     _closeTimer: null,
+0|waitumusic-production  | 2025-07-26T00:36:21:     _errorEmitted: true,
+0|waitumusic-production  | 2025-07-26T00:36:21:     _extensions: {},
+0|waitumusic-production  | 2025-07-26T00:36:21:     _paused: false,
+0|waitumusic-production  | 2025-07-26T00:36:21:     _protocol: '',
+0|waitumusic-production  | 2025-07-26T00:36:21:     _readyState: 3,
+0|waitumusic-production  | 2025-07-26T00:36:21:     _receiver: null,
+0|waitumusic-production  | 2025-07-26T00:36:21:     _sender: null,
+0|waitumusic-production  | 2025-07-26T00:36:21:     _socket: null,
+0|waitumusic-production  | 2025-07-26T00:36:21:     _bufferedAmount: 0,
+0|waitumusic-production  | 2025-07-26T00:36:21:     _isServer: false,
+0|waitumusic-production  | 2025-07-26T00:36:21:     _redirects: 0,
+0|waitumusic-production  | 2025-07-26T00:36:21:     _autoPong: true,
+0|waitumusic-production  | 2025-07-26T00:36:21:     _url: 'wss://support.krystallion.com/v2',
+0|waitumusic-production  | 2025-07-26T00:36:21:     _req: ClientRequest {
+0|waitumusic-production  | 2025-07-26T00:36:21:       _events: [Object: null prototype],
+0|waitumusic-production  | 2025-07-26T00:36:21:       _eventsCount: 4,
+0|waitumusic-production  | 2025-07-26T00:36:21:       _maxListeners: undefined,
+0|waitumusic-production  | 2025-07-26T00:36:21:       outputData: [],
+0|waitumusic-production  | 2025-07-26T00:36:21:       outputSize: 0,
+0|waitumusic-production  | 2025-07-26T00:36:21:       writable: true,
+0|waitumusic-production  | 2025-07-26T00:36:21:       destroyed: true,
+0|waitumusic-production  | 2025-07-26T00:36:21:       _last: true,
+0|waitumusic-production  | 2025-07-26T00:36:21:       chunkedEncoding: false,
+0|waitumusic-production  | 2025-07-26T00:36:21:       shouldKeepAlive: true,
+0|waitumusic-production  | 2025-07-26T00:36:21:       maxRequestsOnConnectionReached: false,
+0|waitumusic-production  | 2025-07-26T00:36:21:       _defaultKeepAlive: true,
+0|waitumusic-production  | 2025-07-26T00:36:21:       useChunkedEncodingByDefault: false,
+0|waitumusic-production  | 2025-07-26T00:36:21:       sendDate: false,
+0|waitumusic-production  | 2025-07-26T00:36:21:       _removedConnection: false,
+0|waitumusic-production  | 2025-07-26T00:36:21:       _removedContLen: false,
+0|waitumusic-production  | 2025-07-26T00:36:21:       _removedTE: false,
+0|waitumusic-production  | 2025-07-26T00:36:21:       strictContentLength: false,
+0|waitumusic-production  | 2025-07-26T00:36:21:       _contentLength: 0,
+0|waitumusic-production  | 2025-07-26T00:36:21:       _hasBody: true,
+0|waitumusic-production  | 2025-07-26T00:36:21:       _trailer: '',
+0|waitumusic-production  | 2025-07-26T00:36:21:       finished: true,
+0|waitumusic-production  | 2025-07-26T00:36:21:       _headerSent: true,
+0|waitumusic-production  | 2025-07-26T00:36:21:       _closed: false,
+0|waitumusic-production  | 2025-07-26T00:36:21:       socket: [TLSSocket],
+0|waitumusic-production  | 2025-07-26T00:36:21:       _header: 'GET /v2 HTTP/1.1\r\n' +
+0|waitumusic-production  | 2025-07-26T00:36:21:         'Sec-WebSocket-Version: 13\r\n' +
+0|waitumusic-production  | 2025-07-26T00:36:21:         'Sec-WebSocket-Key: wyocIZhbiUk+fv721ZIEtQ==\r\n' +
+0|waitumusic-production  | 2025-07-26T00:36:21:         'Connection: Upgrade\r\n' +
+0|waitumusic-production  | 2025-07-26T00:36:21:         'Upgrade: websocket\r\n' +
+0|waitumusic-production  | 2025-07-26T00:36:21:         'Sec-WebSocket-Extensions: permessage-deflate; client_max_window_bits\r\n' +
+0|waitumusic-production  | 2025-07-26T00:36:21:         'Host: support.krystallion.com\r\n' +
+0|waitumusic-production  | 2025-07-26T00:36:21:         '\r\n',
+0|waitumusic-production  | 2025-07-26T00:36:21:       _keepAliveTimeout: 0,
+0|waitumusic-production  | 2025-07-26T00:36:21:       _onPendingData: [Function: nop],
+0|waitumusic-production  | 2025-07-26T00:36:21:       agent: undefined,
+0|waitumusic-production  | 2025-07-26T00:36:21:       socketPath: undefined,
+0|waitumusic-production  | 2025-07-26T00:36:21:       method: 'GET',
+0|waitumusic-production  | 2025-07-26T00:36:21:       maxHeaderSize: undefined,
+0|waitumusic-production  | 2025-07-26T00:36:21:       insecureHTTPParser: undefined,
+0|waitumusic-production  | 2025-07-26T00:36:21:       joinDuplicateHeaders: undefined,
+0|waitumusic-production  | 2025-07-26T00:36:21:       path: '/v2',
+0|waitumusic-production  | 2025-07-26T00:36:21:       _ended: false,
+0|waitumusic-production  | 2025-07-26T00:36:21:       res: [IncomingMessage],
+0|waitumusic-production  | 2025-07-26T00:36:21:       aborted: true,
+0|waitumusic-production  | 2025-07-26T00:36:21:       timeoutCb: null,
+0|waitumusic-production  | 2025-07-26T00:36:21:       upgradeOrConnect: false,
+0|waitumusic-production  | 2025-07-26T00:36:21:       parser: [HTTPParser],
+0|waitumusic-production  | 2025-07-26T00:36:21:       maxHeadersCount: null,
+0|waitumusic-production  | 2025-07-26T00:36:21:       reusedSocket: false,
+0|waitumusic-production  | 2025-07-26T00:36:21:       host: 'support.krystallion.com',
+0|waitumusic-production  | 2025-07-26T00:36:21:       protocol: 'https:',
+0|waitumusic-production  | 2025-07-26T00:36:21:       [Symbol(shapeMode)]: false,
+0|waitumusic-production  | 2025-07-26T00:36:21:       [Symbol(kCapture)]: false,
+0|waitumusic-production  | 2025-07-26T00:36:21:       [Symbol(kBytesWritten)]: 0,
+0|waitumusic-production  | 2025-07-26T00:36:21:       [Symbol(kNeedDrain)]: false,
+0|waitumusic-production  | 2025-07-26T00:36:21:       [Symbol(corked)]: 0,
+0|waitumusic-production  | 2025-07-26T00:36:21:       [Symbol(kOutHeaders)]: [Object: null prototype],
+0|waitumusic-production  | 2025-07-26T00:36:21:       [Symbol(errored)]: null,
+0|waitumusic-production  | 2025-07-26T00:36:21:       [Symbol(kHighWaterMark)]: 16384,
+0|waitumusic-production  | 2025-07-26T00:36:21:       [Symbol(kRejectNonStandardBodyWrites)]: false,
+0|waitumusic-production  | 2025-07-26T00:36:21:       [Symbol(kUniqueHeaders)]: null,
+0|waitumusic-production  | 2025-07-26T00:36:21:       [Symbol(kAborted)]: true,
+0|waitumusic-production  | 2025-07-26T00:36:21:       [Symbol(kError)]: undefined
+0|waitumusic-production  | 2025-07-26T00:36:21:     },
+0|waitumusic-production  | 2025-07-26T00:36:21:     [Symbol(shapeMode)]: false,
+0|waitumusic-production  | 2025-07-26T00:36:21:     [Symbol(kCapture)]: false
+0|waitumusic-production  | 2025-07-26T00:36:21:   },
+0|waitumusic-production  | 2025-07-26T00:36:21:   [Symbol(kType)]: 'error',
+0|waitumusic-production  | 2025-07-26T00:36:21:   [Symbol(kError)]: Error: Unexpected server response: 404
+0|waitumusic-production  | 2025-07-26T00:36:21:       at ClientRequest.<anonymous> (/opt/waitumusic/node_modules/ws/lib/websocket.js:913:7)
+0|waitumusic-production  | 2025-07-26T00:36:21:       at ClientRequest.emit (node:events:524:28)
+0|waitumusic-production  | 2025-07-26T00:36:21:       at HTTPParser.parserOnIncomingClient [as onIncoming] (node:_http_client:702:27)
+0|waitumusic-production  | 2025-07-26T00:36:21:       at HTTPParser.parserOnHeadersComplete (node:_http_common:118:17)
+0|waitumusic-production  | 2025-07-26T00:36:21:       at TLSSocket.socketOnData (node:_http_client:544:22)
+0|waitumusic-production  | 2025-07-26T00:36:21:       at TLSSocket.emit (node:events:524:28)
+0|waitumusic-production  | 2025-07-26T00:36:21:       at addChunk (node:internal/streams/readable:561:12)
+0|waitumusic-production  | 2025-07-26T00:36:21:       at readableAddChunkPushByteMode (node:internal/streams/readable:512:3)
+0|waitumusic-production  | 2025-07-26T00:36:21:       at Readable.push (node:internal/streams/readable:392:5)
+0|waitumusic-production  | 2025-07-26T00:36:21:       at TLSWrap.onStreamRead (node:internal/stream_base_commons:191:23),
+0|waitumusic-production  | 2025-07-26T00:36:21:   [Symbol(kMessage)]: 'Unexpected server response: 404'
+0|waitumusic-production  | 2025-07-26T00:36:21: }
+0|waitumusic-production  | 2025-07-26T00:36:21: 12:36:21 AM [express] GET /api/artists 500 in 173ms :: {"message":"Internal server error"}
+0|waitumusic-production  | 2025-07-26T00:36:22: Error fetching songs: ErrorEvent {
+0|waitumusic-production  | 2025-07-26T00:36:22:   [Symbol(kTarget)]: WebSocket {
+0|waitumusic-production  | 2025-07-26T00:36:22:     _events: [Object: null prototype] {
+0|waitumusic-production  | 2025-07-26T00:36:22:       error: [Function],
+0|waitumusic-production  | 2025-07-26T00:36:22:       message: [Function],
+0|waitumusic-production  | 2025-07-26T00:36:22:       close: [Function],
+0|waitumusic-production  | 2025-07-26T00:36:22:       open: [Function]
+0|waitumusic-production  | 2025-07-26T00:36:22:     },
+0|waitumusic-production  | 2025-07-26T00:36:22:     _eventsCount: 4,
+0|waitumusic-production  | 2025-07-26T00:36:22:     _maxListeners: undefined,
+0|waitumusic-production  | 2025-07-26T00:36:22:     _binaryType: 'arraybuffer',
+0|waitumusic-production  | 2025-07-26T00:36:22:     _closeCode: 1006,
+0|waitumusic-production  | 2025-07-26T00:36:22:     _closeFrameReceived: false,
+0|waitumusic-production  | 2025-07-26T00:36:22:     _closeFrameSent: false,
+0|waitumusic-production  | 2025-07-26T00:36:22:     _closeMessage: <Buffer >,
+0|waitumusic-production  | 2025-07-26T00:36:22:     _closeTimer: null,
+0|waitumusic-production  | 2025-07-26T00:36:22:     _errorEmitted: true,
+0|waitumusic-production  | 2025-07-26T00:36:22:     _extensions: {},
+0|waitumusic-production  | 2025-07-26T00:36:22:     _paused: false,
+0|waitumusic-production  | 2025-07-26T00:36:22:     _protocol: '',
+0|waitumusic-production  | 2025-07-26T00:36:22:     _readyState: 3,
+0|waitumusic-production  | 2025-07-26T00:36:22:     _receiver: null,
+0|waitumusic-production  | 2025-07-26T00:36:22:     _sender: null,
+0|waitumusic-production  | 2025-07-26T00:36:22:     _socket: null,
+0|waitumusic-production  | 2025-07-26T00:36:22:     _bufferedAmount: 0,
+0|waitumusic-production  | 2025-07-26T00:36:22:     _isServer: false,
+0|waitumusic-production  | 2025-07-26T00:36:22:     _redirects: 0,
+0|waitumusic-production  | 2025-07-26T00:36:22:     _autoPong: true,
+0|waitumusic-production  | 2025-07-26T00:36:22:     _url: 'wss://support.krystallion.com/v2',
+0|waitumusic-production  | 2025-07-26T00:36:22:     _req: ClientRequest {
+0|waitumusic-production  | 2025-07-26T00:36:22:       _events: [Object: null prototype],
+0|waitumusic-production  | 2025-07-26T00:36:22:       _eventsCount: 4,
+0|waitumusic-production  | 2025-07-26T00:36:22:       _maxListeners: undefined,
+0|waitumusic-production  | 2025-07-26T00:36:22:       outputData: [],
+0|waitumusic-production  | 2025-07-26T00:36:22:       outputSize: 0,
+0|waitumusic-production  | 2025-07-26T00:36:22:       writable: true,
+0|waitumusic-production  | 2025-07-26T00:36:22:       destroyed: true,
+0|waitumusic-production  | 2025-07-26T00:36:22:       _last: true,
+0|waitumusic-production  | 2025-07-26T00:36:22:       chunkedEncoding: false,
+0|waitumusic-production  | 2025-07-26T00:36:22:       shouldKeepAlive: true,
+0|waitumusic-production  | 2025-07-26T00:36:22:       maxRequestsOnConnectionReached: false,
+0|waitumusic-production  | 2025-07-26T00:36:22:       _defaultKeepAlive: true,
+0|waitumusic-production  | 2025-07-26T00:36:22:       useChunkedEncodingByDefault: false,
+0|waitumusic-production  | 2025-07-26T00:36:22:       sendDate: false,
+0|waitumusic-production  | 2025-07-26T00:36:22:       _removedConnection: false,
+0|waitumusic-production  | 2025-07-26T00:36:22:       _removedContLen: false,
+0|waitumusic-production  | 2025-07-26T00:36:22:       _removedTE: false,
+0|waitumusic-production  | 2025-07-26T00:36:22:       strictContentLength: false,
+0|waitumusic-production  | 2025-07-26T00:36:22:       _contentLength: 0,
+0|waitumusic-production  | 2025-07-26T00:36:22:       _hasBody: true,
+0|waitumusic-production  | 2025-07-26T00:36:22:       _trailer: '',
+0|waitumusic-production  | 2025-07-26T00:36:22:       finished: true,
+0|waitumusic-production  | 2025-07-26T00:36:22:       _headerSent: true,
+0|waitumusic-production  | 2025-07-26T00:36:22:       _closed: false,
+0|waitumusic-production  | 2025-07-26T00:36:22:       socket: [TLSSocket],
+0|waitumusic-production  | 2025-07-26T00:36:22:       _header: 'GET /v2 HTTP/1.1\r\n' +
+0|waitumusic-production  | 2025-07-26T00:36:22:         'Sec-WebSocket-Version: 13\r\n' +
+0|waitumusic-production  | 2025-07-26T00:36:22:         'Sec-WebSocket-Key: I3PZFrB8YOayNCy0KBLMhA==\r\n' +
+0|waitumusic-production  | 2025-07-26T00:36:22:         'Connection: Upgrade\r\n' +
+0|waitumusic-production  | 2025-07-26T00:36:22:         'Upgrade: websocket\r\n' +
+0|waitumusic-production  | 2025-07-26T00:36:22:         'Sec-WebSocket-Extensions: permessage-deflate; client_max_window_bits\r\n' +
+0|waitumusic-production  | 2025-07-26T00:36:22:         'Host: support.krystallion.com\r\n' +
+0|waitumusic-production  | 2025-07-26T00:36:22:         '\r\n',
+0|waitumusic-production  | 2025-07-26T00:36:22:       _keepAliveTimeout: 0,
+0|waitumusic-production  | 2025-07-26T00:36:22:       _onPendingData: [Function: nop],
+0|waitumusic-production  | 2025-07-26T00:36:22:       agent: undefined,
+0|waitumusic-production  | 2025-07-26T00:36:22:       socketPath: undefined,
+0|waitumusic-production  | 2025-07-26T00:36:22:       method: 'GET',
+0|waitumusic-production  | 2025-07-26T00:36:22:       maxHeaderSize: undefined,
+0|waitumusic-production  | 2025-07-26T00:36:22:       insecureHTTPParser: undefined,
+0|waitumusic-production  | 2025-07-26T00:36:22:       joinDuplicateHeaders: undefined,
+0|waitumusic-production  | 2025-07-26T00:36:22:       path: '/v2',
+0|waitumusic-production  | 2025-07-26T00:36:22:       _ended: false,
+0|waitumusic-production  | 2025-07-26T00:36:22:       res: [IncomingMessage],
+0|waitumusic-production  | 2025-07-26T00:36:22:       aborted: true,
+0|waitumusic-production  | 2025-07-26T00:36:22:       timeoutCb: null,
+0|waitumusic-production  | 2025-07-26T00:36:22:       upgradeOrConnect: false,
+0|waitumusic-production  | 2025-07-26T00:36:22:       parser: [HTTPParser],
+0|waitumusic-production  | 2025-07-26T00:36:22:       maxHeadersCount: null,
+0|waitumusic-production  | 2025-07-26T00:36:22:       reusedSocket: false,
+0|waitumusic-production  | 2025-07-26T00:36:22:       host: 'support.krystallion.com',
+0|waitumusic-production  | 2025-07-26T00:36:22:       protocol: 'https:',
+0|waitumusic-production  | 2025-07-26T00:36:22:       [Symbol(shapeMode)]: false,
+0|waitumusic-production  | 2025-07-26T00:36:22:       [Symbol(kCapture)]: false,
+0|waitumusic-production  | 2025-07-26T00:36:22:       [Symbol(kBytesWritten)]: 0,
+0|waitumusic-production  | 2025-07-26T00:36:22:       [Symbol(kNeedDrain)]: false,
+0|waitumusic-production  | 2025-07-26T00:36:22:       [Symbol(corked)]: 0,
+0|waitumusic-production  | 2025-07-26T00:36:22:       [Symbol(kOutHeaders)]: [Object: null prototype],
+0|waitumusic-production  | 2025-07-26T00:36:22:       [Symbol(errored)]: null,
+0|waitumusic-production  | 2025-07-26T00:36:22:       [Symbol(kHighWaterMark)]: 16384,
+0|waitumusic-production  | 2025-07-26T00:36:22:       [Symbol(kRejectNonStandardBodyWrites)]: false,
+0|waitumusic-production  | 2025-07-26T00:36:22:       [Symbol(kUniqueHeaders)]: null,
+0|waitumusic-production  | 2025-07-26T00:36:22:       [Symbol(kAborted)]: true,
+0|waitumusic-production  | 2025-07-26T00:36:22:       [Symbol(kError)]: undefined
+0|waitumusic-production  | 2025-07-26T00:36:22:     },
+0|waitumusic-production  | 2025-07-26T00:36:22:     [Symbol(shapeMode)]: false,
+0|waitumusic-production  | 2025-07-26T00:36:22:     [Symbol(kCapture)]: false
+0|waitumusic-production  | 2025-07-26T00:36:22:   },
+0|waitumusic-production  | 2025-07-26T00:36:22:   [Symbol(kType)]: 'error',
+0|waitumusic-production  | 2025-07-26T00:36:22:   [Symbol(kError)]: Error: Unexpected server response: 404
+0|waitumusic-production  | 2025-07-26T00:36:22:       at ClientRequest.<anonymous> (/opt/waitumusic/node_modules/ws/lib/websocket.js:913:7)
+0|waitumusic-production  | 2025-07-26T00:36:22:       at ClientRequest.emit (node:events:524:28)
+0|waitumusic-production  | 2025-07-26T00:36:22:       at HTTPParser.parserOnIncomingClient [as onIncoming] (node:_http_client:702:27)
+0|waitumusic-production  | 2025-07-26T00:36:22:       at HTTPParser.parserOnHeadersComplete (node:_http_common:118:17)
+0|waitumusic-production  | 2025-07-26T00:36:22:       at TLSSocket.socketOnData (node:_http_client:544:22)
+0|waitumusic-production  | 2025-07-26T00:36:22:       at TLSSocket.emit (node:events:524:28)
+0|waitumusic-production  | 2025-07-26T00:36:22:       at addChunk (node:internal/streams/readable:561:12)
+0|waitumusic-production  | 2025-07-26T00:36:22:       at readableAddChunkPushByteMode (node:internal/streams/readable:512:3)
+0|waitumusic-production  | 2025-07-26T00:36:22:       at Readable.push (node:internal/streams/readable:392:5)
+0|waitumusic-production  | 2025-07-26T00:36:22:       at TLSWrap.onStreamRead (node:internal/stream_base_commons:191:23),
+0|waitumusic-production  | 2025-07-26T00:36:22:   [Symbol(kMessage)]: 'Unexpected server response: 404'
+0|waitumusic-production  | 2025-07-26T00:36:22: }

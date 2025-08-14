@@ -1,0 +1,1631 @@
+injection-topics.js:1 Browsing Topics API removed from https://replit.com/@waitumusic/WaituMusicManager which is main frame
+cdn.segment.com/v1/projects/dMePKGC4BqfBivpe0Hvl8IoPpzSHgjdX/settings:1   Failed to load resource: net::ERR_BLOCKED_BY_CLIENT
+index.ts:46  Failed to fetch
+(anonymous) @ index.ts:46
+standalone.ts:45  [analytics.js] Failed to load Analytics.js TypeError: Failed to fetch
+    at o (sdk.min.js:1:23763)
+    at index.ts:34:26
+    at tslib.es6.js:103:23
+    at Object.next (tslib.es6.js:108:37)
+    at tslib.es6.js:80:8
+    at new Promise (<anonymous>)
+    at u (tslib.es6.js:72:27)
+    at re (index.ts:239:4)
+    at index.ts:338:7
+(anonymous) @ standalone.ts:45
+(anonymous) @ tslib.es6.js:103
+(anonymous) @ tslib.es6.js:108
+u @ tslib.es6.js:74
+api.segment.io/v1/m:1   Failed to load resource: net::ERR_BLOCKED_BY_CLIENT
+remote-metrics.ts:53  Error sending segment performance metrics TypeError: Failed to fetch
+    at o (sdk.min.js:1:23763)
+    at t.<anonymous> (remote-metrics.ts:138:12)
+    at tslib.es6.js:103:23
+    at Object.next (tslib.es6.js:108:37)
+    at tslib.es6.js:80:8
+    at new Promise (<anonymous>)
+    at u (tslib.es6.js:72:27)
+    at t.send (sdk.min.js:1:22021)
+    at t.<anonymous> (remote-metrics.ts:125:16)
+    at tslib.es6.js:103:23
+a @ remote-metrics.ts:53
+(anonymous) @ remote-metrics.ts:126
+[NEW] Explain Console errors by using Copilot in Edge: click
+         
+         to explain an error. 
+        Learn more
+        Don't show again
+stallwart.build.js:1 stallwart: failed ping 1
+_app-887b064411aad558.js:13 
+      /////////////////////
+   ///////////////////////////
+  ////////@@@@@@@//////////////
+  ////////@@@@@@@//////////////
+  ////////@@@@@@@//////////////        Curious and driven?
+  ///////////////@@@@@@@///////        Work with us!
+  ///////////////@@@@@@@///////
+  ///////////////@@@@@@@///////        https://join.replit.com/hack.with.us
+  ////////@@@@@@@//////////////
+  ////////@@@@@@@//////////////
+  ////////@@@@@@#//////////////
+   ///////////////////////////
+      /////////////////////
+      
+_app-887b064411aad558.js:13 [LaunchDarkly] LaunchDarkly client initialized
+injection-topics.js:1 Browsing Topics API removed from https://js.stripe.com/v3/controller-with-preconnect-6ce123f8f18e747e770592e80af1ce7f.html#__shared_params__[version]=acacia&apiKey=pk_live_515YpNsJAmnYVOvfnsBqRdATWS6SzbNAslOz1z2tujdKuvRMDAwWMeFXp6dJL1YKRrQjB0WAp0UDGwlFYL7hxw7Fc00QkfxBFsL&apiVersion=2025-01-27.acacia&stripeJsId=c33076e9-55ca-44ff-9fd8-572c4cdcc40d&stripeObjId=sobj-d95b6319-5d39-4f1d-8ee5-6ff7d173fea3&firstStripeInstanceCreatedLatency=52&controllerCount=1&isCheckout=false&stripeJsLoadTime=1754025313108&manualBrowserDeprecationRollout=false&mids[guid]=NA&mids[muid]=ca9a3c25-0f65-4f56-98d2-91061691de398de85f&mids[sid]=NA&referrer=https%3A%2F%2Freplit.com%2F%40waitumusic%2FWaituMusicManager&controllerId=__privateStripeController3041 which is iframe
+WaituMusicManager:1  Tracking Prevention blocked access to storage for https://www.gravatar.com/avatar/a3be3e59cb36da8a00d29fe26d1575a9?d=blank&s=256.
+WaituMusicManager:1  Tracking Prevention blocked access to storage for https://www.gravatar.com/avatar/a3be3e59cb36da8a00d29fe26d1575a9?d=blank&s=256.
+WaituMusicManager:1  Tracking Prevention blocked access to storage for https://www.gravatar.com/avatar/a3be3e59cb36da8a00d29fe26d1575a9?d=blank&s=256.
+WaituMusicManager:1  Tracking Prevention blocked access to storage for https://www.gravatar.com/avatar/a3be3e59cb36da8a00d29fe26d1575a9?d=blank&s=256.
+injection-topics.js:1 Browsing Topics API removed from https://www.google.com/recaptcha/enterprise/anchor?ar=1&k=6LdqhwwoAAAAAFPdw8jCuvY3PaHQItGj3RzOS4fW&co=aHR0cHM6Ly9yZXBsaXQuY29tOjQ0Mw..&hl=en&v=DBIsSQ0s2djD_akThoRUDeHa&size=invisible&anchor-ms=20000&execute-ms=15000&cb=36tz2fa8uahd which is iframe
+framework-2bd9a0e07d0728ae.js:1  Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+_ @ framework-2bd9a0e07d0728ae.js:1
+(anonymous) @ framework-2bd9a0e07d0728ae.js:1
+uD @ framework-2bd9a0e07d0728ae.js:1
+uI @ framework-2bd9a0e07d0728ae.js:1
+uM @ framework-2bd9a0e07d0728ae.js:1
+uS @ framework-2bd9a0e07d0728ae.js:1
+C @ framework-2bd9a0e07d0728ae.js:1
+z @ framework-2bd9a0e07d0728ae.js:1
+framework-2bd9a0e07d0728ae.js:1  Unrecognized feature: 'ambient-light-sensor'.
+_ @ framework-2bd9a0e07d0728ae.js:1
+(anonymous) @ framework-2bd9a0e07d0728ae.js:1
+uD @ framework-2bd9a0e07d0728ae.js:1
+uI @ framework-2bd9a0e07d0728ae.js:1
+uM @ framework-2bd9a0e07d0728ae.js:1
+uS @ framework-2bd9a0e07d0728ae.js:1
+C @ framework-2bd9a0e07d0728ae.js:1
+z @ framework-2bd9a0e07d0728ae.js:1
+framework-2bd9a0e07d0728ae.js:1  Unrecognized feature: 'battery'.
+_ @ framework-2bd9a0e07d0728ae.js:1
+(anonymous) @ framework-2bd9a0e07d0728ae.js:1
+uD @ framework-2bd9a0e07d0728ae.js:1
+uI @ framework-2bd9a0e07d0728ae.js:1
+uM @ framework-2bd9a0e07d0728ae.js:1
+uS @ framework-2bd9a0e07d0728ae.js:1
+C @ framework-2bd9a0e07d0728ae.js:1
+z @ framework-2bd9a0e07d0728ae.js:1
+framework-2bd9a0e07d0728ae.js:1  Unrecognized feature: 'execution-while-not-rendered'.
+_ @ framework-2bd9a0e07d0728ae.js:1
+(anonymous) @ framework-2bd9a0e07d0728ae.js:1
+uD @ framework-2bd9a0e07d0728ae.js:1
+uI @ framework-2bd9a0e07d0728ae.js:1
+uM @ framework-2bd9a0e07d0728ae.js:1
+uS @ framework-2bd9a0e07d0728ae.js:1
+C @ framework-2bd9a0e07d0728ae.js:1
+z @ framework-2bd9a0e07d0728ae.js:1
+framework-2bd9a0e07d0728ae.js:1  Unrecognized feature: 'execution-while-out-of-viewport'.
+_ @ framework-2bd9a0e07d0728ae.js:1
+(anonymous) @ framework-2bd9a0e07d0728ae.js:1
+uD @ framework-2bd9a0e07d0728ae.js:1
+uI @ framework-2bd9a0e07d0728ae.js:1
+uM @ framework-2bd9a0e07d0728ae.js:1
+uS @ framework-2bd9a0e07d0728ae.js:1
+C @ framework-2bd9a0e07d0728ae.js:1
+z @ framework-2bd9a0e07d0728ae.js:1
+framework-2bd9a0e07d0728ae.js:1  Unrecognized feature: 'layout-animations'.
+_ @ framework-2bd9a0e07d0728ae.js:1
+(anonymous) @ framework-2bd9a0e07d0728ae.js:1
+uD @ framework-2bd9a0e07d0728ae.js:1
+uI @ framework-2bd9a0e07d0728ae.js:1
+uM @ framework-2bd9a0e07d0728ae.js:1
+uS @ framework-2bd9a0e07d0728ae.js:1
+C @ framework-2bd9a0e07d0728ae.js:1
+z @ framework-2bd9a0e07d0728ae.js:1
+framework-2bd9a0e07d0728ae.js:1  Unrecognized feature: 'legacy-image-formats'.
+_ @ framework-2bd9a0e07d0728ae.js:1
+(anonymous) @ framework-2bd9a0e07d0728ae.js:1
+uD @ framework-2bd9a0e07d0728ae.js:1
+uI @ framework-2bd9a0e07d0728ae.js:1
+uM @ framework-2bd9a0e07d0728ae.js:1
+uS @ framework-2bd9a0e07d0728ae.js:1
+C @ framework-2bd9a0e07d0728ae.js:1
+z @ framework-2bd9a0e07d0728ae.js:1
+framework-2bd9a0e07d0728ae.js:1  Unrecognized feature: 'navigation-override'.
+_ @ framework-2bd9a0e07d0728ae.js:1
+(anonymous) @ framework-2bd9a0e07d0728ae.js:1
+uD @ framework-2bd9a0e07d0728ae.js:1
+uI @ framework-2bd9a0e07d0728ae.js:1
+uM @ framework-2bd9a0e07d0728ae.js:1
+uS @ framework-2bd9a0e07d0728ae.js:1
+C @ framework-2bd9a0e07d0728ae.js:1
+z @ framework-2bd9a0e07d0728ae.js:1
+framework-2bd9a0e07d0728ae.js:1  Unrecognized feature: 'oversized-images'.
+_ @ framework-2bd9a0e07d0728ae.js:1
+(anonymous) @ framework-2bd9a0e07d0728ae.js:1
+uD @ framework-2bd9a0e07d0728ae.js:1
+uI @ framework-2bd9a0e07d0728ae.js:1
+uM @ framework-2bd9a0e07d0728ae.js:1
+uS @ framework-2bd9a0e07d0728ae.js:1
+C @ framework-2bd9a0e07d0728ae.js:1
+z @ framework-2bd9a0e07d0728ae.js:1
+framework-2bd9a0e07d0728ae.js:1  Unrecognized feature: 'publickey-credentials'.
+_ @ framework-2bd9a0e07d0728ae.js:1
+(anonymous) @ framework-2bd9a0e07d0728ae.js:1
+uD @ framework-2bd9a0e07d0728ae.js:1
+uI @ framework-2bd9a0e07d0728ae.js:1
+uM @ framework-2bd9a0e07d0728ae.js:1
+uS @ framework-2bd9a0e07d0728ae.js:1
+C @ framework-2bd9a0e07d0728ae.js:1
+z @ framework-2bd9a0e07d0728ae.js:1
+framework-2bd9a0e07d0728ae.js:1  Unrecognized feature: 'speaker-selection'.
+_ @ framework-2bd9a0e07d0728ae.js:1
+(anonymous) @ framework-2bd9a0e07d0728ae.js:1
+uD @ framework-2bd9a0e07d0728ae.js:1
+uI @ framework-2bd9a0e07d0728ae.js:1
+uM @ framework-2bd9a0e07d0728ae.js:1
+uS @ framework-2bd9a0e07d0728ae.js:1
+C @ framework-2bd9a0e07d0728ae.js:1
+z @ framework-2bd9a0e07d0728ae.js:1
+framework-2bd9a0e07d0728ae.js:1  Unrecognized feature: 'unoptimized-images'.
+_ @ framework-2bd9a0e07d0728ae.js:1
+(anonymous) @ framework-2bd9a0e07d0728ae.js:1
+uD @ framework-2bd9a0e07d0728ae.js:1
+uI @ framework-2bd9a0e07d0728ae.js:1
+uM @ framework-2bd9a0e07d0728ae.js:1
+uS @ framework-2bd9a0e07d0728ae.js:1
+C @ framework-2bd9a0e07d0728ae.js:1
+z @ framework-2bd9a0e07d0728ae.js:1
+framework-2bd9a0e07d0728ae.js:1  Unrecognized feature: 'unsized-media'.
+_ @ framework-2bd9a0e07d0728ae.js:1
+(anonymous) @ framework-2bd9a0e07d0728ae.js:1
+uD @ framework-2bd9a0e07d0728ae.js:1
+uI @ framework-2bd9a0e07d0728ae.js:1
+uM @ framework-2bd9a0e07d0728ae.js:1
+uS @ framework-2bd9a0e07d0728ae.js:1
+C @ framework-2bd9a0e07d0728ae.js:1
+z @ framework-2bd9a0e07d0728ae.js:1
+framework-2bd9a0e07d0728ae.js:1  Unrecognized feature: 'pointer-lock'.
+_ @ framework-2bd9a0e07d0728ae.js:1
+(anonymous) @ framework-2bd9a0e07d0728ae.js:1
+uD @ framework-2bd9a0e07d0728ae.js:1
+uI @ framework-2bd9a0e07d0728ae.js:1
+uM @ framework-2bd9a0e07d0728ae.js:1
+uS @ framework-2bd9a0e07d0728ae.js:1
+C @ framework-2bd9a0e07d0728ae.js:1
+z @ framework-2bd9a0e07d0728ae.js:1
+framework-2bd9a0e07d0728ae.js:1  Allow attribute will take precedence over 'allowfullscreen'.
+_ @ framework-2bd9a0e07d0728ae.js:1
+(anonymous) @ framework-2bd9a0e07d0728ae.js:1
+uD @ framework-2bd9a0e07d0728ae.js:1
+uI @ framework-2bd9a0e07d0728ae.js:1
+uM @ framework-2bd9a0e07d0728ae.js:1
+uS @ framework-2bd9a0e07d0728ae.js:1
+C @ framework-2bd9a0e07d0728ae.js:1
+z @ framework-2bd9a0e07d0728ae.js:1
+framework-2bd9a0e07d0728ae.js:1  Allow attribute will take precedence over 'allowpaymentrequest'.
+_ @ framework-2bd9a0e07d0728ae.js:1
+(anonymous) @ framework-2bd9a0e07d0728ae.js:1
+uD @ framework-2bd9a0e07d0728ae.js:1
+uI @ framework-2bd9a0e07d0728ae.js:1
+uM @ framework-2bd9a0e07d0728ae.js:1
+uS @ framework-2bd9a0e07d0728ae.js:1
+C @ framework-2bd9a0e07d0728ae.js:1
+z @ framework-2bd9a0e07d0728ae.js:1
+workspace_iframe.html:32  Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+workspace_iframe.html:32  Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+workspace_iframe.html:32  Unrecognized feature: 'ambient-light-sensor'.
+workspace_iframe.html:32  Unrecognized feature: 'ambient-light-sensor'.
+workspace_iframe.html:32  Unrecognized feature: 'battery'.
+workspace_iframe.html:32  Unrecognized feature: 'battery'.
+workspace_iframe.html:32  Unrecognized feature: 'execution-while-not-rendered'.
+workspace_iframe.html:32  Unrecognized feature: 'execution-while-not-rendered'.
+workspace_iframe.html:32  Unrecognized feature: 'execution-while-out-of-viewport'.
+workspace_iframe.html:32  Unrecognized feature: 'execution-while-out-of-viewport'.
+workspace_iframe.html:32  Unrecognized feature: 'layout-animations'.
+workspace_iframe.html:32  Unrecognized feature: 'layout-animations'.
+workspace_iframe.html:32  Unrecognized feature: 'legacy-image-formats'.
+workspace_iframe.html:32  Unrecognized feature: 'legacy-image-formats'.
+workspace_iframe.html:32  Unrecognized feature: 'navigation-override'.
+workspace_iframe.html:32  Unrecognized feature: 'navigation-override'.
+workspace_iframe.html:32  Unrecognized feature: 'oversized-images'.
+workspace_iframe.html:32  Unrecognized feature: 'oversized-images'.
+workspace_iframe.html:32  Unrecognized feature: 'publickey-credentials'.
+workspace_iframe.html:32  Unrecognized feature: 'publickey-credentials'.
+workspace_iframe.html:32  Unrecognized feature: 'speaker-selection'.
+workspace_iframe.html:32  Unrecognized feature: 'speaker-selection'.
+workspace_iframe.html:32  Unrecognized feature: 'unoptimized-images'.
+workspace_iframe.html:32  Unrecognized feature: 'unoptimized-images'.
+workspace_iframe.html:32  Unrecognized feature: 'unsized-media'.
+workspace_iframe.html:32  Unrecognized feature: 'unsized-media'.
+workspace_iframe.html:32  Allow attribute will take precedence over 'allowfullscreen'.
+e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/__replco/workspace_iframe.html?initialPath=%2F&id=%3Ar2j%3A:32  Allow attribute will take precedence over 'allowfullscreen'.
+workspace_iframe.html:32  Allow attribute will take precedence over 'allowpaymentrequest'.
+e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/__replco/workspace_iframe.html?initialPath=%2F&id=%3Ar2j%3A:32  Allow attribute will take precedence over 'allowpaymentrequest'.
+injection-topics.js:1 Browsing Topics API removed from about:blank which is iframe
+injection-topics.js:1 Browsing Topics API removed from https://e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/__replco/workspace_iframe.html?initialPath=%2F&id=%3Ar2j%3A which is iframe
+VM11 injection-topics.js:1 Browsing Topics API removed from about:blank which is iframe
+injection-topics.js:1 Browsing Topics API removed from https://e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/ which is iframe
+stallwart.build.js:1 stallwart: failed ping 1
+client:536  WebSocket connection to 'wss://e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/?token=tG70QHcgycyM' failed: 
+setupWebSocket @ client:536
+(anonymous) @ client:531
+  WebSocket connection to 'wss://e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/?token=tG70QHcgycyM' failed: 
+setupWebSocket @ e61cef8e-4705-48d7-8…ev/@vite/client:536
+(anonymous) @ e61cef8e-4705-48d7-8…ev/@vite/client:531
+client:536  Uncaught (in promise) SyntaxError: Failed to construct 'WebSocket': The URL 'wss://localhost:undefined/?token=tG70QHcgycyM' is invalid.
+    at setupWebSocket (client:536:19)
+    at fallback (client:509:16)
+    at WebSocket.<anonymous> (client:555:7)
+setupWebSocket @ client:536
+fallback @ client:509
+(anonymous) @ client:555
+stallwart.build.js:1 stallwart: failed ping 2
+stallwart.build.js:1 stallwart: failed ping 3
+injection-topics.js:1 Browsing Topics API removed from about:blank which is iframe
+injection-topics.js:1 Browsing Topics API removed from https://js.stripe.com/v3/m-outer-3437aaddcdf6922d623e172c2d6f9278.html#url=https%3A%2F%2Freplit.com%2F%40waitumusic%2FWaituMusicManager&title=WaituMusicManager%20-%20Replit&referrer=https%3A%2F%2Freplit.com%2F%40waitumusic%2FWaituMusicManager&muid=ca9a3c25-0f65-4f56-98d2-91061691de398de85f&sid=NA&version=6&preview=false&__shared_params__[version]=acacia which is iframe
+main.tsx:35 ✅ React app mounted successfully
+injection-topics.js:1 Browsing Topics API removed from https://m.stripe.network/inner.html#url=https%3A%2F%2Freplit.com%2F%40waitumusic%2FWaituMusicManager&title=WaituMusicManager%20-%20Replit&referrer=https%3A%2F%2Freplit.com%2F%40waitumusic%2FWaituMusicManager&muid=ca9a3c25-0f65-4f56-98d2-91061691de398de85f&sid=NA&version=6&preview=false&__shared_params__[version]=acacia which is iframe
+WaituMusicManager:1 Banner not shown: beforeinstallpromptevent.preventDefault() called. The page must call beforeinstallpromptevent.prompt() to show the banner.
+_app-887b064411aad558.js:13   POST https://events.launchdarkly.com/events/bulk/62b35a865152ab14c5942820 net::ERR_BLOCKED_BY_CLIENT
+(anonymous) @ _app-887b064411aad558.js:13
+(anonymous) @ _app-887b064411aad558.js:13
+promise @ _app-887b064411aad558.js:40
+(anonymous) @ _app-887b064411aad558.js:40
+r.httpRequest @ _app-887b064411aad558.js:40
+t @ _app-887b064411aad558.js:40
+a.sendChunk @ _app-887b064411aad558.js:40
+a.sendEvents @ _app-887b064411aad558.js:40
+a.flush @ _app-887b064411aad558.js:40
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+a.start @ _app-887b064411aad558.js:40
+start @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+_app-887b064411aad558.js:13   POST https://events.launchdarkly.com/events/bulk/62b35a865152ab14c5942820 net::ERR_BLOCKED_BY_CLIENT
+(anonymous) @ _app-887b064411aad558.js:13
+(anonymous) @ _app-887b064411aad558.js:13
+promise @ _app-887b064411aad558.js:40
+(anonymous) @ _app-887b064411aad558.js:40
+r.httpRequest @ _app-887b064411aad558.js:40
+t @ _app-887b064411aad558.js:40
+(anonymous) @ _app-887b064411aad558.js:40
+Promise.catch
+t @ _app-887b064411aad558.js:40
+a.sendChunk @ _app-887b064411aad558.js:40
+a.sendEvents @ _app-887b064411aad558.js:40
+a.flush @ _app-887b064411aad558.js:40
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+a.start @ _app-887b064411aad558.js:40
+start @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+_app-887b064411aad558.js:13   POST https://events.launchdarkly.com/events/bulk/62b35a865152ab14c5942820 net::ERR_BLOCKED_BY_CLIENT
+(anonymous) @ _app-887b064411aad558.js:13
+(anonymous) @ _app-887b064411aad558.js:13
+promise @ _app-887b064411aad558.js:40
+(anonymous) @ _app-887b064411aad558.js:40
+r.httpRequest @ _app-887b064411aad558.js:40
+t @ _app-887b064411aad558.js:40
+a.sendChunk @ _app-887b064411aad558.js:40
+a.sendEvents @ _app-887b064411aad558.js:40
+a.flush @ _app-887b064411aad558.js:40
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+_app-887b064411aad558.js:13   POST https://events.launchdarkly.com/events/bulk/62b35a865152ab14c5942820 net::ERR_BLOCKED_BY_CLIENT
+(anonymous) @ _app-887b064411aad558.js:13
+(anonymous) @ _app-887b064411aad558.js:13
+promise @ _app-887b064411aad558.js:40
+(anonymous) @ _app-887b064411aad558.js:40
+r.httpRequest @ _app-887b064411aad558.js:40
+t @ _app-887b064411aad558.js:40
+(anonymous) @ _app-887b064411aad558.js:40
+Promise.catch
+t @ _app-887b064411aad558.js:40
+a.sendChunk @ _app-887b064411aad558.js:40
+a.sendEvents @ _app-887b064411aad558.js:40
+a.flush @ _app-887b064411aad558.js:40
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+ComprehensiveBookingWorkflow.tsx:180 🔍 FRONTEND: Fetching assigned talent for booking ID: 1
+ComprehensiveBookingWorkflow.tsx:182 📋 FRONTEND: Received assigned talent data: (2) [{…}, {…}]
+ComprehensiveBookingWorkflow.tsx:224 📋 UPDATING assigned talent state: (2) [{…}, {…}]
+ComprehensiveBookingWorkflow.tsx:225 🔍 DETAILED DATA CHECK - First talent object: {id: 'assignment-2', userId: 6, name: 'Lí-Lí Octave', assignmentName: 'Lianne Letang(Lí-Lí Octave)', fullName: 'Lianne Letang', …}
+ComprehensiveBookingWorkflow.tsx:226 🔍 KEYS in first talent: (17) ['id', 'userId', 'name', 'assignmentName', 'fullName', 'stageName', 'type', 'role', 'isMainBookedTalent', 'isPrimary', 'talentType', 'primaryTalent', 'secondaryTalents', 'assignmentId', 'isOriginallyBooked', 'showAcceptDecline', 'showRemove']
+ComprehensiveBookingWorkflow.tsx:227 🔍 PRIMARY TALENT field: Lead Vocalist
+ComprehensiveBookingWorkflow.tsx:228 🔍 SECONDARY TALENTS field: []
+_app-887b064411aad558.js:13   POST https://events.launchdarkly.com/events/bulk/62b35a865152ab14c5942820 net::ERR_BLOCKED_BY_CLIENT
+(anonymous) @ _app-887b064411aad558.js:13
+(anonymous) @ _app-887b064411aad558.js:13
+promise @ _app-887b064411aad558.js:40
+(anonymous) @ _app-887b064411aad558.js:40
+r.httpRequest @ _app-887b064411aad558.js:40
+t @ _app-887b064411aad558.js:40
+a.sendChunk @ _app-887b064411aad558.js:40
+a.sendEvents @ _app-887b064411aad558.js:40
+a.flush @ _app-887b064411aad558.js:40
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+_app-887b064411aad558.js:13   POST https://events.launchdarkly.com/events/bulk/62b35a865152ab14c5942820 net::ERR_BLOCKED_BY_CLIENT
+(anonymous) @ _app-887b064411aad558.js:13
+(anonymous) @ _app-887b064411aad558.js:13
+promise @ _app-887b064411aad558.js:40
+(anonymous) @ _app-887b064411aad558.js:40
+r.httpRequest @ _app-887b064411aad558.js:40
+t @ _app-887b064411aad558.js:40
+(anonymous) @ _app-887b064411aad558.js:40
+Promise.catch
+t @ _app-887b064411aad558.js:40
+a.sendChunk @ _app-887b064411aad558.js:40
+a.sendEvents @ _app-887b064411aad558.js:40
+a.flush @ _app-887b064411aad558.js:40
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+workspace_iframe.html:32  Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+injection-topics.js:1 Browsing Topics API removed from https://e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/__replco/workspace_iframe.html?initialPath=%2F&id=%3Ar2j%3A which is iframe
+VM297 injection-topics.js:1 Browsing Topics API removed from about:blank which is iframe
+injection-topics.js:1 Browsing Topics API removed from https://e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/ which is iframe
+client:536  WebSocket connection to 'wss://e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/?token=tG70QHcgycyM' failed: 
+setupWebSocket @ client:536
+(anonymous) @ client:531
+client:536  Uncaught (in promise) SyntaxError: Failed to construct 'WebSocket': The URL 'wss://localhost:undefined/?token=tG70QHcgycyM' is invalid.
+    at setupWebSocket (client:536:19)
+    at fallback (client:509:16)
+    at WebSocket.<anonymous> (client:555:7)
+setupWebSocket @ client:536
+fallback @ client:509
+(anonymous) @ client:555
+main.tsx:35 ✅ React app mounted successfully
+ComprehensiveBookingWorkflow.tsx:605 🎯 TALENT GROUPED BY ROLE_ID: {totalTalent: 10, roleGroups: Array(2), categorizedCounts: {…}}
+ComprehensiveBookingWorkflow.tsx:180 🔍 FRONTEND: Fetching assigned talent for booking ID: 1
+ComprehensiveBookingWorkflow.tsx:605 🎯 TALENT GROUPED BY ROLE_ID: {totalTalent: 10, roleGroups: Array(2), categorizedCounts: {…}}
+ComprehensiveBookingWorkflow.tsx:605 🎯 TALENT GROUPED BY ROLE_ID: {totalTalent: 16, roleGroups: Array(4), categorizedCounts: {…}}
+ComprehensiveBookingWorkflow.tsx:605 🎯 TALENT GROUPED BY ROLE_ID: {totalTalent: 23, roleGroups: Array(6), categorizedCounts: {…}}
+ComprehensiveBookingWorkflow.tsx:182 📋 FRONTEND: Received assigned talent data: (2) [{…}, {…}]
+ComprehensiveBookingWorkflow.tsx:605 🎯 TALENT GROUPED BY ROLE_ID: {totalTalent: 23, roleGroups: Array(6), categorizedCounts: {…}}
+ComprehensiveBookingWorkflow.tsx:224 📋 UPDATING assigned talent state: (2) [{…}, {…}]
+ComprehensiveBookingWorkflow.tsx:225 🔍 DETAILED DATA CHECK - First talent object: {id: 'assignment-2', userId: 6, name: 'Lí-Lí Octave', assignmentName: 'Lianne Letang(Lí-Lí Octave)', fullName: 'Lianne Letang', …}
+ComprehensiveBookingWorkflow.tsx:226 🔍 KEYS in first talent: (17) ['id', 'userId', 'name', 'assignmentName', 'fullName', 'stageName', 'type', 'role', 'isMainBookedTalent', 'isPrimary', 'talentType', 'primaryTalent', 'secondaryTalents', 'assignmentId', 'isOriginallyBooked', 'showAcceptDecline', 'showRemove']
+ComprehensiveBookingWorkflow.tsx:227 🔍 PRIMARY TALENT field: Lead Vocalist
+ComprehensiveBookingWorkflow.tsx:228 🔍 SECONDARY TALENTS field: []
+ComprehensiveBookingWorkflow.tsx:605 🎯 TALENT GROUPED BY ROLE_ID: {totalTalent: 23, roleGroups: Array(6), categorizedCounts: {…}}
+ComprehensiveBookingWorkflow.tsx:605 🎯 TALENT GROUPED BY ROLE_ID: {totalTalent: 23, roleGroups: Array(6), categorizedCounts: {…}}
+ComprehensiveBookingWorkflow.tsx:605 🎯 TALENT GROUPED BY ROLE_ID: {totalTalent: 23, roleGroups: Array(6), categorizedCounts: {…}}
+ComprehensiveBookingWorkflow.tsx:605 🎯 TALENT GROUPED BY ROLE_ID: {totalTalent: 23, roleGroups: Array(6), categorizedCounts: {…}}
+ComprehensiveBookingWorkflow.tsx:605 🎯 TALENT GROUPED BY ROLE_ID: {totalTalent: 23, roleGroups: Array(6), categorizedCounts: {…}}
+ComprehensiveBookingWorkflow.tsx:605 🎯 TALENT GROUPED BY ROLE_ID: {totalTalent: 23, roleGroups: Array(6), categorizedCounts: {…}}
+ComprehensiveBookingWorkflow.tsx:605 🎯 TALENT GROUPED BY ROLE_ID: {totalTalent: 23, roleGroups: Array(6), categorizedCounts: {…}}
+ComprehensiveBookingWorkflow.tsx:605 🎯 TALENT GROUPED BY ROLE_ID: {totalTalent: 23, roleGroups: Array(6), categorizedCounts: {…}}
+ComprehensiveBookingWorkflow.tsx:605 🎯 TALENT GROUPED BY ROLE_ID: {totalTalent: 23, roleGroups: Array(6), categorizedCounts: {…}}
+ComprehensiveBookingWorkflow.tsx:605 🎯 TALENT GROUPED BY ROLE_ID: {totalTalent: 23, roleGroups: Array(6), categorizedCounts: {…}}
+ComprehensiveBookingWorkflow.tsx:605 🎯 TALENT GROUPED BY ROLE_ID: {totalTalent: 23, roleGroups: Array(6), categorizedCounts: {…}}
+ComprehensiveBookingWorkflow.tsx:605 🎯 TALENT GROUPED BY ROLE_ID: {totalTalent: 23, roleGroups: Array(6), categorizedCounts: {…}}
+ComprehensiveBookingWorkflow.tsx:605 🎯 TALENT GROUPED BY ROLE_ID: {totalTalent: 23, roleGroups: Array(6), categorizedCounts: {…}}
+ComprehensiveBookingWorkflow.tsx:605 🎯 TALENT GROUPED BY ROLE_ID: {totalTalent: 23, roleGroups: Array(6), categorizedCounts: {…}}
+ComprehensiveBookingWorkflow.tsx:605 🎯 TALENT GROUPED BY ROLE_ID: {totalTalent: 23, roleGroups: Array(6), categorizedCounts: {…}}
+ComprehensiveBookingWorkflow.tsx:605 🎯 TALENT GROUPED BY ROLE_ID: {totalTalent: 23, roleGroups: Array(6), categorizedCounts: {…}}
+ComprehensiveBookingWorkflow.tsx:605 🎯 TALENT GROUPED BY ROLE_ID: {totalTalent: 23, roleGroups: Array(6), categorizedCounts: {…}}
+ComprehensiveBookingWorkflow.tsx:605 🎯 TALENT GROUPED BY ROLE_ID: {totalTalent: 23, roleGroups: Array(6), categorizedCounts: {…}}
+ComprehensiveBookingWorkflow.tsx:605 🎯 TALENT GROUPED BY ROLE_ID: {totalTalent: 23, roleGroups: Array(6), categorizedCounts: {…}}
+ComprehensiveBookingWorkflow.tsx:605 🎯 TALENT GROUPED BY ROLE_ID: {totalTalent: 23, roleGroups: Array(6), categorizedCounts: {…}}
+ComprehensiveBookingWorkflow.tsx:605 🎯 TALENT GROUPED BY ROLE_ID: {totalTalent: 23, roleGroups: Array(6), categorizedCounts: {…}}
+ComprehensiveBookingWorkflow.tsx:605 🎯 TALENT GROUPED BY ROLE_ID: {totalTalent: 23, roleGroups: Array(6), categorizedCounts: {…}}
+ComprehensiveBookingWorkflow.tsx:605 🎯 TALENT GROUPED BY ROLE_ID: {totalTalent: 23, roleGroups: Array(6), categorizedCounts: {…}}
+ComprehensiveBookingWorkflow.tsx:605 🎯 TALENT GROUPED BY ROLE_ID: {totalTalent: 23, roleGroups: Array(6), categorizedCounts: {…}}
+ComprehensiveBookingWorkflow.tsx:605 🎯 TALENT GROUPED BY ROLE_ID: {totalTalent: 23, roleGroups: Array(6), categorizedCounts: {…}}
+ComprehensiveBookingWorkflow.tsx:605 🎯 TALENT GROUPED BY ROLE_ID: {totalTalent: 23, roleGroups: Array(6), categorizedCounts: {…}}
+_app-887b064411aad558.js:13   POST https://events.launchdarkly.com/events/bulk/62b35a865152ab14c5942820 net::ERR_BLOCKED_BY_CLIENT
+(anonymous) @ _app-887b064411aad558.js:13
+(anonymous) @ _app-887b064411aad558.js:13
+promise @ _app-887b064411aad558.js:40
+(anonymous) @ _app-887b064411aad558.js:40
+r.httpRequest @ _app-887b064411aad558.js:40
+t @ _app-887b064411aad558.js:40
+a.sendChunk @ _app-887b064411aad558.js:40
+a.sendEvents @ _app-887b064411aad558.js:40
+a.flush @ _app-887b064411aad558.js:40
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+_app-887b064411aad558.js:13   POST https://events.launchdarkly.com/events/bulk/62b35a865152ab14c5942820 net::ERR_BLOCKED_BY_CLIENT
+(anonymous) @ _app-887b064411aad558.js:13
+(anonymous) @ _app-887b064411aad558.js:13
+promise @ _app-887b064411aad558.js:40
+(anonymous) @ _app-887b064411aad558.js:40
+r.httpRequest @ _app-887b064411aad558.js:40
+t @ _app-887b064411aad558.js:40
+(anonymous) @ _app-887b064411aad558.js:40
+Promise.catch
+t @ _app-887b064411aad558.js:40
+a.sendChunk @ _app-887b064411aad558.js:40
+a.sendEvents @ _app-887b064411aad558.js:40
+a.flush @ _app-887b064411aad558.js:40
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+ComprehensiveBookingWorkflow.tsx:605 🎯 TALENT GROUPED BY ROLE_ID: {totalTalent: 23, roleGroups: Array(6), categorizedCounts: {…}}
+EnhancedTechnicalRider.tsx:862 DEBUG: Syncing stage legend talent/skills with band members
+EnhancedTechnicalRider.tsx:908 🔄 TECHNICAL RIDER: Initializing band members
+EnhancedTechnicalRider.tsx:909 🔄 Assigned musicians (props) count: 10
+EnhancedTechnicalRider.tsx:910 🔄 Final assigned musicians (API) count: 10
+EnhancedTechnicalRider.tsx:911 🔄 Will use: assignedMusicians (props)
+EnhancedTechnicalRider.tsx:917 🔄 Using musician data source: assignedMusicians (props)
+EnhancedTechnicalRider.tsx:977 🔄 Total members added from API: 10
+EnhancedTechnicalRider.tsx:1041 Sorting: Maya Bass badge: managed_musician order: 7 vs Lí-Lí Octave badge: managed_artist order: 7
+EnhancedTechnicalRider.tsx:1041 Sorting: Cosmic Taylor badge: Artist order: 7 vs Nova Williams badge: Artist order: 7
+EnhancedTechnicalRider.tsx:1041 Sorting: Phoenix Chen badge: Artist order: 7 vs Cosmic Taylor badge: Artist order: 7
+EnhancedTechnicalRider.tsx:1041 Sorting: Wave Anderson badge: Artist order: 7 vs Phoenix Chen badge: Artist order: 7
+EnhancedTechnicalRider.tsx:1041 Sorting: Ocean Park badge: Artist order: 7 vs Wave Anderson badge: Artist order: 7
+EnhancedTechnicalRider.tsx:1041 Sorting: Storm Johnson badge: Artist order: 7 vs Ocean Park badge: Artist order: 7
+EnhancedTechnicalRider.tsx:1041 Sorting: Session Brooks badge: Artist order: 7 vs Storm Johnson badge: Artist order: 7
+EnhancedTechnicalRider.tsx:1041 Sorting: Sage Rodriguez badge: Artist order: 7 vs Session Brooks badge: Artist order: 7
+EnhancedTechnicalRider.tsx:1041 Sorting: Mr Lindsay George badge: MANAGEMENT order: 999 vs Sage Rodriguez badge: Artist order: 7
+EnhancedTechnicalRider.tsx:1041 Sorting: Ms Joyette Pascal badge: MANAGEMENT order: 999 vs Mr Lindsay George badge: MANAGEMENT order: 999
+EnhancedTechnicalRider.tsx:1046 🔄 FINAL: Setting 12 band members
+EnhancedTechnicalRider.tsx:862 DEBUG: Syncing stage legend talent/skills with band members
+EnhancedTechnicalRider.tsx:908 🔄 TECHNICAL RIDER: Initializing band members
+EnhancedTechnicalRider.tsx:909 🔄 Assigned musicians (props) count: 10
+EnhancedTechnicalRider.tsx:910 🔄 Final assigned musicians (API) count: 2
+EnhancedTechnicalRider.tsx:911 🔄 Will use: assignedMusicians (props)
+EnhancedTechnicalRider.tsx:917 🔄 Using musician data source: assignedMusicians (props)
+EnhancedTechnicalRider.tsx:977 🔄 Total members added from API: 10
+EnhancedTechnicalRider.tsx:1041 Sorting: Maya Bass badge: managed_musician order: 7 vs Lí-Lí Octave badge: managed_artist order: 7
+EnhancedTechnicalRider.tsx:1041 Sorting: Cosmic Taylor badge: Artist order: 7 vs Nova Williams badge: Artist order: 7
+EnhancedTechnicalRider.tsx:1041 Sorting: Phoenix Chen badge: Artist order: 7 vs Cosmic Taylor badge: Artist order: 7
+EnhancedTechnicalRider.tsx:1041 Sorting: Wave Anderson badge: Artist order: 7 vs Phoenix Chen badge: Artist order: 7
+EnhancedTechnicalRider.tsx:1041 Sorting: Ocean Park badge: Artist order: 7 vs Wave Anderson badge: Artist order: 7
+EnhancedTechnicalRider.tsx:1041 Sorting: Storm Johnson badge: Artist order: 7 vs Ocean Park badge: Artist order: 7
+EnhancedTechnicalRider.tsx:1041 Sorting: Session Brooks badge: Artist order: 7 vs Storm Johnson badge: Artist order: 7
+EnhancedTechnicalRider.tsx:1041 Sorting: Sage Rodriguez badge: Artist order: 7 vs Session Brooks badge: Artist order: 7
+EnhancedTechnicalRider.tsx:1041 Sorting: Mr Lindsay George badge: MANAGEMENT order: 999 vs Sage Rodriguez badge: Artist order: 7
+EnhancedTechnicalRider.tsx:1041 Sorting: Ms Joyette Pascal badge: MANAGEMENT order: 999 vs Mr Lindsay George badge: MANAGEMENT order: 999
+EnhancedTechnicalRider.tsx:1046 🔄 FINAL: Setting 12 band members
+EnhancedTechnicalRider.tsx:862 DEBUG: Syncing stage legend talent/skills with band members
+EnhancedTechnicalRider.tsx:1607 🎭 STAGE REMOVAL: Removed Mic Stand 2 for Lí-Lí Octave
+_app-887b064411aad558.js:13   POST https://events.launchdarkly.com/events/bulk/62b35a865152ab14c5942820 net::ERR_BLOCKED_BY_CLIENT
+(anonymous) @ _app-887b064411aad558.js:13
+(anonymous) @ _app-887b064411aad558.js:13
+promise @ _app-887b064411aad558.js:40
+(anonymous) @ _app-887b064411aad558.js:40
+r.httpRequest @ _app-887b064411aad558.js:40
+t @ _app-887b064411aad558.js:40
+a.sendChunk @ _app-887b064411aad558.js:40
+a.sendEvents @ _app-887b064411aad558.js:40
+a.flush @ _app-887b064411aad558.js:40
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+_app-887b064411aad558.js:13   POST https://events.launchdarkly.com/events/bulk/62b35a865152ab14c5942820 net::ERR_BLOCKED_BY_CLIENT
+(anonymous) @ _app-887b064411aad558.js:13
+(anonymous) @ _app-887b064411aad558.js:13
+promise @ _app-887b064411aad558.js:40
+(anonymous) @ _app-887b064411aad558.js:40
+r.httpRequest @ _app-887b064411aad558.js:40
+t @ _app-887b064411aad558.js:40
+(anonymous) @ _app-887b064411aad558.js:40
+Promise.catch
+t @ _app-887b064411aad558.js:40
+a.sendChunk @ _app-887b064411aad558.js:40
+a.sendEvents @ _app-887b064411aad558.js:40
+a.flush @ _app-887b064411aad558.js:40
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+EnhancedTechnicalRider.tsx:2579 🎯 TALENT/SKILL CHANGE: Nova Williams selected "Backing Vocalist"
+EnhancedTechnicalRider.tsx:2010 🔄 TALENT SYNC: Handling talent change for member: musician-16 to: Backing Vocalist
+EnhancedTechnicalRider.tsx:2023 🎯 SYNC: Member is in stage plot, updating stage elements and mixer assignments
+EnhancedTechnicalRider.tsx:862 DEBUG: Syncing stage legend talent/skills with band members
+EnhancedTechnicalRider.tsx:2096 🎛️ AUTO-ASSIGNING: Starting mixer channel auto-assignment
+EnhancedTechnicalRider.tsx:2107 🎛️ Stage plot members for auto-assignment: (10) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
+EnhancedTechnicalRider.tsx:2195 🎛️ AUTO-ASSIGNMENT: Completed mixer channel assignments
+EnhancedTechnicalRider.tsx:2096 🎛️ AUTO-ASSIGNING: Starting mixer channel auto-assignment
+EnhancedTechnicalRider.tsx:2107 🎛️ Stage plot members for auto-assignment: (10) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
+EnhancedTechnicalRider.tsx:2195 🎛️ AUTO-ASSIGNMENT: Completed mixer channel assignments
+_app-887b064411aad558.js:13   POST https://events.launchdarkly.com/events/diagnostic/62b35a865152ab14c5942820 net::ERR_BLOCKED_BY_CLIENT
+(anonymous) @ _app-887b064411aad558.js:13
+(anonymous) @ _app-887b064411aad558.js:13
+promise @ _app-887b064411aad558.js:40
+(anonymous) @ _app-887b064411aad558.js:40
+r.httpRequest @ _app-887b064411aad558.js:40
+t @ _app-887b064411aad558.js:40
+a.sendChunk @ _app-887b064411aad558.js:40
+a.sendEvents @ _app-887b064411aad558.js:40
+m @ _app-887b064411aad558.js:40
+b @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+_app-887b064411aad558.js:13   POST https://events.launchdarkly.com/events/diagnostic/62b35a865152ab14c5942820 net::ERR_BLOCKED_BY_CLIENT
+(anonymous) @ _app-887b064411aad558.js:13
+(anonymous) @ _app-887b064411aad558.js:13
+promise @ _app-887b064411aad558.js:40
+(anonymous) @ _app-887b064411aad558.js:40
+r.httpRequest @ _app-887b064411aad558.js:40
+t @ _app-887b064411aad558.js:40
+(anonymous) @ _app-887b064411aad558.js:40
+Promise.catch
+t @ _app-887b064411aad558.js:40
+a.sendChunk @ _app-887b064411aad558.js:40
+a.sendEvents @ _app-887b064411aad558.js:40
+m @ _app-887b064411aad558.js:40
+b @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+_app-887b064411aad558.js:13   POST https://events.launchdarkly.com/events/bulk/62b35a865152ab14c5942820 net::ERR_BLOCKED_BY_CLIENT
+(anonymous) @ _app-887b064411aad558.js:13
+(anonymous) @ _app-887b064411aad558.js:13
+promise @ _app-887b064411aad558.js:40
+(anonymous) @ _app-887b064411aad558.js:40
+r.httpRequest @ _app-887b064411aad558.js:40
+t @ _app-887b064411aad558.js:40
+a.sendChunk @ _app-887b064411aad558.js:40
+a.sendEvents @ _app-887b064411aad558.js:40
+a.flush @ _app-887b064411aad558.js:40
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+_app-887b064411aad558.js:13   POST https://events.launchdarkly.com/events/bulk/62b35a865152ab14c5942820 net::ERR_BLOCKED_BY_CLIENT
+(anonymous) @ _app-887b064411aad558.js:13
+(anonymous) @ _app-887b064411aad558.js:13
+promise @ _app-887b064411aad558.js:40
+(anonymous) @ _app-887b064411aad558.js:40
+r.httpRequest @ _app-887b064411aad558.js:40
+t @ _app-887b064411aad558.js:40
+(anonymous) @ _app-887b064411aad558.js:40
+Promise.catch
+t @ _app-887b064411aad558.js:40
+a.sendChunk @ _app-887b064411aad558.js:40
+a.sendEvents @ _app-887b064411aad558.js:40
+a.flush @ _app-887b064411aad558.js:40
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13

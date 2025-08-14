@@ -1,0 +1,1406 @@
+ComprehensiveBookingWorkflow.tsx:605 🎯 TALENT GROUPED BY ROLE_ID: {totalTalent: 10, roleGroups: Array(2), categorizedCounts: {…}}
+ComprehensiveBookingWorkflow.tsx:180 🔍 FRONTEND: Fetching assigned talent for booking ID: 1
+ComprehensiveBookingWorkflow.tsx:605 🎯 TALENT GROUPED BY ROLE_ID: {totalTalent: 10, roleGroups: Array(2), categorizedCounts: {…}}
+ComprehensiveBookingWorkflow.tsx:605 🎯 TALENT GROUPED BY ROLE_ID: {totalTalent: 17, roleGroups: Array(4), categorizedCounts: {…}}
+ComprehensiveBookingWorkflow.tsx:605 🎯 TALENT GROUPED BY ROLE_ID: {totalTalent: 23, roleGroups: Array(6), categorizedCounts: {…}}
+ComprehensiveBookingWorkflow.tsx:182 📋 FRONTEND: Received assigned talent data: (2) [{…}, {…}]
+ComprehensiveBookingWorkflow.tsx:605 🎯 TALENT GROUPED BY ROLE_ID: {totalTalent: 23, roleGroups: Array(6), categorizedCounts: {…}}
+ComprehensiveBookingWorkflow.tsx:224 📋 UPDATING assigned talent state: (2) [{…}, {…}]
+ComprehensiveBookingWorkflow.tsx:225 🔍 DETAILED DATA CHECK - First talent object: {id: 'assignment-2', userId: 6, name: 'Lí-Lí Octave', assignmentName: 'Lianne Letang(Lí-Lí Octave)', fullName: 'Lianne Letang', …}
+ComprehensiveBookingWorkflow.tsx:226 🔍 KEYS in first talent: (17) ['id', 'userId', 'name', 'assignmentName', 'fullName', 'stageName', 'type', 'role', 'isMainBookedTalent', 'isPrimary', 'talentType', 'primaryTalent', 'secondaryTalents', 'assignmentId', 'isOriginallyBooked', 'showAcceptDecline', 'showRemove']
+ComprehensiveBookingWorkflow.tsx:227 🔍 PRIMARY TALENT field: Lead Vocalist
+ComprehensiveBookingWorkflow.tsx:228 🔍 SECONDARY TALENTS field: []
+ComprehensiveBookingWorkflow.tsx:605 🎯 TALENT GROUPED BY ROLE_ID: {totalTalent: 23, roleGroups: Array(6), categorizedCounts: {…}}
+ComprehensiveBookingWorkflow.tsx:605 🎯 TALENT GROUPED BY ROLE_ID: {totalTalent: 23, roleGroups: Array(6), categorizedCounts: {…}}
+ComprehensiveBookingWorkflow.tsx:605 🎯 TALENT GROUPED BY ROLE_ID: {totalTalent: 23, roleGroups: Array(6), categorizedCounts: {…}}
+ComprehensiveBookingWorkflow.tsx:605 🎯 TALENT GROUPED BY ROLE_ID: {totalTalent: 23, roleGroups: Array(6), categorizedCounts: {…}}
+ComprehensiveBookingWorkflow.tsx:605 🎯 TALENT GROUPED BY ROLE_ID: {totalTalent: 23, roleGroups: Array(6), categorizedCounts: {…}}
+ComprehensiveBookingWorkflow.tsx:605 🎯 TALENT GROUPED BY ROLE_ID: {totalTalent: 23, roleGroups: Array(6), categorizedCounts: {…}}
+ComprehensiveBookingWorkflow.tsx:605 🎯 TALENT GROUPED BY ROLE_ID: {totalTalent: 23, roleGroups: Array(6), categorizedCounts: {…}}
+ComprehensiveBookingWorkflow.tsx:605 🎯 TALENT GROUPED BY ROLE_ID: {totalTalent: 23, roleGroups: Array(6), categorizedCounts: {…}}
+ComprehensiveBookingWorkflow.tsx:605 🎯 TALENT GROUPED BY ROLE_ID: {totalTalent: 23, roleGroups: Array(6), categorizedCounts: {…}}
+ComprehensiveBookingWorkflow.tsx:605 🎯 TALENT GROUPED BY ROLE_ID: {totalTalent: 23, roleGroups: Array(6), categorizedCounts: {…}}
+ComprehensiveBookingWorkflow.tsx:605 🎯 TALENT GROUPED BY ROLE_ID: {totalTalent: 23, roleGroups: Array(6), categorizedCounts: {…}}
+ComprehensiveBookingWorkflow.tsx:605 🎯 TALENT GROUPED BY ROLE_ID: {totalTalent: 23, roleGroups: Array(6), categorizedCounts: {…}}
+ComprehensiveBookingWorkflow.tsx:605 🎯 TALENT GROUPED BY ROLE_ID: {totalTalent: 23, roleGroups: Array(6), categorizedCounts: {…}}
+ComprehensiveBookingWorkflow.tsx:605 🎯 TALENT GROUPED BY ROLE_ID: {totalTalent: 23, roleGroups: Array(6), categorizedCounts: {…}}
+_app-887b064411aad558.js:13   POST https://events.launchdarkly.com/events/bulk/62b35a865152ab14c5942820 net::ERR_BLOCKED_BY_CLIENT
+(anonymous) @ _app-887b064411aad558.js:13
+(anonymous) @ _app-887b064411aad558.js:13
+promise @ _app-887b064411aad558.js:40
+(anonymous) @ _app-887b064411aad558.js:40
+r.httpRequest @ _app-887b064411aad558.js:40
+t @ _app-887b064411aad558.js:40
+a.sendChunk @ _app-887b064411aad558.js:40
+a.sendEvents @ _app-887b064411aad558.js:40
+a.flush @ _app-887b064411aad558.js:40
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+[NEW] Explain Console errors by using Copilot in Edge: click
+         
+         to explain an error. 
+        Learn more
+        Don't show again
+_app-887b064411aad558.js:13   POST https://events.launchdarkly.com/events/bulk/62b35a865152ab14c5942820 net::ERR_BLOCKED_BY_CLIENT
+(anonymous) @ _app-887b064411aad558.js:13
+(anonymous) @ _app-887b064411aad558.js:13
+promise @ _app-887b064411aad558.js:40
+(anonymous) @ _app-887b064411aad558.js:40
+r.httpRequest @ _app-887b064411aad558.js:40
+t @ _app-887b064411aad558.js:40
+(anonymous) @ _app-887b064411aad558.js:40
+Promise.catch
+t @ _app-887b064411aad558.js:40
+a.sendChunk @ _app-887b064411aad558.js:40
+a.sendEvents @ _app-887b064411aad558.js:40
+a.flush @ _app-887b064411aad558.js:40
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+ComprehensiveBookingWorkflow.tsx:605 🎯 TALENT GROUPED BY ROLE_ID: {totalTalent: 23, roleGroups: Array(6), categorizedCounts: {…}}
+ComprehensiveBookingWorkflow.tsx:605 🎯 TALENT GROUPED BY ROLE_ID: {totalTalent: 23, roleGroups: Array(6), categorizedCounts: {…}}
+ComprehensiveBookingWorkflow.tsx:605 🎯 TALENT GROUPED BY ROLE_ID: {totalTalent: 23, roleGroups: Array(6), categorizedCounts: {…}}
+ComprehensiveBookingWorkflow.tsx:605 🎯 TALENT GROUPED BY ROLE_ID: {totalTalent: 23, roleGroups: Array(6), categorizedCounts: {…}}
+ComprehensiveBookingWorkflow.tsx:605 🎯 TALENT GROUPED BY ROLE_ID: {totalTalent: 23, roleGroups: Array(6), categorizedCounts: {…}}
+ComprehensiveBookingWorkflow.tsx:605 🎯 TALENT GROUPED BY ROLE_ID: {totalTalent: 23, roleGroups: Array(6), categorizedCounts: {…}}
+ComprehensiveBookingWorkflow.tsx:605 🎯 TALENT GROUPED BY ROLE_ID: {totalTalent: 23, roleGroups: Array(6), categorizedCounts: {…}}
+EnhancedTechnicalRider.tsx:862 DEBUG: Syncing stage legend talent/skills with band members
+EnhancedTechnicalRider.tsx:908 🔄 TECHNICAL RIDER: Initializing band members
+EnhancedTechnicalRider.tsx:909 🔄 Assigned musicians (props) count: 8
+EnhancedTechnicalRider.tsx:910 🔄 Final assigned musicians (API) count: 8
+EnhancedTechnicalRider.tsx:911 🔄 Will use: assignedMusicians (props)
+EnhancedTechnicalRider.tsx:917 🔄 Using musician data source: assignedMusicians (props)
+EnhancedTechnicalRider.tsx:977 🔄 Total members added from API: 8
+EnhancedTechnicalRider.tsx:1041 Sorting: Maya Bass badge: managed_musician order: 7 vs Lí-Lí Octave badge: managed_artist order: 7
+EnhancedTechnicalRider.tsx:1041 Sorting: Wave Anderson badge: Artist order: 7 vs Storm Johnson badge: Artist order: 7
+EnhancedTechnicalRider.tsx:1041 Sorting: Ocean Park badge: Artist order: 7 vs Wave Anderson badge: Artist order: 7
+EnhancedTechnicalRider.tsx:1041 Sorting: Session Brooks badge: Artist order: 7 vs Ocean Park badge: Artist order: 7
+EnhancedTechnicalRider.tsx:1041 Sorting: Sage Rodriguez badge: Artist order: 7 vs Session Brooks badge: Artist order: 7
+EnhancedTechnicalRider.tsx:1041 Sorting: River Martinez badge: Artist order: 7 vs Sage Rodriguez badge: Artist order: 7
+EnhancedTechnicalRider.tsx:1041 Sorting: Mr Lindsay George badge: MANAGEMENT order: 999 vs River Martinez badge: Artist order: 7
+EnhancedTechnicalRider.tsx:1041 Sorting: Ms Joyette Pascal badge: MANAGEMENT order: 999 vs Mr Lindsay George badge: MANAGEMENT order: 999
+EnhancedTechnicalRider.tsx:1046 🔄 FINAL: Setting 10 band members
+EnhancedTechnicalRider.tsx:862 DEBUG: Syncing stage legend talent/skills with band members
+EnhancedTechnicalRider.tsx:908 🔄 TECHNICAL RIDER: Initializing band members
+EnhancedTechnicalRider.tsx:909 🔄 Assigned musicians (props) count: 8
+EnhancedTechnicalRider.tsx:910 🔄 Final assigned musicians (API) count: 2
+EnhancedTechnicalRider.tsx:911 🔄 Will use: assignedMusicians (props)
+EnhancedTechnicalRider.tsx:917 🔄 Using musician data source: assignedMusicians (props)
+EnhancedTechnicalRider.tsx:977 🔄 Total members added from API: 8
+EnhancedTechnicalRider.tsx:1041 Sorting: Maya Bass badge: managed_musician order: 7 vs Lí-Lí Octave badge: managed_artist order: 7
+EnhancedTechnicalRider.tsx:1041 Sorting: Wave Anderson badge: Artist order: 7 vs Storm Johnson badge: Artist order: 7
+EnhancedTechnicalRider.tsx:1041 Sorting: Ocean Park badge: Artist order: 7 vs Wave Anderson badge: Artist order: 7
+EnhancedTechnicalRider.tsx:1041 Sorting: Session Brooks badge: Artist order: 7 vs Ocean Park badge: Artist order: 7
+EnhancedTechnicalRider.tsx:1041 Sorting: Sage Rodriguez badge: Artist order: 7 vs Session Brooks badge: Artist order: 7
+EnhancedTechnicalRider.tsx:1041 Sorting: River Martinez badge: Artist order: 7 vs Sage Rodriguez badge: Artist order: 7
+EnhancedTechnicalRider.tsx:1041 Sorting: Mr Lindsay George badge: MANAGEMENT order: 999 vs River Martinez badge: Artist order: 7
+EnhancedTechnicalRider.tsx:1041 Sorting: Ms Joyette Pascal badge: MANAGEMENT order: 999 vs Mr Lindsay George badge: MANAGEMENT order: 999
+EnhancedTechnicalRider.tsx:1046 🔄 FINAL: Setting 10 band members
+EnhancedTechnicalRider.tsx:862 DEBUG: Syncing stage legend talent/skills with band members
+_app-887b064411aad558.js:13   POST https://events.launchdarkly.com/events/diagnostic/62b35a865152ab14c5942820 net::ERR_BLOCKED_BY_CLIENT
+(anonymous) @ _app-887b064411aad558.js:13
+(anonymous) @ _app-887b064411aad558.js:13
+promise @ _app-887b064411aad558.js:40
+(anonymous) @ _app-887b064411aad558.js:40
+r.httpRequest @ _app-887b064411aad558.js:40
+t @ _app-887b064411aad558.js:40
+a.sendChunk @ _app-887b064411aad558.js:40
+a.sendEvents @ _app-887b064411aad558.js:40
+m @ _app-887b064411aad558.js:40
+b @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+_app-887b064411aad558.js:13   POST https://events.launchdarkly.com/events/diagnostic/62b35a865152ab14c5942820 net::ERR_BLOCKED_BY_CLIENT
+(anonymous) @ _app-887b064411aad558.js:13
+(anonymous) @ _app-887b064411aad558.js:13
+promise @ _app-887b064411aad558.js:40
+(anonymous) @ _app-887b064411aad558.js:40
+r.httpRequest @ _app-887b064411aad558.js:40
+t @ _app-887b064411aad558.js:40
+(anonymous) @ _app-887b064411aad558.js:40
+Promise.catch
+t @ _app-887b064411aad558.js:40
+a.sendChunk @ _app-887b064411aad558.js:40
+a.sendEvents @ _app-887b064411aad558.js:40
+m @ _app-887b064411aad558.js:40
+b @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+EnhancedTechnicalRider.tsx:1580 🎭 STAGE PLOT: Band member added to stage, triggering mixer auto-assignment
+EnhancedTechnicalRider.tsx:2120 🎛️ AUTO-ASSIGNING: Starting mixer channel auto-assignment
+EnhancedTechnicalRider.tsx:2131 🎛️ Stage plot members for auto-assignment: []
+EnhancedTechnicalRider.tsx:2135 🎛️ No stage plot members found - skipping auto-assignment
+EnhancedTechnicalRider.tsx:1580 🎭 STAGE PLOT: Band member added to stage, triggering mixer auto-assignment
+EnhancedTechnicalRider.tsx:2120 🎛️ AUTO-ASSIGNING: Starting mixer channel auto-assignment
+EnhancedTechnicalRider.tsx:2131 🎛️ Stage plot members for auto-assignment: [{…}]
+EnhancedTechnicalRider.tsx:2251 🎛️ AUTO-ASSIGNMENT: Completed mixer channel assignments
+EnhancedTechnicalRider.tsx:1580 🎭 STAGE PLOT: Band member added to stage, triggering mixer auto-assignment
+EnhancedTechnicalRider.tsx:2120 🎛️ AUTO-ASSIGNING: Starting mixer channel auto-assignment
+EnhancedTechnicalRider.tsx:2131 🎛️ Stage plot members for auto-assignment: (2) [{…}, {…}]
+EnhancedTechnicalRider.tsx:2251 🎛️ AUTO-ASSIGNMENT: Completed mixer channel assignments
+EnhancedTechnicalRider.tsx:1580 🎭 STAGE PLOT: Band member added to stage, triggering mixer auto-assignment
+EnhancedTechnicalRider.tsx:2120 🎛️ AUTO-ASSIGNING: Starting mixer channel auto-assignment
+EnhancedTechnicalRider.tsx:2131 🎛️ Stage plot members for auto-assignment: (3) [{…}, {…}, {…}]
+EnhancedTechnicalRider.tsx:2251 🎛️ AUTO-ASSIGNMENT: Completed mixer channel assignments
+EnhancedTechnicalRider.tsx:1580 🎭 STAGE PLOT: Band member added to stage, triggering mixer auto-assignment
+EnhancedTechnicalRider.tsx:2120 🎛️ AUTO-ASSIGNING: Starting mixer channel auto-assignment
+EnhancedTechnicalRider.tsx:2131 🎛️ Stage plot members for auto-assignment: (4) [{…}, {…}, {…}, {…}]
+EnhancedTechnicalRider.tsx:2251 🎛️ AUTO-ASSIGNMENT: Completed mixer channel assignments
+EnhancedTechnicalRider.tsx:1580 🎭 STAGE PLOT: Band member added to stage, triggering mixer auto-assignment
+EnhancedTechnicalRider.tsx:2120 🎛️ AUTO-ASSIGNING: Starting mixer channel auto-assignment
+EnhancedTechnicalRider.tsx:2131 🎛️ Stage plot members for auto-assignment: (5) [{…}, {…}, {…}, {…}, {…}]
+EnhancedTechnicalRider.tsx:2251 🎛️ AUTO-ASSIGNMENT: Completed mixer channel assignments
+_app-887b064411aad558.js:13   POST https://events.launchdarkly.com/events/bulk/62b35a865152ab14c5942820 net::ERR_BLOCKED_BY_CLIENT
+(anonymous) @ _app-887b064411aad558.js:13
+(anonymous) @ _app-887b064411aad558.js:13
+promise @ _app-887b064411aad558.js:40
+(anonymous) @ _app-887b064411aad558.js:40
+r.httpRequest @ _app-887b064411aad558.js:40
+t @ _app-887b064411aad558.js:40
+a.sendChunk @ _app-887b064411aad558.js:40
+a.sendEvents @ _app-887b064411aad558.js:40
+a.flush @ _app-887b064411aad558.js:40
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+_app-887b064411aad558.js:13   POST https://events.launchdarkly.com/events/bulk/62b35a865152ab14c5942820 net::ERR_BLOCKED_BY_CLIENT
+(anonymous) @ _app-887b064411aad558.js:13
+(anonymous) @ _app-887b064411aad558.js:13
+promise @ _app-887b064411aad558.js:40
+(anonymous) @ _app-887b064411aad558.js:40
+r.httpRequest @ _app-887b064411aad558.js:40
+t @ _app-887b064411aad558.js:40
+(anonymous) @ _app-887b064411aad558.js:40
+Promise.catch
+t @ _app-887b064411aad558.js:40
+a.sendChunk @ _app-887b064411aad558.js:40
+a.sendEvents @ _app-887b064411aad558.js:40
+a.flush @ _app-887b064411aad558.js:40
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+_app-887b064411aad558.js:13   POST https://events.launchdarkly.com/events/bulk/62b35a865152ab14c5942820 net::ERR_BLOCKED_BY_CLIENT
+(anonymous) @ _app-887b064411aad558.js:13
+(anonymous) @ _app-887b064411aad558.js:13
+promise @ _app-887b064411aad558.js:40
+(anonymous) @ _app-887b064411aad558.js:40
+r.httpRequest @ _app-887b064411aad558.js:40
+t @ _app-887b064411aad558.js:40
+a.sendChunk @ _app-887b064411aad558.js:40
+a.sendEvents @ _app-887b064411aad558.js:40
+a.flush @ _app-887b064411aad558.js:40
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+_app-887b064411aad558.js:13   POST https://events.launchdarkly.com/events/bulk/62b35a865152ab14c5942820 net::ERR_BLOCKED_BY_CLIENT
+(anonymous) @ _app-887b064411aad558.js:13
+(anonymous) @ _app-887b064411aad558.js:13
+promise @ _app-887b064411aad558.js:40
+(anonymous) @ _app-887b064411aad558.js:40
+r.httpRequest @ _app-887b064411aad558.js:40
+t @ _app-887b064411aad558.js:40
+(anonymous) @ _app-887b064411aad558.js:40
+Promise.catch
+t @ _app-887b064411aad558.js:40
+a.sendChunk @ _app-887b064411aad558.js:40
+a.sendEvents @ _app-887b064411aad558.js:40
+a.flush @ _app-887b064411aad558.js:40
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+EnhancedTechnicalRider.tsx:555 🎚️ REORDER: Moved "Mixer Input Patch List
+Professional mixer configuration matching industry technical rider standards
+
+Auto-Assign" to position of "drums"
+EnhancedTechnicalRider.tsx:556 🎚️ NEW ORDER: (7) ['Mixer Input Patch List\r\nProfessional mixer configu…industry technical rider standards\r\n\r\nAuto-Assign', 'drums', 'bass', 'guitar', 'percussion', 'keyboards', 'brass']
+_app-887b064411aad558.js:13   POST https://events.launchdarkly.com/events/bulk/62b35a865152ab14c5942820 net::ERR_BLOCKED_BY_CLIENT
+(anonymous) @ _app-887b064411aad558.js:13
+(anonymous) @ _app-887b064411aad558.js:13
+promise @ _app-887b064411aad558.js:40
+(anonymous) @ _app-887b064411aad558.js:40
+r.httpRequest @ _app-887b064411aad558.js:40
+t @ _app-887b064411aad558.js:40
+a.sendChunk @ _app-887b064411aad558.js:40
+a.sendEvents @ _app-887b064411aad558.js:40
+a.flush @ _app-887b064411aad558.js:40
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+_app-887b064411aad558.js:13   POST https://events.launchdarkly.com/events/bulk/62b35a865152ab14c5942820 net::ERR_BLOCKED_BY_CLIENT
+(anonymous) @ _app-887b064411aad558.js:13
+(anonymous) @ _app-887b064411aad558.js:13
+promise @ _app-887b064411aad558.js:40
+(anonymous) @ _app-887b064411aad558.js:40
+r.httpRequest @ _app-887b064411aad558.js:40
+t @ _app-887b064411aad558.js:40
+(anonymous) @ _app-887b064411aad558.js:40
+Promise.catch
+t @ _app-887b064411aad558.js:40
+a.sendChunk @ _app-887b064411aad558.js:40
+a.sendEvents @ _app-887b064411aad558.js:40
+a.flush @ _app-887b064411aad558.js:40
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+5798-9f6993f38f76bbf9.js:1  Unrecognized feature: 'ambient-light-sensor'.
+(anonymous) @ 5798-9f6993f38f76bbf9.js:1
+(anonymous) @ main-2cce829a0d82288a.js:1
+n @ main-2cce829a0d82288a.js:1
+u @ main-2cce829a0d82288a.js:1
+(anonymous) @ main-2cce829a0d82288a.js:1
+(anonymous) @ main-2cce829a0d82288a.js:1
+(anonymous) @ 5798-9f6993f38f76bbf9.js:1
+(anonymous) @ 5798-9f6993f38f76bbf9.js:1
+(anonymous) @ main-2cce829a0d82288a.js:1
+n @ main-2cce829a0d82288a.js:1
+u @ main-2cce829a0d82288a.js:1
+(anonymous) @ main-2cce829a0d82288a.js:1
+(anonymous) @ main-2cce829a0d82288a.js:1
+(anonymous) @ 5798-9f6993f38f76bbf9.js:1
+navigateTo @ 5798-9f6993f38f76bbf9.js:1
+refresh @ 5798-9f6993f38f76bbf9.js:1
+(anonymous) @ 5798-9f6993f38f76bbf9.js:1
+(anonymous) @ _app-887b064411aad558.js:28
+(anonymous) @ _app-887b064411aad558.js:23
+onClick @ _app-887b064411aad558.js:28
+(anonymous) @ _app-887b064411aad558.js:28
+eB @ framework-2bd9a0e07d0728ae.js:1
+eH @ framework-2bd9a0e07d0728ae.js:1
+(anonymous) @ framework-2bd9a0e07d0728ae.js:1
+re @ framework-2bd9a0e07d0728ae.js:1
+rt @ framework-2bd9a0e07d0728ae.js:1
+(anonymous) @ framework-2bd9a0e07d0728ae.js:1
+uT @ framework-2bd9a0e07d0728ae.js:1
+eM @ framework-2bd9a0e07d0728ae.js:1
+ru @ framework-2bd9a0e07d0728ae.js:1
+tB @ framework-2bd9a0e07d0728ae.js:1
+tD @ framework-2bd9a0e07d0728ae.js:1
+n @ _app-887b064411aad558.js:13
+5798-9f6993f38f76bbf9.js:1  Unrecognized feature: 'battery'.
+(anonymous) @ 5798-9f6993f38f76bbf9.js:1
+(anonymous) @ main-2cce829a0d82288a.js:1
+n @ main-2cce829a0d82288a.js:1
+u @ main-2cce829a0d82288a.js:1
+(anonymous) @ main-2cce829a0d82288a.js:1
+(anonymous) @ main-2cce829a0d82288a.js:1
+(anonymous) @ 5798-9f6993f38f76bbf9.js:1
+(anonymous) @ 5798-9f6993f38f76bbf9.js:1
+(anonymous) @ main-2cce829a0d82288a.js:1
+n @ main-2cce829a0d82288a.js:1
+u @ main-2cce829a0d82288a.js:1
+(anonymous) @ main-2cce829a0d82288a.js:1
+(anonymous) @ main-2cce829a0d82288a.js:1
+(anonymous) @ 5798-9f6993f38f76bbf9.js:1
+navigateTo @ 5798-9f6993f38f76bbf9.js:1
+refresh @ 5798-9f6993f38f76bbf9.js:1
+(anonymous) @ 5798-9f6993f38f76bbf9.js:1
+(anonymous) @ _app-887b064411aad558.js:28
+(anonymous) @ _app-887b064411aad558.js:23
+onClick @ _app-887b064411aad558.js:28
+(anonymous) @ _app-887b064411aad558.js:28
+eB @ framework-2bd9a0e07d0728ae.js:1
+eH @ framework-2bd9a0e07d0728ae.js:1
+(anonymous) @ framework-2bd9a0e07d0728ae.js:1
+re @ framework-2bd9a0e07d0728ae.js:1
+rt @ framework-2bd9a0e07d0728ae.js:1
+(anonymous) @ framework-2bd9a0e07d0728ae.js:1
+uT @ framework-2bd9a0e07d0728ae.js:1
+eM @ framework-2bd9a0e07d0728ae.js:1
+ru @ framework-2bd9a0e07d0728ae.js:1
+tB @ framework-2bd9a0e07d0728ae.js:1
+tD @ framework-2bd9a0e07d0728ae.js:1
+n @ _app-887b064411aad558.js:13
+5798-9f6993f38f76bbf9.js:1  Unrecognized feature: 'execution-while-not-rendered'.
+(anonymous) @ 5798-9f6993f38f76bbf9.js:1
+(anonymous) @ main-2cce829a0d82288a.js:1
+n @ main-2cce829a0d82288a.js:1
+u @ main-2cce829a0d82288a.js:1
+(anonymous) @ main-2cce829a0d82288a.js:1
+(anonymous) @ main-2cce829a0d82288a.js:1
+(anonymous) @ 5798-9f6993f38f76bbf9.js:1
+(anonymous) @ 5798-9f6993f38f76bbf9.js:1
+(anonymous) @ main-2cce829a0d82288a.js:1
+n @ main-2cce829a0d82288a.js:1
+u @ main-2cce829a0d82288a.js:1
+(anonymous) @ main-2cce829a0d82288a.js:1
+(anonymous) @ main-2cce829a0d82288a.js:1
+(anonymous) @ 5798-9f6993f38f76bbf9.js:1
+navigateTo @ 5798-9f6993f38f76bbf9.js:1
+refresh @ 5798-9f6993f38f76bbf9.js:1
+(anonymous) @ 5798-9f6993f38f76bbf9.js:1
+(anonymous) @ _app-887b064411aad558.js:28
+(anonymous) @ _app-887b064411aad558.js:23
+onClick @ _app-887b064411aad558.js:28
+(anonymous) @ _app-887b064411aad558.js:28
+eB @ framework-2bd9a0e07d0728ae.js:1
+eH @ framework-2bd9a0e07d0728ae.js:1
+(anonymous) @ framework-2bd9a0e07d0728ae.js:1
+re @ framework-2bd9a0e07d0728ae.js:1
+rt @ framework-2bd9a0e07d0728ae.js:1
+(anonymous) @ framework-2bd9a0e07d0728ae.js:1
+uT @ framework-2bd9a0e07d0728ae.js:1
+eM @ framework-2bd9a0e07d0728ae.js:1
+ru @ framework-2bd9a0e07d0728ae.js:1
+tB @ framework-2bd9a0e07d0728ae.js:1
+tD @ framework-2bd9a0e07d0728ae.js:1
+n @ _app-887b064411aad558.js:13
+5798-9f6993f38f76bbf9.js:1  Unrecognized feature: 'execution-while-out-of-viewport'.
+(anonymous) @ 5798-9f6993f38f76bbf9.js:1
+(anonymous) @ main-2cce829a0d82288a.js:1
+n @ main-2cce829a0d82288a.js:1
+u @ main-2cce829a0d82288a.js:1
+(anonymous) @ main-2cce829a0d82288a.js:1
+(anonymous) @ main-2cce829a0d82288a.js:1
+(anonymous) @ 5798-9f6993f38f76bbf9.js:1
+(anonymous) @ 5798-9f6993f38f76bbf9.js:1
+(anonymous) @ main-2cce829a0d82288a.js:1
+n @ main-2cce829a0d82288a.js:1
+u @ main-2cce829a0d82288a.js:1
+(anonymous) @ main-2cce829a0d82288a.js:1
+(anonymous) @ main-2cce829a0d82288a.js:1
+(anonymous) @ 5798-9f6993f38f76bbf9.js:1
+navigateTo @ 5798-9f6993f38f76bbf9.js:1
+refresh @ 5798-9f6993f38f76bbf9.js:1
+(anonymous) @ 5798-9f6993f38f76bbf9.js:1
+(anonymous) @ _app-887b064411aad558.js:28
+(anonymous) @ _app-887b064411aad558.js:23
+onClick @ _app-887b064411aad558.js:28
+(anonymous) @ _app-887b064411aad558.js:28
+eB @ framework-2bd9a0e07d0728ae.js:1
+eH @ framework-2bd9a0e07d0728ae.js:1
+(anonymous) @ framework-2bd9a0e07d0728ae.js:1
+re @ framework-2bd9a0e07d0728ae.js:1
+rt @ framework-2bd9a0e07d0728ae.js:1
+(anonymous) @ framework-2bd9a0e07d0728ae.js:1
+uT @ framework-2bd9a0e07d0728ae.js:1
+eM @ framework-2bd9a0e07d0728ae.js:1
+ru @ framework-2bd9a0e07d0728ae.js:1
+tB @ framework-2bd9a0e07d0728ae.js:1
+tD @ framework-2bd9a0e07d0728ae.js:1
+n @ _app-887b064411aad558.js:13
+5798-9f6993f38f76bbf9.js:1  Unrecognized feature: 'layout-animations'.
+(anonymous) @ 5798-9f6993f38f76bbf9.js:1
+(anonymous) @ main-2cce829a0d82288a.js:1
+n @ main-2cce829a0d82288a.js:1
+u @ main-2cce829a0d82288a.js:1
+(anonymous) @ main-2cce829a0d82288a.js:1
+(anonymous) @ main-2cce829a0d82288a.js:1
+(anonymous) @ 5798-9f6993f38f76bbf9.js:1
+(anonymous) @ 5798-9f6993f38f76bbf9.js:1
+(anonymous) @ main-2cce829a0d82288a.js:1
+n @ main-2cce829a0d82288a.js:1
+u @ main-2cce829a0d82288a.js:1
+(anonymous) @ main-2cce829a0d82288a.js:1
+(anonymous) @ main-2cce829a0d82288a.js:1
+(anonymous) @ 5798-9f6993f38f76bbf9.js:1
+navigateTo @ 5798-9f6993f38f76bbf9.js:1
+refresh @ 5798-9f6993f38f76bbf9.js:1
+(anonymous) @ 5798-9f6993f38f76bbf9.js:1
+(anonymous) @ _app-887b064411aad558.js:28
+(anonymous) @ _app-887b064411aad558.js:23
+onClick @ _app-887b064411aad558.js:28
+(anonymous) @ _app-887b064411aad558.js:28
+eB @ framework-2bd9a0e07d0728ae.js:1
+eH @ framework-2bd9a0e07d0728ae.js:1
+(anonymous) @ framework-2bd9a0e07d0728ae.js:1
+re @ framework-2bd9a0e07d0728ae.js:1
+rt @ framework-2bd9a0e07d0728ae.js:1
+(anonymous) @ framework-2bd9a0e07d0728ae.js:1
+uT @ framework-2bd9a0e07d0728ae.js:1
+eM @ framework-2bd9a0e07d0728ae.js:1
+ru @ framework-2bd9a0e07d0728ae.js:1
+tB @ framework-2bd9a0e07d0728ae.js:1
+tD @ framework-2bd9a0e07d0728ae.js:1
+n @ _app-887b064411aad558.js:13
+5798-9f6993f38f76bbf9.js:1  Unrecognized feature: 'legacy-image-formats'.
+(anonymous) @ 5798-9f6993f38f76bbf9.js:1
+(anonymous) @ main-2cce829a0d82288a.js:1
+n @ main-2cce829a0d82288a.js:1
+u @ main-2cce829a0d82288a.js:1
+(anonymous) @ main-2cce829a0d82288a.js:1
+(anonymous) @ main-2cce829a0d82288a.js:1
+(anonymous) @ 5798-9f6993f38f76bbf9.js:1
+(anonymous) @ 5798-9f6993f38f76bbf9.js:1
+(anonymous) @ main-2cce829a0d82288a.js:1
+n @ main-2cce829a0d82288a.js:1
+u @ main-2cce829a0d82288a.js:1
+(anonymous) @ main-2cce829a0d82288a.js:1
+(anonymous) @ main-2cce829a0d82288a.js:1
+(anonymous) @ 5798-9f6993f38f76bbf9.js:1
+navigateTo @ 5798-9f6993f38f76bbf9.js:1
+refresh @ 5798-9f6993f38f76bbf9.js:1
+(anonymous) @ 5798-9f6993f38f76bbf9.js:1
+(anonymous) @ _app-887b064411aad558.js:28
+(anonymous) @ _app-887b064411aad558.js:23
+onClick @ _app-887b064411aad558.js:28
+(anonymous) @ _app-887b064411aad558.js:28
+eB @ framework-2bd9a0e07d0728ae.js:1
+eH @ framework-2bd9a0e07d0728ae.js:1
+(anonymous) @ framework-2bd9a0e07d0728ae.js:1
+re @ framework-2bd9a0e07d0728ae.js:1
+rt @ framework-2bd9a0e07d0728ae.js:1
+(anonymous) @ framework-2bd9a0e07d0728ae.js:1
+uT @ framework-2bd9a0e07d0728ae.js:1
+eM @ framework-2bd9a0e07d0728ae.js:1
+ru @ framework-2bd9a0e07d0728ae.js:1
+tB @ framework-2bd9a0e07d0728ae.js:1
+tD @ framework-2bd9a0e07d0728ae.js:1
+n @ _app-887b064411aad558.js:13
+5798-9f6993f38f76bbf9.js:1  Unrecognized feature: 'navigation-override'.
+(anonymous) @ 5798-9f6993f38f76bbf9.js:1
+(anonymous) @ main-2cce829a0d82288a.js:1
+n @ main-2cce829a0d82288a.js:1
+u @ main-2cce829a0d82288a.js:1
+(anonymous) @ main-2cce829a0d82288a.js:1
+(anonymous) @ main-2cce829a0d82288a.js:1
+(anonymous) @ 5798-9f6993f38f76bbf9.js:1
+(anonymous) @ 5798-9f6993f38f76bbf9.js:1
+(anonymous) @ main-2cce829a0d82288a.js:1
+n @ main-2cce829a0d82288a.js:1
+u @ main-2cce829a0d82288a.js:1
+(anonymous) @ main-2cce829a0d82288a.js:1
+(anonymous) @ main-2cce829a0d82288a.js:1
+(anonymous) @ 5798-9f6993f38f76bbf9.js:1
+navigateTo @ 5798-9f6993f38f76bbf9.js:1
+refresh @ 5798-9f6993f38f76bbf9.js:1
+(anonymous) @ 5798-9f6993f38f76bbf9.js:1
+(anonymous) @ _app-887b064411aad558.js:28
+(anonymous) @ _app-887b064411aad558.js:23
+onClick @ _app-887b064411aad558.js:28
+(anonymous) @ _app-887b064411aad558.js:28
+eB @ framework-2bd9a0e07d0728ae.js:1
+eH @ framework-2bd9a0e07d0728ae.js:1
+(anonymous) @ framework-2bd9a0e07d0728ae.js:1
+re @ framework-2bd9a0e07d0728ae.js:1
+rt @ framework-2bd9a0e07d0728ae.js:1
+(anonymous) @ framework-2bd9a0e07d0728ae.js:1
+uT @ framework-2bd9a0e07d0728ae.js:1
+eM @ framework-2bd9a0e07d0728ae.js:1
+ru @ framework-2bd9a0e07d0728ae.js:1
+tB @ framework-2bd9a0e07d0728ae.js:1
+tD @ framework-2bd9a0e07d0728ae.js:1
+n @ _app-887b064411aad558.js:13
+5798-9f6993f38f76bbf9.js:1  Unrecognized feature: 'oversized-images'.
+(anonymous) @ 5798-9f6993f38f76bbf9.js:1
+(anonymous) @ main-2cce829a0d82288a.js:1
+n @ main-2cce829a0d82288a.js:1
+u @ main-2cce829a0d82288a.js:1
+(anonymous) @ main-2cce829a0d82288a.js:1
+(anonymous) @ main-2cce829a0d82288a.js:1
+(anonymous) @ 5798-9f6993f38f76bbf9.js:1
+(anonymous) @ 5798-9f6993f38f76bbf9.js:1
+(anonymous) @ main-2cce829a0d82288a.js:1
+n @ main-2cce829a0d82288a.js:1
+u @ main-2cce829a0d82288a.js:1
+(anonymous) @ main-2cce829a0d82288a.js:1
+(anonymous) @ main-2cce829a0d82288a.js:1
+(anonymous) @ 5798-9f6993f38f76bbf9.js:1
+navigateTo @ 5798-9f6993f38f76bbf9.js:1
+refresh @ 5798-9f6993f38f76bbf9.js:1
+(anonymous) @ 5798-9f6993f38f76bbf9.js:1
+(anonymous) @ _app-887b064411aad558.js:28
+(anonymous) @ _app-887b064411aad558.js:23
+onClick @ _app-887b064411aad558.js:28
+(anonymous) @ _app-887b064411aad558.js:28
+eB @ framework-2bd9a0e07d0728ae.js:1
+eH @ framework-2bd9a0e07d0728ae.js:1
+(anonymous) @ framework-2bd9a0e07d0728ae.js:1
+re @ framework-2bd9a0e07d0728ae.js:1
+rt @ framework-2bd9a0e07d0728ae.js:1
+(anonymous) @ framework-2bd9a0e07d0728ae.js:1
+uT @ framework-2bd9a0e07d0728ae.js:1
+eM @ framework-2bd9a0e07d0728ae.js:1
+ru @ framework-2bd9a0e07d0728ae.js:1
+tB @ framework-2bd9a0e07d0728ae.js:1
+tD @ framework-2bd9a0e07d0728ae.js:1
+n @ _app-887b064411aad558.js:13
+5798-9f6993f38f76bbf9.js:1  Unrecognized feature: 'publickey-credentials'.
+(anonymous) @ 5798-9f6993f38f76bbf9.js:1
+(anonymous) @ main-2cce829a0d82288a.js:1
+n @ main-2cce829a0d82288a.js:1
+u @ main-2cce829a0d82288a.js:1
+(anonymous) @ main-2cce829a0d82288a.js:1
+(anonymous) @ main-2cce829a0d82288a.js:1
+(anonymous) @ 5798-9f6993f38f76bbf9.js:1
+(anonymous) @ 5798-9f6993f38f76bbf9.js:1
+(anonymous) @ main-2cce829a0d82288a.js:1
+n @ main-2cce829a0d82288a.js:1
+u @ main-2cce829a0d82288a.js:1
+(anonymous) @ main-2cce829a0d82288a.js:1
+(anonymous) @ main-2cce829a0d82288a.js:1
+(anonymous) @ 5798-9f6993f38f76bbf9.js:1
+navigateTo @ 5798-9f6993f38f76bbf9.js:1
+refresh @ 5798-9f6993f38f76bbf9.js:1
+(anonymous) @ 5798-9f6993f38f76bbf9.js:1
+(anonymous) @ _app-887b064411aad558.js:28
+(anonymous) @ _app-887b064411aad558.js:23
+onClick @ _app-887b064411aad558.js:28
+(anonymous) @ _app-887b064411aad558.js:28
+eB @ framework-2bd9a0e07d0728ae.js:1
+eH @ framework-2bd9a0e07d0728ae.js:1
+(anonymous) @ framework-2bd9a0e07d0728ae.js:1
+re @ framework-2bd9a0e07d0728ae.js:1
+rt @ framework-2bd9a0e07d0728ae.js:1
+(anonymous) @ framework-2bd9a0e07d0728ae.js:1
+uT @ framework-2bd9a0e07d0728ae.js:1
+eM @ framework-2bd9a0e07d0728ae.js:1
+ru @ framework-2bd9a0e07d0728ae.js:1
+tB @ framework-2bd9a0e07d0728ae.js:1
+tD @ framework-2bd9a0e07d0728ae.js:1
+n @ _app-887b064411aad558.js:13
+5798-9f6993f38f76bbf9.js:1  Unrecognized feature: 'speaker-selection'.
+(anonymous) @ 5798-9f6993f38f76bbf9.js:1
+(anonymous) @ main-2cce829a0d82288a.js:1
+n @ main-2cce829a0d82288a.js:1
+u @ main-2cce829a0d82288a.js:1
+(anonymous) @ main-2cce829a0d82288a.js:1
+(anonymous) @ main-2cce829a0d82288a.js:1
+(anonymous) @ 5798-9f6993f38f76bbf9.js:1
+(anonymous) @ 5798-9f6993f38f76bbf9.js:1
+(anonymous) @ main-2cce829a0d82288a.js:1
+n @ main-2cce829a0d82288a.js:1
+u @ main-2cce829a0d82288a.js:1
+(anonymous) @ main-2cce829a0d82288a.js:1
+(anonymous) @ main-2cce829a0d82288a.js:1
+(anonymous) @ 5798-9f6993f38f76bbf9.js:1
+navigateTo @ 5798-9f6993f38f76bbf9.js:1
+refresh @ 5798-9f6993f38f76bbf9.js:1
+(anonymous) @ 5798-9f6993f38f76bbf9.js:1
+(anonymous) @ _app-887b064411aad558.js:28
+(anonymous) @ _app-887b064411aad558.js:23
+onClick @ _app-887b064411aad558.js:28
+(anonymous) @ _app-887b064411aad558.js:28
+eB @ framework-2bd9a0e07d0728ae.js:1
+eH @ framework-2bd9a0e07d0728ae.js:1
+(anonymous) @ framework-2bd9a0e07d0728ae.js:1
+re @ framework-2bd9a0e07d0728ae.js:1
+rt @ framework-2bd9a0e07d0728ae.js:1
+(anonymous) @ framework-2bd9a0e07d0728ae.js:1
+uT @ framework-2bd9a0e07d0728ae.js:1
+eM @ framework-2bd9a0e07d0728ae.js:1
+ru @ framework-2bd9a0e07d0728ae.js:1
+tB @ framework-2bd9a0e07d0728ae.js:1
+tD @ framework-2bd9a0e07d0728ae.js:1
+n @ _app-887b064411aad558.js:13
+  Unrecognized feature: 'unoptimized-images'.
+(anonymous) @ 5798-9f6993f38f76bbf9.js:1
+(anonymous) @ main-2cce829a0d82288a.js:1
+n @ main-2cce829a0d82288a.js:1
+u @ main-2cce829a0d82288a.js:1
+(anonymous) @ main-2cce829a0d82288a.js:1
+(anonymous) @ main-2cce829a0d82288a.js:1
+(anonymous) @ 5798-9f6993f38f76bbf9.js:1
+(anonymous) @ 5798-9f6993f38f76bbf9.js:1
+(anonymous) @ main-2cce829a0d82288a.js:1
+n @ main-2cce829a0d82288a.js:1
+u @ main-2cce829a0d82288a.js:1
+(anonymous) @ main-2cce829a0d82288a.js:1
+(anonymous) @ main-2cce829a0d82288a.js:1
+(anonymous) @ 5798-9f6993f38f76bbf9.js:1
+navigateTo @ 5798-9f6993f38f76bbf9.js:1
+refresh @ 5798-9f6993f38f76bbf9.js:1
+(anonymous) @ 5798-9f6993f38f76bbf9.js:1
+(anonymous) @ _app-887b064411aad558.js:28
+(anonymous) @ _app-887b064411aad558.js:23
+onClick @ _app-887b064411aad558.js:28
+(anonymous) @ _app-887b064411aad558.js:28
+eB @ framework-2bd9a0e07d0728ae.js:1
+eH @ framework-2bd9a0e07d0728ae.js:1
+(anonymous) @ framework-2bd9a0e07d0728ae.js:1
+re @ framework-2bd9a0e07d0728ae.js:1
+rt @ framework-2bd9a0e07d0728ae.js:1
+(anonymous) @ framework-2bd9a0e07d0728ae.js:1
+uT @ framework-2bd9a0e07d0728ae.js:1
+eM @ framework-2bd9a0e07d0728ae.js:1
+ru @ framework-2bd9a0e07d0728ae.js:1
+tB @ framework-2bd9a0e07d0728ae.js:1
+tD @ framework-2bd9a0e07d0728ae.js:1
+n @ _app-887b064411aad558.js:13
+  Unrecognized feature: 'unsized-media'.
+(anonymous) @ 5798-9f6993f38f76bbf9.js:1
+(anonymous) @ main-2cce829a0d82288a.js:1
+n @ main-2cce829a0d82288a.js:1
+u @ main-2cce829a0d82288a.js:1
+(anonymous) @ main-2cce829a0d82288a.js:1
+(anonymous) @ main-2cce829a0d82288a.js:1
+(anonymous) @ 5798-9f6993f38f76bbf9.js:1
+(anonymous) @ 5798-9f6993f38f76bbf9.js:1
+(anonymous) @ main-2cce829a0d82288a.js:1
+n @ main-2cce829a0d82288a.js:1
+u @ main-2cce829a0d82288a.js:1
+(anonymous) @ main-2cce829a0d82288a.js:1
+(anonymous) @ main-2cce829a0d82288a.js:1
+(anonymous) @ 5798-9f6993f38f76bbf9.js:1
+navigateTo @ 5798-9f6993f38f76bbf9.js:1
+refresh @ 5798-9f6993f38f76bbf9.js:1
+(anonymous) @ 5798-9f6993f38f76bbf9.js:1
+(anonymous) @ _app-887b064411aad558.js:28
+(anonymous) @ _app-887b064411aad558.js:23
+onClick @ _app-887b064411aad558.js:28
+(anonymous) @ _app-887b064411aad558.js:28
+eB @ framework-2bd9a0e07d0728ae.js:1
+eH @ framework-2bd9a0e07d0728ae.js:1
+(anonymous) @ framework-2bd9a0e07d0728ae.js:1
+re @ framework-2bd9a0e07d0728ae.js:1
+rt @ framework-2bd9a0e07d0728ae.js:1
+(anonymous) @ framework-2bd9a0e07d0728ae.js:1
+uT @ framework-2bd9a0e07d0728ae.js:1
+eM @ framework-2bd9a0e07d0728ae.js:1
+ru @ framework-2bd9a0e07d0728ae.js:1
+tB @ framework-2bd9a0e07d0728ae.js:1
+tD @ framework-2bd9a0e07d0728ae.js:1
+n @ _app-887b064411aad558.js:13
+  Unrecognized feature: 'pointer-lock'.
+(anonymous) @ 5798-9f6993f38f76bbf9.js:1
+(anonymous) @ main-2cce829a0d82288a.js:1
+n @ main-2cce829a0d82288a.js:1
+u @ main-2cce829a0d82288a.js:1
+(anonymous) @ main-2cce829a0d82288a.js:1
+(anonymous) @ main-2cce829a0d82288a.js:1
+(anonymous) @ 5798-9f6993f38f76bbf9.js:1
+(anonymous) @ 5798-9f6993f38f76bbf9.js:1
+(anonymous) @ main-2cce829a0d82288a.js:1
+n @ main-2cce829a0d82288a.js:1
+u @ main-2cce829a0d82288a.js:1
+(anonymous) @ main-2cce829a0d82288a.js:1
+(anonymous) @ main-2cce829a0d82288a.js:1
+(anonymous) @ 5798-9f6993f38f76bbf9.js:1
+navigateTo @ 5798-9f6993f38f76bbf9.js:1
+refresh @ 5798-9f6993f38f76bbf9.js:1
+(anonymous) @ 5798-9f6993f38f76bbf9.js:1
+(anonymous) @ _app-887b064411aad558.js:28
+(anonymous) @ _app-887b064411aad558.js:23
+onClick @ _app-887b064411aad558.js:28
+(anonymous) @ _app-887b064411aad558.js:28
+eB @ framework-2bd9a0e07d0728ae.js:1
+eH @ framework-2bd9a0e07d0728ae.js:1
+(anonymous) @ framework-2bd9a0e07d0728ae.js:1
+re @ framework-2bd9a0e07d0728ae.js:1
+rt @ framework-2bd9a0e07d0728ae.js:1
+(anonymous) @ framework-2bd9a0e07d0728ae.js:1
+uT @ framework-2bd9a0e07d0728ae.js:1
+eM @ framework-2bd9a0e07d0728ae.js:1
+ru @ framework-2bd9a0e07d0728ae.js:1
+tB @ framework-2bd9a0e07d0728ae.js:1
+tD @ framework-2bd9a0e07d0728ae.js:1
+n @ _app-887b064411aad558.js:13
+  Allow attribute will take precedence over 'allowfullscreen'.
+(anonymous) @ 5798-9f6993f38f76bbf9.js:1
+(anonymous) @ main-2cce829a0d82288a.js:1
+n @ main-2cce829a0d82288a.js:1
+u @ main-2cce829a0d82288a.js:1
+(anonymous) @ main-2cce829a0d82288a.js:1
+(anonymous) @ main-2cce829a0d82288a.js:1
+(anonymous) @ 5798-9f6993f38f76bbf9.js:1
+(anonymous) @ 5798-9f6993f38f76bbf9.js:1
+(anonymous) @ main-2cce829a0d82288a.js:1
+n @ main-2cce829a0d82288a.js:1
+u @ main-2cce829a0d82288a.js:1
+(anonymous) @ main-2cce829a0d82288a.js:1
+(anonymous) @ main-2cce829a0d82288a.js:1
+(anonymous) @ 5798-9f6993f38f76bbf9.js:1
+navigateTo @ 5798-9f6993f38f76bbf9.js:1
+refresh @ 5798-9f6993f38f76bbf9.js:1
+(anonymous) @ 5798-9f6993f38f76bbf9.js:1
+(anonymous) @ _app-887b064411aad558.js:28
+(anonymous) @ _app-887b064411aad558.js:23
+onClick @ _app-887b064411aad558.js:28
+(anonymous) @ _app-887b064411aad558.js:28
+eB @ framework-2bd9a0e07d0728ae.js:1
+eH @ framework-2bd9a0e07d0728ae.js:1
+(anonymous) @ framework-2bd9a0e07d0728ae.js:1
+re @ framework-2bd9a0e07d0728ae.js:1
+rt @ framework-2bd9a0e07d0728ae.js:1
+(anonymous) @ framework-2bd9a0e07d0728ae.js:1
+uT @ framework-2bd9a0e07d0728ae.js:1
+eM @ framework-2bd9a0e07d0728ae.js:1
+ru @ framework-2bd9a0e07d0728ae.js:1
+tB @ framework-2bd9a0e07d0728ae.js:1
+tD @ framework-2bd9a0e07d0728ae.js:1
+n @ _app-887b064411aad558.js:13
+  Allow attribute will take precedence over 'allowpaymentrequest'.
+(anonymous) @ 5798-9f6993f38f76bbf9.js:1
+(anonymous) @ main-2cce829a0d82288a.js:1
+n @ main-2cce829a0d82288a.js:1
+u @ main-2cce829a0d82288a.js:1
+(anonymous) @ main-2cce829a0d82288a.js:1
+(anonymous) @ main-2cce829a0d82288a.js:1
+(anonymous) @ 5798-9f6993f38f76bbf9.js:1
+(anonymous) @ 5798-9f6993f38f76bbf9.js:1
+(anonymous) @ main-2cce829a0d82288a.js:1
+n @ main-2cce829a0d82288a.js:1
+u @ main-2cce829a0d82288a.js:1
+(anonymous) @ main-2cce829a0d82288a.js:1
+(anonymous) @ main-2cce829a0d82288a.js:1
+(anonymous) @ 5798-9f6993f38f76bbf9.js:1
+navigateTo @ 5798-9f6993f38f76bbf9.js:1
+refresh @ 5798-9f6993f38f76bbf9.js:1
+(anonymous) @ 5798-9f6993f38f76bbf9.js:1
+(anonymous) @ _app-887b064411aad558.js:28
+(anonymous) @ _app-887b064411aad558.js:23
+onClick @ _app-887b064411aad558.js:28
+(anonymous) @ _app-887b064411aad558.js:28
+eB @ framework-2bd9a0e07d0728ae.js:1
+eH @ framework-2bd9a0e07d0728ae.js:1
+(anonymous) @ framework-2bd9a0e07d0728ae.js:1
+re @ framework-2bd9a0e07d0728ae.js:1
+rt @ framework-2bd9a0e07d0728ae.js:1
+(anonymous) @ framework-2bd9a0e07d0728ae.js:1
+uT @ framework-2bd9a0e07d0728ae.js:1
+eM @ framework-2bd9a0e07d0728ae.js:1
+ru @ framework-2bd9a0e07d0728ae.js:1
+tB @ framework-2bd9a0e07d0728ae.js:1
+tD @ framework-2bd9a0e07d0728ae.js:1
+n @ _app-887b064411aad558.js:13
+workspace_iframe.html:32  Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+workspace_iframe.html:32  Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+workspace_iframe.html:32  Unrecognized feature: 'ambient-light-sensor'.
+workspace_iframe.html:32  Unrecognized feature: 'ambient-light-sensor'.
+workspace_iframe.html:32  Unrecognized feature: 'battery'.
+workspace_iframe.html:32  Unrecognized feature: 'battery'.
+workspace_iframe.html:32  Unrecognized feature: 'execution-while-not-rendered'.
+workspace_iframe.html:32  Unrecognized feature: 'execution-while-not-rendered'.
+workspace_iframe.html:32  Unrecognized feature: 'execution-while-out-of-viewport'.
+workspace_iframe.html:32  Unrecognized feature: 'execution-while-out-of-viewport'.
+workspace_iframe.html:32  Unrecognized feature: 'layout-animations'.
+workspace_iframe.html:32  Unrecognized feature: 'layout-animations'.
+workspace_iframe.html:32  Unrecognized feature: 'legacy-image-formats'.
+workspace_iframe.html:32  Unrecognized feature: 'legacy-image-formats'.
+workspace_iframe.html:32  Unrecognized feature: 'navigation-override'.
+workspace_iframe.html:32  Unrecognized feature: 'navigation-override'.
+workspace_iframe.html:32  Unrecognized feature: 'oversized-images'.
+workspace_iframe.html:32  Unrecognized feature: 'oversized-images'.
+workspace_iframe.html:32  Unrecognized feature: 'publickey-credentials'.
+workspace_iframe.html:32  Unrecognized feature: 'publickey-credentials'.
+workspace_iframe.html:32  Unrecognized feature: 'speaker-selection'.
+workspace_iframe.html:32  Unrecognized feature: 'speaker-selection'.
+workspace_iframe.html:32  Unrecognized feature: 'unoptimized-images'.
+workspace_iframe.html:32  Unrecognized feature: 'unoptimized-images'.
+workspace_iframe.html:32  Unrecognized feature: 'unsized-media'.
+workspace_iframe.html:32  Unrecognized feature: 'unsized-media'.
+workspace_iframe.html:32  Allow attribute will take precedence over 'allowfullscreen'.
+workspace_iframe.html:32  Allow attribute will take precedence over 'allowfullscreen'.
+workspace_iframe.html:32  Allow attribute will take precedence over 'allowpaymentrequest'.
+workspace_iframe.html:32  Allow attribute will take precedence over 'allowpaymentrequest'.
+ Browsing Topics API removed from https://e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/__replco/workspace_iframe.html?initialPath=%2F&id=%3Armu%3A which is iframe
+ Browsing Topics API removed from https://e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/ which is iframe
+  WebSocket connection to 'wss://e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/?token=yUp1-QfIY3kT' failed: 
+setupWebSocket @ client:536
+(anonymous) @ client:531
+  WebSocket connection to 'wss://e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/?token=yUp1-QfIY3kT' failed: 
+setupWebSocket @ client:536
+(anonymous) @ client:531
+client:536  Uncaught (in promise) 
+setupWebSocket @ client:536
+fallback @ client:509
+(anonymous) @ client:555
+ ✅ React app mounted successfully
+workspace_iframe.html:32  Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+ Browsing Topics API removed from https://e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/__replco/workspace_iframe.html?initialPath=%2F&id=%3Armu%3A which is iframe
+ Browsing Topics API removed from about:blank which is iframe
+ Browsing Topics API removed from https://e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/ which is iframe
+  WebSocket connection to 'wss://e61cef8e-4705-48d7-8a18-6b1840d716ae-00-zdhu018i16zv.picard.replit.dev/?token=yUp1-QfIY3kT' failed: 
+setupWebSocket @ client:536
+(anonymous) @ client:531
+client:536  Uncaught (in promise) 
+setupWebSocket @ client:536
+fallback @ client:509
+(anonymous) @ client:555
+ ✅ React app mounted successfully
+   POST https://events.launchdarkly.com/events/bulk/62b35a865152ab14c5942820 net::ERR_BLOCKED_BY_CLIENT
+(anonymous) @ _app-887b064411aad558.js:13
+(anonymous) @ _app-887b064411aad558.js:13
+promise @ _app-887b064411aad558.js:40
+(anonymous) @ _app-887b064411aad558.js:40
+r.httpRequest @ _app-887b064411aad558.js:40
+t @ _app-887b064411aad558.js:40
+a.sendChunk @ _app-887b064411aad558.js:40
+a.sendEvents @ _app-887b064411aad558.js:40
+a.flush @ _app-887b064411aad558.js:40
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+   POST https://events.launchdarkly.com/events/bulk/62b35a865152ab14c5942820 net::ERR_BLOCKED_BY_CLIENT
+(anonymous) @ _app-887b064411aad558.js:13
+(anonymous) @ _app-887b064411aad558.js:13
+promise @ _app-887b064411aad558.js:40
+(anonymous) @ _app-887b064411aad558.js:40
+r.httpRequest @ _app-887b064411aad558.js:40
+t @ _app-887b064411aad558.js:40
+(anonymous) @ _app-887b064411aad558.js:40
+Promise.catch
+t @ _app-887b064411aad558.js:40
+a.sendChunk @ _app-887b064411aad558.js:40
+a.sendEvents @ _app-887b064411aad558.js:40
+a.flush @ _app-887b064411aad558.js:40
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+ 🎯 TALENT GROUPED BY ROLE_ID: {totalTalent: 10, roleGroups: Array(2), categorizedCounts: {…}}
+ 🔍 FRONTEND: Fetching assigned talent for booking ID: 1
+ 🎯 TALENT GROUPED BY ROLE_ID: {totalTalent: 10, roleGroups: Array(2), categorizedCounts: {…}}
+ 📋 FRONTEND: Received assigned talent data: (2) [{…}, {…}]
+ 🎯 TALENT GROUPED BY ROLE_ID: {totalTalent: 10, roleGroups: Array(2), categorizedCounts: {…}}
+ 📋 UPDATING assigned talent state: (2) [{…}, {…}]
+ 🔍 DETAILED DATA CHECK - First talent object: {id: 'assignment-2', userId: 6, name: 'Lí-Lí Octave', assignmentName: 'Lianne Letang(Lí-Lí Octave)', fullName: 'Lianne Letang', …}
+ 🔍 KEYS in first talent: (17) ['id', 'userId', 'name', 'assignmentName', 'fullName', 'stageName', 'type', 'role', 'isMainBookedTalent', 'isPrimary', 'talentType', 'primaryTalent', 'secondaryTalents', 'assignmentId', 'isOriginallyBooked', 'showAcceptDecline', 'showRemove']
+ 🔍 PRIMARY TALENT field: Lead Vocalist
+ 🔍 SECONDARY TALENTS field: []
+ 🎯 TALENT GROUPED BY ROLE_ID: {totalTalent: 10, roleGroups: Array(2), categorizedCounts: {…}}
+ 🎯 TALENT GROUPED BY ROLE_ID: {totalTalent: 17, roleGroups: Array(4), categorizedCounts: {…}}
+ 🎯 TALENT GROUPED BY ROLE_ID: {totalTalent: 23, roleGroups: Array(6), categorizedCounts: {…}}
+ 🎯 TALENT GROUPED BY ROLE_ID: {totalTalent: 23, roleGroups: Array(6), categorizedCounts: {…}}
+ 🎯 TALENT GROUPED BY ROLE_ID: {totalTalent: 23, roleGroups: Array(6), categorizedCounts: {…}}
+ 🎯 TALENT GROUPED BY ROLE_ID: {totalTalent: 23, roleGroups: Array(6), categorizedCounts: {…}}
+ 🎯 TALENT GROUPED BY ROLE_ID: {totalTalent: 23, roleGroups: Array(6), categorizedCounts: {…}}
+ 🎯 TALENT GROUPED BY ROLE_ID: {totalTalent: 23, roleGroups: Array(6), categorizedCounts: {…}}
+ 🎯 TALENT GROUPED BY ROLE_ID: {totalTalent: 23, roleGroups: Array(6), categorizedCounts: {…}}
+ 🎯 TALENT GROUPED BY ROLE_ID: {totalTalent: 23, roleGroups: Array(6), categorizedCounts: {…}}
+ 🎯 TALENT GROUPED BY ROLE_ID: {totalTalent: 23, roleGroups: Array(6), categorizedCounts: {…}}
+ 🎯 TALENT GROUPED BY ROLE_ID: {totalTalent: 23, roleGroups: Array(6), categorizedCounts: {…}}
+ 🎯 TALENT GROUPED BY ROLE_ID: {totalTalent: 23, roleGroups: Array(6), categorizedCounts: {…}}
+ 🎯 TALENT GROUPED BY ROLE_ID: {totalTalent: 23, roleGroups: Array(6), categorizedCounts: {…}}
+ 🎯 TALENT GROUPED BY ROLE_ID: {totalTalent: 23, roleGroups: Array(6), categorizedCounts: {…}}
+ 🎯 TALENT GROUPED BY ROLE_ID: {totalTalent: 23, roleGroups: Array(6), categorizedCounts: {…}}
+ 🎯 TALENT GROUPED BY ROLE_ID: {totalTalent: 23, roleGroups: Array(6), categorizedCounts: {…}}
+ 🎯 TALENT GROUPED BY ROLE_ID: {totalTalent: 23, roleGroups: Array(6), categorizedCounts: {…}}
+ 🎯 TALENT GROUPED BY ROLE_ID: {totalTalent: 23, roleGroups: Array(6), categorizedCounts: {…}}
+ 🎯 TALENT GROUPED BY ROLE_ID: {totalTalent: 23, roleGroups: Array(6), categorizedCounts: {…}}
+ 🎯 TALENT GROUPED BY ROLE_ID: {totalTalent: 23, roleGroups: Array(6), categorizedCounts: {…}}
+ 🎯 TALENT GROUPED BY ROLE_ID: {totalTalent: 23, roleGroups: Array(6), categorizedCounts: {…}}
+ 🎯 TALENT GROUPED BY ROLE_ID: {totalTalent: 23, roleGroups: Array(6), categorizedCounts: {…}}
+ 🎯 TALENT GROUPED BY ROLE_ID: {totalTalent: 23, roleGroups: Array(6), categorizedCounts: {…}}
+ 🎯 TALENT GROUPED BY ROLE_ID: {totalTalent: 23, roleGroups: Array(6), categorizedCounts: {…}}
+ 🎯 TALENT GROUPED BY ROLE_ID: {totalTalent: 23, roleGroups: Array(6), categorizedCounts: {…}}
+ 🎯 TALENT GROUPED BY ROLE_ID: {totalTalent: 23, roleGroups: Array(6), categorizedCounts: {…}}
+ 🎯 TALENT GROUPED BY ROLE_ID: {totalTalent: 23, roleGroups: Array(6), categorizedCounts: {…}}
+ 🎯 TALENT GROUPED BY ROLE_ID: {totalTalent: 23, roleGroups: Array(6), categorizedCounts: {…}}
+ 🎯 TALENT GROUPED BY ROLE_ID: {totalTalent: 23, roleGroups: Array(6), categorizedCounts: {…}}
+ 🎯 TALENT GROUPED BY ROLE_ID: {totalTalent: 23, roleGroups: Array(6), categorizedCounts: {…}}
+ 🎯 TALENT GROUPED BY ROLE_ID: {totalTalent: 23, roleGroups: Array(6), categorizedCounts: {…}}
+ DEBUG: Syncing stage legend talent/skills with band members
+ 🔄 TECHNICAL RIDER: Initializing band members
+ 🔄 Assigned musicians (props) count: 11
+ 🔄 Final assigned musicians (API) count: 11
+ 🔄 Will use: assignedMusicians (props)
+ 🔄 Using musician data source: assignedMusicians (props)
+ 🔄 Total members added from API: 11
+ Sorting: Maya Bass badge: managed_musician order: 7 vs Lí-Lí Octave badge: managed_artist order: 7
+ Sorting: Phoenix Chen badge: Artist order: 7 vs Indie Stone badge: Artist order: 7
+ Sorting: Storm Johnson badge: Artist order: 7 vs Phoenix Chen badge: Artist order: 7
+ Sorting: Wave Anderson badge: Artist order: 7 vs Storm Johnson badge: Artist order: 7
+ Sorting: Ocean Park badge: Artist order: 7 vs Wave Anderson badge: Artist order: 7
+ Sorting: Session Brooks badge: Artist order: 7 vs Ocean Park badge: Artist order: 7
+ Sorting: Sage Rodriguez badge: Artist order: 7 vs Session Brooks badge: Artist order: 7
+ Sorting: River Martinez badge: Artist order: 7 vs Sage Rodriguez badge: Artist order: 7
+ Sorting: Blaze Cooper badge: Artist order: 7 vs River Martinez badge: Artist order: 7
+ Sorting: Mr Lindsay George badge: MANAGEMENT order: 999 vs Blaze Cooper badge: Artist order: 7
+ Sorting: Ms Joyette Pascal badge: MANAGEMENT order: 999 vs Mr Lindsay George badge: MANAGEMENT order: 999
+ 🔄 FINAL: Setting 13 band members
+ DEBUG: Syncing stage legend talent/skills with band members
+ 🔄 TECHNICAL RIDER: Initializing band members
+ 🔄 Assigned musicians (props) count: 11
+ 🔄 Final assigned musicians (API) count: 2
+ 🔄 Will use: assignedMusicians (props)
+ 🔄 Using musician data source: assignedMusicians (props)
+ 🔄 Total members added from API: 11
+ Sorting: Maya Bass badge: managed_musician order: 7 vs Lí-Lí Octave badge: managed_artist order: 7
+ Sorting: Phoenix Chen badge: Artist order: 7 vs Indie Stone badge: Artist order: 7
+ Sorting: Storm Johnson badge: Artist order: 7 vs Phoenix Chen badge: Artist order: 7
+ Sorting: Wave Anderson badge: Artist order: 7 vs Storm Johnson badge: Artist order: 7
+ Sorting: Ocean Park badge: Artist order: 7 vs Wave Anderson badge: Artist order: 7
+ Sorting: Session Brooks badge: Artist order: 7 vs Ocean Park badge: Artist order: 7
+ Sorting: Sage Rodriguez badge: Artist order: 7 vs Session Brooks badge: Artist order: 7
+ Sorting: River Martinez badge: Artist order: 7 vs Sage Rodriguez badge: Artist order: 7
+ Sorting: Blaze Cooper badge: Artist order: 7 vs River Martinez badge: Artist order: 7
+ Sorting: Mr Lindsay George badge: MANAGEMENT order: 999 vs Blaze Cooper badge: Artist order: 7
+ Sorting: Ms Joyette Pascal badge: MANAGEMENT order: 999 vs Mr Lindsay George badge: MANAGEMENT order: 999
+ 🔄 FINAL: Setting 13 band members
+ DEBUG: Syncing stage legend talent/skills with band members
+ 🎭 STAGE PLOT: Band member added to stage, triggering mixer auto-assignment
+ 🎛️ AUTO-ASSIGNING: Starting mixer channel auto-assignment
+ 🎛️ Available members for auto-assignment: (10) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
+ 🎛️ AUTO-ASSIGNED: "Kick In" → Phoenix Chen (instruments: Drummer)
+ 🎛️ AUTO-ASSIGNED: "Bass DI" → Maya Bass (instruments: Bass Player)
+ 🎛️ AUTO-ASSIGNED: "Bass Mic" → Lí-Lí Octave (instruments: Lead Vocalist)
+ 🎛️ AUTO-ASSIGNED: "Guitar 1" → Storm Johnson (instruments: Lead Guitarist)
+ 🎛️ AUTO-ASSIGNED: "Keyboard 1 – Left" → Wave Anderson (instruments: Keyboardist)
+ 🎛️ AUTO-ASSIGNED: "Background Vocals 1" → Indie Stone (instruments: Singer-Songwriter)
+ 🎛️ AUTO-ASSIGNMENT: Completed mixer channel assignments
+ 🎭 STAGE PLOT: Band member added to stage, triggering mixer auto-assignment
+ 🎛️ AUTO-ASSIGNING: Starting mixer channel auto-assignment
+ 🎛️ Available members for auto-assignment: (10) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
+ 🎛️ AUTO-ASSIGNED: "Kick Out" → Phoenix Chen (instruments: Drummer)
+ 🎛️ AUTO-ASSIGNED: "Guitar 2" → Storm Johnson (instruments: Lead Guitarist)
+ 🎛️ AUTO-ASSIGNED: "Keyboard 1 – Right" → Wave Anderson (instruments: Keyboardist)
+ 🎛️ AUTO-ASSIGNED: "Background Vocals 2" → Lí-Lí Octave (instruments: Lead Vocalist, Mic Stand)
+ 🎛️ AUTO-ASSIGNED: "Background Vocals 3" → Indie Stone (instruments: Singer-Songwriter)
+ 🎛️ AUTO-ASSIGNMENT: Completed mixer channel assignments
+ 🎭 STAGE PLOT: Band member added to stage, triggering mixer auto-assignment
+ 🎛️ AUTO-ASSIGNING: Starting mixer channel auto-assignment
+ 🎛️ Available members for auto-assignment: (10) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
+ 🎛️ AUTO-ASSIGNED: "Snare Top" → Phoenix Chen (instruments: Drummer)
+ 🎛️ AUTO-ASSIGNED: "Keyboard 2 – Left" → Wave Anderson (instruments: Keyboardist)
+ 🎛️ AUTO-ASSIGNMENT: Completed mixer channel assignments
+ 🎭 STAGE PLOT: Band member added to stage, triggering mixer auto-assignment
+ 🎛️ AUTO-ASSIGNING: Starting mixer channel auto-assignment
+ 🎛️ Available members for auto-assignment: (10) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
+ 🎛️ AUTO-ASSIGNED: "Snare Bottom" → Phoenix Chen (instruments: Drummer)
+ 🎛️ AUTO-ASSIGNED: "Keyboard 2 – Right" → Wave Anderson (instruments: Keyboardist)
+ 🎛️ AUTO-ASSIGNMENT: Completed mixer channel assignments
+ 🎭 STAGE PLOT: Band member added to stage, triggering mixer auto-assignment
+ 🎛️ AUTO-ASSIGNING: Starting mixer channel auto-assignment
+ 🎛️ Available members for auto-assignment: (10) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
+ 🎛️ AUTO-ASSIGNED: "Hi Hat" → Phoenix Chen (instruments: Drummer, Drums)
+ 🎛️ AUTO-ASSIGNED: "Keyboard 3 – Left" → Wave Anderson (instruments: Keyboardist)
+ 🎛️ AUTO-ASSIGNMENT: Completed mixer channel assignments
+ 🎭 STAGE PLOT: Band member added to stage, triggering mixer auto-assignment
+ 🎛️ AUTO-ASSIGNING: Starting mixer channel auto-assignment
+ 🎛️ Available members for auto-assignment: (10) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
+ 🎛️ AUTO-ASSIGNED: "Rack Tom 1" → Phoenix Chen (instruments: Drummer, Drums)
+ 🎛️ AUTO-ASSIGNED: "Keyboard 3 – Right" → Wave Anderson (instruments: Keyboardist)
+ 🎛️ AUTO-ASSIGNMENT: Completed mixer channel assignments
+ 🎭 STAGE PLOT: Band member added to stage, triggering mixer auto-assignment
+ 🎛️ AUTO-ASSIGNING: Starting mixer channel auto-assignment
+ 🎛️ Available members for auto-assignment: (10) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
+ 🎛️ AUTO-ASSIGNED: "Rack Tom 2" → Phoenix Chen (instruments: Drummer, Drums)
+ 🎛️ AUTO-ASSIGNED: "Keyboard 4 – Left" → Wave Anderson (instruments: Keyboardist, Piano)
+ 🎛️ AUTO-ASSIGNMENT: Completed mixer channel assignments
+ 🎭 STAGE PLOT: Band member added to stage, triggering mixer auto-assignment
+ 🎛️ AUTO-ASSIGNING: Starting mixer channel auto-assignment
+ 🎛️ Available members for auto-assignment: (10) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
+ 🎛️ AUTO-ASSIGNED: "Rack Tom 3 / Floor Tom" → Phoenix Chen (instruments: Drummer, Drums)
+ 🎛️ AUTO-ASSIGNED: "Keyboard 4 – Right" → Wave Anderson (instruments: Keyboardist, Piano)
+ 🎛️ AUTO-ASSIGNMENT: Completed mixer channel assignments
+   POST https://events.launchdarkly.com/events/bulk/62b35a865152ab14c5942820 net::ERR_BLOCKED_BY_CLIENT
+(anonymous) @ _app-887b064411aad558.js:13
+(anonymous) @ _app-887b064411aad558.js:13
+promise @ _app-887b064411aad558.js:40
+(anonymous) @ _app-887b064411aad558.js:40
+r.httpRequest @ _app-887b064411aad558.js:40
+t @ _app-887b064411aad558.js:40
+a.sendChunk @ _app-887b064411aad558.js:40
+a.sendEvents @ _app-887b064411aad558.js:40
+a.flush @ _app-887b064411aad558.js:40
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+   POST https://events.launchdarkly.com/events/bulk/62b35a865152ab14c5942820 net::ERR_BLOCKED_BY_CLIENT
+(anonymous) @ _app-887b064411aad558.js:13
+(anonymous) @ _app-887b064411aad558.js:13
+promise @ _app-887b064411aad558.js:40
+(anonymous) @ _app-887b064411aad558.js:40
+r.httpRequest @ _app-887b064411aad558.js:40
+t @ _app-887b064411aad558.js:40
+(anonymous) @ _app-887b064411aad558.js:40
+Promise.catch
+t @ _app-887b064411aad558.js:40
+a.sendChunk @ _app-887b064411aad558.js:40
+a.sendEvents @ _app-887b064411aad558.js:40
+a.flush @ _app-887b064411aad558.js:40
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13
+setTimeout
+(anonymous) @ _app-887b064411aad558.js:13
+e @ _app-887b064411aad558.js:40
+n @ _app-887b064411aad558.js:13

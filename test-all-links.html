@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test All Links Pages</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 p-8">
+    <div class="max-w-2xl mx-auto bg-white rounded-lg shadow-lg p-6">
+        <h1 class="text-2xl font-bold mb-6">All Links Pages Test</h1>
+        
+        <div class="space-y-4">
+            <div>
+                <label class="block text-sm font-medium mb-2">Test Slug Availability:</label>
+                <input type="text" id="slugInput" placeholder="Enter slug to test" 
+                       class="w-full p-2 border rounded-md">
+                <button onclick="checkSlug()" 
+                        class="mt-2 px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600">
+                    Check Availability
+                </button>
+            </div>
+            
+            <div id="result" class="p-4 border rounded-md hidden"></div>
+            
+            <div class="mt-6">
+                <h3 class="font-medium mb-2">Test Results:</h3>
+                <ul class="space-y-1 text-sm">
+                    <li id="api-test" class="text-gray-500">API Connection: Testing...</li>
+                    <li id="auth-test" class="text-gray-500">Authentication: Testing...</li>
+                    <li id="db-test" class="text-gray-500">Database: Testing...</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Test API connection
+        fetch('/api/artists')
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('api-test').textContent = 'API Connection: ✅ Working';
+                document.getElementById('api-test').className = 'text-green-600';
+            })
+            .catch(error => {
+                document.getElementById('api-test').textContent = 'API Connection: ❌ Failed';
+                document.getElementById('api-test').className = 'text-red-600';
+            });
+
+        // Test authentication
+        fetch('/api/auth/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email: 'lilioctave@waitumusic.com', password: 'secret123' })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.token) {
+                document.getElementById('auth-test').textContent = 'Authentication: ✅ Working';
+                document.getElementById('auth-test').className = 'text-green-600';
+                
+                // Test database with token
+                return fetch('/api/website-integrations/check-slug/test', {
+                    headers: { 'Authorization': `Bearer ${data.token}` }
+                });
+            }
+        })
+        .then(response => response ? response.json() : null)
+        .then(data => {
+            if (data) {
+                document.getElementById('db-test').textContent = 'Database: ✅ Working';
+                document.getElementById('db-test').className = 'text-green-600';
+            }
+        })
+        .catch(error => {
+            document.getElementById('auth-test').textContent = 'Authentication: ❌ Failed';
+            document.getElementById('auth-test').className = 'text-red-600';
+        });
+
+        // Slug checking function
+        async function checkSlug() {
+            const slug = document.getElementById('slugInput').value;
+            const result = document.getElementById('result');
+            
+            if (!slug) {
+                result.innerHTML = '<div class="text-red-600">Please enter a slug</div>';
+                result.classList.remove('hidden');
+                return;
+            }
+
+            try {
+                // First get a token
+                const loginResponse = await fetch('/api/auth/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email: 'lilioctave@waitumusic.com', password: 'secret123' })
+                });
+                const loginData = await loginResponse.json();
+
+                if (!loginData.token) {
+                    throw new Error('Failed to authenticate');
+                }
+
+                // Check slug availability
+                const slugResponse = await fetch(`/api/website-integrations/check-slug/${slug}`, {
+                    headers: { 'Authorization': `Bearer ${loginData.token}` }
+                });
+                const slugData = await slugResponse.json();
+
+                if (slugData.available) {
+                    result.innerHTML = `<div class="text-green-600">✅ Slug "${slug}" is available!</div>`;
+                } else {
+                    result.innerHTML = `<div class="text-red-600">❌ Slug "${slug}" is already taken</div>`;
+                }
+            } catch (error) {
+                result.innerHTML = `<div class="text-red-600">❌ Error: ${error.message}</div>`;
+            }
+            
+            result.classList.remove('hidden');
+        }
+
+        // Allow Enter key to trigger check
+        document.getElementById('slugInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                checkSlug();
+            }
+        });
+    </script>
+</body>
+</html>

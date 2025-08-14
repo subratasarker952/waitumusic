@@ -1,0 +1,134 @@
+The Wai'tuMusic platform features a comprehensive set of pages, each with specific functionalities that work together to create a cohesive music label management system. Here's a detailed breakdown of each page and its features:
+
+Home Page (/)
+Hero Section: Gradient background with main platform introduction and call-to-action buttons
+Featured Artists Carousel: Displays artists marked as "featured" from the artists data
+Popular Services Showcase: Highlights services marked as "popular" from the services data
+Statistics Section: Displays platform metrics (artists, events, fans, services)
+CTA Section: Call-to-action buttons linking to booking, consultation, and about pages
+Relationships: Links to Artists, Booking, Services, and Consultation pages
+Artists Page (/artists)
+Artist Grid: Displays all artists with filtering capabilities
+Search Functionality: Allows filtering by name or genre
+Genre Filter: Dropdown to filter artists by musical genre
+Availability Filter: Shows artists based on booking availability
+Artist Cards: Display artist image, name, genre, stats, and booking status
+Relationships: Links to individual Artist Detail pages and Booking page
+Artist Detail Page (/artist/:id)
+Hero Section: Artist cover image, profile picture, name, and stats
+Tabs Navigation: Overview, Music, Events & Streams, Merchandise
+Overview Tab: Bio, popular tracks, social media links, booking info
+Music Tab: Artist's songs with play functionality
+Events Tab: Upcoming events and live streams with ticket links
+Merchandise Tab: Artist's merchandise with add-to-cart functionality
+Booking Card: Quick access to book the specific artist
+Relationships: Links to Booking page and Cart for merchandise
+Booking Page (/booking)
+Artist Selection: Interface to choose which artist to book
+Interactive Calendar: Date selection with availability indicators
+Package Selection: Customizable booking packages with tier options
+Booking Form: Multi-step form for event details
+Multiple Date Selection: Support for booking series, tours, residencies
+Booking Process Explanation: Step-by-step guide to the booking process
+Relationships: Connects to Artists page and uses BookingModal component
+Services Page (/services)
+Service Catalog: Grid of professional services with filtering
+Search Functionality: Filter services by name or description
+Category Filter: Filter by service category
+Price Filter: Filter by price range
+Service Cards: Display service image, name, description, price, duration
+Service Details: Expanded information about each service
+Add to Cart: Direct purchase of services that don't require consultation
+Consultation Booking: Link to consultation for services that require it
+Relationships: Links to Cart and Consultation pages
+Consultation Page (/consultation)
+Consultation Type Selection: Different types of professional consultations
+Interactive Calendar: Date selection with availability indicators
+Time Slot Selection: Choose available time slots
+Consultation Form: Details about the consultation request
+Pricing Information: Clear display of consultation costs
+Consultation Process Explanation: How the consultation works
+Relationships: Uses Calendar component and BookingModal for form submission
+Cart Page (/cart)
+Cart Items: List of services and merchandise added to cart
+Quantity Controls: Adjust item quantities
+Price Calculation: Subtotal, tax, and total calculation
+Empty Cart State: Special UI when cart is empty
+Checkout Button: Proceed to payment
+Remove Items: Remove items from cart
+Relationships: Connected to Services and Merchandise from Artist Detail
+About Page (/about)
+Hero Section: Introduction to Wai'tuMusic
+Stats Section: Key platform metrics
+Mission Section: Company mission and values
+Team Section: Key team members with bios
+Values Section: Core company values
+CTA Section: Call-to-action for booking and consultation
+Relationships: Links to Booking and Consultation pages
+Contact Page (/contact)
+Contact Information: Company contact details
+Contact Form: Form to send messages to the company
+Office Hours: Business hours information
+Quick Actions: Direct links to booking, consultation, services
+FAQ Section: Frequently asked questions
+Relationships: Links to Booking, Consultation, and Services pages
+Login Page (/login)
+Login Form: Email and password fields
+Social Login: Integration with multiple social platforms
+Remember Me: Session persistence option
+Forgot Password: Password recovery link
+Demo Accounts: Quick access to demo accounts for testing
+Registration Link: Link to create new account
+Relationships: Links to Register page and Dashboard after login
+Register Page (/register)
+Registration Form: New user account creation
+Social Registration: Register with social accounts
+Role Selection: Choose account type (fan, professional, musician)
+Terms Agreement: Legal agreement checkbox
+Benefits Section: Advantages of joining
+Login Link: Link for existing users
+Relationships: Links to Login page and Dashboard after registration
+Dashboard Page (/dashboard)
+Sidebar Navigation: Access to different dashboard sections
+Overview Tab: Key metrics and recent activity
+Profile Tab: User profile management
+Calendar Tab: Availability management (for artists/musicians)
+Bookings Tab: View and manage bookings
+Contracts Tab: Review and sign contracts
+Music Tab: Manage music catalog (for artists)
+Merchandise Tab: Manage merchandise (for artists)
+Settings Tab: Account and notification settings
+Resources Section: Access to guides, best practices, reports
+Relationships: Central hub connecting to all user-specific functionality
+Admin Dashboard Page (/admin)
+Overview Section: Platform-wide metrics and activity
+User Management: Create, edit, and manage all users
+Artist Management: Manage artist profiles and content
+Musician Management: Manage session musicians
+Booking Management: Process booking requests
+Contract Management: Create and manage contract templates
+Form Builder: Create and manage form templates
+System Settings: Configure platform settings
+API Integrations: Manage external service connections
+Text Management: Edit website content and language
+Feature Audit: Verify system functionality
+Relationships: Administrative control center for all platform aspects
+Key Components Used Across Pages
+Calendar Component: Used in Booking, Consultation, and Dashboard pages
+BookingModal Component: Used in Booking and Consultation pages
+ContractSignature Component: Used in Dashboard for signing contracts
+DocumentViewer Component: Used in Dashboard for viewing documents
+DynamicForm Component: Used across multiple pages for form rendering
+ManagedText Component: Used across all pages for editable text content
+NotificationSystem: Used throughout the application for user feedback
+Database Relationships
+Users-Artists: One-to-one relationship where artists are users with additional properties
+Artists-Songs: One-to-many relationship where artists have multiple songs
+Songs-Albums: Many-to-many relationship through album_songs junction table
+Songs-Merchandise: Many-to-many relationship through song_merchandise junction table
+Bookings-BookingDates: One-to-many relationship for multi-date bookings
+Bookings-Musicians: Many-to-many relationship through booking_musicians junction table
+Bookings-Documents: Many-to-many relationship through booking_documents junction table
+Users-FormSubmissions: One-to-many relationship for form submissions
+FormTemplates-FormSubmissions: One-to-many relationship for form data
+This comprehensive structure creates a cohesive platform where each page and feature works together to provide a complete music label management experience. The relationships between pages and components ensure a smooth user flow and consistent functionality across the entire application.

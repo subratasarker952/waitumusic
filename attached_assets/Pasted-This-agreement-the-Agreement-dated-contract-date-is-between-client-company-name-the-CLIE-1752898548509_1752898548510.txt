@@ -1,0 +1,478 @@
+This agreement (the “Agreement”), dated {contract_date}, is between {client_company_name} (the “CLIENT”) and {company_name} (the “SERVICE PROVIDER”) acting on behalf of Ms Lí- Lí Octave, (the "ARTIST").
+
+
+DEFINITIONS
+At all times the definition of the word:
+
+CLIENT shall refer to the legal entity that is engaging this production, which includes musicians, staff, management, etc. of {client_company_name}.
+
+EVENT shall refer to:
+
+VENUE shall refer to the location in which the production shall take place:
+
+PERFORMANCE shall refer to the musical performance of the ARTIST.
+
+ARTIST shall refer to the musical talent contracted to perform the PRODUCTION by the CLIENT:
+
+SERVICE PROVIDER shall refer to the representative(s) of {company_name}.
+
+BAND shall refer to the collective providing musical accompaniment, inclusive of musicians and background vocalists, to the ARTIST.
+
+
+SERVICE PROVIDER and BAND members are:
+
+
+Membership	Role	Name
+BAND	Drummer	Michaj Smith / Karlvin Deravariere
+BAND	Bass	Anika Luke-Balthazar / Kelvin Henderson
+BAND	Guitar	Benton Julius
+BAND	Keyboard	Dean Vidal
+BAND	Background Vocalist (Tenor)	Vernella Williams / Esther Letang
+BAND	Background Vocalist (Soprano)	Josea Massicot-Daniel / Jessia Letang / Philsha Pendenque
+
+SERVICE PROVIDER	CEO	Mr Lindsay George
+SERVICE PROVIDER	CFO	Ms Joyette Pascal
+SERVICE PROVIDER	Marketing Manager	Mrs Davina Boston-George
+SERVICE PROVIDER	Business Administrator	Ms Kay Louisy
+
+
+TERMS
+All equipment, materials, personnel and/or labor specified in this rider will be provided by the CLIENT, at the CLIENT’s own expense (except where this rider specifically states otherwise).
+
+Upon completion of the agreement or sixty (60) days prior to performance, the CLIENT shall provide to the SERVICE PROVIDER, plans and information about the VENUE including a stage and seating diagram, backline lists of lighting, audio and projection equipment, as well as any additional information such as working hours or labor stipulations that may be vital to the planning of this engagement, as applicable.
+
+All video, projection, audio and lighting components, as described below, must be set-up, tested, and fully operational before first rehearsal of the PERFORMANCE, whether that rehearsal is with or without the BAND.
+
+The PERFORMANCE as the musical content contribution to the EVENT may not be changed or altered in any way except by the SERVICE PROVIDER.
+
+The PERFORMANCE duration, in minutes, is approximately:
+
+
+MUSIC SOUND REINFORCEMENT SYSTEM EQUIPMENT RENTAL
+The cost of music sound reinforcement system equipment rental for the PERFORMANCE is the responsibility of the CLIENT.
+
+
+STAGING
+We understand the basic stage layout for the PRODUCTION will be largely predetermined. The stage is to be set-up according to the Stage Plot (see final page of rider) in advance of the first rehearsal.
+
+
+BAND DRESS CODE
+SERVICE PROVIDER requests knowledge of any special/sensitive/important attire requirements of the BAND in advance of PERFORMANCE.
+
+
+BAND MAKEUP
+Unless otherwise negotiated with SERVICE PROVIDER, the BAND shall comprise the following rhythm section musicians as follows:
+
+
+
+Role in BAND	Quantity
+Drummer	1
+Bass Player	2
+Guitarist	1
+Keyboardist	1
+Background Vocalist	2
+Total	7
+
+
+INSTRUMENTATION AND CAST
+SERVICE PROVIDER Provides (unless otherwise negotiated in writing):
+
+
+ARTIST
+BAND MAKEUP as aformentioned (immediately preceding section) for the sake of the PERFORMANCE.
+
+CLIENT Provides (unless otherwise negotiated in writing):
+
+
+One (1) small table or other secure means on which to rest ARTIST’s Tambourine and shaker
+One (1) Performance Stage
+Stage Lighting
+Sound Reinforcement System
+Audio/Video Recording
+Audio/Video Streaming
+Photography
+
+
+RHYTHM SECTION BACK-LINE EQUIPMENT
+CLIENT shall provide the following equipment, or equivalent. This list is subject to change, and it is the responsibility of the CLIENT to confirm the back-line requirements for the purpose of high quality sound reinforcement:
+
+
+Aguilar Tone Hammer 500 Bass Head with 8 X 10 cabinet (preferred) or equivalent
+Fender twin reverb guitar amp or equivalent
+Drum Set Preference (or equivalent):
+1. DW fusion drum kit (14’’ snare; 10”, 12”, 16” toms)
+2. DW 5000 kick pedal
+3. Meinl byzance cymbals (14” hi hat, 16’’ crash, 17/18” crash, 8” splash, splash stack, ride)
+4. Five (5) cymbal stands
+
+In addition to a high-quality sound reinforcement system, CLIENT shall provide the following equipment, or equivalent, and staffing necessary for sound reinforcement:
+
+Mics, Monitors, Other: 
+
+One (1) wireless mic for ARTIST (Shure SM58 or equivalent
+Wedge monitors (sufficient for stage size) or in-ear monitors for BAND
+Small table upon which to rest ARTIST’s Tambourine and shaker
+In-ear Monitor XLR/TRS connection for ARTIST
+
+Suggested On-Stage Mix Groups: 
+
+One (1) of ARTIST
+One (1) of background vocalist(s) (as necessary/if possible) 
+One (1) of BAND
+
+
+STAGE PLOT
+
+
+
+MIXER INPUT PATCH LIST
+Channel
+
+Instrument or Vocal Input
+
+Ch 1
+
+Kick In
+
+Ch 2
+
+Kick Out
+
+Ch 3
+
+Snare Top
+
+Ch 4
+
+Snare Bottom
+
+Ch 5
+
+Hi Hat
+
+Ch 6
+
+Rack Tom 1
+
+Ch 7
+
+Rack Tom 2
+
+Ch 8
+
+Rack Tom 3 / Floor Tom
+
+
+
+
+
+Ch 9
+
+Over Head Left
+
+Ch 10
+
+Over Head Right
+
+Ch 11
+
+Bass DI
+
+Ch 12
+
+Bass Mic
+
+Ch 13
+
+Guitar 1
+
+Ch 14
+
+Guitar 2
+
+Ch 15
+
+Percussion – Electric Floor Tom
+
+Ch 16
+
+Percussion – Cow Bell
+
+
+
+
+
+Ch 17
+
+Keyboard 1 – Left
+
+Ch 18
+
+Keyboard 1 – Right
+
+Ch 19
+
+Keyboard 2 – Left
+
+Ch 20
+
+Keyboard 2 – Right
+
+Ch 21
+
+Keyboard 3 – Left
+
+Ch 22
+
+Keyboard 3 – Right
+
+Ch 23
+
+Keyboard 4 – Left
+
+Ch 24
+
+Keyboard 4 – Right
+
+
+
+
+
+Ch 25
+
+Brass
+
+Ch 26
+
+Brass
+
+Ch 27
+
+Brass
+
+Ch 28
+
+Brass
+
+Ch 29
+
+Brass
+
+Ch 30
+
+Brass
+
+Ch 31
+
+Brass
+
+Ch 32
+
+Brass
+
+
+
+
+
+Ch 33
+
+Background Vocals 1
+
+Ch 34
+
+Background Vocals 2
+
+Ch 35
+
+Background Vocals 3
+
+Ch 36
+
+Lead Vox – Spare
+
+Ch 37
+
+Lead Vox
+
+
+
+
+
+
+
+Only Channels Highlighted in Gold/Bold are Applicable
+
+
+
+SET LIST
+Song	Performer/Writer	Notes
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+LIGHTING
+All lighting equipment and/or changes to the house light plot, including color changes, are to be pre-hung prior to the arrival of THE ARTIST, BAND, or SERVICE PROVIDER for the rehearsal for the PERFORMANCE. PERFORMANCE requires the following:
+
+
+One-two (1-2) follow spots/spotlights for the ARTIST (as applicable)
+Gels for Pops lighting (variety of colors and patterns) (as applicable)
+
+PROJECTION/VIDEO
+PERFORMANCE includes an optional projection design at no additional cost. In the case that CLIENT elects to include the projections, SERVICE PROVIDER or VENUE shall provide the necessary personnel, equipment, cables, distribution amplifiers, scalers and splitters, as required. SERVICE PROVIDER shall provide the graphic or pictures in acceptable format.
+
+
+REHEARSALS
+One (1) 60 minute sound check/rehearsal for the BAND and the ARTIST is required.
+
+
+HOSPITALITY AND DRESSING ROOMS
+SERVICE PROVIDER requests one (1) dressing room for the ARTIST (female), female members of the BAND, and the rest of the BAND (males). Dressing room should be stocked with towels or paper towels. PRODUCER and ARTIST require free access to the internet (if available) for duration of engagement. 
+
+
+A refreshment table must be set-up in or near the dressing room area, made available to ARTIST and BAND, and include the following: 
+
+
+
+Bottle(s) of spring water (room temperature)
+A variety of fruit juices (orange is preferred)
+Hot water, honey and lemon for tea
+Coffee
+
+
+TRANSPORTATION
+Unless otherwise negotiated with SERVICE PROVIDER, CLIENT shall schedule ground transportation rides for ARTIST, BAND and SERVICE PROVIDER, so that they arrive at VENUE a minimum of thirty (30) minutes before rehearsal begins and a minimum of sixty (60) minutes before performance.
+
+
+MERCHANDISE
+CLIENT agrees to make provision for ARTIST/SERVICE PROVIDER, if possible, to sell PERFORMANCE-related merchandise, where ARTIST has the option to greet audience following performance, to take photos, conduct interviews, and autographs, as possible. The SERVICE PROVIDER shall retain the right to provide its own banners, signage, and table signage that is recommended for such use.
+
+
+COMPLIMENTARY TICKETS
+CLIENT agrees to furnish SERVICE PROVIDER with complimentary tickets, as per booking agreement.
+
+
+ARCHIVE AUDIO OR VIDEO
+If CLIENT or VENUE wishes to make an archival or video copy of rehearsal(s) or live performance of PERFORMANCE, the SERVICE PROVIDER must give written approval for such requests a minimum of 48 hours in advance of taping. Upon such approval, CLIENT agrees to provide the SERVICE PROVIDER with a copy of such audio or video at no charge.
+
+
+ARCHIVE AUDIO OR VIDEO
+The CLIENT may choose, upon written agreement with SERVICE PROVIDER, to supply its own photographer to photograph rehearsals and/or performances for publicity and promotion purposes. SERVICE PROVIDER agrees to grant the CLIENT such rights, and the CLIENT agrees to supply copies of photographs to SERVICE PROVIDER at no charge.
+
+
+ARCHIVE AUDIO OR VIDEO
+The PERFORMANCE’s musical content may not be changed or altered in any way except by the SERVICE PROVIDER. The following credit information must be printed verbatim in all audience program books:
+
+a. The logos, credit information for the SERVICE PROVIDER, and set list complete with songwriters (an example of which is included below), must be printed verbatim in all audience program books, as applicable. It is the responsibility of the CLIENT to contact the SERVICE PROVIDER for updated program information prior to printing their programs. It is also the responsibility of CLIENT to request high-quality copies of all logos and photos of the ARTIST or BAND from the SERVICE PROVIDER. Please contact waitumusic@gmail.com for logos and official photos. CLIENT must submit a proof of the audience program book to SERVICE PROVIDER before printing.
+
+
+CONTRACT DURATION AND PREPARATION
+The SERVICE PROVIDER will instruct ARTIST and BAND to begin preparation for performance from {contract_date} and will perform on {contract_end_date} from 7pm to 8pm. 
+
+
+PAYMENT
+The CLIENT will pay the SERVICE PROVIDER a sum of {pricing_table_total}. Of this, the CLIENT will pay the SERVICE PROVIDER a 50% deposit, before PERFORMANCE begins. In case of cancelation of the EVENT by CLIENT, CLIENT shall be liable to pay the SERVICE PROVIDER a minimum of 25% of the total PERFORMANCE COST if the cancellation occurs prior to two weeks before {contract_end_date}, and the full 50% deposit if the cancellation occurs within a two week window prior to {contract_end_date}. 
+
+{pricing_table}
+
+The SERVICE PROVIDER will invoice the CLIENT prior to {contract_end_date}.
+
+The CLIENT agrees to pay the SERVICE PROVIDER in full within 7 days of receiving the invoice or by the  {contract_end_date}, whichever is sooner. Payment after that date will incur a late fee of $500 per month.
+
+
+EXPENSES
+The CLIENT will reimburse the SERVICE PROVIDER’s event related expenses as applicable. Expenses shall be pre-approved by the CLIENT.
+
+
+OWNERSHIP AND AUTHORSHIP
+Ownership: The CLIENT owns all PERFORMANCE (excluding any inherent intellectual property rights of the SERVICE PROVIDER or ARTIST for example song copyrights) once the CLIENT has paid the SERVICE PROVIDER in full.
+
+Authorship: The CLIENT agrees the SERVICE PROVIDER may showcase the PERFORMANCE in the SERVICE PROVIDER or ARTIST’s portfolio and in websites, printed literature and other media for the purpose of recognition.
+
+
+CONFIDENTIALITY AND NON-DISCLOSURE
+Each party confirms to the other party that it will not share information that is marked confidential and non-public with a third party, unless the disclosing party gives written permission first. Each party must continue to follow these obligations, even after the Agreement ends.
+
+
+REPRESENTATIONS
+Each party confirms to the other party that it has the authority to enter into and perform all of its obligations under this Agreement.
+
+
+TERM AND TERMINATION
+Either party may end this Agreement at any time and for any reason, by providing 14 days' written notice.
+
+The CLIENT will pay the SERVICE PROVIDER for all work that has been completed when the Agreement ends and shall immediately reimburse the SERVICE PROVIDER for any prior event-related expenses.
+
+
+LIMITATION OF LIABILITY
+The PERFORMANCE is presented “as is” and the SERVICE PROVIDER’s maximum liability is the total sum paid by the CLIENT to the SERVICE PROVIDER under this Agreement.
+
+
+INDEMNITY
+The CLIENT agrees to indemnify, save and hold harmless the SERVICE PROVIDER and ARTIST and BAND from any and all damages, liabilities, costs, losses or expenses arising out of any claim, demand, or action by a third party as a result of the work the SERVICE PROVIDER, ARTIST, and BAND has done under this Agreement.
+
+
+GENERAL
+Governing Law and Dispute Resolution. The laws of Dominica govern the rights and obligations of the CLIENT and the SERVICE PROVIDER under this Agreement, without regard to conflict of law provisions of that state.
+
+
+
+NOTICES
+All notices to either party shall be in writing and delivered by email or registered mail. Notices must be delivered to the party’s address(es) listed at the begining of this Agreement.
+
+
+SEVERABILITY
+If any portion of this Agreement is changed or disregarded because it is unenforceable, the rest of the Agreement is still enforceable.
+
+ENTIRE AGREEMENT
+This Agreement supersedes all other prior Agreements (both written and oral) between the parties.
+
+
+The undersigned agree to and accept the terms of this Agreement.

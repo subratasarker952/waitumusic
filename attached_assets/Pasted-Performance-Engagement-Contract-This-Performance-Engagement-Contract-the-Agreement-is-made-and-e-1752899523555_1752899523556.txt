@@ -1,0 +1,45 @@
+Performance Engagement Contract
+This Performance Engagement Contract (the "Agreement") is made and entered into as of {contract_date} by and between {company_name}, registered and existing under the laws of the Commonwealth of Dominica, with its principal place of business located at 31 Bath Estate, Roseau, Dominica (hereinafter referred to as "Service Provider"), and {client_company_name}, (hereinafter referred to as the "Client" or "Artist" depending on the context of engagement, and these terms may be used interchangeably within this contract).
+
+1. Engagement
+1.1 Engagement: Service Provider hereby engages the Artist to perform as a member of the LiiMiiX collective for a live performance event called "[Event Name]" (the "Event") scheduled to take place on {contract_end_date} at [Event Time] at [Event Location], (the "Venue").
+1.2 Services: The Artist agrees to perform as a [Instrument/Vocalist] during the Event, providing musical accompaniment and support to Lí-Lí Octave.
+
+2. Compensation
+2.1 Compensation: Service Provider agrees to pay the Artist the sum of {contract_value} as compensation for the services rendered under this Agreement.
+2.2 Payment: Payment shall be made to the Artist by [Payment Method] within 7 days after {contract_end_date}.
+
+3. Rehearsal
+3.1 Rehearsal: The Artist agrees to participate in rehearsals for the Event as scheduled by Service Provider. Rehearsal dates and times will be communicated to the Artist in advance.
+3.2 Soundcheck and Attendance: On the day of Event, Artist is required to be present at the Venue at least three (3) hours in advance to facilitate soundcheck and other preparations for the Event.
+
+4. Exclusivity
+4.1 Exclusivity: During the Event, the Artist agrees to perform exclusively for Service Provider, via LiiMiiX, and not for any other party unless otherwise agreed upon.
+
+5. Publicity
+5.1 Publicity: The Artist grants Service Provider the right to use the Artist's name, likeness, and biographical information for promotional purposes related to the Event.
+
+6. Intellectual Property
+6.1 Ownership: All musical compositions, arrangements, and other creative works created by the Artist in connection with the Event shall be the sole property of Service Provider. Notwithstanding, intellectual property rights and percentages by contribution of the Artist shall be respected.
+
+7. Termination
+7.1 Termination: Either party may terminate this Agreement for cause upon 30 days' written notice to the other party.
+
+8. Indemnification
+8.1 Indemnification: The Artist agrees to indemnify and hold harmless Service Provider, its officers, directors, employees, and agents from and against any and all claims, damages, losses, liabilities, and expenses arising out of or in connection with the Artist's performance under this Agreement.  
+
+9. Entire Agreement
+9.1 Entire Agreement: This Agreement constitutes the entire agreement between the parties and supersedes all prior or contemporaneous communications, representations, or agreements, whether oral or written, barring any written provisions in clause (4.).  
+
+10. Governing Law
+10.1 Governing Law: This Agreement shall be governed by and construed in accordance with the laws of the Commonwealth of Dominica.  
+
+Additional Considerations:
+
+Technical Rider: Wherever possible, Service Provider shall specify who will provide the necessary musical equipment (instruments, amplifiers, etc.) and any technical requirements for the Event, based on information received from the organizers of the Event.
+
+Travel and Accommodation: If applicable, arrangements for the Artist's travel and accommodation for the Event and rehearsals will be outlined.
+
+Insurance: It is suggested that the Artist obtain appropriate liability insurance coverage where applicable.
+
+Confidentiality: All information contained herein is considered strictly confidential, private and not for public consumption under penalty of law. This provision does not preclude discussions of this document with the Artists own legal representative(s).

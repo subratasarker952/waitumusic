@@ -1,0 +1,48 @@
+[Report Only] Refused to load the script '<URL>' because it violates the following Content Security Policy directive: "script-src 'none'". Note that 'script-src-elem' was not explicitly set, so 'script-src' is used as a fallback.
+
+[Report Only] Refused to load the script '<URL>' because it violates the following Content Security Policy directive: "script-src 'none'". Note that 'script-src-elem' was not explicitly set, so 'script-src' is used as a fallback.
+
+[Report Only] Refused to load the script '<URL>' because it violates the following Content Security Policy directive: "script-src 'none'". Note that 'script-src-elem' was not explicitly set, so 'script-src' is used as a fallback.
+
+[Report Only] Refused to load the script '<URL>' because it violates the following Content Security Policy directive: "script-src 'none'". Note that 'script-src-elem' was not explicitly set, so 'script-src' is used as a fallback.
+
+[Report Only] Refused to load the script '<URL>' because it violates the following Content Security Policy directive: "script-src 'none'". Note that 'script-src-elem' was not explicitly set, so 'script-src' is used as a fallback.
+
+[Report Only] Refused to load the script '<URL>' because it violates the following Content Security Policy directive: "script-src 'none'". Note that 'script-src-elem' was not explicitly set, so 'script-src' is used as a fallback.
+
+[Report Only] Refused to load the script '<URL>' because it violates the following Content Security Policy directive: "script-src 'none'". Note that 'script-src-elem' was not explicitly set, so 'script-src' is used as a fallback.
+
+ComprehensiveBookingWorkflow.tsx:744 🎯 TALENT GROUPED BY PRIMARY_TALENT_ID: {totalTalent: 10, talentTypes: Array(10), categorizedCounts: {…}}
+ComprehensiveBookingWorkflow.tsx:193 🔍 FRONTEND: Fetching assigned talent for booking ID: 1
+ComprehensiveBookingWorkflow.tsx:744 🎯 TALENT GROUPED BY PRIMARY_TALENT_ID: {totalTalent: 10, talentTypes: Array(10), categorizedCounts: {…}}
+ComprehensiveBookingWorkflow.tsx:744 🎯 TALENT GROUPED BY PRIMARY_TALENT_ID: {totalTalent: 16, talentTypes: Array(16), categorizedCounts: {…}}
+ComprehensiveBookingWorkflow.tsx:744 🎯 TALENT GROUPED BY PRIMARY_TALENT_ID: {totalTalent: 16, talentTypes: Array(16), categorizedCounts: {…}}
+ComprehensiveBookingWorkflow.tsx:195 📋 FRONTEND: Received assigned talent data: (2) [{…}, {…}]
+ComprehensiveBookingWorkflow.tsx:744 🎯 TALENT GROUPED BY PRIMARY_TALENT_ID: {totalTalent: 16, talentTypes: Array(16), categorizedCounts: {…}}
+ComprehensiveBookingWorkflow.tsx:237 📋 UPDATING assigned talent state: (2) [{…}, {…}]
+ComprehensiveBookingWorkflow.tsx:238 🔍 DETAILED DATA CHECK - First talent object: {id: 'assignment-2', userId: 6, name: 'Lí-Lí Octave', assignmentName: 'Lianne Letang(Lí-Lí Octave)', fullName: 'Lianne Letang', …}
+ComprehensiveBookingWorkflow.tsx:239 🔍 KEYS in first talent: (17) ['id', 'userId', 'name', 'assignmentName', 'fullName', 'stageName', 'type', 'role', 'isMainBookedTalent', 'isPrimary', 'talentType', 'primaryTalent', 'secondaryTalents', 'assignmentId', 'isOriginallyBooked', 'showAcceptDecline', 'showRemove']
+ComprehensiveBookingWorkflow.tsx:240 🔍 PRIMARY TALENT field: Lead Vocalist
+ComprehensiveBookingWorkflow.tsx:241 🔍 SECONDARY TALENTS field: []
+ComprehensiveBookingWorkflow.tsx:744 🎯 TALENT GROUPED BY PRIMARY_TALENT_ID: {totalTalent: 16, talentTypes: Array(16), categorizedCounts: {…}}categorizedCounts: {managedArtists: 9, artists: 1, managedMusicians: 5, musicians: 1, performanceProfessionals: 0, …}talentTypes: (16) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]0: {name: 'Lí-Lí Octave', primaryTalentId: 1, primaryTalent: 'Lead Vocalist', roleId: 3, isManaged: true}1: {name: 'JCro', primaryTalentId: 3, primaryTalent: 'Rapper', roleId: 3, isManaged: true}2: {name: 'Janet "De Angel" Azzouz', primaryTalentId: 1, primaryTalent: 'Lead Vocalist', roleId: 3, isManaged: true}3: {name: 'Princess Trinidad', primaryTalentId: 1, primaryTalent: 'Lead Vocalist', roleId: 3, isManaged: true}4: {name: 'Luna Starlight', primaryTalentId: 40, primaryTalent: 'R&B Vocalist', roleId: 3, isManaged: true}5: {name: 'Apollo Rivers', primaryTalentId: 5, primaryTalent: 'Jazz Vocalist', roleId: 3, isManaged: true}6: {name: 'Nova Williams', primaryTalentId: 6, primaryTalent: 'Pop Vocalist', roleId: 4, isManaged: true}7: {name: 'Echo Davis', primaryTalentId: 2, primaryTalent: 'Singer-Songwriter', roleId: 4, isManaged: true}8: {name: 'Cosmic Taylor', primaryTalentId: 4, primaryTalent: 'Country Singer', roleId: 4, isManaged: true}9: {name: 'Indie Stone', primaryTalentId: 9, primaryTalent: 'Singer-Songwriter', roleId: 4, isManaged: false}10: {name: undefined, primaryTalentId: 15, primaryTalent: 'Drummer', roleId: 5, isManaged: true}11: {name: undefined, primaryTalentId: 23, primaryTalent: 'Lead Guitarist', roleId: 6, isManaged: true}12: {name: undefined, primaryTalentId: 25, primaryTalent: 'Keyboardist', roleId: 6, isManaged: true}13: {name: undefined, primaryTalentId: 58, primaryTalent: 'Violinist', roleId: 6, isManaged: true}14: {name: undefined, primaryTalentId: 59, primaryTalent: 'Saxophonist', roleId: 6, isManaged: false}15: {name: 'Maya Bass', primaryTalentId: 16, primaryTalent: 'Bass Player', roleId: 5, isManaged: true}length: 16[[Prototype]]: Array(0)totalTalent: 16[[Prototype]]: Objectconstructor: ƒ Object()hasOwnProperty: ƒ hasOwnProperty()isPrototypeOf: ƒ isPrototypeOf()propertyIsEnumerable: ƒ propertyIsEnumerable()toLocaleString: ƒ toLocaleString()toString: ƒ toString()valueOf: ƒ valueOf()__defineGetter__: ƒ __defineGetter__()__defineSetter__: ƒ __defineSetter__()__lookupGetter__: ƒ __lookupGetter__()__lookupSetter__: ƒ __lookupSetter__()__proto__: (...)get __proto__: ƒ __proto__()set __proto__: ƒ __proto__()
+ComprehensiveBookingWorkflow.tsx:744 🎯 TALENT GROUPED BY PRIMARY_TALENT_ID: {totalTalent: 23, talentTypes: Array(23), categorizedCounts: {…}}
+ComprehensiveBookingWorkflow.tsx:744 🎯 TALENT GROUPED BY PRIMARY_TALENT_ID: {totalTalent: 23, talentTypes: Array(23), categorizedCounts: {…}}
+dialog.tsx:542  Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+(anonymous) @ dialog.tsx:542
+commitHookEffectListMount @ react-dom.development.js:23189
+commitPassiveMountOnFiber @ react-dom.development.js:24965
+commitPassiveMountEffects_complete @ react-dom.development.js:24930
+commitPassiveMountEffects_begin @ react-dom.development.js:24917
+commitPassiveMountEffects @ react-dom.development.js:24905
+flushPassiveEffectsImpl @ react-dom.development.js:27078
+flushPassiveEffects @ react-dom.development.js:27023
+commitRootImpl @ react-dom.development.js:26974
+commitRoot @ react-dom.development.js:26721
+performSyncWorkOnRoot @ react-dom.development.js:26156
+flushSyncCallbacks @ react-dom.development.js:12042
+(anonymous) @ react-dom.development.js:25690
+[NEW] Explain Console errors by using Copilot in Edge: click
+         
+         to explain an error. 
+        Learn more
+        Don't show again

@@ -1,0 +1,243 @@
+Hospitality and Dressing Rooms
+Professional hospitality requirements for artist and band
+
+Individual Band Member Requirements
+7 Band Members
+L
+Lí-Lí Octave
+(Lí-Lí Octave)
+
+Role
+
+Lead Vocalist
+
+No hospitality requirements found for Lí-Lí Octave
+
+Standard requirements will apply
+
+M
+Maya Bass
+(Maya Bass)
+
+Role
+
+Bass Player
+
+No hospitality requirements found for Maya Bass
+
+Standard requirements will apply
+
+P
+Phoenix Chen
+Role
+
+Drummer
+
+No hospitality requirements found for Phoenix Chen
+
+Standard requirements will apply
+
+S
+Storm Johnson
+Role
+
+Lead Guitarist
+
+No hospitality requirements found for Storm Johnson
+
+Standard requirements will apply
+
+W
+Wave Anderson
+Role
+
+Keyboardist
+
+No hospitality requirements found for Wave Anderson
+
+Standard requirements will apply
+
+O
+Ocean Park
+Role
+
+Violinist
+
+No hospitality requirements found for Ocean Park
+
+Standard requirements will apply
+
+S
+Session Brooks
+Role
+
+Saxophonist
+
+No hospitality requirements found for Session Brooks
+
+Standard requirements will apply
+
+Technical Requirements from Band Members
+Individual Requirements
+L
+Lí-Lí Octave
+(Lí-Lí Octave)
+
+Role
+
+Lead Vocalist
+
+No technical requirements found for Lí-Lí Octave
+
+Standard equipment will apply
+
+M
+Maya Bass
+(Maya Bass)
+
+Role
+
+Bass Player
+
+No technical requirements found for Maya Bass
+
+Standard equipment will apply
+
+P
+Phoenix Chen
+Role
+
+Drummer
+
+No technical requirements found for Phoenix Chen
+
+Standard equipment will apply
+
+S
+Storm Johnson
+Role
+
+Lead Guitarist
+
+No technical requirements found for Storm Johnson
+
+Standard equipment will apply
+
+W
+Wave Anderson
+Role
+
+Keyboardist
+
+No technical requirements found for Wave Anderson
+
+Standard equipment will apply
+
+O
+Ocean Park
+Role
+
+Violinist
+
+No technical requirements found for Ocean Park
+
+Standard equipment will apply
+
+S
+Session Brooks
+Role
+
+Saxophonist
+
+No technical requirements found for Session Brooks
+
+Standard equipment will apply
+
+Performance Specifications from Band Members
+Individual Specifications
+L
+Lí-Lí Octave
+(Lí-Lí Octave)
+
+Role
+
+Lead Vocalist
+
+No performance specifications found for Lí-Lí Octave
+
+Standard performance setup will apply
+
+M
+Maya Bass
+(Maya Bass)
+
+Role
+
+Bass Player
+
+Performance specifications from profile:
+
+setup_time
+Instrument Setup: 20 minutes for electric setup, 30 minutes if using upright bass
+break_requirements
+Tuning Breaks: 2-minute breaks between sets for tuning checks
+P
+Phoenix Chen
+Role
+
+Drummer
+
+Performance specifications from profile:
+
+setup_time
+Instrument Setup: 20 minutes for electric setup, 30 minutes if using upright bass
+break_requirements
+Tuning Breaks: 2-minute breaks between sets for tuning checks
+S
+Storm Johnson
+Role
+
+Lead Guitarist
+
+Performance specifications from profile:
+
+setup_time
+Instrument Setup: 20 minutes for electric setup, 30 minutes if using upright bass
+break_requirements
+Tuning Breaks: 2-minute breaks between sets for tuning checks
+W
+Wave Anderson
+Role
+
+Keyboardist
+
+Performance specifications from profile:
+
+setup_time
+Instrument Setup: 20 minutes for electric setup, 30 minutes if using upright bass
+break_requirements
+Tuning Breaks: 2-minute breaks between sets for tuning checks
+O
+Ocean Park
+Role
+
+Violinist
+
+Performance specifications from profile:
+
+setup_time
+Instrument Setup: 20 minutes for electric setup, 30 minutes if using upright bass
+break_requirements
+Tuning Breaks: 2-minute breaks between sets for tuning checks
+S
+Session Brooks
+Role
+
+Saxophonist
+
+Performance specifications from profile:
+
+setup_time
+Instrument Setup: 20 minutes for electric setup, 30 minutes if using upright bass
+break_requirements
+Tuning Breaks: 2-minute breaks between sets for tuning checks

@@ -1,0 +1,45 @@
+/* Mobile-responsive modal styles */
+@media (max-width: 768px) {
+  /* Fix modal height on mobile */
+  .modal-content,
+  [role="dialog"] > div {
+    max-height: 90vh !important;
+    max-height: 90dvh !important; /* Dynamic viewport height */
+    margin: 1rem !important;
+  }
+  
+  /* Ensure modal body is scrollable */
+  .modal-body,
+  [role="dialog"] .overflow-y-auto {
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch;
+    max-height: calc(90vh - 8rem) !important;
+    max-height: calc(90dvh - 8rem) !important;
+  }
+  
+  /* Fix action buttons at bottom on mobile */
+  .modal-actions,
+  [role="dialog"] footer {
+    position: sticky;
+    bottom: 0;
+    background: var(--background);
+    padding: 1rem;
+    border-top: 1px solid var(--border);
+    margin-top: auto;
+    z-index: 10;
+  }
+  
+  /* Ensure touch targets are at least 44px */
+  .modal-content button,
+  [role="dialog"] button {
+    min-height: 44px;
+    min-width: 44px;
+  }
+  
+  /* Fix dropdown positioning when keyboard is visible */
+  .dropdown-content[data-keyboard-visible="true"] {
+    position: fixed !important;
+    bottom: calc(var(--keyboard-height, 0px) + 1rem) !important;
+    top: auto !important;
+  }
+}
