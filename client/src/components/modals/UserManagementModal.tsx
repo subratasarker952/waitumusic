@@ -9,6 +9,7 @@ import { useToast } from '@/hooks/use-toast';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { apiRequest } from '@/lib/queryClient';
 import { User, Edit, Save, X, UserCheck, Shield, Music, Users } from 'lucide-react';
+import { stringify } from 'querystring';
 
 interface UserData {
   id: string;
@@ -23,24 +24,40 @@ interface UserData {
 interface UserManagementModalProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  userId?: string;
+  userData?: any;
   mode?: 'edit' | 'create' | 'view';
 }
 
-export default function UserManagementModal({ 
-  open, 
-  onOpenChange, 
-  userId, 
-  mode = 'edit' 
+const getRoleDisplayName = (roleId: number): string => {
+  const roleNames = {
+    1: 'Superadmin',
+    2: 'Admin',
+    3: 'Managed Artist',
+    4: 'Artist',
+    5: 'Managed Musician',
+    6: 'Musician',
+    7: 'Managed Professional',
+    8: 'Professional',
+    9: 'Fan'
+  };
+  return roleNames[roleId as keyof typeof roleNames] || `Role ${roleId}`;
+};
+
+export default function UserManagementModal({
+  open,
+  onOpenChange,
+  userData,
+  mode = 'edit'
 }: UserManagementModalProps) {
+
   const { toast } = useToast();
   const queryClient = useQueryClient();
-  
+
   const [formData, setFormData] = useState({
     fullName: '',
     email: '',
-    role: 'fan',
-    status: 'active',
+    role: '',
+    status: '',
     password: '',
     confirmPassword: ''
   });
@@ -48,11 +65,12 @@ export default function UserManagementModal({
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   // Fetch user data if editing existing user
-  const { data: userData, isLoading: isLoadingUser } = useQuery({
-    queryKey: ['/api/users', userId],
-    enabled: !!userId && mode !== 'create',
-    select: (users: any[]) => users.find(u => u.id.toString() === userId)
-  });
+  // const { data: userData, isLoading: isLoadingUser } = useQuery({
+  //   queryKey: ['/api/users', userId],
+  //   enabled: !!userId && mode !== 'create',
+  //   select: (users: any[]) => users.find(u => u.id.toString() === userId)
+  // });
+
 
   // Fetch available roles
   const { data: roles = [] } = useQuery({
@@ -65,17 +83,18 @@ export default function UserManagementModal({
       setFormData({
         fullName: userData.fullName || '',
         email: userData.email || '',
-        role: userData.role || 'fan',
+        role: userData.roleId.toString() || '',
         status: userData.status || 'active',
         password: '',
         confirmPassword: ''
       });
+      console.log(formData)
     } else if (mode === 'create') {
       // Reset form for create mode
       setFormData({
         fullName: '',
         email: '',
-        role: 'fan',
+        role: '2',
         status: 'active',
         password: '',
         confirmPassword: ''
@@ -105,7 +124,7 @@ export default function UserManagementModal({
 
   // Update user mutation
   const updateUserMutation = useMutation({
-    mutationFn: (data: any) => apiRequest(`/api/users/${userId}`, { method: 'PATCH', body: JSON.stringify(data) }),
+    mutationFn: (data: any) => apiRequest(`/api/users/${userData.id}`, { method: 'PATCH', body: JSON.stringify(data) }),
     onSuccess: () => {
       toast({
         title: "User Updated",
@@ -187,12 +206,12 @@ export default function UserManagementModal({
     try {
       // Here you would make an API call
       const action = mode === 'create' ? 'created' : 'updated';
-      
+
       toast({
         title: `User ${action.charAt(0).toUpperCase() + action.slice(1)}`,
         description: `${formData.fullName} has been successfully ${action}.`,
       });
-      
+
       onOpenChange(false);
     } catch (error) {
       toast({
@@ -207,14 +226,14 @@ export default function UserManagementModal({
 
   const getRoleIcon = (role: string) => {
     switch (role) {
-      case 'superadmin':
-      case 'admin':
+      case 'Superadmin':
+      case 'Admin':
         return <Shield className="h-4 w-4" />;
-      case 'managed_artist':
+      case 'Managed_artist':
       case 'artist':
         return <Music className="h-4 w-4" />;
-      case 'managed_musician':
-      case 'musician':
+      case 'Managed_musician':
+      case 'Musician':
         return <Users className="h-4 w-4" />;
       default:
         return <User className="h-4 w-4" />;
@@ -223,20 +242,20 @@ export default function UserManagementModal({
 
   const getRoleColor = (role: string) => {
     switch (role) {
-      case 'superadmin':
+      case 'Superadmin':
         return 'bg-red-100 text-red-800';
-      case 'admin':
+      case 'Admin':
         return 'bg-blue-100 text-blue-800';
-      case 'managed_artist':
-      case 'artist':
+      case 'Managed_artist':
+      case 'Artist':
         return 'bg-purple-100 text-purple-800';
-      case 'managed_musician':
-      case 'musician':
+      case 'Managed_musician':
+      case 'Musician':
         return 'bg-green-100 text-green-800';
-      case 'managed_professional':
-      case 'professional':
+      case 'Managed_professional':
+      case 'Professional':
         return 'bg-orange-100 text-orange-800';
-      case 'fan':
+      case 'Fan':
         return 'bg-pink-100 text-pink-800';
       default:
         return 'bg-gray-100 text-gray-800';
@@ -312,7 +331,7 @@ export default function UserManagementModal({
 
               <div className="space-y-2">
                 <Label htmlFor="role">Role *</Label>
-                <Select 
+                <Select
                   value={formData.role}
                   onValueChange={(value) => handleInputChange('role', value)}
                   disabled={mode === 'view'}
@@ -321,22 +340,22 @@ export default function UserManagementModal({
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="fan">Fan</SelectItem>
-                    <SelectItem value="artist">Artist</SelectItem>
-                    <SelectItem value="managed_artist">Managed Artist</SelectItem>
-                    <SelectItem value="musician">Musician</SelectItem>
-                    <SelectItem value="managed_musician">Managed Musician</SelectItem>
-                    <SelectItem value="professional">Professional</SelectItem>
-                    <SelectItem value="managed_professional">Managed Professional</SelectItem>
-                    <SelectItem value="admin">Admin</SelectItem>
-                    <SelectItem value="superadmin">Superadmin</SelectItem>
+                    <SelectItem value="2">Admin</SelectItem>
+                    <SelectItem value="1">Superadmin</SelectItem>
+                    <SelectItem value="4">Artist</SelectItem>
+                    <SelectItem value="3">Managed Artist</SelectItem>
+                    <SelectItem value="6">Musician</SelectItem>
+                    <SelectItem value="5">Managed Musician</SelectItem>
+                    <SelectItem value="8">Professional</SelectItem>
+                    <SelectItem value="7">Managed Professional</SelectItem>
+                    <SelectItem value="9">Fan</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
 
               <div className="space-y-2">
                 <Label htmlFor="status">Account Status</Label>
-                <Select 
+                <Select
                   value={formData.status}
                   onValueChange={(value) => handleInputChange('status', value)}
                   disabled={mode === 'view'}
@@ -357,7 +376,7 @@ export default function UserManagementModal({
             {mode === 'create' && (
               <div className="space-y-4 pt-4 border-t">
                 <h4 className="font-medium">Password Setup</h4>
-                
+
                 <div className="space-y-2">
                   <Label htmlFor="password">Password *</Label>
                   <Input
@@ -386,18 +405,18 @@ export default function UserManagementModal({
             {mode !== 'create' && userData && (
               <div className="space-y-4 pt-4 border-t">
                 <h4 className="font-medium">Account Information</h4>
-                
+
                 <div className="grid grid-cols-2 gap-4 text-sm">
                   <div>
                     <Label className="text-xs text-muted-foreground">Current Role</Label>
                     <div className="flex items-center gap-2 mt-1">
-                      <Badge className={getRoleColor(userData.role)}>
-                        {getRoleIcon(userData.role)}
-                        <span className="ml-1 capitalize">{userData.role.replace('_', ' ')}</span>
+                      <Badge className={getRoleColor(getRoleDisplayName(userData.roleId))}>
+                        {getRoleIcon(getRoleDisplayName(userData.roleId))}
+                        <span className="ml-1 capitalize">{getRoleDisplayName(userData.roleId)}</span>
                       </Badge>
                     </div>
                   </div>
-                  
+
                   <div>
                     <Label className="text-xs text-muted-foreground">Status</Label>
                     <div className="flex items-center gap-2 mt-1">
@@ -445,7 +464,7 @@ export default function UserManagementModal({
           <div className="flex flex-col sm:flex-row justify-end gap-3 pt-4 border-t">
             <Button onClick={() => onOpenChange(false)} className="w-full sm:w-auto">
               <X className="h-4 w-4 mr-2" />
-              Close  
+              Close
             </Button>
           </div>
         )}

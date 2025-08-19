@@ -35,11 +35,11 @@ interface UserListModalProps {
 export default function UserListModal({ open, onOpenChange }: UserListModalProps) {
   const { toast } = useToast();
   const queryClient = useQueryClient();
-  
   const [searchQuery, setSearchQuery] = useState('');
+  
   const [deleteUserId, setDeleteUserId] = useState<string | null>(null);
   const [userManagementOpen, setUserManagementOpen] = useState(false);
-  const [userEditingId, setUserEditingId] = useState<string | undefined>();
+  const [userData, setUserData] = useState<any | undefined>();
   const [userEditMode, setUserEditMode] = useState<'edit' | 'create' | 'view'>('edit');
 
   // Fetch all users
@@ -47,10 +47,10 @@ export default function UserListModal({ open, onOpenChange }: UserListModalProps
     queryKey: ['/api/users'],
     enabled: open
   });
-
+  
   // Delete user mutation
   const deleteUserMutation = useMutation({
-    mutationFn: (userId: string) => apiRequest(`/api/users/${userId}`, { method: 'DELETE' }),
+    mutationFn: (deleteUserId: string) => apiRequest(`/api/users/${deleteUserId}`, { method: 'DELETE' }),
     onSuccess: () => {
       toast({
         title: "User Deleted",
@@ -92,6 +92,22 @@ export default function UserListModal({ open, onOpenChange }: UserListModalProps
       default: return 'default';
     }
   };
+  
+// Helper function to get role display names
+const getRoleDisplayName = (roleId: number): string => {
+  const roleNames = {
+    1: 'Superadmin',
+    2: 'Admin', 
+    3: 'Managed Artist',
+    4: 'Artist',
+    5: 'Managed Musician',
+    6: 'Musician',
+    7: 'Managed Professional',
+    8: 'Professional',
+    9: 'Fan'
+  };
+  return roleNames[roleId as keyof typeof roleNames] || `Role ${roleId}`;
+};
 
   return (
     <>
@@ -114,7 +130,7 @@ export default function UserListModal({ open, onOpenChange }: UserListModalProps
             </div>
             <Button 
               onClick={() => {
-                setUserEditingId(undefined);
+                setUserData(undefined);
                 setUserEditMode('create');
                 setUserManagementOpen(true);
               }}
@@ -151,8 +167,8 @@ export default function UserListModal({ open, onOpenChange }: UserListModalProps
                       <TableCell className="font-medium">{user.fullName}</TableCell>
                       <TableCell>{user.email}</TableCell>
                       <TableCell>
-                        <Badge variant={getRoleBadgeVariant(user.role)}>
-                          {user.role}
+                        <Badge variant={getRoleBadgeVariant(getRoleDisplayName(user.roleId))}>
+                          {getRoleDisplayName(user.roleId)}
                         </Badge>
                       </TableCell>
                       <TableCell>
@@ -172,7 +188,7 @@ export default function UserListModal({ open, onOpenChange }: UserListModalProps
                             variant="ghost"
                             size="sm"
                             onClick={() => {
-                              setUserEditingId(user.id.toString());
+                              setUserData(user);
                               setUserEditMode('view');
                               setUserManagementOpen(true);
                             }}
@@ -184,7 +200,7 @@ export default function UserListModal({ open, onOpenChange }: UserListModalProps
                             variant="ghost"
                             size="sm"
                             onClick={() => {
-                              setUserEditingId(user.id.toString());
+                              setUserData(user);
                               setUserEditMode('edit');
                               setUserManagementOpen(true);
                             }}
@@ -195,9 +211,9 @@ export default function UserListModal({ open, onOpenChange }: UserListModalProps
                           <Button
                             variant="ghost"
                             size="sm"
-                            disabled={user.role === 'superadmin'}
-                            onClick={() => setDeleteUserId(user.id.toString())}
-                            data-testid={`button-delete-user-${user.id}`}
+                            disabled={getRoleDisplayName(user.roleId) == 'Superadmin'}
+                            onClick={() => setDeleteUserId(user.id)}
+                            data-testid={`button-delete-user-${user.id.toString()}`}
                           >
                             <Trash2 className="h-4 w-4 text-destructive" />
                           </Button>
@@ -238,7 +254,7 @@ export default function UserListModal({ open, onOpenChange }: UserListModalProps
       <UserManagementModal
         open={userManagementOpen}
         onOpenChange={setUserManagementOpen}
-        userId={userEditingId}
+        userData={userData}
         mode={userEditMode}
       />
     </>

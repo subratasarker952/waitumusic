@@ -75,7 +75,7 @@ export default function Login() {
     enabled: (demoModeData as any)?.demoMode === true,
     staleTime: 5 * 60 * 1000, // Cache for 5 minutes
   });
-  {console.log(demoUsers)}
+  // {console.log(demoUsers)}
 
   const isDemoModeEnabled = (demoModeData as any)?.demoMode ?? false;
 
