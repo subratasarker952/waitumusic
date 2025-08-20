@@ -13,7 +13,7 @@ function DashboardContent() {
   const { user, isLoading, role } = useAuth();
   const [dashboardMode, setDashboardMode] = useState<'operational' | 'configuration'>('operational');
   useScrollToTop(); // Scroll to top on page navigation
-  
+
   // Show loading spinner while auth is being checked
   if (isLoading) {
     return (
@@ -25,7 +25,7 @@ function DashboardContent() {
       </div>
     );
   }
-  
+
   // Simple role-based check: if no user or no role, redirect to login
   if (!user || !role?.id) {
     window.location.href = '/login';
@@ -65,7 +65,7 @@ function DashboardContent() {
   // Show error message with more details for debugging
   if (statsError || allBookingsError || userBookingsError) {
     console.error('Dashboard errors:', { statsError, allBookingsError, userBookingsError });
-    
+
     // Report error to OppHub learning system
     if (statsError || allBookingsError || userBookingsError) {
       const errorMsg = statsError?.message || allBookingsError?.message || userBookingsError?.message || 'Dashboard loading error';
@@ -78,7 +78,7 @@ function DashboardContent() {
         })
       }).catch(console.error);
     }
-    
+
     return (
       <div className="container mx-auto px-4 py-8">
         <div className="text-center">
@@ -87,7 +87,7 @@ function DashboardContent() {
           {process.env.NODE_ENV === 'development' && (
             <div className="text-xs text-gray-500 mt-4 p-2 bg-gray-100 rounded">
               <p>Stats Error: {statsError?.message || 'None'}</p>
-              <p>Admin Bookings Error: {allBookingsError?.message || 'None'}</p>  
+              <p>Admin Bookings Error: {allBookingsError?.message || 'None'}</p>
               <p>User Bookings Error: {userBookingsError?.message || 'None'}</p>
             </div>
           )}
@@ -162,42 +162,23 @@ function DashboardContent() {
       {isAdminUser ? (
         <>
           {isSuperAdmin && dashboardMode === 'configuration' ? (
-            <HierarchicalDashboard 
-              user={{
-                id: user.id,
-                fullName: user.fullName,
-                role: role?.name || 'user',
-                roleId: user.roleId,
-                roleName: role?.name || 'user'
-              }}
-            />
+            <HierarchicalDashboard user={user} />
           ) : (
-            <UnifiedDashboard 
-              user={{
-                id: user.id,
-                fullName: user.fullName,
-                role: role?.name || 'user',
-                roleId: user.roleId,
-                roleName: role?.name || 'user'
-              }}
+            <UnifiedDashboard
+              user={user}
               stats={stats || {}}
-              bookings={isAdminRole ? allBookings : userBookings}
+              bookings={isAdminRole ? (allBookings || []) : (userBookings || [])}
             />
           )}
         </>
       ) : (
-        <UnifiedDashboard 
-          user={{
-            id: user.id,
-            fullName: user.fullName,
-            role: role?.name || 'user',
-            roleId: user.roleId,
-            roleName: role?.name || 'user'
-          }}
+        <UnifiedDashboard
+          user={user}
           stats={stats || {}}
-          bookings={isAdminRole ? allBookings : userBookings}
+          bookings={isAdminRole ? (allBookings || []) : (userBookings || [])}
         />
       )}
+
     </div>
   );
 }

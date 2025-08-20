@@ -149,12 +149,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.status(404).json({ message: "User not found" });
       }
 
-      res.json({
-        id: user.id,
-        email: user.email,
-        fullName: user.fullName,
-        roleId: user.roleId
-      });
+      const { passwordHash, ...userWithoutPassword } = user;
+
+      res.json(userWithoutPassword);
     } catch (error) {
       console.error('Get current user error:', error);
       res.status(500).json({ message: "Internal server error" });

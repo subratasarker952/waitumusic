@@ -25,13 +25,7 @@ import SystemAdministrationTab from './SystemAdministrationTab';
 import StatisticsTab from './StatisticsTab';
 
 interface HierarchicalDashboardProps {
-  user: {
-    id: number;
-    fullName: string;
-    role: string;
-    roleId: number;
-    roleName: string;
-  };
+  user: any;
 }
 
 // Icon mapping for dashboard sections

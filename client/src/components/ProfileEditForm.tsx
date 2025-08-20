@@ -34,9 +34,10 @@ export default function ProfileEditForm({
   // State to track if the user has a profile
   const [hasProfile, setHasProfile] = useState(false);
 
+  // console.log(user)
+
   const { toast } = useToast();
   const queryClient = useQueryClient();
-
   const [formData, setFormData] = useState({
     fullName: user?.fullName || '',
     email: user?.email || '',
@@ -128,7 +129,6 @@ export default function ProfileEditForm({
     try {
       if (isArtist) {
         const artistData = await apiRequest(`/api/artists/${user.id}`);
-        console.log(artistData)
         if (artistData) {
           setFormData(prev => ({
             ...prev,
@@ -272,6 +272,8 @@ export default function ProfileEditForm({
   const updateProfileMutation = useMutation({
   mutationFn: async (data: any) => {
     // Update basic user data (always PATCH for users)
+
+    console.log(data)
     await apiRequest(`/api/users/${user.id}`, {
       method: 'PATCH',
       body: JSON.stringify({

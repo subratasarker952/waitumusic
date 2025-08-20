@@ -11,15 +11,7 @@ import { apiRequest } from '@/lib/queryClient';
 import { User, Edit, Save, X, UserCheck, Shield, Music, Users } from 'lucide-react';
 import { stringify } from 'querystring';
 
-interface UserData {
-  id: string;
-  fullName: string;
-  email: string;
-  role: string;
-  status: string;
-  lastLogin?: string;
-  createdAt: string;
-}
+
 
 interface UserManagementModalProps {
   open: boolean;

@@ -68,6 +68,7 @@ import {
   FanEngagementModal, 
   ConsultationManagementModal 
 } from '@/components/modals/ComprehensiveModalSystem';
+import { Index } from 'drizzle-orm/mysql-core';
 
 // Helper function to get role display names
 const getRoleDisplayName = (roleId: number): string => {
@@ -87,7 +88,7 @@ const getRoleDisplayName = (roleId: number): string => {
 
 interface UnifiedDashboardProps {
   stats: any;
-  bookings: any[];
+  bookings: any;
   user: any;
 }
 
@@ -838,7 +839,7 @@ export default function UnifiedDashboard({ stats, bookings, user }: UnifiedDashb
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
-                  {userBookings.slice(0, 3).map((booking: any, index) => (
+                  {userBookings.slice(0, 3).map((booking: any, index:Index) => (
                     <div key={booking.id || index} className="flex items-center space-x-4">
                       <div className="w-2 h-2 bg-primary rounded-full"></div>
                       <div className="flex-1">
@@ -1602,7 +1603,7 @@ export default function UnifiedDashboard({ stats, bookings, user }: UnifiedDashb
         <UserManagementModal 
           open={userManagementOpen} 
           onOpenChange={setUserManagementOpen}
-          userId={selectedUserId}
+          userData={user}
           mode={userModalMode}
         />
       )}

@@ -2489,6 +2489,13 @@ export class DatabaseStorage implements IStorage {
     return await db.select().from(albums).where(eq(albums.artistUserId, artistUserId));
   }
 
+  async getMerchandiseByArtist(artistUserId: number): Promise<Merchandise[]> {
+    return await db
+      .select()
+      .from(merchandise)
+      .where(eq(merchandise.artistUserId, artistUserId));
+  }
+
   async createAlbum(album: InsertAlbum): Promise<Album> {
     const [createdAlbum] = await db
       .insert(albums)
