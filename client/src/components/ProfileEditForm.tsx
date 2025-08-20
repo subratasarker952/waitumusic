@@ -30,6 +30,10 @@ export default function ProfileEditForm({
   isFan,
   hasActiveSubscription = false
 }: ProfileEditFormProps) {
+
+  // State to track if the user has a profile
+  const [hasProfile, setHasProfile] = useState(false);
+
   const { toast } = useToast();
   const queryClient = useQueryClient();
 
@@ -66,132 +70,299 @@ export default function ProfileEditForm({
   });
 
   // Load profile-specific data based on user type
+  // useEffect(() => {
+  //   const loadProfileData = async () => {
+  //     try {
+  //       if (isArtist) {
+  //         const artistData = await apiRequest(`/api/artists/${user.id}`);
+  //         if (artistData) {
+  //           setFormData(prev => ({
+  //             ...prev,
+  //             stageName: artistData.stageName || '',
+  //             bio: artistData.bio || '',
+  //             primaryGenre: artistData.primaryGenre || '',
+  //             basePrice: artistData.basePrice || '',
+  //             idealPerformanceRate: artistData.idealPerformanceRate || '',
+  //             minimumAcceptableRate: artistData.minimumAcceptableRate || '',
+  //             epkUrl: artistData.epkUrl || '',
+  //             bookingFormPictureUrl: artistData.bookingFormPictureUrl || '',
+  //             primaryTalentId: artistData.primaryTalentId || null
+  //           }));
+  //         }
+  //       } else if (isMusicianProfile) {
+  //         const musicianData = await apiRequest(`/api/musicians/${user.id}`);
+  //         if (musicianData) {
+  //           setFormData(prev => ({
+  //             ...prev,
+  //             stageName: musicianData.stageName || '',
+  //             bio: musicianData.bio || '',
+  //             basePrice: musicianData.basePrice || '',
+  //             idealPerformanceRate: musicianData.idealPerformanceRate || '',
+  //             minimumAcceptableRate: musicianData.minimumAcceptableRate || '',
+  //             primaryTalentId: musicianData.primaryTalentId || null
+  //           }));
+  //         }
+  //       } else if (isProfessional) {
+  //         const professionalData = await apiRequest(`/api/professionals/${user.id}`);
+  //         if (professionalData) {
+  //           setFormData(prev => ({
+  //             ...prev,
+  //             bio: professionalData.bio || '',
+  //             websiteUrl: professionalData.websiteUrl || '',
+  //             primaryTalentId: professionalData.primaryTalentId || null
+  //           }));
+  //         }
+  //       }
+  //     } catch (error) {
+  //       console.error('Error loading profile data:', error);
+  //     }
+  //   };
+
+  //   if (user?.id) {
+  //     loadProfileData();
+  //   }
+  // }, [user?.id, isArtist, isMusicianProfile, isProfessional]);
+
   useEffect(() => {
-    const loadProfileData = async () => {
-      try {
-        if (isArtist) {
-          const artistData = await apiRequest(`/api/artists/${user.id}`);
-          if (artistData) {
-            setFormData(prev => ({
-              ...prev,
-              stageName: artistData.stageName || '',
-              bio: artistData.bio || '',
-              primaryGenre: artistData.primaryGenre || '',
-              basePrice: artistData.basePrice || '',
-              idealPerformanceRate: artistData.idealPerformanceRate || '',
-              minimumAcceptableRate: artistData.minimumAcceptableRate || '',
-              epkUrl: artistData.epkUrl || '',
-              bookingFormPictureUrl: artistData.bookingFormPictureUrl || '',
-              primaryTalentId: artistData.primaryTalentId || null
-            }));
-          }
-        } else if (isMusicianProfile) {
-          const musicianData = await apiRequest(`/api/musicians/${user.id}`);
-          if (musicianData) {
-            setFormData(prev => ({
-              ...prev,
-              stageName: musicianData.stageName || '',
-              bio: musicianData.bio || '',
-              basePrice: musicianData.basePrice || '',
-              idealPerformanceRate: musicianData.idealPerformanceRate || '',
-              minimumAcceptableRate: musicianData.minimumAcceptableRate || '',
-              primaryTalentId: musicianData.primaryTalentId || null
-            }));
-          }
-        } else if (isProfessional) {
-          const professionalData = await apiRequest(`/api/professionals/${user.id}`);
-          if (professionalData) {
-            setFormData(prev => ({
-              ...prev,
-              bio: professionalData.bio || '',
-              websiteUrl: professionalData.websiteUrl || '',
-              primaryTalentId: professionalData.primaryTalentId || null
-            }));
-          }
+  const loadProfileData = async () => {
+    try {
+      if (isArtist) {
+        const artistData = await apiRequest(`/api/artists/${user.id}`);
+        console.log(artistData)
+        if (artistData) {
+          setFormData(prev => ({
+            ...prev,
+            stageName: artistData.stageName || '',
+            bio: artistData.bio || '',
+            primaryGenre: artistData.primaryGenre || '',
+            basePrice: artistData.basePrice || '',
+            idealPerformanceRate: artistData.idealPerformanceRate || '',
+            minimumAcceptableRate: artistData.minimumAcceptableRate || '',
+            epkUrl: artistData.epkUrl || '',
+            bookingFormPictureUrl: artistData.bookingFormPictureUrl || '',
+            primaryTalentId: artistData.primaryTalentId || null
+          }));
+          setHasProfile(true); // ✅ found → edit mode
+        } else {
+          setHasProfile(false); // ✅ not found → create mode
         }
-      } catch (error) {
+      }
+      // musicians
+      else if (isMusicianProfile) {
+        const musicianData = await apiRequest(`/api/musicians/${user.id}`);
+        if (musicianData) {
+          setFormData(prev => ({
+            ...prev,
+            stageName: musicianData.stageName || '',
+            bio: musicianData.bio || '',
+            basePrice: musicianData.basePrice || '',
+            idealPerformanceRate: musicianData.idealPerformanceRate || '',
+            minimumAcceptableRate: musicianData.minimumAcceptableRate || '',
+            primaryTalentId: musicianData.primaryTalentId || null
+          }));
+          setHasProfile(true);
+        } else {
+          setHasProfile(false);
+        }
+      }
+      // professionals
+      else if (isProfessional) {
+        const professionalData = await apiRequest(`/api/professionals/${user.id}`);
+        if (professionalData) {
+          setFormData(prev => ({
+            ...prev,
+            bio: professionalData.bio || '',
+            websiteUrl: professionalData.websiteUrl || '',
+            primaryTalentId: professionalData.primaryTalentId || null
+          }));
+          setHasProfile(true);
+        } else {
+          setHasProfile(false);
+        }
+      }
+    } catch (error: any) {
+      if (error.message?.includes("404")) {
+        setHasProfile(false); // ✅ not found case
+      } else {
         console.error('Error loading profile data:', error);
       }
-    };
-
-    if (user?.id) {
-      loadProfileData();
     }
-  }, [user?.id, isArtist, isMusicianProfile, isProfessional]);
+  };
+
+  if (user?.id) {
+    loadProfileData();
+  }
+}, [user?.id, isArtist, isMusicianProfile, isProfessional]);
+
+
+  // const updateProfileMutation = useMutation({
+  //   mutationFn: async (data: any) => {
+  //     // Update basic user data
+  //     await apiRequest(`/api/users/${user.id}`, {
+  //       method: 'PATCH',
+  //       body: JSON.stringify({
+  //         fullName: data.fullName,
+  //         phoneNumber: data.phoneNumber,
+  //         privacySetting: data.privacySetting,
+  //         avatarUrl: data.profilePictureUrl,
+  //         coverImageUrl: data.profileBannerUrl
+  //       }),
+  //     });
+
+  //     // Update role-specific data
+  //     if (isArtist) {
+  //       await apiRequest(`/api/artists/${user.id}`, {
+  //         method: 'PATCH',
+  //         body: JSON.stringify({
+  //           stageName: data.stageName,
+  //           bio: data.bio,
+  //           primaryGenre: data.primaryGenre,
+  //           basePrice: data.basePrice ? parseFloat(data.basePrice) : null,
+  //           idealPerformanceRate: data.idealPerformanceRate ? parseFloat(data.idealPerformanceRate) : null,
+  //           minimumAcceptableRate: data.minimumAcceptableRate ? parseFloat(data.minimumAcceptableRate) : null,
+  //           epkUrl: data.epkUrl,
+  //           bookingFormPictureUrl: data.bookingFormPictureUrl,
+  //           primaryTalentId: data.primaryTalentId
+  //         }),
+  //       });
+  //     } else if (isMusicianProfile) {
+  //       await apiRequest(`/api/musicians/${user.id}`, {
+  //         method: 'PATCH',
+  //         body: JSON.stringify({
+  //           stageName: data.stageName,
+  //           bio: data.bio,
+  //           basePrice: data.basePrice ? parseFloat(data.basePrice) : null,
+  //           idealPerformanceRate: data.idealPerformanceRate ? parseFloat(data.idealPerformanceRate) : null,
+  //           minimumAcceptableRate: data.minimumAcceptableRate ? parseFloat(data.minimumAcceptableRate) : null,
+  //           primaryTalentId: data.primaryTalentId
+  //         }),
+  //       });
+  //     } else if (isProfessional) {
+  //       await apiRequest(`/api/professionals/${user.id}`, {
+  //         method: 'PATCH',
+  //         body: JSON.stringify({
+  //           bio: data.bio,
+  //           websiteUrl: data.websiteUrl,
+  //           primaryTalentId: data.primaryTalentId
+  //         }),
+  //       });
+  //     }
+
+  //     return data;
+  //   },
+  //   onSuccess: () => {
+  //     toast({
+  //       title: "Profile Updated",
+  //       description: "Your profile has been updated successfully",
+  //     });
+  //     queryClient.invalidateQueries({ queryKey: ['/api/user/profile'] });
+  //     queryClient.invalidateQueries({ queryKey: [`/api/artists/${user.id}`] });
+  //     queryClient.invalidateQueries({ queryKey: [`/api/musicians/${user.id}`] });
+  //     queryClient.invalidateQueries({ queryKey: [`/api/professionals/${user.id}`] });
+  //   },
+  //   onError: (error: any) => {
+  //     toast({
+  //       title: "Update Failed",
+  //       description: error.message || "Failed to update profile",
+  //       variant: "destructive",
+  //     });
+  //   },
+  // });
 
   const updateProfileMutation = useMutation({
-    mutationFn: async (data: any) => {
-      // Update basic user data
-      await apiRequest(`/api/users/${user.id}`, {
-        method: 'PATCH',
+  mutationFn: async (data: any) => {
+    // Update basic user data (always PATCH for users)
+    await apiRequest(`/api/users/${user.id}`, {
+      method: 'PATCH',
+      body: JSON.stringify({
+        fullName: data.fullName,
+        phoneNumber: data.phoneNumber,
+        privacySetting: data.privacySetting,
+        avatarUrl: data.profilePictureUrl,
+        coverImageUrl: data.profileBannerUrl
+      }),
+    });
+
+    // Role-specific
+    if (isArtist) {
+      const method = hasProfile ? "PATCH" : "POST";
+      const url = hasProfile
+        ? `/api/artists/${user.id}`
+        : `/api/artists`;
+
+      await apiRequest(url, {
+        method,
         body: JSON.stringify({
-          fullName: data.fullName,
-          phoneNumber: data.phoneNumber,
-          privacySetting: data.privacySetting,
-          avatarUrl: data.profilePictureUrl,
-          coverImageUrl: data.profileBannerUrl
+          userId: user.id, // POST এর সময় দরকার
+          stageName: data.stageName,
+          bio: data.bio,
+          primaryGenre: data.primaryGenre,
+          basePrice: data.basePrice ? parseFloat(data.basePrice) : null,
+          idealPerformanceRate: data.idealPerformanceRate ? parseFloat(data.idealPerformanceRate) : null,
+          minimumAcceptableRate: data.minimumAcceptableRate ? parseFloat(data.minimumAcceptableRate) : null,
+          epkUrl: data.epkUrl,
+          bookingFormPictureUrl: data.bookingFormPictureUrl,
+          primaryTalentId: data.primaryTalentId
         }),
       });
+    }
+    else if (isMusicianProfile) {
+      const method = hasProfile ? "PATCH" : "POST";
+      const url = hasProfile
+        ? `/api/musicians/${user.id}`
+        : `/api/musicians`;
 
-      // Update role-specific data
-      if (isArtist) {
-        await apiRequest(`/api/artists/${user.id}`, {
-          method: 'PATCH',
-          body: JSON.stringify({
-            stageName: data.stageName,
-            bio: data.bio,
-            primaryGenre: data.primaryGenre,
-            basePrice: data.basePrice ? parseFloat(data.basePrice) : null,
-            idealPerformanceRate: data.idealPerformanceRate ? parseFloat(data.idealPerformanceRate) : null,
-            minimumAcceptableRate: data.minimumAcceptableRate ? parseFloat(data.minimumAcceptableRate) : null,
-            epkUrl: data.epkUrl,
-            bookingFormPictureUrl: data.bookingFormPictureUrl,
-            primaryTalentId: data.primaryTalentId
-          }),
-        });
-      } else if (isMusicianProfile) {
-        await apiRequest(`/api/musicians/${user.id}`, {
-          method: 'PATCH',
-          body: JSON.stringify({
-            stageName: data.stageName,
-            bio: data.bio,
-            basePrice: data.basePrice ? parseFloat(data.basePrice) : null,
-            idealPerformanceRate: data.idealPerformanceRate ? parseFloat(data.idealPerformanceRate) : null,
-            minimumAcceptableRate: data.minimumAcceptableRate ? parseFloat(data.minimumAcceptableRate) : null,
-            primaryTalentId: data.primaryTalentId
-          }),
-        });
-      } else if (isProfessional) {
-        await apiRequest(`/api/professionals/${user.id}`, {
-          method: 'PATCH',
-          body: JSON.stringify({
-            bio: data.bio,
-            websiteUrl: data.websiteUrl,
-            primaryTalentId: data.primaryTalentId
-          }),
-        });
-      }
+      await apiRequest(url, {
+        method,
+        body: JSON.stringify({
+          musicianId: user.id,
+          stageName: data.stageName,
+          bio: data.bio,
+          basePrice: data.basePrice ? parseFloat(data.basePrice) : null,
+          idealPerformanceRate: data.idealPerformanceRate ? parseFloat(data.idealPerformanceRate) : null,
+          minimumAcceptableRate: data.minimumAcceptableRate ? parseFloat(data.minimumAcceptableRate) : null,
+          primaryTalentId: data.primaryTalentId
+        }),
+      });
+    }
+    else if (isProfessional) {
+      const method = hasProfile ? "PATCH" : "POST";
+      const url = hasProfile
+        ? `/api/professionals/${user.id}`
+        : `/api/professionals`;
 
-      return data;
-    },
-    onSuccess: () => {
-      toast({
-        title: "Profile Updated",
-        description: "Your profile has been updated successfully",
+      await apiRequest(url, {
+        method,
+        body: JSON.stringify({
+          professionalId: user.id,
+          bio: data.bio,
+          websiteUrl: data.websiteUrl,
+          primaryTalentId: data.primaryTalentId
+        }),
       });
-      queryClient.invalidateQueries({ queryKey: ['/api/user/profile'] });
-      queryClient.invalidateQueries({ queryKey: [`/api/artists/${user.id}`] });
-      queryClient.invalidateQueries({ queryKey: [`/api/musicians/${user.id}`] });
-      queryClient.invalidateQueries({ queryKey: [`/api/professionals/${user.id}`] });
-    },
-    onError: (error: any) => {
-      toast({
-        title: "Update Failed",
-        description: error.message || "Failed to update profile",
-        variant: "destructive",
-      });
-    },
-  });
+    }
+
+    return data;
+  },
+  onSuccess: () => {
+    toast({
+      title: "Profile Updated",
+      description: "Your profile has been updated successfully",
+    });
+    queryClient.invalidateQueries({ queryKey: ['/api/user/profile'] });
+    queryClient.invalidateQueries({ queryKey: [`/api/artists/${user.id}`] });
+    queryClient.invalidateQueries({ queryKey: [`/api/musicians/${user.id}`] });
+    queryClient.invalidateQueries({ queryKey: [`/api/professionals/${user.id}`] });
+  },
+  onError: (error: any) => {
+    toast({
+      title: "Update Failed",
+      description: error.message || "Failed to update profile",
+      variant: "destructive",
+    });
+  },
+});
+
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -591,6 +762,21 @@ export default function ProfileEditForm({
                   </div>
                 </div>
 
+                  {/* Preview uploaded files */}
+                {formData.epkUrl && (
+                  <div className="text-sm text-muted-foreground">
+                    <span className="font-medium">Current EPK:</span>{' '}
+                    <a 
+                      href={formData.epkUrl} 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="text-blue-600 hover:underline"
+                    >
+                      {formData.epkUrl.includes('/uploads/') ? 'Uploaded file' : 'External URL'}
+                    </a>
+                  </div>
+                )}
+
                 {/* Booking Photo Upload/URL */}
                 <div className="space-y-2">
                   <Label htmlFor="bookingFormPictureUrl">Booking Form Picture</Label>
@@ -636,20 +822,7 @@ export default function ProfileEditForm({
                   </div>
                 </div>
 
-                {/* Preview uploaded files */}
-                {formData.epkUrl && (
-                  <div className="text-sm text-muted-foreground">
-                    <span className="font-medium">Current EPK:</span>{' '}
-                    <a 
-                      href={formData.epkUrl} 
-                      target="_blank" 
-                      rel="noopener noreferrer"
-                      className="text-blue-600 hover:underline"
-                    >
-                      {formData.epkUrl.includes('/uploads/') ? 'Uploaded file' : 'External URL'}
-                    </a>
-                  </div>
-                )}
+              
                 {formData.bookingFormPictureUrl && (
                   <div className="text-sm text-muted-foreground">
                     <span className="font-medium">Current booking photo:</span>{' '}
