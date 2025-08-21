@@ -153,7 +153,7 @@ CREATE TABLE "artists" (
 	"ipi_number" text,
 	"primary_talent_id" integer NOT NULL,
 	"is_demo" boolean DEFAULT false,
-		"is_complete" boolean DEFAULT false
+	"is_complete" boolean DEFAULT false
 
 );
 --> statement-breakpoint

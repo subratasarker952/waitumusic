@@ -62,11 +62,11 @@ import KnowledgeBaseManager from '@/components/professional/KnowledgeBaseManager
 import AdvancedCalendar from '@/components/shared/AdvancedCalendar';
 import InstrumentManager from '@/components/InstrumentManager';
 import MusicianInstrumentPreferences from '@/components/MusicianInstrumentPreferences';
-import { 
-  AdvancedSetlistModal, 
-  AdvancedEquipmentModal, 
-  FanEngagementModal, 
-  ConsultationManagementModal 
+import {
+  AdvancedSetlistModal,
+  AdvancedEquipmentModal,
+  FanEngagementModal,
+  ConsultationManagementModal
 } from '@/components/modals/ComprehensiveModalSystem';
 import { Index } from 'drizzle-orm/mysql-core';
 
@@ -74,7 +74,7 @@ import { Index } from 'drizzle-orm/mysql-core';
 const getRoleDisplayName = (roleId: number): string => {
   const roleNames = {
     1: 'Superadmin',
-    2: 'Admin', 
+    2: 'Admin',
     3: 'Managed Artist',
     4: 'Artist',
     5: 'Managed Musician',
@@ -137,7 +137,7 @@ export default function UnifiedDashboard({ stats, bookings, user }: UnifiedDashb
   // Performance optimization hooks
   const { showSuccess, NotificationContainer } = useSuccessNotification();
   const { measurePerformance, optimizeCache } = usePerformanceOptimization();
-  
+
   // Data queries with performance optimization
   const { data: songs, isLoading: songsLoading } = useQuery({
     queryKey: ['/api/songs'],
@@ -164,13 +164,13 @@ export default function UnifiedDashboard({ stats, bookings, user }: UnifiedDashb
   });
 
   // Large dataset optimization for artists
-  const { 
-    filteredData: filteredArtists, 
-    isProcessing: isFilteringArtists 
+  const {
+    filteredData: filteredArtists,
+    isProcessing: isFilteringArtists
   } = useLargeDatasetOptimization(
     artists || [],
     '',
-    (artist, query) => 
+    (artist, query) =>
       (artist as any).stageName?.toLowerCase().includes(query.toLowerCase()) ||
       (artist as any).bio?.toLowerCase().includes(query.toLowerCase())
   );
@@ -197,23 +197,23 @@ export default function UnifiedDashboard({ stats, bookings, user }: UnifiedDashb
   const isManagedMusician = userRole === 5;
   const isProfessional = [7, 8].includes(userRole);
   const isFan = userRole === 9;
-  
+
   // PRO registration eligibility: Artists, Musicians, and Music-related Professionals
   const musicProfessionalTypes = [
-    'background_vocalist', 'producer', 'arranger', 'composer', 'songwriter', 
+    'background_vocalist', 'producer', 'arranger', 'composer', 'songwriter',
     'dj', 'music_director', 'sound_engineer', 'mixing_engineer', 'mastering_engineer',
     'music_producer', 'beat_maker', 'orchestrator', 'lyricist', 'jingle_writer'
   ];
-  const isPROEligible = isArtist || isMusicianProfile || 
-    (isProfessional && user.roleData?.specializations?.some((spec: string) => 
+  const isPROEligible = isArtist || isMusicianProfile ||
+    (isProfessional && user.roleData?.specializations?.some((spec: string) =>
       musicProfessionalTypes.includes(spec.toLowerCase().replace(/\s+/g, '_'))
     ));
 
   // Filter data based on user
   const userSongs = songs?.filter((song: any) => song.artistUserId === user?.id) || [];
-  const userBookings = bookings?.filter((b: any) => 
-    b.musician_user_id === user?.id || 
-    b.professional_user_id === user?.id || 
+  const userBookings = bookings?.filter((b: any) =>
+    b.musician_user_id === user?.id ||
+    b.professional_user_id === user?.id ||
     b.booker_user_id === user?.id ||
     b.artist_user_id === user?.id
   ) || [];
@@ -376,26 +376,25 @@ export default function UnifiedDashboard({ stats, bookings, user }: UnifiedDashb
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
           <div className="flex-1">
             <h1 className="text-2xl sm:text-3xl font-bold">
-              {isFan ? 'Welcome Back!' : 
-               isArtist ? 'Artist Dashboard' :
-               isMusicianProfile ? 'Musician Dashboard' :
-               isProfessional ? 'Professional Dashboard' : 'Dashboard'}
+              {isFan ? 'Welcome Back!' :
+                isArtist ? 'Artist Dashboard' :
+                  isMusicianProfile ? 'Musician Dashboard' :
+                    isProfessional ? 'Professional Dashboard' : 'Dashboard'}
             </h1>
             <p className="text-sm sm:text-base text-muted-foreground mt-1">
               {isFan ? 'Discover music, follow artists, and book experiences' :
-               isArtist ? 'Manage your music career and bookings' :
-               isMusicianProfile ? 'Manage your session work and bookings' :
-               isProfessional ? 'Manage your consulting services and clients' : 'Manage your account'}
+                isArtist ? 'Manage your music career and bookings' :
+                  isMusicianProfile ? 'Manage your session work and bookings' :
+                    isProfessional ? 'Manage your consulting services and clients' : 'Manage your account'}
             </p>
           </div>
           <Badge variant="outline" className={`
-            flex-shrink-0 ${
-            isManaged ? "text-green-600 border-green-600" :
-            isArtist ? "text-purple-600 border-purple-600" :
-            isMusicianProfile ? "text-blue-600 border-blue-600" :
-            isProfessional ? "text-orange-600 border-orange-600" :
-            "text-pink-600 border-pink-600"
-          }`}>
+            flex-shrink-0 ${isManaged ? "text-green-600 border-green-600" :
+              isArtist ? "text-purple-600 border-purple-600" :
+                isMusicianProfile ? "text-blue-600 border-blue-600" :
+                  isProfessional ? "text-orange-600 border-orange-600" :
+                    "text-pink-600 border-pink-600"
+            }`}>
             {isManaged && <Check className="h-3 w-3 mr-1" />}
             {isArtist && <Music className="h-3 w-3 mr-1" />}
             {isMusicianProfile && <Headphones className="h-3 w-3 mr-1" />}
@@ -414,35 +413,35 @@ export default function UnifiedDashboard({ stats, bookings, user }: UnifiedDashb
             <SelectTrigger className="w-full h-12 text-base">
               <SelectValue placeholder={
                 isArtist ? "🎨 Creative Studio" :
-                isMusicianProfile ? "🎧 Session Workshop" :
-                isProfessional ? "💼 Professional Suite" :
-                isFan ? "💖 Fan Experience" : "🎵 Dashboard"
+                  isMusicianProfile ? "🎧 Session Workshop" :
+                    isProfessional ? "💼 Professional Suite" :
+                      isFan ? "💖 Fan Experience" : "🎵 Dashboard"
               } />
             </SelectTrigger>
             <SelectContent>
               {/* Creative Studio/Session Workshop */}
               <SelectItem value="overview">🏰 Overview ({isArtist ? 'Studio' : isMusicianProfile ? 'Workshop' : 'Dashboard'})</SelectItem>
               <SelectItem value="profile">⭐ Profile ({isArtist ? 'Studio' : isMusicianProfile ? 'Workshop' : 'Profile'})</SelectItem>
-              
+
               {/* Performance & Production */}
               {!isFan && <SelectItem value="calendar">📅 Calendar (Schedule)</SelectItem>}
               {(isArtist || isManagedMusician) && <SelectItem value="music">🎵 Music (Production)</SelectItem>}
               {isMusicianProfile && <SelectItem value="equipment">🎧 Instruments (Equipment)</SelectItem>}
-              
+
               {/* Business & Opportunities */}
               {isProfessional && <SelectItem value="services">💼 Services (Business)</SelectItem>}
               {!isProfessional && <SelectItem value="bookings">📋 Bookings (Business)</SelectItem>}
               {(isArtist || isMusicianProfile || isProfessional) && <SelectItem value="gigs">🎤 My Gigs (Performances)</SelectItem>}
-              
+
               {/* Commercial & Legal */}
               {isArtist && !isFan && <SelectItem value="merchandise">🛒 Merchandise (Commercial)</SelectItem>}
               {isPROEligible && <SelectItem value="pro-registration">📝 PRO Registration (Legal)</SelectItem>}
               {isManaged && (isArtist || isManagedMusician) && <SelectItem value="splitsheets">📄 Splitsheets (Legal)</SelectItem>}
-              
+
               {/* Fan Experience */}
               {isFan && <SelectItem value="favorites">❤️ Favorites (Fan)</SelectItem>}
               {isFan && <SelectItem value="purchases">🛒 Purchases (Fan)</SelectItem>}
-              
+
               {/* Knowledge Center */}
               {isProfessional && <SelectItem value="knowledge">📚 Knowledge Base (Resources)</SelectItem>}
             </SelectContent>
@@ -453,7 +452,7 @@ export default function UnifiedDashboard({ stats, bookings, user }: UnifiedDashb
         <Tabs value={activeTab} onValueChange={handleTabChange} className="w-full">
           <div className="hidden sm:block">
             <div className="space-y-4 mb-6">
-              
+
               {/* Artist/Musician Creative Hub */}
               {(isArtist || isMusicianProfile) && (
                 <div className="bg-gradient-to-r from-purple-50 to-pink-50 dark:from-purple-950/20 dark:to-pink-950/20 rounded-lg p-3">
@@ -824,9 +823,9 @@ export default function UnifiedDashboard({ stats, bookings, user }: UnifiedDashb
                     {isProfessional ? '$5,200' : isArtist ? '$3,400' : isMusicianProfile ? '4.9' : '156'}
                   </div>
                   <p className="text-xs text-muted-foreground">
-                    {isProfessional ? '+25% from last month' : 
-                     isArtist ? '+18% from last month' : 
-                     isMusicianProfile ? 'Average rating' : 'Total downloads'}
+                    {isProfessional ? '+25% from last month' :
+                      isArtist ? '+18% from last month' :
+                        isMusicianProfile ? 'Average rating' : 'Total downloads'}
                   </p>
                 </CardContent>
               </Card>
@@ -839,15 +838,15 @@ export default function UnifiedDashboard({ stats, bookings, user }: UnifiedDashb
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
-                  {userBookings.slice(0, 3).map((booking: any, index:Index) => (
+                  {userBookings.slice(0, 3).map((booking: any, index: Index) => (
                     <div key={booking.id || index} className="flex items-center space-x-4">
                       <div className="w-2 h-2 bg-primary rounded-full"></div>
                       <div className="flex-1">
                         <p className="font-medium">
                           {isArtist ? `Performance booked for ${booking.eventName || 'Event'}` :
-                           isMusicianProfile ? `Session scheduled for ${booking.eventName || 'Session'}` :
-                           isProfessional ? `Consultation scheduled with ${booking.clientName || 'Client'}` :
-                           `Booking: ${booking.eventName || 'Event'}`}
+                            isMusicianProfile ? `Session scheduled for ${booking.eventName || 'Session'}` :
+                              isProfessional ? `Consultation scheduled with ${booking.clientName || 'Client'}` :
+                                `Booking: ${booking.eventName || 'Event'}`}
                         </p>
                         <p className="text-sm text-muted-foreground">
                           {booking.eventDate ? new Date(booking.eventDate).toLocaleDateString() : 'Date TBD'}
@@ -872,19 +871,19 @@ export default function UnifiedDashboard({ stats, bookings, user }: UnifiedDashb
               <CardContent className="space-y-4">
                 {/* Website Integration Modal - Visible to all users with premium overlay for non-managed */}
                 <div className="relative group">
-                  <WebsiteIntegrationModal 
-                    artistId={user.id} 
+                  <WebsiteIntegrationModal
+                    artistId={user.id}
                     artistName={user.fullName}
                   >
-                    <Button 
-                      className="w-full h-12 text-base bg-blue-600 hover:bg-blue-700 text-white" 
+                    <Button
+                      className="w-full h-12 text-base bg-blue-600 hover:bg-blue-700 text-white"
                       disabled={!((isManaged && (isArtist || isMusicianProfile)) || isAdmin)}
                     >
                       <Globe className="w-4 h-4 mr-2" />
                       Website Integration
                     </Button>
                   </WebsiteIntegrationModal>
-                  
+
                   {/* Premium Feature Overlay for non-managed users */}
                   {!((isManaged && (isArtist || isMusicianProfile)) || isAdmin) && (
                     <div className="absolute inset-0 bg-gradient-to-r from-purple-600/90 to-blue-600/90 rounded-md opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
@@ -899,7 +898,7 @@ export default function UnifiedDashboard({ stats, bookings, user }: UnifiedDashb
             </Card>
 
             {/* Profile Edit Form */}
-            <ProfileEditForm 
+            <ProfileEditForm
               user={user}
               isManaged={isManaged}
               isArtist={isArtist}
@@ -923,9 +922,9 @@ export default function UnifiedDashboard({ stats, bookings, user }: UnifiedDashb
                 <CardContent>
                   <div className="grid grid-cols-1 gap-3">
                     <div className="relative group">
-                      <Button 
-                        onClick={() => setLocation('/hospitality-requirements')} 
-                        variant="outline" 
+                      <Button
+                        onClick={() => setLocation('/hospitality-requirements')}
+                        variant="outline"
                         className="w-full h-12 text-base justify-start"
                         disabled={!isManaged && !false} // TODO: Replace !false with !hasActiveSubscription
                       >
@@ -941,11 +940,11 @@ export default function UnifiedDashboard({ stats, bookings, user }: UnifiedDashb
                         </div>
                       )}
                     </div>
-                    
+
                     <div className="relative group">
-                      <Button 
-                        onClick={() => setLocation('/technical-requirements')} 
-                        variant="outline" 
+                      <Button
+                        onClick={() => setLocation('/technical-requirements')}
+                        variant="outline"
                         className="w-full h-12 text-base justify-start"
                         disabled={!isManaged && !false} // TODO: Replace !false with !hasActiveSubscription
                       >
@@ -961,11 +960,11 @@ export default function UnifiedDashboard({ stats, bookings, user }: UnifiedDashb
                         </div>
                       )}
                     </div>
-                    
+
                     <div className="relative group">
-                      <Button 
-                        onClick={() => setLocation('/performance-requirements')} 
-                        variant="outline" 
+                      <Button
+                        onClick={() => setLocation('/performance-requirements')}
+                        variant="outline"
                         className="w-full h-12 text-base justify-start"
                         disabled={!isManaged && !false} // TODO: Replace !false with !hasActiveSubscription
                       >
@@ -1024,7 +1023,7 @@ export default function UnifiedDashboard({ stats, bookings, user }: UnifiedDashb
                       <Music className="w-4 h-4 mr-2" />
                       Upload Music
                     </Button>
-                    <UploadAlbumButton 
+                    <UploadAlbumButton
                       variant="outline"
                       className="w-full h-12 text-base"
                       onSuccess={() => {
@@ -1036,12 +1035,12 @@ export default function UnifiedDashboard({ stats, bookings, user }: UnifiedDashb
                       }}
                     />
                   </div>
-                  
+
                   {isManaged && (
                     <div className="border-t pt-4">
                       <h4 className="font-medium mb-2 text-emerald-700 dark:text-emerald-300">YouTube Video Integration</h4>
-                      <Button 
-                        onClick={() => setVideoUploadOpen(true)} 
+                      <Button
+                        onClick={() => setVideoUploadOpen(true)}
                         className="w-full h-12 text-base bg-red-600 hover:bg-red-700 text-white"
                       >
                         <Video className="w-4 h-4 mr-2" />
@@ -1052,7 +1051,7 @@ export default function UnifiedDashboard({ stats, bookings, user }: UnifiedDashb
                       </p>
                     </div>
                   )}
-                  
+
                   <div className="space-y-4">
                     <h4 className="font-medium">Your Songs</h4>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
@@ -1248,9 +1247,9 @@ export default function UnifiedDashboard({ stats, bookings, user }: UnifiedDashb
               <Card>
                 <CardHeader>
                   <CardTitle className="text-lg sm:text-xl">
-                    {isArtist ? 'Performance Bookings' : 
-                     isMusicianProfile ? 'Session Bookings' : 
-                     'Event Bookings'}
+                    {isArtist ? 'Performance Bookings' :
+                      isMusicianProfile ? 'Session Bookings' :
+                        'Event Bookings'}
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
@@ -1265,8 +1264,8 @@ export default function UnifiedDashboard({ stats, bookings, user }: UnifiedDashb
                                 {booking.eventDate ? new Date(booking.eventDate).toLocaleDateString() : 'Date TBD'}
                               </p>
                             </div>
-                            <Button 
-                              size="sm" 
+                            <Button
+                              size="sm"
                               className="w-full sm:w-auto flex-shrink-0"
                               onClick={() => handleViewBooking(booking)}
                             >
@@ -1513,7 +1512,7 @@ export default function UnifiedDashboard({ stats, bookings, user }: UnifiedDashb
                     </p>
                   </CardHeader>
                   <CardContent>
-                    <EnhancedNewsletterManagement 
+                    <EnhancedNewsletterManagement
                       userRole={userRole}
                       userId={user?.id || 0}
                     />
@@ -1534,7 +1533,7 @@ export default function UnifiedDashboard({ stats, bookings, user }: UnifiedDashb
                     </p>
                   </CardHeader>
                   <CardContent>
-                    <PressReleaseManagement 
+                    <PressReleaseManagement
                       userRole={userRole}
                       userId={user?.id || 0}
                     />
@@ -1553,55 +1552,55 @@ export default function UnifiedDashboard({ stats, bookings, user }: UnifiedDashb
       {renderDashboardContent()}
 
       {/* Modals */}
-      
+
       {musicUploadOpen && (
-        <MusicUploadModal 
-          open={musicUploadOpen} 
+        <MusicUploadModal
+          open={musicUploadOpen}
           onOpenChange={setMusicUploadOpen}
         />
       )}
-      
+
       {calendarOpen && (
-        <CalendarModal 
-          open={calendarOpen} 
+        <CalendarModal
+          open={calendarOpen}
           onOpenChange={setCalendarOpen}
           mode="schedule"
         />
       )}
-      
+
       {equipmentOpen && (
-        <EquipmentModal 
-          open={equipmentOpen} 
+        <EquipmentModal
+          open={equipmentOpen}
           onOpenChange={setEquipmentOpen}
         />
       )}
-      
+
       {bookingResponseOpen && selectedBooking && (
-        <BookingResponseModal 
-          open={bookingResponseOpen} 
+        <BookingResponseModal
+          open={bookingResponseOpen}
           onOpenChange={setBookingResponseOpen}
           booking={selectedBooking}
           onResponse={handleBookingResponse}
         />
       )}
-      
+
       {merchandiseOpen && (
-        <MerchandiseModal 
-          open={merchandiseOpen} 
+        <MerchandiseModal
+          open={merchandiseOpen}
           onOpenChange={setMerchandiseOpen}
         />
       )}
-      
+
       {serviceManagementOpen && (
-        <ServiceManagementModal 
-          open={serviceManagementOpen} 
+        <ServiceManagementModal
+          open={serviceManagementOpen}
           onOpenChange={setServiceManagementOpen}
         />
       )}
-      
+
       {userManagementOpen && (
-        <UserManagementModal 
-          open={userManagementOpen} 
+        <UserManagementModal
+          open={userManagementOpen}
           onOpenChange={setUserManagementOpen}
           userData={user}
           mode={userModalMode}
@@ -1609,23 +1608,23 @@ export default function UnifiedDashboard({ stats, bookings, user }: UnifiedDashb
       )}
 
       {videoUploadOpen && (
-        <VideoUploadModal 
-          isOpen={videoUploadOpen} 
+        <VideoUploadModal
+          isOpen={videoUploadOpen}
           onOpenChange={setVideoUploadOpen}
           userId={user.id}
         />
       )}
 
       {knowledgeBaseOpen && (
-        <KnowledgeBaseModal 
-          open={knowledgeBaseOpen} 
+        <KnowledgeBaseModal
+          open={knowledgeBaseOpen}
           onOpenChange={setKnowledgeBaseOpen}
         />
       )}
 
       {storeBrowserOpen && (
-        <StoreBrowserModal 
-          isOpen={storeBrowserOpen} 
+        <StoreBrowserModal
+          isOpen={storeBrowserOpen}
           onClose={() => setStoreBrowserOpen(false)}
           user={user}
         />

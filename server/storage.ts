@@ -1293,30 +1293,32 @@ export class MemStorage {
     return this.managementTiers;
   }
 
-
-
-
-
   async createArtist(artist: InsertArtist): Promise<Artist> {
     const artistRecord: Artist = {
       userId: artist.userId,
-      stageNames: artist.stageNames || [],
+      stageName: artist.stageName,
+      bio: artist.bio || null,
+      epkUrl: artist.epkUrl || null,
       primaryGenre: artist.primaryGenre || null,
-      secondaryGenres: artist.secondaryGenres || [],
-      topGenres: artist.topGenres || [],
-      socialMediaHandles: artist.socialMediaHandles || {},
       basePrice: artist.basePrice || null,
-      managementTierId: artist.managementTierId || null,
+      idealPerformanceRate: artist.idealPerformanceRate || null,
+      minimumAcceptableRate: artist.minimumAcceptableRate || null,
       isManaged: artist.isManaged || false,
+      managementTierId: artist.managementTierId || null,
       bookingFormPictureUrl: artist.bookingFormPictureUrl || null,
+      isRegisteredWithPro: artist.isRegisteredWithPro || false,
       performingRightsOrganization: artist.performingRightsOrganization || null,
       ipiNumber: artist.ipiNumber || null,
-      technicalRiderProfile: artist.technicalRiderProfile || null
+      primaryTalentId: artist.primaryTalentId,
+      isDemo: artist.isDemo || false,
+      isComplete: artist.isComplete || false,
     };
+  
     this.artists.set(artist.userId, artistRecord);
     return artistRecord;
   }
-
+  
+  
   async updateArtist(userId: number, updates: Partial<Artist>): Promise<Artist | undefined> {
     const artist = this.artists.get(userId);
     if (!artist) return undefined;

@@ -272,8 +272,8 @@ export default function ProfileEditForm({
   useEffect(() => {
     const loadProfileData = async () => {
       try {
-        const res = await apiRequest('/api/current-user');
-        const userData = res.user;
+        const user = await apiRequest('/api/current-user');
+        const userData = user?.userData;
   
         // Set basic user info
         setFormData(prev => ({

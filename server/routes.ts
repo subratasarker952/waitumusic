@@ -174,7 +174,13 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
       const { passwordHash, ...userWithoutPassword } = user;
 
-      res.json({ user: { ...userWithoutPassword, roleData } });
+      res.json({
+        id: user.id,
+        email: user.email,
+        fullName: user.fullName,
+        roleId: user.roleId,
+        userData: { ...userWithoutPassword, roleData }
+      });
     } catch (error) {
       console.error('Get current user error:', error);
       res.status(500).json({ message: "Internal server error" });
@@ -572,7 +578,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       }
 
       const updates = req.body;
-
+      
       // 1️⃣ Update basic user fields
       const basicUserData = {
         fullName: updates.fullName,
@@ -582,6 +588,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         coverImageUrl: updates.profileBannerUrl
       };
       const updatedUser = await storage.updateUser(userId, basicUserData);
+ 
 
       if (!updatedUser) {
         return res.status(404).json({ message: "User not found" });
@@ -590,7 +597,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
       // 2️⃣ Update role-specific data
       let roleData = null;
 
-      switch (updatedUser.roleId) {
+      console.log(req.user?.roleId)
+      switch (req.user?.roleId) {
         case 3: // Star Talent (managed artist)
         case 4: // Rising Artist
           roleData = await storage.updateArtist(userId, {
@@ -672,72 +680,173 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // Artist routes
-  app.get("/api/artists", authenticateToken, requirePerm('view_content'), async (req: Request, res: Response) => {
-    try {
-      const { page = '0', limit = '20' } = req.query;
-      const offset = parseInt(page as string) * parseInt(limit as string);
+  // app.get("/api/artists", authenticateToken, requirePerm('view_content'), async (req: Request, res: Response) => {
+  //   try {
+  //     const { page = '0', limit = '20' } = req.query;
+  //     const offset = parseInt(page as string) * parseInt(limit as string);
 
-      const cacheKey = generateCacheKey('artists', { page, limit });
-      const artistsWithData = await withCache(cacheKey, async () => {
-        // Optimized query with single database call to avoid N+1 problem
-        const artistsQuery = await db
-          .select({
-            artist: schema.artists,
-            user: schema.users
-          })
-          .from(schema.artists)
-          .innerJoin(schema.users, eq(schema.artists.userId, schema.users.id))
-          .limit(parseInt(limit as string))
-          .offset(offset);
+  //     const cacheKey = generateCacheKey('artists', { page, limit });
+  //     const artistsWithData = await withCache(cacheKey, async () => {
+  //       // Optimized query with single database call to avoid N+1 problem
+  //       const artistsQuery = await db
+  //         .select({
+  //           artist: schema.artists,
+  //           user: schema.users
+  //         })
+  //         .from(schema.artists)
+  //         .innerJoin(schema.users, eq(schema.artists.userId, schema.users.id))
+  //         .limit(parseInt(limit as string))
+  //         .offset(offset);
 
-        // Batch fetch all talents for these artists
-        const userIds = artistsQuery.map(row => row.artist.userId);
+  //       // Batch fetch all talents for these artists
+  //       const userIds = artistsQuery.map(row => row.artist.userId);
 
-        if (userIds.length === 0) {
-          return [];
-        }
+  //       if (userIds.length === 0) {
+  //         return [];
+  //       }
 
-        // Get all primary and secondary talents in one query
-        const [primaryTalents, secondaryTalents] = await Promise.all([
-          db.select()
-            .from(schema.allInstruments)
-            .where(inArray(schema.allInstruments.id,
-              artistsQuery.map(r => r.artist.primaryTalentId).filter(Boolean)
-            )),
-          db.select()
-            .from(schema.userSecondaryPerformanceTalents)
-            .where(inArray(schema.userSecondaryPerformanceTalents.userId, userIds))
-        ]);
+  //       // Get all primary and secondary talents in one query
+  //       const [primaryTalents, secondaryTalents] = await Promise.all([
+  //         db.select()
+  //           .from(schema.allInstruments)
+  //           .where(inArray(schema.allInstruments.id,
+  //             artistsQuery.map(r => r.artist.primaryTalentId).filter(Boolean)
+  //           )),
+  //         db.select()
+  //           .from(schema.userSecondaryPerformanceTalents)
+  //           .where(inArray(schema.userSecondaryPerformanceTalents.userId, userIds))
+  //       ]);
 
-        // Create lookup maps
-        const primaryTalentMap = primaryTalents.reduce((acc, talent) => {
-          acc[talent.id] = talent.name;
-          return acc;
-        }, {} as Record<number, string>);
+  //       // Create lookup maps
+  //       const primaryTalentMap = primaryTalents.reduce((acc, talent) => {
+  //         acc[talent.id] = talent.name;
+  //         return acc;
+  //       }, {} as Record<number, string>);
 
-        const userTalentMap = secondaryTalents.reduce((acc, talent) => {
-          if (!acc[talent.userId]) acc[talent.userId] = [];
-          acc[talent.userId].push(talent.talentName);
-          return acc;
-        }, {} as Record<number, string[]>);
+  //       const userTalentMap = secondaryTalents.reduce((acc, talent) => {
+  //         if (!acc[talent.userId]) acc[talent.userId] = [];
+  //         acc[talent.userId].push(talent.talentName);
+  //         return acc;
+  //       }, {} as Record<number, string[]>);
 
-        // Combine results
-        return artistsQuery.map(row => ({
-          ...row.artist,
-          user: row.user,
-          primaryTalent: row.artist.primaryTalentId ? primaryTalentMap[row.artist.primaryTalentId] : null,
-          secondaryTalents: userTalentMap[row.artist.userId] || []
-        }));
-      });
+  //       // Combine results
+  //       return artistsQuery.map(row => ({
+  //         ...row.artist,
+  //         user: row.user,
+  //         primaryTalent: row.artist.primaryTalentId ? primaryTalentMap[row.artist.primaryTalentId] : null,
+  //         secondaryTalents: userTalentMap[row.artist.userId] || []
+  //       }));
+  //     });
 
-      res.json(artistsWithData);
-    } catch (error: any) {
-      logError(error, ErrorSeverity.ERROR, { endpoint: '/api/artists', query: req.query });
-      res.status(500).json({
-        message: "Internal server error"
-      });
+  //     res.json(artistsWithData);
+  //   } catch (error: any) {
+  //     logError(error, ErrorSeverity.ERROR, { endpoint: '/api/artists', query: req.query });
+  //     res.status(500).json({
+  //       message: "Internal server error"
+  //     });
+  //   }
+  // });
+
+  // Artist routes
+  app.get(
+    "/api/artists",
+    authenticateToken,
+    requirePerm("view_content"),
+    async (req: Request, res: Response) => {
+      try {
+        // Validate query params using Zod
+        const querySchema = z.object({
+          page: z.string().optional().default("0"),
+          limit: z.string().optional().default("20"),
+          isComplete: z.string().optional().default("true"),
+          isDemo: z.string().optional().default("false"),
+        });
+
+        const parsedQuery = querySchema.parse(req.query);
+
+        const page = parseInt(parsedQuery.page);
+        const limit = parseInt(parsedQuery.limit);
+        const offset = page * limit;
+        const isComplete = parsedQuery.isComplete === "true";
+        const isDemo = parsedQuery.isDemo === "true";
+
+        // Filters
+        const filters = [
+          eq(schema.artists.isComplete, isComplete),
+          eq(schema.artists.isDemo, isDemo),
+        ];
+
+        const cacheKey = generateCacheKey("artists", JSON.stringify({ page, limit, isComplete, isDemo }));
+
+        const artistsWithData = await withCache(cacheKey, async () => {
+          // Main query
+          const artistsQuery = await db
+            .select({
+              artist: schema.artists,
+              user: schema.users,
+            })
+            .from(schema.artists)
+            .innerJoin(schema.users, eq(schema.artists.userId, schema.users.id))
+            .where(and(...filters))
+            .limit(limit)
+            .offset(offset);
+
+          console.log(artistsQuery)
+          const userIds = artistsQuery.map((row) => row.artist.userId);
+          if (userIds.length === 0) return [];
+
+          // Batch fetch talents
+          const [primaryTalents, secondaryTalents] = await Promise.all([
+            db
+              .select()
+              .from(schema.allInstruments)
+              .where(
+                inArray(
+                  schema.allInstruments.id,
+                  artistsQuery.map((r) => r.artist.primaryTalentId).filter(Boolean)
+                )
+              ),
+            db
+              .select()
+              .from(schema.userSecondaryPerformanceTalents)
+              .where(inArray(schema.userSecondaryPerformanceTalents.userId, userIds)),
+          ]);
+
+          // Lookup maps
+          const primaryTalentMap = primaryTalents.reduce((acc, talent) => {
+            acc[talent.id] = talent.name;
+            return acc;
+          }, {} as Record<number, string>);
+
+          const userTalentMap = secondaryTalents.reduce((acc, talent) => {
+            if (!acc[talent.userId]) acc[talent.userId] = [];
+            acc[talent.userId].push(talent.talentName);
+            return acc;
+          }, {} as Record<number, string[]>);
+
+          // Combine results
+          return artistsQuery.map((row) => ({
+            ...row.artist,
+            user: row.user,
+            primaryTalent: row.artist.primaryTalentId
+              ? primaryTalentMap[row.artist.primaryTalentId]
+              : null,
+            secondaryTalents: userTalentMap[row.artist.userId] || [],
+          }));
+        });
+
+        res.json(artistsWithData);
+      } catch (error: any) {
+        logError(error, ErrorSeverity.ERROR, {
+          endpoint: "/api/artists",
+          query: req.query,
+        });
+        res.status(500).json({
+          message: "Internal server error",
+        });
+      }
     }
-  });
+  );
 
   app.get("/api/artists/:id", authenticateToken, requirePerm('view_content'), validateParams(schemas.idParamSchema), async (req: Request, res: Response) => {
     try {
@@ -810,50 +919,165 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // Musicians routes
-  app.get("/api/musicians", authenticateToken, requirePerm('view_content'), async (req: Request, res: Response) => {
-    try {
-      const cacheKey = generateCacheKey('musicians');
-      const musiciansWithData = await withCache(cacheKey, async () => {
-        const musicians = await storage.getMusicians();
+  // app.get("/api/musicians", authenticateToken, requirePerm('view_content'), async (req: Request, res: Response) => {
+  //   try {
+  //     const cacheKey = generateCacheKey('musicians');
+  //     const musiciansWithData = await withCache(cacheKey, async () => {
+  //       const musicians = await storage.getMusicians();
 
-        const musiciansWithUsers = await Promise.all(
-          musicians.map(async (musician) => {
-            const user = await storage.getUser(musician.userId);
-            const profile = await storage.getUserProfile(musician.userId);
+  //       const musiciansWithUsers = await Promise.all(
+  //         musicians.map(async (musician) => {
+  //           const user = await storage.getUser(musician.userId);
+  //           const profile = await storage.getUserProfile(musician.userId);
 
-            // Fetch primary talent by ID - use player_name for specific talent display
-            let primaryTalent = null;
-            if (musician.primaryTalentId) {
-              const talent = await storage.getPrimaryTalentById(musician.primaryTalentId, 'musician');
-              primaryTalent = talent ? talent.player_name : null;
-            }
+  //           // Fetch primary talent by ID - use player_name for specific talent display
+  //           let primaryTalent = null;
+  //           if (musician.primaryTalentId) {
+  //             const talent = await storage.getPrimaryTalentById(musician.primaryTalentId, 'musician');
+  //             primaryTalent = talent ? talent.player_name : null;
+  //           }
 
-            // Fetch secondary talents
-            const secondaryPerformanceTalents = await storage.getUserSecondaryPerformanceTalents(musician.userId);
-            const secondaryProfessionalTalents = await storage.getUserSecondaryProfessionalTalents(musician.userId);
-            const secondaryTalents = [
-              ...secondaryPerformanceTalents.map(t => t.talentName),
-              ...secondaryProfessionalTalents.map(t => t.talentName)
-            ];
+  //           // Fetch secondary talents
+  //           const secondaryPerformanceTalents = await storage.getUserSecondaryPerformanceTalents(musician.userId);
+  //           const secondaryProfessionalTalents = await storage.getUserSecondaryProfessionalTalents(musician.userId);
+  //           const secondaryTalents = [
+  //             ...secondaryPerformanceTalents.map(t => t.talentName),
+  //             ...secondaryProfessionalTalents.map(t => t.talentName)
+  //           ];
 
-            return {
-              ...musician,
-              user,
-              profile,
-              primaryTalent,
-              secondaryTalents
-            };
-          })
+  //           return {
+  //             ...musician,
+  //             user,
+  //             profile,
+  //             primaryTalent,
+  //             secondaryTalents
+  //           };
+  //         })
+  //       );
+  //       return musiciansWithUsers;
+  //     });
+
+  //     res.json(musiciansWithData);
+  //   } catch (error) {
+  //     logError(error, ErrorSeverity.ERROR, { endpoint: '/api/musicians' });
+  //     res.status(500).json({ message: "Internal server error" });
+  //   }
+  // });
+
+  // Musicians routes
+  app.get(
+    "/api/musicians",
+    authenticateToken,
+    requirePerm("view_content"),
+    async (req: Request, res: Response) => {
+      try {
+        // ✅ Parse query params with Zod
+        const querySchema = z.object({
+          page: z.string().optional().default("0"),
+          limit: z.string().optional().default("20"),
+          isComplete: z.string().optional().default("true"),
+          isDemo: z.string().optional().default("false"),
+        });
+
+        const parsedQuery = querySchema.parse(req.query);
+
+        const page = parseInt(parsedQuery.page);
+        const limit = parseInt(parsedQuery.limit);
+        const offset = page * limit;
+        const isComplete = parsedQuery.isComplete === "true";
+        const isDemo = parsedQuery.isDemo === "true";
+
+        // ✅ Cache key
+        const cacheKey = generateCacheKey(
+          "musicians",
+          JSON.stringify({ page, limit, isComplete, isDemo })
         );
-        return musiciansWithUsers;
-      });
 
-      res.json(musiciansWithData);
-    } catch (error) {
-      logError(error, ErrorSeverity.ERROR, { endpoint: '/api/musicians' });
-      res.status(500).json({ message: "Internal server error" });
+        const musiciansWithData = await withCache(cacheKey, async () => {
+          // Dynamic filters
+          const conditions = [
+            eq(schema.musicians.isComplete, isComplete),
+            eq(schema.musicians.isDemo, isDemo),
+          ];
+
+          // ✅ Main query with join, filters, pagination
+          const query = db
+            .select({
+              musician: schema.musicians,
+              user: schema.users,
+            })
+            .from(schema.musicians)
+            .innerJoin(schema.users, eq(schema.musicians.userId, schema.users.id))
+            .where(and(...conditions))
+            .limit(limit)
+            .offset(offset);
+
+          const musiciansQuery = await query;
+
+          const userIds = musiciansQuery.map((row) => row.musician.userId);
+          if (userIds.length === 0) return [];
+
+          // Fetch primary talents
+          const primaryTalents = await db
+            .select()
+            .from(schema.allInstruments)
+            .where(
+              inArray(
+                schema.allInstruments.id,
+                musiciansQuery.map((r) => r.musician.primaryTalentId).filter(Boolean)
+              )
+            );
+
+          const primaryTalentMap = primaryTalents.reduce((acc, talent) => {
+            acc[talent.id] = talent.playerName || talent.name;
+            return acc;
+          }, {} as Record<number, string>);
+
+          // Fetch secondary talents
+          const [secondaryPerformanceTalents, secondaryProfessionalTalents] =
+            await Promise.all([
+              db
+                .select()
+                .from(schema.userSecondaryPerformanceTalents)
+                .where(inArray(schema.userSecondaryPerformanceTalents.userId, userIds)),
+
+              db
+                .select()
+                .from(schema.userSecondaryProfessionalTalents)
+                .where(inArray(schema.userSecondaryProfessionalTalents.userId, userIds)),
+            ]);
+
+          const secondaryMap: Record<number, string[]> = {};
+          [...secondaryPerformanceTalents, ...secondaryProfessionalTalents].forEach(
+            (talent) => {
+              if (!secondaryMap[talent.userId]) secondaryMap[talent.userId] = [];
+              secondaryMap[talent.userId].push(talent.talentName);
+            }
+          );
+
+          // Merge final result
+          return musiciansQuery.map((row) => ({
+            ...row.musician,
+            user: row.user,
+            primaryTalent: row.musician.primaryTalentId
+              ? primaryTalentMap[row.musician.primaryTalentId]
+              : null,
+            secondaryTalents: secondaryMap[row.musician.userId] || [],
+          }));
+        });
+
+        res.json(musiciansWithData);
+      } catch (error: any) {
+        logError(error, ErrorSeverity.ERROR, {
+          endpoint: "/api/musicians",
+          query: req.query,
+        });
+        res.status(500).json({ message: "Internal server error" });
+      }
     }
-  });
+  );
+
+
 
   // Professionals routes
   app.get("/api/professionals", authenticateToken, requirePerm('view_content'), async (req: Request, res: Response) => {
