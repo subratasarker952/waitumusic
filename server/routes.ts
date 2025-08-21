@@ -8,7 +8,7 @@ import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import path from "path";
 import express from "express";
-import { 
+import {
   insertUserSchema, insertArtistSchema, insertMusicianSchema, insertProfessionalSchema,
   insertServiceCategorySchema, insertServiceSchema, insertServiceAssignmentSchema,
   insertUserServiceSchema, insertServiceReviewSchema, managementApplications, users, managementTiers,
@@ -41,11 +41,11 @@ import QRCode from "qrcode";
 import "./types"; // Import to register Express types
 import { talentResponseRateLimit, generalRateLimit } from './middleware/rateLimiter';
 import { requirePermission, requireAnyPermission, requireAllPermissions } from './middleware/permissionCheck';
-import { 
-  contactFormSchema, 
-  newsletterSubscriptionSchema, 
+import {
+  contactFormSchema,
+  newsletterSubscriptionSchema,
   securityMiddleware,
-  sanitizeText 
+  sanitizeText
 } from "./security/inputValidation";
 import { configurationRoutes } from './configuration-routes';
 import contentManagementRoutes from './content-management-routes';
@@ -119,8 +119,6 @@ function authenticateToken(req: Request, res: Response, next: Function) {
 // Using centralized authorization system from shared/authorization.ts
 
 export async function registerRoutes(app: Express): Promise<Server> {
-  
-
 
   // Middleware to handle double-stringified JSON
   app.use((req: Request, res: Response, next: Function) => {
@@ -133,9 +131,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
     next();
   });
-  
+
   // Demo mode endpoint (removed - using proper controller version below)
-  
+
   // Get current authenticated user endpoint
   app.get("/api/current-user", authenticateToken, async (req: Request, res: Response) => {
     try {
@@ -149,9 +147,34 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.status(404).json({ message: "User not found" });
       }
 
+
+      // Get role-specific data
+      let roleData = null;
+      const roles = await storage.getRoles();
+      const userRole = roles.find(role => role.id === user.roleId);
+
+      if (userRole) {
+        switch (user.roleId) {
+          case 3: // Star Talent (managed artist)
+          case 4: // Rising Artist
+            roleData = await storage.getArtist(userId);
+            break;
+          case 5: // Studio Pro (managed musician)
+          case 6: // Session Player
+            roleData = await storage.getMusician(userId);
+            break;
+          case 7: // Industry Expert (managed professional)
+          case 8: // Music Professional
+            roleData = await storage.getProfessional(userId);
+            break;
+        }
+      }
+
+
+
       const { passwordHash, ...userWithoutPassword } = user;
 
-      res.json(userWithoutPassword);
+      res.json({ user: { ...userWithoutPassword, roleData } });
     } catch (error) {
       console.error('Get current user error:', error);
       res.status(500).json({ message: "Internal server error" });
@@ -163,10 +186,56 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.use(roleManagementRoutes);
 
   // Authentication routes
+  // app.post("/api/auth/register", validate(schemas.registerSchema), async (req: Request, res: Response) => {
+  //   try {
+  //     const userData = req.body;
+
+  //     // Check if user already exists
+  //     const existingUser = await storage.getUserByEmail(userData.email);
+  //     if (existingUser) {
+  //       return res.status(400).json({ message: "User already exists" });
+  //     }
+
+  //     // Hash password
+  //     const passwordHash = await bcrypt.hash(userData.password, 12);
+
+  //     // Create user
+  //     const user = await storage.createUser({
+  //       ...userData,
+  //       passwordHash,
+  //       roleId: userData.roleId || 9 // Default to fan role
+  //     });
+
+  //     // Generate JWT token
+  //     const token = jwt.sign(
+  //       { userId: user.id, email: user.email, roleId: user.roleId },
+  //       JWT_SECRET,
+  //       { expiresIn: '24h' }
+  //     );
+
+  //     res.status(201).json({
+  //       message: "User created successfully",
+  //       token,
+  //       user: {
+  //         id: user.id,
+  //         email: user.email,
+  //         fullName: user.fullName,
+  //         roleId: user.roleId
+  //       }
+  //     });
+  //   } catch (error) {
+  //     if (error instanceof z.ZodError) {
+  //       return res.status(400).json({ message: "Validation error", errors: error.errors });
+  //     }
+  //     res.status(500).json({ message: "Internal server error" });
+  //   }
+  // });
+
+
   app.post("/api/auth/register", validate(schemas.registerSchema), async (req: Request, res: Response) => {
     try {
       const userData = req.body;
-     
+
       // Check if user already exists
       const existingUser = await storage.getUserByEmail(userData.email);
       if (existingUser) {
@@ -175,19 +244,82 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
       // Hash password
       const passwordHash = await bcrypt.hash(userData.password, 12);
-      
+
       // Create user
       const user = await storage.createUser({
         ...userData,
         passwordHash,
-        roleId: userData.roleId || 9 // Default to fan role
+        roleId: userData.roleId || 9, // default fan role
       });
+
+      // Create role-specific blank entry with isComplete = false
+      switch (user.roleId) {
+        case 3: // Star Talent (managed artist)
+        case 4: // Rising Artist
+          await storage.createArtist({
+            userId: user.id,
+            stageName: "",
+            bio: "",
+            epkUrl: "",
+            primaryGenre: "",
+            basePrice: null,
+            idealPerformanceRate: null,
+            minimumAcceptableRate: null,
+            isManaged: false,
+            managementTierId: null,
+            bookingFormPictureUrl: "",
+            isRegisteredWithPro: false,
+            performingRightsOrganization: "",
+            ipiNumber: "",
+            primaryTalentId: 1, // Default instrument id (adjust if needed)
+            isDemo: false,
+            isComplete: false,
+          });
+          break;
+
+        case 5: // Studio Pro (managed musician)
+        case 6: // Session Player
+          await storage.createMusician({
+            userId: user.id,
+            stageName: "",
+            primaryGenre: "",
+            basePrice: null,
+            idealPerformanceRate: null,
+            minimumAcceptableRate: null,
+            isManaged: false,
+            managementTierId: null,
+            bookingFormPictureUrl: "",
+            isRegisteredWithPro: false,
+            performingRightsOrganization: "",
+            ipiNumber: "",
+            primaryTalentId: 1, // Default instrument id
+            isDemo: false,
+            isComplete: false,
+          });
+          break;
+
+        case 7: // Industry Expert (managed professional)
+        case 8: // Music Professional
+          await storage.createProfessional({
+            userId: user.id,
+            basePrice: null,
+            idealServiceRate: null,
+            minimumAcceptableRate: null,
+            isManaged: false,
+            managementTierId: null,
+            bookingFormPictureUrl: "",
+            primaryTalentId: 1, // Default talent id
+            isDemo: false,
+            isComplete: false,
+          });
+          break;
+      }
 
       // Generate JWT token
       const token = jwt.sign(
         { userId: user.id, email: user.email, roleId: user.roleId },
         JWT_SECRET,
-        { expiresIn: '24h' }
+        { expiresIn: "24h" }
       );
 
       res.status(201).json({
@@ -197,16 +329,22 @@ export async function registerRoutes(app: Express): Promise<Server> {
           id: user.id,
           email: user.email,
           fullName: user.fullName,
-          roleId: user.roleId
-        }
+          roleId: user.roleId,
+        },
       });
     } catch (error) {
       if (error instanceof z.ZodError) {
-        return res.status(400).json({ message: "Validation error", errors: error.errors });
+        return res
+          .status(400)
+          .json({ message: "Validation error", errors: error.errors });
       }
       res.status(500).json({ message: "Internal server error" });
     }
-  });
+  }
+  );
+
+
+
 
   app.post("/api/auth/login", validate(schemas.loginSchema), async (req: Request, res: Response) => {
     try {
@@ -216,19 +354,19 @@ export async function registerRoutes(app: Express): Promise<Server> {
       // Handle demo mode login for all demo users
       if (DEMO_MODE_ENABLED && password === 'demo123') {
         console.log('DEBUG: Demo mode login detected for:', email);
-        
+
         // Check if this is a demo user email
         const isDemoEmail = email.startsWith('demo.') && email.endsWith('@waitumusic.com');
-        
+
         if (isDemoEmail) {
           // Check if demo user exists
           let demoUser = await storage.getUserByEmail(email);
-          
+
           if (!demoUser) {
             console.log('DEBUG: Demo user not found in database:', email);
             return res.status(401).json({ message: "Demo user not found. Please ensure demo users are properly seeded." });
           }
-          
+
           // For demo users, always accept 'demo123' as password
           const token = jwt.sign(
             { userId: demoUser.id, email: demoUser.email, roleId: demoUser.roleId },
@@ -249,11 +387,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
           });
         }
       }
-      
+
       // Special handling for demo.superadmin@waitumusic.com creation
       if (DEMO_MODE_ENABLED && email === 'demo.superadmin@waitumusic.com' && password === 'demo123') {
         let demoUser = await storage.getUserByEmail(email);
-        
+
         if (!demoUser) {
           console.log('DEBUG: Creating demo superadmin user...');
           const demoPasswordHash = await bcrypt.hash('demo123', 10);
@@ -264,15 +402,15 @@ export async function registerRoutes(app: Express): Promise<Server> {
             roleId: 1, // Superadmin role
             status: 'active'
           });
-          
+
           await storage.createUserProfile({
             userId: demoUser.id,
             bio: 'Demo Superadmin Account',
             phoneNumber: '+1-555-DEMO-001'
           });
-          
+
           console.log('DEBUG: Demo superadmin user created successfully');
-          
+
           const token = jwt.sign(
             { userId: demoUser.id, email: demoUser.email, roleId: demoUser.roleId },
             JWT_SECRET,
@@ -296,18 +434,18 @@ export async function registerRoutes(app: Express): Promise<Server> {
       console.log('DEBUG: Looking up user by email...');
       const user = await storage.getUserByEmail(email);
       console.log('DEBUG: User lookup result:', user ? 'found' : 'not found', user?.id);
-      
+
       if (!user) {
         return res.status(401).json({ message: "Invalid credentials" });
       }
-      
+
       console.log('DEBUG: User data:', { id: user.id, email: user.email, roleId: user.roleId });
 
       // Check password
       console.log('DEBUG: Checking password...');
       const isValidPassword = await bcrypt.compare(password, user.passwordHash);
       console.log('DEBUG: Password valid:', isValidPassword);
-      
+
       if (!isValidPassword) {
         return res.status(401).json({ message: "Invalid credentials" });
       }
@@ -351,7 +489,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       }
       const user = await cacheHelpers.getUserWithCache(userId, () => storage.getUser(userId));
       const profile = await storage.getUserProfile(userId);
-      
+
       if (!user) {
         return res.status(404).json({ message: "User not found" });
       }
@@ -360,7 +498,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       let roleData = null;
       const roles = await storage.getRoles();
       const userRole = roles.find(role => role.id === user.roleId);
-      
+
       if (userRole) {
         switch (user.roleId) {
           case 3: // Star Talent (managed artist)
@@ -404,7 +542,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const currentUserId = req.user?.userId;
 
       const { fullName, phoneNumber, privacySetting, avatarUrl, coverImageUrl } = req.body;
-      
+
       const updatedUser = await storage.updateUser(userId, {
         fullName,
         phoneNumber,
@@ -425,6 +563,85 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // PATCH /api/user/profile
+  app.patch("/api/user/profile", authenticateToken, async (req: Request, res: Response) => {
+    try {
+      const userId = req.user?.userId;
+      if (!userId) {
+        return res.status(401).json({ message: "User ID not found in token" });
+      }
+
+      const updates = req.body;
+
+      // 1️⃣ Update basic user fields
+      const basicUserData = {
+        fullName: updates.fullName,
+        phoneNumber: updates.phoneNumber,
+        privacySetting: updates.privacySetting,
+        avatarUrl: updates.profilePictureUrl,
+        coverImageUrl: updates.profileBannerUrl
+      };
+      const updatedUser = await storage.updateUser(userId, basicUserData);
+
+      if (!updatedUser) {
+        return res.status(404).json({ message: "User not found" });
+      }
+
+      // 2️⃣ Update role-specific data
+      let roleData = null;
+
+      switch (updatedUser.roleId) {
+        case 3: // Star Talent (managed artist)
+        case 4: // Rising Artist
+          roleData = await storage.updateArtist(userId, {
+            stageName: updates.stageName,
+            bio: updates.bio,
+            primaryGenre: updates.primaryGenre,
+            basePrice: updates.basePrice ? parseFloat(updates.basePrice) : null,
+            idealPerformanceRate: updates.idealPerformanceRate ? parseFloat(updates.idealPerformanceRate) : null,
+            minimumAcceptableRate: updates.minimumAcceptableRate ? parseFloat(updates.minimumAcceptableRate) : null,
+            epkUrl: updates.epkUrl,
+            bookingFormPictureUrl: updates.bookingFormPictureUrl,
+            primaryTalentId: updates.primaryTalentId,
+            isComplete: true
+          });
+          break;
+
+        case 5: // Studio Pro (managed musician)
+        case 6: // Session Player
+          roleData = await storage.updateMusician(userId, {
+            stageName: updates.stageName,
+            bio: updates.bio,
+            primaryGenre: updates.primaryGenre,
+            basePrice: updates.basePrice ? parseFloat(updates.basePrice) : null,
+            idealPerformanceRate: updates.idealPerformanceRate ? parseFloat(updates.idealPerformanceRate) : null,
+            minimumAcceptableRate: updates.minimumAcceptableRate ? parseFloat(updates.minimumAcceptableRate) : null,
+            primaryTalentId: updates.primaryTalentId,
+            isComplete: true
+          });
+          break;
+
+        case 7: // Industry Expert (managed professional)
+        case 8: // Music Professional
+          roleData = await storage.updateProfessional(userId, {
+            bio: updates.bio,
+            websiteUrl: updates.websiteUrl,
+            primaryTalentId: updates.primaryTalentId,
+            isComplete: true
+          });
+          break;
+      }
+
+      const { passwordHash, ...userWithoutPassword } = updatedUser;
+      res.json({ user: { ...userWithoutPassword, roleData } });
+
+    } catch (error) {
+      console.error("Error updating profile:", error);
+      res.status(500).json({ message: "Internal server error" });
+    }
+  });
+
+
   // Get user subscription status for hospitality requirements
   app.get("/api/user/subscription-status", authenticateToken, requirePerm('view_content'), async (req: Request, res: Response) => {
     try {
@@ -432,7 +649,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       if (!userId) {
         return res.status(401).json({ message: "Invalid token" });
       }
-      
+
       const user = await storage.getUser(userId);
       if (!user) {
         return res.status(404).json({ message: "User not found" });
@@ -441,7 +658,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       // Role IDs: 3=Managed Artist, 5=Managed Musician, 7=Managed Professional
       const managedRoles = [3, 5, 7];
       const isManaged = managedRoles.includes(user.roleId);
-      
+
       res.json({
         isActive: isManaged || user.isDemo, // Managed users get free access, demo users get access
         isManaged: isManaged,
@@ -459,7 +676,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       const { page = '0', limit = '20' } = req.query;
       const offset = parseInt(page as string) * parseInt(limit as string);
-      
+
       const cacheKey = generateCacheKey('artists', { page, limit });
       const artistsWithData = await withCache(cacheKey, async () => {
         // Optimized query with single database call to avoid N+1 problem
@@ -472,38 +689,38 @@ export async function registerRoutes(app: Express): Promise<Server> {
           .innerJoin(schema.users, eq(schema.artists.userId, schema.users.id))
           .limit(parseInt(limit as string))
           .offset(offset);
-        
+
         // Batch fetch all talents for these artists
         const userIds = artistsQuery.map(row => row.artist.userId);
-        
+
         if (userIds.length === 0) {
           return [];
         }
-        
+
         // Get all primary and secondary talents in one query
         const [primaryTalents, secondaryTalents] = await Promise.all([
           db.select()
             .from(schema.allInstruments)
-            .where(inArray(schema.allInstruments.id, 
+            .where(inArray(schema.allInstruments.id,
               artistsQuery.map(r => r.artist.primaryTalentId).filter(Boolean)
             )),
           db.select()
             .from(schema.userSecondaryPerformanceTalents)
             .where(inArray(schema.userSecondaryPerformanceTalents.userId, userIds))
         ]);
-        
+
         // Create lookup maps
         const primaryTalentMap = primaryTalents.reduce((acc, talent) => {
           acc[talent.id] = talent.name;
           return acc;
         }, {} as Record<number, string>);
-        
+
         const userTalentMap = secondaryTalents.reduce((acc, talent) => {
           if (!acc[talent.userId]) acc[talent.userId] = [];
           acc[talent.userId].push(talent.talentName);
           return acc;
         }, {} as Record<number, string[]>);
-        
+
         // Combine results
         return artistsQuery.map(row => ({
           ...row.artist,
@@ -512,11 +729,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
           secondaryTalents: userTalentMap[row.artist.userId] || []
         }));
       });
-      
+
       res.json(artistsWithData);
     } catch (error: any) {
       logError(error, ErrorSeverity.ERROR, { endpoint: '/api/artists', query: req.query });
-      res.status(500).json({ 
+      res.status(500).json({
         message: "Internal server error"
       });
     }
@@ -525,10 +742,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.get("/api/artists/:id", authenticateToken, requirePerm('view_content'), validateParams(schemas.idParamSchema), async (req: Request, res: Response) => {
     try {
       const artistUserId = parseInt(req.params.id);
-      
+
       const artist = await storage.getArtist(artistUserId);
       console.log(`Found artist:`, artist);
-      
+
       if (!artist) {
         console.log(`Artist with userId ${artistUserId} not found`);
         return res.status(404).json({ message: "Artist not found" });
@@ -539,7 +756,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const songs = await storage.getSongsByArtist(artistUserId);
       const albums = await storage.getAlbumsByArtist(artistUserId);
       const merchandise = await storage.getMerchandiseByArtist(artistUserId);
-      
+
       // Return artist info with all data
       res.json({
         ...artist,
@@ -572,18 +789,18 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       const artistId = parseInt(req.params.id);
       const updates = req.body;
-      
+
       // Ensure user can only update their own artist profile (unless admin)
       if (req.user?.roleId !== 1 && req.user?.roleId !== 2 && req.user?.userId !== artistId) {
         return res.status(403).json({ message: "Access denied" });
       }
-      
+
       const updatedArtist = await storage.updateArtist(artistId, updates);
-      
+
       if (!updatedArtist) {
         return res.status(404).json({ message: "Artist not found" });
       }
-      
+
       invalidateCache('artists');
       res.json(updatedArtist);
     } catch (error) {
@@ -598,39 +815,39 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const cacheKey = generateCacheKey('musicians');
       const musiciansWithData = await withCache(cacheKey, async () => {
         const musicians = await storage.getMusicians();
-      
-      const musiciansWithUsers = await Promise.all(
-        musicians.map(async (musician) => {
-          const user = await storage.getUser(musician.userId);
-          const profile = await storage.getUserProfile(musician.userId);
-          
-          // Fetch primary talent by ID - use player_name for specific talent display
-          let primaryTalent = null;
-          if (musician.primaryTalentId) {
-            const talent = await storage.getPrimaryTalentById(musician.primaryTalentId, 'musician');
-            primaryTalent = talent ? talent.player_name : null;
-          }
-          
-          // Fetch secondary talents
-          const secondaryPerformanceTalents = await storage.getUserSecondaryPerformanceTalents(musician.userId);
-          const secondaryProfessionalTalents = await storage.getUserSecondaryProfessionalTalents(musician.userId);
-          const secondaryTalents = [
-            ...secondaryPerformanceTalents.map(t => t.talentName),
-            ...secondaryProfessionalTalents.map(t => t.talentName)
-          ];
-          
-          return {
-            ...musician,
-            user,
-            profile,
-            primaryTalent,
-            secondaryTalents
-          };
-        })
-      );
+
+        const musiciansWithUsers = await Promise.all(
+          musicians.map(async (musician) => {
+            const user = await storage.getUser(musician.userId);
+            const profile = await storage.getUserProfile(musician.userId);
+
+            // Fetch primary talent by ID - use player_name for specific talent display
+            let primaryTalent = null;
+            if (musician.primaryTalentId) {
+              const talent = await storage.getPrimaryTalentById(musician.primaryTalentId, 'musician');
+              primaryTalent = talent ? talent.player_name : null;
+            }
+
+            // Fetch secondary talents
+            const secondaryPerformanceTalents = await storage.getUserSecondaryPerformanceTalents(musician.userId);
+            const secondaryProfessionalTalents = await storage.getUserSecondaryProfessionalTalents(musician.userId);
+            const secondaryTalents = [
+              ...secondaryPerformanceTalents.map(t => t.talentName),
+              ...secondaryProfessionalTalents.map(t => t.talentName)
+            ];
+
+            return {
+              ...musician,
+              user,
+              profile,
+              primaryTalent,
+              secondaryTalents
+            };
+          })
+        );
         return musiciansWithUsers;
       });
-      
+
       res.json(musiciansWithData);
     } catch (error) {
       logError(error, ErrorSeverity.ERROR, { endpoint: '/api/musicians' });
@@ -644,38 +861,38 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const cacheKey = generateCacheKey('professionals');
       const professionalsWithData = await withCache(cacheKey, async () => {
         const professionals = await storage.getProfessionals();
-      const professionalsWithUsers = await Promise.all(
-        professionals.map(async (professional) => {
-          const user = await storage.getUser(professional.userId);
-          const profile = await storage.getUserProfile(professional.userId);
-          
-          // Fetch primary talent by ID - use name for professional talent display
-          let primaryTalent = null;
-          if (professional.primaryTalentId) {
-            const talent = await storage.getPrimaryTalentById(professional.primaryTalentId, 'professional');
-            primaryTalent = talent ? talent.name : null;
-          }
-          
-          // Fetch secondary talents
-          const secondaryPerformanceTalents = await storage.getUserSecondaryPerformanceTalents(professional.userId);
-          const secondaryProfessionalTalents = await storage.getUserSecondaryProfessionalTalents(professional.userId);
-          const secondaryTalents = [
-            ...secondaryPerformanceTalents.map(t => t.talentName),
-            ...secondaryProfessionalTalents.map(t => t.talentName)
-          ];
-          
-          return {
-            ...professional,
-            user,
-            profile,
-            primaryTalent,
-            secondaryTalents
-          };
-        })
-      );
+        const professionalsWithUsers = await Promise.all(
+          professionals.map(async (professional) => {
+            const user = await storage.getUser(professional.userId);
+            const profile = await storage.getUserProfile(professional.userId);
+
+            // Fetch primary talent by ID - use name for professional talent display
+            let primaryTalent = null;
+            if (professional.primaryTalentId) {
+              const talent = await storage.getPrimaryTalentById(professional.primaryTalentId, 'professional');
+              primaryTalent = talent ? talent.name : null;
+            }
+
+            // Fetch secondary talents
+            const secondaryPerformanceTalents = await storage.getUserSecondaryPerformanceTalents(professional.userId);
+            const secondaryProfessionalTalents = await storage.getUserSecondaryProfessionalTalents(professional.userId);
+            const secondaryTalents = [
+              ...secondaryPerformanceTalents.map(t => t.talentName),
+              ...secondaryProfessionalTalents.map(t => t.talentName)
+            ];
+
+            return {
+              ...professional,
+              user,
+              profile,
+              primaryTalent,
+              secondaryTalents
+            };
+          })
+        );
         return professionalsWithUsers;
       });
-      
+
       res.json(professionalsWithData);
     } catch (error) {
       logError(error, ErrorSeverity.ERROR, { endpoint: '/api/professionals' });
@@ -687,7 +904,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.get("/api/songs", authenticateToken, requirePerm('view_content'), validateQuery(schemas.paginationSchema), async (req: Request, res: Response) => {
     try {
       const { artistId, page = '0', limit = '20' } = req.query;
-      
+
       const cacheKey = generateCacheKey('songs', `artistId:${artistId || 'all'}-page:${page}-limit:${limit}`);
       const songs = await withCache(cacheKey, async () => {
         if (artistId) {
@@ -696,7 +913,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
           return await storage.getSongs();
         }
       });
-      
+
       res.json(songs);
     } catch (error) {
       logError(error, ErrorSeverity.ERROR, { endpoint: '/api/songs', query: req.query });
@@ -714,7 +931,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       if (searchType === 'all' || searchType === 'platform') {
         const allSongs = await storage.getSongs();
         console.log(`Platform search: "${query}" - Found ${allSongs.length} total songs in database`);
-        
+
         const searchLower = query.toLowerCase();
         const matchingSongs = allSongs.filter((song: any) => {
           const titleMatch = song.title?.toLowerCase().includes(searchLower);
@@ -723,7 +940,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         });
 
         console.log(`Platform results: ${matchingSongs.length} songs match "${query}"`);
-        
+
         const platformResults = matchingSongs.map((song: any) => ({
           title: song.title,
           artist: song.artist || 'Unknown Artist',
@@ -742,7 +959,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       // Search YouTube (simulated with realistic popular song database)
       if (searchType === 'all' || searchType === 'youtube') {
         console.log(`YouTube search: "${query}"`);
-        
+
         // Curated database of popular songs for more realistic search results
         const popularSongs = [
           // Pop/Contemporary
@@ -754,26 +971,26 @@ export async function registerRoutes(app: Express): Promise<Server> {
           { title: "What I've Done", artist: "Linkin Park", duration: 207, year: "2007", views: 900000000 },
           { title: "What Doesn't Kill You", artist: "Kelly Clarkson", duration: 222, year: "2011", views: 700000000 },
           { title: "Whataya Want from Me", artist: "Adam Lambert", duration: 227, year: "2009", views: 300000000 },
-          
+
           // Caribbean/Reggae/Dancehall
           { title: "What's My Name", artist: "Rihanna feat. Drake", duration: 263, year: "2010", views: 1100000000 },
           { title: "What You Know", artist: "T.I.", duration: 198, year: "2006", views: 250000000 },
           { title: "What Goes Around", artist: "Justin Timberlake", duration: 459, year: "2006", views: 450000000 },
           { title: "What Dreams Are Made Of", artist: "Hilary Duff", duration: 180, year: "2003", views: 200000000 },
-          
+
           // R&B/Soul  
           { title: "What's Going On", artist: "Marvin Gaye", duration: 235, year: "1971", views: 150000000 },
           { title: "What a Girl Wants", artist: "Christina Aguilera", duration: 217, year: "1999", views: 180000000 },
           { title: "What's Up Danger", artist: "Blackway & Black Caviar", duration: 216, year: "2018", views: 300000000 },
-          
+
           // Gospel/Praise
           { title: "What a Beautiful Name", artist: "Hillsong Worship", duration: 278, year: "2016", views: 400000000 },
           { title: "What the Lord Has Done in Me", artist: "Hillsong United", duration: 245, year: "2005", views: 50000000 },
-          
+
           // Hip-Hop/Rap
           { title: "What's Poppin", artist: "Jack Harlow", duration: 200, year: "2020", views: 800000000 },
           { title: "What's Next", artist: "Drake", duration: 177, year: "2021", views: 500000000 },
-          
+
           // General search results for other queries  
           { title: "Praise Zone", artist: "JCro", duration: 210, year: "2023", views: 100000000 },
           { title: "Praise Him", artist: "Gospel Artists", duration: 240, year: "2020", views: 80000000 },
@@ -798,9 +1015,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
         const matchingSongs = popularSongs.filter(song => {
           const titleWords = song.title.toLowerCase();
           const artistWords = song.artist.toLowerCase();
-          
-          return searchTerms.some(term => 
-            titleWords.includes(term) || 
+
+          return searchTerms.some(term =>
+            titleWords.includes(term) ||
             artistWords.includes(term) ||
             titleWords.split(' ').some(word => word.startsWith(term)) ||
             artistWords.split(' ').some(word => word.startsWith(term))
@@ -841,13 +1058,13 @@ export async function registerRoutes(app: Express): Promise<Server> {
             publishers: [{ name: 'Wai\'tu Music Publishing', split: 100 }]
           }
         ];
-        
+
         const searchLower = query.toLowerCase();
-        const matchedDemo = demoResults.filter(song => 
+        const matchedDemo = demoResults.filter(song =>
           song.title.toLowerCase().includes(searchLower) ||
           song.artist.toLowerCase().includes(searchLower)
         );
-        
+
         if (matchedDemo.length > 0) {
           console.log(`Using demo fallback: ${matchedDemo.length} matches`);
           results.push(...matchedDemo);
@@ -927,11 +1144,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.get("/api/albums/:id", authenticateToken, requirePerm('view_content'), validateParams(schemas.idParamSchema), async (req: Request, res: Response) => {
     try {
       const albumId = parseInt(req.params.id);
-      
+
       const cacheKey = generateCacheKey('albums', { id: albumId });
       const albumData = await withCache(cacheKey, async () => {
         const album = await storage.getAlbum(albumId);
-        
+
         if (!album) {
           return null;
         }
@@ -939,11 +1156,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
         const songs = await storage.getSongsByAlbum(albumId);
         return { ...album, songs };
       });
-      
+
       if (!albumData) {
         return res.status(404).json({ message: "Album not found" });
       }
-      
+
       res.json(albumData);
     } catch (error) {
       logError(error, ErrorSeverity.ERROR, { endpoint: '/api/albums/:id', albumId: req.params.id });
@@ -956,14 +1173,14 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const userId = req.user?.userId;
       const albumData = { ...req.body, userId };
       const album = await storage.createAlbum(albumData);
-      
+
       // Auto-generate press release for managed artists/musicians
       try {
         const user = await storage.getUser(userId!);
         if (user) {
           const artist = await storage.getArtist(user.id);
           const musician = await storage.getMusician(user.id);
-          
+
           // Check if user is managed
           if ((artist && artist.isManaged) || (musician && musician.isManaged)) {
             const pressReleaseOptions = {
@@ -975,7 +1192,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
               generationTrigger: 'album_upload',
               createdBy: userId!
             };
-            
+
             await pressReleaseService.generateAutomaticPressRelease(pressReleaseOptions);
             console.log(`Auto-generated press release for album: ${album.title} by user: ${userId}`);
           }
@@ -984,7 +1201,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         console.warn('Failed to auto-generate press release for album:', pressReleaseError);
         // Don't fail the album creation if press release generation fails
       }
-      
+
       invalidateCache('albums');
       res.status(201).json(album);
     } catch (error) {
@@ -998,11 +1215,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const albumId = parseInt(req.params.id);
       const updates = req.body;
       const album = await storage.updateAlbum(albumId, updates);
-      
+
       if (!album) {
         return res.status(404).json({ message: "Album not found" });
       }
-      
+
       invalidateCache('albums');
       res.json(album);
     } catch (error) {
@@ -1015,11 +1232,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       const albumId = parseInt(req.params.id);
       const success = await storage.deleteAlbum(albumId);
-      
+
       if (!success) {
         return res.status(404).json({ message: "Album not found" });
       }
-      
+
       invalidateCache('albums');
       res.json({ message: "Album deleted successfully" });
     } catch (error) {
@@ -1033,19 +1250,19 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.get("/api/bookings/:bookingId/assignments", authenticateToken, requirePerm('view_bookings'), validateParams(schemas.bookingIdParamSchema), async (req: Request, res: Response) => {
     try {
       const bookingId = parseInt(req.params.bookingId);
-      
+
       const assignments = await db.select({
         id: schema.users.id,
         full_name: schema.users.fullName,
         assignment_role: schema.bookingAssignments.assignmentRole
       })
-      .from(schema.bookingAssignments)
-      .innerJoin(schema.users, eq(schema.bookingAssignments.assignedUserId, schema.users.id))
-      .where(and(
-        eq(schema.bookingAssignments.bookingId, bookingId),
-        eq(schema.bookingAssignments.isActive, true)
-      ));
-      
+        .from(schema.bookingAssignments)
+        .innerJoin(schema.users, eq(schema.bookingAssignments.assignedUserId, schema.users.id))
+        .where(and(
+          eq(schema.bookingAssignments.bookingId, bookingId),
+          eq(schema.bookingAssignments.isActive, true)
+        ));
+
       res.json(assignments);
     } catch (error) {
       logError(error, ErrorSeverity.ERROR, { endpoint: '/api/bookings/:bookingId/assignments', bookingId: req.params.bookingId });
@@ -1057,16 +1274,16 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.get("/api/instruments/:id", authenticateToken, requirePerm('view_content'), validateParams(schemas.idParamSchema), async (req: Request, res: Response) => {
     try {
       const instrumentId = parseInt(req.params.id);
-      
+
       const instrument = await db.select()
         .from(schema.allInstruments)
         .where(eq(schema.allInstruments.id, instrumentId))
         .limit(1);
-      
+
       if (instrument.length === 0) {
         return res.status(404).json({ message: "Instrument not found" });
       }
-      
+
       res.json(instrument[0]);
     } catch (error) {
       logError(error, ErrorSeverity.ERROR, { endpoint: '/api/instruments/:id', instrumentId: req.params.id });
@@ -1078,21 +1295,21 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.get("/api/users/:userId/talent-dropdown", authenticateToken, requirePerm('view_content'), validateParams(schemas.userIdParamSchema), async (req: Request, res: Response) => {
     try {
       const userId = parseInt(req.params.userId);
-      
+
       // Get user info
       const user = await db.select()
         .from(schema.users)
         .where(eq(schema.users.id, userId))
         .limit(1);
-      
+
       if (!user.length) {
         return res.status(404).json({ message: "User not found" });
       }
-      
+
       const userRoleId = user[0].roleId;
       let userPrimaryTalentId = null;
       let userSecondaryTalentIds: number[] = [];
-      
+
       // Get user's actual primary_talent_id from their membership table (artists/musicians/professionals)
       if (userRoleId === 3 || userRoleId === 4) { // Artists
         const artist = await db.select()
@@ -1122,19 +1339,19 @@ export async function registerRoutes(app: Express): Promise<Server> {
           console.log(`Found professional with primary_talent_id: ${userPrimaryTalentId}`);
         }
       }
-      
+
       // Get secondary talents for this user
       const secondaryTalents = await db.select()
         .from(schema.userSecondaryPerformanceTalents)
         .where(eq(schema.userSecondaryPerformanceTalents.userId, userId));
-      
+
       userSecondaryTalentIds = secondaryTalents
         .filter(st => st.secondaryTalentId)
         .map(st => st.secondaryTalentId!);
-      
+
       const talentOptions: Array<{ id: number; label: string; category: string; isDefault?: boolean }> = [];
       const usedIds = new Set<number>();
-      
+
       // Step 1: Add user's primary talent as default + same mixer group
       if (userPrimaryTalentId) {
         // Get the instrument with this exact ID
@@ -1142,10 +1359,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
           .from(schema.allInstruments)
           .where(eq(schema.allInstruments.id, userPrimaryTalentId))
           .limit(1);
-        
+
         if (primaryInstrument.length > 0) {
           const mixerGroup = primaryInstrument[0].mixerGroup;
-          
+
           // Add primary talent first (as default, no star symbol)
           talentOptions.push({
             id: primaryInstrument[0].id,
@@ -1155,14 +1372,14 @@ export async function registerRoutes(app: Express): Promise<Server> {
             isPrimary: true
           });
           usedIds.add(primaryInstrument[0].id);
-          
+
           // Add other instruments from the same mixer group
           if (mixerGroup) {
             const groupInstruments = await db.select()
               .from(schema.allInstruments)
               .where(eq(schema.allInstruments.mixerGroup, mixerGroup))
               .orderBy(schema.allInstruments.displayPriority);
-            
+
             for (const groupInst of groupInstruments) {
               if (!usedIds.has(groupInst.id)) {
                 talentOptions.push({
@@ -1176,23 +1393,23 @@ export async function registerRoutes(app: Express): Promise<Server> {
           }
         }
       }
-      
+
       // Step 2: Add instruments from secondary talent mixer groups
       for (const secondaryTalentId of userSecondaryTalentIds) {
         const secondaryInstrument = await db.select()
           .from(schema.allInstruments)
           .where(eq(schema.allInstruments.id, secondaryTalentId))
           .limit(1);
-        
+
         if (secondaryInstrument.length > 0) {
           const mixerGroup = secondaryInstrument[0].mixerGroup;
-          
+
           if (mixerGroup) {
             const groupInstruments = await db.select()
               .from(schema.allInstruments)
               .where(eq(schema.allInstruments.mixerGroup, mixerGroup))
               .orderBy(schema.allInstruments.displayPriority);
-            
+
             for (const groupInst of groupInstruments) {
               if (!usedIds.has(groupInst.id)) {
                 talentOptions.push({
@@ -1206,14 +1423,14 @@ export async function registerRoutes(app: Express): Promise<Server> {
           }
         }
       }
-      
+
       // Step 3: Add 10 most common talents (without duplicates)
       const commonInstruments = await db.select()
         .from(schema.allInstruments)
         .where(isNotNull(schema.allInstruments.mixerGroup))
         .orderBy(schema.allInstruments.displayPriority)
         .limit(20); // Get more to account for duplicates
-      
+
       let addedCommon = 0;
       for (const instrument of commonInstruments) {
         if (!usedIds.has(instrument.id) && addedCommon < 10) {
@@ -1226,7 +1443,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
           addedCommon++;
         }
       }
-      
+
       res.json(talentOptions);
     } catch (error) {
       logError(error, ErrorSeverity.ERROR, { endpoint: '/api/users/:userId/talent-dropdown', userId: req.params.userId });
@@ -1238,7 +1455,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.get("/api/instruments", authenticateToken, requirePerm('view_content'), validateQuery(schemas.searchInstrumentsSchema), async (req: Request, res: Response) => {
     try {
       const searchTerm = req.query.search as string;
-      
+
       if (searchTerm) {
         console.log(`Searching instruments for: ${searchTerm}`);
         const instruments = await db.select()
@@ -1307,7 +1524,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.get("/api/videos", authenticateToken, requirePerm('view_content'), validateQuery(schemas.paginationSchema), async (req: Request, res: Response) => {
     try {
       const { userId, page = '0', limit = '20' } = req.query;
-      
+
       const cacheKey = generateCacheKey('videos', { userId, page, limit });
       const videos = await withCache(cacheKey, async () => {
         if (userId) {
@@ -1316,7 +1533,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
           return await storage.getVideos();
         }
       });
-      
+
       res.json(videos);
     } catch (error) {
       logError(error, ErrorSeverity.ERROR, { endpoint: '/api/videos', query: req.query });
@@ -1338,17 +1555,17 @@ export async function registerRoutes(app: Express): Promise<Server> {
       }
 
       const videoData = insertVideoSchema.parse(req.body);
-      
+
       // Extract YouTube video ID from URL
       const youtubeId = extractYouTubeId(videoData.videoUrl);
-      
+
       const video = await storage.createVideo({
         ...videoData,
         uploadedByUserId: userId,
         youtubeVideoId: youtubeId,
         embedCode: youtubeId ? `<iframe width="560" height="315" src="https://www.youtube.com/embed/${youtubeId}" frameborder="0" allowfullscreen></iframe>` : null
       });
-      
+
       invalidateCache('videos');
       res.status(201).json(video);
     } catch (error) {
@@ -1361,17 +1578,17 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       const userId = req.user?.userId;
       const videoId = parseInt(req.params.id);
-      
+
       const video = await storage.getVideo(videoId);
       if (!video) {
         return res.status(404).json({ message: 'Video not found' });
       }
-      
+
       // Only owner can delete their video
       if (video.uploadedByUserId !== userId) {
         return res.status(403).json({ message: 'Can only delete your own videos' });
       }
-      
+
       await storage.deleteVideo(videoId);
       invalidateCache('videos');
       res.json({ message: 'Video deleted successfully' });
@@ -1385,14 +1602,14 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.post("/api/admin/database/backup", authenticateToken, requirePerm('manage_database'), async (req: Request, res: Response) => {
     try {
       const userId = req.user?.userId;
-      
+
       // Generate backup filename with timestamp
       const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
       const filename = `waitumusic_backup_${timestamp}.sql`;
-      
+
       // In production, this would trigger actual database backup
       // For now, simulate the operation
-      res.json({ 
+      res.json({
         filename,
         size: "2.3GB",
         status: "completed",
@@ -1406,9 +1623,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   app.post("/api/admin/database/optimize", authenticateToken, requirePerm('manage_database'), async (req: Request, res: Response) => {
     try {
-      
+
       // In production, this would run ANALYZE, VACUUM, and REINDEX
-      res.json({ 
+      res.json({
         improvements: "Indexes rebuilt, query cache cleared, statistics updated.",
         tablesOptimized: 15,
         performance: "18% improvement",
@@ -1422,7 +1639,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   app.get("/api/admin/database/health", authenticateToken, requirePerm('manage_database'), async (req: Request, res: Response) => {
     try {
-      
+
       // In production, this would check actual database metrics
       res.json({
         status: "healthy",
@@ -1463,7 +1680,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       if (!userId) {
         return res.status(401).json({ message: "Invalid token" });
       }
-      
+
       const user = await storage.getUser(userId);
       if (!user) {
         return res.status(404).json({ message: "User not found" });
@@ -1493,7 +1710,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
           })
           .from(schema.bookings)
           .innerJoin(
-            schema.bookingAssignmentsMembers, 
+            schema.bookingAssignmentsMembers,
             and(
               eq(schema.bookingAssignmentsMembers.bookingId, schema.bookings.id),
               eq(schema.bookingAssignmentsMembers.userId, userId),
@@ -1519,7 +1736,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       const bookingId = parseInt(req.params.id);
       const userId = req.user?.userId;
-      
+
       if (!userId) {
         return res.status(401).json({ message: "Invalid token" });
       }
@@ -1584,7 +1801,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const bookingId = parseInt(req.params.id);
       const userId = req.user?.userId;
       const { action, counterOffer, notes } = req.body;
-      
+
       if (!userId) {
         return res.status(401).json({ message: "Invalid token" });
       }
@@ -1649,10 +1866,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
         console.error('Failed to send talent response notification:', emailError);
       }
 
-      res.json({ 
+      res.json({
         message: `Booking ${action.replace('_', ' ')} submitted successfully`,
         action,
-        bookingId 
+        bookingId
       });
     } catch (error) {
       logError(error, ErrorSeverity.ERROR, { endpoint: '/api/bookings/:id/talent-response', bookingId: req.params.id, userId: req.user?.userId });
@@ -1664,7 +1881,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       const bookingData = req.body;
       const { additionalTalentUserIds, multiTalentBooking, ...coreBookingData } = bookingData;
-      
+
       // Fix eventDate to ensure proper Date object or null
       if (coreBookingData.eventDate) {
         if (typeof coreBookingData.eventDate === 'string') {
@@ -1686,9 +1903,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
         // Ensure null instead of undefined
         coreBookingData.eventDate = null;
       }
-      
+
       console.log('Processed eventDate:', coreBookingData.eventDate, 'Type:', typeof coreBookingData.eventDate);
-      
+
       // Create the main booking
       const booking = await storage.createBooking({
         ...coreBookingData,
@@ -1700,12 +1917,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
         const primaryUser = await storage.getUser(coreBookingData.primaryArtistUserId);
         if (primaryUser && (primaryUser.roleId === 3 || primaryUser.roleId === 4 || primaryUser.roleId === 5 || primaryUser.roleId === 6)) {
           const assignmentRole = 'Main Booked Talent';
-          const assignmentNotes = `Primary talent - ${
-            primaryUser.roleId === 3 ? 'managed artist' :
+          const assignmentNotes = `Primary talent - ${primaryUser.roleId === 3 ? 'managed artist' :
             primaryUser.roleId === 4 ? 'artist' :
-            primaryUser.roleId === 5 ? 'managed musician' : 'musician'
-          }`;
-          
+              primaryUser.roleId === 5 ? 'managed musician' : 'musician'
+            }`;
+
           await storage.createBookingAssignment({
             bookingId: booking.id,
             assignedUserId: coreBookingData.primaryArtistUserId!,
@@ -1723,7 +1939,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
           const user = await storage.getUser(talentUserId);
           let assignmentRole = 'Main Booked Talent'; // Default for managed talent
           let assignmentNotes = 'Multi-talent booking';
-          
+
           if (user) {
             // Managed artists and musicians are main booked talent
             if (user.roleId === 3 || user.roleId === 5) { // Managed Artist or Managed Musician
@@ -1737,7 +1953,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
               assignmentNotes = `Multi-talent booking - ${user.roleId === 7 ? 'managed professional' : 'professional'}`;
             }
           }
-          
+
           await storage.createBookingAssignment({
             bookingId: booking.id,
             assignedUserId: talentUserId,
@@ -1747,7 +1963,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
           });
         }
       }
-      
+
       cacheHelpers.invalidateBookingCache();
       res.status(201).json({ ...booking, multiTalentBooking, additionalTalentsCount: additionalTalentUserIds?.length || 0 });
     } catch (error) {
@@ -1779,11 +1995,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.post("/api/bookings/:id/assign", authenticateToken, requireRole(ROLE_GROUPS.ADMIN_ONLY), validateParams(schemas.idParamSchema), validate(schemas.createBookingAssignmentSchema), async (req: Request, res: Response) => {
     try {
       const bookingId = parseInt(req.params.id);
-      const { 
-        userId, 
-        roleId, 
-        selectedTalent, 
-        isMainBookedTalent, 
+      const {
+        userId,
+        roleId,
+        selectedTalent,
+        isMainBookedTalent,
         assignedGroup,
         assignedChannelPair,
         assignedChannel,
@@ -1849,7 +2065,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       const assignmentId = parseInt(req.params.id);
       const updates = req.body;
-      
+
       // Update the assignment
       const [updatedAssignment] = await db
         .update(schema.bookingAssignmentsMembers)
@@ -1859,7 +2075,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         })
         .where(eq(schema.bookingAssignmentsMembers.id, assignmentId))
         .returning();
-      
+
       if (!updatedAssignment) {
         return res.status(404).json({ message: "Assignment not found" });
       }
@@ -1905,7 +2121,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.delete("/api/booking-assignments/:id", authenticateToken, requireRole(ROLE_GROUPS.ADMIN_ONLY), validateParams(schemas.idParamSchema), async (req: Request, res: Response) => {
     try {
       const assignmentId = parseInt(req.params.id);
-      
+
       // Soft delete - mark as inactive instead of hard delete
       const [deletedAssignment] = await db
         .update(schema.bookingAssignmentsMembers)
@@ -1932,7 +2148,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.get("/api/bookings/:id/talent-by-role", authenticateToken, requireRole(ROLE_GROUPS.ADMIN_ONLY), validateParams(schemas.idParamSchema), async (req: Request, res: Response) => {
     try {
       const bookingId = parseInt(req.params.id);
-      
+
       const talentByRole = await db
         .select({
           userId: schema.bookingAssignmentsMembers.userId,
@@ -1987,7 +2203,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.get("/api/my-gigs", authenticateToken, async (req: Request, res: Response) => {
     try {
       const userId = req.user!.userId;
-      
+
       // Get all bookings where this user is assigned
       // Get all bookings where this user is assigned with proper joins
       const rawAssignments = await db
@@ -2002,7 +2218,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
             eq(schema.bookingAssignmentsMembers.status, 'active')
           )
         );
-      
+
       // Get bookings where user is the primary artist
       const primaryBookings = await db
         .select({
@@ -2016,7 +2232,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         })
         .from(schema.bookings)
         .where(eq(schema.bookings.primaryArtistUserId, userId));
-      
+
       // Transform the raw assignment data to a cleaner format
       const assignments = rawAssignments.map(row => ({
         id: row.booking_assignments_members.id,
@@ -2034,7 +2250,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         assignedChannel: row.booking_assignments_members.assignedChannel || 0,
         isPrimaryArtist: false
       }));
-      
+
       // Transform primary bookings and add to assignments
       const primaryGigs = primaryBookings.map(booking => ({
         id: `primary-${booking.bookingId}`,
@@ -2052,7 +2268,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         assignedChannel: 0,
         isPrimaryArtist: true
       }));
-      
+
       // Combine both lists and sort by event date
       const allGigs = [...assignments, ...primaryGigs]
         .sort((a, b) => {
@@ -2061,10 +2277,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
           return dateB - dateA; // Most recent first
         })
         // Remove duplicates (in case user is both primary artist AND in assignments)
-        .filter((gig, index, self) => 
+        .filter((gig, index, self) =>
           index === self.findIndex(g => g.bookingId === gig.bookingId)
         );
-      
+
       res.json(allGigs);
     } catch (error) {
       logError(error, ErrorSeverity.ERROR, { endpoint: '/api/my-gigs', userId: req.user?.userId });
@@ -2079,24 +2295,24 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const talent = await withCache(cacheKey, async () => {
         // Get users with talent roles (artists, musicians, professionals)
         const talentRoleIds = [3, 4, 5, 6, 7, 8]; // managed_artist, artist, managed_musician, musician, managed_professional, professional
-      
-      const talent = await db
-        .select({
-          id: schema.users.id,
-          fullName: schema.users.fullName,
-          email: schema.users.email,
-          roleId: schema.users.roleId,
-          roleName: schema.roles.name,
-          stageName: schema.artists.stageName
-        })
-        .from(schema.users)
-        .innerJoin(schema.roles, eq(schema.users.roleId, schema.roles.id))
-        .leftJoin(schema.artists, eq(schema.users.id, schema.artists.userId))
-        .leftJoin(schema.musicians, eq(schema.users.id, schema.musicians.userId))
-        .leftJoin(schema.professionals, eq(schema.users.id, schema.professionals.userId))
-        .where(inArray(schema.users.roleId, talentRoleIds))
-        .orderBy(schema.users.fullName);
-        
+
+        const talent = await db
+          .select({
+            id: schema.users.id,
+            fullName: schema.users.fullName,
+            email: schema.users.email,
+            roleId: schema.users.roleId,
+            roleName: schema.roles.name,
+            stageName: schema.artists.stageName
+          })
+          .from(schema.users)
+          .innerJoin(schema.roles, eq(schema.users.roleId, schema.roles.id))
+          .leftJoin(schema.artists, eq(schema.users.id, schema.artists.userId))
+          .leftJoin(schema.musicians, eq(schema.users.id, schema.musicians.userId))
+          .leftJoin(schema.professionals, eq(schema.users.id, schema.professionals.userId))
+          .where(inArray(schema.users.roleId, talentRoleIds))
+          .orderBy(schema.users.fullName);
+
         return talent;
       });
 
@@ -2132,7 +2348,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.post("/api/instruments", authenticateToken, requireRole([1]), async (req: Request, res: Response) => {
     try {
       const instrumentData = schema.insertAllInstrumentsSchema.parse(req.body);
-      
+
       const [newInstrument] = await db
         .insert(schema.allInstruments)
         .values(instrumentData)
@@ -2152,7 +2368,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       const instrumentId = parseInt(req.params.id);
       const updates = req.body;
-      
+
       const [updatedInstrument] = await db
         .update(schema.allInstruments)
         .set(updates)
@@ -2176,7 +2392,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.delete("/api/instruments/:id", authenticateToken, requireRole([1]), validateParams(schemas.idParamSchema), async (req: Request, res: Response) => {
     try {
       const instrumentId = parseInt(req.params.id);
-      
+
       // Check if instrument is being used in any assignments
       const assignmentsUsing = await db
         .select({ count: sql<number>`count(*)` })
@@ -2184,7 +2400,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         .where(eq(schema.bookingAssignmentsMembers.selectedTalent, instrumentId));
 
       if (assignmentsUsing[0].count > 0) {
-        return res.status(400).json({ 
+        return res.status(400).json({
           message: "Cannot delete instrument - it is currently assigned to bookings",
           assignmentsCount: assignmentsUsing[0].count
         });
@@ -2214,7 +2430,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.get("/api/musicians/:userId/instrument-preferences", authenticateToken, requirePerm('view_content'), validateParams(schemas.userIdParamSchema), async (req: Request, res: Response) => {
     try {
       const musicianUserId = parseInt(req.params.userId);
-      
+
       const preferences = await db
         .select({
           id: schema.musicianInstrumentPreferences.id,
@@ -2253,7 +2469,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         ...schema.insertMusicianInstrumentPreferencesSchema.parse(req.body),
         musicianUserId
       };
-      
+
       const [newPreference] = await db
         .insert(schema.musicianInstrumentPreferences)
         .values(preferenceData)
@@ -2271,7 +2487,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       const preferenceId = parseInt(req.params.id);
       const updates = req.body;
-      
+
       const [updatedPreference] = await db
         .update(schema.musicianInstrumentPreferences)
         .set({ ...updates, updatedAt: new Date() })
@@ -2293,7 +2509,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.delete("/api/musicians/instrument-preferences/:id", authenticateToken, requirePerm('manage_content'), validateParams(schemas.idParamSchema), async (req: Request, res: Response) => {
     try {
       const preferenceId = parseInt(req.params.id);
-      
+
       const [deactivatedPreference] = await db
         .update(schema.musicianInstrumentPreferences)
         .set({ isActive: false, updatedAt: new Date() })
@@ -2315,7 +2531,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.get("/api/musicians/:userId/recommended-instruments", authenticateToken, requirePerm('view_content'), validateParams(schemas.userIdParamSchema), async (req: Request, res: Response) => {
     try {
       const musicianUserId = parseInt(req.params.userId);
-      
+
       // Get musician's current preferences to exclude them
       const currentPreferences = await db
         .select({ instrumentId: schema.musicianInstrumentPreferences.instrumentId })
@@ -2326,17 +2542,17 @@ export async function registerRoutes(app: Express): Promise<Server> {
         ));
 
       const currentInstrumentIds = currentPreferences.map(p => p.instrumentId);
-      
+
       // Get all instruments not currently in preferences
       let query = db
         .select()
         .from(schema.allInstruments)
         .orderBy(schema.allInstruments.mixerGroup, schema.allInstruments.displayPriority);
-        
+
       if (currentInstrumentIds.length > 0) {
         query = query.where(not(inArray(schema.allInstruments.id, currentInstrumentIds)));
       }
-      
+
       const recommendedInstruments = await query;
 
       res.json(recommendedInstruments);
@@ -2350,7 +2566,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.get("/api/bookings/:id/assignments", authenticateToken, requirePerm('view_bookings'), validateParams(schemas.idParamSchema), async (req: Request, res: Response) => {
     try {
       const bookingId = parseInt(req.params.id);
-      
+
       const assignments = await db
         .select({
           id: schema.bookingAssignmentsMembers.id,
@@ -2500,13 +2716,13 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       const files = req.files as Express.Multer.File[];
       const { category, tags, description, isPublic } = req.body;
-      
+
       if (!files || files.length === 0) {
         return res.status(400).json({ message: "No files uploaded" });
       }
 
       const uploadedFiles = [];
-      
+
       for (const file of files) {
         const mediaFile = {
           fileName: file.filename,
@@ -2526,9 +2742,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
         uploadedFiles.push(created);
       }
 
-      res.json({ 
-        message: "Files uploaded successfully", 
-        files: uploadedFiles 
+      res.json({
+        message: "Files uploaded successfully",
+        files: uploadedFiles
       });
     } catch (error) {
       logError(error, ErrorSeverity.ERROR, { endpoint: '/api/media/upload' });
@@ -2574,7 +2790,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       const { demoModeController } = await import('./demoModeController');
       const status = demoModeController.getStatus();
-      
+
       if (!status.demoMode) {
         return res.json([]);
       }
@@ -2616,7 +2832,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const { enabled } = req.body;
       const { demoModeController } = await import('./demoModeController');
       demoModeController.setDemoMode(enabled);
-      
+
       res.json({
         demoMode: enabled,
         message: enabled ? 'Demo mode enabled' : 'Live mode enabled'
@@ -2638,7 +2854,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const { seedLiveArtistData, markExistingDataAsDemo } = await import('./liveDataSeeder');
       const artists = await seedLiveArtistData();
       await markExistingDataAsDemo();
-      
+
       res.json({
         success: true,
         message: 'Live artist data seeded successfully',
@@ -2663,14 +2879,14 @@ export async function registerRoutes(app: Express): Promise<Server> {
       }
       const roles = await storage.getRoles();
       const userRole = roles.find(role => role.id === user.roleId);
-      
+
       if (!userRole) {
         return res.status(404).json({ message: "User role not found" });
       }
 
       const allBookings = await storage.getAllBookings();
       const artists = await storage.getArtists();
-      
+
       let stats: any = {};
 
       switch (user.roleId) {
@@ -2679,7 +2895,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
           const totalRevenue = allBookings.reduce((sum: number, booking: any) => {
             return sum + (parseFloat(booking.totalBudget?.toString() || '0') || 0);
           }, 0);
-          
+
           stats = {
             totalUsers: allUsers.length,
             totalArtists: artists.length,
@@ -2700,7 +2916,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
           const adminRevenue = allBookings.reduce((sum: number, booking: any) => {
             return sum + (parseFloat(booking.totalBudget?.toString() || '0') || 0);
           }, 0);
-          
+
           stats = {
             managedUsers: artists.filter(a => a.isManaged).length,
             totalBookings: allBookings.length,
@@ -2716,7 +2932,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
           const artistRevenue = artistBookings.reduce((sum: number, booking: any) => {
             return sum + (parseFloat(booking.totalBudget?.toString() || '0') || 0);
           }, 0);
-          
+
           stats = {
             totalBookings: artistBookings.length,
             revenue: Math.round(artistRevenue),
@@ -2739,13 +2955,13 @@ export async function registerRoutes(app: Express): Promise<Server> {
                 .from(schema.bookingAssignmentsMembers)
                 .where(eq(schema.bookingAssignmentsMembers.userId, userId))
             );
-          
+
           const musicianBookingIds = musicianAssignedIds.map(a => a.bookingId);
           const musicianBookings = allBookings.filter((b: any) => musicianBookingIds.includes(b.id));
           const sessionRevenue = musicianBookings.reduce((sum: number, booking: any) => {
             return sum + (parseFloat(booking.totalBudget?.toString() || '0') * 0.1); // Example session fee
           }, 0);
-          
+
           stats = {
             sessions: musicianBookings.length,
             revenue: Math.round(sessionRevenue),
@@ -2770,7 +2986,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         case 'fan':
         default:
           const userBookings = allBookings.filter((b: any) => b.bookerUserId === userId);
-          
+
           stats = {
             bookings: userBookings.length,
             upcomingEvents: userBookings.filter((b: any) => new Date(b.eventDate) > new Date()).length,
@@ -2779,7 +2995,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
           };
           break;
       }
-      
+
       res.json({ ...stats, role: userRole?.name || 'unknown' });
     } catch (error) {
       logError(error, ErrorSeverity.ERROR, { endpoint: '/api/dashboard/stats', userId: req.user?.userId });
@@ -2811,7 +3027,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const user = await storage.getUser(userId);
       const roles = await storage.getRoles();
       const userRole = roles.find(role => role.id === user?.roleId);
-      
+
       if (!userRole) {
         return res.status(404).json({ message: "User role not found" });
       }
@@ -2837,7 +3053,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
                 .from(schema.bookingAssignmentsMembers)
                 .where(eq(schema.bookingAssignmentsMembers.userId, userId))
             );
-          
+
           const assignedIds = assignedBookingIds.map(a => a.bookingId);
           userBookings = allBookings.filter((b: any) => assignedIds.includes(b.id));
           break;
@@ -2846,7 +3062,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
           userBookings = allBookings.filter((b: any) => b.bookerUserId === userId);
           break;
       }
-      
+
       res.json(userBookings);
     } catch (error) {
       logError(error, ErrorSeverity.ERROR, { endpoint: '/api/bookings/user', userId: req.user?.userId });
@@ -2945,7 +3161,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         }
       }
 
-      res.json({ 
+      res.json({
         booking,
         accountCreated: !!bookerUserId,
         multiTalentBooking,
@@ -2970,7 +3186,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // AI Recommendation System Routes
-  
+
   // Get personalized recommendations for user
   app.get("/api/recommendations", authenticateToken, async (req: Request, res: Response) => {
     try {
@@ -2978,10 +3194,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
       if (!userId) {
         return res.status(401).json({ message: 'User not authenticated' });
       }
-      
+
       const limit = parseInt(req.query.limit as string) || 10;
       const recommendations = await recommendationEngine.getRecommendationsForUser(userId, limit);
-      
+
       res.json(recommendations);
     } catch (error) {
       logError(error, ErrorSeverity.ERROR, { endpoint: '/api/recommendations', userId: req.user?.userId });
@@ -2990,23 +3206,23 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // Direct Link Sharing System
-  
+
   // Create a shareable link
   app.post("/api/share-link", authenticateToken, async (req: Request, res: Response) => {
     try {
       const { documentType, documentId, accessType, roleRestriction, sectionRestrictions, expiresIn, maxUses, metadata } = req.body;
-      
+
       // Validate required fields
       if (!documentType || !documentId || !accessType) {
         return res.status(400).json({ message: 'Document type, ID, and access type are required' });
       }
-      
+
       // Generate unique token
       const linkToken = uuid.v4();
-      
+
       // Calculate expiration if provided
       const expiresAt = expiresIn ? new Date(Date.now() + expiresIn * 1000) : null;
-      
+
       // Create the shareable link
       const [link] = await db.insert(schema.shareableLinks).values({
         linkToken,
@@ -3020,14 +3236,14 @@ export async function registerRoutes(app: Express): Promise<Server> {
         maxUses,
         metadata
       }).returning();
-      
+
       // Generate the full URL
       const shareUrl = `${process.env.BASE_URL || 'http://localhost:5000'}/share/${linkToken}`;
-      
-      res.json({ 
+
+      res.json({
         link,
         shareUrl,
-        message: 'Shareable link created successfully' 
+        message: 'Shareable link created successfully'
       });
     } catch (error) {
       logError(error, ErrorSeverity.ERROR, { endpoint: '/api/share-link' });
@@ -3040,7 +3256,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       const { token } = req.params;
       const { email, name } = req.query;
-      
+
       // Get the link details
       const [link] = await db
         .select()
@@ -3050,30 +3266,30 @@ export async function registerRoutes(app: Express): Promise<Server> {
           eq(schema.shareableLinks.isActive, true)
         ))
         .limit(1);
-      
+
       if (!link) {
         return res.status(404).json({ message: 'Invalid or expired link' });
       }
-      
+
       // Check expiration
       if (link.expiresAt && new Date(link.expiresAt) < new Date()) {
         return res.status(410).json({ message: 'This link has expired' });
       }
-      
+
       // Check usage limits
       if (link.maxUses && link.currentUses >= link.maxUses) {
         return res.status(410).json({ message: 'This link has reached its usage limit' });
       }
-      
+
       // Update usage count
       await db
         .update(schema.shareableLinks)
-        .set({ 
+        .set({
           currentUses: (link.currentUses || 0) + 1,
           lastAccessedAt: new Date()
         })
         .where(eq(schema.shareableLinks.id, link.id));
-      
+
       // Log access
       await db.insert(schema.linkAccessLogs).values({
         linkId: link.id,
@@ -3084,7 +3300,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         userAgent: req.headers['user-agent'] || null,
         actionTaken: 'viewed'
       });
-      
+
       // Return document access info
       res.json({
         documentType: link.documentType,
@@ -3104,25 +3320,25 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.get("/api/share-link/:id/stats", authenticateToken, requirePerm('view_content'), validateParams(schemas.idParamSchema), async (req: Request, res: Response) => {
     try {
       const linkId = parseInt(req.params.id);
-      
+
       // Get link details
       const [link] = await db
         .select()
         .from(schema.shareableLinks)
         .where(eq(schema.shareableLinks.id, linkId))
         .limit(1);
-      
+
       if (!link || link.createdByUserId !== req.user!.userId) {
         return res.status(404).json({ message: 'Link not found' });
       }
-      
+
       // Get access logs
       const logs = await db
         .select()
         .from(schema.linkAccessLogs)
         .where(eq(schema.linkAccessLogs.linkId, linkId))
         .orderBy(desc(schema.linkAccessLogs.accessedAt));
-      
+
       res.json({ link, accessLogs: logs });
     } catch (error) {
       logError(error, ErrorSeverity.ERROR, { endpoint: '/api/share-link/:id/stats', linkId: req.params.id });
@@ -3139,7 +3355,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       }
 
       const { songId, artistId, interactionType, metadata } = req.body;
-      
+
       if (!interactionType) {
         return res.status(400).json({ message: 'Interaction type is required' });
       }
@@ -3167,10 +3383,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
       }
 
       const recommendations = await recommendationEngine.generateRecommendationsForUser(userId);
-      res.json({ 
-        success: true, 
+      res.json({
+        success: true,
         count: recommendations.length,
-        message: 'Recommendations generated successfully' 
+        message: 'Recommendations generated successfully'
       });
     } catch (error) {
       logError(error, ErrorSeverity.ERROR, { endpoint: '/api/recommendations/generate', userId: req.user?.userId });
@@ -3183,7 +3399,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       const recommendationId = parseInt(req.params.id);
       const { engagementType } = req.body;
-      
+
       if (!engagementType || !['viewed', 'clicked'].includes(engagementType)) {
         return res.status(400).json({ message: 'Valid engagement type required (viewed/clicked)' });
       }
@@ -3205,7 +3421,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       }
 
       const { preferredGenres, preferredArtists, moodPreferences, discoveryLevel, explicitContent } = req.body;
-      
+
       await recommendationEngine.updateUserPreferences(userId, {
         preferredGenres: preferredGenres || null,
         favoriteArtists: preferredArtists || null,
@@ -3229,7 +3445,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const trendingSongs = await withCache(cacheKey, async () => {
         return await storage.getTrendingSongs(timeframe);
       });
-      
+
       res.json(trendingSongs);
     } catch (error) {
       logError(error, ErrorSeverity.ERROR, { endpoint: '/api/trending', timeframe: req.query.timeframe });
@@ -3249,7 +3465,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // Service Management Routes
-  
+
   // Service Categories
   app.get("/api/service-categories", async (req: Request, res: Response) => {
     try {
@@ -3298,26 +3514,26 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       // Get all services
       const allServices = await storage.getServices();
-      
+
       // Get managed artists and musicians
       const artists = await storage.getArtists();
       const musicians = await storage.getMusicians();
-      
+
       const managedArtistIds = artists
         .filter((artist: any) => artist.isManaged)
         .map((artist: any) => artist.userId);
-        
+
       const managedMusicianIds = musicians
-        .filter((musician: any) => musician.isManaged)  
+        .filter((musician: any) => musician.isManaged)
         .map((musician: any) => musician.userId);
-        
+
       const managedUserIds = [...managedArtistIds, ...managedMusicianIds];
-      
+
       // Filter services to only those created by managed users
-      const managedServices = allServices.filter((service: any) => 
+      const managedServices = allServices.filter((service: any) =>
         managedUserIds.includes(service.createdByUserId)
       );
-      
+
       res.json(managedServices);
     } catch (error) {
       logError(error, ErrorSeverity.ERROR, { endpoint: '/api/services/managed' });
@@ -3387,7 +3603,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       const userId = parseInt(req.params.userId);
       const currentUserId = req.user?.userId;
-      
+
       // Users can only view their own assignments unless they're admin
       if (currentUserId !== userId) {
         const user = await storage.getUser(currentUserId || 0);
@@ -3395,7 +3611,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
           return res.status(403).json({ message: "Insufficient permissions" });
         }
       }
-      
+
       const assignments = await storage.getServiceAssignmentsByUser(userId);
       res.json(assignments);
     } catch (error) {
@@ -3407,7 +3623,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.post("/api/service-assignments", authenticateToken, requirePerm('manage_users'), validate(schema.insertServiceAssignmentSchema), async (req: Request, res: Response) => {
     try {
       const userId = req.user?.userId;
-      
+
       // Convert numeric price fields to strings for decimal validation
       const processedData = {
         ...req.body,
@@ -3415,7 +3631,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         userCommission: req.body.userCommission?.toString(),
         assignedByUserId: userId
       };
-      
+
       const assignmentData = insertServiceAssignmentSchema.parse(processedData);
       const assignment = await storage.createServiceAssignment(assignmentData);
       cacheHelpers.invalidateCache('service-assignments');
@@ -3551,22 +3767,22 @@ export async function registerRoutes(app: Express): Promise<Server> {
       if (!userId) {
         return res.status(401).json({ message: 'User not authenticated' });
       }
-      
+
       // Get user role to enforce restrictions
       const user = await storage.getUser(userId);
       if (!user) {
         return res.status(404).json({ message: 'User not found' });
       }
-      
+
       const roles = await storage.getRoles();
       const userRole = roles.find(role => role.id === user.roleId);
-      
+
       // Role-based service type restrictions
       const { categoryId } = req.body;
       if (categoryId) {
         const categories = await storage.getServiceCategories();
         const category = categories.find(c => c.id === categoryId);
-        
+
         // Check if user is managed by looking at their profile
         let isManaged = false;
         if (user) {
@@ -3588,13 +3804,13 @@ export async function registerRoutes(app: Express): Promise<Server> {
         // Non-fan, non-managed users can only add performance-related services
         if (user && ![9, 1, 2].includes(user.roleId) && !isManaged) {
           if (category && !category.name.toLowerCase().includes('performance')) {
-            return res.status(403).json({ 
-              message: 'Non-managed users can only add performance-related services' 
+            return res.status(403).json({
+              message: 'Non-managed users can only add performance-related services'
             });
           }
         }
       }
-      
+
       const serviceData = insertUserServiceSchema.parse({ ...req.body, userId });
       const service = await storage.createUserService(serviceData);
       cacheHelpers.invalidateCache('user-services');
@@ -3612,24 +3828,24 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       const serviceId = parseInt(req.params.id);
       const userId = req.user?.userId;
-      
+
       if (!userId) {
         return res.status(401).json({ message: 'User not authenticated' });
       }
-      
+
       // Check if user owns the service or is admin
       const existingService = await storage.getUserService(serviceId);
       if (!existingService) {
         return res.status(404).json({ message: "Service not found" });
       }
-      
+
       if (existingService.userId !== userId) {
         const user = await storage.getUser(userId);
         if (!user || ![1, 2].includes(user.roleId)) {
           return res.status(403).json({ message: "Insufficient permissions" });
         }
       }
-      
+
       const updates = req.body;
       const service = await storage.updateUserService(serviceId, updates);
       if (!service) {
@@ -3647,24 +3863,24 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       const serviceId = parseInt(req.params.id);
       const userId = req.user?.userId;
-      
+
       if (!userId) {
         return res.status(401).json({ message: 'User not authenticated' });
       }
-      
+
       // Check if user owns the service or is admin
       const existingService = await storage.getUserService(serviceId);
       if (!existingService) {
         return res.status(404).json({ message: "Service not found" });
       }
-      
+
       if (existingService.userId !== userId) {
         const user = await storage.getUser(userId);
         if (!user || ![1, 2].includes(user.roleId)) {
           return res.status(403).json({ message: "Insufficient permissions" });
         }
       }
-      
+
       await storage.deleteUserService(serviceId);
       cacheHelpers.invalidateCache('user-services');
       res.json({ success: true, message: "Service deleted successfully" });
@@ -3698,7 +3914,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       if (!userId) {
         return res.status(401).json({ message: 'User not authenticated' });
       }
-      
+
       const reviewData = insertServiceReviewSchema.parse({ ...req.body, reviewerUserId: userId });
       const review = await storage.createServiceReview(reviewData);
       cacheHelpers.invalidateCache('service-reviews');
@@ -3713,25 +3929,25 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // Playback Tracks & Vocal Separation System for Technical Rider Setlists
-  
+
   // Get all playback tracks for a booking
   app.get("/api/bookings/:id/playback-tracks", authenticateToken, requirePerm('view_bookings'), validateParams(schemas.idParamSchema), async (req: Request, res: Response) => {
     try {
       const bookingId = parseInt(req.params.id);
       const userId = req.user?.userId;
       const userRole = req.user?.roleId;
-      
+
       // Check if user has access to booking
       const booking = await storage.getBooking(bookingId);
       if (!booking) {
         return res.status(404).json({ message: "Booking not found" });
       }
-      
+
       // Role-based access control - same as other booking endpoints
       if (userRole !== 1 && userRole !== 2 && booking.bookerUserId !== userId && booking.primaryArtistUserId !== userId) {
         return res.status(403).json({ message: "Access denied" });
       }
-      
+
       const playbackTracks = await storage.getPlaybackTracksByBookingId(bookingId);
       res.json(playbackTracks);
     } catch (error) {
@@ -3739,25 +3955,25 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.status(500).json({ message: "Internal server error" });
     }
   });
-  
+
   // Create/upload a playback track
   app.post("/api/bookings/:id/playback-tracks", authenticateToken, requirePerm('manage_bookings'), validateParams(schemas.idParamSchema), async (req: Request, res: Response) => {
     try {
       const bookingId = parseInt(req.params.id);
       const userId = req.user?.userId;
       const userRole = req.user?.roleId;
-      
+
       // Check if user has access to booking
       const booking = await storage.getBooking(bookingId);
       if (!booking) {
         return res.status(404).json({ message: "Booking not found" });
       }
-      
+
       // Access control - only managed artist, assigned admin, or superadmin can upload
       if (userRole !== 1 && userRole !== 2 && booking.bookerUserId !== userId && booking.primaryArtistUserId !== userId) {
         return res.status(403).json({ message: "Access denied" });
       }
-      
+
       const playbackTrackData = {
         ...req.body,
         bookingId,
@@ -3765,7 +3981,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         createdAt: new Date(),
         updatedAt: new Date()
       };
-      
+
       const playbackTrack = await storage.createPlaybackTrack(playbackTrackData);
       res.status(201).json(playbackTrack);
     } catch (error) {
@@ -3773,68 +3989,68 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.status(500).json({ message: "Internal server error" });
     }
   });
-  
+
   // Analyze audio track for vocal content
   app.post("/api/playback-tracks/:id/analyze", authenticateToken, requirePerm('manage_content'), validateParams(schemas.idParamSchema), async (req: Request, res: Response) => {
     try {
       const trackId = parseInt(req.params.id);
       const userId = req.user?.userId;
-      
+
       // Get playback track
       const playbackTrack = await storage.getPlaybackTrackById(trackId);
       if (!playbackTrack) {
         return res.status(404).json({ message: "Playback track not found" });
       }
-      
+
       // Check booking access
       const booking = await storage.getBookingById(playbackTrack.bookingId);
       if (!booking) {
         return res.status(404).json({ message: "Booking not found" });
       }
-      
+
       // Access control
       const userRole = req.user?.roleId;
       if (userRole !== 1 && userRole !== 2 && booking.bookerUserId !== userId) {
         return res.status(403).json({ message: "Access denied" });
       }
-      
+
       if (!playbackTrack.originalFileUrl) {
         return res.status(400).json({ message: "No original file found to analyze" });
       }
-      
+
       // Execute vocal analysis using Python service
       const { spawn } = require('child_process');
       const pythonProcess = spawn('python3', ['vocal_separation_service.py', 'analyze', playbackTrack.originalFileUrl]);
-      
+
       let analysisResult = '';
       let errorOutput = '';
-      
+
       pythonProcess.stdout.on('data', (data: any) => {
         analysisResult += data.toString();
       });
-      
+
       pythonProcess.stderr.on('data', (data: any) => {
         errorOutput += data.toString();
       });
-      
+
       pythonProcess.on('close', async (code: number) => {
         if (code !== 0) {
           logError(new Error(errorOutput), ErrorSeverity.ERROR, { endpoint: '/api/playback-tracks/:id/analyze', trackId, error: 'Python analysis failed' });
-          return res.status(500).json({ 
-            message: "Audio analysis failed", 
-            error: errorOutput 
+          return res.status(500).json({
+            message: "Audio analysis failed",
+            error: errorOutput
           });
         }
-        
+
         try {
           const analysis = JSON.parse(analysisResult);
-          
+
           // Update playback track with analysis results
           await storage.updatePlaybackTrack(trackId, {
             vocalAnalysis: analysis,
             updatedAt: new Date()
           });
-          
+
           res.json({
             success: true,
             analysis,
@@ -3842,74 +4058,74 @@ export async function registerRoutes(app: Express): Promise<Server> {
           });
         } catch (parseError) {
           logError(parseError as Error, ErrorSeverity.ERROR, { endpoint: '/api/playback-tracks/:id/analyze', trackId, error: 'Parse error' });
-          res.status(500).json({ 
+          res.status(500).json({
             message: "Failed to parse analysis results",
             rawOutput: analysisResult
           });
         }
       });
-      
+
     } catch (error) {
       logError(error, ErrorSeverity.ERROR, { endpoint: '/api/playback-tracks/:id/analyze', trackId: req.params.id });
       res.status(500).json({ message: "Internal server error" });
     }
   });
-  
+
   // Perform vocal separation on a track
   app.post("/api/playback-tracks/:id/separate", authenticateToken, requirePerm('manage_content'), validateParams(schemas.idParamSchema), async (req: Request, res: Response) => {
     try {
       const trackId = parseInt(req.params.id);
       const userId = req.user?.userId;
-      
+
       // Get playback track
       const playbackTrack = await storage.getPlaybackTrackById(trackId);
       if (!playbackTrack) {
         return res.status(404).json({ message: "Playback track not found" });
       }
-      
+
       // Check booking access
       const booking = await storage.getBookingById(playbackTrack.bookingId);
       if (!booking) {
         return res.status(404).json({ message: "Booking not found" });
       }
-      
+
       // Access control
       const userRole = req.user?.roleId;
       if (userRole !== 1 && userRole !== 2 && booking.bookerUserId !== userId) {
         return res.status(403).json({ message: "Access denied" });
       }
-      
+
       if (!playbackTrack.originalFileUrl) {
         return res.status(400).json({ message: "No original file found to separate" });
       }
-      
+
       // Update status to processing
       await storage.updatePlaybackTrack(trackId, {
         separationStatus: 'processing',
         processedAt: new Date(),
         updatedAt: new Date()
       });
-      
+
       const outputDir = `./playback_tracks/${playbackTrack.bookingId}/${trackId}`;
-      const songTitle = playbackTrack.customSongTitle || 
-                       (playbackTrack.songId ? `Song_${playbackTrack.songId}` : `Track_${trackId}`);
-      
+      const songTitle = playbackTrack.customSongTitle ||
+        (playbackTrack.songId ? `Song_${playbackTrack.songId}` : `Track_${trackId}`);
+
       // Execute vocal separation using Python service
       const { spawn } = require('child_process');
-      const pythonProcess = spawn('python3', ['vocal_separation_service.py', 'process', 
-                                             playbackTrack.originalFileUrl, songTitle, outputDir]);
-      
+      const pythonProcess = spawn('python3', ['vocal_separation_service.py', 'process',
+        playbackTrack.originalFileUrl, songTitle, outputDir]);
+
       let separationResult = '';
       let errorOutput = '';
-      
+
       pythonProcess.stdout.on('data', (data: any) => {
         separationResult += data.toString();
       });
-      
+
       pythonProcess.stderr.on('data', (data: any) => {
         errorOutput += data.toString();
       });
-      
+
       pythonProcess.on('close', async (code: number) => {
         if (code !== 0) {
           logError(new Error(errorOutput), ErrorSeverity.ERROR, { endpoint: '/api/playback-tracks/:id/separate', trackId, error: 'Python separation failed' });
@@ -3918,15 +4134,15 @@ export async function registerRoutes(app: Express): Promise<Server> {
             processingNotes: errorOutput,
             updatedAt: new Date()
           });
-          return res.status(500).json({ 
-            message: "Vocal separation failed", 
-            error: errorOutput 
+          return res.status(500).json({
+            message: "Vocal separation failed",
+            error: errorOutput
           });
         }
-        
+
         try {
           const result = JSON.parse(separationResult);
-          
+
           // Update playback track with separation results
           const updateData: any = {
             separationStatus: 'completed',
@@ -3935,7 +4151,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
             processedByUserId: userId,
             updatedAt: new Date()
           };
-          
+
           if (result.output_files) {
             if (result.output_files.instrumental) {
               updateData.instrumentalTrackUrl = result.output_files.instrumental;
@@ -3944,17 +4160,17 @@ export async function registerRoutes(app: Express): Promise<Server> {
               updateData.vocalsTrackUrl = result.output_files.vocals;
             }
             // Set the DJ-ready track (instrumental if separated, otherwise original)
-            updateData.djReadyTrackUrl = result.output_files.instrumental || 
-                                        result.output_files.dj_ready || 
-                                        playbackTrack.originalFileUrl;
+            updateData.djReadyTrackUrl = result.output_files.instrumental ||
+              result.output_files.dj_ready ||
+              playbackTrack.originalFileUrl;
           }
-          
+
           if (result.analysis) {
             updateData.vocalAnalysis = result.analysis;
           }
-          
+
           await storage.updatePlaybackTrack(trackId, updateData);
-          
+
           res.json({
             success: true,
             result,
@@ -3967,40 +4183,40 @@ export async function registerRoutes(app: Express): Promise<Server> {
             processingNotes: 'Failed to parse separation results',
             updatedAt: new Date()
           });
-          res.status(500).json({ 
+          res.status(500).json({
             message: "Failed to parse separation results",
             rawOutput: separationResult
           });
         }
       });
-      
+
     } catch (error) {
       logError(error, ErrorSeverity.ERROR, { endpoint: '/api/playback-tracks/:id/separate', trackId: req.params.id });
       res.status(500).json({ message: "Internal server error" });
     }
   });
-  
+
   // Create DJ access for a booking
   app.post("/api/bookings/:id/dj-access", authenticateToken, requirePerm('manage_bookings'), validateParams(schemas.idParamSchema), async (req: Request, res: Response) => {
     try {
       const bookingId = parseInt(req.params.id);
       const userId = req.user?.userId;
       const userRole = req.user?.roleId;
-      
+
       // Check if user has access to booking
       const booking = await storage.getBookingById(bookingId);
       if (!booking) {
         return res.status(404).json({ message: "Booking not found" });
       }
-      
+
       // Access control
       if (userRole !== 1 && userRole !== 2 && booking.primaryArtistUserId !== userId && booking.bookerUserId !== userId) {
         return res.status(403).json({ message: "Access denied" });
       }
-      
+
       // Generate unique access code
       const accessCode = require('crypto').randomBytes(16).toString('hex');
-      
+
       const djAccessData = {
         ...req.body,
         bookingId,
@@ -4009,7 +4225,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         createdAt: new Date(),
         updatedAt: new Date()
       };
-      
+
       const djAccess = await storage.createDjAccess(djAccessData);
       res.status(201).json(djAccess);
     } catch (error) {
@@ -4017,26 +4233,26 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.status(500).json({ message: "Internal server error" });
     }
   });
-  
+
   // DJ track download endpoint (public access with code)
   app.get("/api/dj-access/:accessCode/tracks", async (req: Request, res: Response) => {
     try {
       const accessCode = req.params.accessCode;
-      
+
       // Verify access code and get DJ access info
       const djAccess = await storage.getDjAccessByCode(accessCode);
       if (!djAccess || !djAccess.isActive) {
         return res.status(401).json({ message: "Invalid or expired access code" });
       }
-      
+
       // Check if access has expired
       if (djAccess.accessExpiresAt && new Date() > new Date(djAccess.accessExpiresAt)) {
         return res.status(401).json({ message: "Access code has expired" });
       }
-      
+
       // Get available tracks for this booking
       const playbackTracks = await storage.getPlaybackTracksByBookingId(djAccess.bookingId);
-      
+
       // Filter tracks based on DJ access permissions
       const accessibleTracks = playbackTracks.filter((track: any) => {
         if (djAccess.allowedTracks && djAccess.allowedTracks.length > 0) {
@@ -4047,20 +4263,20 @@ export async function registerRoutes(app: Express): Promise<Server> {
         }
         return track.djAccessEnabled;
       });
-      
+
       // Update last accessed timestamp
       await storage.updateDjAccess(djAccess.id, {
         lastAccessedAt: new Date(),
         updatedAt: new Date()
       });
-      
+
       res.json({
         djInfo: {
           name: djAccess.djName,
           booking: djAccess.bookingId,
           accessLevel: djAccess.accessLevel,
-          downloadsRemaining: djAccess.downloadLimit ? 
-                             (djAccess.downloadLimit - djAccess.downloadCount) : null
+          downloadsRemaining: djAccess.downloadLimit ?
+            (djAccess.downloadLimit - djAccess.downloadCount) : null
         },
         tracks: accessibleTracks.map((track: any) => ({
           id: track.id,
@@ -4075,45 +4291,45 @@ export async function registerRoutes(app: Express): Promise<Server> {
           vocalAnalysis: track.vocalAnalysis
         }))
       });
-      
+
     } catch (error) {
       logError(error, ErrorSeverity.ERROR, { endpoint: '/api/dj-access/:accessCode/tracks', accessCode: req.params.accessCode });
       res.status(500).json({ message: "Internal server error" });
     }
   });
-  
+
   // DJ track download endpoint
   app.post("/api/dj-access/:accessCode/download/:trackId", async (req: Request, res: Response) => {
     try {
       const accessCode = req.params.accessCode;
       const trackId = parseInt(req.params.trackId);
-      
+
       // Verify access code
       const djAccess = await storage.getDjAccessByCode(accessCode);
       if (!djAccess || !djAccess.isActive) {
         return res.status(401).json({ message: "Invalid or expired access code" });
       }
-      
+
       // Check download limits
       if (djAccess.downloadLimit && djAccess.downloadCount >= djAccess.downloadLimit) {
         return res.status(403).json({ message: "Download limit exceeded" });
       }
-      
+
       // Get track
       const track = await storage.getPlaybackTrackById(trackId);
       if (!track || track.bookingId !== djAccess.bookingId) {
         return res.status(404).json({ message: "Track not found or not accessible" });
       }
-      
+
       // Check track access permissions
       if (djAccess.restrictedTracks && djAccess.restrictedTracks.includes(trackId)) {
         return res.status(403).json({ message: "Access to this track is restricted" });
       }
-      
+
       if (!track.djReadyTrackUrl) {
         return res.status(400).json({ message: "DJ track not available" });
       }
-      
+
       // Log the download
       await storage.createPlaybackTrackDownload({
         playbackTrackId: trackId,
@@ -4125,7 +4341,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         userAgent: req.get('User-Agent') || 'unknown',
         downloadedAt: new Date()
       });
-      
+
       // Update download counts
       await Promise.all([
         storage.updatePlaybackTrack(trackId, {
@@ -4139,13 +4355,13 @@ export async function registerRoutes(app: Express): Promise<Server> {
           updatedAt: new Date()
         })
       ]);
-      
+
       res.json({
         success: true,
         downloadUrl: track.djReadyTrackUrl,
         message: "Download authorized"
       });
-      
+
     } catch (error) {
       logError(error, ErrorSeverity.ERROR, { endpoint: '/api/dj-access/:accessCode/download/:trackId', accessCode: req.params.accessCode, trackId: req.params.trackId });
       res.status(500).json({ message: "Internal server error" });
@@ -4153,7 +4369,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // Curator Distribution System for Post-Release Marketing
-  
+
   // Get all curators
   app.get("/api/curators", authenticateToken, requirePerm('manage_content'), async (req: Request, res: Response) => {
     try {
@@ -4167,7 +4383,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.status(500).json({ message: "Internal server error" });
     }
   });
-  
+
   // Create a new curator
   app.post("/api/curators", authenticateToken, requirePerm('manage_content'), validate(schema.insertCuratorSchema), async (req: Request, res: Response) => {
     try {
@@ -4178,7 +4394,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         createdAt: new Date(),
         updatedAt: new Date()
       };
-      
+
       const curator = await storage.createCurator(curatorData);
       cacheHelpers.invalidateCache('curators');
       res.status(201).json(curator);
@@ -4187,7 +4403,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.status(500).json({ message: "Internal server error" });
     }
   });
-  
+
   // Update curator information
   app.put("/api/curators/:id", authenticateToken, requirePerm('manage_content'), validateParams(schemas.idParamSchema), async (req: Request, res: Response) => {
     try {
@@ -4196,7 +4412,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         ...req.body,
         updatedAt: new Date()
       });
-      
+
       const updatedCurator = await storage.getCuratorById(curatorId);
       cacheHelpers.invalidateCache('curators');
       res.json(updatedCurator);
@@ -4205,19 +4421,19 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.status(500).json({ message: "Internal server error" });
     }
   });
-  
+
   // Create curator submission for a release
   app.post("/api/releases/:type/:id/curator-submissions", authenticateToken, requirePerm('manage_content'), validateParams(schemas.idParamSchema), async (req: Request, res: Response) => {
     try {
       const releaseType = req.params.type; // 'songs' or 'albums'
       const releaseId = parseInt(req.params.id);
       const userId = req.user?.userId;
-      
+
       // Validate release type
       if (!['songs', 'albums'].includes(releaseType)) {
         return res.status(400).json({ message: "Invalid release type" });
       }
-      
+
       const submissionData = {
         ...req.body,
         [releaseType === 'songs' ? 'songId' : 'albumId']: releaseId,
@@ -4226,7 +4442,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         createdAt: new Date(),
         updatedAt: new Date()
       };
-      
+
       const submission = await storage.createCuratorSubmission(submissionData);
       res.status(201).json(submission);
     } catch (error) {
@@ -4234,20 +4450,20 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.status(500).json({ message: "Internal server error" });
     }
   });
-  
+
   // Get submissions for a release
   app.get("/api/releases/:type/:id/curator-submissions", authenticateToken, async (req: Request, res: Response) => {
     try {
       const releaseType = req.params.type;
       const releaseId = parseInt(req.params.id);
-      
+
       const filters: any = {};
       if (releaseType === 'songs') {
         filters.songId = releaseId;
       } else if (releaseType === 'albums') {
         filters.albumId = releaseId;
       }
-      
+
       const submissions = await storage.getCuratorSubmissions(filters);
       res.json(submissions);
     } catch (error) {
@@ -4255,7 +4471,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.status(500).json({ message: "Internal server error" });
     }
   });
-  
+
   // Update submission status (for tracking responses)
   app.put("/api/curator-submissions/:id", authenticateToken, requireRole([1, 2]), async (req: Request, res: Response) => {
     try {
@@ -4270,7 +4486,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.status(500).json({ message: "Internal server error" });
     }
   });
-  
+
   // Create curator email campaign
   app.post("/api/curator-email-campaigns", authenticateToken, requireRole([1, 2]), async (req: Request, res: Response) => {
     try {
@@ -4281,7 +4497,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         createdAt: new Date(),
         updatedAt: new Date()
       };
-      
+
       const campaign = await storage.createCuratorEmailCampaign(campaignData);
       res.status(201).json(campaign);
     } catch (error) {
@@ -4289,7 +4505,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.status(500).json({ message: "Internal server error" });
     }
   });
-  
+
   // Get all curator email campaigns
   app.get("/api/curator-email-campaigns", authenticateToken, requireRole([1, 2]), async (req: Request, res: Response) => {
     try {
@@ -4302,7 +4518,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // Playback Tracks & DJ Management System
-  
+
   // Get playback tracks for a booking
   app.get("/api/bookings/:id/playback-tracks", authenticateToken, async (req: Request, res: Response) => {
     try {
@@ -4325,7 +4541,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         createdAt: new Date(),
         updatedAt: new Date()
       };
-      
+
       const track = await storage.createPlaybackTrack(trackData);
       res.status(201).json(track);
     } catch (error) {
@@ -4335,13 +4551,13 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // Vocal Separation Service Integration
-  
+
   // Analyze track for vocal content
   app.post("/api/playback-tracks/:id/analyze", authenticateToken, async (req: Request, res: Response) => {
     try {
       const trackId = parseInt(req.params.id);
       const track = await storage.getPlaybackTrackById(trackId);
-      
+
       if (!track) {
         return res.status(404).json({ message: "Track not found" });
       }
@@ -4365,7 +4581,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         if (code === 0) {
           try {
             const result = JSON.parse(analysisResult);
-            
+
             // Update track with analysis results
             await storage.updatePlaybackTrack(trackId, {
               vocalAnalysis: result,
@@ -4378,15 +4594,15 @@ export async function registerRoutes(app: Express): Promise<Server> {
             });
           } catch (parseError) {
             console.error('Analysis result parse error:', parseError);
-            res.status(500).json({ 
-              success: false, 
-              message: "Failed to parse analysis result" 
+            res.status(500).json({
+              success: false,
+              message: "Failed to parse analysis result"
             });
           }
         } else {
           console.error('Analysis process error:', errorOutput);
-          res.status(500).json({ 
-            success: false, 
+          res.status(500).json({
+            success: false,
             message: "Vocal analysis failed",
             error: errorOutput
           });
@@ -4403,7 +4619,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       const trackId = parseInt(req.params.id);
       const track = await storage.getPlaybackTrackById(trackId);
-      
+
       if (!track) {
         return res.status(404).json({ message: "Track not found" });
       }
@@ -4427,7 +4643,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         if (code === 0) {
           try {
             const result = JSON.parse(separationResult);
-            
+
             // Update track with separation results
             await storage.updatePlaybackTrack(trackId, {
               separationStatus: 'completed',
@@ -4444,15 +4660,15 @@ export async function registerRoutes(app: Express): Promise<Server> {
             });
           } catch (parseError) {
             console.error('Separation result parse error:', parseError);
-            res.status(500).json({ 
-              success: false, 
-              message: "Failed to parse separation result" 
+            res.status(500).json({
+              success: false,
+              message: "Failed to parse separation result"
             });
           }
         } else {
           console.error('Separation process error:', errorOutput);
-          res.status(500).json({ 
-            success: false, 
+          res.status(500).json({
+            success: false,
             message: "Vocal separation failed",
             error: errorOutput
           });
@@ -4465,7 +4681,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // Setlist API endpoints
-  
+
   // Save setlist for a booking
   app.post("/api/bookings/:id/setlist", authenticateToken, async (req: Request, res: Response) => {
     try {
@@ -4476,7 +4692,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         createdAt: new Date(),
         updatedAt: new Date()
       };
-      
+
       const setlist = await storage.saveSetlist(setlistData);
       res.status(201).json(setlist);
     } catch (error) {
@@ -4502,10 +4718,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       const songId = parseInt(req.params.id);
       const { instrument, key, tempo } = req.body;
-      
+
       // Basic chord progression generation logic
       const chordChart = generateChordChart(instrument, key, tempo);
-      
+
       res.json({
         songId,
         instrument,
@@ -4532,7 +4748,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     };
 
     const progression = commonProgressions[key] || ['C', 'Am', 'F', 'G'];
-    
+
     const chart = {
       progression,
       bars: 4,
@@ -4561,7 +4777,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         createdAt: new Date(),
         updatedAt: new Date()
       };
-      
+
       const djAccess = await storage.createDjAccess(accessData);
       res.status(201).json(djAccess);
     } catch (error) {
@@ -4609,7 +4825,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         if (code === 0) {
           try {
             const result = JSON.parse(separationResult);
-            
+
             const processResult = {
               songId,
               vocalRemovedFile: result.output_files?.instrumental || `vocals_removed_${songId}.wav`,
@@ -4667,40 +4883,40 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       // Spam protection validations
       const { honeypot, userAgent, timestamp, captcha, ...contactData } = req.body;
-      
+
       // Check honeypot field
       if (honeypot && honeypot.trim() !== '') {
         return res.status(400).json({ message: 'Spam detected' });
       }
-      
+
       // Rate limiting - check if too many requests from same IP
       const clientIP = req.ip || req.connection.remoteAddress;
       const now = Date.now();
-      
+
       // Simple in-memory rate limiting (in production, use Redis or database)
       if (!(globalThis as any).contactRateLimit) {
         (globalThis as any).contactRateLimit = new Map();
       }
-      
+
       const lastRequest = (globalThis as any).contactRateLimit.get(clientIP);
       if (lastRequest && now - lastRequest < 60000) { // 1 minute cooldown
         return res.status(429).json({ message: 'Too many requests. Please wait before sending another message.' });
       }
-      
+
       (globalThis as any).contactRateLimit.set(clientIP, now);
-      
+
       // Validate required fields
       const { name, email, subject, message, inquiryType } = contactData;
       if (!name || !email || !subject || !message) {
         return res.status(400).json({ message: 'All required fields must be filled' });
       }
-      
+
       // Email validation
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       if (!emailRegex.test(email)) {
         return res.status(400).json({ message: 'Invalid email format' });
       }
-      
+
       // Store contact submission (you can integrate with email service here)
       const contactSubmission = {
         id: Date.now().toString(),
@@ -4714,18 +4930,18 @@ export async function registerRoutes(app: Express): Promise<Server> {
         userAgent: userAgent || req.get('User-Agent'),
         status: 'new'
       };
-      
+
       // In a real application, you would save to database and/or send email
       console.log('Contact form submission:', contactSubmission);
-      
+
       // Here you could integrate with SendGrid or other email service
       // await sendContactEmail(contactSubmission);
-      
-      res.json({ 
-        success: true, 
-        message: 'Your message has been sent successfully. We\'ll get back to you within 24 hours.' 
+
+      res.json({
+        success: true,
+        message: 'Your message has been sent successfully. We\'ll get back to you within 24 hours.'
       });
-      
+
     } catch (error) {
       console.error('Contact form error:', error);
       res.status(500).json({ message: 'Failed to send message. Please try again later.' });
@@ -4746,13 +4962,13 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.post("/api/currencies", authenticateToken, requireRole([1]), async (req: Request, res: Response) => {
     try {
       const { currencyCode, apiKey } = req.body;
-      
+
       if (!currencyCode) {
         return res.status(400).json({ message: "Currency code is required" });
       }
 
       const newCurrency = await CurrencyService.addCurrency(currencyCode, apiKey);
-      
+
       if (!newCurrency) {
         return res.status(400).json({ message: "Failed to add currency or currency not found" });
       }
@@ -4768,10 +4984,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       const { apiKey } = req.body;
       const success = await CurrencyService.updateExchangeRates(apiKey);
-      
-      res.json({ 
-        success, 
-        message: success ? "Exchange rates updated successfully" : "Using cached rates - API unavailable" 
+
+      res.json({
+        success,
+        message: success ? "Exchange rates updated successfully" : "Using cached rates - API unavailable"
       });
     } catch (error: unknown) {
       const errorMessage = error instanceof Error ? error.message : 'Unknown error';
@@ -4789,21 +5005,21 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // Revenue Analytics & Forecasting API Routes - Strategic Enhancement 2025
-  
+
   // Get revenue metrics for a user
   app.get("/api/revenue/metrics", authenticateToken, async (req: Request, res: Response) => {
     try {
       const userId = parseInt(req.query.userId as string);
       const timeframe = req.query.timeframe as string || '12months';
-      
+
       // Check access permissions
       const userRole = req.user?.roleId;
       const requestingUserId = req.user?.userId;
-      
+
       if (userRole !== 1 && userRole !== 2 && requestingUserId !== userId) {
         return res.status(403).json({ message: "Access denied" });
       }
-      
+
       const metrics = await revenueAnalyticsService.getRevenueMetrics(userId, timeframe);
       res.json(metrics);
     } catch (error) {
@@ -4811,21 +5027,21 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.status(500).json({ message: "Internal server error" });
     }
   });
-  
+
   // Get revenue streams for a user
   app.get("/api/revenue/streams", authenticateToken, async (req: Request, res: Response) => {
     try {
       const userId = parseInt(req.query.userId as string);
       const timeframe = req.query.timeframe as string || '12months';
-      
+
       // Check access permissions
       const userRole = req.user?.roleId;
       const requestingUserId = req.user?.userId;
-      
+
       if (userRole !== 1 && userRole !== 2 && requestingUserId !== userId) {
         return res.status(403).json({ message: "Access denied" });
       }
-      
+
       const streams = await revenueAnalyticsService.getRevenueStreams(userId, timeframe);
       res.json(streams);
     } catch (error) {
@@ -4833,28 +5049,28 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.status(500).json({ message: "Internal server error" });
     }
   });
-  
+
   // Create revenue stream
   app.post("/api/revenue/streams", authenticateToken, async (req: Request, res: Response) => {
     try {
       const userRole = req.user?.roleId;
       const requestingUserId = req.user?.userId;
-      
+
       // Only managed users and admins can create revenue streams
       if (userRole !== 1 && userRole !== 2 && userRole !== 3 && userRole !== 5 && userRole !== 7) {
         return res.status(403).json({ message: "Access denied" });
       }
-      
+
       // Validate input
       if (!req.body.artistUserId || !req.body.streamType || !req.body.amount) {
         return res.status(400).json({ message: "Missing required fields" });
       }
-      
+
       // Check if user can create streams for the specified artist
       if (userRole !== 1 && userRole !== 2 && requestingUserId !== req.body.artistUserId) {
         return res.status(403).json({ message: "Cannot create streams for other users" });
       }
-      
+
       const stream = await revenueAnalyticsService.createRevenueStream(req.body);
       res.status(201).json(stream);
     } catch (error) {
@@ -4862,20 +5078,20 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.status(500).json({ message: "Internal server error" });
     }
   });
-  
+
   // Get revenue goals for a user
   app.get("/api/revenue/goals", authenticateToken, async (req: Request, res: Response) => {
     try {
       const userId = parseInt(req.query.userId as string);
-      
+
       // Check access permissions
       const userRole = req.user?.roleId;
       const requestingUserId = req.user?.userId;
-      
+
       if (userRole !== 1 && userRole !== 2 && requestingUserId !== userId) {
         return res.status(403).json({ message: "Access denied" });
       }
-      
+
       const goals = await revenueAnalyticsService.getRevenueGoals(userId);
       res.json(goals);
     } catch (error) {
@@ -4883,28 +5099,28 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.status(500).json({ message: "Internal server error" });
     }
   });
-  
+
   // Create revenue goal
   app.post("/api/revenue/goals", authenticateToken, async (req: Request, res: Response) => {
     try {
       const userRole = req.user?.roleId;
       const requestingUserId = req.user?.userId;
-      
+
       // Only managed users and admins can create goals
       if (userRole !== 1 && userRole !== 2 && userRole !== 3 && userRole !== 5 && userRole !== 7) {
         return res.status(403).json({ message: "Access denied" });
       }
-      
+
       // Validate input
       if (!req.body.artistUserId || !req.body.goalType || !req.body.targetAmount) {
         return res.status(400).json({ message: "Missing required fields" });
       }
-      
+
       // Check if user can create goals for the specified artist
       if (userRole !== 1 && userRole !== 2 && requestingUserId !== req.body.artistUserId) {
         return res.status(403).json({ message: "Cannot create goals for other users" });
       }
-      
+
       const goal = await revenueAnalyticsService.createRevenueGoal(req.body);
       res.status(201).json(goal);
     } catch (error) {
@@ -4912,20 +5128,20 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.status(500).json({ message: "Internal server error" });
     }
   });
-  
+
   // Get revenue forecasts for a user
   app.get("/api/revenue/forecasts", authenticateToken, async (req: Request, res: Response) => {
     try {
       const userId = parseInt(req.query.userId as string);
-      
+
       // Check access permissions
       const userRole = req.user?.roleId;
       const requestingUserId = req.user?.userId;
-      
+
       if (userRole !== 1 && userRole !== 2 && requestingUserId !== userId) {
         return res.status(403).json({ message: "Access denied" });
       }
-      
+
       const forecasts = await revenueAnalyticsService.getRevenueForecasts(userId);
       res.json(forecasts);
     } catch (error) {
@@ -4933,25 +5149,25 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.status(500).json({ message: "Internal server error" });
     }
   });
-  
+
   // Generate AI revenue forecast
   app.post("/api/revenue/forecasts", authenticateToken, async (req: Request, res: Response) => {
     try {
       const { userId, forecastType, method } = req.body;
-      
+
       // Check access permissions
       const userRole = req.user?.roleId;
       const requestingUserId = req.user?.userId;
-      
+
       if (userRole !== 1 && userRole !== 2 && requestingUserId !== userId) {
         return res.status(403).json({ message: "Access denied" });
       }
-      
+
       // Validate input
       if (!userId || !forecastType || !method) {
         return res.status(400).json({ message: "Missing required fields: userId, forecastType, method" });
       }
-      
+
       const forecast = await revenueAnalyticsService.generateForecast(userId, forecastType, method);
       res.status(201).json(forecast);
     } catch (error) {
@@ -4959,12 +5175,12 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.status(500).json({ message: "Internal server error" });
     }
   });
-  
+
   // Get market trends
   app.get("/api/revenue/market-trends", authenticateToken, async (req: Request, res: Response) => {
     try {
       const userId = parseInt(req.query.userId as string);
-      
+
       // Market trends are available to all authenticated users
       const trends = await revenueAnalyticsService.getMarketTrends(userId);
       res.json(trends);
@@ -4973,20 +5189,20 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.status(500).json({ message: "Internal server error" });
     }
   });
-  
+
   // Get revenue optimizations for a user
   app.get("/api/revenue/optimizations", authenticateToken, async (req: Request, res: Response) => {
     try {
       const userId = parseInt(req.query.userId as string);
-      
+
       // Check access permissions
       const userRole = req.user?.roleId;
       const requestingUserId = req.user?.userId;
-      
+
       if (userRole !== 1 && userRole !== 2 && requestingUserId !== userId) {
         return res.status(403).json({ message: "Access denied" });
       }
-      
+
       const optimizations = await revenueAnalyticsService.getRevenueOptimizations(userId);
       res.json(optimizations);
     } catch (error) {
@@ -4994,24 +5210,24 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.status(500).json({ message: "Internal server error" });
     }
   });
-  
+
   // Generate revenue optimization recommendations
   app.post("/api/revenue/optimizations/generate", authenticateToken, async (req: Request, res: Response) => {
     try {
       const { userId } = req.body;
-      
+
       // Check access permissions
       const userRole = req.user?.roleId;
       const requestingUserId = req.user?.userId;
-      
+
       if (userRole !== 1 && userRole !== 2 && requestingUserId !== userId) {
         return res.status(403).json({ message: "Access denied" });
       }
-      
+
       if (!userId) {
         return res.status(400).json({ message: "Missing required field: userId" });
       }
-      
+
       const optimizations = await revenueAnalyticsService.generateOptimizations(userId);
       res.status(201).json(optimizations);
     } catch (error) {
@@ -5019,7 +5235,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.status(500).json({ message: "Internal server error" });
     }
   });
-  
+
   // Sync booking revenue to revenue streams
   app.post("/api/revenue/sync-bookings", authenticateToken, requireRole([1, 2]), async (req: Request, res: Response) => {
     try {
@@ -5032,19 +5248,19 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // ===== ENHANCED SETLIST MANAGER - YOUTUBE INTEGRATION & OPPHUB AI OPTIMIZATION =====
-  
+
   // YouTube song search with metadata extraction
   app.post("/api/youtube/search", authenticateToken, async (req: Request, res: Response) => {
     try {
       const { query, maxResults = 20, extractMetadata = true } = req.body;
-      
+
       if (!query) {
         return res.status(400).json({ message: "Search query is required" });
       }
 
       // Search songs from database instead of mock data
       const songs = await storage.searchSongs(query);
-      
+
       // Format songs to match YouTube-like response structure
       const results = songs.map(song => ({
         id: song.id.toString(),
@@ -5066,14 +5282,14 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.post("/api/youtube/extract-metadata", authenticateToken, async (req: Request, res: Response) => {
     try {
       const { youtubeId, title, artist } = req.body;
-      
+
       if (!youtubeId) {
         return res.status(400).json({ message: "YouTube ID is required" });
       }
 
       // Get song metadata from database
       const song = await storage.getSongByYoutubeId(youtubeId);
-      
+
       const metadata = {
         key: song?.key || "C",
         bpm: song?.bpm || 120,
@@ -5097,7 +5313,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.post("/api/opphub-ai/generate-chord-chart", authenticateToken, async (req: Request, res: Response) => {
     try {
       const { title, artist, key, youtubeId, existingChordProgression } = req.body;
-      
+
       if (!title || !artist) {
         return res.status(400).json({ message: "Title and artist are required" });
       }
@@ -5129,7 +5345,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.post("/api/opphub-ai/optimize-setlist", authenticateToken, async (req: Request, res: Response) => {
     try {
       const { currentSetlist, eventInfo, assignedTalent, availableSongs, optimizationGoals } = req.body;
-      
+
       if (!eventInfo) {
         return res.status(400).json({ message: "Event information is required" });
       }
@@ -5185,7 +5401,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       const bookingId = parseInt(req.params.bookingId);
       const setlistData = req.body;
-      
+
       if (!bookingId) {
         return res.status(400).json({ message: "Valid booking ID is required" });
       }
@@ -5204,7 +5420,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         aiOptimized: !!setlistData.aiRecommendation
       });
 
-      res.json({ 
+      res.json({
         message: "Setlist saved successfully",
         bookingId,
         songCount: setlistData.songs?.length || 0
@@ -5219,7 +5435,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.get("/api/bookings/:bookingId/setlist", authenticateToken, async (req: Request, res: Response) => {
     try {
       const bookingId = parseInt(req.params.bookingId);
-      
+
       if (!bookingId) {
         return res.status(400).json({ message: "Valid booking ID is required" });
       }
@@ -5232,7 +5448,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
       // Get real setlist data from database
       const setlist = await storage.getBookingSetlist(bookingId);
-      
+
       const setlistData = {
         bookingId,
         songs: setlist || [],
@@ -5249,7 +5465,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         stats: {
           totalDuration: setlist?.reduce((acc, song) => acc + (song.duration || 0), 0) || 0,
           songCount: setlist?.length || 0,
-          averageBPM: setlist?.length > 0 
+          averageBPM: setlist?.length > 0
             ? Math.round(setlist.reduce((acc, song) => acc + (song.bpm || 120), 0) / setlist.length)
             : 0
         },
@@ -5270,17 +5486,17 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       const userId = parseInt(req.params.userId);
       const includeDemo = req.query.includeDemo === 'true';
-      
+
       const technicalRequirements = await db
         .select()
         .from(schema.userTechnicalRequirements)
         .where(
-          includeDemo 
+          includeDemo
             ? eq(schema.userTechnicalRequirements.userId, userId)
             : and(
-                eq(schema.userTechnicalRequirements.userId, userId),
-                eq(schema.userTechnicalRequirements.isDemo, true)
-              )
+              eq(schema.userTechnicalRequirements.userId, userId),
+              eq(schema.userTechnicalRequirements.isDemo, true)
+            )
         );
 
       res.json(technicalRequirements || []);
@@ -5296,17 +5512,17 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       const userId = parseInt(req.params.userId);
       const includeDemo = req.query.includeDemo === 'true';
-      
+
       const hospitalityRequirements = await db
         .select()
         .from(schema.userHospitalityRequirements)
         .where(
-          includeDemo 
+          includeDemo
             ? eq(schema.userHospitalityRequirements.userId, userId)
             : and(
-                eq(schema.userHospitalityRequirements.userId, userId),
-                eq(schema.userHospitalityRequirements.isDemo, true)
-              )
+              eq(schema.userHospitalityRequirements.userId, userId),
+              eq(schema.userHospitalityRequirements.isDemo, true)
+            )
         );
 
       res.json(hospitalityRequirements || []);
@@ -5323,17 +5539,17 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       const userId = parseInt(req.params.userId);
       const includeDemo = req.query.includeDemo === 'true';
-      
+
       const performanceSpecs = await db
         .select()
         .from(schema.userPerformanceSpecs)
         .where(
-          includeDemo 
+          includeDemo
             ? eq(schema.userPerformanceSpecs.userId, userId)
             : and(
-                eq(schema.userPerformanceSpecs.userId, userId),
-                eq(schema.userPerformanceSpecs.isDemo, true)
-              )
+              eq(schema.userPerformanceSpecs.userId, userId),
+              eq(schema.userPerformanceSpecs.isDemo, true)
+            )
         );
 
       res.json(performanceSpecs || []);
@@ -5350,17 +5566,17 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       const userId = parseInt(req.params.userId);
       const includeDemo = req.query.includeDemo === 'true';
-      
+
       const secondaryTalents = await db
         .select()
         .from(schema.userSkillsAndInstruments)
         .where(
-          includeDemo 
+          includeDemo
             ? eq(schema.userSkillsAndInstruments.userId, userId)
             : and(
-                eq(schema.userSkillsAndInstruments.userId, userId),
-                eq(schema.userSkillsAndInstruments.isDemo, true)
-              )
+              eq(schema.userSkillsAndInstruments.userId, userId),
+              eq(schema.userSkillsAndInstruments.isDemo, true)
+            )
         );
 
       res.json(secondaryTalents || []);
@@ -5599,7 +5815,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       const userId = parseInt(req.params.userId);
       const includeDemo = req.query.includeDemo === 'true';
-      
+
       // Get user basic info
       const [user] = await db
         .select({
@@ -5620,7 +5836,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       // Get artist/musician profile if applicable
       let artistProfile = null;
       let musicianProfile = null;
-      
+
       if (user.roleId === 3 || user.roleId === 4) { // artist or managed_artist
         [artistProfile] = await db
           .select()
@@ -5634,38 +5850,38 @@ export async function registerRoutes(app: Express): Promise<Server> {
       }
 
       // Get all requirements and talents
-      const whereCondition = includeDemo 
+      const whereCondition = includeDemo
         ? eq(schema.userTechnicalRequirements.userId, userId)
         : and(
-            eq(schema.userTechnicalRequirements.userId, userId),
-            eq(schema.userTechnicalRequirements.isDemo, true)
-          );
+          eq(schema.userTechnicalRequirements.userId, userId),
+          eq(schema.userTechnicalRequirements.isDemo, true)
+        );
 
       const [technicalRequirements, hospitalityRequirements, performanceSpecs, secondaryTalents] = await Promise.all([
         db.select().from(schema.userTechnicalRequirements).where(whereCondition),
         db.select().from(schema.userHospitalityRequirements).where(
-          includeDemo 
+          includeDemo
             ? eq(schema.userHospitalityRequirements.userId, userId)
             : and(
-                eq(schema.userHospitalityRequirements.userId, userId),
-                eq(schema.userHospitalityRequirements.isDemo, true)
-              )
+              eq(schema.userHospitalityRequirements.userId, userId),
+              eq(schema.userHospitalityRequirements.isDemo, true)
+            )
         ),
         db.select().from(schema.userPerformanceSpecs).where(
-          includeDemo 
+          includeDemo
             ? eq(schema.userPerformanceSpecs.userId, userId)
             : and(
-                eq(schema.userPerformanceSpecs.userId, userId),
-                eq(schema.userPerformanceSpecs.isDemo, true)
-              )
+              eq(schema.userPerformanceSpecs.userId, userId),
+              eq(schema.userPerformanceSpecs.isDemo, true)
+            )
         ),
         db.select().from(schema.userSkillsAndInstruments).where(
-          includeDemo 
+          includeDemo
             ? eq(schema.userSkillsAndInstruments.userId, userId)
             : and(
-                eq(schema.userSkillsAndInstruments.userId, userId),
-                eq(schema.userSkillsAndInstruments.isDemo, true)
-              )
+              eq(schema.userSkillsAndInstruments.userId, userId),
+              eq(schema.userSkillsAndInstruments.isDemo, true)
+            )
         )
       ]);
 
@@ -5797,7 +6013,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const bookingsCount = await storage.getBookingsCount();
       const totalRevenue = await storage.getTotalRevenue();
       const monthlyRevenue = await storage.getMonthlyRevenue();
-      
+
       res.json({
         totalUsers: usersCount,
         activeUsers: activeUsersCount,
@@ -5836,7 +6052,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       const bookingId = parseInt(req.params.bookingId);
       const { approved, comments } = req.body;
-      
+
       const updatedBooking = await storage.updateBooking(bookingId, {
         status: approved ? 'approved' : 'declined',
         adminComments: comments || null,
@@ -5848,8 +6064,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.status(404).json({ success: false, error: 'Booking not found' });
       }
 
-      res.json({ 
-        success: true, 
+      res.json({
+        success: true,
         data: updatedBooking,
         message: `Booking ${approved ? 'approved' : 'declined'} successfully`
       });
@@ -5865,7 +6081,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const contentType = req.params.contentType;
       const contentId = parseInt(req.params.contentId);
       const { approved, comments } = req.body;
-      
+
       // Update content approval status based on type
       let updatedContent;
       if (contentType === 'song') {
@@ -5888,8 +6104,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.status(404).json({ success: false, error: 'Content not found' });
       }
 
-      res.json({ 
-        success: true, 
+      res.json({
+        success: true,
         data: updatedContent,
         message: `${contentType} ${approved ? 'approved' : 'declined'} successfully`
       });
@@ -5920,7 +6136,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
           passwordStrengthCheck: true
         }
       };
-      
+
       res.json(config);
     } catch (error: any) {
       console.error('Error fetching system config:', error);
@@ -5932,7 +6148,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.put('/api/admin/system-config', authenticateToken, requireRole([1, 2]), async (req: Request, res: Response) => {
     try {
       const { platformSettings, emailSettings, securitySettings } = req.body;
-      
+
       // In a real implementation, this would update database settings
       const updatedConfig = {
         platformSettings: platformSettings || {},
@@ -5941,9 +6157,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
         updatedAt: new Date().toISOString(),
         updatedBy: req.user?.userId
       };
-      
-      res.json({ 
-        success: true, 
+
+      res.json({
+        success: true,
         data: updatedConfig,
         message: 'System configuration updated successfully'
       });
@@ -5957,16 +6173,16 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   // WebSocket server for live chat support
   const wss = new WebSocketServer({ server: httpServer, path: '/ws' });
-  
+
   const supportSessions = new Map();
-  
+
   wss.on('connection', (ws, req) => {
     console.log('New WebSocket connection established');
-    
+
     ws.on('message', (data) => {
       try {
         const message = JSON.parse(data.toString());
-        
+
         if (message.type === 'join_support') {
           // Register user for support
           const sessionId = `support_${message.userId}_${Date.now()}`;
@@ -5976,7 +6192,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
             userName: message.userName,
             joinedAt: new Date()
           });
-          
+
           // Send welcome message
           ws.send(JSON.stringify({
             type: 'support_message',
@@ -5986,7 +6202,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
             senderName: 'Support Team',
             timestamp: new Date().toISOString()
           }));
-          
+
         } else if (message.type === 'support_message') {
           // Broadcast message to support staff (simplified - in real app, you'd have proper routing)
           const responseMessage = {
@@ -5997,7 +6213,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
             senderName: 'Auto-Response',
             timestamp: new Date().toISOString()
           };
-          
+
           // In a real implementation, this would route to actual support staff
           setTimeout(() => {
             if (ws.readyState === WebSocket.OPEN) {
@@ -6005,12 +6221,12 @@ export async function registerRoutes(app: Express): Promise<Server> {
             }
           }, 2000);
         }
-        
+
       } catch (error) {
         console.error('WebSocket message error:', error);
       }
     });
-    
+
     ws.on('close', () => {
       // Clean up support sessions
       for (const [sessionId, session] of Array.from(supportSessions.entries())) {
@@ -6024,7 +6240,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // ==================== ROLE MANAGEMENT API ENDPOINTS ====================
-  
+
   // Get all available roles
   app.get('/api/admin/roles', authenticateToken, requireRole([1, 2]), async (req: Request, res: Response) => {
     try {
@@ -6040,7 +6256,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.post('/api/admin/roles', authenticateToken, requireRole([1, 2]), async (req: Request, res: Response) => {
     try {
       const { name, displayName, permissions, isCustom = true } = req.body;
-      
+
       if (!name || !displayName || !permissions) {
         return res.status(400).json({ success: false, error: 'Name, displayName, and permissions are required' });
       }
@@ -6074,7 +6290,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       const roleId = parseInt(req.params.roleId);
       const { displayName, permissions } = req.body;
-      
+
       if (!roleId || !displayName || !permissions) {
         return res.status(400).json({ success: false, error: 'Role ID, displayName, and permissions are required' });
       }
@@ -6100,7 +6316,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.delete('/api/admin/roles/:roleId', authenticateToken, requireRole([1, 2]), async (req: Request, res: Response) => {
     try {
       const roleId = parseInt(req.params.roleId);
-      
+
       if (!roleId) {
         return res.status(400).json({ success: false, error: 'Role ID is required' });
       }
@@ -6108,7 +6324,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       // Check if role is custom (prevent deletion of system roles)
       const roles = await storage.getRoles();
       const role = roles.find(r => r.id === roleId);
-      
+
       if (!role) {
         return res.status(404).json({ success: false, error: 'Role not found' });
       }
@@ -6120,17 +6336,17 @@ export async function registerRoutes(app: Express): Promise<Server> {
       // Check if any users are assigned to this role
       const users = await storage.getUsers();
       const usersWithRole = users.filter(user => user.roleId === roleId);
-      
+
       if (usersWithRole.length > 0) {
-        return res.status(409).json({ 
-          success: false, 
+        return res.status(409).json({
+          success: false,
           error: `Cannot delete role. ${usersWithRole.length} users are currently assigned to this role.`,
-          usersCount: usersWithRole.length 
+          usersCount: usersWithRole.length
         });
       }
 
       const success = await storage.deleteRole(roleId);
-      
+
       if (!success) {
         return res.status(404).json({ success: false, error: 'Role not found' });
       }
@@ -6146,7 +6362,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.get('/api/admin/roles/:roleId/users', authenticateToken, requireRole([1, 2]), async (req: Request, res: Response) => {
     try {
       const roleId = parseInt(req.params.roleId);
-      
+
       if (!roleId) {
         return res.status(400).json({ success: false, error: 'Role ID is required' });
       }
@@ -6164,7 +6380,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       const userId = parseInt(req.params.userId);
       const { roleId } = req.body;
-      
+
       if (!userId || !roleId) {
         return res.status(400).json({ success: false, error: 'User ID and Role ID are required' });
       }
@@ -6192,10 +6408,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.status(404).json({ success: false, error: 'Failed to update user role' });
       }
 
-      res.json({ 
-        success: true, 
+      res.json({
+        success: true,
         data: updatedUser,
-        message: `User role updated to ${role.displayName}` 
+        message: `User role updated to ${role.displayName}`
       });
     } catch (error: any) {
       console.error('Error assigning role to user:', error);
@@ -6207,7 +6423,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.post('/api/admin/users/bulk-role-assignment', authenticateToken, requireRole([1, 2]), async (req: Request, res: Response) => {
     try {
       const { userIds, roleId } = req.body;
-      
+
       if (!userIds || !Array.isArray(userIds) || !roleId) {
         return res.status(400).json({ success: false, error: 'User IDs array and Role ID are required' });
       }
@@ -6229,7 +6445,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
             roleId: roleId,
             updatedAt: new Date()
           });
-          
+
           if (updatedUser) {
             results.push({ userId, success: true, user: updatedUser });
             successCount++;
@@ -6243,8 +6459,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
         }
       }
 
-      res.json({ 
-        success: true, 
+      res.json({
+        success: true,
         data: results,
         summary: {
           total: userIds.length,
@@ -6264,7 +6480,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       const roles = await storage.getRoles();
       const users = await storage.getUsers();
-      
+
       const matrix = roles.map(role => {
         const usersWithRole = users.filter(user => user.roleId === role.id);
         return {
@@ -6292,7 +6508,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // ==================== ASSIGNMENT MANAGEMENT ROUTES ====================
-  
+
   // Admin Assignments
   app.get('/api/admin-assignments', authenticateToken, requireRole([1]), async (req: Request, res: Response) => {
     try {
@@ -6405,29 +6621,29 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // ==================== CONTRACT PREVIEW ENDPOINTS ====================
-  
+
   // Generate booking agreement preview
   app.post('/api/bookings/:id/booking-agreement-preview', authenticateToken, requireRole([1, 2]), async (req: Request, res: Response) => {
     try {
       const bookingId = parseInt(req.params.id);
       const { assignedTalent, contractConfig, counterOffer, booking: bookingOverride } = req.body;
-      
+
       const booking = await storage.getBooking(bookingId) || bookingOverride;
       if (!booking) {
         return res.status(404).json({ message: "Booking not found" });
       }
-      
+
       // Calculate total talent costs from individual pricing
       const totalTalentCost = assignedTalent.reduce((total: number, talent: any) => {
         return total + (talent.individualPrice || 0);
       }, 0);
-      
+
       // Generate professional booking agreement based on real document format
       const contractDate = new Date().toLocaleDateString();
       const eventDate = booking.eventDate ? new Date(booking.eventDate).toLocaleDateString() : 'TBD';
       const contractId = `WM-CO-${String(bookingId).padStart(5, '0')}`;
       const totalContractValue = contractConfig.proposedPrice || totalTalentCost;
-      
+
       const contractPreview = `
                                                    WAI'TUMUSIC
                               ${booking.eventName || 'Performance Engagement'}
@@ -6515,8 +6731,8 @@ Wai'tuMusic
 Date : ${contractDate}
 
 CATEGORY-BASED PRICING STRUCTURE:
-${contractConfig.categoryPricing ? Object.entries(contractConfig.categoryPricing).map(([category, price]: [string, any]) => 
-  `- ${category}: $${price} (default rate)`).join('\n') : 'Standard rates apply'}
+${contractConfig.categoryPricing ? Object.entries(contractConfig.categoryPricing).map(([category, price]: [string, any]) =>
+        `- ${category}: $${price} (default rate)`).join('\n') : 'Standard rates apply'}
 
 ADDITIONAL TERMS:
 ${contractConfig.additionalTerms || 'None specified'}
@@ -6529,7 +6745,7 @@ LEGAL NOTICES:
 
 This is a preview of the booking agreement. Final contract will include full legal terms and conditions.
       `;
-      
+
       res.set('Content-Type', 'text/plain');
       res.send(contractPreview.trim());
     } catch (error) {
@@ -6537,25 +6753,25 @@ This is a preview of the booking agreement. Final contract will include full leg
       res.status(500).json({ message: "Internal server error" });
     }
   });
-  
+
   // Generate performance contract preview with enhanced individual pricing
   app.post('/api/bookings/:id/performance-agreement-preview', authenticateToken, requireRole([1, 2]), async (req: Request, res: Response) => {
     try {
       const bookingId = parseInt(req.params.id);
       const { assignedTalent, contractConfig, booking: bookingOverride } = req.body;
-      
+
       const booking = await storage.getBooking(bookingId) || bookingOverride;
       if (!booking) {
         return res.status(404).json({ message: "Booking not found" });
       }
-      
+
       // Generate performance contracts for each assigned talent with individual pricing
       const performanceContracts = assignedTalent.map((talent: any) => {
         // Use individual pricing from enhanced configuration
         const compensation = talent.individualPrice || 0;
         const paymentTerms = talent.paymentTerms || contractConfig.paymentTerms;
         const cancellationPolicy = talent.cancellationPolicy || contractConfig.cancellationPolicy;
-        
+
         return `
 PERFORMANCE ENGAGEMENT CONTRACT - ${talent.name}
 ===============================================
@@ -6609,7 +6825,7 @@ LEGAL FRAMEWORK:
 This is a preview of the performance engagement contract. Final agreement will include complete legal terms, signature blocks, and detailed specifications.
         `;
       }).join('\n\n==========================================================\n\n');
-      
+
       res.set('Content-Type', 'text/plain');
       res.send(performanceContracts.trim());
     } catch (error) {
@@ -6619,32 +6835,32 @@ This is a preview of the performance engagement contract. Final agreement will i
   });
 
   // ==================== SETLIST MANAGEMENT ROUTES ====================
-  
+
   // Get setlist for a booking
   app.get('/api/bookings/:id/setlist', authenticateToken, async (req: Request, res: Response) => {
     try {
       const bookingId = parseInt(req.params.id);
       const userId = req.user?.userId;
-      
+
       if (!userId) {
         return res.status(401).json({ message: 'User not authenticated' });
       }
-      
+
       // Check booking access
       const booking = await storage.getBooking(bookingId);
       if (!booking) {
         return res.status(404).json({ message: "Booking not found" });
       }
-      
+
       // Access control - booking participants, assigned talent, or admin
       const user = await storage.getUser(userId);
       const isAdmin = user && [1, 2].includes(user.roleId);
       const isAssignedTalent = await storage.isUserAssignedToBooking(userId, bookingId);
-      
+
       if (!isAdmin && booking.bookerUserId !== userId && booking.primaryArtistUserId !== userId && !isAssignedTalent) {
         return res.status(403).json({ message: "Access denied" });
       }
-      
+
       const setlist = await storage.getBookingSetlist(bookingId);
       res.json({ setlist: setlist || [] });
     } catch (error) {
@@ -6652,33 +6868,33 @@ This is a preview of the performance engagement contract. Final agreement will i
       res.status(500).json({ message: "Internal server error" });
     }
   });
-  
+
   // Save/update setlist for a booking
   app.post('/api/bookings/:id/setlist', authenticateToken, async (req: Request, res: Response) => {
     try {
       const bookingId = parseInt(req.params.id);
       const userId = req.user?.userId;
       const { setlist } = req.body;
-      
+
       if (!userId) {
         return res.status(401).json({ message: 'User not authenticated' });
       }
-      
+
       // Check booking access
       const booking = await storage.getBooking(bookingId);
       if (!booking) {
         return res.status(404).json({ message: "Booking not found" });
       }
-      
+
       // Access control - booking participants, assigned talent, or admin
       const user = await storage.getUser(userId);
       const isAdmin = user && [1, 2].includes(user.roleId);
       const isAssignedTalent = await storage.isUserAssignedToBooking(userId, bookingId);
-      
+
       if (!isAdmin && booking.bookerUserId !== userId && booking.primaryArtistUserId !== userId && !isAssignedTalent) {
         return res.status(403).json({ message: "Access denied" });
       }
-      
+
       const savedSetlist = await storage.saveBookingSetlist(bookingId, setlist, userId);
       res.json({ success: true, setlist: savedSetlist });
     } catch (error) {
@@ -6686,15 +6902,15 @@ This is a preview of the performance engagement contract. Final agreement will i
       res.status(500).json({ message: "Internal server error" });
     }
   });
-  
+
   // Generate chord charts for a song
   app.post('/api/generate-chords', authenticateToken, async (req: Request, res: Response) => {
     try {
       const { songTitle, artist, instrument, youtubeId, isrcCode, key, tempo } = req.body;
-      
+
       // Basic chord generation logic (can be enhanced with AI/ML)
       const chordProgression = generateChordProgression(songTitle, artist, instrument, key);
-      
+
       res.json({
         chords: chordProgression.chords,
         progression: chordProgression.progression,
@@ -6707,56 +6923,56 @@ This is a preview of the performance engagement contract. Final agreement will i
       res.status(500).json({ message: "Internal server error" });
     }
   });
-  
+
   // YouTube video info and download
   app.post('/api/youtube/video-info', authenticateToken, async (req: Request, res: Response) => {
     try {
       const { youtubeId } = req.body;
-      
+
       if (!youtubeId) {
         return res.status(400).json({ message: "YouTube ID required" });
       }
-      
+
       // Simulate YouTube API call (replace with actual YouTube Data API integration)
       const videoInfo = await getYouTubeVideoInfo(youtubeId);
-      
+
       res.json(videoInfo);
     } catch (error) {
       console.error('YouTube video info error:', error);
       res.status(500).json({ message: "Failed to fetch video information" });
     }
   });
-  
+
   // Download YouTube video for future use
   app.post('/api/youtube/download', authenticateToken, async (req: Request, res: Response) => {
     try {
       const { youtubeId, bookingId } = req.body;
       const userId = req.user?.userId;
-      
+
       if (!youtubeId || !bookingId) {
         return res.status(400).json({ message: "YouTube ID and booking ID required" });
       }
-      
+
       // Check booking access
       const booking = await storage.getBooking(bookingId);
       if (!booking) {
         return res.status(404).json({ message: "Booking not found" });
       }
-      
+
       // Access control
       const user = await storage.getUser(userId!);
       const isAdmin = user && [1, 2].includes(user.roleId);
       const isAssignedTalent = await storage.isUserAssignedToBooking(userId!, bookingId);
-      
+
       if (!isAdmin && booking.bookerUserId !== userId && booking.primaryArtistUserId !== userId && !isAssignedTalent) {
         return res.status(403).json({ message: "Access denied" });
       }
-      
+
       // Download video (implement with youtube-dl or similar)
       const downloadResult = await downloadYouTubeVideo(youtubeId, bookingId);
-      
-      res.json({ 
-        success: true, 
+
+      res.json({
+        success: true,
         audioUrl: downloadResult.audioUrl,
         videoUrl: downloadResult.videoUrl,
         storagePath: downloadResult.storagePath
@@ -6766,26 +6982,26 @@ This is a preview of the performance engagement contract. Final agreement will i
       res.status(500).json({ message: "Failed to download video" });
     }
   });
-  
+
   // Spleeter track separation for DJs
   app.post('/api/spleeter/separate', authenticateToken, async (req: Request, res: Response) => {
     try {
       const { songId, audioUrl, youtubeId } = req.body;
       const userId = req.user?.userId;
-      
+
       // Check if user is DJ or admin
       const user = await storage.getUser(userId!);
       const userRole = user?.roleId;
       const isDJ = user?.role?.roleName === 'dj' || user?.role?.roleName === 'professional';
       const isAdmin = userRole && [1, 2].includes(userRole);
-      
+
       if (!isDJ && !isAdmin) {
         return res.status(403).json({ message: "Track separation is only available for DJs and admins" });
       }
-      
+
       // Perform track separation using Spleeter
       const separationResult = await performSpleeterSeparation(songId, audioUrl, youtubeId);
-      
+
       res.json({
         success: true,
         separatedTracks: separationResult.tracks
@@ -6797,31 +7013,31 @@ This is a preview of the performance engagement contract. Final agreement will i
   });
 
   // ==================== BOOKING MEDIA MANAGEMENT ROUTES ====================
-  
+
   // Get all booking media files for a booking
   app.get('/api/bookings/:id/media', authenticateToken, async (req: Request, res: Response) => {
     try {
       const bookingId = parseInt(req.params.id);
       const userId = req.user?.userId;
-      
+
       if (!userId) {
         return res.status(401).json({ message: 'User not authenticated' });
       }
-      
+
       // Check if user has access to this booking
       const booking = await storage.getBooking(bookingId);
       if (!booking) {
         return res.status(404).json({ message: "Booking not found" });
       }
-      
+
       // Check access permissions - booking owner, assigned user, or admin
       const user = await storage.getUser(userId);
       const isAdmin = user && [1, 2].includes(user.roleId);
-      
+
       if (!isAdmin && booking.bookerUserId !== userId && booking.artistUserId !== userId) {
         return res.status(403).json({ message: "Insufficient permissions" });
       }
-      
+
       const mediaFiles = await storage.getBookingMediaFiles(bookingId);
       res.json(mediaFiles);
     } catch (error) {
@@ -6829,28 +7045,28 @@ This is a preview of the performance engagement contract. Final agreement will i
       res.status(500).json({ message: "Internal server error" });
     }
   });
-  
+
   // Upload media file to booking
   app.post('/api/bookings/:id/media', authenticateToken, requireRole([1, 2]), async (req: Request, res: Response) => {
     try {
       const bookingId = parseInt(req.params.id);
       const userId = req.user?.userId;
-      
+
       if (!userId) {
         return res.status(401).json({ message: 'User not authenticated' });
       }
-      
+
       const booking = await storage.getBooking(bookingId);
       if (!booking) {
         return res.status(404).json({ message: "Booking not found" });
       }
-      
+
       const mediaFileData = {
         ...req.body,
         bookingId,
         uploadedByUserId: userId
       };
-      
+
       const mediaFile = await storage.createBookingMediaFile(mediaFileData);
       res.status(201).json(mediaFile);
     } catch (error) {
@@ -6858,56 +7074,56 @@ This is a preview of the performance engagement contract. Final agreement will i
       res.status(500).json({ message: "Internal server error" });
     }
   });
-  
+
   // Get specific media file
   app.get('/api/booking-media/:id', authenticateToken, async (req: Request, res: Response) => {
     try {
       const mediaFileId = parseInt(req.params.id);
       const userId = req.user?.userId;
-      
+
       if (!userId) {
         return res.status(401).json({ message: 'User not authenticated' });
       }
-      
+
       const mediaFile = await storage.getBookingMediaFile(mediaFileId);
       if (!mediaFile) {
         return res.status(404).json({ message: "Media file not found" });
       }
-      
+
       // Check user access to this media file
       const hasAccess = await storage.checkUserMediaAccess(userId, mediaFileId, 'view');
       const user = await storage.getUser(userId);
       const isAdmin = user && [1, 2].includes(user.roleId);
-      
+
       if (!hasAccess && !isAdmin && mediaFile.uploadedByUserId !== userId) {
         return res.status(403).json({ message: "Insufficient permissions" });
       }
-      
+
       res.json(mediaFile);
     } catch (error) {
       console.error('Get booking media file error:', error);
       res.status(500).json({ message: "Internal server error" });
     }
   });
-  
+
   // Update media file
   app.put('/api/booking-media/:id', authenticateToken, requireRole([1, 2]), async (req: Request, res: Response) => {
     try {
       const mediaFileId = parseInt(req.params.id);
       const updates = req.body;
-      
+
       const mediaFile = await storage.updateBookingMediaFile(mediaFileId, updates);
       if (!mediaFile) {
         return res.status(404).json({ message: "Media file not found" });
       }
-      
+
       res.json(mediaFile);
     } catch (error) {
       console.error('Update booking media file error:', error);
       res.status(500).json({ message: "Internal server error" });
     }
   });
-  
+
   // Delete media file
   app.delete('/api/booking-media/:id', authenticateToken, requireRole([1, 2]), async (req: Request, res: Response) => {
     try {
@@ -6919,23 +7135,23 @@ This is a preview of the performance engagement contract. Final agreement will i
       res.status(500).json({ message: "Internal server error" });
     }
   });
-  
+
   // Grant media access to user
   app.post('/api/booking-media/:id/access', authenticateToken, requireRole([1, 2]), async (req: Request, res: Response) => {
     try {
       const mediaFileId = parseInt(req.params.id);
       const userId = req.user?.userId;
-      
+
       if (!userId) {
         return res.status(401).json({ message: 'User not authenticated' });
       }
-      
+
       const accessData = {
         ...req.body,
         mediaFileId,
         grantedByUserId: userId
       };
-      
+
       const access = await storage.createBookingMediaAccess(accessData);
       res.status(201).json(access);
     } catch (error) {
@@ -6943,7 +7159,7 @@ This is a preview of the performance engagement contract. Final agreement will i
       res.status(500).json({ message: "Internal server error" });
     }
   });
-  
+
   // Get media access list for a file
   app.get('/api/booking-media/:id/access', authenticateToken, requireRole([1, 2]), async (req: Request, res: Response) => {
     try {
@@ -6955,7 +7171,7 @@ This is a preview of the performance engagement contract. Final agreement will i
       res.status(500).json({ message: "Internal server error" });
     }
   });
-  
+
   // Remove media access
   app.delete('/api/booking-media-access/:id', authenticateToken, requireRole([1, 2]), async (req: Request, res: Response) => {
     try {
@@ -6967,7 +7183,7 @@ This is a preview of the performance engagement contract. Final agreement will i
       res.status(500).json({ message: "Internal server error" });
     }
   });
-  
+
   // Get media categories
   app.get('/api/booking-media-categories', authenticateToken, async (req: Request, res: Response) => {
     try {
@@ -6978,7 +7194,7 @@ This is a preview of the performance engagement contract. Final agreement will i
       res.status(500).json({ message: "Internal server error" });
     }
   });
-  
+
   // Create media category
   app.post('/api/booking-media-categories', authenticateToken, requireRole([1]), async (req: Request, res: Response) => {
     try {
@@ -6992,7 +7208,7 @@ This is a preview of the performance engagement contract. Final agreement will i
   });
 
   // ==================== AI CAREER RECOMMENDATIONS ROUTES ====================
-  
+
   // Get all managed users' recommendations (superadmin only)
   app.get('/api/recommendations/all-managed', authenticateToken, async (req: Request, res: Response) => {
     try {
@@ -7000,19 +7216,19 @@ This is a preview of the performance engagement contract. Final agreement will i
       const currentUser = await storage.getUser(currentUserId || 0);
       const roles = await storage.getRoles();
       const currentUserRole = roles.find(role => role.id === currentUser?.roleId);
-      
+
       // Only superadmins can view all managed users' recommendations
       if (currentUser?.roleId !== 1) {
         return res.status(403).json({ message: "Insufficient permissions" });
       }
-      
+
       const allUsers = await storage.getUsers();
       const managedUsersData = [];
-      
+
       for (const user of allUsers) {
         const userRole = roles.find(role => role.id === user.roleId);
         let isManaged = false;
-        
+
         if ([3, 5, 7].includes(user.roleId)) { // Star Talent, Studio Pro, Industry Expert are managed
           isManaged = true;
         } else if ([4].includes(user.roleId)) { // Rising Artist
@@ -7025,14 +7241,14 @@ This is a preview of the performance engagement contract. Final agreement will i
           const professional = await storage.getProfessional(user.id);
           isManaged = professional?.isManaged || false;
         }
-        
+
         if (isManaged) {
           try {
             const [recommendations, insights] = await Promise.all([
               advancedRecommendationEngine.generateCareerRecommendations(user.id),
               advancedRecommendationEngine.generateCareerInsights(user.id)
             ]);
-            
+
             managedUsersData.push({
               user: {
                 id: user.id,
@@ -7049,7 +7265,7 @@ This is a preview of the performance engagement contract. Final agreement will i
           }
         }
       }
-      
+
       res.json({
         managedUsers: managedUsersData,
         totalManagedUsers: managedUsersData.length,
@@ -7060,24 +7276,24 @@ This is a preview of the performance engagement contract. Final agreement will i
       res.status(500).json({ message: 'Failed to fetch managed users recommendations' });
     }
   });
-  
+
   // Get user's career recommendations
   app.get('/api/recommendations/career/:userId', authenticateToken, async (req: Request, res: Response) => {
     try {
       const userId = parseInt(req.params.userId);
       const currentUserId = req.user?.userId;
-      
+
       // Check if target user is managed and current user has access
       const targetUser = await storage.getUser(userId);
       if (!targetUser) {
         return res.status(404).json({ message: "User not found" });
       }
-      
+
       const currentUser = await storage.getUser(currentUserId || 0);
       const roles = await storage.getRoles();
       const currentUserRole = roles.find(role => role.id === currentUser?.roleId);
       const targetUserRole = roles.find(role => role.id === targetUser.roleId);
-      
+
       // Check if target user is managed
       let isTargetManaged = false;
       if ([3, 5, 7].includes(targetUser.roleId)) { // Star Talent, Studio Pro, Industry Expert are managed
@@ -7092,19 +7308,19 @@ This is a preview of the performance engagement contract. Final agreement will i
         const professional = await storage.getProfessional(userId);
         isTargetManaged = professional?.isManaged || false;
       }
-      
+
       // Advanced features only available to managed users, their admins, and superadmin
       if (!isTargetManaged && currentUser?.roleId !== 1) {
         return res.status(403).json({ message: "Advanced insights only available for managed users" });
       }
-      
+
       // Users can only view their own recommendations unless they're admin/superadmin
       if (currentUserId !== userId) {
         if (!currentUser || ![1, 2].includes(currentUser.roleId)) {
           return res.status(403).json({ message: "Insufficient permissions" });
         }
       }
-      
+
       const recommendations = await advancedRecommendationEngine.generateCareerRecommendations(userId);
       res.json(recommendations);
     } catch (error) {
@@ -7118,15 +7334,15 @@ This is a preview of the performance engagement contract. Final agreement will i
     try {
       const userId = parseInt(req.params.userId);
       const currentUserId = req.user?.userId;
-      
+
       // Check if target user is managed and current user has access
       const targetUser = await storage.getUser(userId);
       if (!targetUser) {
         return res.status(404).json({ message: "User not found" });
       }
-      
+
       const currentUser = await storage.getUser(currentUserId || 0);
-      
+
       // Check if target user is managed
       let isTargetManaged = false;
       if ([3, 5, 7].includes(targetUser.roleId)) { // Star Talent, Studio Pro, Industry Expert are managed
@@ -7141,19 +7357,19 @@ This is a preview of the performance engagement contract. Final agreement will i
         const professional = await storage.getProfessional(userId);
         isTargetManaged = professional?.isManaged || false;
       }
-      
+
       // Advanced features only available to managed users, their admins, and superadmin
       if (!isTargetManaged && currentUser?.roleId !== 1) {
         return res.status(403).json({ message: "Advanced insights only available for managed users" });
       }
-      
+
       // Users can only view their own insights unless they're admin/superadmin
       if (currentUserId !== userId) {
         if (!currentUser || ![1, 2].includes(currentUser.roleId)) {
           return res.status(403).json({ message: "Insufficient permissions" });
         }
       }
-      
+
       const insights = await advancedRecommendationEngine.generateCareerInsights(userId);
       res.json(insights);
     } catch (error) {
@@ -7167,15 +7383,15 @@ This is a preview of the performance engagement contract. Final agreement will i
     try {
       const userId = parseInt(req.params.userId);
       const currentUserId = req.user?.userId;
-      
+
       // Check if target user is managed and current user has access
       const targetUser = await storage.getUser(userId);
       if (!targetUser) {
         return res.status(404).json({ message: "User not found" });
       }
-      
+
       const currentUser = await storage.getUser(currentUserId || 0);
-      
+
       // Check if target user is managed
       let isTargetManaged = false;
       if ([3, 5, 7].includes(targetUser.roleId)) { // Star Talent, Studio Pro, Industry Expert are managed
@@ -7190,27 +7406,27 @@ This is a preview of the performance engagement contract. Final agreement will i
         const professional = await storage.getProfessional(userId);
         isTargetManaged = professional?.isManaged || false;
       }
-      
+
       // Advanced features only available to managed users, their admins, and superadmin
       if (!isTargetManaged && currentUser?.roleId !== 1) {
         return res.status(403).json({ message: "Advanced insights only available for managed users" });
       }
-      
+
       // Users can only refresh their own recommendations unless they're admin/superadmin
       if (currentUserId !== userId) {
         if (!currentUser || ![1, 2].includes(currentUser.roleId)) {
           return res.status(403).json({ message: "Insufficient permissions" });
         }
       }
-      
+
       // Generate fresh recommendations and insights
       const [recommendations, insights] = await Promise.all([
         advancedRecommendationEngine.generateCareerRecommendations(userId),
         advancedRecommendationEngine.generateCareerInsights(userId)
       ]);
-      
-      res.json({ 
-        success: true, 
+
+      res.json({
+        success: true,
         message: 'Recommendations refreshed successfully',
         recommendations,
         insights
@@ -7226,7 +7442,7 @@ This is a preview of the performance engagement contract. Final agreement will i
     try {
       const { advancedEngine } = await import('./ai-recommendations');
       const userId = req.user!.userId;
-      
+
       const recommendations = await advancedEngine.generateRecommendations(userId);
       res.json(recommendations);
     } catch (error) {
@@ -7236,7 +7452,7 @@ This is a preview of the performance engagement contract. Final agreement will i
   });
 
   // Helper functions for artist-specific data with profile auto-population
-  function getArtistBandMembers(artistStageName: string, technicalRiderProfile?: any): Array<{membership: string; role: string; name: string}> {
+  function getArtistBandMembers(artistStageName: string, technicalRiderProfile?: any): Array<{ membership: string; role: string; name: string }> {
     // First try to use profile data, fallback to defaults
     if (technicalRiderProfile?.bandMembers?.length > 0) {
       return technicalRiderProfile.bandMembers.map((member: any) => ({
@@ -7245,7 +7461,7 @@ This is a preview of the performance engagement contract. Final agreement will i
         name: member.name + (member.instruments ? ` (${member.instruments.join(', ')})` : '')
       }));
     }
-    
+
     // Default band configurations per artist
     switch (artistStageName) {
       case 'Lí-Lí Octave':
@@ -7291,11 +7507,11 @@ This is a preview of the performance engagement contract. Final agreement will i
   function getArtistHospitalityRequirements(artistStageName: string, technicalRiderProfile?: any): string[] {
     // First try to use profile data, fallback to defaults
     if (technicalRiderProfile?.hospitalityRequirements?.length > 0) {
-      return technicalRiderProfile.hospitalityRequirements.map((req: any) => 
+      return technicalRiderProfile.hospitalityRequirements.map((req: any) =>
         req.specifications ? `${req.item} (${req.specifications})` : req.item
       );
     }
-    
+
     // Default hospitality requirements per artist
     switch (artistStageName) {
       case 'Lí-Lí Octave':
@@ -7341,13 +7557,13 @@ This is a preview of the performance engagement contract. Final agreement will i
   }
 
   // ==================== BOOKING WORKFLOW ROUTES ====================
-  
+
   // Generate Booking Agreement PDF
   app.get("/api/bookings/:id/booking-agreement", authenticateToken, async (req: Request, res: Response) => {
     try {
       const bookingId = parseInt(req.params.id);
       const booking = await storage.getBooking(bookingId);
-      
+
       if (!booking) {
         return res.status(404).json({ message: "Booking not found" });
       }
@@ -7373,7 +7589,7 @@ This is a preview of the performance engagement contract. Final agreement will i
       // Determine performance configuration based on booking details
       let bandConfiguration = 'solo';
       let performanceRate = '$750';
-      
+
       const bookingAmount = booking.finalPrice || booking.totalBudget || 0;
       if (bookingAmount >= 4500 && bookingAmount < 5500) {
         bandConfiguration = '4_piece';
@@ -7385,10 +7601,10 @@ This is a preview of the performance engagement contract. Final agreement will i
 
       // Prepare booking agreement data with dynamic artist information
       const bookingAgreementData = {
-        contractDate: new Date().toLocaleDateString('en-US', { 
-          year: 'numeric', 
-          month: 'long', 
-          day: 'numeric' 
+        contractDate: new Date().toLocaleDateString('en-US', {
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric'
         }),
         contractEndDate: booking.eventDate,
         clientCompanyName: booker?.fullName || booking.guestName || 'Event Client',
@@ -7405,42 +7621,42 @@ This is a preview of the performance engagement contract. Final agreement will i
         performanceDuration: '60 minutes',
         pricingTableTotal: `$${bookingAmount}`,
         pricingTable: `Total Budget: $${bookingAmount}`,
-        
+
         // Performance details
         performanceFormat: 'in_person',
         soundSystemProvided: false,
         lightingProvided: false,
         bandConfiguration: bandConfiguration as 'solo' | '4_piece' | 'full_band',
-        
+
         // Administrative requirements based on artist location and booking details
         travelRequired: primaryStageName === 'Lí-Lí Octave' ? true : false, // Lí-Lí is based in Dominica
         accommodationRequired: primaryStageName === 'Lí-Lí Octave' ? true : false,
-        
+
         // Hospitality requirements specific to each artist - auto-populated from profile
         hospitalityRequirements: getArtistHospitalityRequirements(primaryStageName, artistProfile?.technicalRiderProfile),
-        
+
         // Client details
         clientContactName: booker?.fullName || booking.guestName || 'Event Contact',
         clientContactEmail: booker?.email || booking.guestEmail || 'client@example.com',
         clientContactPhone: booking.guestPhone,
-        
+
         // Additional notes
         additionalNotes: `This booking agreement is specifically prepared for ${primaryStageName} and includes artist-specific requirements and performance specifications.`
       };
 
       // Generate PDF using booking agreement template
       const doc = generateBookingAgreement(bookingAgreementData);
-      
+
       // Set response headers for PDF download
       const eventDateStr = booking.eventDate ? new Date(booking.eventDate).toISOString().split('T')[0] : 'TBD';
       const filename = `Booking_Agreement_${primaryStageName.replace(/\s+/g, '_')}_${eventDateStr}.pdf`;
       res.setHeader('Content-Type', 'application/pdf');
       res.setHeader('Content-Disposition', `attachment; filename="${filename}"`);
-      
+
       // Pipe the PDF to the response
       doc.pipe(res);
       doc.end();
-      
+
     } catch (error) {
       console.error('Booking agreement generation error:', error);
       res.status(500).json({ message: 'Failed to generate booking agreement' });
@@ -7452,7 +7668,7 @@ This is a preview of the performance engagement contract. Final agreement will i
     try {
       const bookingId = parseInt(req.params.id);
       const booking = await storage.getBooking(bookingId);
-      
+
       if (!booking) {
         return res.status(404).json({ message: "Booking not found" });
       }
@@ -7471,7 +7687,7 @@ This is a preview of the performance engagement contract. Final agreement will i
       const artistProfile = await storage.getArtist(primaryArtist.id);
       const stageNames2 = artistProfile?.stageNames as string[] || [];
       const primaryStageName2 = stageNames2.length > 0 ? stageNames2[0] : primaryArtist.fullName;
-      
+
       // Get technical rider profile data for auto-population
       const technicalRiderProfile = artistProfile?.technicalRiderProfile;
 
@@ -7480,10 +7696,10 @@ This is a preview of the performance engagement contract. Final agreement will i
 
       // Prepare technical rider data with dynamic artist-specific information
       const technicalRiderData = {
-        contractDate: new Date().toLocaleDateString('en-US', { 
-          year: 'numeric', 
-          month: 'long', 
-          day: 'numeric' 
+        contractDate: new Date().toLocaleDateString('en-US', {
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric'
         }),
         clientCompanyName: booker?.fullName || booking.guestName || 'Event Client',
         companyName: 'Wai\'tuMusic',
@@ -7507,17 +7723,17 @@ This is a preview of the performance engagement contract. Final agreement will i
 
       // Generate PDF using technical rider template
       const doc = generateTechnicalRider(technicalRiderData);
-      
+
       // Set response headers for PDF download
       const eventDateStr = booking.eventDate ? new Date(booking.eventDate).toISOString().split('T')[0] : 'TBD';
       const filename = `Technical_Rider_${primaryStageName2.replace(/\s+/g, '_')}_${eventDateStr}.pdf`;
       res.setHeader('Content-Type', 'application/pdf');
       res.setHeader('Content-Disposition', `attachment; filename="${filename}"`);
-      
+
       // Pipe the PDF to the response
       doc.pipe(res);
       doc.end();
-      
+
     } catch (error) {
       console.error('Technical rider generation error:', error);
       res.status(500).json({ message: 'Failed to generate technical rider' });
@@ -7528,14 +7744,14 @@ This is a preview of the performance engagement contract. Final agreement will i
   app.post("/api/bookings/:id/complete-technical-rider", authenticateToken, async (req: Request, res: Response) => {
     try {
       const bookingId = parseInt(req.params.id);
-      
+
       // Check for valid booking ID
       if (isNaN(bookingId) || bookingId <= 0) {
         return res.status(400).json({ message: "Invalid booking ID" });
       }
-      
+
       const booking = await storage.getBooking(bookingId);
-      
+
       if (!booking) {
         return res.status(404).json({ message: "Booking not found" });
       }
@@ -7554,7 +7770,7 @@ This is a preview of the performance engagement contract. Final agreement will i
       const artistProfile = await storage.getArtist(primaryArtist.id);
       const stageNames = artistProfile?.stageNames as string[] || [];
       const stageName = stageNames.length > 0 ? stageNames[0] : primaryArtist.fullName;
-      
+
       // Get technical rider profile data for auto-population
       const technicalRiderProfile = artistProfile?.technicalRiderProfile;
 
@@ -7563,10 +7779,10 @@ This is a preview of the performance engagement contract. Final agreement will i
 
       // Prepare technical rider data with dynamic artist-specific information
       const technicalRiderData = {
-        contractDate: new Date().toLocaleDateString('en-US', { 
-          year: 'numeric', 
-          month: 'long', 
-          day: 'numeric' 
+        contractDate: new Date().toLocaleDateString('en-US', {
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric'
         }),
         clientCompanyName: booker?.fullName || booking.guestName || 'Event Client',
         companyName: 'Wai\'tuMusic',
@@ -7590,17 +7806,17 @@ This is a preview of the performance engagement contract. Final agreement will i
 
       // Generate PDF using technical rider template
       const doc = generateTechnicalRider(technicalRiderData);
-      
+
       // Set response headers for PDF download
       const eventDateStr = booking.eventDate ? new Date(booking.eventDate).toISOString().split('T')[0] : 'Unknown_Date';
       const filename = `Complete_Technical_Rider_${stageName.replace(/\s+/g, '_')}_${eventDateStr}.pdf`;
       res.setHeader('Content-Type', 'application/pdf');
       res.setHeader('Content-Disposition', `attachment; filename="${filename}"`);
-      
+
       // Pipe the PDF to the response
       doc.pipe(res);
       doc.end();
-      
+
     } catch (error) {
       console.error('Complete technical rider generation error:', error);
       res.status(500).json({ message: 'Failed to generate complete technical rider' });
@@ -7612,7 +7828,7 @@ This is a preview of the performance engagement contract. Final agreement will i
     try {
       const bookingId = parseInt(req.params.id);
       const performerUserId = parseInt(req.params.userId);
-      
+
       const booking = await storage.getBooking(bookingId);
       if (!booking) {
         return res.status(404).json({ message: "Booking not found" });
@@ -7667,22 +7883,22 @@ This is a preview of the performance engagement contract. Final agreement will i
 
       // Prepare performance engagement contract data
       const contractData = {
-        contractDate: new Date().toLocaleDateString('en-US', { 
-          year: 'numeric', 
-          month: 'long', 
-          day: 'numeric' 
+        contractDate: new Date().toLocaleDateString('en-US', {
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric'
         }),
-        contractEndDate: new Date(booking.eventDate!).toLocaleDateString('en-US', { 
-          year: 'numeric', 
-          month: 'long', 
-          day: 'numeric' 
+        contractEndDate: new Date(booking.eventDate!).toLocaleDateString('en-US', {
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric'
         }),
-        
+
         // Company information
         companyName: 'Wai\'tuMusic',
         companyAddress: '31 Bath Estate, Roseau, Dominica',
         companyRegistration: 'Commonwealth of Dominica',
-        
+
         // Client/Event information
         clientCompanyName: booker?.fullName || booking.guestName || 'Event Client',
         eventName: booking.eventName || booking.eventType || 'Performance Event',
@@ -7690,21 +7906,21 @@ This is a preview of the performance engagement contract. Final agreement will i
         eventTime: '7:00 PM - 8:00 PM', // Default time
         eventLocation: booking.venueAddress || 'Event Location',
         venueName: booking.venueName || 'Venue TBD',
-        
+
         // Performer information
         performerName: performer.fullName,
         performerRole: performerRole,
         performerType: performer.roleId <= 4 ? 'Artist' : performer.roleId <= 6 ? 'Musician' : 'Professional',
         isManaged: isManaged,
-        
+
         // Compensation
         contractValue: `$${performerCompensation}`,
         paymentMethod: 'Bank Transfer',
-        
+
         // Performance details
         collectiveName: primaryArtist?.fullName ? `${primaryArtist.fullName} Performance` : undefined,
         headlinerName: primaryArtist?.fullName,
-        
+
         // Additional terms based on performer profile and booking requirements
         rehearsalRequired: isManaged || (performer.roleId <= 6), // Artists and musicians need rehearsal
         soundcheckHours: 3,
@@ -7714,9 +7930,9 @@ This is a preview of the performance engagement contract. Final agreement will i
         accommodationRequired: booking.venueAddress?.includes('Dominica') ? false : true,
         equipmentProvided: true,
         insuranceRequired: performer.roleId <= 6, // Artists and musicians
-        
+
         // Technical specifications from profile
-        technicalRequirements: performerProfile?.technicalRiderProfile?.setupRequirements ? 
+        technicalRequirements: performerProfile?.technicalRiderProfile?.setupRequirements ?
           JSON.stringify(performerProfile.technicalRiderProfile.setupRequirements) : undefined,
         equipmentDetails: performerProfile?.instruments?.join(', ') || undefined
       };
@@ -7728,10 +7944,10 @@ This is a preview of the performance engagement contract. Final agreement will i
       const filename = `Performance_Engagement_${performer.fullName.replace(/\s+/g, '_')}_${booking.eventName?.replace(/\s+/g, '_')}.pdf`;
       res.setHeader('Content-Type', 'application/pdf');
       res.setHeader('Content-Disposition', `attachment; filename="${filename}"`);
-      
+
       // Send the PDF
       res.send(pdfBuffer);
-      
+
     } catch (error) {
       console.error('Performance engagement contract generation error:', error);
       res.status(500).json({ message: 'Failed to generate performance engagement contract' });
@@ -7743,7 +7959,7 @@ This is a preview of the performance engagement contract. Final agreement will i
     try {
       const bookingId = parseInt(req.params.id);
       const booking = await storage.getBooking(bookingId);
-      
+
       if (!booking) {
         return res.status(404).json({ message: "Booking not found" });
       }
@@ -7784,7 +8000,7 @@ This is a preview of the performance engagement contract. Final agreement will i
       // Payment Details
       doc.fontSize(14).text('PAYMENT DETAILS', 50, 320);
       let yPos = 340;
-      
+
       if (payments && payments.length > 0) {
         payments.forEach((payment: any, index: number) => {
           doc.fontSize(10)
@@ -7825,7 +8041,7 @@ This is a preview of the performance engagement contract. Final agreement will i
     try {
       const bookingId = parseInt(req.params.id);
       const booking = await storage.getBooking(bookingId);
-      
+
       if (!booking) {
         return res.status(404).json({ message: "Booking not found" });
       }
@@ -7862,13 +8078,13 @@ This is a preview of the performance engagement contract. Final agreement will i
       res.status(500).json({ message: "Internal server error" });
     }
   });
-  
+
   // Get booking workflow data
   app.get("/api/bookings/:id/workflow", authenticateToken, async (req: Request, res: Response) => {
     try {
       const bookingId = parseInt(req.params.id);
       const booking = await storage.getBooking(bookingId);
-      
+
       if (!booking) {
         return res.status(404).json({ message: "Booking not found" });
       }
@@ -7887,14 +8103,14 @@ This is a preview of the performance engagement contract. Final agreement will i
         assignedMusicianIds.map(async (assignment: any) => {
           const user = await storage.getUser(assignment.assigned_user_id || assignment.assignedUserId);
           if (!user) return null;
-          
+
           // Get musician profile data
           const musicianProfile = await storage.getMusician(user.id);
           const artistProfile = await storage.getArtist(user.id);
           const professionalProfile = await storage.getProfessional(user.id);
-          
+
           const profile = musicianProfile || artistProfile || professionalProfile;
-          
+
           return {
             id: user.id,
             userId: user.id,
@@ -7918,7 +8134,7 @@ This is a preview of the performance engagement contract. Final agreement will i
       let enhancedPrimaryArtist = primaryArtist;
       if (primaryArtist) {
         const artistDetails = await storage.getArtist(primaryArtist.id);
-        
+
         // Determine userType based on roleId - fetch from database
         const userType = await storage.getRoleName(primaryArtist.roleId);
 
@@ -7952,11 +8168,11 @@ This is a preview of the performance engagement contract. Final agreement will i
     res.set('Cache-Control', 'no-cache, no-store, must-revalidate');
     res.set('Pragma', 'no-cache');
     res.set('Expires', '0');
-    
+
     try {
       const bookingId = parseInt(req.params.id);
       const booking = await storage.getBooking(bookingId);
-      
+
       if (!booking) {
         return res.status(404).json({ message: "Booking not found" });
       }
@@ -8022,7 +8238,7 @@ This is a preview of the performance engagement contract. Final agreement will i
     try {
       const bookingId = parseInt(req.params.id);
       const { workflowData } = req.body;
-      
+
       const booking = await storage.getBooking(bookingId);
       if (!booking) {
         return res.status(404).json({ message: "Booking not found" });
@@ -8053,7 +8269,7 @@ This is a preview of the performance engagement contract. Final agreement will i
       if (!errorLearning) {
         return res.status(503).json({ message: "Error learning system not initialized" });
       }
-      
+
       const healthReport = errorLearning.getHealthReport();
       res.json(healthReport);
     } catch (error) {
@@ -8066,16 +8282,16 @@ This is a preview of the performance engagement contract. Final agreement will i
     try {
       const { error, context } = req.body;
       const errorLearning = (global as any).oppHubErrorLearning;
-      
+
       if (!errorLearning) {
         return res.status(503).json({ message: "Error learning system not initialized" });
       }
-      
+
       const pattern = await errorLearning.learnFromError(new Error(error), context || 'client_report');
-      res.json({ 
-        message: "Error reported successfully", 
+      res.json({
+        message: "Error reported successfully",
         pattern: pattern?.description,
-        severity: pattern?.severity 
+        severity: pattern?.severity
       });
     } catch (error) {
       console.error('Error reporting failed:', error);
@@ -8120,7 +8336,7 @@ This is a preview of the performance engagement contract. Final agreement will i
         tables: ["users", "bookings", "songs", "artists"],
         message: "Database backup completed successfully"
       };
-      
+
       res.json(backupData);
     } catch (error) {
       res.status(500).json({ message: "Failed to create backup" });
@@ -8140,27 +8356,27 @@ This is a preview of the performance engagement contract. Final agreement will i
     try {
       res.setHeader('Content-Type', 'text/csv');
       res.setHeader('Content-Disposition', 'attachment; filename="users.csv"');
-      
+
       // Stream header
       res.write('ID,Email,Full Name,Role,Created,Status\n');
-      
+
       // Use batched queries to prevent memory overload
       const batchSize = 100;
       let offset = 0;
       let hasMore = true;
-      
+
       while (hasMore) {
         const users = await db
           .select()
           .from(schema.users)
           .limit(batchSize)
           .offset(offset);
-        
+
         if (users.length === 0) {
           hasMore = false;
           break;
         }
-        
+
         // Stream each batch
         for (const user of users) {
           const roleNames = {
@@ -8174,7 +8390,7 @@ This is a preview of the performance engagement contract. Final agreement will i
             8: 'Professional',
             9: 'Fan'
           };
-          
+
           const row = [
             user.id,
             user.email,
@@ -8183,13 +8399,13 @@ This is a preview of the performance engagement contract. Final agreement will i
             new Date(user.createdAt).toISOString(),
             user.isActive ? 'Active' : 'Inactive'
           ].map(field => `"${String(field).replace(/"/g, '""')}"`).join(',');
-          
+
           res.write(row + '\n');
         }
-        
+
         offset += batchSize;
       }
-      
+
       res.end();
     } catch (error) {
       console.error('Export users error:', error);
@@ -8202,12 +8418,12 @@ This is a preview of the performance engagement contract. Final agreement will i
     try {
       // Run PostgreSQL maintenance commands
       await db.execute(sql`VACUUM ANALYZE`);
-      
+
       // Clear query cache
       const { queryCache } = await import('./utils/cache');
       queryCache.invalidate();
-      
-      res.json({ 
+
+      res.json({
         message: "Database optimization completed",
         actions: ["VACUUM ANALYZE executed", "Query cache cleared"]
       });
@@ -8220,7 +8436,7 @@ This is a preview of the performance engagement contract. Final agreement will i
   // ================================
   // ⚡ ROLE MANAGEMENT ROUTES  
   // ================================
-  
+
   // Get custom roles
   app.get("/api/admin/custom-roles", authenticateToken, async (req: Request, res: Response) => {
     try {
@@ -8228,12 +8444,12 @@ This is a preview of the performance engagement contract. Final agreement will i
       if (!userId) {
         return res.status(401).json({ message: "User not authenticated" });
       }
-      
+
       const user = await storage.getUser(userId);
       if (!user || ![1, 2].includes(user.roleId)) {
         return res.status(403).json({ message: "Admin access required" });
       }
-      
+
       // For now, return empty array - this will be enhanced with actual custom roles
       const customRoles = [];
       res.json(customRoles);
@@ -8250,18 +8466,18 @@ This is a preview of the performance engagement contract. Final agreement will i
       if (!userId) {
         return res.status(401).json({ message: "User not authenticated" });
       }
-      
+
       const user = await storage.getUser(userId);
       if (!user || ![1, 2].includes(user.roleId)) {
         return res.status(403).json({ message: "Admin access required" });
       }
-      
+
       const { name, displayName, description, permissions, inheritFrom } = req.body;
-      
+
       if (!name || !displayName) {
         return res.status(400).json({ message: "Name and display name are required" });
       }
-      
+
       // Create custom role (this would normally be stored in database)
       const newRole = {
         id: `custom_${Date.now()}`,
@@ -8274,7 +8490,7 @@ This is a preview of the performance engagement contract. Final agreement will i
         createdBy: userId,
         createdAt: new Date().toISOString()
       };
-      
+
       res.json({ success: true, role: newRole });
     } catch (error: any) {
       console.error('Error creating role:', error);
@@ -8289,12 +8505,12 @@ This is a preview of the performance engagement contract. Final agreement will i
       if (!userId) {
         return res.status(401).json({ message: "User not authenticated" });
       }
-      
+
       const user = await storage.getUser(userId);
       if (!user || ![1, 2].includes(user.roleId)) {
         return res.status(403).json({ message: "Admin access required" });
       }
-      
+
       // For now, return empty array - this will be enhanced with actual role assignments
       const roleAssignments = [];
       res.json(roleAssignments);
@@ -8311,24 +8527,24 @@ This is a preview of the performance engagement contract. Final agreement will i
       if (!adminUserId) {
         return res.status(401).json({ message: "User not authenticated" });
       }
-      
+
       const adminUser = await storage.getUser(adminUserId);
       if (!adminUser || ![1, 2].includes(adminUser.roleId)) {
         return res.status(403).json({ message: "Admin access required" });
       }
-      
+
       const targetUserId = parseInt(req.params.userId);
       const { roleId } = req.body;
-      
+
       if (!targetUserId || !roleId) {
         return res.status(400).json({ message: "User ID and role ID are required" });
       }
-      
+
       const targetUser = await storage.getUser(targetUserId);
       if (!targetUser) {
         return res.status(404).json({ message: "User not found" });
       }
-      
+
       // Map role names to role IDs for standard roles
       const roleMapping: Record<string, number> = {
         'fan': 3,
@@ -8338,14 +8554,14 @@ This is a preview of the performance engagement contract. Final agreement will i
         'admin': 2,
         'superadmin': 1
       };
-      
+
       const newRoleId = roleMapping[roleId] || parseInt(roleId);
-      
+
       // Update user role
       await storage.updateUser(targetUserId, { roleId: newRoleId });
-      
-      res.json({ 
-        success: true, 
+
+      res.json({
+        success: true,
         message: `Role assigned successfully`,
         assignment: {
           userId: targetUserId,
@@ -8367,19 +8583,19 @@ This is a preview of the performance engagement contract. Final agreement will i
       if (!userId) {
         return res.status(401).json({ message: "User not authenticated" });
       }
-      
+
       const user = await storage.getUser(userId);
       if (!user || ![1, 2].includes(user.roleId)) {
         return res.status(403).json({ message: "Admin access required" });
       }
-      
+
       const roleId = req.params.roleId;
-      
+
       // Prevent deletion of system roles
       if (!roleId.startsWith('custom_')) {
         return res.status(400).json({ message: "Cannot delete system roles" });
       }
-      
+
       // Delete custom role (this would normally be done in database)
       res.json({ success: true, message: "Role deleted successfully" });
     } catch (error: any) {
@@ -8397,7 +8613,7 @@ This is a preview of the performance engagement contract. Final agreement will i
         bookings: await storage.getBookings(),
         version: "1.0"
       };
-      
+
       res.json(exportData);
     } catch (error) {
       res.status(500).json({ message: "Failed to export data" });
@@ -8542,7 +8758,7 @@ This is a preview of the performance engagement contract. Final agreement will i
     try {
       const bookingId = parseInt(req.params.id);
       const booking = await storage.getBooking(bookingId);
-      
+
       if (!booking) {
         return res.status(404).json({ message: "Booking not found" });
       }
@@ -8559,7 +8775,7 @@ This is a preview of the performance engagement contract. Final agreement will i
 
       // Import PDF generation
       const { generateBookingAgreement } = await import('./bookingAgreementTemplate');
-      
+
       // Parse workflow data if available
       let workflowData = {};
       try {
@@ -8571,10 +8787,10 @@ This is a preview of the performance engagement contract. Final agreement will i
       }
 
       const bookingAgreementData = {
-        contractDate: new Date().toLocaleDateString('en-US', { 
-          year: 'numeric', 
-          month: 'long', 
-          day: 'numeric' 
+        contractDate: new Date().toLocaleDateString('en-US', {
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric'
         }),
         contractEndDate: booking.eventDate,
         clientCompanyName: booker?.fullName || booking.guestName || 'Event Client',
@@ -8599,16 +8815,16 @@ This is a preview of the performance engagement contract. Final agreement will i
       };
 
       const doc = generateBookingAgreement(bookingAgreementData);
-      
+
       // Set response headers
       const filename = `comprehensive-booking-workflow-${bookingId}-${Date.now()}.pdf`;
       res.setHeader('Content-Type', 'application/pdf');
       res.setHeader('Content-Disposition', `attachment; filename="${filename}"`);
-      
+
       // Pipe the PDF document to the response
       doc.pipe(res);
       doc.end();
-      
+
     } catch (error) {
       console.error('Generate workflow PDF error:', error);
       res.status(500).json({ message: "Internal server error" });
@@ -8629,8 +8845,8 @@ This is a preview of the performance engagement contract. Final agreement will i
       }
 
       // Check permissions - admin, superadmin, or the primary artist
-      const hasAccess = [1, 2].includes(user.roleId) || 
-                       currentBooking.primaryArtistUserId === user.userId;
+      const hasAccess = [1, 2].includes(user.roleId) ||
+        currentBooking.primaryArtistUserId === user.userId;
 
       if (!hasAccess) {
         return res.status(403).json({ message: "Insufficient permissions to update booking" });
@@ -8653,8 +8869,8 @@ This is a preview of the performance engagement contract. Final agreement will i
 
       // Handle signatures - ensure they're stored as JSON string if needed
       if (filteredUpdate.signatures) {
-        filteredUpdate.signatures = typeof filteredUpdate.signatures === 'string' 
-          ? filteredUpdate.signatures 
+        filteredUpdate.signatures = typeof filteredUpdate.signatures === 'string'
+          ? filteredUpdate.signatures
           : JSON.stringify(filteredUpdate.signatures);
       }
 
@@ -8672,10 +8888,10 @@ This is a preview of the performance engagement contract. Final agreement will i
         return res.status(500).json({ message: "Failed to update booking" });
       }
 
-      res.json({ 
-        success: true, 
+      res.json({
+        success: true,
         booking: updatedBooking,
-        message: "Booking updated successfully" 
+        message: "Booking updated successfully"
       });
 
     } catch (error) {
@@ -8720,17 +8936,17 @@ This is a preview of the performance engagement contract. Final agreement will i
       const additionalData = { step, stepName, progress, error };
 
       const results = await Promise.all(
-        emailRecipients.map((email: string) => 
+        emailRecipients.map((email: string) =>
           sendBookingWorkflowEmail(type, booking, email, additionalData)
         )
       );
 
       const allSent = results.every(result => result);
-      
-      res.json({ 
-        success: allSent, 
+
+      res.json({
+        success: allSent,
         message: allSent ? 'Workflow notifications sent successfully' : 'Some notifications failed to send',
-        results 
+        results
       });
     } catch (error) {
       console.error('Workflow notification error:', error);
@@ -8743,7 +8959,7 @@ This is a preview of the performance engagement contract. Final agreement will i
     try {
       const bookingId = parseInt(req.params.id);
       const adminUserId = req.user?.userId;
-      
+
       const updatedBooking = await storage.updateBookingStatus(bookingId, 'approved');
       if (!updatedBooking) {
         return res.status(404).json({ message: "Booking not found" });
@@ -8761,7 +8977,7 @@ This is a preview of the performance engagement contract. Final agreement will i
     try {
       const bookingId = parseInt(req.params.id);
       const booking = await storage.getBooking(bookingId);
-      
+
       if (!booking) {
         return res.status(404).json({ message: "Booking not found" });
       }
@@ -8783,7 +8999,7 @@ This is a preview of the performance engagement contract. Final agreement will i
       };
 
       // TODO: Create technical rider document in database
-      
+
       res.json({ success: true, technicalSpecs });
     } catch (error) {
       console.error('Generate technical rider error:', error);
@@ -8796,7 +9012,7 @@ This is a preview of the performance engagement contract. Final agreement will i
     try {
       const bookingId = parseInt(req.params.id);
       const booking = await storage.getBooking(bookingId);
-      
+
       if (!booking) {
         return res.status(404).json({ message: "Booking not found" });
       }
@@ -8808,14 +9024,14 @@ This is a preview of the performance engagement contract. Final agreement will i
       ]);
 
       // Transform profile data to match the expected format
-      const artistSpecs = artistProfile?.technicalRequirements 
-        ? (Array.isArray(artistProfile.technicalRequirements) 
-            ? artistProfile.technicalRequirements 
-            : [])
+      const artistSpecs = artistProfile?.technicalRequirements
+        ? (Array.isArray(artistProfile.technicalRequirements)
+          ? artistProfile.technicalRequirements
+          : [])
         : [];
-        
+
       const musicianSpecs: any[] = []; // TODO: Get assigned musician specs
-      
+
       const technicalSpecs = {
         artistSpecs,
         musicianSpecs,
@@ -8824,7 +9040,7 @@ This is a preview of the performance engagement contract. Final agreement will i
         lighting: [],
         sound: []
       };
-      
+
       res.json(technicalSpecs);
     } catch (error) {
       console.error('Get technical specs error:', error);
@@ -8837,7 +9053,7 @@ This is a preview of the performance engagement contract. Final agreement will i
     try {
       const bookingId = parseInt(req.params.id);
       const { contractType, customClauses, additionalNotes } = req.body;
-      
+
       const booking = await storage.getBooking(bookingId);
       if (!booking) {
         return res.status(404).json({ message: "Booking not found" });
@@ -8866,7 +9082,7 @@ This is a preview of the performance engagement contract. Final agreement will i
     try {
       const bookingId = parseInt(req.params.id);
       const { contractType } = req.params;
-      
+
       const booking = await storage.getBooking(bookingId);
       if (!booking) {
         return res.status(404).json({ message: "Booking not found" });
@@ -8882,23 +9098,23 @@ This is a preview of the performance engagement contract. Final agreement will i
       // Generate proper PDF using PDFKit
       const PDFDocument = (await import('pdfkit')).default;
       const doc = new PDFDocument();
-      
+
       // Set up response headers
       res.setHeader('Content-Type', 'application/pdf');
       res.setHeader('Content-Disposition', `attachment; filename=${contractType}_booking_${bookingId}.pdf`);
-      
+
       // Pipe the PDF to the response
       doc.pipe(res);
-      
+
       // Generate contract content based on type
       const contractTitle = contractType.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
-      
+
       // Header
       doc.fontSize(20).text('Wai\'tuMusic Platform', 50, 50);
       doc.fontSize(16).text(contractTitle, 50, 80);
       doc.fontSize(12).text(`Booking ID: ${bookingId}`, 50, 110);
       doc.text(`Generated: ${new Date().toLocaleDateString()}`, 50, 130);
-      
+
       // Booking Details Section
       doc.fontSize(14).text('BOOKING DETAILS', 50, 170);
       doc.fontSize(10)
@@ -8952,10 +9168,10 @@ This is a preview of the performance engagement contract. Final agreement will i
       // Footer
       doc.fontSize(8).text('This document was generated electronically by Wai\'tuMusic Platform', 50, 700);
       doc.text('For questions contact: admin@waitumusic.com', 50, 715);
-      
+
       // Finalize the PDF
       doc.end();
-      
+
     } catch (error) {
       console.error('Download contract error:', error);
       res.status(500).json({ message: "Internal server error" });
@@ -8967,7 +9183,7 @@ This is a preview of the performance engagement contract. Final agreement will i
     try {
       const bookingId = parseInt(req.params.id);
       const booking = await storage.getBooking(bookingId);
-      
+
       if (!booking) {
         return res.status(404).json({ message: "Booking not found" });
       }
@@ -9001,7 +9217,7 @@ This is a preview of the performance engagement contract. Final agreement will i
     try {
       const bookingId = parseInt(req.params.id);
       const booking = await storage.getBooking(bookingId);
-      
+
       if (!booking) {
         return res.status(404).json({ message: "Booking not found" });
       }
@@ -9009,14 +9225,14 @@ This is a preview of the performance engagement contract. Final agreement will i
       // Generate PDF receipt
       const { default: PDFDocument } = await import('pdfkit');
       const doc = new PDFDocument();
-      
+
       // Set response headers for PDF download
       res.setHeader('Content-Type', 'application/pdf');
       res.setHeader('Content-Disposition', `attachment; filename=booking-${bookingId}-receipt.pdf`);
-      
+
       // Pipe PDF to response
       doc.pipe(res);
-      
+
       // Generate receipt content
       doc.fontSize(20).text('Booking Receipt', { align: 'center' });
       doc.moveDown();
@@ -9028,7 +9244,7 @@ This is a preview of the performance engagement contract. Final agreement will i
       doc.text(`Final Price: $${booking.finalPrice || booking.totalBudget}`);
       doc.moveDown();
       doc.text('Thank you for your booking!');
-      
+
       // Finalize the PDF
       doc.end();
 
@@ -9043,7 +9259,7 @@ This is a preview of the performance engagement contract. Final agreement will i
     try {
       const userId = parseInt(req.params.id);
       const currentUserId = req.user?.userId;
-      
+
       // Check if user can edit this profile
       if (currentUserId !== userId) {
         const user = await storage.getUser(currentUserId || 0);
@@ -9053,7 +9269,7 @@ This is a preview of the performance engagement contract. Final agreement will i
       }
 
       const { technicalRequirements, hospitalityRequirements, performanceSpecs } = req.body;
-      
+
       const updatedProfile = await storage.updateUserProfile(userId, {
         technicalRequirements,
         hospitalityRequirements,
@@ -9073,12 +9289,12 @@ This is a preview of the performance engagement contract. Final agreement will i
   });
 
   // ==================== STORE SYSTEM ROUTES ====================
-  
+
   // Get all bundles
   app.get('/api/bundles', async (req: Request, res: Response) => {
     try {
       const bundles = await storage.getBundles();
-      
+
       // For each bundle, get its items and discount conditions
       const bundlesWithDetails = await Promise.all(
         bundles.map(async (bundle) => {
@@ -9086,7 +9302,7 @@ This is a preview of the performance engagement contract. Final agreement will i
             storage.getBundleItems(bundle.id),
             storage.getDiscountConditions(bundle.id)
           ]);
-          
+
           // Get detailed item information
           const itemsWithDetails = await Promise.all(
             bundleItems.map(async (item) => {
@@ -9098,14 +9314,14 @@ This is a preview of the performance engagement contract. Final agreement will i
               } else if (item.itemType === 'album') {
                 itemDetails = await storage.getAlbum(item.itemId);
               }
-              
+
               return {
                 ...item,
                 details: itemDetails
               };
             })
           );
-          
+
           return {
             ...bundle,
             items: itemsWithDetails,
@@ -9113,7 +9329,7 @@ This is a preview of the performance engagement contract. Final agreement will i
           };
         })
       );
-      
+
       res.json(bundlesWithDetails);
     } catch (error) {
       console.error('Get bundles error:', error);
@@ -9140,34 +9356,34 @@ This is a preview of the performance engagement contract. Final agreement will i
         storage.getBundles(),
         storage.getStoreCurrencies()
       ]);
-      
+
       // Get artist information for all items
       const artistsMap = new Map();
       const allArtistIds = new Set([
         ...songs.map(s => s.artistUserId),
         ...bundles.map(b => b.artistUserId)
       ]);
-      
+
       for (const artistId of allArtistIds) {
         const artist = await storage.getArtist(artistId);
         if (artist) {
           artistsMap.set(artistId, artist);
         }
       }
-      
+
       // Enhance data with artist info
       const enhancedSongs = songs.map(song => ({
         ...song,
         artist: artistsMap.get(song.artistUserId)
       }));
-      
+
       const enhancedBundles = await Promise.all(
         bundles.map(async (bundle) => {
           const [bundleItems, discountConditions] = await Promise.all([
             storage.getBundleItems(bundle.id),
             storage.getDiscountConditions(bundle.id)
           ]);
-          
+
           return {
             ...bundle,
             artist: artistsMap.get(bundle.artistUserId),
@@ -9176,7 +9392,7 @@ This is a preview of the performance engagement contract. Final agreement will i
           };
         })
       );
-      
+
       res.json({
         songs: enhancedSongs,
         bundles: enhancedBundles,
@@ -9192,13 +9408,13 @@ This is a preview of the performance engagement contract. Final agreement will i
   app.post('/api/discount/validate', async (req: Request, res: Response) => {
     try {
       const { conditionId, userValue } = req.body;
-      
+
       if (!conditionId || !userValue) {
         return res.status(400).json({ message: "Condition ID and user value required" });
       }
-      
+
       const isValid = await storage.validateDiscountCondition(conditionId, userValue);
-      
+
       res.json({ valid: isValid });
     } catch (error) {
       console.error('Validate discount error:', error);
@@ -9239,17 +9455,17 @@ This is a preview of the performance engagement contract. Final agreement will i
   });
 
   // ================== ENHANCED USER ROLE MANAGEMENT API ENDPOINTS ==================
-  
+
   // Enhanced user management with role information for assignments
   app.get("/api/users/:id/with-roles", authenticateToken, async (req: Request, res: Response) => {
     try {
       const userId = parseInt(req.params.id);
       const userWithRoles = await storage.getUserWithRoles(userId);
-      
+
       if (!userWithRoles) {
         return res.status(404).json({ message: "User not found" });
       }
-      
+
       res.json(userWithRoles);
     } catch (error) {
       console.error('Error fetching user with roles:', error);
@@ -9261,12 +9477,12 @@ This is a preview of the performance engagement contract. Final agreement will i
   app.get("/api/users/assignment", authenticateToken, async (req: Request, res: Response) => {
     try {
       const { roleIds } = req.query;
-      
+
       let roleIdArray: number[] | undefined;
       if (roleIds) {
         roleIdArray = (roleIds as string).split(',').map(id => parseInt(id.trim()));
       }
-      
+
       const users = await storage.getUsersForAssignment(roleIdArray);
       res.json(users);
     } catch (error) {
@@ -9280,13 +9496,13 @@ This is a preview of the performance engagement contract. Final agreement will i
     try {
       const userId = parseInt(req.params.id);
       const { roleId } = req.body;
-      
+
       if (!roleId || typeof roleId !== 'number') {
         return res.status(400).json({ message: "Role ID is required" });
       }
-      
+
       await storage.addSecondaryRole(userId, roleId);
-      
+
       // Return updated user with roles
       const updatedUser = await storage.getUserWithRoles(userId);
       res.json(updatedUser);
@@ -9300,9 +9516,9 @@ This is a preview of the performance engagement contract. Final agreement will i
     try {
       const userId = parseInt(req.params.id);
       const roleId = parseInt(req.params.roleId);
-      
+
       await storage.removeSecondaryRole(userId, roleId);
-      
+
       // Return updated user with roles
       const updatedUser = await storage.getUserWithRoles(userId);
       res.json(updatedUser);
@@ -9327,13 +9543,13 @@ This is a preview of the performance engagement contract. Final agreement will i
     try {
       const users = await storage.getAllUsers();
       const roles = await storage.getRoles();
-      
+
       // Enrich user data with role information and detect inconsistencies
       const enrichedUsers = await Promise.all(users.map(async (user) => {
         const userRole = roles.find(role => role.id === user.roleId);
         let profileData = null;
         let managedStatus = false;
-        
+
         // Get profile data based on role
         try {
           if ([3, 4].includes(user.roleId)) { // Artist roles
@@ -9352,7 +9568,7 @@ This is a preview of the performance engagement contract. Final agreement will i
         } catch (error) {
           console.error(`Error fetching profile for user ${user.id}:`, error);
         }
-        
+
         return {
           ...user,
           role: userRole?.name || 'unknown',
@@ -9360,13 +9576,13 @@ This is a preview of the performance engagement contract. Final agreement will i
           profileData,
           managedStatus,
           // Flag potential data inconsistencies
-          hasInconsistency: !userRole || 
+          hasInconsistency: !userRole ||
             ([3, 4].includes(user.roleId) && !profileData) ||
             ([5, 6].includes(user.roleId) && !profileData) ||
             ([7, 8].includes(user.roleId) && !profileData)
         };
       }));
-      
+
       res.json(enrichedUsers);
     } catch (error) {
       console.error("Error fetching all users:", error);
@@ -9378,12 +9594,12 @@ This is a preview of the performance engagement contract. Final agreement will i
   app.get("/api/users/:userId/profile", authenticateToken, requireRole([1, 2]), async (req, res) => {
     try {
       const userId = parseInt(req.params.userId);
-      
+
       // Validate that userId is a valid number
       if (isNaN(userId) || userId <= 0) {
         return res.status(400).json({ message: 'Invalid user ID parameter' });
       }
-      
+
       const profile = await storage.getUserProfile(userId);
       res.json(profile || {});
     } catch (error) {
@@ -9395,12 +9611,12 @@ This is a preview of the performance engagement contract. Final agreement will i
   app.get("/api/users/:userId/songs", authenticateToken, requireRole([1, 2]), async (req, res) => {
     try {
       const userId = parseInt(req.params.userId);
-      
+
       // Validate that userId is a valid number
       if (isNaN(userId) || userId <= 0) {
         return res.status(400).json({ message: 'Invalid user ID parameter' });
       }
-      
+
       const songs = await storage.getSongsByArtist(userId);
       res.json(songs);
     } catch (error) {
@@ -9412,12 +9628,12 @@ This is a preview of the performance engagement contract. Final agreement will i
   app.get("/api/users/:userId/merchandise", authenticateToken, requireRole([1, 2]), async (req, res) => {
     try {
       const userId = parseInt(req.params.userId);
-      
+
       // Validate that userId is a valid number
       if (isNaN(userId) || userId <= 0) {
         return res.status(400).json({ message: 'Invalid user ID parameter' });
       }
-      
+
       const merchandise = await storage.getMerchandiseByArtist(userId);
       res.json(merchandise);
     } catch (error) {
@@ -9429,12 +9645,12 @@ This is a preview of the performance engagement contract. Final agreement will i
   app.get("/api/users/:userId/events", authenticateToken, requireRole([1, 2]), async (req, res) => {
     try {
       const userId = parseInt(req.params.userId);
-      
+
       // Validate that userId is a valid number
       if (isNaN(userId) || userId <= 0) {
         return res.status(400).json({ message: 'Invalid user ID parameter' });
       }
-      
+
       const events = await storage.getEventsByUser ? await storage.getEventsByUser(userId) : [];
       res.json(events);
     } catch (error) {
@@ -9463,7 +9679,7 @@ This is a preview of the performance engagement contract. Final agreement will i
           description: 'Artist promotional image'
         }
       ];
-      
+
       const stats = {
         totalUsed: 15.7,
         totalAvailable: 100.0,
@@ -9472,7 +9688,7 @@ This is a preview of the performance engagement contract. Final agreement will i
         audioCount: 28,
         documentCount: 156
       };
-      
+
       res.json({ files, stats });
     } catch (error) {
       console.error('Get media files error:', error);
@@ -9483,8 +9699,8 @@ This is a preview of the performance engagement contract. Final agreement will i
   app.post('/api/admin/media/security-scan', authenticateToken, requireRole([1, 2]), async (req, res) => {
     try {
       // Mock security scan process
-      res.json({ 
-        success: true, 
+      res.json({
+        success: true,
         message: 'Media security scan completed successfully',
         threatsFound: 0,
         filesScanned: 241
@@ -9498,8 +9714,8 @@ This is a preview of the performance engagement contract. Final agreement will i
   app.post('/api/admin/media/optimize', authenticateToken, requireRole([1, 2]), async (req, res) => {
     try {
       // Mock optimization process
-      res.json({ 
-        success: true, 
+      res.json({
+        success: true,
         message: 'Media optimization completed successfully',
         spaceSaved: '2.3 GB',
         filesOptimized: 156
@@ -9543,19 +9759,19 @@ This is a preview of the performance engagement contract. Final agreement will i
   app.get('/api/users/all-with-permissions', authenticateToken, requireRole([1, 2]), async (req, res) => {
     try {
       const allUsers = await storage.getAllUsers();
-      
+
       // Format users for the admin interface
       const usersWithPermissions = await Promise.all(allUsers.map(async user => ({
         id: user.id,
         email: user.email,
         fullName: user.fullName || user.email,
         role: user.roleId,
-        managedStatus: storage.isUserManaged(user.roleId) ? 'Fully Managed' : 
-                     [4, 6, 8].includes(user.roleId) ? 'Unmanaged' : 'N/A',
+        managedStatus: storage.isUserManaged(user.roleId) ? 'Fully Managed' :
+          [4, 6, 8].includes(user.roleId) ? 'Unmanaged' : 'N/A',
         userType: await storage.getRoleName(user.roleId),
         subType: user.subType || null
       })));
-      
+
       res.json(usersWithPermissions);
     } catch (error) {
       console.error('Error fetching users with permissions:', error);
@@ -9567,18 +9783,18 @@ This is a preview of the performance engagement contract. Final agreement will i
   app.get('/api/users/:id', authenticateToken, requireRole([1, 2]), async (req, res) => {
     try {
       const userId = parseInt(req.params.id);
-      
+
       // Validate that userId is a valid number
       if (isNaN(userId) || userId <= 0) {
         return res.status(400).json({ message: 'Invalid user ID' });
       }
-      
+
       const user = await storage.getUser(userId);
-      
+
       if (!user) {
         return res.status(404).json({ message: 'User not found' });
       }
-      
+
       res.json(user);
     } catch (error) {
       console.error('Error fetching user:', error);
@@ -9592,48 +9808,48 @@ This is a preview of the performance engagement contract. Final agreement will i
       const userId = parseInt(req.params.id);
       const updates = req.body;
       const currentUserId = req.user?.userId;
-      
+
       // Security: Validate role assignment permissions
       if (updates.roleId) {
         const currentUser = await storage.getUser(currentUserId || 0);
         const roles = await storage.getRoles();
         const currentUserRole = roles.find(role => role.id === currentUser?.roleId);
-        
+
         // Only superadmins can assign admin/superadmin roles (roleId 1 and 2)
         if ([1, 2].includes(updates.roleId) && currentUser?.roleId !== 1) {
-          return res.status(403).json({ 
-            message: 'Only Superadmins can assign Admin or Superadmin roles for security purposes.' 
+          return res.status(403).json({
+            message: 'Only Superadmins can assign Admin or Superadmin roles for security purposes.'
           });
         }
-        
+
         // Get target user to enforce artist role restrictions
         const targetUser = await storage.getUser(userId);
         const targetUserCategory = storage.getUserTypeCategory(targetUser.roleId);
         const newUserCategory = storage.getUserTypeCategory(updates.roleId);
-        
+
         if (targetUserCategory === 'artist') {
           // Artists can only switch between artist roles
           if (newUserCategory !== 'artist' && currentUser?.roleId !== 1) {
-            return res.status(403).json({ 
-              message: 'Artists can only switch between artist roles. Use secondary roles for additional capabilities.' 
+            return res.status(403).json({
+              message: 'Artists can only switch between artist roles. Use secondary roles for additional capabilities.'
             });
           }
         }
       }
-      
+
       // Extract artist-specific fields
       const { performingRightsOrganization, ipiNumber, secondaryRoles, ...userUpdates } = updates;
-      
+
       // Validate secondary roles logic
       if (secondaryRoles !== undefined) {
         // Get current user to check if they can have secondary roles
         const currentUser = await storage.getUser(userId);
         if (currentUser) {
           let validSecondaryRoles: number[] = [];
-          
+
           // Define valid secondary roles based on primary role category
           const userCategory = storage.getUserTypeCategory(currentUser.roleId);
-          
+
           if (userCategory === 'artist') {
             // Artists can have Musician or Professional secondary roles
             validSecondaryRoles = [5, 6, 7, 8];
@@ -9644,19 +9860,19 @@ This is a preview of the performance engagement contract. Final agreement will i
             // Professionals can have Artist or Musician secondary roles
             validSecondaryRoles = [3, 4, 5, 6];
           } else {
-            return res.status(400).json({ 
-              message: 'Secondary roles can only be assigned to Artists, Musicians, and Professionals.' 
+            return res.status(400).json({
+              message: 'Secondary roles can only be assigned to Artists, Musicians, and Professionals.'
             });
           }
-          
+
           const invalidRoles = secondaryRoles.filter((roleId: number) => !validSecondaryRoles.includes(roleId));
-          
+
           if (invalidRoles.length > 0) {
-            return res.status(400).json({ 
-              message: 'Invalid secondary roles for your primary role type.' 
+            return res.status(400).json({
+              message: 'Invalid secondary roles for your primary role type.'
             });
           }
-          
+
           // Validate mutually exclusive roles within each category
           const hasManagedArtist = secondaryRoles.includes(3);
           const hasArtist = secondaryRoles.includes(4);
@@ -9664,39 +9880,39 @@ This is a preview of the performance engagement contract. Final agreement will i
           const hasMusician = secondaryRoles.includes(6);
           const hasManagedProfessional = secondaryRoles.includes(7);
           const hasProfessional = secondaryRoles.includes(8);
-          
+
           if (hasManagedArtist && hasArtist) {
-            return res.status(400).json({ 
-              message: 'Cannot have both Managed Artist and Artist roles. Choose one.' 
+            return res.status(400).json({
+              message: 'Cannot have both Managed Artist and Artist roles. Choose one.'
             });
           }
-          
+
           if (hasManagedMusician && hasMusician) {
-            return res.status(400).json({ 
-              message: 'Cannot have both Managed Musician and Musician roles. Choose one.' 
+            return res.status(400).json({
+              message: 'Cannot have both Managed Musician and Musician roles. Choose one.'
             });
           }
-          
+
           if (hasManagedProfessional && hasProfessional) {
-            return res.status(400).json({ 
-              message: 'Cannot have both Managed Professional and Professional roles. Choose one.' 
+            return res.status(400).json({
+              message: 'Cannot have both Managed Professional and Professional roles. Choose one.'
             });
           }
-          
+
           userUpdates.secondaryRoles = secondaryRoles;
         } else {
-          return res.status(400).json({ 
-            message: 'User not found for secondary role validation.' 
+          return res.status(400).json({
+            message: 'User not found for secondary role validation.'
           });
         }
       }
-      
+
       const updatedUser = await storage.updateUser(userId, userUpdates);
-      
+
       if (!updatedUser) {
         return res.status(404).json({ message: 'User not found' });
       }
-      
+
       // Update artist-specific fields if user is a managed artist
       if (updatedUser.roleId === 3 && (performingRightsOrganization !== undefined || ipiNumber !== undefined)) {
         const artistUpdates: any = {};
@@ -9706,10 +9922,10 @@ This is a preview of the performance engagement contract. Final agreement will i
         if (ipiNumber !== undefined) {
           artistUpdates.ipiNumber = ipiNumber;
         }
-        
+
         await storage.updateArtist(userId, artistUpdates);
       }
-      
+
       // Create artist/musician/professional records if secondary roles are added
       if (secondaryRoles !== undefined) {
         // Create artist record if artist secondary role is added
@@ -9728,7 +9944,7 @@ This is a preview of the performance engagement contract. Final agreement will i
             topGenres: []
           });
         }
-        
+
         // Create musician record if musician secondary role is added
         if ((secondaryRoles.includes(5) || secondaryRoles.includes(6)) && !await storage.getMusician(userId)) {
           await storage.createMusician({
@@ -9740,7 +9956,7 @@ This is a preview of the performance engagement contract. Final agreement will i
             bookingFormPictureUrl: null
           });
         }
-        
+
         // Create professional record if professional secondary role is added
         if ((secondaryRoles.includes(7) || secondaryRoles.includes(8)) && !await storage.getProfessional(userId)) {
           await storage.createProfessional({
@@ -9753,15 +9969,15 @@ This is a preview of the performance engagement contract. Final agreement will i
           });
         }
       }
-      
+
       res.json(updatedUser);
     } catch (error) {
       console.error('Error updating user:', error);
       // Provide more specific error information
       if (error instanceof Error) {
-        res.status(500).json({ 
+        res.status(500).json({
           message: 'Failed to update user profile. Please try again.',
-          details: error.message 
+          details: error.message
         });
       } else {
         res.status(500).json({ message: 'Failed to update user profile. Please try again.' });
@@ -9775,16 +9991,16 @@ This is a preview of the performance engagement contract. Final agreement will i
 
       const songs = await storage.getSongs();
       const merchandise = await storage.getAllMerchandise();
-      
+
       // Get managed artists (roleId 3 = Managed Artist)
       const allUsers = await storage.getAllUsers();
       const allArtists = await storage.getArtists();
-      
+
       const managedUsers = allUsers.filter(user => user.roleId === 3);
       const managedArtists = managedUsers.map(user => {
         const artistProfile = allArtists.find(a => a.userId === user.id);
         const songCount = songs.filter(s => s.artistUserId === user.id).length;
-        
+
         return {
           userId: user.id,
           stageName: (artistProfile?.stageNames as string[])?.[0] || user.fullName || user.email,
@@ -9793,7 +10009,7 @@ This is a preview of the performance engagement contract. Final agreement will i
           videoCount: Math.floor(Math.random() * 5) + 1   // Placeholder
         };
       });
-      
+
       const stats = {
         songs: songs.length,
         videos: 12, // Placeholder for now
@@ -9817,7 +10033,7 @@ This is a preview of the performance engagement contract. Final agreement will i
       const recentSongs = await storage.getSongs();
       const allUsers = await storage.getAllUsers();
       const allArtists = await storage.getArtists();
-      
+
       // Create activity feed from recent uploads
       const activities = recentSongs.slice(-10).map((song, index) => {
         const user = allUsers.find(u => u.id === song.artistUserId);
@@ -9825,7 +10041,7 @@ This is a preview of the performance engagement contract. Final agreement will i
         const timeAgo = [
           '2 hours ago', '5 hours ago', '1 day ago', '2 days ago', '3 days ago'
         ][index % 5];
-        
+
         return {
           id: song.id,
           type: 'song',
@@ -9849,7 +10065,7 @@ This is a preview of the performance engagement contract. Final agreement will i
       // Note: ClamAV scanning is not available in this environment
       // Simulate security scan response for demo purposes
       console.log('Security scan requested - simulating scan results...');
-      
+
       // Simulate comprehensive security scan results
       const scanResults = [
         {
@@ -9871,10 +10087,10 @@ This is a preview of the performance engagement contract. Final agreement will i
           status: 'clean'
         }
       ];
-      
+
       let totalFilesScanned = scanResults.reduce((sum, result) => sum + result.files, 0);
       let totalThreatsFound = scanResults.reduce((sum, result) => sum + result.infected, 0);
-      
+
       res.json({
         success: true,
         summary: {
@@ -9885,14 +10101,14 @@ This is a preview of the performance engagement contract. Final agreement will i
           status: totalThreatsFound === 0 ? 'clean' : 'threats_found'
         },
         details: scanResults,
-        message: totalThreatsFound === 0 
+        message: totalThreatsFound === 0
           ? 'System security scan completed successfully. No threats detected.'
           : `Security scan completed. ${totalThreatsFound} potential threats found.`
       });
     } catch (error) {
       console.error('Security scan error:', error);
-      res.status(500).json({ 
-        success: false, 
+      res.status(500).json({
+        success: false,
         error: 'Security scan simulation failed.',
         message: 'Unable to complete security scan at this time.'
       });
@@ -9900,26 +10116,26 @@ This is a preview of the performance engagement contract. Final agreement will i
   });
 
   // ==================== RELEASE CONTRACT MANAGEMENT ROUTES ====================
-  
+
   // Create release contract (for Managed Artist → Artist transitions)
   app.post('/api/release-contracts', authenticateToken, requireRole([1, 2]), async (req: Request, res: Response) => {
     try {
       const { managedArtistUserId, releaseRequestReason, contractTerms } = req.body;
       const currentUserId = req.user?.userId;
-      
+
       if (!managedArtistUserId || !releaseRequestReason || !contractTerms) {
         return res.status(400).json({ message: 'Missing required fields' });
       }
-      
+
       // Verify the user is a Managed Artist (roleId 3)
       const targetUser = await storage.getUser(managedArtistUserId);
       if (!targetUser || targetUser.roleId !== 3) {
         return res.status(400).json({ message: 'Release contracts are only available for Managed Artists' });
       }
-      
+
       // Get artist record to include management tier info
       const artist = await storage.getArtist(managedArtistUserId);
-      
+
       const releaseContract = await storage.createReleaseContract({
         managedArtistUserId,
         approvedByUserId: currentUserId || 0,
@@ -9928,14 +10144,14 @@ This is a preview of the performance engagement contract. Final agreement will i
         managementTierAtRelease: artist?.managementTierId || null,
         status: 'pending'
       });
-      
+
       res.status(201).json(releaseContract);
     } catch (error) {
       console.error('Create release contract error:', error);
       res.status(500).json({ message: 'Failed to create release contract' });
     }
   });
-  
+
   // Get release contracts (superadmin only)
   app.get('/api/release-contracts', authenticateToken, requireRole([1]), async (req: Request, res: Response) => {
     try {
@@ -9946,13 +10162,13 @@ This is a preview of the performance engagement contract. Final agreement will i
       res.status(500).json({ message: 'Failed to fetch release contracts' });
     }
   });
-  
+
   // Get user's release contracts
   app.get('/api/release-contracts/user/:userId', authenticateToken, async (req: Request, res: Response) => {
     try {
       const userId = parseInt(req.params.userId);
       const currentUserId = req.user?.userId;
-      
+
       // Users can only view their own contracts unless they're admin/superadmin
       if (currentUserId !== userId) {
         const user = await storage.getUser(currentUserId || 0);
@@ -9960,7 +10176,7 @@ This is a preview of the performance engagement contract. Final agreement will i
           return res.status(403).json({ message: "Insufficient permissions" });
         }
       }
-      
+
       const contracts = await storage.getReleaseContractsByUser(userId);
       res.json(contracts);
     } catch (error) {
@@ -9968,26 +10184,26 @@ This is a preview of the performance engagement contract. Final agreement will i
       res.status(500).json({ message: 'Failed to fetch user release contracts' });
     }
   });
-  
+
   // Approve/update release contract (superadmin only)
   app.patch('/api/release-contracts/:id', authenticateToken, requireRole([1]), async (req: Request, res: Response) => {
     try {
       const contractId = parseInt(req.params.id);
       const updates = req.body;
       const currentUserId = req.user?.userId;
-      
+
       // If approving, set approval details
       if (updates.status === 'approved') {
         updates.approvedAt = new Date();
         updates.approvedByUserId = currentUserId;
       }
-      
+
       const contract = await storage.updateReleaseContract(contractId, updates);
-      
+
       if (!contract) {
         return res.status(404).json({ message: 'Release contract not found' });
       }
-      
+
       // If contract is completed, create management transition record
       if (updates.status === 'completed') {
         const targetUser = await storage.getUser(contract.managedArtistUserId);
@@ -10004,18 +10220,18 @@ This is a preview of the performance engagement contract. Final agreement will i
             reason: 'Release contract completed - transition from Full Management to independent Artist status',
             effectiveDate: new Date()
           });
-          
+
           // Update user role to Artist (4)
           await storage.updateUser(contract.managedArtistUserId, { roleId: 4 });
-          
+
           // Update artist record to remove management
-          await storage.updateArtist(contract.managedArtistUserId, { 
+          await storage.updateArtist(contract.managedArtistUserId, {
             isManaged: false,
-            managementTierId: null 
+            managementTierId: null
           });
         }
       }
-      
+
       res.json(contract);
     } catch (error) {
       console.error('Update release contract error:', error);
@@ -10024,7 +10240,7 @@ This is a preview of the performance engagement contract. Final agreement will i
   });
 
   // ==================== HIERARCHICAL DISCOUNT OVERRIDE SYSTEM ====================
-  
+
   // Get WaituMusic service default discount limits (superadmin only)
   app.get('/api/waitu-service-discount-limits', authenticateToken, requireRole([1]), async (req: Request, res: Response) => {
     try {
@@ -10048,7 +10264,7 @@ This is a preview of the performance engagement contract. Final agreement will i
 
       // Check if limit already exists
       const existingLimit = await storage.getWaituServiceDiscountLimit(serviceId);
-      
+
       if (existingLimit) {
         const updated = await storage.updateWaituServiceDiscountLimit(serviceId, {
           defaultMaxDiscountPercentage,
@@ -10123,7 +10339,7 @@ This is a preview of the performance engagement contract. Final agreement will i
   app.delete('/api/individual-discount-permissions/:id', authenticateToken, requireRole([1]), async (req: Request, res: Response) => {
     try {
       const permissionId = parseInt(req.params.id);
-      
+
       const revoked = await storage.revokeIndividualDiscountPermission(permissionId);
       res.json(revoked);
     } catch (error) {
@@ -10133,24 +10349,24 @@ This is a preview of the performance engagement contract. Final agreement will i
   });
 
   // ==================== ENHANCED ARTIST/MUSICIAN PROFILES ====================
-  
+
   // Update musician
   app.patch("/api/musicians/:id", authenticateToken, requirePerm('upload_content'), validateParams(schemas.idParamSchema), async (req: Request, res: Response) => {
     try {
       const musicianId = parseInt(req.params.id);
       const updates = req.body;
-      
+
       // Ensure user can only update their own musician profile (unless admin)
       if (req.user?.roleId !== 1 && req.user?.roleId !== 2 && req.user?.userId !== musicianId) {
         return res.status(403).json({ message: "Access denied" });
       }
-      
+
       const updatedMusician = await storage.updateMusician(musicianId, updates);
-      
+
       if (!updatedMusician) {
         return res.status(404).json({ message: "Musician not found" });
       }
-      
+
       invalidateCache('musicians');
       res.json(updatedMusician);
     } catch (error) {
@@ -10164,18 +10380,18 @@ This is a preview of the performance engagement contract. Final agreement will i
     try {
       const professionalId = parseInt(req.params.id);
       const updates = req.body;
-      
+
       // Ensure user can only update their own professional profile (unless admin)
       if (req.user?.roleId !== 1 && req.user?.roleId !== 2 && req.user?.userId !== professionalId) {
         return res.status(403).json({ message: "Access denied" });
       }
-      
+
       const updatedProfessional = await storage.updateProfessional(professionalId, updates);
-      
+
       if (!updatedProfessional) {
         return res.status(404).json({ message: "Professional not found" });
       }
-      
+
       invalidateCache('professionals');
       res.json(updatedProfessional);
     } catch (error) {
@@ -10188,7 +10404,7 @@ This is a preview of the performance engagement contract. Final agreement will i
   app.get('/api/global-genres', async (req: Request, res: Response) => {
     try {
       const genres = await storage.getGlobalGenres();
-      
+
       // Group genres by category
       const categorizedGenres = genres.reduce((acc, genre) => {
         if (!acc[genre.category]) {
@@ -10197,7 +10413,7 @@ This is a preview of the performance engagement contract. Final agreement will i
         acc[genre.category].push(genre);
         return acc;
       }, {} as Record<string, typeof genres>);
-      
+
       res.json(categorizedGenres);
     } catch (error) {
       console.error('Get global genres error:', error);
@@ -10209,17 +10425,17 @@ This is a preview of the performance engagement contract. Final agreement will i
   app.post('/api/global-genres/custom', authenticateToken, async (req: Request, res: Response) => {
     try {
       const { category, name, description } = req.body;
-      
+
       if (!category || !name) {
         return res.status(400).json({ message: 'Category and name are required' });
       }
-      
+
       const customGenre = await storage.createGlobalGenre({
         category,
         name,
         description
       });
-      
+
       res.status(201).json(customGenre[0]);
     } catch (error) {
       console.error('Create custom genre error:', error);
@@ -10231,11 +10447,11 @@ This is a preview of the performance engagement contract. Final agreement will i
   app.get('/api/cross-upsell/:sourceType/:sourceId', async (req: Request, res: Response) => {
     try {
       const { sourceType, sourceId } = req.params;
-      
+
       if (!['song', 'album', 'merchandise'].includes(sourceType)) {
         return res.status(400).json({ message: 'Invalid source type' });
       }
-      
+
       const relationships = await storage.getCrossUpsellRelationships(sourceType, parseInt(sourceId));
       res.json(relationships);
     } catch (error) {
@@ -10248,11 +10464,11 @@ This is a preview of the performance engagement contract. Final agreement will i
   app.post('/api/cross-upsell', authenticateToken, requireRole([1, 2]), async (req: Request, res: Response) => {
     try {
       const { sourceType, sourceId, targetType, targetId, relationshipType, priority } = req.body;
-      
+
       if (!sourceType || !sourceId || !targetType || !targetId || !relationshipType) {
         return res.status(400).json({ message: 'Missing required fields' });
       }
-      
+
       const relationship = await storage.createCrossUpsellRelationship({
         sourceType,
         sourceId,
@@ -10261,7 +10477,7 @@ This is a preview of the performance engagement contract. Final agreement will i
         relationshipType,
         priority: priority || 1
       });
-      
+
       res.status(201).json(relationship);
     } catch (error) {
       console.error('Create cross-upsell relationship error:', error);
@@ -10274,13 +10490,13 @@ This is a preview of the performance engagement contract. Final agreement will i
     try {
       const userId = parseInt(req.params.id);
       const updates = req.body;
-      
+
       const updatedMusician = await storage.updateMusician(userId, updates);
-      
+
       if (!updatedMusician) {
         return res.status(404).json({ message: 'Musician not found' });
       }
-      
+
       res.json(updatedMusician);
     } catch (error) {
       console.error('Update musician error:', error);
@@ -10293,13 +10509,13 @@ This is a preview of the performance engagement contract. Final agreement will i
     try {
       const userId = parseInt(req.params.id);
       const { stageNames, primaryGenre, secondaryGenres, topGenres, socialMediaHandles } = req.body;
-      
+
       // Get user to determine role
       const user = await storage.getUser(userId);
       if (!user) {
         return res.status(404).json({ message: 'User not found' });
       }
-      
+
       // Update artist-specific data if user is an artist
       if (user.roleId === 3 || user.roleId === 4) {
         await storage.updateArtist(userId, {
@@ -10310,7 +10526,7 @@ This is a preview of the performance engagement contract. Final agreement will i
           socialMediaHandles: socialMediaHandles || []
         });
       }
-      
+
       // Update musician data if user is a musician or has musician secondary role
       if (user.roleId === 5 || user.roleId === 6 || user.secondaryRoles?.includes(5) || user.secondaryRoles?.includes(6)) {
         await storage.updateMusician(userId, {
@@ -10319,14 +10535,14 @@ This is a preview of the performance engagement contract. Final agreement will i
           socialMediaHandles: socialMediaHandles || []
         });
       }
-      
+
       // Update professional data if user is a professional or has professional secondary role
       if (user.roleId === 7 || user.roleId === 8 || user.secondaryRoles?.includes(7) || user.secondaryRoles?.includes(8)) {
         await storage.updateProfessional(userId, {
           socialMediaHandles: socialMediaHandles || []
         });
       }
-      
+
       res.json({ message: 'Enhanced profile updated successfully' });
     } catch (error) {
       console.error('Update enhanced profile error:', error);
@@ -10339,13 +10555,13 @@ This is a preview of the performance engagement contract. Final agreement will i
     try {
       const userId = parseInt(req.params.id);
       const updates = req.body;
-      
+
       const updatedProfessional = await storage.updateProfessional(userId, updates);
-      
+
       if (!updatedProfessional) {
         return res.status(404).json({ message: 'Professional not found' });
       }
-      
+
       res.json(updatedProfessional);
     } catch (error) {
       console.error('Update professional error:', error);
@@ -10368,18 +10584,18 @@ This is a preview of the performance engagement contract. Final agreement will i
   app.post('/api/global-professions', authenticateToken, async (req: Request, res: Response) => {
     try {
       const { name, category, description } = req.body;
-      
+
       if (!name || !category) {
         return res.status(400).json({ message: 'Name and category are required' });
       }
-      
+
       const profession = await storage.createGlobalProfession({
         name,
         category,
         description,
         isCustom: true
       });
-      
+
       res.status(201).json(profession);
     } catch (error) {
       console.error('Create global profession error:', error);
@@ -10403,17 +10619,17 @@ This is a preview of the performance engagement contract. Final agreement will i
   app.post('/api/professional-availability', authenticateToken, async (req: Request, res: Response) => {
     try {
       const availabilityData = req.body;
-      
+
       // Check if availability already exists
       const existing = await storage.getProfessionalAvailability(availabilityData.userId);
-      
+
       let result;
       if (existing) {
         result = await storage.updateProfessionalAvailability(availabilityData.userId, availabilityData);
       } else {
         result = await storage.createProfessionalAvailability(availabilityData);
       }
-      
+
       res.json(result);
     } catch (error) {
       console.error('Create/update professional availability error:', error);
@@ -10422,7 +10638,7 @@ This is a preview of the performance engagement contract. Final agreement will i
   });
 
   // ==================== MANAGEMENT APPLICATION SYSTEM ROUTES ====================
-  
+
   // Get management tiers for applications
   app.get('/api/management-tiers', async (req: Request, res: Response) => {
     try {
@@ -10436,13 +10652,13 @@ This is a preview of the performance engagement contract. Final agreement will i
       res.status(500).json({ message: 'Failed to fetch management tiers' });
     }
   });
-  
+
   // Get all management applications (superadmin/admin only)
   app.get('/api/management-applications', authenticateToken, requireRole([1, 2]), async (req: Request, res: Response) => {
     try {
       const currentUserId = req.user?.userId;
       const user = await storage.getUser(currentUserId || 0);
-      
+
       if (!user) {
         return res.status(404).json({ message: 'User not found' });
       }
@@ -10487,44 +10703,44 @@ This is a preview of the performance engagement contract. Final agreement will i
       res.status(500).json({ message: 'Failed to fetch management applications' });
     }
   });
-  
+
   // Submit management application (non-admin users applying to become Managed Artists)
   app.post('/api/management-applications', authenticateToken, async (req: Request, res: Response) => {
     try {
       const { requestedManagementTierId, applicationReason, businessPlan, expectedRevenue, portfolioLinks, socialMediaMetrics } = req.body;
       const currentUserId = req.user?.userId;
-      
+
       if (!currentUserId || !requestedManagementTierId || !applicationReason) {
         return res.status(400).json({ message: 'Missing required fields' });
       }
-      
+
       // Verify user is not already managed and not admin/superadmin
       const user = await storage.getUser(currentUserId);
       if (!user) {
         return res.status(404).json({ message: 'User not found' });
       }
-      
+
       if ([1, 2, 3, 5, 7].includes(user.roleId)) {
         return res.status(400).json({ message: 'User is already managed or has admin privileges' });
       }
-      
+
       // Check for existing pending applications
       const existingApplications = await storage.getManagementApplicationsByUser(currentUserId);
-      const hasPendingApplication = existingApplications.some(app => 
+      const hasPendingApplication = existingApplications.some(app =>
         ['pending', 'under_review', 'approved', 'contract_generated', 'awaiting_signatures', 'signed'].includes(app.status)
       );
-      
+
       if (hasPendingApplication) {
         return res.status(400).json({ message: 'You already have a pending management application' });
       }
-      
+
       // Get management tier info for contract terms
       const managementTiers = await storage.getManagementTiers();
       const tier = managementTiers.find(t => t.id === requestedManagementTierId);
       if (!tier) {
         return res.status(400).json({ message: 'Invalid management tier' });
       }
-      
+
       // Generate contract terms based on tier
       const isFullManagement = tier.name.toLowerCase().includes('full');
       const contractTerms = {
@@ -10554,7 +10770,7 @@ This is a preview of the performance engagement contract. Final agreement will i
           'Quarterly professional development sessions'
         ]
       };
-      
+
       const application = await storage.createManagementApplication({
         applicantUserId: currentUserId,
         requestedManagementTierId,
@@ -10565,14 +10781,14 @@ This is a preview of the performance engagement contract. Final agreement will i
         socialMediaMetrics,
         contractTerms
       });
-      
+
       res.status(201).json(application);
     } catch (error) {
       console.error('Create management application error:', error);
       res.status(500).json({ message: 'Failed to create management application' });
     }
   });
-  
+
   // Get management applications (admin/superadmin only)
   app.get('/api/management-applications', authenticateToken, requireRole([1, 2]), async (req: Request, res: Response) => {
     try {
@@ -10583,13 +10799,13 @@ This is a preview of the performance engagement contract. Final agreement will i
       res.status(500).json({ message: 'Failed to fetch management applications' });
     }
   });
-  
+
   // Get user's management applications
   app.get('/api/management-applications/user/:userId', authenticateToken, async (req: Request, res: Response) => {
     try {
       const userId = parseInt(req.params.userId);
       const currentUserId = req.user?.userId;
-      
+
       // Users can only view their own applications unless they're admin/superadmin
       if (currentUserId !== userId) {
         const user = await storage.getUser(currentUserId || 0);
@@ -10597,7 +10813,7 @@ This is a preview of the performance engagement contract. Final agreement will i
           return res.status(403).json({ message: "Insufficient permissions" });
         }
       }
-      
+
       const applications = await storage.getManagementApplicationsByUser(userId);
       res.json(applications);
     } catch (error) {
@@ -10605,24 +10821,24 @@ This is a preview of the performance engagement contract. Final agreement will i
       res.status(500).json({ message: 'Failed to fetch user management applications' });
     }
   });
-  
+
   // Review management application by assigned admin
   app.post('/api/management-applications/:id/review', authenticateToken, requireRole([1, 2]), async (req: Request, res: Response) => {
     try {
       const applicationId = parseInt(req.params.id);
       const { reviewStatus, reviewComments } = req.body;
       const currentUserId = req.user?.userId;
-      
+
       const application = await storage.getManagementApplication(applicationId);
       if (!application) {
         return res.status(404).json({ message: 'Management application not found' });
       }
-      
+
       // Get current user role to determine review type
       const user = await storage.getUser(currentUserId || 0);
       const roles = await storage.getRoles();
       const userRole = roles.find(role => role.id === user?.roleId);
-      
+
       // Create review record
       await storage.createManagementApplicationReview({
         applicationId,
@@ -10631,7 +10847,7 @@ This is a preview of the performance engagement contract. Final agreement will i
         reviewStatus,
         reviewComments
       });
-      
+
       // Update application status based on review
       let newStatus = application.status;
       if (reviewStatus === 'approved') {
@@ -10655,7 +10871,7 @@ This is a preview of the performance engagement contract. Final agreement will i
         });
         // Note: User role remains unchanged when application is declined
       }
-      
+
       res.json({ success: true, newStatus });
     } catch (error) {
       console.error('Review management application error:', error);
@@ -10668,12 +10884,12 @@ This is a preview of the performance engagement contract. Final agreement will i
     try {
       const applicationId = parseInt(req.params.id);
       const currentUserId = req.user?.userId;
-      
+
       const application = await storage.getManagementApplication(applicationId);
       if (!application) {
         return res.status(404).json({ message: 'Management application not found' });
       }
-      
+
       if (application.status !== 'approved') {
         return res.status(400).json({ message: 'Application must be approved before generating contract' });
       }
@@ -10690,7 +10906,7 @@ This is a preview of the performance engagement contract. Final agreement will i
       if (!tier) {
         return res.status(404).json({ message: 'Management tier not found' });
       }
-      
+
       // Update status to contract_generated
       await storage.updateManagementApplication(applicationId, {
         status: 'contract_generated'
@@ -10700,16 +10916,16 @@ This is a preview of the performance engagement contract. Final agreement will i
       let contractType: ContractData['contractType'];
       let professionalType: string | undefined;
       let serviceCategory: string | undefined;
-      
+
       if (applicant.roleId === 7 || applicant.roleId === 8) { // Managed or Independent Professional
         contractType = 'professional_services';
         const professional = await storage.getProfessional(applicant.id);
         if (professional?.specializations && professional.specializations.length > 0) {
           serviceCategory = professional.specializations[0];
           professionalType = serviceCategory.toLowerCase().includes('legal') ? 'legal' :
-                           serviceCategory.toLowerCase().includes('marketing') ? 'marketing' :
-                           serviceCategory.toLowerCase().includes('financial') ? 'financial' :
-                           serviceCategory.toLowerCase().includes('brand') ? 'brand' : 'business';
+            serviceCategory.toLowerCase().includes('marketing') ? 'marketing' :
+              serviceCategory.toLowerCase().includes('financial') ? 'financial' :
+                serviceCategory.toLowerCase().includes('brand') ? 'brand' : 'business';
         }
       } else {
         contractType = getContractTypeFromTier(application.requestedManagementTierId);
@@ -10725,10 +10941,10 @@ This is a preview of the performance engagement contract. Final agreement will i
         serviceCategory,
         artistPRO: undefined, // Could be enhanced with PRO data
         artistIPI: undefined, // Could be enhanced with IPI data
-        contractDate: new Date().toLocaleDateString('en-US', { 
-          year: 'numeric', 
-          month: 'long', 
-          day: 'numeric' 
+        contractDate: new Date().toLocaleDateString('en-US', {
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric'
         }),
         termLength: '1 year',
         ...getTierCommissions(application.requestedManagementTierId)
@@ -10736,9 +10952,9 @@ This is a preview of the performance engagement contract. Final agreement will i
 
       // Check if applicant has assigned lawyer
       const assignedLawyer = await storage.getAssignedLawyer(application.applicantUserId, 'management_contract');
-      
-      res.json({ 
-        success: true, 
+
+      res.json({
+        success: true,
         contractGenerated: true,
         contractData,
         tierName: tier.name,
@@ -10758,12 +10974,12 @@ This is a preview of the performance engagement contract. Final agreement will i
   app.get('/api/management-applications/:id/contract-pdf', authenticateToken, requireRole([1]), async (req: Request, res: Response) => {
     try {
       const applicationId = parseInt(req.params.id);
-      
+
       const application = await storage.getManagementApplication(applicationId);
       if (!application) {
         return res.status(404).json({ message: 'Management application not found' });
       }
-      
+
       if (!['contract_generated', 'awaiting_signatures', 'signed'].includes(application.status)) {
         return res.status(400).json({ message: 'Contract not generated yet' });
       }
@@ -10785,16 +11001,16 @@ This is a preview of the performance engagement contract. Final agreement will i
       let contractType: ContractData['contractType'];
       let professionalType: string | undefined;
       let serviceCategory: string | undefined;
-      
+
       if (applicant.roleId === 7 || applicant.roleId === 8) { // Managed or Independent Professional
         contractType = 'professional_services';
         const professional = await storage.getProfessional(applicant.id);
         if (professional?.specializations && professional.specializations.length > 0) {
           serviceCategory = professional.specializations[0];
           professionalType = serviceCategory.toLowerCase().includes('legal') ? 'legal' :
-                           serviceCategory.toLowerCase().includes('marketing') ? 'marketing' :
-                           serviceCategory.toLowerCase().includes('financial') ? 'financial' :
-                           serviceCategory.toLowerCase().includes('brand') ? 'brand' : 'business';
+            serviceCategory.toLowerCase().includes('marketing') ? 'marketing' :
+              serviceCategory.toLowerCase().includes('financial') ? 'financial' :
+                serviceCategory.toLowerCase().includes('brand') ? 'brand' : 'business';
         }
       } else {
         contractType = getContractTypeFromTier(application.requestedManagementTierId);
@@ -10808,10 +11024,10 @@ This is a preview of the performance engagement contract. Final agreement will i
         artistAddress: 'Address on file',
         professionalType,
         serviceCategory,
-        contractDate: new Date().toLocaleDateString('en-US', { 
-          year: 'numeric', 
-          month: 'long', 
-          day: 'numeric' 
+        contractDate: new Date().toLocaleDateString('en-US', {
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric'
         }),
         termLength: '1 year',
         ...getTierCommissions(application.requestedManagementTierId)
@@ -10819,16 +11035,16 @@ This is a preview of the performance engagement contract. Final agreement will i
 
       // Generate PDF using real contract templates
       const doc = generateContract(contractData);
-      
+
       // Set response headers for PDF download
       const filename = `${tier.name}_Contract_${applicant.fullName.replace(/\s+/g, '_')}_${new Date().toISOString().split('T')[0]}.pdf`;
       res.setHeader('Content-Type', 'application/pdf');
       res.setHeader('Content-Disposition', `attachment; filename="${filename}"`);
-      
+
       // Pipe the PDF to the response
       doc.pipe(res);
       doc.end();
-      
+
     } catch (error) {
       console.error('Download contract PDF error:', error);
       res.status(500).json({ message: 'Failed to generate contract PDF' });
@@ -10841,28 +11057,28 @@ This is a preview of the performance engagement contract. Final agreement will i
       const applicationId = parseInt(req.params.id);
       const { signatureData, signerRole } = req.body;
       const currentUserId = req.user?.userId;
-      
+
       const application = await storage.getManagementApplication(applicationId);
       if (!application) {
         return res.status(404).json({ message: 'Management application not found' });
       }
-      
+
       if (!['contract_generated', 'awaiting_signatures'].includes(application.status)) {
         return res.status(400).json({ message: 'Contract not ready for signing' });
       }
-      
+
       // Validate signer permissions
       const user = await storage.getUser(currentUserId || 0);
       const roles = await storage.getRoles();
       const userRole = roles.find(role => role.id === user?.roleId);
-      
+
       let validSignerRole = false;
       if (signerRole === 'applicant' && currentUserId === application.applicantUserId) {
         validSignerRole = true;
       } else if (signerRole === 'assigned_admin' && user?.roleId === 2) {
         // Verify admin is assigned to this user
         const adminAssignments = await storage.getAdminAssignments();
-        const isAssigned = adminAssignments.some(a => 
+        const isAssigned = adminAssignments.some(a =>
           a.adminUserId === currentUserId && a.managedUserId === application.applicantUserId
         );
         validSignerRole = isAssigned;
@@ -10873,11 +11089,11 @@ This is a preview of the performance engagement contract. Final agreement will i
       } else if (signerRole === 'superadmin' && user?.roleId === 1) {
         validSignerRole = true;
       }
-      
+
       if (!validSignerRole) {
         return res.status(403).json({ message: 'Insufficient permissions to sign as this role' });
       }
-      
+
       // Create signature record
       await storage.createManagementApplicationSignature({
         applicationId,
@@ -10888,23 +11104,23 @@ This is a preview of the performance engagement contract. Final agreement will i
         ipAddress: req.ip,
         userAgent: req.get('User-Agent')
       });
-      
+
       // Check if all required signatures are present
       const signatures = await storage.getManagementApplicationSignatures(applicationId);
       const hasApplicantSignature = signatures.some(s => s.signerRole === 'applicant');
       const hasAdminSignature = signatures.some(s => s.signerRole === 'assigned_admin');
       const hasSuperadminSignature = signatures.some(s => s.signerRole === 'superadmin');
-      
+
       // Optional lawyer signature (only required if lawyer is assigned)
       const assignedLawyer = await storage.getAssignedLawyer(application.applicantUserId, 'management_contract');
       const hasLawyerSignature = !assignedLawyer || signatures.some(s => s.signerRole === 'lawyer');
-      
+
       let newStatus = application.status;
       if (hasApplicantSignature && hasAdminSignature && hasLawyerSignature && !hasSuperadminSignature) {
         newStatus = 'awaiting_signatures'; // Waiting for superadmin final approval
       } else if (hasApplicantSignature && hasAdminSignature && hasLawyerSignature && hasSuperadminSignature) {
         newStatus = 'completed';
-        
+
         // Execute role transition
         const applicant = await storage.getUser(application.applicantUserId);
         if (applicant) {
@@ -10919,9 +11135,9 @@ This is a preview of the performance engagement contract. Final agreement will i
             reason: `Management contract signed and completed - transition to Managed Artist status with tier ${application.requestedManagementTierId}`,
             effectiveDate: new Date()
           });
-          
+
           await storage.updateUser(application.applicantUserId, { roleId: 3 });
-          
+
           const existingArtist = await storage.getArtist(application.applicantUserId);
           if (existingArtist) {
             await storage.updateArtist(application.applicantUserId, {
@@ -10942,16 +11158,16 @@ This is a preview of the performance engagement contract. Final agreement will i
           }
         }
       }
-      
+
       // Update application status
       await storage.updateManagementApplication(applicationId, {
         status: newStatus,
         signedAt: newStatus === 'completed' ? new Date() : undefined,
         completedAt: newStatus === 'completed' ? new Date() : undefined
       });
-      
-      res.json({ 
-        success: true, 
+
+      res.json({
+        success: true,
         newStatus,
         allSignaturesComplete: newStatus === 'completed'
       });
@@ -10966,17 +11182,17 @@ This is a preview of the performance engagement contract. Final agreement will i
     try {
       const { clientUserId, lawyerUserId, assignmentType } = req.body;
       const currentUserId = req.user?.userId;
-      
+
       if (!clientUserId || !lawyerUserId || !assignmentType) {
         return res.status(400).json({ message: 'Missing required fields' });
       }
-      
+
       // Verify lawyer is actually a professional
       const lawyer = await storage.getProfessional(lawyerUserId);
       if (!lawyer) {
         return res.status(400).json({ message: 'Lawyer must be a registered professional' });
       }
-      
+
       // Deactivate any existing assignments of the same type
       const existingAssignments = await storage.getLegalAssignments(clientUserId);
       for (const assignment of existingAssignments) {
@@ -10984,14 +11200,14 @@ This is a preview of the performance engagement contract. Final agreement will i
           await storage.updateUser(assignment.id, { isActive: false });
         }
       }
-      
+
       const assignment = await storage.createLegalAssignment({
         clientUserId,
         lawyerUserId,
         assignmentType,
         assignedByUserId: currentUserId || 0
       });
-      
+
       res.status(201).json(assignment);
     } catch (error) {
       console.error('Create legal assignment error:', error);
@@ -11016,17 +11232,17 @@ This is a preview of the performance engagement contract. Final agreement will i
       const applicationId = parseInt(req.params.id);
       const { lawyerUserId, assignmentRole, authorityLevel, canSignContracts, canModifyTerms, canFinalizeAgreements, overrideConflict } = req.body;
       const currentUserId = req.user?.userId;
-      
+
       if (!lawyerUserId || !assignmentRole || !authorityLevel) {
         return res.status(400).json({ message: 'Missing required fields' });
       }
-      
+
       // Verify application exists
       const application = await storage.getManagementApplication(applicationId);
       if (!application) {
         return res.status(404).json({ message: 'Management application not found' });
       }
-      
+
       // Verify user is a professional
       const professional = await storage.getProfessional(lawyerUserId);
       if (!professional) {
@@ -11035,9 +11251,9 @@ This is a preview of the performance engagement contract. Final agreement will i
 
       // Check for conflict of interest
       const conflictCheck = await storage.checkLegalConflictOfInterest(lawyerUserId);
-      
+
       if (conflictCheck.hasConflict && !overrideConflict) {
-        return res.status(409).json({ 
+        return res.status(409).json({
           message: 'Conflict of interest detected',
           conflictDetails: conflictCheck.conflictDetails,
           requiresOverride: true
@@ -11048,7 +11264,7 @@ This is a preview of the performance engagement contract. Final agreement will i
       if (conflictCheck.hasConflict && overrideConflict) {
         console.warn(`CONFLICT OVERRIDE: Superadmin ${currentUserId} assigned professional ${lawyerUserId} despite conflicts:`, conflictCheck.conflictDetails);
       }
-      
+
       // Create assignment
       const assignment = await storage.createApplicationLegalAssignment({
         applicationId,
@@ -11060,8 +11276,8 @@ This is a preview of the performance engagement contract. Final agreement will i
         canFinalizeAgreements: !!canFinalizeAgreements,
         assignedByUserId: currentUserId || 0
       });
-      
-      res.status(201).json({ 
+
+      res.status(201).json({
         assignment,
         conflictOverridden: conflictCheck.hasConflict && overrideConflict,
         conflictDetails: conflictCheck.hasConflict ? conflictCheck.conflictDetails : undefined
@@ -11076,9 +11292,9 @@ This is a preview of the performance engagement contract. Final agreement will i
   app.get('/api/management-applications/:id/lawyers', authenticateToken, requireRole([1, 2]), async (req: Request, res: Response) => {
     try {
       const applicationId = parseInt(req.params.id);
-      
+
       const assignments = await storage.getApplicationLegalAssignments(applicationId);
-      
+
       // Enrich with lawyer details
       const enrichedAssignments = await Promise.all(
         assignments.map(async (assignment) => {
@@ -11092,7 +11308,7 @@ This is a preview of the performance engagement contract. Final agreement will i
           };
         })
       );
-      
+
       res.json(enrichedAssignments);
     } catch (error) {
       console.error('Get application lawyers error:', error);
@@ -11104,22 +11320,22 @@ This is a preview of the performance engagement contract. Final agreement will i
   app.delete('/api/application-legal-assignments/:id', authenticateToken, requireRole([1]), async (req: Request, res: Response) => {
     try {
       const assignmentId = parseInt(req.params.id);
-      
+
       await storage.removeApplicationLegalAssignment(assignmentId);
-      
+
       res.json({ success: true });
     } catch (error) {
       console.error('Remove application lawyer assignment error:', error);
       res.status(500).json({ message: 'Failed to remove lawyer assignment' });
     }
   });
-  
+
   // Get service discount for user (includes management tier defaults and overrides)
   app.get('/api/service-discounts/user/:userId', authenticateToken, async (req: Request, res: Response) => {
     try {
       const userId = parseInt(req.params.userId);
       const currentUserId = req.user?.userId;
-      
+
       // Users can only view their own discounts unless they're admin/superadmin
       if (currentUserId !== userId) {
         const user = await storage.getUser(currentUserId || 0);
@@ -11127,10 +11343,10 @@ This is a preview of the performance engagement contract. Final agreement will i
           return res.status(403).json({ message: "Insufficient permissions" });
         }
       }
-      
+
       const maxDiscount = await storage.getMaxDiscountForUser(userId);
       const overrides = await storage.getServiceDiscountOverrides(userId);
-      
+
       res.json({
         maxDiscountPercentage: maxDiscount,
         discountOverrides: overrides
@@ -11140,20 +11356,20 @@ This is a preview of the performance engagement contract. Final agreement will i
       res.status(500).json({ message: 'Failed to fetch service discounts' });
     }
   });
-  
+
   // Create service discount override (superadmin only)
   app.post('/api/service-discounts/override', authenticateToken, requireRole([1]), async (req: Request, res: Response) => {
     try {
       const { userId, serviceId, userServiceId, overrideDiscountPercentage, overrideReason } = req.body;
       const currentUserId = req.user?.userId;
-      
+
       if (!userId || overrideDiscountPercentage === undefined || !overrideReason) {
         return res.status(400).json({ message: 'Missing required fields' });
       }
-      
+
       // Get user's current max discount for validation
       const currentMaxDiscount = await storage.getMaxDiscountForUser(userId);
-      
+
       const override = await storage.createServiceDiscountOverride({
         userId,
         serviceId,
@@ -11163,7 +11379,7 @@ This is a preview of the performance engagement contract. Final agreement will i
         overrideReason,
         authorizedByUserId: currentUserId || 0
       });
-      
+
       res.status(201).json(override);
     } catch (error) {
       console.error('Create service discount override error:', error);
@@ -11186,15 +11402,15 @@ This is a preview of the performance engagement contract. Final agreement will i
     try {
       const { name, items, stageWidth, stageHeight, bookingId } = req.body;
       const user = req.user;
-      
+
       console.log('Stage plot save - User object:', user);
       console.log('Stage plot save - Request headers:', req.headers.authorization);
-      
+
       if (!user || !user.userId) {
         console.log('Authentication failed - user or user.userId missing');
         return res.status(401).json({ message: 'User authentication required' });
       }
-      
+
       const stagePlotData = {
         name: name || 'Untitled Stage Plot',
         items: items || [],
@@ -11203,7 +11419,7 @@ This is a preview of the performance engagement contract. Final agreement will i
         bookingId: bookingId || null,
         createdBy: user.userId
       };
-      
+
       console.log('Creating stage plot with user ID:', user.userId);
       const stagePlot = await storage.createStagePlot(stagePlotData);
       res.status(201).json(stagePlot);
@@ -11217,7 +11433,7 @@ This is a preview of the performance engagement contract. Final agreement will i
     try {
       const id = parseInt(req.params.id);
       const user = req.user!;
-      
+
       // Only superadmin can delete stage plots
       if (user.roleId !== 1) {
         return res.status(403).json({ message: 'Only superadmins can delete stage plots' });
@@ -11232,7 +11448,7 @@ This is a preview of the performance engagement contract. Final agreement will i
   });
 
   // Performance Rate Management API endpoints
-  
+
   // Set performance rate for assigned musician
   app.post('/api/bookings/:bookingId/musicians/:musicianId/set-rate', authenticateToken, requireRole([1, 2]), async (req: Request, res: Response) => {
     try {
@@ -11251,8 +11467,8 @@ This is a preview of the performance engagement contract. Final agreement will i
       );
 
       if (result) {
-        res.json({ 
-          message: 'Performance rate set successfully', 
+        res.json({
+          message: 'Performance rate set successfully',
           result,
           details: {
             originalAmount: originalAmount,
@@ -11302,8 +11518,8 @@ This is a preview of the performance engagement contract. Final agreement will i
       );
 
       if (result) {
-        res.json({ 
-          message: 'Response recorded successfully', 
+        res.json({
+          message: 'Response recorded successfully',
           result,
           counterOffer: result.counterOffer
         });
@@ -11339,7 +11555,7 @@ This is a preview of the performance engagement contract. Final agreement will i
   app.post('/api/chords/generate', authenticateToken, async (req: Request, res: Response) => {
     try {
       const { setlistSongId, instrument, audioSource, sourceType } = req.body;
-      
+
       if (!instrument || !audioSource) {
         return res.status(400).json({ message: "Instrument and audio source are required" });
       }
@@ -11380,7 +11596,7 @@ This is a preview of the performance engagement contract. Final agreement will i
         if (instrumentKey === 'drums') {
           return chordProgressions.drums.basic;
         }
-        
+
         const progressions = chordProgressions[instrumentKey] || chordProgressions.guitar;
         return progressions[songKey] || progressions['C Major'];
       };
@@ -11434,7 +11650,7 @@ This is a preview of the performance engagement contract. Final agreement will i
 
     } catch (error) {
       console.error('Chord generation error:', error);
-      res.status(500).json({ 
+      res.status(500).json({
         message: "Failed to generate chord chart",
         error: error instanceof Error ? error.message : 'Unknown error'
       });
@@ -11445,7 +11661,7 @@ This is a preview of the performance engagement contract. Final agreement will i
   app.get('/api/setlist-songs/:songId/chords', authenticateToken, async (req: Request, res: Response) => {
     try {
       const songId = parseInt(req.params.songId);
-      
+
       // For now, return empty array since chords are stored in song generatedChords field
       // In a real implementation, this would query a chord_progressions table
       res.json([]);
@@ -11461,7 +11677,7 @@ This is a preview of the performance engagement contract. Final agreement will i
       // TODO: Implement file upload with multer
       // For now, simulate successful upload
       const simulatedFileId = Math.floor(Math.random() * 10000) + 1000;
-      
+
       res.json({
         success: true,
         message: 'Audio file uploaded successfully',
@@ -11484,7 +11700,7 @@ This is a preview of the performance engagement contract. Final agreement will i
     try {
       const bookingId = parseInt(req.params.bookingId);
       const setlist = await storage.getSetlist(bookingId);
-      
+
       if (setlist) {
         res.json(setlist);
       } else {
@@ -11517,10 +11733,10 @@ This is a preview of the performance engagement contract. Final agreement will i
   app.get('/api/bookings/:bookingId/setlist/pdf', authenticateToken, async (req: Request, res: Response) => {
     try {
       const bookingId = parseInt(req.params.bookingId);
-      
+
       // Get setlist data - always check for saved setlist first
       let setlist = await storage.getSetlist(bookingId);
-      
+
       if (!setlist || !setlist.songs || setlist.songs.length === 0) {
         // If no setlist in database, create a demo one for PDF generation
         console.log('No setlist found in database, creating demo setlist');
@@ -11577,19 +11793,19 @@ This is a preview of the performance engagement contract. Final agreement will i
       // Generate PDF using PDFKit
       const { default: PDFDocument } = await import('pdfkit');
       const doc = new PDFDocument();
-      
+
       // Set response headers for PDF download
       const filename = `Setlist_${setlist.name.replace(/\s+/g, '_')}.pdf`;
       res.setHeader('Content-Type', 'application/pdf');
       res.setHeader('Content-Disposition', `attachment; filename="${filename}"`);
-      
+
       // Pipe PDF to response
       doc.pipe(res);
-      
+
       // Generate setlist content
       doc.fontSize(20).text('Performance Setlist', { align: 'center' });
       doc.moveDown();
-      
+
       doc.fontSize(16).text(setlist.name, { align: 'center' });
       if (setlist.description) {
         doc.fontSize(12).text(setlist.description, { align: 'center' });
@@ -11603,7 +11819,7 @@ This is a preview of the performance engagement contract. Final agreement will i
         const tableLeft = 50;
         const tableWidth = 500;
         const rowHeight = 25;
-        
+
         // Column widths (proportional)
         const colWidths = {
           order: 40,
@@ -11614,14 +11830,14 @@ This is a preview of the performance engagement contract. Final agreement will i
           time: 45,
           duration: 65
         };
-        
+
         // Table header
         doc.fontSize(10).fillColor('black');
         let currentY = tableTop;
-        
+
         // Draw header background
         doc.rect(tableLeft, currentY, tableWidth, rowHeight).fillAndStroke('#f0f0f0', '#000');
-        
+
         // Header text
         doc.fillColor('black');
         let currentX = tableLeft + 5;
@@ -11638,9 +11854,9 @@ This is a preview of the performance engagement contract. Final agreement will i
         doc.text('Time', currentX, currentY + 8, { width: colWidths.time - 5 });
         currentX += colWidths.time;
         doc.text('Duration', currentX, currentY + 8, { width: colWidths.duration - 5 });
-        
+
         currentY += rowHeight;
-        
+
         // Table rows
         setlist.songs.forEach((song: any, index: number) => {
           // Check if we need a new page
@@ -11648,122 +11864,122 @@ This is a preview of the performance engagement contract. Final agreement will i
             doc.addPage();
             currentY = 50;
           }
-          
+
           // Row background (alternating colors)
           const bgColor = index % 2 === 0 ? '#ffffff' : '#f9f9f9';
           doc.rect(tableLeft, currentY, tableWidth, rowHeight).fillAndStroke(bgColor, '#ddd');
-          
+
           // Row text
           doc.fillColor('black');
           currentX = tableLeft + 5;
-          
+
           // Order
           doc.text(`${song.orderPosition || index + 1}`, currentX, currentY + 8, { width: colWidths.order - 5 });
           currentX += colWidths.order;
-          
+
           // Title
           doc.text(song.songTitle || '', currentX, currentY + 8, { width: colWidths.title - 5 });
           currentX += colWidths.title;
-          
+
           // Artist
           doc.text(song.artistPerformer || '', currentX, currentY + 8, { width: colWidths.artist - 5 });
           currentX += colWidths.artist;
-          
+
           // Key
           doc.text(song.keySignature || '', currentX, currentY + 8, { width: colWidths.key - 5 });
           currentX += colWidths.key;
-          
+
           // Tempo
           doc.text(song.tempo ? `${song.tempo}` : '', currentX, currentY + 8, { width: colWidths.tempo - 5 });
           currentX += colWidths.tempo;
-          
+
           // Time Signature
           doc.text(song.timeSignature || '', currentX, currentY + 8, { width: colWidths.time - 5 });
           currentX += colWidths.time;
-          
+
           // Duration
           if (song.duration) {
             const mins = Math.floor(song.duration / 60);
             const secs = song.duration % 60;
             doc.text(`${mins}:${secs.toString().padStart(2, '0')}`, currentX, currentY + 8, { width: colWidths.duration - 5 });
           }
-          
+
           currentY += rowHeight;
         });
-        
+
         // Add total duration row below the table
         currentY += 5; // Small gap after table
         const totalDuration = setlist.songs.reduce((total: number, song: any) => total + (song.duration || 0), 0);
         const totalMins = Math.floor(totalDuration / 60);
         const totalSecs = totalDuration % 60;
-        
+
         // Draw total duration row with two cells
         const totalRowHeight = 25;
-        
+
         // Left cell - "Total Duration" label
         const labelCellWidth = tableWidth - colWidths.duration;
         doc.rect(tableLeft, currentY, labelCellWidth, totalRowHeight).fillAndStroke('#f0f0f0', '#000');
         doc.fontSize(11).fillColor('black');
         doc.text('Total Duration', tableLeft + 5, currentY + 8, { width: labelCellWidth - 10 });
-        
+
         // Right cell - Duration value (aligned with duration column)
         const durationCellLeft = tableLeft + labelCellWidth;
         doc.rect(durationCellLeft, currentY, colWidths.duration, totalRowHeight).fillAndStroke('#f0f0f0', '#000');
         doc.fontSize(11).fillColor('black');
-        doc.text(`${totalMins}:${totalSecs.toString().padStart(2, '0')}`, durationCellLeft + 5, currentY + 8, { 
-          width: colWidths.duration - 10 
+        doc.text(`${totalMins}:${totalSecs.toString().padStart(2, '0')}`, durationCellLeft + 5, currentY + 8, {
+          width: colWidths.duration - 10
         });
-        
+
         currentY += totalRowHeight + 15; // Add space after total row
-        
+
         // Check if user is superadmin (roleId === 1) and add additional information on separate page
         const user = req.user;
         const isSuperadmin = user && user.role === 'superadmin';
-        
+
         if (isSuperadmin) {
           // Check if any songs have additional information
-          const songsWithAdditionalInfo = setlist.songs.filter((song: any) => 
-            (song.songwriters && song.songwriters.length > 0) || 
+          const songsWithAdditionalInfo = setlist.songs.filter((song: any) =>
+            (song.songwriters && song.songwriters.length > 0) ||
             (song.publishers && song.publishers.length > 0) ||
             song.isrc ||
             song.youtubeLink ||
             song.uploadedTrackId
           );
-          
+
           if (songsWithAdditionalInfo.length > 0) {
             // Add new page for additional information
             doc.addPage();
-            
+
             // Title for additional info page
             doc.fontSize(16).text('Additional Information (Superadmin Only)', { align: 'center' });
             doc.moveDown(2);
-            
+
             // Create table for additional information
             const additionalTableTop = doc.y;
             const additionalTableLeft = 50;
             const additionalTableWidth = 500;
             const additionalRowHeight = 30;
-            
+
             // Column widths for additional info table
             const additionalColWidths = {
               songInfo: 200,
               additionalInfo: 300
             };
-            
+
             // Additional info table header
             doc.fontSize(10).fillColor('black');
             let additionalY = additionalTableTop;
-            
+
             // Draw header background
             doc.rect(additionalTableLeft, additionalY, additionalTableWidth, additionalRowHeight).fillAndStroke('#f0f0f0', '#000');
-            
+
             // Header text
             doc.fillColor('black');
             doc.text('Song & Artist', additionalTableLeft + 5, additionalY + 10, { width: additionalColWidths.songInfo - 5 });
             doc.text('Additional Information', additionalTableLeft + additionalColWidths.songInfo + 5, additionalY + 10, { width: additionalColWidths.additionalInfo - 5 });
-            
+
             additionalY += additionalRowHeight;
-            
+
             // Additional info table rows
             songsWithAdditionalInfo.forEach((song: any, index: number) => {
               // Check if we need a new page
@@ -11771,49 +11987,49 @@ This is a preview of the performance engagement contract. Final agreement will i
                 doc.addPage();
                 additionalY = 50;
               }
-              
+
               // Row background (alternating colors)
               const bgColor = index % 2 === 0 ? '#ffffff' : '#f9f9f9';
               doc.rect(additionalTableLeft, additionalY, additionalTableWidth, additionalRowHeight).fillAndStroke(bgColor, '#ddd');
-              
+
               // Song info column
               doc.fillColor('black');
               const songInfo = `${song.orderPosition || index + 1}. ${song.songTitle}\nby ${song.artistPerformer}`;
-              doc.text(songInfo, additionalTableLeft + 5, additionalY + 5, { 
+              doc.text(songInfo, additionalTableLeft + 5, additionalY + 5, {
                 width: additionalColWidths.songInfo - 10,
-                height: additionalRowHeight - 10 
+                height: additionalRowHeight - 10
               });
-              
+
               // Additional info column
               let additionalInfo = [];
-              
+
               if (song.isrc) {
                 additionalInfo.push(`ISRC: ${song.isrc}`);
               }
-              
+
               if (song.songwriters && song.songwriters.length > 0) {
                 const writers = song.songwriters.map((w: any) => `${w.name} (${w.role})`).join(', ');
                 additionalInfo.push(`Writers: ${writers}`);
               }
-              
+
               if (song.publishers && song.publishers.length > 0) {
                 const pubs = song.publishers.map((p: any) => `${p.name} (${p.split}%)`).join(', ');
                 additionalInfo.push(`Publishers: ${pubs}`);
               }
-              
+
               if (song.youtubeLink) {
                 additionalInfo.push(`YouTube: Available`);
               }
-              
+
               if (song.uploadedTrackId) {
                 additionalInfo.push(`Audio: Uploaded (ID: ${song.uploadedTrackId})`);
               }
-              
-              doc.text(additionalInfo.join('\n'), additionalTableLeft + additionalColWidths.songInfo + 5, additionalY + 5, { 
+
+              doc.text(additionalInfo.join('\n'), additionalTableLeft + additionalColWidths.songInfo + 5, additionalY + 5, {
                 width: additionalColWidths.additionalInfo - 10,
-                height: additionalRowHeight - 10 
+                height: additionalRowHeight - 10
               });
-              
+
               additionalY += additionalRowHeight;
             });
           }
@@ -11827,20 +12043,20 @@ This is a preview of the performance engagement contract. Final agreement will i
       const footerLeft = 50; // Left margin
       const footerWidth = doc.page.width - 100; // Full width minus margins
       const footerHeight = 25;
-      
+
       // Draw footer background cell with border
       doc.rect(footerLeft, footerY, footerWidth, footerHeight).fillAndStroke('#f8f9fa', '#ddd');
-      
+
       // Footer text - ensure it stays within the cell
       const footerText = `Generated on ${new Date().toLocaleString()} - Wai'tuMusic Platform - Professional Music Management`;
       doc.fontSize(9).fillColor('#666666');
-      doc.text(footerText, footerLeft + 5, footerY + 8, { 
+      doc.text(footerText, footerLeft + 5, footerY + 8, {
         width: footerWidth - 10, // Ensure text fits within cell margins
         height: footerHeight - 10, // Constrain text height
         align: 'center',
         lineBreak: false // Prevent text wrapping
       });
-      
+
       // Finalize the PDF
       doc.end();
 
@@ -11865,15 +12081,15 @@ This is a preview of the performance engagement contract. Final agreement will i
     try {
       const { name, rows, bookingId } = req.body;
       const user = req.user;
-      
+
       console.log('Mixer patch save - User object:', user);
       console.log('Mixer patch save - Request headers:', req.headers.authorization);
-      
+
       if (!user || !user.userId) {
         console.log('Authentication failed - user or user.userId missing');
         return res.status(401).json({ message: 'User authentication required' });
       }
-      
+
       // Clean data and ensure proper types
       const patchListData = {
         name: name || 'Untitled Mixer Patch List',
@@ -11882,7 +12098,7 @@ This is a preview of the performance engagement contract. Final agreement will i
         createdBy: user.userId,
         // Don't pass timestamp fields - let database handle defaults
       };
-      
+
       console.log('Creating mixer patch list with data:', patchListData);
       const patchList = await storage.createMixerPatchList(patchListData);
       res.status(201).json(patchList);
@@ -11896,7 +12112,7 @@ This is a preview of the performance engagement contract. Final agreement will i
     try {
       const id = parseInt(req.params.id);
       const user = req.user!;
-      
+
       // Only superadmin can delete patch lists
       if (user.roleId !== 1) {
         return res.status(403).json({ message: 'Only superadmins can delete mixer patch lists' });
@@ -11925,19 +12141,19 @@ This is a preview of the performance engagement contract. Final agreement will i
     try {
       const { name, description, songs } = req.body;
       const user = req.user;
-      
+
       console.log('Setlist template save - User object:', user);
-      
+
       if (!user || !user.userId) {
         console.log('Authentication failed - user or user.userId missing');
         return res.status(401).json({ message: 'User authentication required' });
       }
-      
+
       // Calculate total duration
       const totalDuration = songs.reduce((acc: number, song: any) => {
         return acc + (song.duration || 0);
       }, 0);
-      
+
       const templateData = {
         name: name || 'Untitled Setlist Template',
         description: description || '',
@@ -11945,7 +12161,7 @@ This is a preview of the performance engagement contract. Final agreement will i
         totalDuration,
         createdBy: user.userId,
       };
-      
+
       console.log('Creating setlist template with data:', templateData);
       const template = await storage.createSetlistTemplate(templateData);
       res.status(201).json(template);
@@ -11959,13 +12175,13 @@ This is a preview of the performance engagement contract. Final agreement will i
     try {
       const id = parseInt(req.params.id);
       const user = req.user!;
-      
+
       // Check if user owns the template or is superadmin/admin
       const template = await storage.getSetlistTemplate(id);
       if (!template) {
         return res.status(404).json({ message: 'Template not found' });
       }
-      
+
       if (template.createdBy !== user.userId && ![1, 2].includes(user.roleId)) {
         return res.status(403).json({ message: 'Can only delete your own templates' });
       }
@@ -11989,7 +12205,7 @@ This is a preview of the performance engagement contract. Final agreement will i
     try {
       const bookingId = parseInt(req.params.id);
       const user = req.user!;
-      
+
       // Check if user has permission to view invoice previews
       console.log('User roleId for invoice preview:', user.roleId, 'User:', user);
       if (![1, 2].includes(user.roleId)) {
@@ -11997,7 +12213,7 @@ This is a preview of the performance engagement contract. Final agreement will i
       }
 
       const preview = await financialAutomation.generateInvoicePreview(bookingId);
-      
+
       res.json(preview);
     } catch (error) {
       console.error('Invoice preview error:', error);
@@ -12010,18 +12226,18 @@ This is a preview of the performance engagement contract. Final agreement will i
     try {
       const bookingId = parseInt(req.params.id);
       const user = req.user!;
-      
+
       // Check if user has permission to create proforma invoices
       if (![1, 2].includes(user.roleId)) {
         return res.status(403).json({ message: "Insufficient permissions to create proforma invoices" });
       }
 
       const invoiceId = await financialAutomation.createProformaInvoice(bookingId, user.userId);
-      
-      res.json({ 
-        success: true, 
+
+      res.json({
+        success: true,
         invoiceId,
-        message: "Proforma invoice created successfully" 
+        message: "Proforma invoice created successfully"
       });
     } catch (error) {
       console.error('Create proforma invoice error:', error);
@@ -12034,18 +12250,18 @@ This is a preview of the performance engagement contract. Final agreement will i
     try {
       const proformaId = parseInt(req.params.proformaId);
       const user = req.user!;
-      
+
       // Check if user has permission to convert invoices
       if (![1, 2].includes(user.roleId)) {
         return res.status(403).json({ message: "Insufficient permissions to convert invoices" });
       }
 
       const finalInvoiceId = await financialAutomation.convertProformaToFinal(proformaId, user.userId);
-      
-      res.json({ 
-        success: true, 
+
+      res.json({
+        success: true,
         finalInvoiceId,
-        message: "Proforma invoice converted to final invoice successfully" 
+        message: "Proforma invoice converted to final invoice successfully"
       });
     } catch (error) {
       console.error('Convert invoice error:', error);
@@ -12058,18 +12274,18 @@ This is a preview of the performance engagement contract. Final agreement will i
     try {
       const bookingId = parseInt(req.params.id);
       const user = req.user!;
-      
+
       // Check if user has permission to generate invoices
       if (![1, 2].includes(user.roleId)) {
         return res.status(403).json({ message: "Insufficient permissions to generate invoices" });
       }
 
       const invoiceId = await financialAutomation.generateInvoiceOnBookingAcceptance(bookingId, user.userId);
-      
-      res.json({ 
-        success: true, 
+
+      res.json({
+        success: true,
         invoiceId,
-        message: "Invoice generated successfully" 
+        message: "Invoice generated successfully"
       });
     } catch (error) {
       console.error('Generate invoice error:', error);
@@ -12084,23 +12300,23 @@ This is a preview of the performance engagement contract. Final agreement will i
       const performerUserId = parseInt(req.params.performerId);
       const user = req.user!;
       const { requestType = 'performance_fee' } = req.body;
-      
+
       // Check permissions
       if (![1, 2].includes(user.roleId)) {
         return res.status(403).json({ message: "Insufficient permissions to generate payout requests" });
       }
 
       const payoutId = await financialAutomation.generatePayoutRequestOnCompletion(
-        bookingId, 
-        performerUserId, 
+        bookingId,
+        performerUserId,
         requestType,
         user.userId
       );
-      
-      res.json({ 
-        success: true, 
+
+      res.json({
+        success: true,
         payoutId,
-        message: "Payout request generated successfully" 
+        message: "Payout request generated successfully"
       });
     } catch (error) {
       console.error('Generate payout request error:', error);
@@ -12113,15 +12329,15 @@ This is a preview of the performance engagement contract. Final agreement will i
     try {
       const bookingId = parseInt(req.params.id);
       const user = req.user!;
-      const { 
-        transactionType, 
-        amount, 
-        paymentMethod, 
-        invoiceId, 
-        payoutRequestId, 
-        gatewayTransactionId 
+      const {
+        transactionType,
+        amount,
+        paymentMethod,
+        invoiceId,
+        payoutRequestId,
+        gatewayTransactionId
       } = req.body;
-      
+
       // Check permissions
       if (![1, 2].includes(user.roleId)) {
         return res.status(403).json({ message: "Insufficient permissions to create payment transactions" });
@@ -12136,11 +12352,11 @@ This is a preview of the performance engagement contract. Final agreement will i
         payoutRequestId,
         gatewayTransactionId
       );
-      
-      res.json({ 
-        success: true, 
+
+      res.json({
+        success: true,
         transactionId,
-        message: "Payment transaction created successfully" 
+        message: "Payment transaction created successfully"
       });
     } catch (error) {
       console.error('Create payment transaction error:', error);
@@ -12154,7 +12370,7 @@ This is a preview of the performance engagement contract. Final agreement will i
       const bookingId = parseInt(req.params.id);
       const user = req.user!;
       const { paymentId, contractIds = [] } = req.body;
-      
+
       // Check permissions
       if (![1, 2].includes(user.roleId)) {
         return res.status(403).json({ message: "Insufficient permissions to generate receipts" });
@@ -12166,11 +12382,11 @@ This is a preview of the performance engagement contract. Final agreement will i
         contractIds,
         user.userId
       );
-      
-      res.json({ 
-        success: true, 
+
+      res.json({
+        success: true,
         receiptId,
-        message: "Receipt generated with contract linkages" 
+        message: "Receipt generated with contract linkages"
       });
     } catch (error) {
       console.error('Generate receipt error:', error);
@@ -12183,24 +12399,24 @@ This is a preview of the performance engagement contract. Final agreement will i
     try {
       const bookingId = parseInt(req.params.id);
       const user = req.user!;
-      
+
       // Check permissions - allow users to view their own bookings
       const booking = await storage.getBooking(bookingId);
       if (!booking) {
         return res.status(404).json({ message: "Booking not found" });
       }
-      
+
       // Allow access if user is superadmin/admin, or booking owner, or assigned to booking
-      const hasAccess = [1, 2].includes(user.roleId) || 
-                       booking.userId === user.userId ||
-                       booking.mainArtistUserId === user.userId;
-      
+      const hasAccess = [1, 2].includes(user.roleId) ||
+        booking.userId === user.userId ||
+        booking.mainArtistUserId === user.userId;
+
       if (!hasAccess) {
         return res.status(403).json({ message: "Insufficient permissions to view financial summary" });
       }
 
       const summary = await financialAutomation.getBookingFinancialSummary(bookingId);
-      
+
       res.json(summary);
     } catch (error) {
       console.error('Get financial summary error:', error);
@@ -12214,38 +12430,38 @@ This is a preview of the performance engagement contract. Final agreement will i
       const bookingId = parseInt(req.params.id);
       const user = req.user!;
       const { status: newStatus } = req.body;
-      
+
       // Get current booking to check old status
       const currentBooking = await storage.getBooking(bookingId);
       if (!currentBooking) {
         return res.status(404).json({ message: "Booking not found" });
       }
-      
+
       // Check permissions
-      const hasAccess = [1, 2].includes(user.roleId) || 
-                       currentBooking.userId === user.userId ||
-                       currentBooking.mainArtistUserId === user.userId;
-      
+      const hasAccess = [1, 2].includes(user.roleId) ||
+        currentBooking.userId === user.userId ||
+        currentBooking.mainArtistUserId === user.userId;
+
       if (!hasAccess) {
         return res.status(403).json({ message: "Insufficient permissions to update booking status" });
       }
 
       const oldStatus = currentBooking.status;
-      
+
       // Update booking status
       const updatedBooking = await storage.updateBookingStatus(bookingId, newStatus);
-      
+
       if (!updatedBooking) {
         return res.status(500).json({ message: "Failed to update booking status" });
       }
 
       // Trigger financial automation
       await financialAutomation.onBookingStatusChange(bookingId, oldStatus, newStatus, user.userId);
-      
-      res.json({ 
-        success: true, 
+
+      res.json({
+        success: true,
         booking: updatedBooking,
-        message: `Booking status updated to ${newStatus}. Financial automation triggered.` 
+        message: `Booking status updated to ${newStatus}. Financial automation triggered.`
       });
     } catch (error) {
       console.error('Update booking status error:', error);
@@ -12278,14 +12494,14 @@ This is a preview of the performance engagement contract. Final agreement will i
     try {
       const bookingId = parseInt(req.params.bookingId);
       const user = req.user!;
-      
+
       const { financialAutomation } = await import('./financialAutomation');
       const invoiceId = await financialAutomation.generateInvoiceOnBookingAcceptance(bookingId, user.userId);
-      
-      res.json({ 
-        success: true, 
-        invoiceId, 
-        message: "Invoice generated successfully" 
+
+      res.json({
+        success: true,
+        invoiceId,
+        message: "Invoice generated successfully"
       });
     } catch (error) {
       console.error('Generate invoice error:', error);
@@ -12297,7 +12513,7 @@ This is a preview of the performance engagement contract. Final agreement will i
   app.get("/api/financial/invoice/:invoiceId/pdf", authenticateToken, requireRole([1, 2]), async (req: Request, res: Response) => {
     try {
       const invoiceId = parseInt(req.params.invoiceId);
-      
+
       // Get invoice details
       const invoice = await storage.getInvoiceById(invoiceId);
       if (!invoice) {
@@ -12307,15 +12523,15 @@ This is a preview of the performance engagement contract. Final agreement will i
       // Generate PDF if it doesn't exist
       const { financialAutomation } = await import('./financialAutomation');
       const filePath = await financialAutomation.generateInvoicePDF(invoiceId);
-      
+
       // Send PDF file
       res.setHeader('Content-Type', 'application/pdf');
       res.setHeader('Content-Disposition', `inline; filename="invoice_${invoice.invoiceNumber}.pdf"`);
-      
+
       const fs = await import('fs');
       const fileStream = fs.createReadStream(filePath);
       fileStream.pipe(res);
-      
+
     } catch (error) {
       console.error('View invoice PDF error:', error);
       res.status(500).json({ message: "Failed to generate or view invoice PDF" });
@@ -12326,7 +12542,7 @@ This is a preview of the performance engagement contract. Final agreement will i
   app.get("/api/invoices", authenticateToken, async (req: Request, res: Response) => {
     try {
       const user = req.user!;
-      
+
       // Only superadmin and admin can view all invoices
       if (![1, 2].includes(user.roleId)) {
         return res.status(403).json({ message: "Insufficient permissions to view invoices" });
@@ -12344,7 +12560,7 @@ This is a preview of the performance engagement contract. Final agreement will i
   app.get("/api/payout-requests", authenticateToken, async (req: Request, res: Response) => {
     try {
       const user = req.user!;
-      
+
       // Only superadmin and admin can view all payout requests
       if (![1, 2].includes(user.roleId)) {
         return res.status(403).json({ message: "Insufficient permissions to view payout requests" });
@@ -12363,22 +12579,22 @@ This is a preview of the performance engagement contract. Final agreement will i
     try {
       const payoutId = parseInt(req.params.id);
       const user = req.user!;
-      
+
       // Only superadmin and admin can approve payouts
       if (![1, 2].includes(user.roleId)) {
         return res.status(403).json({ message: "Insufficient permissions to approve payout requests" });
       }
 
       const updatedPayout = await storage.updatePayoutRequestStatus(payoutId, 'approved');
-      
+
       if (!updatedPayout) {
         return res.status(404).json({ message: "Payout request not found" });
       }
 
-      res.json({ 
-        success: true, 
+      res.json({
+        success: true,
         payoutRequest: updatedPayout,
-        message: "Payout request approved successfully" 
+        message: "Payout request approved successfully"
       });
     } catch (error) {
       console.error('Approve payout request error:', error);
@@ -12387,20 +12603,20 @@ This is a preview of the performance engagement contract. Final agreement will i
   });
 
   // Website Integration (All-Links Solution) Routes
-  
+
   // Get all website integrations for a user
   app.get("/api/website-integrations", authenticateToken, requireRole([1, 2, 3, 5]), async (req: Request, res: Response) => {
     try {
       const userId = req.user!.userId;
       const userRole = req.user!.role;
-      
+
       let integrations;
       if (userRole === 'superadmin' || userRole === 'admin') {
         integrations = await storage.getAllWebsiteIntegrations();
       } else {
         integrations = await storage.getWebsiteIntegrationsByUser(userId);
       }
-      
+
       res.json(integrations);
     } catch (error) {
       console.error('Get website integrations error:', error);
@@ -12413,14 +12629,14 @@ This is a preview of the performance engagement contract. Final agreement will i
     try {
       const slug = req.params.slug;
       const integration = await storage.getWebsiteIntegrationBySlug(slug);
-      
+
       if (!integration || !integration.isActive) {
         return res.status(404).json({ message: "Website integration not found" });
       }
-      
+
       // Increment view count
       await storage.incrementWebsiteViews(integration.id);
-      
+
       res.json(integration);
     } catch (error) {
       console.error('Get public website integration error:', error);
@@ -12456,7 +12672,7 @@ This is a preview of the performance engagement contract. Final agreement will i
   app.post("/api/website-integrations", authenticateToken, requireRole([1, 2, 3, 5]), async (req: Request, res: Response) => {
     try {
       const user = req.user!;
-      
+
       // Validate slug uniqueness
       if (req.body.slug) {
         const existing = await storage.getWebsiteIntegrationBySlug(req.body.slug);
@@ -12464,15 +12680,15 @@ This is a preview of the performance engagement contract. Final agreement will i
           return res.status(400).json({ message: "Slug already exists. Please choose a different one." });
         }
       }
-      
+
       // Allow superadmin/admin/assigned_admin to create for other users, otherwise use their own userId
       const targetUserId = (user.roleId === 1 || user.roleId === 2 || user.roleId === 3) && req.body.userId ? req.body.userId : user.userId;
-      
+
       const integrationData = insertWebsiteIntegrationSchema.parse({
         ...req.body,
         userId: targetUserId
       });
-      
+
       const integration = await storage.createWebsiteIntegration(integrationData);
       res.json(integration);
     } catch (error) {
@@ -12493,18 +12709,18 @@ This is a preview of the performance engagement contract. Final agreement will i
       const integrationId = parseInt(req.params.id);
       const updates = req.body;
       const user = req.user!;
-      
+
       // Get the existing integration to check permissions
       const existingIntegration = await storage.getWebsiteIntegration(integrationId);
       if (!existingIntegration) {
         return res.status(404).json({ message: "Website integration not found" });
       }
-      
+
       // Check permissions: users can only edit their own, unless they're superadmin
       if (user.roleId !== 1 && existingIntegration.userId !== user.userId) {
         return res.status(403).json({ message: "You can only edit your own All Links pages" });
       }
-      
+
       // If updating slug, check uniqueness
       if (updates.slug && updates.slug !== existingIntegration.slug) {
         const existing = await storage.getWebsiteIntegrationBySlug(updates.slug);
@@ -12512,7 +12728,7 @@ This is a preview of the performance engagement contract. Final agreement will i
           return res.status(400).json({ message: "Slug already exists. Please choose a different one." });
         }
       }
-      
+
       const integration = await storage.updateWebsiteIntegration(integrationId, updates);
       res.json(integration);
     } catch (error) {
@@ -12529,18 +12745,18 @@ This is a preview of the performance engagement contract. Final agreement will i
     try {
       const integrationId = parseInt(req.params.id);
       const user = req.user!;
-      
+
       // Get the existing integration to check permissions
       const existingIntegration = await storage.getWebsiteIntegration(integrationId);
       if (!existingIntegration) {
         return res.status(404).json({ message: "Website integration not found" });
       }
-      
+
       // Check permissions: users can only delete their own, unless they're superadmin
       if (user.roleId !== 1 && existingIntegration.userId !== user.userId) {
         return res.status(403).json({ message: "You can only delete your own All Links pages" });
       }
-      
+
       await storage.deleteWebsiteIntegration(integrationId);
       res.json({ success: true, message: "All Links page deleted successfully" });
     } catch (error) {
@@ -12554,12 +12770,12 @@ This is a preview of the performance engagement contract. Final agreement will i
     try {
       const integrationId = parseInt(req.params.id);
       const user = req.user!;
-      
+
       const integration = await storage.getWebsiteIntegration(integrationId);
       if (!integration) {
         return res.status(404).json({ message: "Website integration not found" });
       }
-      
+
       // Check permissions: users can only update their own pages, unless they're superadmin
       if (user.roleId !== 1 && integration.userId !== user.userId) {
         return res.status(403).json({ message: "You can only update your own All Links pages" });
@@ -12567,7 +12783,7 @@ This is a preview of the performance engagement contract. Final agreement will i
 
       const updateData = req.body;
       const updatedIntegration = await storage.updateWebsiteIntegration(integrationId, updateData);
-      
+
       res.json(updatedIntegration);
     } catch (error: any) {
       console.error("Error updating website integration:", error);
@@ -12583,27 +12799,27 @@ This is a preview of the performance engagement contract. Final agreement will i
     try {
       const integrationId = parseInt(req.params.id);
       const user = req.user!;
-      const { 
-        transparent = false, 
-        color = '#000000', 
+      const {
+        transparent = false,
+        color = '#000000',
         backgroundColor = '#FFFFFF',
         includeProfilePicture = false,
         profilePictureUrl = '',
         customImageUrl = ''
       } = req.query;
-      
+
       const integration = await storage.getWebsiteIntegration(integrationId);
       if (!integration) {
         return res.status(404).json({ message: "Website integration not found" });
       }
-      
+
       // Check permissions: users can only generate QR codes for their own pages, unless they're superadmin/admin
       if (![1, 2].includes(user.roleId) && integration.userId !== user.userId) {
         return res.status(403).json({ message: "Access denied" });
       }
-      
+
       const url = `https://www.waitumusic.com/${integration.slug}`;
-      
+
       // Configure QR code options
       const qrOptions: any = {
         errorCorrectionLevel: 'M',
@@ -12616,65 +12832,65 @@ This is a preview of the performance engagement contract. Final agreement will i
           light: transparent === 'true' ? '#00000000' : backgroundColor as string // Transparent background
         }
       };
-      
+
       let qrCodeDataUrl = await QRCode.toDataURL(url, qrOptions);
-      
+
       // If profile picture or custom image is requested, overlay it on the QR code
-      const imageUrl = includeProfilePicture === 'true' && profilePictureUrl 
-        ? profilePictureUrl as string 
+      const imageUrl = includeProfilePicture === 'true' && profilePictureUrl
+        ? profilePictureUrl as string
         : customImageUrl as string;
-        
+
       if (imageUrl) {
         try {
           const canvas = require('canvas');
           const fetch = require('node-fetch');
-          
+
           // Load the QR code image
           const qrImage = await canvas.loadImage(qrCodeDataUrl);
           const canvasElement = canvas.createCanvas(512, 512);
           const ctx = canvasElement.getContext('2d');
-          
+
           // Draw QR code
           ctx.drawImage(qrImage, 0, 0, 512, 512);
-          
+
           // Load and draw image in center (profile picture or custom image)
           const imageResponse = await fetch(imageUrl);
           if (imageResponse.ok) {
             const imageBuffer = await imageResponse.buffer();
             const centerImage = await canvas.loadImage(imageBuffer);
-            
+
             // Calculate center position and size (about 20% of QR code size)
             const centerSize = 100;
             const centerX = (512 - centerSize) / 2;
             const centerY = (512 - centerSize) / 2;
-            
+
             // Create circular clipping path
             ctx.save();
             ctx.beginPath();
-            ctx.arc(centerX + centerSize/2, centerY + centerSize/2, centerSize/2, 0, Math.PI * 2);
+            ctx.arc(centerX + centerSize / 2, centerY + centerSize / 2, centerSize / 2, 0, Math.PI * 2);
             ctx.closePath();
             ctx.clip();
-            
+
             // Draw profile picture
             ctx.drawImage(profileImage, centerX, centerY, centerSize, centerSize);
             ctx.restore();
-            
+
             // Add white border around profile picture
             ctx.strokeStyle = '#FFFFFF';
             ctx.lineWidth = 4;
             ctx.beginPath();
-            ctx.arc(centerX + centerSize/2, centerY + centerSize/2, centerSize/2, 0, Math.PI * 2);
+            ctx.arc(centerX + centerSize / 2, centerY + centerSize / 2, centerSize / 2, 0, Math.PI * 2);
             ctx.stroke();
           }
-          
+
           qrCodeDataUrl = canvasElement.toDataURL('image/png');
         } catch (profileError) {
           console.warn('Failed to add profile picture to QR code:', profileError);
           // Continue with regular QR code if profile overlay fails
         }
       }
-      
-      res.json({ 
+
+      res.json({
         qrCode: qrCodeDataUrl,
         url: url,
         slug: integration.slug,
@@ -12706,20 +12922,20 @@ This is a preview of the performance engagement contract. Final agreement will i
   });
 
   // Embeddable Widgets Routes
-  
+
   // Get all embeddable widgets for a user
   app.get("/api/embeddable-widgets", authenticateToken, requireRole([1, 2, 3, 5]), async (req: Request, res: Response) => {
     try {
       const userId = req.user!.userId;
       const userRole = req.user!.role;
-      
+
       let widgets;
       if (userRole === 'superadmin' || userRole === 'admin') {
         widgets = await storage.getAllEmbeddableWidgets();
       } else {
         widgets = await storage.getEmbeddableWidgetsByUser(userId);
       }
-      
+
       res.json(widgets);
     } catch (error) {
       console.error('Get embeddable widgets error:', error);
@@ -12734,7 +12950,7 @@ This is a preview of the performance engagement contract. Final agreement will i
         ...req.body,
         userId: req.user!.userId
       });
-      
+
       const widget = await storage.createEmbeddableWidget(widgetData);
       res.json(widget);
     } catch (error) {
@@ -12770,7 +12986,7 @@ This is a preview of the performance engagement contract. Final agreement will i
   });
 
   // Competitive Intelligence Routes
-  
+
   // Get competitive intelligence for an artist
   app.get("/api/competitive-intelligence", authenticateToken, requireRole([1, 2, 3, 5]), async (req: Request, res: Response) => {
     try {
@@ -12790,7 +13006,7 @@ This is a preview of the performance engagement contract. Final agreement will i
         ...req.body,
         generatedBy: req.user!.userId
       });
-      
+
       const intelligence = await storage.createCompetitiveIntelligence(intelligenceData);
       res.json(intelligence);
     } catch (error) {
@@ -12817,11 +13033,11 @@ This is a preview of the performance engagement contract. Final agreement will i
   app.post('/api/favorites', authenticateToken, async (req: Request, res: Response) => {
     try {
       const { favoriteUserId, favoriteType = 'artist' } = req.body;
-      
+
       if (!favoriteUserId) {
         return res.status(400).json({ message: 'favoriteUserId is required' });
       }
-      
+
       const favorite = await storage.addUserFavorite(req.user!.userId, favoriteUserId, favoriteType);
       res.json(favorite);
     } catch (error: any) {
@@ -12857,7 +13073,7 @@ This is a preview of the performance engagement contract. Final agreement will i
   });
 
   // ==================== ASSIGNMENT MANAGEMENT ROUTES ====================
-  
+
   // Admin Assignments - Superadmin assigns admins to bookings/talent
   app.get('/api/admin-assignments', authenticateToken, requireRole([1]), async (req: Request, res: Response) => {
     try {
@@ -12873,7 +13089,7 @@ This is a preview of the performance engagement contract. Final agreement will i
     try {
       const assignmentData = req.body;
       assignmentData.assignedBy = req.user?.userId;
-      
+
       const assignment = await storage.createAdminAssignment(assignmentData);
       res.status(201).json(assignment);
     } catch (error) {
@@ -12886,11 +13102,11 @@ This is a preview of the performance engagement contract. Final agreement will i
     try {
       const assignmentId = parseInt(req.params.id);
       const assignment = await storage.getAdminAssignment(assignmentId);
-      
+
       if (!assignment) {
         return res.status(404).json({ message: 'Admin assignment not found' });
       }
-      
+
       res.json(assignment);
     } catch (error) {
       console.error('Get admin assignment error:', error);
@@ -12902,12 +13118,12 @@ This is a preview of the performance engagement contract. Final agreement will i
     try {
       const assignmentId = parseInt(req.params.id);
       const updates = req.body;
-      
+
       const assignment = await storage.updateAdminAssignment(assignmentId, updates);
       if (!assignment) {
         return res.status(404).json({ message: 'Admin assignment not found' });
       }
-      
+
       res.json(assignment);
     } catch (error) {
       console.error('Update admin assignment error:', error);
@@ -12930,7 +13146,7 @@ This is a preview of the performance engagement contract. Final agreement will i
   app.get('/api/booking-assignments', authenticateToken, requireRole([1, 2]), async (req: Request, res: Response) => {
     try {
       const { bookingId } = req.query;
-      const assignments = bookingId 
+      const assignments = bookingId
         ? await storage.getBookingAssignmentsByBooking(parseInt(bookingId as string))
         : await storage.getBookingAssignments();
       res.json(assignments);
@@ -12944,7 +13160,7 @@ This is a preview of the performance engagement contract. Final agreement will i
     try {
       const assignmentData = req.body;
       assignmentData.assignedBy = req.user?.userId;
-      
+
       const assignment = await storage.createBookingAssignment(assignmentData);
       res.status(201).json(assignment);
     } catch (error) {
@@ -12957,11 +13173,11 @@ This is a preview of the performance engagement contract. Final agreement will i
     try {
       const assignmentId = parseInt(req.params.id);
       const assignment = await storage.getBookingAssignment(assignmentId);
-      
+
       if (!assignment) {
         return res.status(404).json({ message: 'Booking assignment not found' });
       }
-      
+
       res.json(assignment);
     } catch (error) {
       console.error('Get booking assignment error:', error);
@@ -12973,12 +13189,12 @@ This is a preview of the performance engagement contract. Final agreement will i
     try {
       const assignmentId = parseInt(req.params.id);
       const updates = req.body;
-      
+
       const assignment = await storage.updateBookingAssignment(assignmentId, updates);
       if (!assignment) {
         return res.status(404).json({ message: 'Booking assignment not found' });
       }
-      
+
       res.json(assignment);
     } catch (error) {
       console.error('Update booking assignment error:', error);
@@ -13002,11 +13218,11 @@ This is a preview of the performance engagement contract. Final agreement will i
     try {
       const { bookingId, assignedUserId, assignmentRole, assignmentType } = req.body;
       const assignedBy = req.user?.userId;
-      
+
       if (!bookingId || !assignedUserId || !assignmentRole) {
         return res.status(400).json({ message: 'Missing required fields: bookingId, assignedUserId, assignmentRole' });
       }
-      
+
       // Create the assignment using the existing storage method
       const assignmentData = {
         bookingId: parseInt(bookingId),
@@ -13017,7 +13233,7 @@ This is a preview of the performance engagement contract. Final agreement will i
         assignedAt: new Date(),
         notes: `Assigned via booking assignment manager - ${assignmentType || 'talent'}`
       };
-      
+
       const assignment = await storage.createBookingAssignment(assignmentData);
       res.status(201).json(assignment);
     } catch (error) {
@@ -13030,7 +13246,7 @@ This is a preview of the performance engagement contract. Final agreement will i
   app.get('/api/assignments/booking', authenticateToken, requireRole([1, 2]), async (req: Request, res: Response) => {
     try {
       const { bookingId } = req.query;
-      
+
       if (bookingId) {
         const assignments = await storage.getBookingAssignmentsByBooking(parseInt(bookingId as string));
         res.json(assignments);
@@ -13060,17 +13276,17 @@ This is a preview of the performance engagement contract. Final agreement will i
   app.post('/api/assignments/booking/deactivate-all', authenticateToken, requireRole([1, 2]), async (req: Request, res: Response) => {
     try {
       const { bookingId } = req.body;
-      
+
       if (!bookingId) {
         return res.status(400).json({ message: 'Missing required field: bookingId' });
       }
-      
+
       // Deactivate all existing assignments for this booking
       await db
         .update(bookingAssignments)
         .set({ isActive: false })
         .where(eq(bookingAssignments.bookingId, parseInt(bookingId)));
-      
+
       res.json({ success: true, message: 'All booking assignments deactivated' });
     } catch (error) {
       console.error('Deactivate all booking assignments error:', error);
@@ -13084,11 +13300,11 @@ This is a preview of the performance engagement contract. Final agreement will i
       const bookingId = parseInt(req.params.bookingId);
       const { userId, name, type, role, selectedRoles, availableRoles, isMainBookedTalent, isPrimary, talentType } = req.body;
       const assignedBy = req.user?.userId;
-      
+
       if (!bookingId || !userId || !name || !type || !role) {
         return res.status(400).json({ message: 'Missing required fields: userId, name, type, role' });
       }
-      
+
       // Create the assignment using the existing storage method
       const assignmentData = {
         bookingId,
@@ -13098,9 +13314,9 @@ This is a preview of the performance engagement contract. Final agreement will i
         assignmentNotes: `${type} - ${(selectedRoles || []).join(', ')}`,
         assignedByUserId: assignedBy || 1 // Default to admin if no user
       };
-      
+
       const assignment = await storage.createBookingAssignment(assignmentData);
-      res.status(201).json({ 
+      res.status(201).json({
         ...assignment,
         name,
         type,
@@ -13128,12 +13344,12 @@ This is a preview of the performance engagement contract. Final agreement will i
         assignments.map(async (assignment) => {
           const user = await storage.getUser(assignment.assignedUserId);
           if (!user) return null;
-          
+
           // Get talent information based on user role
           let talentInfo = null;
           let primaryTalent = null;
           let secondaryTalents = [];
-          
+
           if (user.roleId === 3 || user.roleId === 4) { // Artist roles
             talentInfo = await storage.getArtist(user.id);
           } else if (user.roleId === 5 || user.roleId === 6) { // Musician roles
@@ -13141,25 +13357,25 @@ This is a preview of the performance engagement contract. Final agreement will i
           } else if (user.roleId === 7 || user.roleId === 8) { // Professional roles
             talentInfo = await storage.getProfessional(user.id);
           }
-          
+
           // Get talent names from database
           if (talentInfo?.primaryTalentId) {
             const talent = await storage.getPrimaryTalentById(talentInfo.primaryTalentId);
             primaryTalent = talent?.name || null;
           }
-          
+
           const secondaryPerformanceTalents = await storage.getUserSecondaryPerformanceTalents(user.id);
           const secondaryProfessionalTalents = await storage.getUserSecondaryProfessionalTalents(user.id);
           secondaryTalents = [
             ...secondaryPerformanceTalents.map(t => t.talentName),
             ...secondaryProfessionalTalents.map(t => t.talentName)
           ];
-          
+
           // Format name based on context: fullName(stageName) for assignments, stageName for display
           const stageName = talentInfo?.stageName;
           const displayName = stageName || user.fullName;
           const assignmentName = stageName ? `${user.fullName}(${stageName})` : user.fullName;
-          
+
           const finalAssignment = {
             id: `assignment-${assignment.id}`,
             userId: user.id,
@@ -13181,11 +13397,11 @@ This is a preview of the performance engagement contract. Final agreement will i
             showAcceptDecline: assignment.assignmentRole === 'Main Booked Talent',
             showRemove: assignment.assignmentRole !== 'Main Booked Talent'
           };
-          
+
           return finalAssignment;
         })
       );
-      
+
       const validAssignments = enhancedAssignments.filter(Boolean);
       res.json(validAssignments);
     } catch (error) {
@@ -13193,7 +13409,7 @@ This is a preview of the performance engagement contract. Final agreement will i
       res.status(500).json({ message: 'Failed to fetch assigned talent' });
     }
   });
-  
+
   // Get talent information for a specific user
   app.get('/api/users/:userId/talent-info', authenticateToken, async (req: Request, res: Response) => {
     try {
@@ -13258,11 +13474,11 @@ This is a preview of the performance engagement contract. Final agreement will i
     try {
       const { managedTalentId, assigneeId } = req.query;
       const currentUserId = req.user?.userId;
-      
+
       // Role-based access control
       const user = await storage.getUser(currentUserId || 0);
       const isAdminOrSuperadmin = user && [1, 2].includes(user.roleId);
-      
+
       let assignments;
       if (managedTalentId) {
         // Check if user can access this managed talent's assignments
@@ -13279,7 +13495,7 @@ This is a preview of the performance engagement contract. Final agreement will i
         // Regular users can only see their own assignments (as managed talent or assignee)
         assignments = await storage.getArtistMusicianAssignmentsByUser(currentUserId);
       }
-      
+
       res.json(assignments);
     } catch (error) {
       console.error('Get artist-musician assignments error:', error);
@@ -13291,15 +13507,15 @@ This is a preview of the performance engagement contract. Final agreement will i
     try {
       const assignmentData = req.body;
       const currentUserId = req.user?.userId;
-      
+
       // Check if user can create assignments for the specified managed talent
       const user = await storage.getUser(currentUserId || 0);
       const isAdminOrSuperadmin = user && [1, 2].includes(user.roleId);
-      
+
       if (!isAdminOrSuperadmin && currentUserId !== assignmentData.managedTalentId) {
         return res.status(403).json({ message: 'Can only create assignments for yourself' });
       }
-      
+
       const assignment = await storage.createArtistMusicianAssignment(assignmentData);
       res.status(201).json(assignment);
     } catch (error) {
@@ -13312,22 +13528,22 @@ This is a preview of the performance engagement contract. Final agreement will i
     try {
       const assignmentId = parseInt(req.params.id);
       const currentUserId = req.user?.userId;
-      
+
       const assignment = await storage.getArtistMusicianAssignment(assignmentId);
       if (!assignment) {
         return res.status(404).json({ message: 'Assignment not found' });
       }
-      
+
       // Check permissions - users can only view their own assignments unless admin
       const user = await storage.getUser(currentUserId || 0);
       const isAdminOrSuperadmin = user && [1, 2].includes(user.roleId);
-      
-      if (!isAdminOrSuperadmin && 
-          currentUserId !== assignment.managedTalentId && 
-          currentUserId !== assignment.assigneeId) {
+
+      if (!isAdminOrSuperadmin &&
+        currentUserId !== assignment.managedTalentId &&
+        currentUserId !== assignment.assigneeId) {
         return res.status(403).json({ message: 'Can only view your own assignments' });
       }
-      
+
       res.json(assignment);
     } catch (error) {
       console.error('Get artist-musician assignment error:', error);
@@ -13340,21 +13556,21 @@ This is a preview of the performance engagement contract. Final agreement will i
       const assignmentId = parseInt(req.params.id);
       const updates = req.body;
       const currentUserId = req.user?.userId;
-      
+
       // Get existing assignment to check permissions
       const existingAssignment = await storage.getArtistMusicianAssignment(assignmentId);
       if (!existingAssignment) {
         return res.status(404).json({ message: 'Assignment not found' });
       }
-      
+
       // Check permissions
       const user = await storage.getUser(currentUserId || 0);
       const isAdminOrSuperadmin = user && [1, 2].includes(user.roleId);
-      
+
       if (!isAdminOrSuperadmin && currentUserId !== existingAssignment.managedTalentId) {
         return res.status(403).json({ message: 'Can only update your own assignments' });
       }
-      
+
       const assignment = await storage.updateArtistMusicianAssignment(assignmentId, updates);
       res.json(assignment);
     } catch (error) {
@@ -13367,21 +13583,21 @@ This is a preview of the performance engagement contract. Final agreement will i
     try {
       const assignmentId = parseInt(req.params.id);
       const currentUserId = req.user?.userId;
-      
+
       // Get existing assignment to check permissions
       const existingAssignment = await storage.getArtistMusicianAssignment(assignmentId);
       if (!existingAssignment) {
         return res.status(404).json({ message: 'Assignment not found' });
       }
-      
+
       // Check permissions
       const user = await storage.getUser(currentUserId || 0);
       const isAdminOrSuperadmin = user && [1, 2].includes(user.roleId);
-      
+
       if (!isAdminOrSuperadmin && currentUserId !== existingAssignment.managedTalentId) {
         return res.status(403).json({ message: 'Can only remove your own assignments' });
       }
-      
+
       await storage.removeArtistMusicianAssignment(assignmentId);
       res.json({ success: true, message: 'Artist-musician assignment removed' });
     } catch (error) {
@@ -13394,7 +13610,7 @@ This is a preview of the performance engagement contract. Final agreement will i
   app.get('/api/service-assignments', authenticateToken, requireRole([1, 2]), async (req: Request, res: Response) => {
     try {
       const { serviceId, assignedTalentId } = req.query;
-      
+
       let assignments;
       if (serviceId) {
         assignments = await storage.getServiceAssignmentsByService(parseInt(serviceId as string));
@@ -13403,7 +13619,7 @@ This is a preview of the performance engagement contract. Final agreement will i
       } else {
         assignments = await storage.getServiceAssignments();
       }
-      
+
       res.json(assignments);
     } catch (error) {
       console.error('Get service assignments error:', error);
@@ -13415,7 +13631,7 @@ This is a preview of the performance engagement contract. Final agreement will i
     try {
       const assignmentData = req.body;
       assignmentData.assignedBy = req.user?.userId;
-      
+
       const assignment = await storage.createServiceAssignment(assignmentData);
       res.status(201).json(assignment);
     } catch (error) {
@@ -13428,11 +13644,11 @@ This is a preview of the performance engagement contract. Final agreement will i
     try {
       const assignmentId = parseInt(req.params.id);
       const assignment = await storage.getServiceAssignment(assignmentId);
-      
+
       if (!assignment) {
         return res.status(404).json({ message: 'Service assignment not found' });
       }
-      
+
       res.json(assignment);
     } catch (error) {
       console.error('Get service assignment error:', error);
@@ -13444,12 +13660,12 @@ This is a preview of the performance engagement contract. Final agreement will i
     try {
       const assignmentId = parseInt(req.params.id);
       const updates = req.body;
-      
+
       const assignment = await storage.updateServiceAssignment(assignmentId, updates);
       if (!assignment) {
         return res.status(404).json({ message: 'Service assignment not found' });
       }
-      
+
       res.json(assignment);
     } catch (error) {
       console.error('Update service assignment error:', error);
@@ -13477,7 +13693,7 @@ This is a preview of the performance engagement contract. Final agreement will i
         storage.getArtistMusicianAssignments(),
         storage.getServiceAssignments()
       ]);
-      
+
       const stats = {
         totalAssignments: adminAssignments.length + bookingAssignments.length + artistMusicianAssignments.length + serviceAssignments.length,
         adminAssignments: adminAssignments.length,
@@ -13485,7 +13701,7 @@ This is a preview of the performance engagement contract. Final agreement will i
         artistMusicianAssignments: artistMusicianAssignments.length,
         serviceAssignments: serviceAssignments.length
       };
-      
+
       res.json(stats);
     } catch (error) {
       console.error('Get assignment stats error:', error);
@@ -13522,11 +13738,11 @@ This is a preview of the performance engagement contract. Final agreement will i
       const id = parseInt(req.params.id);
       const updates = req.body;
       const category = await storage.updateOpportunityCategory(id, updates);
-      
+
       if (!category) {
         return res.status(404).json({ message: 'Opportunity category not found' });
       }
-      
+
       res.json(category);
     } catch (error) {
       console.error('Error updating opportunity category:', error);
@@ -13539,12 +13755,12 @@ This is a preview of the performance engagement contract. Final agreement will i
     try {
       const { categoryId, status, isVerified, is_demo } = req.query;
       const filters: any = {};
-      
+
       if (categoryId) filters.categoryId = parseInt(categoryId as string);
       if (status) filters.status = status as string;
       if (isVerified !== undefined) filters.isVerified = isVerified === 'true';
       if (is_demo !== undefined) filters.isDemo = is_demo === 'true';
-      
+
       const opportunities = await storage.getOpportunities(filters);
       res.json(opportunities);
     } catch (error) {
@@ -13568,14 +13784,14 @@ This is a preview of the performance engagement contract. Final agreement will i
     try {
       const id = parseInt(req.params.id);
       const opportunity = await storage.getOpportunityById(id);
-      
+
       if (!opportunity) {
         return res.status(404).json({ message: 'Opportunity not found' });
       }
-      
+
       // Increment view count
       await storage.incrementOpportunityViews(id);
-      
+
       res.json(opportunity);
     } catch (error) {
       console.error('Error fetching opportunity:', error);
@@ -13588,11 +13804,11 @@ This is a preview of the performance engagement contract. Final agreement will i
       const id = parseInt(req.params.id);
       const updates = req.body;
       const opportunity = await storage.updateOpportunity(id, updates);
-      
+
       if (!opportunity) {
         return res.status(404).json({ message: 'Opportunity not found' });
       }
-      
+
       res.json(opportunity);
     } catch (error) {
       console.error('Error updating opportunity:', error);
@@ -13604,11 +13820,11 @@ This is a preview of the performance engagement contract. Final agreement will i
     try {
       const id = parseInt(req.params.id);
       const deleted = await storage.deleteOpportunity(id);
-      
+
       if (!deleted) {
         return res.status(404).json({ message: 'Opportunity not found' });
       }
-      
+
       res.json({ success: true, message: 'Opportunity deleted successfully' });
     } catch (error) {
       console.error('Error deleting opportunity:', error);
@@ -13623,14 +13839,14 @@ This is a preview of the performance engagement contract. Final agreement will i
     try {
       const { OppHubAdvancedFiltering } = await import('./oppHubAdvancedFiltering');
       const filter = new OppHubAdvancedFiltering(storage);
-      
+
       const { criteria } = req.body;
       const userProfile = await storage.getUserProfile(req.user?.userId);
-      
+
       const filteredOpportunities = await filter.getFilteredOpportunities(criteria, userProfile);
 
-      res.json({ 
-        success: true, 
+      res.json({
+        success: true,
         opportunities: filteredOpportunities,
         totalFiltered: filteredOpportunities.length
       });
@@ -13645,11 +13861,11 @@ This is a preview of the performance engagement contract. Final agreement will i
     try {
       const { OppHubAdvancedFiltering } = await import('./oppHubAdvancedFiltering');
       const filter = new OppHubAdvancedFiltering(storage);
-      
+
       const statistics = await filter.getOpportunityStatistics();
 
-      res.json({ 
-        success: true, 
+      res.json({
+        success: true,
         statistics
       });
     } catch (error) {
@@ -13663,11 +13879,11 @@ This is a preview of the performance engagement contract. Final agreement will i
     try {
       const { OppHubAdvancedFiltering } = await import('./oppHubAdvancedFiltering');
       const filter = new OppHubAdvancedFiltering(storage);
-      
+
       const report = await filter.generatePersonalizedReport(req.user?.userId);
 
-      res.json({ 
-        success: true, 
+      res.json({
+        success: true,
         report
       });
     } catch (error) {
@@ -13681,7 +13897,7 @@ This is a preview of the performance engagement contract. Final agreement will i
     try {
       const { ManagedUserAnalytics } = await import('./managedUserAnalytics');
       const analytics = new ManagedUserAnalytics(storage);
-      
+
       const managedUsersData = await analytics.getAllManagedUsersWithAnalytics();
 
       res.json(managedUsersData);
@@ -13695,7 +13911,7 @@ This is a preview of the performance engagement contract. Final agreement will i
     try {
       const { ManagedUserAnalytics } = await import('./managedUserAnalytics');
       const analytics = new ManagedUserAnalytics(storage);
-      
+
       const insights = await analytics.getPerformanceInsights();
 
       res.json(insights);
@@ -13709,7 +13925,7 @@ This is a preview of the performance engagement contract. Final agreement will i
     try {
       const { ManagedUserAnalytics } = await import('./managedUserAnalytics');
       const analytics = new ManagedUserAnalytics(storage);
-      
+
       const limit = parseInt(req.query.limit as string) || 5;
       const topPerformers = await analytics.getTopPerformers(limit);
 
@@ -13724,7 +13940,7 @@ This is a preview of the performance engagement contract. Final agreement will i
     try {
       const { ManagedUserAnalytics } = await import('./managedUserAnalytics');
       const analytics = new ManagedUserAnalytics(storage);
-      
+
       const usersNeedingAttention = await analytics.getUsersNeedingAttention();
 
       res.json(usersNeedingAttention);
@@ -13738,7 +13954,7 @@ This is a preview of the performance engagement contract. Final agreement will i
     try {
       const { ManagedUserAnalytics } = await import('./managedUserAnalytics');
       const analytics = new ManagedUserAnalytics(storage);
-      
+
       const userId = parseInt(req.params.userId);
       const userAnalytics = await analytics.getUserAnalyticsDetail(userId);
 
@@ -13765,7 +13981,7 @@ This is a preview of the performance engagement contract. Final agreement will i
         { name: 'Showcase Opportunities', count: 25, region: 'Global', category: 'showcases' }
       ];
 
-      res.json({ 
+      res.json({
         totalSources: sources.reduce((sum, s) => sum + s.count, 0),
         sources: sources,
         lastScan: new Date().toISOString(),
@@ -13782,11 +13998,11 @@ This is a preview of the performance engagement contract. Final agreement will i
     try {
       const { opportunityId, applicantUserId, is_demo } = req.query;
       const filters: any = {};
-      
+
       if (opportunityId) filters.opportunityId = parseInt(opportunityId as string);
       if (applicantUserId) filters.applicantUserId = parseInt(applicantUserId as string);
       if (is_demo !== undefined) filters.isDemo = is_demo === 'true';
-      
+
       const applications = await storage.getOpportunityApplications(filters);
       res.json(applications);
     } catch (error) {
@@ -13799,44 +14015,44 @@ This is a preview of the performance engagement contract. Final agreement will i
     try {
       const applicationData = req.body;
       const userId = req.user?.userId;
-      
+
       // Check if user has an active subscription or is managed
       const user = await storage.getUser(userId);
       if (!user) {
         return res.status(404).json({ message: 'User not found' });
       }
-      
+
       // Check if user is managed (gets free access)
       const isManaged = [3, 5, 7].includes(user.roleId); // managed_artist, managed_musician, managed_professional
-      
+
       if (!isManaged) {
         // Check subscription
         const subscription = await storage.getOppHubSubscriptionByUserId(userId);
         if (!subscription || subscription.status !== 'active') {
           return res.status(403).json({ message: 'Active OppHub subscription required' });
         }
-        
+
         // Check application limits
         const tierLimits: Record<string, number> = {
           publisher: 5,
           representation: 15,
           full_management: 50
         };
-        
+
         const monthlyLimit = tierLimits[subscription.subscriptionTier] || 5;
         if (subscription.applicationsUsed >= monthlyLimit) {
           return res.status(403).json({ message: 'Monthly application limit reached' });
         }
-        
+
         // Increment usage count
         await storage.incrementApplicationsUsed(userId);
       }
-      
+
       const application = await storage.createOpportunityApplication({
         ...applicationData,
         applicantUserId: userId
       });
-      
+
       res.json(application);
     } catch (error) {
       console.error('Error creating opportunity application:', error);
@@ -13848,11 +14064,11 @@ This is a preview of the performance engagement contract. Final agreement will i
     try {
       const id = parseInt(req.params.id);
       const application = await storage.getOpportunityApplicationById(id);
-      
+
       if (!application) {
         return res.status(404).json({ message: 'Opportunity application not found' });
       }
-      
+
       res.json(application);
     } catch (error) {
       console.error('Error fetching opportunity application:', error);
@@ -13865,13 +14081,13 @@ This is a preview of the performance engagement contract. Final agreement will i
       const id = parseInt(req.params.id);
       const { status, reviewNotes } = req.body;
       const reviewedBy = req.user?.userId;
-      
+
       const application = await storage.updateOpportunityApplicationStatus(id, status, reviewNotes, reviewedBy);
-      
+
       if (!application) {
         return res.status(404).json({ message: 'Opportunity application not found' });
       }
-      
+
       res.json(application);
     } catch (error) {
       console.error('Error updating opportunity application status:', error);
@@ -13884,10 +14100,10 @@ This is a preview of the performance engagement contract. Final agreement will i
     try {
       const { userId, status } = req.query;
       const filters: any = {};
-      
+
       if (userId) filters.userId = parseInt(userId as string);
       if (status) filters.status = status as string;
-      
+
       const subscriptions = await storage.getOppHubSubscriptions(filters);
       res.json(subscriptions);
     } catch (error) {
@@ -13911,18 +14127,18 @@ This is a preview of the performance engagement contract. Final agreement will i
     try {
       const subscriptionData = req.body;
       const userId = req.user?.userId;
-      
+
       // Check if user already has an active subscription
       const existingSubscription = await storage.getOppHubSubscriptionByUserId(userId);
       if (existingSubscription) {
         return res.status(400).json({ message: 'User already has an active subscription' });
       }
-      
+
       const subscription = await storage.createOppHubSubscription({
         ...subscriptionData,
         userId
       });
-      
+
       res.json(subscription);
     } catch (error) {
       console.error('Error creating OppHub subscription:', error);
@@ -13935,11 +14151,11 @@ This is a preview of the performance engagement contract. Final agreement will i
       const id = parseInt(req.params.id);
       const updates = req.body;
       const subscription = await storage.updateOppHubSubscription(id, updates);
-      
+
       if (!subscription) {
         return res.status(404).json({ message: 'OppHub subscription not found' });
       }
-      
+
       res.json(subscription);
     } catch (error) {
       console.error('Error updating OppHub subscription:', error);
@@ -13955,7 +14171,7 @@ This is a preview of the performance engagement contract. Final agreement will i
     try {
       const userId = req.user.userId;
       const matches = await matchingEngine.findMatchesForUser(userId);
-      
+
       res.json({
         success: true,
         matches,
@@ -13964,10 +14180,10 @@ This is a preview of the performance engagement contract. Final agreement will i
       });
     } catch (error) {
       console.error('Error finding opportunity matches:', error);
-      res.status(500).json({ 
-        success: false, 
+      res.status(500).json({
+        success: false,
         message: 'Failed to find opportunity matches',
-        error: error.message 
+        error: error.message
       });
     }
   });
@@ -13976,7 +14192,7 @@ This is a preview of the performance engagement contract. Final agreement will i
     try {
       const userId = req.user.userId;
       const recommendations = await matchingEngine.generateRecommendations(userId);
-      
+
       res.json({
         success: true,
         ...recommendations,
@@ -13985,10 +14201,10 @@ This is a preview of the performance engagement contract. Final agreement will i
       });
     } catch (error) {
       console.error('Error generating recommendations:', error);
-      res.status(500).json({ 
-        success: false, 
+      res.status(500).json({
+        success: false,
         message: 'Failed to generate recommendations',
-        error: error.message 
+        error: error.message
       });
     }
   });
@@ -13996,22 +14212,22 @@ This is a preview of the performance engagement contract. Final agreement will i
   app.get('/api/opportunity-matching/profile-score/me', authenticateToken, async (req: Request, res: Response) => {
     try {
       const userId = req.user.userId;
-      
+
       const userProfile = await (matchingEngine as any).getUserProfile(userId);
       if (!userProfile) {
         return res.status(404).json({ message: 'User profile not found' });
       }
-      
+
       // Calculate profile completeness score
       let completeness = 0;
-      
+
       if (userProfile.fullName) completeness += 10;
       if (userProfile.email) completeness += 10;
       if (userProfile.talentProfile) completeness += 30;
       if (userProfile.skills && userProfile.skills.length > 0) completeness += 20;
       if (userProfile.genres && userProfile.genres.length > 0) completeness += 20;
       if (userProfile.location && userProfile.location !== 'Global') completeness += 10;
-      
+
       res.json({
         success: true,
         profile_completeness: Math.round(completeness),
@@ -14021,9 +14237,9 @@ This is a preview of the performance engagement contract. Final agreement will i
       });
     } catch (error) {
       console.error('Error calculating profile score:', error);
-      res.status(500).json({ 
-        success: false, 
-        message: 'Failed to calculate profile score' 
+      res.status(500).json({
+        success: false,
+        message: 'Failed to calculate profile score'
       });
     }
   });
@@ -14031,27 +14247,27 @@ This is a preview of the performance engagement contract. Final agreement will i
   app.get('/api/opportunity-matching/profile-score/:userId', authenticateToken, async (req: Request, res: Response) => {
     try {
       const userId = parseInt(req.params.userId);
-      
+
       // Only allow users to check their own score or superadmins/admins to check others
       if (req.user.userId !== userId && ![1, 2].includes(req.user.roleId)) {
         return res.status(403).json({ message: 'Access denied' });
       }
-      
+
       const userProfile = await (matchingEngine as any).getUserProfile(userId);
       if (!userProfile) {
         return res.status(404).json({ message: 'User profile not found' });
       }
-      
+
       // Calculate profile completeness score
       let completeness = 0;
-      
+
       if (userProfile.fullName) completeness += 10;
       if (userProfile.email) completeness += 10;
       if (userProfile.talentProfile) completeness += 30;
       if (userProfile.skills && userProfile.skills.length > 0) completeness += 20;
       if (userProfile.genres && userProfile.genres.length > 0) completeness += 20;
       if (userProfile.location && userProfile.location !== 'Global') completeness += 10;
-      
+
       res.json({
         success: true,
         profile_completeness: Math.round(completeness),
@@ -14061,16 +14277,16 @@ This is a preview of the performance engagement contract. Final agreement will i
       });
     } catch (error) {
       console.error('Error calculating profile score:', error);
-      res.status(500).json({ 
-        success: false, 
-        message: 'Failed to calculate profile score' 
+      res.status(500).json({
+        success: false,
+        message: 'Failed to calculate profile score'
       });
     }
   });
 
   // OppHub Internal AI Routes - Self-Contained Intelligence System
   const oppHubAI = new (await import('./oppHubInternalAI')).default();
-  
+
   // Platform Health Monitoring (Superadmin/Admin only)
   app.get('/api/opphub-ai/health', authenticateToken, async (req: Request, res: Response) => {
     try {
@@ -14092,7 +14308,7 @@ This is a preview of the performance engagement contract. Final agreement will i
           },
           {
             name: 'OppHub Internal AI Engine',
-            status: 'healthy', 
+            status: 'healthy',
             details: 'Internal AI algorithms operational, no external dependencies',
             responseTime: '45ms'
           },
@@ -14139,14 +14355,14 @@ This is a preview of the performance engagement contract. Final agreement will i
       // Generate forecasts using internal AI engine
       let bookings = [];
       let users = [];
-      
+
       try {
         bookings = await storage.getAllBookings();
         users = await storage.getAllUsers();
       } catch (error: any) {
         console.log('⚠️ OppHub Internal AI: Using available data for forecasting');
       }
-      
+
       // Use internal AI for business forecasting
       const userData = {
         currentRevenue: bookings.reduce((sum, b) => sum + (b.totalCost || 0), 0),
@@ -14154,7 +14370,7 @@ This is a preview of the performance engagement contract. Final agreement will i
         bookings,
         users
       };
-      
+
       const forecasts = oppHubAI.generateBusinessForecasts(userData);
       res.json(forecasts);
     } catch (error) {
@@ -14167,7 +14383,7 @@ This is a preview of the performance engagement contract. Final agreement will i
   app.post('/api/opphub-ai/market-research', authenticateToken, async (req: Request, res: Response) => {
     try {
       const { artist_id, research_type } = req.body;
-      
+
       // Get artist profile for internal AI analysis
       const artist = await storage.getArtistByUserId(parseInt(artist_id));
       if (!artist) {
@@ -14203,7 +14419,7 @@ This is a preview of the performance engagement contract. Final agreement will i
   app.post('/api/opphub-ai/opportunity-matching', authenticateToken, async (req: Request, res: Response) => {
     try {
       const { artist_id } = req.body;
-      
+
       // Get artist profile for internal AI analysis
       const artist = await storage.getArtistByUserId(parseInt(artist_id));
       if (!artist) {
@@ -14238,7 +14454,7 @@ This is a preview of the performance engagement contract. Final agreement will i
   app.get('/api/opphub-ai/social-media/:userId', authenticateToken, async (req: Request, res: Response) => {
     try {
       const targetUserId = parseInt(req.params.userId);
-      
+
       // Get artist profile for internal AI analysis
       const artist = await storage.getArtistByUserId(targetUserId);
       if (!artist) {
@@ -14278,7 +14494,7 @@ This is a preview of the performance engagement contract. Final agreement will i
       // Use internal AI for learning data analysis
       const interactions = []; // This would come from user interaction logs
       const learning = oppHubAI.processLearningData(interactions);
-      
+
       res.json({
         ...learning,
         generated_at: new Date().toISOString(),
@@ -14295,12 +14511,12 @@ This is a preview of the performance engagement contract. Final agreement will i
     try {
       const user = req.user;
       const targetUserId = parseInt(req.params.userId);
-      
+
       // Check access permissions
       const isAdmin = user.roleId === 1 || user.roleId === 2;
       const isManaged = [3, 5, 7].includes(user.roleId);
       const isOwnProfile = user.userId === targetUserId;
-      
+
       if (!isAdmin && !isManaged && !isOwnProfile) {
         return res.status(403).json({ error: 'Access denied' });
       }
@@ -14317,20 +14533,20 @@ This is a preview of the performance engagement contract. Final agreement will i
   // Professional Integration and Internal Objectives Routes
   const internalObjectivesRoutes = await import('./routes/internalObjectives');
   const professionalIntegrationRoutes = await import('./routes/professionalIntegration');
-  
+
   app.use('/api/internal-objectives', internalObjectivesRoutes.default);
   app.use('/api/professional-integration', professionalIntegrationRoutes.default);
-  
+
   // Generate AI guidance for opportunity
   app.post('/api/opphub-ai/guidance/generate', authenticateToken, async (req: Request, res: Response) => {
     try {
       const user = req.user;
       const { opportunityId, targetUserId } = req.body;
-      
+
       // Check permissions
       const isAdmin = user.roleId === 1 || user.roleId === 2;
       const isManaged = [3, 5, 7].includes(user.roleId);
-      
+
       if (!isAdmin && !isManaged) {
         return res.status(403).json({ error: 'Access denied' });
       }
@@ -14365,12 +14581,12 @@ This is a preview of the performance engagement contract. Final agreement will i
     try {
       const user = req.user;
       const targetUserId = parseInt(req.params.userId);
-      
+
       // Check permissions
       const isAdmin = user.roleId === 1 || user.roleId === 2;
       const isManagedArtist = user.roleId === 3;
       const isOwnProfile = user.userId === targetUserId;
-      
+
       if (!isAdmin && !(isManagedArtist && isOwnProfile)) {
         return res.status(403).json({ error: 'Access denied' });
       }
@@ -14449,7 +14665,7 @@ This is a preview of the performance engagement contract. Final agreement will i
       let bookings = [];
       let users = [];
       let opportunities = [];
-      
+
       try {
         bookings = await storage.getAllBookings();
         users = await storage.getAllUsers();
@@ -14546,7 +14762,7 @@ This is a preview of the performance engagement contract. Final agreement will i
 
       // Import error learning system
       const { oppHubErrorLearning } = await import('./oppHubErrorLearning');
-      
+
       // Get real-time system health and error learning data
       const systemHealth = await oppHubErrorLearning.getSystemHealth();
       const errorPatterns = await oppHubErrorLearning.getErrorPatterns();
@@ -14555,14 +14771,14 @@ This is a preview of the performance engagement contract. Final agreement will i
       // Compile comprehensive AI dashboard data with real error learning
       const dashboard = {
         health: {
-          status: systemHealth.every(h => h.status === 'healthy') ? 'healthy' : 
-                 systemHealth.some(h => h.status === 'error') ? 'error' : 'warning',
+          status: systemHealth.every(h => h.status === 'healthy') ? 'healthy' :
+            systemHealth.some(h => h.status === 'error') ? 'error' : 'warning',
           uptime: '99.9%',
           activeServices: 12,
           systemChecks: systemHealth
         },
         forecasts: {
-          revenue: { 
+          revenue: {
             trend: 'growing',
             projection: '+15%'
           },
@@ -14669,7 +14885,7 @@ This is a preview of the performance engagement contract. Final agreement will i
             description: "Advanced revenue forecasting and business intelligence based on historical platform data",
             features: [
               "Revenue forecasting with trend analysis",
-              "User growth analysis with weekly growth rates", 
+              "User growth analysis with weekly growth rates",
               "Booking trend analysis with seasonal pattern detection",
               "Opportunity market analysis and recommendations",
               "ROI analysis for managed vs independent artists"
@@ -14714,14 +14930,14 @@ This is a preview of the performance engagement contract. Final agreement will i
               features: [
                 "Global opportunity discovery (42+ sources)",
                 "Basic application guidance",
-                "Weekly opportunity alerts", 
+                "Weekly opportunity alerts",
                 "Basic analytics dashboard",
                 "Email support",
                 "Booking system access for non-managed talent"
               ]
             },
             {
-              name: "OppHub Marketplace Professional", 
+              name: "OppHub Marketplace Professional",
               basePrice: 9.99,
               features: [
                 "All Essential features",
@@ -14734,7 +14950,7 @@ This is a preview of the performance engagement contract. Final agreement will i
             },
             {
               name: "OppHub Marketplace Enterprise",
-              basePrice: 19.99, 
+              basePrice: 19.99,
               features: [
                 "All Professional features",
                 "Custom data analysis and insights",
@@ -14752,7 +14968,7 @@ This is a preview of the performance engagement contract. Final agreement will i
               description: "Managed artists with publisher-level management get 10% off all OppHub subscription rates"
             },
             "Representation Level": {
-              discountPercentage: 50, 
+              discountPercentage: 50,
               description: "Managed talent with representation-level management get 50% off all subscription rates"
             },
             "Full Management": {
@@ -14776,7 +14992,7 @@ This is a preview of the performance engagement contract. Final agreement will i
         accessControl: {
           superadmins: [
             "Complete AI monitoring and management capabilities",
-            "Platform health monitoring with error prevention", 
+            "Platform health monitoring with error prevention",
             "Business forecasting and strategic planning",
             "Global opportunity scanner management",
             "AI learning system oversight and configuration",
@@ -14785,14 +15001,14 @@ This is a preview of the performance engagement contract. Final agreement will i
           admins: [
             "AI monitoring and basic management capabilities",
             "Platform health monitoring (read-only)",
-            "Business forecasting access", 
+            "Business forecasting access",
             "Opportunity scanner monitoring",
             "User AI guidance management",
             "Subscription management for managed users"
           ],
           managedUsers: [
             "Personalized AI guidance for opportunity applications",
-            "Social media AI strategy generation", 
+            "Social media AI strategy generation",
             "Career enhancement recommendations",
             "Priority access to opportunity matching",
             "Performance analytics and insights",
@@ -14800,7 +15016,7 @@ This is a preview of the performance engagement contract. Final agreement will i
           ],
           regularUsers: [
             "Subscription-based opportunity discovery access",
-            "Basic platform recommendations", 
+            "Basic platform recommendations",
             "Pay full subscription rates (no discounts)",
             "Limited free tier with basic features"
           ]
@@ -14841,10 +15057,10 @@ This is a preview of the performance engagement contract. Final agreement will i
     try {
       const { status, sourceType } = req.query;
       const filters: any = {};
-      
+
       if (status) filters.status = status as string;
       if (sourceType) filters.sourceType = sourceType as string;
-      
+
       const intelligence = await storage.getMarketIntelligence(filters);
       res.json(intelligence);
     } catch (error) {
@@ -14869,13 +15085,13 @@ This is a preview of the performance engagement contract. Final agreement will i
       const id = parseInt(req.params.id);
       const { status, reviewNotes } = req.body;
       const reviewedBy = req.user?.userId;
-      
+
       const intelligence = await storage.updateMarketIntelligenceStatus(id, status, reviewNotes, reviewedBy);
-      
+
       if (!intelligence) {
         return res.status(404).json({ message: 'Market intelligence not found' });
       }
-      
+
       res.json(intelligence);
     } catch (error) {
       console.error('Error updating market intelligence status:', error);
@@ -14909,7 +15125,7 @@ This is a preview of the performance engagement contract. Final agreement will i
     try {
       const id = parseInt(req.params.id);
       const { opportunitiesFound } = req.body;
-      
+
       await storage.updateOpportunitySourceLastScraped(id, opportunitiesFound);
       res.json({ success: true, message: 'Opportunity source updated successfully' });
     } catch (error) {
@@ -14923,10 +15139,10 @@ This is a preview of the performance engagement contract. Final agreement will i
     try {
       const { artistId, opportunityId } = req.query;
       const filters: any = {};
-      
+
       if (artistId) filters.artistId = parseInt(artistId as string);
       if (opportunityId) filters.opportunityId = parseInt(opportunityId as string);
-      
+
       const matches = await storage.getOpportunityMatches(filters);
       res.json(matches);
     } catch (error) {
@@ -14950,7 +15166,7 @@ This is a preview of the performance engagement contract. Final agreement will i
     try {
       const id = parseInt(req.params.id);
       const { interactionType } = req.body;
-      
+
       await storage.updateOpportunityMatchInteraction(id, interactionType);
       res.json({ success: true, message: 'Opportunity match interaction updated' });
     } catch (error) {
@@ -14991,16 +15207,16 @@ This is a preview of the performance engagement contract. Final agreement will i
   app.post('/api/opphub/scan', authenticateToken, requireRole([1, 2]), async (req: Request, res: Response) => {
     try {
       console.log('🚀 Starting OppHub AI scan...');
-      
+
       // Run scan in background to avoid timeout
       oppHubScanner.scanForOpportunities('full').then(() => {
         console.log('✅ OppHub scan completed successfully');
       }).catch(error => {
         console.error('❌ OppHub scan failed:', error);
       });
-      
-      res.json({ 
-        success: true, 
+
+      res.json({
+        success: true,
         message: 'AI web scan initiated. New opportunities will be populated shortly.',
         status: 'scanning'
       });
@@ -15014,7 +15230,7 @@ This is a preview of the performance engagement contract. Final agreement will i
     try {
       // Get recent opportunities to show scan progress
       const recentOpportunities = await storage.getOpportunities();
-      
+
       // Calculate category and region counts from opportunities
       const categoryCounts = recentOpportunities.reduce((acc: any, opp: any) => {
         const category = opp.category || 'General';
@@ -15036,7 +15252,7 @@ This is a preview of the performance engagement contract. Final agreement will i
         categoryCounts: Object.keys(categoryCounts).length > 0 ? categoryCounts : { "General": 0 },
         regionCounts: Object.keys(regionCounts).length > 0 ? regionCounts : { "Global": 0 }
       };
-      
+
       res.json(scanStats);
     } catch (error) {
       console.error('Error fetching scan status:', error);
@@ -15047,9 +15263,9 @@ This is a preview of the performance engagement contract. Final agreement will i
   app.post('/api/opphub/promote', authenticateToken, requireRole([1]), async (req: Request, res: Response) => {
     try {
       const { targetMarkets, budget, strategy } = req.body;
-      
+
       console.log('🚀 Initiating OppHub self-promotion campaign...');
-      
+
       // Create promotional campaign data
       const campaignData = {
         name: `OppHub Market Expansion - ${new Date().toLocaleDateString()}`,
@@ -15060,7 +15276,7 @@ This is a preview of the performance engagement contract. Final agreement will i
         ],
         targetAudience: targetMarkets || [
           'Independent artists',
-          'Music managers', 
+          'Music managers',
           'Emerging musicians',
           'Label A&R representatives',
           'Music industry professionals'
@@ -15116,7 +15332,7 @@ This is a preview of the performance engagement contract. Final agreement will i
         estimatedROI: '400%',
         timeline: '6 months to significant market penetration'
       });
-      
+
     } catch (error) {
       console.error('Error initiating promotion campaign:', error);
       res.status(500).json({ message: 'Failed to initiate promotion campaign' });
@@ -15124,12 +15340,12 @@ This is a preview of the performance engagement contract. Final agreement will i
   });
 
   // ==================== PRO REGISTRATION ROUTES ====================
-  
+
   // PRO Fee Lookup Routes - Real-time fee calculation from OppHub
   app.get("/api/pro-fees/:proName", async (req: Request, res: Response) => {
     try {
       const { proName } = req.params;
-      
+
       // Default fees with real-time updates from OppHub scanner
       const defaultFees = {
         ASCAP: 50,
@@ -15137,17 +15353,17 @@ This is a preview of the performance engagement contract. Final agreement will i
         SESAC: 0, // Invitation only
         GMR: 0    // Contact for pricing
       };
-      
+
       // Get real-time fees from opportunities table (populated by OppHub scanner)
       const opportunities = await storage.getOpportunities();
-      const proOpportunity = opportunities.find((opp: any) => 
+      const proOpportunity = opportunities.find((opp: any) =>
         opp.source === 'pro_requirements' && opp.title.includes(proName)
       );
-      
+
       const fee = proOpportunity ? parseFloat(proOpportunity.amount) || defaultFees[proName as keyof typeof defaultFees] : defaultFees[proName as keyof typeof defaultFees];
-      
-      res.json({ 
-        proName, 
+
+      res.json({
+        proName,
         membershipFee: fee,
         lastUpdated: proOpportunity?.updated_at || new Date().toISOString(),
         source: proOpportunity ? 'oppHub_real_time' : 'default'
@@ -15171,7 +15387,7 @@ This is a preview of the performance engagement contract. Final agreement will i
         dateOfBirth: '01-21-1995',
         treatyCountry: 'THE COMMONWEALTH OF DOMINICA'
       };
-      
+
       res.json(template);
     } catch (error) {
       console.error('W-8BEN template error:', error);
@@ -15183,7 +15399,7 @@ This is a preview of the performance engagement contract. Final agreement will i
   app.post("/api/admin/pro-service-fees", authenticateToken, requireRole([1]), async (req: Request, res: Response) => {
     try {
       const { adminFee, handlingFee, servicePricing } = req.body;
-      
+
       // Store fee structure in database or config
       const feeStructure = {
         adminFee,
@@ -15192,10 +15408,10 @@ This is a preview of the performance engagement contract. Final agreement will i
         updatedAt: new Date(),
         updatedBy: req.user?.userId
       };
-      
+
       // For now, return success (could store in database for persistence)
-      res.json({ 
-        success: true, 
+      res.json({
+        success: true,
         message: 'PRO service fees updated successfully',
         feeStructure
       });
@@ -15210,19 +15426,19 @@ This is a preview of the performance engagement contract. Final agreement will i
     try {
       // Trigger OppHub scanner for PRO organizations
       const { oppHubScanner } = require('./oppHubScanner');
-      
+
       if (oppHubScanner) {
         // Force scan PRO websites for updated fees
         await oppHubScanner.scanForOpportunities('full');
-        
-        res.json({ 
-          success: true, 
-          message: 'PRO fees refreshed from OppHub scanner' 
+
+        res.json({
+          success: true,
+          message: 'PRO fees refreshed from OppHub scanner'
         });
       } else {
-        res.json({ 
-          success: false, 
-          message: 'OppHub scanner not available' 
+        res.json({
+          success: false,
+          message: 'OppHub scanner not available'
         });
       }
     } catch (error) {
@@ -15237,12 +15453,12 @@ This is a preview of the performance engagement contract. Final agreement will i
   app.get("/api/service-pricing/:serviceName", async (req: Request, res: Response) => {
     try {
       const serviceName = req.params.serviceName;
-      
+
       const [service] = await db.select()
         .from(services)
         .where(eq(services.name, serviceName))
         .limit(1);
-      
+
       if (!service) {
         return res.status(404).json({ message: `Service '${serviceName}' not found` });
       }
@@ -15260,7 +15476,7 @@ This is a preview of the performance engagement contract. Final agreement will i
         representationDiscount: 50, // 50%
         fullManagementDiscount: 100, // 100% (free)
       };
-      
+
       res.json(pricing);
     } catch (error) {
       console.error('Service pricing error:', error);
@@ -15280,15 +15496,15 @@ This is a preview of the performance engagement contract. Final agreement will i
         duration: services.duration,
         isActive: services.isActive
       })
-      .from(services)
-      .where(eq(services.isActive, true))
-      .orderBy(services.name);
+        .from(services)
+        .where(eq(services.isActive, true))
+        .orderBy(services.name);
 
       const formattedServices = allServices.map(service => ({
         ...service,
         basePrice: parseFloat(service.basePrice || '0')
       }));
-      
+
       res.json(formattedServices);
     } catch (error) {
       console.error('Services fetch error:', error);
@@ -15364,7 +15580,7 @@ This is a preview of the performance engagement contract. Final agreement will i
         }
       }
 
-      res.json({ 
+      res.json({
         message: `${createdServices.length} consultation services created`,
         services: createdServices
       });
@@ -15381,7 +15597,7 @@ This is a preview of the performance engagement contract. Final agreement will i
         .from(services)
         .where(eq(services.name, 'ISRC Coding'))
         .limit(1);
-      
+
       if (!service) {
         return res.status(404).json({ message: "ISRC Coding service not found" });
       }
@@ -15394,7 +15610,7 @@ This is a preview of the performance engagement contract. Final agreement will i
         coverArtValidationFee: 2.00,
         metadataEmbeddingFee: 3.00
       };
-      
+
       res.json(pricing);
     } catch (error) {
       console.error('ISRC pricing error:', error);
@@ -15407,18 +15623,18 @@ This is a preview of the performance engagement contract. Final agreement will i
     try {
       const userId = parseInt(req.params.userId);
       const user = await storage.getUser(userId);
-      
+
       if (!user) {
         return res.status(404).json({ message: "User not found" });
       }
-      
+
       // Determine management tier based on role
       let tierName = 'None';
       if (user.roleId === 3 || user.roleId === 5 || user.roleId === 7) {
         // Check management tier from database or default logic
         tierName = 'Full Management'; // Default for managed users
       }
-      
+
       res.json({ tierName, roleId: user.roleId, isManaged: [3, 5, 7].includes(user.roleId) });
     } catch (error) {
       console.error('User management tier error:', error);
@@ -15430,11 +15646,11 @@ This is a preview of the performance engagement contract. Final agreement will i
   app.post("/api/opphub/validate-cover-art", authenticateToken, async (req: Request, res: Response) => {
     try {
       const { oppHubISRCProcessor } = require('./oppHubISRCProcessor');
-      
+
       if (!req.file) {
         return res.status(400).json({ message: "No cover art file provided" });
       }
-      
+
       const validation = await oppHubISRCProcessor.validateCoverArt(req.file.path);
       res.json(validation);
     } catch (error) {
@@ -15448,24 +15664,24 @@ This is a preview of the performance engagement contract. Final agreement will i
     try {
       const userId = req.user?.userId;
       const user = await storage.getUser(userId || 0);
-      
+
       // Check if user is managed
       if (!user || ![3, 5, 7].includes(user.roleId)) {
         return res.status(403).json({ message: "ISRC coding service is only available to managed artists" });
       }
-      
+
       // Process submission with OppHub
       const { oppHubISRCProcessor } = require('./oppHubISRCProcessor');
-      
+
       const audioFile = req.files?.audioFile?.[0];
       const coverArt = req.files?.coverArt?.[0];
       const splitsheetData = JSON.parse(req.body.splitsheetData);
       const submissionType = req.body.submissionType;
-      
+
       if (!audioFile || !coverArt) {
         return res.status(400).json({ message: "Audio file and cover art are required" });
       }
-      
+
       // Process with OppHub ISRC processor
       const result = await oppHubISRCProcessor.processISRCSubmission(
         audioFile.path,
@@ -15474,7 +15690,7 @@ This is a preview of the performance engagement contract. Final agreement will i
         submissionType,
         user.id
       );
-      
+
       if (result.success) {
         // Store submission in database
         const submission = {
@@ -15492,7 +15708,7 @@ This is a preview of the performance engagement contract. Final agreement will i
           totalCost: 5.00, // Base price
           finalCost: 0.00 // Free for managed users by default
         };
-        
+
         // Store in database (implementation depends on storage structure)
         res.json({
           success: true,
@@ -15517,7 +15733,7 @@ This is a preview of the performance engagement contract. Final agreement will i
   app.get("/api/isrc-submissions", authenticateToken, async (req: Request, res: Response) => {
     try {
       const userId = req.user?.userId;
-      
+
       // For now, return empty array (would fetch from database)
       res.json([]);
     } catch (error) {
@@ -15531,12 +15747,12 @@ This is a preview of the performance engagement contract. Final agreement will i
     try {
       // Handle splitsheet signature with file upload
       const { splitsheetId, signerName, signerRole, ownershipType, percentageOwnership, ipiNumber, accessToken } = req.body;
-      
+
       // Process signature file (PNG with transparent background)
       // Store signature in database and send notifications
-      
-      res.json({ 
-        success: true, 
+
+      res.json({
+        success: true,
         message: 'Splitsheet signed successfully',
         signatureId: Date.now() // Mock ID for now
       });
@@ -15550,12 +15766,12 @@ This is a preview of the performance engagement contract. Final agreement will i
   app.post("/api/splitsheet-notify", authenticateToken, async (req: Request, res: Response) => {
     try {
       const { splitsheetId, recipients } = req.body;
-      
+
       // Send email notifications to all parties that need to sign
       // Generate access tokens for non-users
-      
-      res.json({ 
-        success: true, 
+
+      res.json({
+        success: true,
         message: 'Notifications sent successfully',
         notificationsSent: recipients?.length || 0
       });
@@ -15569,10 +15785,10 @@ This is a preview of the performance engagement contract. Final agreement will i
   app.get("/api/splitsheet-access/:accessToken", async (req: Request, res: Response) => {
     try {
       const { accessToken } = req.params;
-      
+
       // Validate access token and return splitsheet data
       // Allow non-users to access and sign splitsheets
-      
+
       res.json({
         splitsheet: {
           id: 1,
@@ -15596,52 +15812,52 @@ This is a preview of the performance engagement contract. Final agreement will i
     try {
       const splitsheetData = req.body;
       const userId = req.user?.userId;
-      
+
       // Validate Wai'tuMusic percentage policy
       const { writerComposers = [], recordingArtists = [], otherContributors = [] } = splitsheetData;
-      
+
       // Calculate totals for each category matching frontend validation
       const songwritingTotal = (writerComposers.reduce((sum: number, wc: any) => sum + (wc.songwritingPercentage || 0), 0)) +
-                               (otherContributors.filter((oc: any) => oc.roleNotes?.toLowerCase().includes('songwriter') || oc.roleNotes?.toLowerCase().includes('author'))
-                                .reduce((sum: number, oc: any) => sum + (oc.workOwnership || 0), 0));
-      
+        (otherContributors.filter((oc: any) => oc.roleNotes?.toLowerCase().includes('songwriter') || oc.roleNotes?.toLowerCase().includes('author'))
+          .reduce((sum: number, oc: any) => sum + (oc.workOwnership || 0), 0));
+
       const melodyTotal = (recordingArtists.reduce((sum: number, ra: any) => sum + (ra.musicOwnership || 0), 0)) +
-                         (otherContributors.filter((oc: any) => oc.roleNotes?.toLowerCase().includes('melody'))
-                          .reduce((sum: number, oc: any) => sum + (oc.workOwnership || 0), 0));
-      
-      const beatProductionTotal = otherContributors.filter((oc: any) => oc.roleNotes?.toLowerCase().includes('beat') || 
-                                                                        oc.roleNotes?.toLowerCase().includes('production') ||
-                                                                        oc.roleNotes?.toLowerCase().includes('producer'))
-                                 .reduce((sum: number, oc: any) => sum + (oc.workOwnership || 0), 0);
-      
+        (otherContributors.filter((oc: any) => oc.roleNotes?.toLowerCase().includes('melody'))
+          .reduce((sum: number, oc: any) => sum + (oc.workOwnership || 0), 0));
+
+      const beatProductionTotal = otherContributors.filter((oc: any) => oc.roleNotes?.toLowerCase().includes('beat') ||
+        oc.roleNotes?.toLowerCase().includes('production') ||
+        oc.roleNotes?.toLowerCase().includes('producer'))
+        .reduce((sum: number, oc: any) => sum + (oc.workOwnership || 0), 0);
+
       const totalComposition = songwritingTotal + melodyTotal + beatProductionTotal;
-      
+
       // Check policy limits: Songwriting 50%, Melody 25%, Music Composition 25%
       if (songwritingTotal > 50) {
-        return res.status(400).json({ 
+        return res.status(400).json({
           message: "Songwriting percentages exceed 50% limit",
           songwritingTotal: songwritingTotal
         });
       }
-      
+
       if (melodyTotal > 25) {
-        return res.status(400).json({ 
-          message: "Melody creation percentages exceed 25% limit", 
+        return res.status(400).json({
+          message: "Melody creation percentages exceed 25% limit",
           melodyTotal: melodyTotal
         });
       }
-      
+
       if (beatProductionTotal > 25) {
-        return res.status(400).json({ 
+        return res.status(400).json({
           message: "Music composition percentages exceed 25% limit",
           beatProductionTotal: beatProductionTotal
         });
       }
-      
+
       // Add service pricing information ($15 per splitsheet)
       const splitsheetWithPricing = {
         ...splitsheetData,
-        serviceType: "splitsheet_creation", 
+        serviceType: "splitsheet_creation",
         basePrice: "15.00", // $15 per splitsheet
         discountPercentage: "0.00", // No discount by default
         finalPrice: "15.00", // Final price is $15
@@ -15652,7 +15868,7 @@ This is a preview of the performance engagement contract. Final agreement will i
 
       // Create splitsheet and send notifications
       const splitsheetId = Date.now(); // Mock ID
-      
+
       // Extract all parties for notifications
       const allParties = [
         ...writerComposers.map((wc: any) => ({ ...wc, role: 'songwriter', ownershipType: 'songwriting' })),
@@ -15661,20 +15877,20 @@ This is a preview of the performance engagement contract. Final agreement will i
         ...(splitsheetData.publishers || []).map((pub: any) => ({ ...pub, role: 'publisher' })),
         ...(otherContributors || []).map((oc: any) => ({ ...oc, role: 'other_contributor', ownershipType: oc.roleNotes }))
       ];
-      
+
       // Send notifications to all parties
       let notificationsSent = 0;
       for (const party of allParties) {
         if (party.email) {
           // Generate access token for signing
           const accessToken = `SPLIT-${Date.now()}-${Math.random().toString(36).substring(7)}`;
-          
+
           // Mock notification sending
           console.log(`Sending splitsheet notification to ${party.name} (${party.email})`);
           notificationsSent++;
         }
       }
-      
+
       res.json({
         success: true,
         splitsheetId,
@@ -15736,9 +15952,9 @@ This is a preview of the performance engagement contract. Final agreement will i
 
     } catch (error) {
       console.error('Enhanced splitsheet creation error:', error);
-      res.status(500).json({ 
+      res.status(500).json({
         message: "Failed to create enhanced splitsheet",
-        error: error.message 
+        error: error.message
       });
     }
   });
@@ -15755,7 +15971,7 @@ This is a preview of the performance engagement contract. Final agreement will i
         try {
           // Check if user already exists
           const existingUser = await storage.getUserByEmail(participant.email);
-          
+
           if (existingUser) {
             // User exists, assign them
             processedParticipant.assignedUserId = existingUser.id;
@@ -15809,7 +16025,7 @@ This is a preview of the performance engagement contract. Final agreement will i
   async function sendWelcomeEmailToNewUser(participant: any, userId: number, tempPassword: string): Promise<void> {
     try {
       const loginUrl = `${process.env.BASE_URL || 'http://localhost:5000'}/login`;
-      
+
       const emailHtml = `
         <div style="max-width: 600px; margin: 0 auto; padding: 20px; font-family: Arial, sans-serif;">
           <div style="text-align: center; margin-bottom: 30px;">
@@ -15942,7 +16158,7 @@ This is a preview of the performance engagement contract. Final agreement will i
         // If all signed and paid, generate final PDF
         if (result.allSigned) {
           const pdfUrl = await enhancedSplitsheetProcessor.generateFinalPDF(splitsheetId);
-          
+
           res.json({
             success: true,
             allSigned: true,
@@ -15984,8 +16200,8 @@ This is a preview of the performance engagement contract. Final agreement will i
 
       // Verify download eligibility
       if (!splitsheet.canDownload) {
-        return res.status(400).json({ 
-          message: 'Download not available. Ensure all participants have signed and payment is complete.' 
+        return res.status(400).json({
+          message: 'Download not available. Ensure all participants have signed and payment is complete.'
         });
       }
 
@@ -16000,11 +16216,11 @@ This is a preview of the performance engagement contract. Final agreement will i
 
       // Generate and serve PDF
       const pdfUrl = await enhancedSplitsheetProcessor.generateFinalPDF(splitsheetId);
-      
+
       if (pdfUrl) {
         // Update download count
         await db.update(enhancedSplitsheets)
-          .set({ 
+          .set({
             downloadCount: (splitsheet.downloadCount || 0) + 1,
             lastDownloadAt: new Date()
           })
@@ -16058,7 +16274,7 @@ This is a preview of the performance engagement contract. Final agreement will i
   app.get("/api/users/assignable-talent", authenticateToken, async (req: Request, res: Response) => {
     try {
       const search = req.query.q as string;
-      
+
       if (!search || search.length < 3) {
         return res.json([]);
       }
@@ -16070,17 +16286,17 @@ This is a preview of the performance engagement contract. Final agreement will i
         email: users.email,
         roleId: users.roleId
       })
-      .from(users)
-      .where(
-        and(
-          inArray(users.roleId, [3, 4, 5, 6, 7, 8]), // Artist, Managed Artist, Musician, Managed Musician, Professional, Managed Professional
-          or(
-            sql`LOWER(${users.fullName}) LIKE LOWER(${`%${search}%`})`,
-            sql`LOWER(${users.email}) LIKE LOWER(${`%${search}%`})`
+        .from(users)
+        .where(
+          and(
+            inArray(users.roleId, [3, 4, 5, 6, 7, 8]), // Artist, Managed Artist, Musician, Managed Musician, Professional, Managed Professional
+            or(
+              sql`LOWER(${users.fullName}) LIKE LOWER(${`%${search}%`})`,
+              sql`LOWER(${users.email}) LIKE LOWER(${`%${search}%`})`
+            )
           )
         )
-      )
-      .limit(10);
+        .limit(10);
 
       res.json(users);
     } catch (error) {
@@ -16093,7 +16309,7 @@ This is a preview of the performance engagement contract. Final agreement will i
   app.post("/api/splitsheet-sign", async (req: Request, res: Response) => {
     try {
       const { splitsheetId, partyName, partyRole, signatureMode, signatureText, accessToken } = req.body;
-      
+
       // Validate access (either authenticated user or valid token)
       let isAuthorized = false;
       if (req.headers.authorization) {
@@ -16104,11 +16320,11 @@ This is a preview of the performance engagement contract. Final agreement will i
         console.log(`Validating access token: ${accessToken}`);
         isAuthorized = true; // Mock validation - would check database in production
       }
-      
+
       if (!isAuthorized) {
         return res.status(401).json({ message: "Unauthorized access" });
       }
-      
+
       // Record signature
       const signatureData = {
         splitsheetId: parseInt(splitsheetId),
@@ -16119,12 +16335,12 @@ This is a preview of the performance engagement contract. Final agreement will i
         signedAt: new Date(),
         ipAddress: req.ip || req.connection.remoteAddress
       };
-      
+
       console.log(`Recording signature for ${partyName} on splitsheet ${splitsheetId}`);
-      
+
       // Check if splitsheet is now fully signed
       const isFullySigned = true; // Mock check - would verify all required signatures
-      
+
       let djSongAccess = null;
       if (isFullySigned) {
         // Grant DJ access to song since splitsheet is fully signed
@@ -16135,7 +16351,7 @@ This is a preview of the performance engagement contract. Final agreement will i
         };
         console.log(`Splitsheet fully signed - DJ access granted: ${djSongAccess.accessCode}`);
       }
-      
+
       res.json({
         success: true,
         message: 'Signature recorded successfully',
@@ -16153,26 +16369,26 @@ This is a preview of the performance engagement contract. Final agreement will i
   app.post("/api/dj-song-access", authenticateToken, requireRole([1, 2]), async (req: Request, res: Response) => {
     try {
       const { djUserId, bookingId, songId, splitsheetId } = req.body;
-      
+
       // Verify splitsheet is fully signed before granting access
       // Check if all required parties have signed the splitsheet
       const isFullySigned = true; // Mock check - would verify all signatures in production
-      
+
       if (!isFullySigned) {
-        return res.status(400).json({ 
-          message: "Cannot grant DJ access - splitsheet not fully signed" 
+        return res.status(400).json({
+          message: "Cannot grant DJ access - splitsheet not fully signed"
         });
       }
-      
+
       // Grant DJ access to the SONG (not just splitsheet)
       const accessCode = `DJ-SONG-${Date.now()}-${Math.random().toString(36).substring(7)}`;
       const expiresAt = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000); // 30 days
-      
+
       // Store DJ song access record
       console.log(`Granting DJ access to song ${songId} for DJ ${djUserId} in booking ${bookingId}`);
-      
-      res.json({ 
-        success: true, 
+
+      res.json({
+        success: true,
         accessCode,
         songId,
         splitsheetId,
@@ -16189,7 +16405,7 @@ This is a preview of the performance engagement contract. Final agreement will i
   app.get("/api/dj-accessible-songs/:djUserId/:bookingId", authenticateToken, async (req: Request, res: Response) => {
     try {
       const { djUserId, bookingId } = req.params;
-      
+
       // Return songs with fully signed splitsheets that DJ can access
       const accessibleSongs = [
         {
@@ -16204,7 +16420,7 @@ This is a preview of the performance engagement contract. Final agreement will i
           expiresAt: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000)
         }
       ];
-      
+
       res.json({
         success: true,
         accessibleSongs,
@@ -16222,10 +16438,10 @@ This is a preview of the performance engagement contract. Final agreement will i
     try {
       const { id } = req.params;
       const userId = req.user?.userId;
-      
+
       // Verify user has access to this splitsheet
       // Generate PDF with all signatures and return download
-      
+
       res.json({
         downloadUrl: `/api/files/splitsheet-${id}.pdf`,
         expires: new Date(Date.now() + 60 * 60 * 1000) // 1 hour
@@ -16246,7 +16462,7 @@ This is a preview of the performance engagement contract. Final agreement will i
         completedSubmissions: 0,
         totalRevenue: '0.00'
       };
-      
+
       res.json(overview);
     } catch (error) {
       console.error('ISRC submissions overview error:', error);
@@ -16264,20 +16480,20 @@ This is a preview of the performance engagement contract. Final agreement will i
 
       const user = await storage.getUser(userId);
       const userProfile = await storage.getUserProfile(userId);
-      
+
       // Validate request body
       const { hasOriginalMusic, hasPublishedWorks, intendsToPersue, hasPerformances, isUSCitizen, additionalInfo } = req.body;
-      
-      if (typeof hasOriginalMusic !== 'boolean' || 
-          typeof hasPublishedWorks !== 'boolean' || 
-          typeof intendsToPersue !== 'boolean' || 
-          typeof hasPerformances !== 'boolean') {
+
+      if (typeof hasOriginalMusic !== 'boolean' ||
+        typeof hasPublishedWorks !== 'boolean' ||
+        typeof intendsToPersue !== 'boolean' ||
+        typeof hasPerformances !== 'boolean') {
         return res.status(400).json({ message: "Invalid assessment data" });
       }
-      
+
       // Determine tax form requirements based on citizenship
       const requiresW8BEN = !isUSCitizen;
-      
+
       // Prepare Wai'tuMusic autofill data for label-managed users
       const waituMusicAutofill = {
         labelName: "Wai'tuMusic",
@@ -16291,7 +16507,7 @@ This is a preview of the performance engagement contract. Final agreement will i
           phoneNumber: userProfile.phoneNumber
         })
       };
-      
+
       const assessmentData = {
         userId,
         hasOriginalMusic,
@@ -16302,7 +16518,7 @@ This is a preview of the performance engagement contract. Final agreement will i
         eligibilityScore: calculateEligibilityScore(req.body),
         assessmentData: JSON.stringify({ additionalInfo, waituMusicAutofill })
       };
-      
+
       const assessment = await storage.createPROEligibilityAssessment(assessmentData);
       res.status(201).json({
         ...assessment,
@@ -16342,7 +16558,7 @@ This is a preview of the performance engagement contract. Final agreement will i
     try {
       const userId = req.user?.userId;
       const { organizationChoice, personalInfo, fees, contactPreferences, notes } = req.body;
-      
+
       const registrationData = {
         userId,
         proName: organizationChoice, // Map organizationChoice to proName
@@ -16360,7 +16576,7 @@ This is a preview of the performance engagement contract. Final agreement will i
           notes
         }
       };
-      
+
       const registration = await storage.createPRORegistration(registrationData);
       res.status(201).json(registration);
     } catch (error) {
@@ -16415,7 +16631,7 @@ This is a preview of the performance engagement contract. Final agreement will i
         ...req.body,
         registrationDate: new Date()
       };
-      
+
       const work = await storage.createPROWork(workData);
       res.status(201).json(work);
     } catch (error) {
@@ -16458,7 +16674,7 @@ This is a preview of the performance engagement contract. Final agreement will i
       if (userRole !== 1 && userRole !== 2) {
         return res.status(403).json({ message: "Access denied. Admin privileges required." });
       }
-      
+
       const registrations = await storage.getPRORegistrations();
       res.json(registrations);
     } catch (error) {
@@ -16473,20 +16689,20 @@ This is a preview of the performance engagement contract. Final agreement will i
       if (userRole !== 1) { // Only superadmin can update fees
         return res.status(403).json({ message: "Access denied. Superadmin privileges required." });
       }
-      
+
       const id = parseInt(req.params.id);
       const { adminFee, proRegistrationFee, handlingFee } = req.body;
-      
+
       const registration = await storage.updatePRORegistration(id, {
         adminFee,
         proRegistrationFee,
         handlingFee
       });
-      
+
       if (!registration) {
         return res.status(404).json({ message: "PRO registration not found" });
       }
-      
+
       res.json(registration);
     } catch (error) {
       console.error('Update PRO registration fees error:', error);
@@ -16500,20 +16716,20 @@ This is a preview of the performance engagement contract. Final agreement will i
       if (userRole !== 1) { // Only superadmin can approve
         return res.status(403).json({ message: "Access denied. Superadmin privileges required." });
       }
-      
+
       const id = parseInt(req.params.id);
       const { notes } = req.body;
-      
+
       const registration = await storage.updatePRORegistration(id, {
         applicationStatus: 'approved',
         reviewNotes: notes,
         reviewDate: new Date()
       });
-      
+
       if (!registration) {
         return res.status(404).json({ message: "PRO registration not found" });
       }
-      
+
       res.json(registration);
     } catch (error) {
       console.error('Approve PRO registration error:', error);
@@ -16527,24 +16743,24 @@ This is a preview of the performance engagement contract. Final agreement will i
       if (userRole !== 1 && userRole !== 2) {
         return res.status(403).json({ message: "Access denied. Admin privileges required." });
       }
-      
+
       const id = parseInt(req.params.id);
       const registration = await storage.getPRORegistrationById(id);
-      
+
       if (!registration) {
         return res.status(404).json({ message: "PRO registration not found" });
       }
-      
+
       // Generate payment link (placeholder implementation)
       const totalAmount = registration.adminFee + registration.proRegistrationFee + registration.handlingFee;
       const paymentUrl = `https://waitumusic.com/payment/${id}?amount=${totalAmount}`;
-      
+
       // Update registration with payment link
       await storage.updatePRORegistration(id, {
         paymentUrl,
         paymentLinkGenerated: new Date()
       });
-      
+
       res.json({
         paymentUrl,
         amount: totalAmount,
@@ -16560,14 +16776,14 @@ This is a preview of the performance engagement contract. Final agreement will i
   app.get('/api/pro-fees/:proName', async (req: Request, res: Response) => {
     try {
       const proName = req.params.proName.toUpperCase();
-      
+
       // Get latest PRO requirements from OppHub monitoring
       try {
-        const proRequirements = await storage.getOpportunities(undefined, { 
+        const proRequirements = await storage.getOpportunities(undefined, {
           sourceType: 'pro_requirements',
-          organizerName: proName 
+          organizerName: proName
         });
-        
+
         let currentFees = {
           membershipFee: null,
           applicationFee: null,
@@ -16575,10 +16791,10 @@ This is a preview of the performance engagement contract. Final agreement will i
           requirements: [],
           benefits: []
         };
-        
+
         if (proRequirements && proRequirements.length > 0) {
           const latestReq = proRequirements[0];
-          
+
           // Extract fee from compensation details
           if (latestReq.compensationDetails && latestReq.compensationDetails !== 'Contact for pricing') {
             const feeMatch = latestReq.compensationDetails.match(/\$(\d+(?:\.\d{2})?)/);
@@ -16586,17 +16802,17 @@ This is a preview of the performance engagement contract. Final agreement will i
               currentFees.membershipFee = parseFloat(feeMatch[1]);
             }
           }
-          
+
           currentFees.lastUpdated = latestReq.createdAt;
           currentFees.requirements = latestReq.requirements ? latestReq.requirements.split(', ') : [];
-          
+
           // Extract benefits from description
           const benefitsMatch = latestReq.description.match(/Benefits: ([^.]+)/);
           if (benefitsMatch) {
             currentFees.benefits = benefitsMatch[1].split(', ').filter(b => b.trim().length > 0);
           }
         }
-        
+
         // Provide default fees if not available from monitoring
         const defaultFees = {
           ASCAP: { membershipFee: 50, applicationFee: 0 },
@@ -16604,12 +16820,12 @@ This is a preview of the performance engagement contract. Final agreement will i
           SESAC: { membershipFee: null, applicationFee: null }, // By invitation only
           GMR: { membershipFee: null, applicationFee: null } // Contact for pricing
         };
-        
+
         if (!currentFees.membershipFee && defaultFees[proName]) {
           currentFees.membershipFee = defaultFees[proName].membershipFee;
           currentFees.applicationFee = defaultFees[proName].applicationFee;
         }
-        
+
         res.json(currentFees);
       } catch (dbError) {
         // Fallback to default fees if database query fails
@@ -16619,7 +16835,7 @@ This is a preview of the performance engagement contract. Final agreement will i
           SESAC: { membershipFee: null, applicationFee: null },
           GMR: { membershipFee: null, applicationFee: null }
         };
-        
+
         res.json(defaultFees[proName] || { membershipFee: null, applicationFee: null });
       }
     } catch (error) {
@@ -16632,7 +16848,7 @@ This is a preview of the performance engagement contract. Final agreement will i
   console.log('🔍 OppHub ready to scan authentic sources on-demand only');
 
   // ==================== SPLITSHEET SERVICE ENDPOINTS ====================
-  
+
   // Get user's splitsheets for dashboard
   app.get("/api/user/splitsheets/:userId", authenticateToken, async (req: Request, res: Response) => {
     try {
@@ -16643,7 +16859,7 @@ This is a preview of the performance engagement contract. Final agreement will i
       if (currentUserId !== userId) {
         const user = await storage.getUser(currentUserId);
         const isAdmin = user && [1, 2].includes(user.roleId);
-        
+
         if (!isAdmin) {
           return res.status(403).json({ message: "Access denied" });
         }
@@ -16674,7 +16890,7 @@ This is a preview of the performance engagement contract. Final agreement will i
     try {
       const userId = parseInt(req.params.userId);
       const user = await storage.getUser(userId);
-      
+
       if (!user) {
         return res.status(404).json({ message: "User not found" });
       }
@@ -16741,7 +16957,7 @@ This is a preview of the performance engagement contract. Final agreement will i
 
 -- This is a simulated backup file
 -- In production, this would contain actual database dump`;
-      
+
       res.setHeader('Content-Type', 'application/sql');
       res.setHeader('Content-Disposition', `attachment; filename="database-backup-${new Date().toISOString().split('T')[0]}.sql"`);
       res.send(backupContent);
@@ -16762,7 +16978,7 @@ This is a preview of the performance engagement contract. Final agreement will i
   });
 
   // ==================== DATA INTEGRITY FIX TRACKER ROUTES ====================
-  
+
   // Get data integrity status report
   app.get('/api/data-integrity/status', authenticateToken, requireRole([1, 2]), async (req: Request, res: Response) => {
     try {
@@ -16780,11 +16996,11 @@ This is a preview of the performance engagement contract. Final agreement will i
     try {
       const { issueId, fixDescription } = req.body;
       const appliedBy = req.user?.fullName || 'Unknown User';
-      
+
       const { getDataIntegrityFixTracker } = await import('./dataIntegrityFixTracker');
       const fixTracker = getDataIntegrityFixTracker(storage);
       const fix = fixTracker.applyFix(issueId, fixDescription, appliedBy);
-      
+
       res.json({ success: true, fix, message: `Fix applied for issue ${issueId}` });
     } catch (error: any) {
       res.status(400).json({ success: false, error: error.message });
@@ -16795,11 +17011,11 @@ This is a preview of the performance engagement contract. Final agreement will i
   app.post('/api/data-integrity/verify-fix', authenticateToken, requireRole([1, 2]), async (req: Request, res: Response) => {
     try {
       const { fixId, verificationNotes } = req.body;
-      
+
       const { getDataIntegrityFixTracker } = await import('./dataIntegrityFixTracker');
       const fixTracker = getDataIntegrityFixTracker(storage);
       fixTracker.verifyFix(fixId, verificationNotes);
-      
+
       res.json({ success: true, message: 'Fix verified and issue marked as completed - removed from active issues listing' });
     } catch (error: any) {
       res.status(400).json({ success: false, error: error.message });
@@ -16812,7 +17028,7 @@ This is a preview of the performance engagement contract. Final agreement will i
       const { getDataIntegrityFixTracker } = await import('./dataIntegrityFixTracker');
       const fixTracker = getDataIntegrityFixTracker(storage);
       const activeIssues = fixTracker.getActiveIssues();
-      
+
       res.json({ success: true, activeIssues });
     } catch (error: any) {
       res.status(500).json({ success: false, error: error.message });
@@ -16825,7 +17041,7 @@ This is a preview of the performance engagement contract. Final agreement will i
       const { getDataIntegrityFixTracker } = await import('./dataIntegrityFixTracker');
       const fixTracker = getDataIntegrityFixTracker(storage);
       const completedIssues = fixTracker.getCompletedIssues();
-      
+
       res.json({ success: true, completedIssues });
     } catch (error: any) {
       res.status(500).json({ success: false, error: error.message });
@@ -16839,7 +17055,7 @@ This is a preview of the performance engagement contract. Final agreement will i
       const artists = await storage.getArtists();
       const songs = await storage.getSongs();
       const bookings = await storage.getBookings();
-      
+
       const exportData = {
         metadata: {
           exportDate: new Date().toISOString(),
@@ -16852,7 +17068,7 @@ This is a preview of the performance engagement contract. Final agreement will i
         bookings: bookings.length,
         // Add more aggregated data as needed
       };
-      
+
       res.setHeader('Content-Type', 'application/json');
       res.setHeader('Content-Disposition', `attachment; filename="waitumusic-data-export-${new Date().toISOString().split('T')[0]}.json"`);
       res.json(exportData);
@@ -16863,7 +17079,7 @@ This is a preview of the performance engagement contract. Final agreement will i
   });
 
   // ==================== UNIFIED ADMIN CONFIGURATION ROUTES ====================
-  
+
   // Global configuration storage (in production, this would be in database)
   let adminConfiguration: any = null;
 
@@ -16876,7 +17092,7 @@ This is a preview of the performance engagement contract. Final agreement will i
         const { DEFAULT_ADMIN_CONFIG } = await import('@shared/admin-config');
         adminConfiguration = DEFAULT_ADMIN_CONFIG;
       }
-      
+
       res.json(adminConfiguration);
     } catch (error) {
       console.error('Get admin config error:', error);
@@ -16888,7 +17104,7 @@ This is a preview of the performance engagement contract. Final agreement will i
   app.post("/api/admin/config", authenticateToken, requireRole([1]), async (req: Request, res: Response) => {
     try {
       const updates = req.body;
-      
+
       // Validate the configuration updates
       if (!updates || typeof updates !== 'object') {
         return res.status(400).json({ message: "Invalid configuration data" });
@@ -16916,8 +17132,8 @@ This is a preview of the performance engagement contract. Final agreement will i
 
       // In production, save to database here
       // await storage.updateAdminConfiguration(adminConfiguration);
-      
-      res.json({ 
+
+      res.json({
         message: "Configuration updated successfully",
         config: adminConfiguration
       });
@@ -16932,8 +17148,8 @@ This is a preview of the performance engagement contract. Final agreement will i
     try {
       const { DEFAULT_ADMIN_CONFIG } = await import('@shared/admin-config');
       adminConfiguration = { ...DEFAULT_ADMIN_CONFIG };
-      
-      res.json({ 
+
+      res.json({
         message: "Configuration reset to defaults",
         config: adminConfiguration
       });
@@ -16976,7 +17192,7 @@ This is a preview of the performance engagement contract. Final agreement will i
           requireApproval: { type: 'boolean', default: true }
         }
       };
-      
+
       res.json(schema);
     } catch (error) {
       console.error('Get config schema error:', error);
@@ -17091,7 +17307,7 @@ This is a preview of the performance engagement contract. Final agreement will i
           tagline: 'Your Music, Your Journey',
         },
       };
-      
+
       res.json(theme);
     } catch (error) {
       console.error('Error getting UI theme:', error);
@@ -17102,7 +17318,7 @@ This is a preview of the performance engagement contract. Final agreement will i
   app.put("/api/admin/ui-theme", authenticateToken, requireRole([1]), async (req: Request, res: Response) => {
     try {
       const theme = req.body;
-      
+
       // Validate theme structure (basic validation)
       if (!theme || typeof theme !== 'object') {
         return res.status(400).json({ message: 'Invalid theme data' });
@@ -17112,7 +17328,7 @@ This is a preview of the performance engagement contract. Final agreement will i
       if (storage.saveUITheme) {
         await storage.saveUITheme(theme);
       }
-      
+
       res.json({ message: 'UI theme saved successfully', theme });
     } catch (error) {
       console.error('Error saving UI theme:', error);
@@ -17123,12 +17339,12 @@ This is a preview of the performance engagement contract. Final agreement will i
   app.patch("/api/admin/financial-settings", authenticateToken, requireRole([1]), async (req: Request, res: Response) => {
     try {
       const { platformFeePercentage, processingFeePercentage } = req.body;
-      
+
       // In a real implementation, this would update system settings in database
       // For now, we'll simulate the update
       console.log('Updating financial settings:', { platformFeePercentage, processingFeePercentage });
-      
-      res.json({ 
+
+      res.json({
         message: "Financial settings updated successfully",
         platformFeePercentage,
         processingFeePercentage
@@ -17153,7 +17369,7 @@ This is a preview of the performance engagement contract. Final agreement will i
     try {
       // Get system settings from database
       const config = await storage.getPlatformConfiguration();
-      
+
       const settings = {
         demoMode: DEMO_MODE_ENABLED,
         maintenanceMode: config.maintenanceMode || false,
@@ -17174,7 +17390,7 @@ This is a preview of the performance engagement contract. Final agreement will i
       const users = await storage.getUsers();
       const bookings = await storage.getBookings();
       const artists = await storage.getArtists();
-      
+
       const stats = {
         totalUsers: users.length,
         activeUsers: users.filter(u => u.status === 'active').length,
@@ -17187,7 +17403,7 @@ This is a preview of the performance engagement contract. Final agreement will i
           lastBackup: new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString() // 2 hours ago
         }
       };
-      
+
       res.json(stats);
     } catch (error) {
       console.error('Get system stats error:', error);
@@ -17202,8 +17418,8 @@ This is a preview of the performance engagement contract. Final agreement will i
     try {
       console.log('🗄️ Database optimization requested by superadmin');
       await new Promise(resolve => setTimeout(resolve, 2000));
-      res.json({ 
-        success: true, 
+      res.json({
+        success: true,
         message: 'Database optimization completed successfully',
         optimizations: ['Indexes rebuilt', 'Vacuum completed', 'Statistics updated']
       });
@@ -17218,8 +17434,8 @@ This is a preview of the performance engagement contract. Final agreement will i
     try {
       console.log('🔒 Security scan requested by superadmin');
       await new Promise(resolve => setTimeout(resolve, 1500));
-      res.json({ 
-        success: true, 
+      res.json({
+        success: true,
         message: 'Security scan completed - no threats detected',
         scannedItems: 1247,
         threatsFound: 0,
@@ -17236,8 +17452,8 @@ This is a preview of the performance engagement contract. Final agreement will i
     try {
       console.log('📊 Performance analysis requested by superadmin');
       await new Promise(resolve => setTimeout(resolve, 1000));
-      res.json({ 
-        success: true, 
+      res.json({
+        success: true,
         message: 'Performance analysis completed',
         metrics: {
           uptime: '99.9%',
@@ -17257,8 +17473,8 @@ This is a preview of the performance engagement contract. Final agreement will i
   app.get('/api/admin/system/config', authenticateToken, requireRole([1]), async (req: Request, res: Response) => {
     try {
       console.log('⚙️ System configuration accessed by superadmin');
-      res.json({ 
-        success: true, 
+      res.json({
+        success: true,
         config: {
           environment: process.env.NODE_ENV || 'development',
           features: {
@@ -17285,8 +17501,8 @@ This is a preview of the performance engagement contract. Final agreement will i
     try {
       console.log('🛡️ Media security scan requested by superadmin');
       await new Promise(resolve => setTimeout(resolve, 3000));
-      res.json({ 
-        success: true, 
+      res.json({
+        success: true,
         message: 'Media security scan completed - all files clean',
         filesScanned: 1456,
         threatsFound: 0,
@@ -17304,8 +17520,8 @@ This is a preview of the performance engagement contract. Final agreement will i
     try {
       console.log('🎵 Media optimization requested by superadmin');
       await new Promise(resolve => setTimeout(resolve, 2500));
-      res.json({ 
-        success: true, 
+      res.json({
+        success: true,
         message: 'Media optimization completed successfully',
         optimizations: {
           filesOptimized: 234,
@@ -17328,7 +17544,7 @@ This is a preview of the performance engagement contract. Final agreement will i
         { domain: 'musicgateway.com', category: 'sync_licensing', scan_interval: 24 },
         { domain: 'backstage.com', category: 'performance_calls', scan_interval: 24 }
       ];
-      
+
       res.json({
         revenue_platforms: revenuePlatforms,
         total_targets: revenuePlatforms.length,
@@ -17377,7 +17593,7 @@ This is a preview of the performance engagement contract. Final agreement will i
           application_url: 'https://caribbeanmusicfest.com/apply'
         }
       ];
-      
+
       res.json({
         artist_id,
         matched_opportunities: opportunities,
@@ -17391,16 +17607,16 @@ This is a preview of the performance engagement contract. Final agreement will i
   });
 
   // ==================== PRESS RELEASE SYSTEM ROUTES ====================
-  
+
   // Get all press releases (with optional filtering)
   app.get('/api/press-releases', authenticateToken, async (req: Request, res: Response) => {
     try {
       const { artistId, status } = req.query;
       const filters: any = {};
-      
+
       if (artistId) filters.artistId = parseInt(artistId as string);
       if (status) filters.status = status as string;
-      
+
       const pressReleases = await storage.getPressReleases(filters);
       res.json(pressReleases);
     } catch (error) {
@@ -17425,11 +17641,11 @@ This is a preview of the performance engagement contract. Final agreement will i
         targetRegions,
         contactInfo
       } = req.body;
-      
+
       if (!releaseType || !primaryArtistId) {
         return res.status(400).json({ message: "Release type and primary artist ID are required" });
       }
-      
+
       const options = {
         releaseType,
         primaryArtistId,
@@ -17446,7 +17662,7 @@ This is a preview of the performance engagement contract. Final agreement will i
         generationTrigger: 'manual_request',
         createdBy: req.user?.userId || primaryArtistId
       };
-      
+
       const pressRelease = await pressReleaseService.generateAutomaticPressRelease(options);
       res.status(201).json(pressRelease);
     } catch (error) {
@@ -17460,25 +17676,25 @@ This is a preview of the performance engagement contract. Final agreement will i
     try {
       const id = parseInt(req.params.id);
       const publishedBy = req.user?.userId;
-      
+
       if (!publishedBy) {
         return res.status(401).json({ message: "User not authenticated" });
       }
-      
+
       // Publish via storage
       const pressRelease = await storage.publishPressRelease(id, publishedBy);
-      
+
       if (!pressRelease) {
         return res.status(404).json({ message: "Press release not found" });
       }
-      
+
       // Distribute via service
       await pressReleaseService.publishAndDistribute(id, publishedBy);
-      
-      res.json({ 
-        success: true, 
+
+      res.json({
+        success: true,
         message: "Press release published and distributed successfully",
-        pressRelease 
+        pressRelease
       });
     } catch (error) {
       console.error('Publish press release error:', error);
@@ -17487,12 +17703,12 @@ This is a preview of the performance engagement contract. Final agreement will i
   });
 
   // ==================== NEWSLETTER SYSTEM ENDPOINTS ====================
-  
+
   // Subscribe to newsletter (public endpoint)
   app.post('/api/newsletter/subscribe', async (req: Request, res: Response) => {
     try {
       const { email, firstName, lastName, subscriptionType, artistInterests, source } = req.body;
-      
+
       if (!email) {
         return res.status(400).json({ message: 'Email is required' });
       }
@@ -17521,13 +17737,13 @@ This is a preview of the performance engagement contract. Final agreement will i
   app.get('/api/newsletter/unsubscribe', async (req: Request, res: Response) => {
     try {
       const { token } = req.query;
-      
+
       if (!token) {
         return res.status(400).json({ message: 'Unsubscribe token is required' });
       }
 
       const result = await newsletterService.unsubscribe(token as string);
-      
+
       if (result.success) {
         res.json(result);
       } else {
@@ -17543,7 +17759,7 @@ This is a preview of the performance engagement contract. Final agreement will i
   app.post('/api/newsletter/create', authenticateToken, requireRole([1, 2]), async (req: Request, res: Response) => {
     try {
       const { title, content, type, targetArtistId, scheduledFor } = req.body;
-      
+
       if (!title || !content) {
         return res.status(400).json({ message: 'Title and content are required' });
       }
@@ -17568,10 +17784,10 @@ This is a preview of the performance engagement contract. Final agreement will i
       }
     } catch (error) {
       console.error('Newsletter creation error:', error);
-      res.status(500).json({ 
-        success: false, 
-        message: "Failed to create newsletter", 
-        error: error.message || "Internal server error" 
+      res.status(500).json({
+        success: false,
+        message: "Failed to create newsletter",
+        error: error.message || "Internal server error"
       });
     }
   });
@@ -17581,16 +17797,16 @@ This is a preview of the performance engagement contract. Final agreement will i
     try {
       const artistId = parseInt(req.params.artistId);
       const { title, content, releaseInfo, showInfo } = req.body;
-      
+
       // Check if user is the artist, admin, or superadmin
       const userRole = req.user!.roleId;
       const isArtist = req.user!.id === artistId;
       const isAdminOrSuperadmin = userRole === 1 || userRole === 2; // Assuming 1=superadmin, 2=admin
-      
+
       if (!isArtist && !isAdminOrSuperadmin) {
         return res.status(403).json({ message: 'Not authorized to send updates for this artist' });
       }
-      
+
       if (!title || !content) {
         return res.status(400).json({ message: 'Title and content are required' });
       }
@@ -17640,7 +17856,7 @@ This is a preview of the performance engagement contract. Final agreement will i
   app.post('/api/newsletter/test', authenticateToken, requireRole([1, 2]), async (req: Request, res: Response) => {
     try {
       const { email } = req.body;
-      
+
       if (!email) {
         return res.status(400).json({ message: 'Test email address is required' });
       }
@@ -17662,8 +17878,8 @@ This is a preview of the performance engagement contract. Final agreement will i
 
       res.json({
         success: result.success,
-        message: result.success 
-          ? 'Test newsletter sent successfully! Check the provided email address.' 
+        message: result.success
+          ? 'Test newsletter sent successfully! Check the provided email address.'
           : result.message,
         emailServerStatus: 'Connected'
       });
@@ -17678,7 +17894,7 @@ This is a preview of the performance engagement contract. Final agreement will i
     try {
       // Validate and sanitize input using schema
       const validatedData = newsletterSubscriptionSchema.parse(req.body);
-      
+
       // Check honeypot field (bot detection)
       if (validatedData.honeypot) {
         return res.status(400).json({ success: false, message: 'Invalid request' });
@@ -17697,16 +17913,16 @@ This is a preview of the performance engagement contract. Final agreement will i
       res.json(result);
     } catch (error) {
       console.error('Newsletter subscription error:', error);
-      
+
       // Handle validation errors
       if (error.name === 'ZodError') {
-        return res.status(400).json({ 
-          success: false, 
+        return res.status(400).json({
+          success: false,
           message: 'Invalid input data',
-          errors: error.errors 
+          errors: error.errors
         });
       }
-      
+
       res.status(500).json({ success: false, message: "Failed to subscribe" });
     }
   });
@@ -17716,7 +17932,7 @@ This is a preview of the performance engagement contract. Final agreement will i
     try {
       // Validate and sanitize input using schema
       const validatedData = contactFormSchema.parse(req.body);
-      
+
       // Check honeypot field (bot detection)
       if (validatedData.honeypot) {
         return res.status(400).json({ success: false, message: 'Invalid request' });
@@ -17746,22 +17962,22 @@ This is a preview of the performance engagement contract. Final agreement will i
         console.warn('Email notification failed, but contact form submission was successful:', emailError);
       }
 
-      res.json({ 
-        success: true, 
-        message: 'Message sent successfully! We\'ll get back to you soon.' 
+      res.json({
+        success: true,
+        message: 'Message sent successfully! We\'ll get back to you soon.'
       });
     } catch (error) {
       console.error('Contact form error:', error);
-      
+
       // Handle validation errors
       if (error.name === 'ZodError') {
-        return res.status(400).json({ 
-          success: false, 
+        return res.status(400).json({
+          success: false,
           message: 'Invalid input data',
-          errors: error.errors 
+          errors: error.errors
         });
       }
-      
+
       res.status(500).json({ success: false, message: "Failed to send message" });
     }
   });
@@ -17769,19 +17985,19 @@ This is a preview of the performance engagement contract. Final agreement will i
   // Register Analytics Routes
   const { registerAnalyticsRoutes } = await import('./routes/analyticsRoutes');
   registerAnalyticsRoutes(app);
-  
+
   // Import and register contract routes
   const { registerContractRoutes } = await import('./routes/contractRoutes');
   registerContractRoutes(app);
-  
+
   // Import and register artist development routes
   const { registerArtistDevelopmentRoutes } = await import('./routes/artistDevelopmentRoutes');
   registerArtistDevelopmentRoutes(app);
-  
+
   // Import and register pricing intelligence routes
   const { registerPricingIntelligenceRoutes } = await import('./routes/pricingIntelligenceRoutes');
   registerPricingIntelligenceRoutes(app);
-  
+
   // Platform Audit Routes are registered above in the main routes section
 
   // Data Integrity API Endpoints
@@ -17811,11 +18027,11 @@ This is a preview of the performance engagement contract. Final agreement will i
   app.post('/api/data-integrity/apply-fixes', authenticateToken, requireRole([1]), async (req: Request, res: Response) => {
     try {
       const { scanId, issueIds } = req.body;
-      
+
       if (!scanId || !Array.isArray(issueIds)) {
         return res.status(400).json({ message: 'Invalid request data' });
       }
-      
+
       const result = await dataIntegritySystem.applyApprovedFixes(scanId, issueIds);
       res.json(result);
     } catch (error) {
@@ -17838,13 +18054,13 @@ This is a preview of the performance engagement contract. Final agreement will i
   app.post('/api/platform-audit/run', authenticateToken, requireRole([1, 2]), async (req: Request, res: Response) => {
     try {
       const startTime = Date.now();
-      
+
       // REAL-TIME PLATFORM ANALYSIS - NO DUMMY DATA
       const auditResults = await performRealTimeAudit(storage);
-      
+
       const executionTime = Date.now() - startTime;
       console.log(`🔍 Real Platform Audit completed in ${executionTime}ms`);
-      
+
       res.json({
         success: true,
         audit: auditResults,
@@ -17980,57 +18196,57 @@ This is a preview of the performance engagement contract. Final agreement will i
     try {
       const { bookingId, riderData, eventDetails, assignedMusicians } = req.body;
       const PDFDocument = require('pdfkit');
-      
+
       // Create PDF document
-      const doc = new PDFDocument({ 
+      const doc = new PDFDocument({
         margin: 50,
         size: 'A4'
       });
-      
+
       // Set response headers for PDF download
       res.setHeader('Content-Type', 'application/pdf');
       res.setHeader('Content-Disposition', `attachment; filename="Technical_Rider_${eventDetails?.eventName || 'Event'}_${new Date().toISOString().split('T')[0]}.pdf"`);
-      
+
       // Pipe the PDF document to the response
       doc.pipe(res);
-      
+
       // Header
       doc.fontSize(20).font('Helvetica-Bold');
       doc.text('PROFESSIONAL TECHNICAL RIDER', 50, 50);
       doc.fontSize(14).font('Helvetica');
       doc.text(`${eventDetails?.eventName || 'Event'} - ${eventDetails?.venueName || 'Venue'}`, 50, 80);
       doc.text(`Date: ${eventDetails?.eventDate || 'TBD'} | Duration: ${eventDetails?.duration || 'TBD'} minutes`, 50, 100);
-      
+
       let yPosition = 140;
-      
+
       // Event Information
       doc.fontSize(16).font('Helvetica-Bold');
       doc.text('EVENT INFORMATION', 50, yPosition);
       yPosition += 30;
-      
+
       doc.fontSize(12).font('Helvetica');
       doc.text(`Event: ${eventDetails?.eventName || 'TBD'}`, 50, yPosition);
       doc.text(`Venue: ${eventDetails?.venueName || 'TBD'}`, 50, yPosition + 20);
       doc.text(`Date: ${eventDetails?.eventDate || 'TBD'}`, 50, yPosition + 40);
       doc.text(`Type: ${eventDetails?.eventType || 'TBD'}`, 50, yPosition + 60);
       yPosition += 100;
-      
+
       // Technical Requirements
       if (riderData.technicalRequirements?.length > 0) {
         doc.fontSize(16).font('Helvetica-Bold');
         doc.text('TECHNICAL REQUIREMENTS', 50, yPosition);
         yPosition += 30;
-        
+
         riderData.technicalRequirements.forEach((req: any, index: number) => {
           if (yPosition > 700) {
             doc.addPage();
             yPosition = 50;
           }
-          
+
           doc.fontSize(12).font('Helvetica-Bold');
           doc.text(`${index + 1}. ${req.item}`, 50, yPosition);
           yPosition += 15;
-          
+
           doc.fontSize(10).font('Helvetica');
           doc.text(`Category: ${req.category} | Priority: ${req.priority} | Provided by: ${req.providedBy}`, 70, yPosition);
           if (req.description) {
@@ -18041,28 +18257,28 @@ This is a preview of the performance engagement contract. Final agreement will i
         });
         yPosition += 20;
       }
-      
+
       // Stage Layout
       if (riderData.stageLayout) {
         if (yPosition > 600) {
           doc.addPage();
           yPosition = 50;
         }
-        
+
         doc.fontSize(16).font('Helvetica-Bold');
         doc.text('STAGE LAYOUT', 50, yPosition);
         yPosition += 30;
-        
+
         doc.fontSize(12).font('Helvetica');
         doc.text(`Stage Dimensions: ${riderData.stageLayout.stageWidth}ft x ${riderData.stageLayout.stageHeight}ft`, 50, yPosition);
         doc.text(`Stage Type: ${riderData.stageLayout.stageType}`, 50, yPosition + 20);
         yPosition += 50;
-        
+
         if (riderData.stageLayout.elements?.length > 0) {
           doc.fontSize(14).font('Helvetica-Bold');
           doc.text('Stage Elements:', 50, yPosition);
           yPosition += 20;
-          
+
           riderData.stageLayout.elements.forEach((element: any, index: number) => {
             doc.fontSize(10).font('Helvetica');
             doc.text(`• ${element.name}${element.assignedTo ? ` (${element.assignedTo})` : ''}`, 70, yPosition);
@@ -18071,29 +18287,29 @@ This is a preview of the performance engagement contract. Final agreement will i
           yPosition += 20;
         }
       }
-      
+
       // Audio Configuration
       if (riderData.audioConfig) {
         if (yPosition > 600) {
           doc.addPage();
           yPosition = 50;
         }
-        
+
         doc.fontSize(16).font('Helvetica-Bold');
         doc.text('AUDIO CONFIGURATION', 50, yPosition);
         yPosition += 30;
-        
+
         doc.fontSize(12).font('Helvetica');
         doc.text(`Main PA System: ${riderData.audioConfig.mainPA}`, 50, yPosition);
         doc.text(`Mixer Channels Required: ${riderData.audioConfig.mixerChannels}`, 50, yPosition + 20);
         yPosition += 50;
-        
+
         // Monitor Configuration
         if (riderData.audioConfig.monitors?.length > 0) {
           doc.fontSize(14).font('Helvetica-Bold');
           doc.text('Monitor Configuration:', 50, yPosition);
           yPosition += 20;
-          
+
           riderData.audioConfig.monitors.forEach((monitor: any, index: number) => {
             doc.fontSize(10).font('Helvetica');
             doc.text(`• ${monitor.type} x${monitor.quantity} - ${monitor.placement}`, 70, yPosition);
@@ -18101,13 +18317,13 @@ This is a preview of the performance engagement contract. Final agreement will i
           });
           yPosition += 20;
         }
-        
+
         // Input List
         if (riderData.audioConfig.inputList?.length > 0) {
           doc.fontSize(14).font('Helvetica-Bold');
           doc.text('Channel Input List:', 50, yPosition);
           yPosition += 20;
-          
+
           // Table headers
           doc.fontSize(9).font('Helvetica-Bold');
           doc.text('CH', 50, yPosition);
@@ -18116,11 +18332,11 @@ This is a preview of the performance engagement contract. Final agreement will i
           doc.text('48V', 280, yPosition);
           doc.text('ASSIGNED TO', 320, yPosition);
           yPosition += 15;
-          
+
           // Draw line
           doc.moveTo(50, yPosition).lineTo(550, yPosition).stroke();
           yPosition += 10;
-          
+
           riderData.audioConfig.inputList.forEach((input: any) => {
             doc.fontSize(9).font('Helvetica');
             doc.text(input.channel.toString(), 50, yPosition);
@@ -18132,14 +18348,14 @@ This is a preview of the performance engagement contract. Final agreement will i
           });
         }
       }
-      
+
       // Footer
       doc.fontSize(8).font('Helvetica');
       doc.text(`Generated by Wai'tuMusic Professional Technical Rider System on ${new Date().toLocaleDateString()}`, 50, 750);
-      
+
       // Finalize the PDF and end the stream
       doc.end();
-      
+
     } catch (error) {
       console.error('Technical rider export error:', error);
       res.status(500).json({ error: 'Failed to export technical rider' });
@@ -18160,26 +18376,26 @@ This is a preview of the performance engagement contract. Final agreement will i
     try {
       const artistId = parseInt(req.params.id);
       const { stageNames } = req.body;
-      
+
       // Validate that user can update this artist's stage names
       const userRole = req.user?.roleId;
       const requestingUserId = req.user?.userId;
-      
+
       if (userRole !== 1 && userRole !== 2 && requestingUserId !== artistId) {
         return res.status(403).json({ message: "Access denied" });
       }
-      
+
       // Validate stage names format
       if (!Array.isArray(stageNames) || stageNames.length === 0) {
         return res.status(400).json({ message: "Stage names must be a non-empty array" });
       }
-      
+
       // Ensure exactly one primary stage name
       const primaryNames = stageNames.filter(sn => sn.isPrimary);
       if (primaryNames.length !== 1) {
         return res.status(400).json({ message: "Exactly one stage name must be marked as primary" });
       }
-      
+
       const updatedArtist = await storage.updateArtistStageNames(artistId, stageNames);
       res.json({ success: true, artist: updatedArtist });
     } catch (error) {
@@ -18192,26 +18408,26 @@ This is a preview of the performance engagement contract. Final agreement will i
     try {
       const musicianId = parseInt(req.params.id);
       const { stageNames } = req.body;
-      
+
       // Validate that user can update this musician's stage names
       const userRole = req.user?.roleId;
       const requestingUserId = req.user?.userId;
-      
+
       if (userRole !== 1 && userRole !== 2 && requestingUserId !== musicianId) {
         return res.status(403).json({ message: "Access denied" });
       }
-      
+
       // Validate stage names format
       if (!Array.isArray(stageNames) || stageNames.length === 0) {
         return res.status(400).json({ message: "Stage names must be a non-empty array" });
       }
-      
+
       // Ensure exactly one primary stage name
       const primaryNames = stageNames.filter(sn => sn.isPrimary);
       if (primaryNames.length !== 1) {
         return res.status(400).json({ message: "Exactly one stage name must be marked as primary" });
       }
-      
+
       const updatedMusician = await storage.updateMusicianStageNames(musicianId, stageNames);
       res.json({ success: true, musician: updatedMusician });
     } catch (error) {
@@ -18230,7 +18446,7 @@ This is a preview of the performance engagement contract. Final agreement will i
 
       // ClamAV scan
       const scanResult = await scanFileWithClamAV(file.path);
-      
+
       const attachmentData = {
         booking_id: parseInt(req.body.bookingId),
         file_name: file.originalname,
@@ -18253,7 +18469,7 @@ This is a preview of the performance engagement contract. Final agreement will i
   });
 
   // ==================== COMPREHENSIVE SYSTEM ANALYSIS ROUTES ====================
-  
+
   // Get comprehensive system analysis
   app.get('/api/system-analysis/comprehensive', authenticateToken, requireRole([1, 2]), async (req: Request, res: Response) => {
     try {
@@ -18270,8 +18486,8 @@ This is a preview of the performance engagement contract. Final agreement will i
       res.json(analysis);
     } catch (error) {
       console.error('System analysis error:', error);
-      res.status(500).json({ 
-        success: false, 
+      res.status(500).json({
+        success: false,
         error: 'Failed to perform system analysis',
         details: error instanceof Error ? error.message : 'Unknown error'
       });
@@ -18290,8 +18506,8 @@ This is a preview of the performance engagement contract. Final agreement will i
       });
     } catch (error) {
       console.error('Auto-fix error:', error);
-      res.status(500).json({ 
-        success: false, 
+      res.status(500).json({
+        success: false,
         error: 'Failed to apply auto-fixes',
         details: error instanceof Error ? error.message : 'Unknown error'
       });
@@ -18310,8 +18526,8 @@ This is a preview of the performance engagement contract. Final agreement will i
       });
     } catch (error) {
       console.error('Monitoring status error:', error);
-      res.status(500).json({ 
-        success: false, 
+      res.status(500).json({
+        success: false,
         error: 'Failed to get monitoring status',
         details: error instanceof Error ? error.message : 'Unknown error'
       });
@@ -18330,8 +18546,8 @@ This is a preview of the performance engagement contract. Final agreement will i
       });
     } catch (error) {
       console.error('Start monitoring error:', error);
-      res.status(500).json({ 
-        success: false, 
+      res.status(500).json({
+        success: false,
         error: 'Failed to start monitoring',
         details: error instanceof Error ? error.message : 'Unknown error'
       });
@@ -18350,8 +18566,8 @@ This is a preview of the performance engagement contract. Final agreement will i
       });
     } catch (error) {
       console.error('Stop monitoring error:', error);
-      res.status(500).json({ 
-        success: false, 
+      res.status(500).json({
+        success: false,
         error: 'Failed to stop monitoring',
         details: error instanceof Error ? error.message : 'Unknown error'
       });
@@ -18359,7 +18575,7 @@ This is a preview of the performance engagement contract. Final agreement will i
   });
 
   // ==================== ALBUM-MERCHANDISE ASSIGNMENT ROUTES (POST-UPLOAD INGENIOUS WORKFLOW) ====================
-  
+
   // Mount advanced booking routes
   app.use('/api/advanced-booking', advancedBookingRoutes);
 
@@ -18395,11 +18611,11 @@ This is a preview of the performance engagement contract. Final agreement will i
       const user = await storage.getUser(currentUserId || 0);
       const roles = await storage.getRoles();
       const userRole = roles.find(role => role.id === user?.roleId);
-      
+
       // Allow: superadmin, admins, or the album's artist
-      const canAssign = user?.roleId === 1 || 
-                       user?.roleId === 2 || 
-                       album.artistUserId === currentUserId;
+      const canAssign = user?.roleId === 1 ||
+        user?.roleId === 2 ||
+        album.artistUserId === currentUserId;
 
       if (!canAssign) {
         return res.status(403).json({ message: 'Insufficient permissions to assign merchandise to this album' });
@@ -18441,10 +18657,10 @@ This is a preview of the performance engagement contract. Final agreement will i
   app.get('/api/booking-attachments/:id/scan-status', authenticateToken, async (req: Request, res: Response) => {
     try {
       const attachment = await storage.getBookingAttachment(parseInt(req.params.id));
-      res.json({ 
-        success: true, 
+      res.json({
+        success: true,
         scanStatus: attachment?.clamav_scan_status,
-        scanResult: attachment?.clamav_scan_result 
+        scanResult: attachment?.clamav_scan_result
       });
     } catch (error) {
       res.status(500).json({ success: false, error: 'Failed to get scan status' });
@@ -18455,7 +18671,7 @@ This is a preview of the performance engagement contract. Final agreement will i
     try {
       const { approve, approvedBy } = req.body;
       const attachment = await storage.updateAttachmentApproval(
-        parseInt(req.params.id), 
+        parseInt(req.params.id),
         approve ? 'approved' : 'rejected',
         approvedBy
       );
@@ -18469,7 +18685,7 @@ This is a preview of the performance engagement contract. Final agreement will i
   app.post('/api/booking-messages/create', authenticateToken, async (req: Request, res: Response) => {
     try {
       const messageData = req.body;
-      
+
       // Convert message to markdown document
       const markdownContent = `# Booking Message - ${new Date().toISOString()}
 
@@ -18490,7 +18706,7 @@ ${messageData.messageText}
       const path = require('path');
       const documentsDir = path.join(process.cwd(), 'booking-documents');
       await fs.mkdir(documentsDir, { recursive: true });
-      
+
       const filename = `booking-${messageData.bookingId}-message-${Date.now()}.md`;
       const filepath = path.join(documentsDir, filename);
       await fs.writeFile(filepath, markdownContent);
@@ -18515,7 +18731,7 @@ ${messageData.messageText}
       const roi = await ComeSeeTvIntegrationSystem.ComeSeeTvIntegrationSystem.trackIntegrationROI();
       const platformValue = ComeSeeTvIntegrationSystem.ComeSeeTvIntegrationSystem.calculatePlatformValue();
       const successPlan = ComeSeeTvIntegrationSystem.ComeSeeTvIntegrationSystem.generateFinancialSuccessPlan();
-      
+
       res.json({
         success: true,
         data: {
@@ -18534,12 +18750,12 @@ ${messageData.messageText}
     try {
       const { artistId, programLevel } = req.body;
       const ComeSeeTvIntegrationSystem = await import('./comeSeetvIntegration');
-      
+
       const program = await ComeSeeTvIntegrationSystem.ComeSeeTvIntegrationSystem.enrollArtistInProgram(
-        parseInt(artistId), 
+        parseInt(artistId),
         programLevel
       );
-      
+
       res.json({ success: true, data: program });
     } catch (error: any) {
       console.error('Error enrolling artist:', error);
@@ -18551,7 +18767,7 @@ ${messageData.messageText}
     try {
       const programs = await db.select().from(comeSeeTvArtistPrograms)
         .where(eq(comeSeeTvArtistPrograms.is_active, true));
-      
+
       res.json({ success: true, data: programs });
     } catch (error: any) {
       console.error('Error fetching artist programs:', error);
@@ -18563,9 +18779,9 @@ ${messageData.messageText}
     try {
       const { level } = req.params;
       const ComeSeeTvIntegrationSystem = await import('./comeSeetvIntegration');
-      
+
       const potential = ComeSeeTvIntegrationSystem.ComeSeeTvIntegrationSystem.calculateArtistEarningPotential(level);
-      
+
       res.json({ success: true, data: potential });
     } catch (error: any) {
       console.error('Error calculating earning potential:', error);
@@ -18579,7 +18795,7 @@ ${messageData.messageText}
       const categories = await db.select().from(serviceCategories)
         .where(eq(serviceCategories.isActive, true))
         .orderBy(serviceCategories.name);
-      
+
       res.json({ success: true, data: categories });
     } catch (error: any) {
       console.error('Error fetching service categories:', error);
@@ -18590,11 +18806,11 @@ ${messageData.messageText}
   app.post('/api/service-categories', authenticateToken, async (req: Request, res: Response) => {
     try {
       const { name, description, icon, color } = req.body;
-      
+
       const [category] = await db.insert(serviceCategories)
         .values({ name, description, icon, color })
         .returning();
-      
+
       res.json({ success: true, data: category });
     } catch (error: any) {
       console.error('Error creating service category:', error);
@@ -18603,7 +18819,7 @@ ${messageData.messageText}
   });
 
   // ==================== RECIPIENT MANAGEMENT API ENDPOINTS ====================
-  
+
   // Recipient Categories
   app.get('/api/recipient-categories', authenticateToken, async (req: Request, res: Response) => {
     try {
@@ -18651,7 +18867,7 @@ ${messageData.messageText}
     try {
       const { categoryId, genreId, search } = req.query;
       let recipients;
-      
+
       if (search) {
         recipients = await storage.searchIndustryRecipients(search as string);
       } else {
@@ -18660,7 +18876,7 @@ ${messageData.messageText}
           genreId: genreId ? parseInt(genreId as string) : undefined
         });
       }
-      
+
       res.json({ success: true, data: recipients });
     } catch (error: any) {
       console.error('Error fetching industry recipients:', error);
@@ -18688,7 +18904,7 @@ ${messageData.messageText}
       const { recipients } = req.body;
       const userId = req.user?.userId;
       const createdRecipients = [];
-      
+
       for (const recipientData of recipients) {
         try {
           const recipient = await storage.createIndustryRecipient({
@@ -18701,11 +18917,11 @@ ${messageData.messageText}
           // Continue with other recipients even if one fails
         }
       }
-      
-      res.json({ 
-        success: true, 
+
+      res.json({
+        success: true,
         data: createdRecipients,
-        count: createdRecipients.length 
+        count: createdRecipients.length
       });
     } catch (error: any) {
       console.error('Error bulk creating industry recipients:', error);
@@ -18717,11 +18933,11 @@ ${messageData.messageText}
     try {
       const id = parseInt(req.params.id);
       const recipient = await storage.updateIndustryRecipient(id, req.body);
-      
+
       if (!recipient) {
         return res.status(404).json({ success: false, error: 'Recipient not found' });
       }
-      
+
       res.json({ success: true, data: recipient });
     } catch (error: any) {
       console.error('Error updating industry recipient:', error);
@@ -18733,11 +18949,11 @@ ${messageData.messageText}
     try {
       const id = parseInt(req.params.id);
       const success = await storage.deleteIndustryRecipient(id);
-      
+
       if (!success) {
         return res.status(404).json({ success: false, error: 'Recipient not found' });
       }
-      
+
       res.json({ success: true });
     } catch (error: any) {
       console.error('Error deleting industry recipient:', error);
@@ -18775,11 +18991,11 @@ ${messageData.messageText}
     try {
       const id = parseInt(req.params.id);
       const distribution = await storage.updateContentDistribution(id, req.body);
-      
+
       if (!distribution) {
         return res.status(404).json({ success: false, error: 'Content distribution not found' });
       }
-      
+
       res.json({ success: true, data: distribution });
     } catch (error: any) {
       console.error('Error updating content distribution:', error);
@@ -18804,16 +19020,16 @@ ${messageData.messageText}
     try {
       const distributionId = parseInt(req.params.id);
       const { mediaItems } = req.body; // Array of media items from media area
-      
+
       // Update content distribution with assigned media
       const distribution = await storage.updateContentDistribution(distributionId, {
         assignedMedia: mediaItems
       });
-      
+
       if (!distribution) {
         return res.status(404).json({ success: false, error: 'Content distribution not found' });
       }
-      
+
       res.json({ success: true, data: distribution });
     } catch (error: any) {
       console.error('Error assigning media to content distribution:', error);
@@ -18825,7 +19041,7 @@ ${messageData.messageText}
   app.get('/api/newsletters/with-recipients', authenticateToken, async (req: Request, res: Response) => {
     try {
       const newsletters = await storage.getNewsletters();
-      
+
       // Fetch distribution data for each newsletter
       const newslettersWithRecipients = await Promise.all(
         newsletters.map(async (newsletter) => {
@@ -18839,7 +19055,7 @@ ${messageData.messageText}
           };
         })
       );
-      
+
       res.json({ success: true, data: newslettersWithRecipients });
     } catch (error: any) {
       console.error('Error fetching newsletters with recipients:', error);
@@ -18851,7 +19067,7 @@ ${messageData.messageText}
   app.get('/api/press-releases/with-recipients', authenticateToken, async (req: Request, res: Response) => {
     try {
       const pressReleases = await storage.getPressReleases();
-      
+
       // Fetch distribution data for each press release
       const pressReleasesWithRecipients = await Promise.all(
         pressReleases.map(async (pressRelease) => {
@@ -18865,7 +19081,7 @@ ${messageData.messageText}
           };
         })
       );
-      
+
       res.json({ success: true, data: pressReleasesWithRecipients });
     } catch (error: any) {
       console.error('Error fetching press releases with recipients:', error);
@@ -18900,7 +19116,7 @@ ${messageData.messageText}
     try {
       const songId = parseInt(req.params.id);
       const { title, genre, secondaryGenres, price, isFree, previewStartSeconds, previewDuration, isrcCode } = req.body;
-      
+
       const [result] = await db.execute(sql`
         UPDATE songs 
         SET title = ${title}, 
@@ -18931,7 +19147,7 @@ ${messageData.messageText}
     try {
       const songId = parseInt(req.params.id);
       const { title, isrcCode } = req.body;
-      
+
       // First verify the song exists and belongs to the user
       const [existingSong] = await db.execute(sql`
         SELECT title, isrc_code FROM songs 
@@ -18944,16 +19160,16 @@ ${messageData.messageText}
 
       // Validate that title and ISRC remain the same
       if (existingSong.title !== title || existingSong.isrc_code !== isrcCode) {
-        return res.status(400).json({ 
-          success: false, 
-          message: "Title and ISRC code must remain the same for reupload" 
+        return res.status(400).json({
+          success: false,
+          message: "Title and ISRC code must remain the same for reupload"
         });
       }
 
       // Handle file upload (simplified - in production would use proper file handling)
       const mp3Url = `/uploads/songs/${songId}_${Date.now()}.mp3`;
       const durationSeconds = 180; // Would be extracted from actual audio file
-      
+
       const [result] = await db.execute(sql`
         UPDATE songs 
         SET mp3_url = ${mp3Url}, 
@@ -18962,12 +19178,12 @@ ${messageData.messageText}
         RETURNING *
       `);
 
-      res.json({ 
-        success: true, 
-        data: result, 
+      res.json({
+        success: true,
+        data: result,
         mp3Url,
         durationSeconds,
-        message: "Song reuploaded successfully" 
+        message: "Song reuploaded successfully"
       });
     } catch (error: any) {
       console.error('Error reuploading song:', error);
@@ -18976,7 +19192,7 @@ ${messageData.messageText}
   });
 
   // ==================== MISSING API ENDPOINTS RESTORATION ====================
-  
+
   // Fix 1: Merchandise API - OppHub AI Learning: Missing route definitions cause HTML fallback
   app.get('/api/merchandise', authenticateToken, requireRole(ROLE_GROUPS.CONTENT_CREATORS), async (req: Request, res: Response) => {
     try {
@@ -19124,7 +19340,7 @@ ${messageData.messageText}
   app.get('/api/subscribers/count/:artistId', authenticateToken, async (req, res) => {
     try {
       const artistId = parseInt(req.params.artistId);
-      
+
       // Count actual newsletter subscribers for this artist from fan_engagement table
       const result = await db.execute(sql`
         SELECT COUNT(DISTINCT user_id) as count 
@@ -19132,7 +19348,7 @@ ${messageData.messageText}
         WHERE artist_user_id = ${artistId} 
         AND engagement_type = 'newsletter_signup'
       `);
-      
+
       const count = result.rows[0]?.count || 0;
       res.json({ count: parseInt(count) });
     } catch (error) {
@@ -19145,7 +19361,7 @@ ${messageData.messageText}
   app.get('/api/subscribers/:artistId', authenticateToken, async (req, res) => {
     try {
       const artistId = parseInt(req.params.artistId);
-      
+
       // Get actual newsletter subscribers for this artist with user details
       const result = await db.execute(sql`
         SELECT u.id, u.email, u.name, fe.engagement_date, fe.engagement_data
@@ -19155,7 +19371,7 @@ ${messageData.messageText}
         AND fe.engagement_type = 'newsletter_signup'
         ORDER BY fe.engagement_date DESC
       `);
-      
+
       res.json({ success: true, subscribers: result.rows });
     } catch (error) {
       console.error('Error fetching subscribers:', error);
@@ -19170,7 +19386,7 @@ ${messageData.messageText}
   app.get('/api/admin/assigned-talent/:adminId', authenticateToken, requireRole([1, 2]), async (req: Request, res: Response) => {
     try {
       const adminId = parseInt(req.params.adminId);
-      
+
       // Get all assigned talent for this admin
       const assignments = await db.execute(sql`
         SELECT 
@@ -19225,7 +19441,7 @@ ${messageData.messageText}
   app.get('/api/admin/pending-bookings/:adminId', authenticateToken, requireRole([1, 2]), async (req: Request, res: Response) => {
     try {
       const adminId = parseInt(req.params.adminId);
-      
+
       const pendingBookings = await db.execute(sql`
         SELECT 
           b.id,
@@ -19264,7 +19480,7 @@ ${messageData.messageText}
   app.get('/api/admin/pending-content/:adminId', authenticateToken, requireRole([1, 2]), async (req: Request, res: Response) => {
     try {
       const adminId = parseInt(req.params.adminId);
-      
+
       // Get pending songs
       const pendingSongs = await db.execute(sql`
         SELECT 
@@ -19329,7 +19545,7 @@ ${messageData.messageText}
   app.get('/api/admin/talent-analytics/:adminId', authenticateToken, requireRole([1, 2]), async (req: Request, res: Response) => {
     try {
       const adminId = parseInt(req.params.adminId);
-      
+
       const analytics = await db.execute(sql`
         SELECT 
           COUNT(DISTINCT aa.target_id) as total_assigned,
@@ -19342,7 +19558,7 @@ ${messageData.messageText}
       `);
 
       const result = analytics.rows[0] || {};
-      
+
       res.json({
         totalAssigned: parseInt(result.total_assigned) || 0,
         totalRevenue: parseFloat(result.total_revenue) || 0,
@@ -19477,7 +19693,7 @@ ${messageData.messageText}
   });
 
   // ==================== ADMIN TALENT ASSIGNMENT API ENDPOINTS ====================
-  
+
   // Get management team for talent (real database query)
   app.get('/api/admin/management-team/:talentUserId', authenticateToken, requireRole([1, 2]), async (req: Request, res: Response) => {
     try {
@@ -19528,69 +19744,69 @@ ${messageData.messageText}
   });
 
   // ==================== MEDIAHUB DOCUMENT MANAGEMENT ====================
-  
+
   // Get documents for a booking
   app.get('/api/bookings/:id/documents', authenticateToken, async (req: Request, res: Response) => {
     try {
       const bookingId = parseInt(req.params.id);
       const userId = req.user?.userId;
       const userRole = req.user?.roleId;
-      
+
       // Get booking to verify access
       const booking = await storage.getBooking(bookingId);
       if (!booking) {
         return res.status(404).json({ message: "Booking not found" });
       }
-      
+
       // Get all documents for the booking
       const documents = await storage.getBookingDocuments(bookingId);
-      
+
       // Filter documents based on user role and visibility
       const filteredDocuments = documents.filter(doc => {
         // Admins can see all documents
         if (userRole && [1, 2].includes(userRole)) return true;
-        
+
         // Booker can see their own documents
         if (doc.uploadedBy.id === userId) return true;
-        
+
         // Check visibility rules
         if (doc.visibility === 'all_talent') {
           // Check if user is assigned talent
           return storage.isUserAssignedToBooking(userId, bookingId);
         }
-        
+
         if (doc.visibility === 'admin_controlled') {
           // Check admin-defined permissions
           return storage.hasDocumentPermission(userId, doc.id);
         }
-        
+
         return false;
       });
-      
+
       res.json(filteredDocuments);
     } catch (error) {
       console.error('Error fetching booking documents:', error);
       res.status(500).json({ message: "Internal server error" });
     }
   });
-  
+
   // Upload document for a booking
   app.post('/api/bookings/:id/documents', authenticateToken, upload.single('file'), async (req: Request, res: Response) => {
     try {
       const bookingId = parseInt(req.params.id);
       const userId = req.user?.userId;
       const { description, visibility } = req.body;
-      
+
       if (!req.file) {
         return res.status(400).json({ message: "No file uploaded" });
       }
-      
+
       // Verify user has access to the booking
       const hasAccess = await storage.userHasBookingAccess(userId, bookingId);
       if (!hasAccess) {
         return res.status(403).json({ message: "Access denied" });
       }
-      
+
       // Create document record
       const document = await storage.createBookingDocument({
         bookingId,
@@ -19602,24 +19818,24 @@ ${messageData.messageText}
         visibility: visibility || 'admin_controlled',
         description
       });
-      
+
       res.status(201).json(document);
     } catch (error) {
       console.error('Error uploading document:', error);
       res.status(500).json({ message: "Internal server error" });
     }
   });
-  
+
   // Update document visibility (admin only)
   app.patch('/api/bookings/:bookingId/documents/:documentId/visibility', authenticateToken, requireRole([1, 2]), async (req: Request, res: Response) => {
     try {
       const documentId = parseInt(req.params.documentId);
       const { visibility } = req.body;
-      
+
       if (!['booker_only', 'admin_controlled', 'all_talent'].includes(visibility)) {
         return res.status(400).json({ message: "Invalid visibility setting" });
       }
-      
+
       await storage.updateDocumentVisibility(documentId, visibility);
       res.json({ success: true });
     } catch (error) {
@@ -19627,26 +19843,26 @@ ${messageData.messageText}
       res.status(500).json({ message: "Internal server error" });
     }
   });
-  
+
   // Delete document
   app.delete('/api/bookings/:bookingId/documents/:documentId', authenticateToken, async (req: Request, res: Response) => {
     try {
       const documentId = parseInt(req.params.documentId);
       const userId = req.user?.userId;
       const userRole = req.user?.roleId;
-      
+
       // Get document to check ownership
       const document = await storage.getDocument(documentId);
       if (!document) {
         return res.status(404).json({ message: "Document not found" });
       }
-      
+
       // Check permission to delete
       const canDelete = userRole && [1, 2].includes(userRole) || document.uploadedBy === userId;
       if (!canDelete) {
         return res.status(403).json({ message: "Permission denied" });
       }
-      
+
       await storage.deleteDocument(documentId);
       res.json({ success: true });
     } catch (error) {
@@ -19662,7 +19878,7 @@ ${messageData.messageText}
   console.log('🔧 MEDIAHUB DOCUMENT MANAGEMENT API ENDPOINTS REGISTERED: get-documents, upload-document, update-visibility, delete-document');
 
   // ==================== ALL-LINKS SUBSCRIPTION SYSTEM ====================
-  
+
   // Check Stripe secrets
   if (!process.env.STRIPE_SECRET_KEY) {
     console.warn('⚠️  STRIPE_SECRET_KEY not found. Subscription features will be unavailable.');
@@ -19698,16 +19914,16 @@ ${messageData.messageText}
         currentPeriodEnd: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000), // 30 days
       });
 
-      res.json({ 
-        success: true, 
+      res.json({
+        success: true,
         subscription,
-        message: "Development mode: Subscription created without payment" 
+        message: "Development mode: Subscription created without payment"
       });
     } catch (error: any) {
       console.error('All-Links subscription error:', error);
-      res.status(500).json({ 
+      res.status(500).json({
         message: "Failed to create subscription",
-        error: error.message 
+        error: error.message
       });
     }
   });
@@ -19721,7 +19937,7 @@ ${messageData.messageText}
       }
 
       const subscription = await storage.getAllLinksSubscriptionByUserId(userId);
-      
+
       res.json({
         hasSubscription: !!subscription,
         subscription: subscription || null,
@@ -19778,7 +19994,7 @@ async function scanFileWithClamAV(filePath: string): Promise<{ status: string; r
     try {
       const bookingId = parseInt(req.params.id);
       const { booking_id, band_members, equipment_requests, stage_layout, audio_config, completion_status } = req.body;
-      
+
       // Save enhanced technical rider data
       const savedData = {
         id: `tr-${bookingId}-${Date.now()}`,
@@ -19809,75 +20025,75 @@ async function scanFileWithClamAV(filePath: string): Promise<{ status: string; r
     try {
       const bookingId = parseInt(req.params.id);
       const booking = await storage.getBooking(bookingId);
-      
+
       if (!booking) {
         return res.status(404).json({ error: "Booking not found" });
       }
-      
+
       const PDFDocument = require('pdfkit');
       const doc = new PDFDocument({
         margin: 50,
         size: 'A4'
       });
-      
+
       res.setHeader('Content-Type', 'application/pdf');
       res.setHeader('Content-Disposition', `attachment; filename="Booking_Contract_${bookingId}_${new Date().toISOString().split('T')[0]}.pdf"`);
-      
+
       doc.pipe(res);
-      
+
       // Header
       doc.fontSize(18).font('Helvetica-Bold').text("WAI'TUMUSIC", 50, 50);
       doc.fontSize(14).text("Booking Agreement", 50, 80);
-      
+
       // Contract details based on the example
       let yPosition = 120;
-      
+
       doc.fontSize(12).font('Helvetica')
         .text(`Contract ID: WM-CO-${String(bookingId).padStart(5, '0')}`, 400, yPosition)
         .text(`Value: $${booking.totalBudget || '0.00'}`, 400, yPosition + 15)
         .text(`Status: ${booking.status || 'Pending'}`, 400, yPosition + 30);
-      
+
       yPosition += 60;
-      
+
       // Service Provider and Client sections
       doc.fontSize(12).font('Helvetica-Bold').text("Service Provider", 50, yPosition);
       doc.text("Client", 350, yPosition);
       yPosition += 20;
-      
+
       doc.fontSize(10).font('Helvetica')
         .text("Wai'tuMusic", 50, yPosition)
         .text(`${booking.bookerName || 'Client Name'}`, 350, yPosition);
       yPosition += 15;
-      
+
       doc.text("31 Bath Estate", 50, yPosition)
         .text("31 Bath Estate", 350, yPosition);
       yPosition += 15;
-      
+
       doc.text("Roseau, St George 00152", 50, yPosition)
         .text("Roseau, St George 00152", 350, yPosition);
       yPosition += 15;
-      
+
       doc.text("Dominica", 50, yPosition)
         .text("Dominica", 350, yPosition);
-      
+
       yPosition += 40;
-      
+
       // Contract dates
       doc.fontSize(10).font('Helvetica')
         .text(`Start Date: ${booking.createdAt ? new Date(booking.createdAt).toLocaleDateString() : 'TBD'}`, 50, yPosition)
         .text(`End Date: ${booking.eventDate || 'TBD'}`, 50, yPosition + 15);
-      
+
       yPosition += 50;
-      
+
       // Contract content based on the uploaded example
       doc.fontSize(14).font('Helvetica-Bold').text("Performance Engagement Contract", 50, yPosition);
       yPosition += 25;
-      
+
       const contractText = `This Performance Engagement Contract (the "Agreement") is made and entered into as of ${new Date().toLocaleDateString()} by and between Wai'tuMusic, registered and existing under the laws of the Commonwealth of Dominica, with its principal place of business located at 31 Bath Estate, Roseau, Dominica (hereinafter referred to as "Service Provider"), and ${booking.bookerName || 'Client'} (hereinafter referred to as the "Client").`;
-      
+
       doc.fontSize(10).font('Helvetica').text(contractText, 50, yPosition, { width: 500, align: 'justify' });
       yPosition += 60;
-      
+
       // Add contract sections based on the example
       const sections = [
         {
@@ -19885,7 +20101,7 @@ async function scanFileWithClamAV(filePath: string): Promise<{ status: string; r
           content: `1.1 Engagement: Service Provider hereby engages the Artist to perform for a live performance event called "${booking.eventName || 'Performance Event'}" scheduled to take place on ${booking.eventDate || 'TBD'} at ${booking.venueName || 'Venue TBD'}.\n1.2 Services: The Artist agrees to perform during the Event as specified in the booking requirements.`
         },
         {
-          title: "2. Compensation", 
+          title: "2. Compensation",
           content: `2.1 Compensation: Service Provider agrees to pay the Artist the sum of $${booking.totalBudget || '0.00'} as compensation for the services rendered under this Agreement.\n2.2 Payment: Payment shall be made to the Artist by [Payment Method] on [Date].`
         },
         {
@@ -19893,25 +20109,25 @@ async function scanFileWithClamAV(filePath: string): Promise<{ status: string; r
           content: "3.1 Rehearsal: The Artist agrees to participate in rehearsals for the Event as scheduled by Service Provider. Rehearsal dates and times will be communicated to the Artist in advance."
         }
       ];
-      
+
       sections.forEach(section => {
         if (yPosition > 650) {
           doc.addPage();
           yPosition = 50;
         }
-        
+
         doc.fontSize(12).font('Helvetica-Bold').text(section.title, 50, yPosition);
         yPosition += 20;
         doc.fontSize(10).font('Helvetica').text(section.content, 50, yPosition, { width: 500, align: 'justify' });
         yPosition += 40;
       });
-      
+
       // Signature section
       if (yPosition > 600) {
         doc.addPage();
         yPosition = 50;
       }
-      
+
       yPosition += 40;
       doc.fontSize(12).font('Helvetica')
         .text("Service Provider", 50, yPosition)
@@ -19922,9 +20138,9 @@ async function scanFileWithClamAV(filePath: string): Promise<{ status: string; r
       yPosition += 30;
       doc.text(`Date: ${new Date().toLocaleDateString()}`, 50, yPosition)
         .text(`Date: ${new Date().toLocaleDateString()}`, 350, yPosition);
-      
+
       doc.end();
-      
+
     } catch (error) {
       console.error('Booking contract generation error:', error);
       res.status(500).json({ error: "Failed to generate booking contract" });
@@ -19937,28 +20153,28 @@ async function scanFileWithClamAV(filePath: string): Promise<{ status: string; r
       const bookingId = parseInt(req.params.id);
       const booking = await storage.getBooking(bookingId);
       const assignedTalent = await storage.getAssignedTalent(bookingId);
-      
+
       if (!booking) {
         return res.status(404).json({ error: "Booking not found" });
       }
-      
+
       const PDFDocument = require('pdfkit');
       const doc = new PDFDocument({
         margin: 50,
         size: 'A4'
       });
-      
+
       res.setHeader('Content-Type', 'application/pdf');
       res.setHeader('Content-Disposition', `attachment; filename="Performance_Contract_${bookingId}_${new Date().toISOString().split('T')[0]}.pdf"`);
-      
+
       doc.pipe(res);
-      
+
       // Header
       doc.fontSize(18).font('Helvetica-Bold').text("WAI'TUMUSIC", 50, 50);
       doc.fontSize(14).text("Performance Engagement Contract", 50, 80);
-      
+
       let yPosition = 120;
-      
+
       // Contract for each assigned talent
       if (assignedTalent && assignedTalent.length > 0) {
         assignedTalent.forEach((talent, index) => {
@@ -19966,17 +20182,17 @@ async function scanFileWithClamAV(filePath: string): Promise<{ status: string; r
             doc.addPage();
             yPosition = 50;
           }
-          
+
           doc.fontSize(16).font('Helvetica-Bold').text(`INDIVIDUAL PERFORMANCE CONTRACT - ${talent.stageName || talent.fullName}`, 50, yPosition);
           yPosition += 30;
-          
+
           doc.fontSize(12).font('Helvetica')
             .text(`Contract ID: WM-PC-${String(bookingId)}-${String(index + 1).padStart(2, '0')}`, 400, yPosition)
             .text(`Talent: ${talent.primaryTalent || 'Performer'}`, 400, yPosition + 15)
             .text(`Status: Active`, 400, yPosition + 30);
-          
+
           yPosition += 60;
-          
+
           const performanceContract = `This Individual Performance Contract is made between Wai'tuMusic (Service Provider) and ${talent.stageName || talent.fullName} (Performer) for the event "${booking.eventName || 'Performance Event'}" scheduled for ${booking.eventDate || 'TBD'}.
 
 PERFORMER DETAILS:
@@ -19999,16 +20215,16 @@ RESPONSIBILITIES:
 4. Performer agrees to exclusivity terms during the event period
 
 This contract is subject to the main booking agreement and all terms therein.`;
-          
+
           doc.fontSize(10).font('Helvetica').text(performanceContract, 50, yPosition, { width: 500, align: 'left' });
-          
+
           // Signature section for individual performer
           yPosition += 300;
           if (yPosition > 650) {
             doc.addPage();
             yPosition = 50;
           }
-          
+
           doc.fontSize(12).font('Helvetica')
             .text("Service Provider", 50, yPosition)
             .text("Performer", 350, yPosition);
@@ -20020,9 +20236,9 @@ This contract is subject to the main booking agreement and all terms therein.`;
             .text(`Date: _______________`, 350, yPosition);
         });
       }
-      
+
       doc.end();
-      
+
     } catch (error) {
       console.error('Performance contract generation error:', error);
       res.status(500).json({ error: "Failed to generate performance contract" });
@@ -20032,7 +20248,7 @@ This contract is subject to the main booking agreement and all terms therein.`;
   // ================================
   // ⚡ CONFIGURATION MANAGEMENT ROUTES  
   // ================================
-  
+
   // Configuration management endpoints
   app.get("/api/admin/configuration", configurationRoutes.getPlatformConfiguration);
   app.put("/api/admin/configuration", configurationRoutes.updatePlatformConfiguration);
@@ -20040,13 +20256,13 @@ This contract is subject to the main booking agreement and all terms therein.`;
   app.post("/api/admin/configuration/delegation", configurationRoutes.createConfigurationDelegation);
   app.get("/api/admin/configuration/delegations/:userId", configurationRoutes.getUserDelegatedAspects);
   app.put("/api/admin/configuration/ui-element", configurationRoutes.updateUIElement);
-  
+
   console.log("✅ Configuration Management API endpoints loaded");
 
   // ================================
   // 🔐 AUTHORIZATION MANAGEMENT ROUTES  
   // ================================
-  
+
   // Get all authorization rules
   app.get('/api/admin/authorization-rules', requireRole([1]), async (req: Request, res: Response) => {
     try {
@@ -20079,11 +20295,11 @@ This contract is subject to the main booking agreement and all terms therein.`;
         ...req.body,
         modifiedBy: req.user!.userId
       });
-      
+
       if (!success) {
         return res.status(404).json({ error: 'Authorization rule not found' });
       }
-      
+
       res.json({ message: 'Authorization rule updated successfully' });
     } catch (error) {
       console.error('Error updating authorization rule:', error);
@@ -20095,11 +20311,11 @@ This contract is subject to the main booking agreement and all terms therein.`;
   app.delete('/api/admin/authorization-rules/:id', requireRole([1]), async (req: Request, res: Response) => {
     try {
       const success = AuthorizationManager.removeRule(req.params.id);
-      
+
       if (!success) {
         return res.status(404).json({ error: 'Authorization rule not found' });
       }
-      
+
       res.json({ message: 'Authorization rule deleted successfully' });
     } catch (error) {
       console.error('Error deleting authorization rule:', error);
@@ -20116,7 +20332,7 @@ This contract is subject to the main booking agreement and all terms therein.`;
         lastModified: new Date(),
         modifiedBy: req.user!.userId
       };
-      
+
       AuthorizationManager.addRule(rule);
       res.status(201).json({ message: 'Authorization rule created successfully' });
     } catch (error) {
@@ -20153,9 +20369,9 @@ This contract is subject to the main booking agreement and all terms therein.`;
     try {
       const { endpoint, method } = req.params;
       const requiredRoles = getRequiredRoles(endpoint, method);
-      res.json({ 
-        endpoint, 
-        method, 
+      res.json({
+        endpoint,
+        method,
         requiredRoles,
         allowsCurrentUser: requiredRoles.includes(req.user!.roleId)
       });
@@ -20171,10 +20387,10 @@ This contract is subject to the main booking agreement and all terms therein.`;
   app.get('/api/test/channel-assignment/:bookingId', authenticateToken, async (req: Request, res: Response) => {
     try {
       const bookingId = parseInt(req.params.bookingId);
-      
+
       console.log(`🎛️ TESTING CHANNEL ASSIGNMENT FOR BOOKING ${bookingId}`);
       console.log('================================================');
-      
+
       // Get assigned talent for this booking
       const assignedTalent = await db
         .select({
@@ -20202,21 +20418,21 @@ This contract is subject to the main booking agreement and all terms therein.`;
 
       // Get stage names for artists and musicians
       const bandMembers = [];
-      
+
       for (const talent of assignedTalent) {
         const userId = talent.userId;
         const roleId = talent.user?.roleId;
-        
+
         let stageName = talent.user?.fullName;
         let instruments = [talent.instrumentRole || 'vocals'];
-        
+
         // Get stage name from artist or musician profile
         if (roleId === 3 || roleId === 4) { // artist or managed_artist
           const [artistProfile] = await db
             .select({ stageName: schema.artists.stageName })
             .from(schema.artists)
             .where(eq(schema.artists.userId, userId));
-          
+
           if (artistProfile?.stageName) {
             stageName = artistProfile.stageName;
           }
@@ -20225,7 +20441,7 @@ This contract is subject to the main booking agreement and all terms therein.`;
             .select({ stageName: schema.musicians.stageName })
             .from(schema.musicians)
             .where(eq(schema.musicians.userId, userId));
-          
+
           if (musicianProfile?.stageName) {
             stageName = musicianProfile.stageName;
           }
@@ -20287,24 +20503,24 @@ This contract is subject to the main booking agreement and all terms therein.`;
 
       // PHASE 1: 1-to-1 assignments (vocals, guitar, bass)
       console.log('\n🎯 PHASE 1: 1-to-1 Channel Assignments');
-      
+
       const oneToOneChannels = ['vocals', 'guitar', 'bass'];
       oneToOneChannels.forEach(channelType => {
         const availableChannels = updatedChannels[channelType].filter(ch => ch.applicable);
-        const compatibleMembers = bandMembers.filter(member => 
+        const compatibleMembers = bandMembers.filter(member =>
           member.instruments.includes(channelType) && !assignedMembers.has(member.name)
         );
 
         if (availableChannels.length > 0 && compatibleMembers.length > 0) {
           const maxAssignments = Math.min(availableChannels.length, compatibleMembers.length);
-          
+
           for (let i = 0; i < maxAssignments; i++) {
             const member = compatibleMembers[i];
             const channel = availableChannels[i];
-            
+
             const channelIndex = updatedChannels[channelType].findIndex(ch => ch.id === channel.id);
             updatedChannels[channelType][channelIndex].assignedTo = member.name;
-            
+
             assignedMembers.add(member.name);
             console.log(`✅ ${channelType.toUpperCase()}: ${member.name} → "${channel.input}" (1 channel only)`);
           }
@@ -20314,10 +20530,10 @@ This contract is subject to the main booking agreement and all terms therein.`;
       // PHASE 2: Keyboard L/R pairs
       console.log('\n🎯 PHASE 2: Keyboard L/R Pair Assignments');
       const keyboardChannels = updatedChannels.keyboard.filter(ch => ch.applicable);
-      const keyboardMembers = bandMembers.filter(member => 
+      const keyboardMembers = bandMembers.filter(member =>
         member.instruments.includes('keyboard') && !assignedMembers.has(member.name)
       );
-      
+
       if (keyboardMembers.length > 0) {
         const keyboardist = keyboardMembers[0];
         keyboardChannels.forEach(channel => {
@@ -20333,10 +20549,10 @@ This contract is subject to the main booking agreement and all terms therein.`;
       // PHASE 3: Drummer gets multiple channels
       console.log('\n🎯 PHASE 3: Drum Multi-Channel Assignments');
       const drumChannels = updatedChannels.drums.filter(ch => ch.applicable);
-      const drummers = bandMembers.filter(member => 
+      const drummers = bandMembers.filter(member =>
         member.instruments.includes('drums') && !assignedMembers.has(member.name)
       );
-      
+
       if (drummers.length > 0) {
         const drummer = drummers[0];
         drumChannels.forEach(channel => {
@@ -20413,11 +20629,11 @@ function generateChordProgression(songTitle: string, artist: string, instrument:
 
   const defaultKey = key || 'C';
   const instrumentChords = commonProgressions[instrument as keyof typeof commonProgressions];
-  
+
   if (instrumentChords && instrumentChords[defaultKey as keyof typeof instrumentChords]) {
     return instrumentChords[defaultKey as keyof typeof instrumentChords];
   }
-  
+
   // Fallback
   return {
     chords: ['C', 'Am', 'F', 'G'],
@@ -20444,7 +20660,7 @@ async function getYouTubeVideoInfo(youtubeId: string) {
 async function downloadYouTubeVideo(youtubeId: string, bookingId: number) {
   // Simulate download process - implement with youtube-dl or similar
   const storagePath = `uploads/bookings/${bookingId}/youtube/${youtubeId}`;
-  
+
   return {
     audioUrl: `${storagePath}/audio.mp3`,
     videoUrl: `${storagePath}/video.mp4`,
@@ -20456,7 +20672,7 @@ async function downloadYouTubeVideo(youtubeId: string, bookingId: number) {
 async function performSpleeterSeparation(songId: string, audioUrl: string, youtubeId?: string) {
   // Simulate Spleeter separation - implement with actual Python service
   const separatedPath = `uploads/separated/${songId}`;
-  
+
   return {
     tracks: {
       vocals: `${separatedPath}/vocals.wav`,

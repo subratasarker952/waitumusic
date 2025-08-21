@@ -152,7 +152,9 @@ CREATE TABLE "artists" (
 	"performing_rights_organization" text,
 	"ipi_number" text,
 	"primary_talent_id" integer NOT NULL,
-	"is_demo" boolean DEFAULT false
+	"is_demo" boolean DEFAULT false,
+		"is_complete" boolean DEFAULT false
+
 );
 --> statement-breakpoint
 CREATE TABLE "audio_file_metadata" (
@@ -1280,7 +1282,9 @@ CREATE TABLE "musicians" (
 	"performing_rights_organization" text,
 	"ipi_number" text,
 	"primary_talent_id" integer NOT NULL,
-	"is_demo" boolean DEFAULT false
+	"is_demo" boolean DEFAULT false,
+	"is_complete" boolean DEFAULT false
+
 );
 --> statement-breakpoint
 CREATE TABLE "newsletter_engagements" (
@@ -1828,7 +1832,8 @@ CREATE TABLE "professionals" (
 	"management_tier_id" integer,
 	"booking_form_picture_url" text,
 	"primary_talent_id" integer,
-	"is_demo" boolean DEFAULT false
+	"is_demo" boolean DEFAULT false,
+	"is_complete" boolean DEFAULT false
 );
 --> statement-breakpoint
 CREATE TABLE "receipts" (

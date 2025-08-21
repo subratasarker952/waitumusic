@@ -230,6 +230,7 @@ export const artists = pgTable("artists", {
   ipiNumber: text("ipi_number"),
   primaryTalentId: integer("primary_talent_id").references(() => allInstruments.id).notNull(),
   isDemo: boolean("is_demo").default(false),
+  isComplete: boolean("is_complete").default(false),
 });
 
 // Musicians table - exact specification
@@ -248,6 +249,7 @@ export const musicians = pgTable("musicians", {
   ipiNumber: text("ipi_number"),
   primaryTalentId: integer("primary_talent_id").references(() => allInstruments.id).notNull(),
   isDemo: boolean("is_demo").default(false),
+  isComplete: boolean("is_complete").default(false),
 });
 
 // Professionals table - exact specification
@@ -261,6 +263,7 @@ export const professionals = pgTable("professionals", {
   bookingFormPictureUrl: text("booking_form_picture_url"),
   primaryTalentId: integer("primary_talent_id").references(() => userProfessionalPrimaryTalents.id),
   isDemo: boolean("is_demo").default(false),
+  isComplete: boolean("is_complete").default(false),
 });
 
 // Music catalog tables
