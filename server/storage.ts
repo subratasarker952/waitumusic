@@ -1885,6 +1885,7 @@ export class MemStorage {
 }
 
 export class DatabaseStorage implements IStorage {
+
   async getUser(id: number): Promise<User | undefined> {
     const [user] = await db.select().from(users).where(eq(users.id, id));
     return user || undefined;
@@ -2150,9 +2151,9 @@ export class DatabaseStorage implements IStorage {
   }
 
   // UserProfile methods temporarily removed - using normalized user data tables
-  async getUserProfile(userId: number): Promise<any | undefined> {
-    // Return empty object for now - normalized data is in user tables
-    return {};
+  async getUserProfile(id: number): Promise<User | undefined> {
+    const [user] = await db.select().from(users).where(eq(users.id, id));
+    return user || undefined;
   }
 
   async createUserProfile(profile: any): Promise<any> {

@@ -584,12 +584,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
         fullName: updates.fullName,
         phoneNumber: updates.phoneNumber,
         privacySetting: updates.privacySetting,
-        avatarUrl: updates.profilePictureUrl,
-        coverImageUrl: updates.profileBannerUrl
+        avatarUrl: updates.avatarUrl,
+        coverImageUrl: updates.coverImageUrl
       };
-      const updatedUser = await storage.updateUser(userId, basicUserData);
- 
 
+      const updatedUser = await storage.updateUser(userId, basicUserData);
       if (!updatedUser) {
         return res.status(404).json({ message: "User not found" });
       }
@@ -597,7 +596,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
       // 2️⃣ Update role-specific data
       let roleData = null;
 
-      console.log(req.user?.roleId)
       switch (req.user?.roleId) {
         case 3: // Star Talent (managed artist)
         case 4: // Rising Artist
@@ -605,9 +603,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
             stageName: updates.stageName,
             bio: updates.bio,
             primaryGenre: updates.primaryGenre,
-            basePrice: updates.basePrice ? parseFloat(updates.basePrice) : null,
-            idealPerformanceRate: updates.idealPerformanceRate ? parseFloat(updates.idealPerformanceRate) : null,
-            minimumAcceptableRate: updates.minimumAcceptableRate ? parseFloat(updates.minimumAcceptableRate) : null,
+            basePrice: updates.basePrice ? updates.basePrice : null,
+            idealPerformanceRate: updates.idealPerformanceRate ? updates.idealPerformanceRate : null,
+            minimumAcceptableRate: updates.minimumAcceptableRate ? updates.minimumAcceptableRate : null,
             epkUrl: updates.epkUrl,
             bookingFormPictureUrl: updates.bookingFormPictureUrl,
             primaryTalentId: updates.primaryTalentId,
@@ -619,11 +617,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
         case 6: // Session Player
           roleData = await storage.updateMusician(userId, {
             stageName: updates.stageName,
-            bio: updates.bio,
             primaryGenre: updates.primaryGenre,
-            basePrice: updates.basePrice ? parseFloat(updates.basePrice) : null,
-            idealPerformanceRate: updates.idealPerformanceRate ? parseFloat(updates.idealPerformanceRate) : null,
-            minimumAcceptableRate: updates.minimumAcceptableRate ? parseFloat(updates.minimumAcceptableRate) : null,
+            basePrice: updates.basePrice ? updates.basePrice : null,
+            idealPerformanceRate: updates.idealPerformanceRate ? updates.idealPerformanceRate : null,
+            minimumAcceptableRate: updates.minimumAcceptableRate ? updates.minimumAcceptableRate : null,
             primaryTalentId: updates.primaryTalentId,
             isComplete: true
           });
@@ -641,7 +638,14 @@ export async function registerRoutes(app: Express): Promise<Server> {
       }
 
       const { passwordHash, ...userWithoutPassword } = updatedUser;
-      res.json({ user: { ...userWithoutPassword, roleData } });
+
+      res.json({
+        id: updatedUser.id,
+        email: updatedUser.email,
+        fullName: updatedUser.fullName,
+        roleId: updatedUser.roleId,
+        userData: { ...userWithoutPassword, roleData }
+      });
 
     } catch (error) {
       console.error("Error updating profile:", error);
