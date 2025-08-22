@@ -237,7 +237,7 @@ export default function Artists() {
                   <div className="text-center mb-4">
                     <Avatar className="w-24 h-24 mx-auto mb-3">
                       <AvatarImage
-                        src={performer.profile?.avatarUrl}
+                        src={performer?.avatarUrl}
                         alt={performer.stageNames?.find(sn => sn.isPrimary)?.name || performer.stageName || performer.user?.fullName}
                         className="object-cover"
                       />
@@ -312,7 +312,7 @@ export default function Artists() {
 
                   {/* Actions */}
                   <div className="space-y-2">
-                    <Link href={`/artists/${performer.userId}`}>
+                    <Link href={`/artists/${performer.userId}?type=${performer.type}`}>
                       <Button className="w-full">
                         View Profile
                       </Button>

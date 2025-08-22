@@ -617,6 +617,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         case 6: // Session Player
           roleData = await storage.updateMusician(userId, {
             stageName: updates.stageName,
+            bio: updates.bio,
             primaryGenre: updates.primaryGenre,
             basePrice: updates.basePrice ? updates.basePrice : null,
             idealPerformanceRate: updates.idealPerformanceRate ? updates.idealPerformanceRate : null,
@@ -852,39 +853,97 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   );
 
-  app.get("/api/artists/:id", authenticateToken, requirePerm('view_content'), validateParams(schemas.idParamSchema), async (req: Request, res: Response) => {
-    try {
-      const artistUserId = parseInt(req.params.id);
+  // OLD
+  // app.get("/api/artists/:id", authenticateToken, requirePerm('view_content'), validateParams(schemas.idParamSchema), async (req: Request, res: Response) => {
+  //   try {
+  //     const artistUserId = parseInt(req.params.id);
 
-      const artist = await storage.getArtist(artistUserId);
-      console.log(`Found artist:`, artist);
+  //     const artist = await storage.getArtist(artistUserId);
+  //     console.log(`Found artist:`, artist);
 
-      if (!artist) {
-        console.log(`Artist with userId ${artistUserId} not found`);
-        return res.status(404).json({ message: "Artist not found" });
+  //     if (!artist) {
+  //       console.log(`Artist with userId ${artistUserId} not found`);
+  //       return res.status(404).json({ message: "Artist not found" });
+  //     }
+
+  //     const user = await storage.getUser(artistUserId);
+  //     const profile = await storage.getUserProfile(artistUserId);
+  //     const songs = await storage.getSongsByArtist(artistUserId);
+  //     const albums = await storage.getAlbumsByArtist(artistUserId);
+  //     const merchandise = await storage.getMerchandiseByArtist(artistUserId);
+
+  //     // Return artist info with all data
+  //     res.json({
+  //       ...artist,
+  //       user,
+  //       profile,
+  //       songs,
+  //       albums,
+  //       merchandise,
+  //       events: [] // Temporarily disable to fix the column error
+  //     });
+  //   } catch (error) {
+  //     logError(error, ErrorSeverity.ERROR, { endpoint: '/api/artists/:id', artistId: req.params.id });
+  //     res.status(500).json({ message: "Internal server error" });
+  //   }
+  // });
+
+  // NEW
+  app.get(
+    "/api/artists/:id",
+    authenticateToken,
+    requirePerm("view_content"),
+    validateParams(schemas.idParamSchema),
+    async (req: Request, res: Response) => {
+      try {
+        const userId = parseInt(req.params.id);
+        const type = (req.query.type as string) || "artist"; // default artist
+  
+        let performer: any;
+        if (type === "musician") {
+          performer = await storage.getMusician(userId); // musician table
+        } else {
+          performer = await storage.getArtist(userId); // artist table
+        }
+  
+        if (!performer) {
+          console.log(`${type} with userId ${userId} not found`);
+          return res.status(404).json({ message: `${type} not found` });
+        }
+  
+        const user = await storage.getUser(userId);
+        const profile = await storage.getUserProfile(userId);
+  
+        // songs, albums, merchandise fetch based on type
+        const songs = type === "musician"
+          ? [] //await storage.getSongsByMusician(userId)
+          : await storage.getSongsByArtist(userId);
+  
+        const albums = type === "musician"
+          ? [] // await storage.getAlbumsByMusician(userId)
+          : await storage.getAlbumsByArtist(userId);
+  
+        const merchandise = type === "musician"
+          ? [] // await storage.getMerchandiseByMusician(userId)
+          : await storage.getMerchandiseByArtist(userId);
+  
+        res.json({
+          ...performer,
+          type,
+          user,
+          profile,
+          songs,
+          albums,
+          merchandise,
+          events: [], // temporarily empty
+        });
+      } catch (error) {
+        logError(error, ErrorSeverity.ERROR, { endpoint: "/api/artists/:id", userId: req.params.id });
+        res.status(500).json({ message: "Internal server error" });
       }
-
-      const user = await storage.getUser(artistUserId);
-      const profile = await storage.getUserProfile(artistUserId);
-      const songs = await storage.getSongsByArtist(artistUserId);
-      const albums = await storage.getAlbumsByArtist(artistUserId);
-      const merchandise = await storage.getMerchandiseByArtist(artistUserId);
-
-      // Return artist info with all data
-      res.json({
-        ...artist,
-        user,
-        profile,
-        songs,
-        albums,
-        merchandise,
-        events: [] // Temporarily disable to fix the column error
-      });
-    } catch (error) {
-      logError(error, ErrorSeverity.ERROR, { endpoint: '/api/artists/:id', artistId: req.params.id });
-      res.status(500).json({ message: "Internal server error" });
     }
-  });
+  );
+  
 
   app.post("/api/artists", authenticateToken, requirePerm('upload_content'), validate(schemas.createArtistSchema), async (req: Request, res: Response) => {
     try {

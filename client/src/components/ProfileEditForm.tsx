@@ -453,7 +453,7 @@ export default function ProfileEditForm({
           </div>
 
           {/* Bio */}
-          {(isArtist || isProfessional) && (
+          {(isArtist ||isMusicianProfile|| isProfessional) && (
             <div className="space-y-2">
               <Label htmlFor="bio">Bio</Label>
               <Textarea

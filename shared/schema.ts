@@ -237,6 +237,7 @@ export const artists = pgTable("artists", {
 export const musicians = pgTable("musicians", {
   userId: integer("user_id").references(() => users.id).primaryKey(),
   stageName: text("stage_name"), // Stage name for musicians - fallback to fullName if not provided
+  bio: text("bio"),
   primaryGenre: text("primary_genre"),
   basePrice: decimal("base_price", { precision: 10, scale: 2 }),
   idealPerformanceRate: decimal("ideal_performance_rate", { precision: 10, scale: 2 }),
