@@ -24,6 +24,34 @@ export const rolePermissions = pgTable("role_permissions", {
   unique('unique_role_permission').on(table.roleId, table.permissionKey),
 ]);
 
+// Normalized user data tables
+export const userSecondaryRoles = pgTable("user_secondary_roles", {
+  id: serial("id").primaryKey(),
+  userId: integer("user_id").references(() => users.id).notNull(),
+  roleId: integer("role_id").references(() => roles.id).notNull(),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+// users
+export const users = pgTable("users", {
+  id: serial("id").primaryKey(),
+  email: text("email").notNull().unique(),
+  passwordHash: text("password_hash").notNull(),
+  fullName: text("full_name").notNull(),
+  roleId: integer("role_id").references(() => roles.id).notNull(),
+  phoneNumber: text("phone_number"),
+  gender: text("gender"), // male, female, non-binary, prefer_not_to_say
+  status: text("status").notNull().default("active"),
+  privacySetting: text("privacy_setting").default("public"), // public/private
+  avatarUrl: text("avatar_url"), // Media hub reference
+  coverImageUrl: text("cover_image_url"), // Media hub reference
+  isDemo: boolean("is_demo").default(false),
+  createdAt: timestamp("created_at").defaultNow(),
+  lastLogin: timestamp("last_login"),
+});
+
+
+
 // Professional primary talents (for professionals only - artists/musicians use all_instruments)
 export const userProfessionalPrimaryTalents = pgTable("user_professional_primary_talents", {
   id: serial("id").primaryKey(),
@@ -50,31 +78,6 @@ export const managementTiers = pgTable("management_tiers", {
   description: text("description"),
   maxDiscountPercentage: integer("max_discount_percentage").notNull(),
   appliesTo: jsonb("applies_to").default(['artist', 'musician']), // Professional roles excluded from Publisher
-});
-
-export const users = pgTable("users", {
-  id: serial("id").primaryKey(),
-  email: text("email").notNull().unique(),
-  passwordHash: text("password_hash").notNull(),
-  fullName: text("full_name").notNull(),
-  roleId: integer("role_id").references(() => roles.id).notNull(),
-  phoneNumber: text("phone_number"),
-  gender: text("gender"), // male, female, non-binary, prefer_not_to_say
-  status: text("status").notNull().default("active"),
-  privacySetting: text("privacy_setting").default("public"), // public/private
-  avatarUrl: text("avatar_url"), // Media hub reference
-  coverImageUrl: text("cover_image_url"), // Media hub reference
-  isDemo: boolean("is_demo").default(false),
-  createdAt: timestamp("created_at").defaultNow(),
-  lastLogin: timestamp("last_login"),
-});
-
-// Normalized user data tables
-export const userSecondaryRoles = pgTable("user_secondary_roles", {
-  id: serial("id").primaryKey(),
-  userId: integer("user_id").references(() => users.id).notNull(),
-  roleId: integer("role_id").references(() => roles.id).notNull(),
-  createdAt: timestamp("created_at").defaultNow(),
 });
 
 export const userSecondaryPerformanceTalents = pgTable("user_secondary_performance_talents", {
