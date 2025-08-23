@@ -519,7 +519,7 @@ export default function Contact() {
                       </Button>
                     </DialogTrigger>
                     <DialogContent className="sm:max-w-md h-[600px] flex flex-col p-0">
-                      <DialogHeader className="p-4 border-b bg-gradient-to-r from-purple-600 to-blue-600 text-white">
+                      <DialogHeader className="p-4 border-b bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-t-lg">
                         <DialogTitle className="flex items-center gap-2">
                           <MessageCircle className="h-5 w-5" />
                           Live Support Chat

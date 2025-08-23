@@ -24,7 +24,8 @@ import {
   Mic, Headphones, Briefcase, Check, AlertTriangle,
   BarChart3, Clock, MapPin, Play, ShoppingCart, Award,
   Globe, Wrench, Database, UserCheck, BookOpen,
-  CreditCard, Camera, Video, Image, FolderOpen, Trash2, Music2, Crown, Mail, X, Utensils
+  CreditCard, Camera, Video, Image, FolderOpen, Trash2, Music2, Crown, Mail, X, Utensils,
+  List
 } from 'lucide-react';
 
 // Modal Components
@@ -514,13 +515,19 @@ export default function UnifiedDashboard({ stats, bookings, user }: UnifiedDashb
                     <Briefcase className="h-4 w-4" />
                     Business & Opportunities
                   </h3>
-                  <div className="grid grid-cols-2 gap-1">
+                  <div className="grid grid-cols-3 gap-1">
                     {!isProfessional && (
                       <>
                         <TabsList className="grid w-full grid-cols-1">
                           <TabsTrigger value="bookings" className="text-xs flex items-center gap-1">
                             <Calendar className="h-3 w-3" />
                             Bookings
+                          </TabsTrigger>
+                        </TabsList>
+                        <TabsList className="grid w-full grid-cols-1">
+                          <TabsTrigger value="applications" className="text-xs flex items-center gap-1">
+                            <List className="h-3 w-3" />
+                            Applications
                           </TabsTrigger>
                         </TabsList>
                         <TabsList className="grid w-full grid-cols-1">
@@ -1283,6 +1290,45 @@ export default function UnifiedDashboard({ stats, bookings, user }: UnifiedDashb
               </Card>
             </TabsContent>
           )}
+
+          <TabsContent value="applications" className="space-y-4 sm:space-y-6">
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-lg sm:text-xl">
+                  All Applications
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-3 sm:space-y-4">
+                  {userApplications.map((appication: any) => (
+                    <Card key={appication.id}>
+                      <CardContent className="p-3 sm:p-4">
+                        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+                          <div className="flex-1 min-w-0">
+                            <h4 className="font-medium text-sm sm:text-base truncate">{appication.eventName || 'Event'}</h4>
+                            <p className="text-xs sm:text-sm text-muted-foreground">
+                              {appication.eventDate ? new Date(appication.eventDate).toLocaleDateString() : 'Date TBD'}
+                            </p>
+                          </div>
+                          <Button
+                            size="sm"
+                            className="w-full sm:w-auto flex-shrink-0"
+                            onClick={() => handleViewAppication(appication)}
+                          >
+                            View Details
+                          </Button>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  ))}
+                  {userAppications.length === 0 && (
+                    <p className="text-muted-foreground text-center py-6 sm:py-8">No Appications yet</p>
+                  )}
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
+
 
           {/* My Gigs Tab - For Artists, Musicians, and Professionals */}
           {(isArtist || isMusicianProfile || isProfessional) && !isFan && !isAdmin && !isSuperadmin && (

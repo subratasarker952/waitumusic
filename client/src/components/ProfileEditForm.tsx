@@ -92,22 +92,22 @@ export default function ProfileEditForm({
 
  useEffect(() => {
   if (userResponse) {
-    const {userData} = userResponse;
+    const {user} = userResponse;
 
     // Basic user info
     setFormData((prev) => ({
       ...prev,
-      fullName: userData.fullName || "",
-      email: userData.email || "",
-      phoneNumber: userData.phoneNumber || "",
-      privacySetting: userData.privacySetting || "public",
-      profilePictureUrl: userData.avatarUrl || "",
-      profileBannerUrl: userData.coverImageUrl || "",
+      fullName: user.fullName || "",
+      email: user.email || "",
+      phoneNumber: user.phoneNumber || "",
+      privacySetting: user.privacySetting || "public",
+      profilePictureUrl: user.avatarUrl || "",
+      profileBannerUrl: user.coverImageUrl || "",
     }));
 
     // Role-specific
-    if (userData.roleData) {
-      const rd = userData.roleData;
+    if (user.roleData) {
+      const rd = user.roleData;
       setFormData((prev) => ({
         ...prev,
         stageName: rd.stageName || "",

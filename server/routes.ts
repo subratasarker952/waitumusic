@@ -179,7 +179,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         email: user.email,
         fullName: user.fullName,
         roleId: user.roleId,
-        userData: { ...userWithoutPassword, roleData }
+        user: { ...userWithoutPassword, roleData }
       });
     } catch (error) {
       console.error('Get current user error:', error);
@@ -687,7 +687,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         email: updatedUser.email,
         fullName: updatedUser.fullName,
         roleId: updatedUser.roleId,
-        userData: { ...userWithoutPassword, roleData }
+        user: { ...userWithoutPassword, roleData }
       });
 
     } catch (error) {
@@ -838,7 +838,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
             .limit(limit)
             .offset(offset);
 
-          console.log(artistsQuery)
           const userIds = artistsQuery.map((row) => row.artist.userId);
           if (userIds.length === 0) return [];
 
@@ -11034,43 +11033,136 @@ This is a preview of the performance engagement contract. Final agreement will i
   });
 
   // Submit management application (non-admin users applying to become Managed Artists)
+  // app.post('/api/management-applications', authenticateToken, async (req: Request, res: Response) => {
+  //   try {
+  //     const { requestedManagementTierId, applicationReason, businessPlan, expectedRevenue, portfolioLinks, socialMediaMetrics } = req.body;
+  //     const currentUserId = req.user?.userId;
+
+  //     if (!currentUserId || !requestedManagementTierId || !applicationReason) {
+  //       return res.status(400).json({ message: 'Missing required fields' });
+  //     }
+
+  //     // Verify user is not already managed and not admin/superadmin
+  //     const user = await storage.getUser(currentUserId);
+  //     if (!user) {
+  //       return res.status(404).json({ message: 'User not found' });
+  //     }
+
+  //     if ([1, 2, 3, 5, 7].includes(user.roleId)) {
+  //       return res.status(400).json({ message: 'User is already managed or has admin privileges' });
+  //     }
+
+  //     // Check for existing pending applications
+  //     const existingApplications = await storage.getManagementApplicationsByUser(currentUserId);
+  //     const hasPendingApplication = existingApplications.some(app =>
+  //       ['pending', 'under_review', 'approved', 'contract_generated', 'awaiting_signatures', 'signed'].includes(app.status)
+  //     );
+
+  //     if (hasPendingApplication) {
+  //       return res.status(400).json({ message: 'You already have a pending management application' });
+  //     }
+
+  //     // Get management tier info for contract terms
+  //     const managementTiers = await storage.getManagementTiers();
+  //     const tier = managementTiers.find(t => t.id === requestedManagementTierId);
+  //     if (!tier) {
+  //       return res.status(400).json({ message: 'Invalid management tier' });
+  //     }
+
+  //     // Generate contract terms based on tier
+  //     const isFullManagement = tier.name.toLowerCase().includes('full');
+  //     const contractTerms = {
+  //       managementType: isFullManagement ? 'full_management' : 'administration',
+  //       maxDiscountPercentage: isFullManagement ? 100 : 50,
+  //       minimumCommitmentMonths: 12,
+  //       revenueSharePercentage: isFullManagement ? 15.0 : 10.0,
+  //       exclusivityRequired: isFullManagement,
+  //       marketingSupport: isFullManagement ? 'comprehensive' : 'standard',
+  //       professionalDevelopment: isFullManagement ? 'unlimited' : 'quarterly',
+  //       termination: {
+  //         noticePeriod: isFullManagement ? 60 : 30,
+  //         earlyTerminationFee: isFullManagement ? 2500 : 1000
+  //       },
+  //       benefits: isFullManagement ? [
+  //         'Up to 100% discount on all WaituMusic services',
+  //         'Dedicated management team',
+  //         'Priority booking and promotion',
+  //         'Comprehensive marketing campaigns',
+  //         'Unlimited professional development sessions',
+  //         'Exclusive label events and networking'
+  //       ] : [
+  //         'Up to 50% discount on WaituMusic services',
+  //         'Shared management resources',
+  //         'Standard booking assistance',
+  //         'Basic marketing support',
+  //         'Quarterly professional development sessions'
+  //       ]
+  //     };
+
+  //     const application = await storage.createManagementApplication({
+  //       applicantUserId: currentUserId,
+  //       requestedManagementTierId,
+  //       applicationReason,
+  //       businessPlan,
+  //       expectedRevenue,
+  //       portfolioLinks,
+  //       socialMediaMetrics,
+  //       contractTerms
+  //     });
+
+  //     res.status(201).json(application);
+  //   } catch (error) {
+  //     console.error('Create management application error:', error);
+  //     res.status(500).json({ message: 'Failed to create management application' });
+  //   }
+  // });
+
   app.post('/api/management-applications', authenticateToken, async (req: Request, res: Response) => {
     try {
-      const { requestedManagementTierId, applicationReason, businessPlan, expectedRevenue, portfolioLinks, socialMediaMetrics } = req.body;
+      const { 
+        requestedManagementTierId, 
+        applicationReason, 
+        businessPlan, 
+        expectedRevenue, 
+        portfolioLinks, 
+        socialMediaMetrics 
+      } = req.body;
+  
       const currentUserId = req.user?.userId;
-
+  
       if (!currentUserId || !requestedManagementTierId || !applicationReason) {
         return res.status(400).json({ message: 'Missing required fields' });
       }
-
-      // Verify user is not already managed and not admin/superadmin
+  
+      // Verify user exists
       const user = await storage.getUser(currentUserId);
       if (!user) {
         return res.status(404).json({ message: 'User not found' });
       }
-
+  
+      // Prevent admins/managed users from applying
       if ([1, 2, 3, 5, 7].includes(user.roleId)) {
         return res.status(400).json({ message: 'User is already managed or has admin privileges' });
       }
-
-      // Check for existing pending applications
+  
+      // Check existing pending applications
       const existingApplications = await storage.getManagementApplicationsByUser(currentUserId);
       const hasPendingApplication = existingApplications.some(app =>
         ['pending', 'under_review', 'approved', 'contract_generated', 'awaiting_signatures', 'signed'].includes(app.status)
       );
-
+  
       if (hasPendingApplication) {
         return res.status(400).json({ message: 'You already have a pending management application' });
       }
-
-      // Get management tier info for contract terms
+  
+      // Validate management tier
       const managementTiers = await storage.getManagementTiers();
       const tier = managementTiers.find(t => t.id === requestedManagementTierId);
       if (!tier) {
         return res.status(400).json({ message: 'Invalid management tier' });
       }
-
-      // Generate contract terms based on tier
+  
+      // Generate contract terms
       const isFullManagement = tier.name.toLowerCase().includes('full');
       const contractTerms = {
         managementType: isFullManagement ? 'full_management' : 'administration',
@@ -11099,24 +11191,31 @@ This is a preview of the performance engagement contract. Final agreement will i
           'Quarterly professional development sessions'
         ]
       };
-
+  
+      // 🛠 sanitize optional fields
+      const safeBusinessPlan = businessPlan && businessPlan.trim() !== "" ? businessPlan : null;
+      const safeExpectedRevenue = expectedRevenue && expectedRevenue !== "" ? Number(expectedRevenue) : null;
+      const safePortfolioLinks = portfolioLinks && Object.keys(portfolioLinks).length > 0 ? portfolioLinks : null;
+      const safeSocialMediaMetrics = socialMediaMetrics && Object.keys(socialMediaMetrics).length > 0 ? socialMediaMetrics : null;
+  
       const application = await storage.createManagementApplication({
         applicantUserId: currentUserId,
         requestedManagementTierId,
         applicationReason,
-        businessPlan,
-        expectedRevenue,
-        portfolioLinks,
-        socialMediaMetrics,
+        businessPlan: safeBusinessPlan,
+        expectedRevenue: safeExpectedRevenue,
+        portfolioLinks: safePortfolioLinks,
+        socialMediaMetrics: safeSocialMediaMetrics,
         contractTerms
       });
-
+  
       res.status(201).json(application);
     } catch (error) {
       console.error('Create management application error:', error);
       res.status(500).json({ message: 'Failed to create management application' });
     }
   });
+  
 
   // Get management applications (admin/superadmin only)
   app.get('/api/management-applications', authenticateToken, requireRole([1, 2]), async (req: Request, res: Response) => {

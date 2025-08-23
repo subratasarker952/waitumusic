@@ -1,5 +1,5 @@
 import React from 'react';
-import logoImage from '@assets/WaituMusic_Logo_AI_1753582673973.png';
+import logoImage from '/WaituMusic_Logo_AI_1753582673973.png';
 
 interface WaituMusicLogoProps {
   className?: string;

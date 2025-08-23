@@ -117,6 +117,7 @@ export default function ManagementApplicationModal({
 
   const onSubmit = async (data: ManagementApplicationForm) => {
     setIsSubmitting(true);
+    console.log(data)
     try {
       await apiRequest("/api/management-applications", {
         method: "POST",
@@ -146,14 +147,14 @@ export default function ManagementApplicationModal({
   return (
     <Dialog open={isOpen} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
-      <DialogHeader>
-    <DialogTitle className="text-2xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
-      Apply for Role Change
-    </DialogTitle>
-    <DialogDescription className="text-sm text-muted-foreground">
-      Change your role or apply for managed status with exclusive benefits and professional support.
-    </DialogDescription>
-  </DialogHeader>
+        <DialogHeader>
+          <DialogTitle className="text-2xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
+            Apply for Role Change
+          </DialogTitle>
+          <DialogDescription className="text-sm text-muted-foreground">
+            Change your role or apply for managed status with exclusive benefits and professional support.
+          </DialogDescription>
+        </DialogHeader>
 
 
         <Form {...form}>
