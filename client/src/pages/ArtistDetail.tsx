@@ -680,7 +680,7 @@ export default function ArtistDetail() {
               )}
             </div>
             <div className="flex items-center gap-6 text-lg">
-              <div className="flex items-center"><Music className="w-5 h-5 mr-2" />{performer.primaryGenre || 'Multi-Genre'}</div>
+              <div className="flex items-center"><Music className="w-5 h-5 mr-2" />{performer.genre || 'Multi-Genre'}</div>
               <div className="flex items-center"><Star className="w-5 h-5 mr-2 fill-yellow-400 text-yellow-400" />4.8 (156 reviews)</div>
               <div className="flex items-center"><MapPin className="w-5 h-5 mr-2" />Worldwide</div>
             </div>

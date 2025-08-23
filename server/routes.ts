@@ -249,12 +249,12 @@ export async function registerRoutes(app: Express): Promise<Server> {
       }
 
       // Hash password
-      const passwordHash = await bcrypt.hash(userData.password, 12);
+      const password = await bcrypt.hash(userData.password, 12);
 
       // Create user
       const user = await storage.createUser({
         ...userData,
-        passwordHash,
+        passwordHash:password,
         roleId: userData.roleId || 9, // default fan role
       });
 
@@ -328,15 +328,37 @@ export async function registerRoutes(app: Express): Promise<Server> {
         { expiresIn: "24h" }
       );
 
+
+
+      // Get role-specific data
+      let roleData = null;
+      const roles = await storage.getRoles();
+      const userRole = roles.find(role => role.id === user.roleId);
+
+      if (userRole) {
+        switch (user.roleId) {
+          case 3: // Star Talent (managed artist)
+          case 4: // Rising Artist
+            roleData = await storage.getArtist(user.id);
+            break;
+          case 5: // Studio Pro (managed musician)
+          case 6: // Session Player
+            roleData = await storage.getMusician(user.id);
+            break;
+          case 7: // Industry Expert (managed professional)
+          case 8: // Music Professional
+            roleData = await storage.getProfessional(user.id);
+            break;
+        }
+      }
+
+      const { passwordHash, ...userWithoutPassword } = user;
+
+
       res.status(201).json({
         message: "User created successfully",
         token,
-        user: {
-          id: user.id,
-          email: user.email,
-          fullName: user.fullName,
-          roleId: user.roleId,
-        },
+        user:{... userWithoutPassword, roleData},
       });
     } catch (error) {
       if (error instanceof z.ZodError) {
@@ -469,19 +491,39 @@ export async function registerRoutes(app: Express): Promise<Server> {
       );
 
       console.log('DEBUG: Login successful for user:', user.id);
+
+         // Get role-specific data
+         let roleData = null;
+         const roles = await storage.getRoles();
+         const userRole = roles.find(role => role.id === user.roleId);
+   
+         if (userRole) {
+           switch (user.roleId) {
+             case 3: // Star Talent (managed artist)
+             case 4: // Rising Artist
+               roleData = await storage.getArtist(user.id);
+               break;
+             case 5: // Studio Pro (managed musician)
+             case 6: // Session Player
+               roleData = await storage.getMusician(user.id);
+               break;
+             case 7: // Industry Expert (managed professional)
+             case 8: // Music Professional
+               roleData = await storage.getProfessional(user.id);
+               break;
+           }
+         }
+   
+         const { passwordHash, ...userWithoutPassword } = user;
+   
       res.json({
         message: "Login successful",
         token,
-        user: {
-          id: user.id,
-          email: user.email,
-          fullName: user.fullName,
-          roleId: user.roleId
-        }
+        user:{... userWithoutPassword, roleData},
       });
     } catch (error) {
       console.error('DEBUG: Login error details:', error);
-      logError(error, ErrorSeverity.ERROR, { endpoint: '/api/auth/login', email });
+      logError(error, ErrorSeverity.ERROR, { endpoint: '/api/auth/login', email: req.body.email });
       res.status(500).json({ message: "Internal server error", debug: error.message });
     }
   });
@@ -578,7 +620,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       }
 
       const updates = req.body;
-      
+
       // 1️⃣ Update basic user fields
       const basicUserData = {
         fullName: updates.fullName,
@@ -898,35 +940,35 @@ export async function registerRoutes(app: Express): Promise<Server> {
       try {
         const userId = parseInt(req.params.id);
         const type = (req.query.type as string) || "artist"; // default artist
-  
+
         let performer: any;
         if (type === "musician") {
           performer = await storage.getMusician(userId); // musician table
         } else {
           performer = await storage.getArtist(userId); // artist table
         }
-  
+
         if (!performer) {
           console.log(`${type} with userId ${userId} not found`);
           return res.status(404).json({ message: `${type} not found` });
         }
-  
+
         const user = await storage.getUser(userId);
         const profile = await storage.getUserProfile(userId);
-  
+
         // songs, albums, merchandise fetch based on type
         const songs = type === "musician"
           ? [] //await storage.getSongsByMusician(userId)
           : await storage.getSongsByArtist(userId);
-  
+
         const albums = type === "musician"
           ? [] // await storage.getAlbumsByMusician(userId)
           : await storage.getAlbumsByArtist(userId);
-  
+
         const merchandise = type === "musician"
           ? [] // await storage.getMerchandiseByMusician(userId)
           : await storage.getMerchandiseByArtist(userId);
-  
+
         res.json({
           ...performer,
           type,
@@ -938,12 +980,12 @@ export async function registerRoutes(app: Express): Promise<Server> {
           events: [], // temporarily empty
         });
       } catch (error) {
-        logError(error, ErrorSeverity.ERROR, { endpoint: "/api/artists/:id", userId: req.params.id });
+        logError(error, ErrorSeverity.ERROR, { endpoint: "/api/artists/:id", userId: parseFloat(req.params.id) });
         res.status(500).json({ message: "Internal server error" });
       }
     }
   );
-  
+
 
   app.post("/api/artists", authenticateToken, requirePerm('upload_content'), validate(schemas.createArtistSchema), async (req: Request, res: Response) => {
     try {
@@ -1432,7 +1474,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       const albumId = parseInt(req.params.id);
 
-      const cacheKey = generateCacheKey('albums', { id: albumId });
+      const cacheKey = generateCacheKey('albums',  albumId);
       const albumData = await withCache(cacheKey, async () => {
         const album = await storage.getAlbum(albumId);
 

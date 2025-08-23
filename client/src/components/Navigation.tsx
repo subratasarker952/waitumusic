@@ -16,6 +16,7 @@ import { Badge } from '@/components/ui/badge';
 import ManagementApplicationModal from '@/components/modals/ManagementApplicationModal';
 
 export default function Navigation() {
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [location] = useLocation();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [pianoSoundsEnabled, setPianoSoundsEnabled] = useState(true);
@@ -124,8 +125,8 @@ export default function Navigation() {
               <div className="flex items-baseline space-x-1">
                 {navigationItems.map((item) => (
                   <Link key={item.href} href={item.href} className={`px-3 py-2 rounded-md text-sm font-medium transition-all duration-300 hover:scale-105 ${isActive(item.href)
-                      ? 'text-white bg-gradient-to-r from-blue-500 to-purple-600 shadow-lg animate-pulse-slow'
-                      : 'text-gray-700 hover:text-transparent hover:bg-gradient-to-r hover:from-orange-500 hover:to-red-600 hover:bg-clip-text hover:font-bold'
+                    ? 'text-white bg-gradient-to-r from-blue-500 to-purple-600 shadow-lg animate-pulse-slow'
+                    : 'text-gray-700 hover:text-transparent hover:bg-gradient-to-r hover:from-orange-500 hover:to-red-600 hover:bg-clip-text hover:font-bold'
                     }`}>
                     {item.label}
                   </Link>
@@ -150,40 +151,55 @@ export default function Navigation() {
 
             {/* User Menu */}
             {user ? (
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" size="sm" className="flex items-center space-x-2">
-                    <User className="h-4 w-4" />
-                    <span>{user.fullName}</span>
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end">
-                  <DropdownMenuItem asChild>
-                    <Link href="/dashboard">Dashboard</Link>
-                  </DropdownMenuItem>
+              <>
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button variant="ghost" size="sm" className="flex items-center space-x-2">
+                      <User className="h-4 w-4" />
+                      <span>{user.fullName}</span>
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end">
+                    <DropdownMenuItem asChild>
+                      <Link href="/dashboard">Dashboard</Link>
+                    </DropdownMenuItem>
 
 
 
-                  {/* Show Apply for Management for eligible non-admin users */}
-                  {user && ![1, 2, 3, 5, 7].includes(user.roleId) && (
-                    <>
-                      <DropdownMenuSeparator />
-                      <DropdownMenuItem asChild>
-                        <ManagementApplicationModal>
-                          <button className="w-full flex items-center gap-2 text-left px-2">
+                    {/* Show Apply for Management for eligible non-admin users */}
+                    {user && ![1, 2, 3, 5, 7].includes(user.roleId) && (
+                      <>
+                        <DropdownMenuSeparator />
+
+                        <DropdownMenuItem asChild>
+                          <button
+                            className="w-full flex items-center gap-2 text-left px-2"
+                            onClick={(e) => {
+                              e.stopPropagation(); // prevent dropdown from closing
+                              setIsModalOpen(true);
+                            }}
+                          >
                             <UserPlus className="w-4 h-4" />
                             Apply for Management
                           </button>
-                        </ManagementApplicationModal>
-                      </DropdownMenuItem>
-                      <DropdownMenuSeparator />
-                    </>
-                  )}
-                  <DropdownMenuItem onClick={logout}>
-                    Logout
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
+                        </DropdownMenuItem>
+                        <DropdownMenuSeparator />
+                      </>
+                    )}
+                    <DropdownMenuItem onClick={logout}>
+                      Logout
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+
+
+                <ManagementApplicationModal
+                  isOpen={isModalOpen}
+                  onOpenChange={setIsModalOpen}
+                />
+
+
+              </>
             ) : (
               <div className="flex items-center space-x-3">
                 <Link href="/login">

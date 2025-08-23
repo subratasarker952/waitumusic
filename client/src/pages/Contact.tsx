@@ -119,7 +119,11 @@ export default function Contact() {
 
   const contactFormMutation = useMutation({
     mutationFn: async (data: any) => {
-      return apiRequest('/api/contact', 'POST', data);
+      return apiRequest('/api/contact', {
+        method: 'POST',
+        body: data
+      }
+      );
     },
     onSuccess: () => {
       toast({
@@ -527,8 +531,7 @@ export default function Contact() {
                           )}
                         </DialogTitle>
                         <DialogDescription className="text-sm text-purple-100 mt-1">
-                          Chat with our support team in real-time. We’re here to help you with
-                          bookings, technical issues, and any questions you have.
+                          Chat with our support team 24/7.
                         </DialogDescription>
                       </DialogHeader>
 

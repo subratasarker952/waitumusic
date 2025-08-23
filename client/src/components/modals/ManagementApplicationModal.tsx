@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { useModalManager } from '@/hooks/useModalManager';
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -8,9 +7,9 @@ import { useToast } from "@/hooks/use-toast";
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "@/components/ui/dialog";
 import {
   Form,
@@ -30,16 +29,27 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
-import { CheckCircle, AlertCircle, Clock, Star } from "lucide-react";
+import { Clock } from "lucide-react";
 
 const managementApplicationSchema = z.object({
-  requestedRoleType: z.enum(['managed_artist', 'managed_musician', 'managed_professional', 'artist', 'musician', 'professional'], {
-    required_error: "Please select a role type"
-  }),
+  requestedRoleType: z.enum(
+    [
+      "managed_artist",
+      "managed_musician",
+      "managed_professional",
+      "artist",
+      "musician",
+      "professional",
+    ],
+    {
+      required_error: "Please select a role type",
+    }
+  ),
   requestedManagementTierId: z.number().optional(),
-  applicationReason: z.string().min(50, "Please provide at least 50 characters explaining why you want this role"),
+  applicationReason: z
+    .string()
+    .min(50, "Please provide at least 50 characters explaining why you want this role"),
   businessPlan: z.string().optional(),
   expectedRevenue: z.string().optional(),
   portfolioLinks: z.string().optional(),
@@ -49,18 +59,16 @@ const managementApplicationSchema = z.object({
 type ManagementApplicationForm = z.infer<typeof managementApplicationSchema>;
 
 interface ManagementApplicationModalProps {
-  children: React.ReactNode;
+  isOpen: boolean;
+  onOpenChange: (open: boolean) => void;
   onSuccess?: () => void;
 }
 
-interface ManagementTier {
-  id: number;
-  name: string;
-  description: string;
-}
-
-export default function ManagementApplicationModal({ children, onSuccess }: ManagementApplicationModalProps) {
-  const [open, setOpen] = useState(false);
+export default function ManagementApplicationModal({
+  isOpen,
+  onOpenChange,
+  onSuccess,
+}: ManagementApplicationModalProps) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { toast } = useToast();
 
@@ -76,34 +84,36 @@ export default function ManagementApplicationModal({ children, onSuccess }: Mana
   });
 
   const roleOptions = [
-    { value: 'managed_artist', label: 'Managed Artist', description: 'Professional artist with management support' },
-    { value: 'managed_musician', label: 'Managed Musician', description: 'Session musician with management benefits' },
-    { value: 'managed_professional', label: 'Managed Professional', description: 'Professional service provider with management' },
-    { value: 'artist', label: 'Artist', description: 'Independent artist' },
-    { value: 'musician', label: 'Musician', description: 'Independent session musician' },
-    { value: 'professional', label: 'Professional', description: 'Independent service professional' },
+    { value: "managed_artist", label: "Managed Artist", description: "Professional artist with management support" },
+    { value: "managed_musician", label: "Managed Musician", description: "Session musician with management benefits" },
+    { value: "managed_professional", label: "Managed Professional", description: "Professional service provider with management" },
+    { value: "artist", label: "Artist", description: "Independent artist" },
+    { value: "musician", label: "Musician", description: "Independent session musician" },
+    { value: "professional", label: "Professional", description: "Independent service professional" },
   ];
 
   const tierOptions = {
     artist: [
       { id: 1, name: "Publisher", description: "Up to 10% discounts, publishing only" },
       { id: 2, name: "Representation", description: "Up to 50% discounts, business handling" },
-      { id: 3, name: "Full Management", description: "Up to 100% discounts, complete career responsibility" }
+      { id: 3, name: "Full Management", description: "Up to 100% discounts, complete career responsibility" },
     ],
     musician: [
       { id: 1, name: "Publisher", description: "Up to 10% discounts, publishing only" },
       { id: 2, name: "Representation", description: "Up to 50% discounts, business handling" },
-      { id: 3, name: "Full Management", description: "Up to 100% discounts, complete career responsibility" }
+      { id: 3, name: "Full Management", description: "Up to 100% discounts, complete career responsibility" },
     ],
     professional: [
       { id: 2, name: "Representation", description: "Up to 50% discounts, business handling" },
-      { id: 3, name: "Full Management", description: "Up to 100% discounts, complete career responsibility" }
-    ]
+      { id: 3, name: "Full Management", description: "Up to 100% discounts, complete career responsibility" },
+    ],
   };
 
   const watchedRoleType = form.watch("requestedRoleType");
   const isManaged = watchedRoleType?.startsWith("managed_");
-  const baseRoleType = isManaged ? watchedRoleType.replace("managed_", "") as keyof typeof tierOptions : null;
+  const baseRoleType = isManaged
+    ? (watchedRoleType.replace("managed_", "") as keyof typeof tierOptions)
+    : null;
 
   const onSubmit = async (data: ManagementApplicationForm) => {
     setIsSubmitting(true);
@@ -119,7 +129,7 @@ export default function ManagementApplicationModal({ children, onSuccess }: Mana
       });
 
       form.reset();
-      setOpen(false);
+      onOpenChange(false);
       onSuccess?.();
     } catch (error) {
       console.error("Error submitting application:", error);
@@ -133,33 +143,22 @@ export default function ManagementApplicationModal({ children, onSuccess }: Mana
     }
   };
 
-  const handleOpenChange = (newOpen: boolean) => {
-    if (!isSubmitting) {
-      setOpen(newOpen);
-      if (!newOpen) {
-        form.reset();
-      }
-    }
-  };
-
   return (
-    <Dialog open={open} onOpenChange={handleOpenChange}>
-      <DialogTrigger asChild>
-        {children}
-      </DialogTrigger>
+    <Dialog open={isOpen} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
-        <DialogHeader>
-          <DialogTitle className="text-2xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
-            Apply for Role Change
-          </DialogTitle>
-          <p className="text-sm text-muted-foreground">
-            Change your role or apply for managed status with exclusive benefits and professional support.
-          </p>
-        </DialogHeader>
+      <DialogHeader>
+    <DialogTitle className="text-2xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
+      Apply for Role Change
+    </DialogTitle>
+    <DialogDescription className="text-sm text-muted-foreground">
+      Change your role or apply for managed status with exclusive benefits and professional support.
+    </DialogDescription>
+  </DialogHeader>
+
 
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-            {/* Role Type Selection */}
+            {/* Role Type */}
             <FormField
               control={form.control}
               name="requestedRoleType"
@@ -188,7 +187,7 @@ export default function ManagementApplicationModal({ children, onSuccess }: Mana
               )}
             />
 
-            {/* Management Tier Selection - Only for managed roles */}
+            {/* Management Tier */}
             {isManaged && baseRoleType && (
               <FormField
                 control={form.control}
@@ -196,7 +195,7 @@ export default function ManagementApplicationModal({ children, onSuccess }: Mana
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="text-lg font-semibold">Select Management Tier</FormLabel>
-                    <Select onValueChange={(value) => field.onChange(parseInt(value))}>
+                    <Select onValueChange={(val) => field.onChange(parseInt(val))}>
                       <FormControl>
                         <SelectTrigger>
                           <SelectValue placeholder="Choose your preferred management tier" />
@@ -221,7 +220,7 @@ export default function ManagementApplicationModal({ children, onSuccess }: Mana
 
             <Separator />
 
-            {/* Application Reason */}
+            {/* Reason */}
             <FormField
               control={form.control}
               name="applicationReason"
@@ -240,26 +239,20 @@ export default function ManagementApplicationModal({ children, onSuccess }: Mana
               )}
             />
 
-            {/* Business Plan */}
+            {/* Optional fields */}
             <FormField
               control={form.control}
               name="businessPlan"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Business Plan & Career Strategy (Optional)</FormLabel>
+                  <FormLabel>Business Plan (Optional)</FormLabel>
                   <FormControl>
-                    <Textarea
-                      placeholder="Describe your business plan and career strategy..."
-                      className="min-h-[80px]"
-                      {...field}
-                    />
+                    <Textarea placeholder="Describe your business plan..." {...field} />
                   </FormControl>
-                  <FormMessage />
                 </FormItem>
               )}
             />
 
-            {/* Expected Revenue */}
             <FormField
               control={form.control}
               name="expectedRevenue"
@@ -267,18 +260,12 @@ export default function ManagementApplicationModal({ children, onSuccess }: Mana
                 <FormItem>
                   <FormLabel>Expected Annual Revenue (USD) (Optional)</FormLabel>
                   <FormControl>
-                    <Input
-                      type="number"
-                      placeholder="e.g., 50000"
-                      {...field}
-                    />
+                    <Input type="number" placeholder="e.g., 50000" {...field} />
                   </FormControl>
-                  <FormMessage />
                 </FormItem>
               )}
             />
 
-            {/* Portfolio Links */}
             <FormField
               control={form.control}
               name="portfolioLinks"
@@ -286,18 +273,12 @@ export default function ManagementApplicationModal({ children, onSuccess }: Mana
                 <FormItem>
                   <FormLabel>Portfolio/Website Links (Optional)</FormLabel>
                   <FormControl>
-                    <Textarea
-                      placeholder="Share links to your portfolio, website, or relevant work..."
-                      className="min-h-[60px]"
-                      {...field}
-                    />
+                    <Textarea placeholder="Share links to your portfolio..." {...field} />
                   </FormControl>
-                  <FormMessage />
                 </FormItem>
               )}
             />
 
-            {/* Social Media Metrics */}
             <FormField
               control={form.control}
               name="socialMediaMetrics"
@@ -305,18 +286,13 @@ export default function ManagementApplicationModal({ children, onSuccess }: Mana
                 <FormItem>
                   <FormLabel>Social Media Metrics (Optional)</FormLabel>
                   <FormControl>
-                    <Textarea
-                      placeholder="Share your social media following and engagement metrics..."
-                      className="min-h-[60px]"
-                      {...field}
-                    />
+                    <Textarea placeholder="Share your social media stats..." {...field} />
                   </FormControl>
-                  <FormMessage />
                 </FormItem>
               )}
             />
 
-            {/* Application Process Info */}
+            {/* Info */}
             <div className="border rounded-lg p-4 bg-blue-50 dark:bg-blue-950/20">
               <div className="flex items-center gap-2 mb-2">
                 <Clock className="w-5 h-5 text-blue-500" />
@@ -324,25 +300,23 @@ export default function ManagementApplicationModal({ children, onSuccess }: Mana
               </div>
               <ol className="list-decimal list-inside space-y-1 text-sm text-blue-600 dark:text-blue-400">
                 <li>Submit your application with all required information</li>
-                <li>Our team will review your application (typically 3-5 business days)</li>
-                <li>If approved, you'll receive a management contract for signing</li>
+                <li>Our team will review your application (3–5 business days)</li>
+                <li>If approved, you'll receive a contract for signing</li>
                 <li>Welcome to the WaituMusic family!</li>
               </ol>
             </div>
 
+            {/* Buttons */}
             <div className="flex justify-end gap-4">
-              <Button 
-                type="button" 
-                variant="outline" 
-                onClick={() => setOpen(false)}
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => onOpenChange(false)}
                 disabled={isSubmitting}
               >
                 Cancel
               </Button>
-              <Button 
-                type="submit" 
-                disabled={isSubmitting}
-              >
+              <Button type="submit" disabled={isSubmitting}>
                 {isSubmitting ? "Submitting..." : "Submit Application"}
               </Button>
             </div>
