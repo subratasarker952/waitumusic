@@ -57,13 +57,30 @@ function DashboardContent() {
     retry: 1
   });
 
+  // Fetch Applications based on user role
+  const { data: allApplications, isLoading: allApplicationsLoading, error: allApplicationsError } = useQuery({
+    queryKey: ['/api/management-applications'],
+    enabled: !!user && !!isAdminRole,
+    retry: 1
+  });
+
+  // Fetch user's own applications
+  const { data: userApplications, isLoading: userApplicationsLoading, error: userApplicationsError } = useQuery({
+    queryKey: [`/api/management-applications/user/${user.id}`],
+    enabled: !!user && !isAdminRole,
+    retry: 1
+  });
+
+  console.log(userApplications, allApplications)
   // Check loading states
   const shouldLoadStats = statsLoading;
   const shouldLoadAdminBookings = isAdminRole && allBookingsLoading;
   const shouldLoadUserBookings = !isAdminRole && userBookingsLoading;
+  const shouldLoadAdminApplications = isAdminRole && allApplicationsLoading;
+  const shouldLoadUserApplications = !isAdminRole && userApplicationsLoading;
 
   // Show error message with more details for debugging
-  if (statsError || allBookingsError || userBookingsError) {
+  if (statsError || allBookingsError || userBookingsError || userApplicationsError || allApplicationsError) {
     console.error('Dashboard errors:', { statsError, allBookingsError, userBookingsError });
 
     // Report error to OppHub learning system
@@ -96,7 +113,7 @@ function DashboardContent() {
     );
   }
 
-  if (shouldLoadStats || shouldLoadAdminBookings || shouldLoadUserBookings) {
+  if (shouldLoadStats || shouldLoadAdminBookings || shouldLoadUserBookings || shouldLoadAdminApplications || shouldLoadUserApplications) {
     return (
       <div className="container mx-auto px-4 py-8">
         <div className="text-center">
@@ -168,6 +185,7 @@ function DashboardContent() {
               user={user}
               stats={stats || {}}
               bookings={isAdminRole ? (allBookings || []) : (userBookings || [])}
+              applications={isAdminRole ? (allApplications || []) : (userApplications || [])}
             />
           )}
         </>
@@ -176,6 +194,7 @@ function DashboardContent() {
           user={user}
           stats={stats || {}}
           bookings={isAdminRole ? (allBookings || []) : (userBookings || [])}
+          applications={isAdminRole ? (allApplications || []) : (userApplications || [])}
         />
       )}
 

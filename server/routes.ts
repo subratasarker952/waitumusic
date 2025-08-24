@@ -277,7 +277,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
             isRegisteredWithPro: false,
             performingRightsOrganization: "",
             ipiNumber: "",
-            primaryTalentId: 1, // Default instrument id (adjust if needed)
+            primaryTalentId: 1, 
             isDemo: false,
             isComplete: false,
           });
@@ -11194,7 +11194,7 @@ This is a preview of the performance engagement contract. Final agreement will i
   
       // 🛠 sanitize optional fields
       const safeBusinessPlan = businessPlan && businessPlan.trim() !== "" ? businessPlan : null;
-      const safeExpectedRevenue = expectedRevenue && expectedRevenue !== "" ? Number(expectedRevenue) : null;
+      const safeExpectedRevenue = expectedRevenue && expectedRevenue !== "" ? expectedRevenue : null;
       const safePortfolioLinks = portfolioLinks && Object.keys(portfolioLinks).length > 0 ? portfolioLinks : null;
       const safeSocialMediaMetrics = socialMediaMetrics && Object.keys(socialMediaMetrics).length > 0 ? socialMediaMetrics : null;
   
@@ -11576,7 +11576,7 @@ This is a preview of the performance engagement contract. Final agreement will i
             await storage.createArtist({
               userId: application.applicantUserId,
               stageName: applicant.fullName || applicant.email.split('@')[0],
-              genre: 'To Be Determined',
+              primaryGenre: 'To Be Determined',
               bio: 'New managed artist',
               socialMediaLinks: {},
               isManaged: true,

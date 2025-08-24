@@ -88,12 +88,13 @@ const getRoleDisplayName = (roleId: number): string => {
 };
 
 interface UnifiedDashboardProps {
+  user: any;
   stats: any;
   bookings: any;
-  user: any;
+  applications: any;
 }
 
-export default function UnifiedDashboard({ stats, bookings, user }: UnifiedDashboardProps) {
+export default function UnifiedDashboard({ stats, bookings, user, applications }: UnifiedDashboardProps) {
   const [, setLocation] = useLocation();
   const { toast } = useToast();
   const queryClient = useQueryClient();
@@ -111,6 +112,7 @@ export default function UnifiedDashboard({ stats, bookings, user }: UnifiedDashb
   const [knowledgeBaseOpen, setKnowledgeBaseOpen] = useState(false);
   const [storeBrowserOpen, setStoreBrowserOpen] = useState(false);
   const [selectedBooking, setSelectedBooking] = useState(null);
+  const [selectedApplication, setSelectedApplication] = useState(null);
   const [selectedUserId, setSelectedUserId] = useState<string | undefined>();
   const [userModalMode, setUserModalMode] = useState<'create' | 'edit' | 'view'>('view');
   // Handle URL parameter for tab navigation
@@ -212,12 +214,15 @@ export default function UnifiedDashboard({ stats, bookings, user }: UnifiedDashb
 
   // Filter data based on user
   const userSongs = songs?.filter((song: any) => song.artistUserId === user?.id) || [];
+
   const userBookings = bookings?.filter((b: any) =>
     b.musician_user_id === user?.id ||
     b.professional_user_id === user?.id ||
     b.booker_user_id === user?.id ||
     b.artist_user_id === user?.id
   ) || [];
+
+  const userApplications = applications?.filter((a: any) => a.applicantUserId === user?.id) || [];
 
   // Event handlers
 
@@ -279,6 +284,7 @@ export default function UnifiedDashboard({ stats, bookings, user }: UnifiedDashb
   const handleViewBooking = (booking: any) => {
     setLocation(`/bookings/${booking.id}`);
   };
+
 
   const handleManageKnowledgeBase = () => {
     // Open knowledge base management modal
@@ -432,6 +438,7 @@ export default function UnifiedDashboard({ stats, bookings, user }: UnifiedDashb
               {/* Business & Opportunities */}
               {isProfessional && <SelectItem value="services">💼 Services (Business)</SelectItem>}
               {!isProfessional && <SelectItem value="bookings">📋 Bookings (Business)</SelectItem>}
+              {user && <SelectItem value="applications">📋 Applications (Business)</SelectItem>}
               {(isArtist || isMusicianProfile || isProfessional) && <SelectItem value="gigs">🎤 My Gigs (Performances)</SelectItem>}
 
               {/* Commercial & Legal */}
@@ -1079,7 +1086,7 @@ export default function UnifiedDashboard({ stats, bookings, user }: UnifiedDashb
                                 )}
                               </div>
                               <Button
-                                size="sm"
+                                
                                 variant="destructive"
                                 className="flex-shrink-0"
                                 onClick={() => handleDeleteSong(song.id, song.title)}
@@ -1295,39 +1302,122 @@ export default function UnifiedDashboard({ stats, bookings, user }: UnifiedDashb
             <Card>
               <CardHeader>
                 <CardTitle className="text-lg sm:text-xl">
-                  All Applications
+                  {selectedApplication ?` ApplicationId ${selectedApplication.id} Details` : "All Applications"}
                 </CardTitle>
               </CardHeader>
+
               <CardContent>
-                <div className="space-y-3 sm:space-y-4">
-                  {userApplications.map((appication: any) => (
-                    <Card key={appication.id}>
-                      <CardContent className="p-3 sm:p-4">
-                        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
-                          <div className="flex-1 min-w-0">
-                            <h4 className="font-medium text-sm sm:text-base truncate">{appication.eventName || 'Event'}</h4>
-                            <p className="text-xs sm:text-sm text-muted-foreground">
-                              {appication.eventDate ? new Date(appication.eventDate).toLocaleDateString() : 'Date TBD'}
+                {!selectedApplication ? (
+                  // ----------------- LIST VIEW -----------------
+                  <div className="space-y-3 sm:space-y-4">
+                    {userApplications.map((app: any) => (
+                      <Card key={app.id}>
+                        <CardContent className="p-3">
+                          <div className="flex items-center justify-between gap-3">
+                            <div className="flex-1 min-w-0">
+                              <div className="space-y-2">
+                                <div className="flex items-center justify-between gap-3">
+                                  <h3 className="text-lg font-semibold">
+                                    Application # {app.id}
+                                  </h3>
+                                  <Button
+                                    
+                                    className=""
+                                    onClick={() => setSelectedApplication(app)}
+                                  >
+                                    View Details
+                                  </Button>
+                                </div>
+                                <p>
+                                  <strong>Reason:</strong>
+                                  {app.applicationReason || "N/A"}
+                                </p>
+                                <p>
+                                  <strong>Status:</strong> {app.status}
+                                </p>
+                                <p>
+                                  <strong>Submitted:</strong>
+                                  {new Date(app.submittedAt).toLocaleString()}
+                                </p>
+                              </div>
+                            </div>
+                          </div>
+                        </CardContent>
+                      </Card>
+                    ))}
+
+                    {userApplications.length === 0 && (
+                      <p className="text-muted-foreground text-center py-6 sm:py-8">
+                        No Applications yet
+                      </p>
+                    )}
+                  </div>
+                ) : (
+                  // ----------------- DETAILS VIEW -----------------
+                  <div className="space-y-4">
+                    <Card>
+                      <CardContent className='p-3'>
+                        {/* Basic Info (all users can see) */}
+                        <div className="space-y-2">
+                          <div className="flex justify-between items-center gap-3">
+                            <h3 className="text-lg font-semibold">
+                              Application # {selectedApplication.id}
+                            </h3>
+                            <Button
+                              
+                              onClick={() => setSelectedApplication(null)}
+                            >
+                              Less Detailes
+                            </Button>
+                          </div>
+                          <div className="space-y-2">
+                            <p>
+                              <strong>Reason:</strong>
+                              {selectedApplication.applicationReason || "N/A"}
+                            </p>
+                            <p>
+                              <strong>Status:</strong> {selectedApplication.status} 
+                            </p>
+                            <p>
+                              <strong>Submitted:</strong>
+                              {new Date(selectedApplication.submittedAt).toLocaleString()}
                             </p>
                           </div>
-                          <Button
-                            size="sm"
-                            className="w-full sm:w-auto flex-shrink-0"
-                            onClick={() => handleViewAppication(appication)}
-                          >
-                            View Details
-                          </Button>
+
                         </div>
+                        {/* Admin only extra info */}
+                        {isAdmin && (
+                          <div className="space-y-3 border-t pt-4">
+                            <p>
+                              <strong>Business Plan:</strong>
+                              {selectedApplication.businessPlan || "N/A"}
+                            </p>
+                            <p>
+                              <strong>Expected Revenue:</strong>
+                              {selectedApplication.expectedRevenue || "N/A"}
+                            </p>
+                            <p>
+                              <strong>Portfolio Links:</strong>
+                              {JSON.stringify(selectedApplication.portfolioLinks)}
+                            </p>
+                            <p>
+                              <strong>Social Media Metrics:</strong>
+                              {JSON.stringify(selectedApplication.socialMediaMetrics)}
+                            </p>
+                            <p>
+                              <strong>Contract Terms:</strong>
+                              {JSON.stringify(selectedApplication.contractTerms)}
+                            </p>
+                          </div>
+                        )}
                       </CardContent>
                     </Card>
-                  ))}
-                  {userAppications.length === 0 && (
-                    <p className="text-muted-foreground text-center py-6 sm:py-8">No Appications yet</p>
-                  )}
-                </div>
+                  </div>
+                )}
               </CardContent>
             </Card>
           </TabsContent>
+
 
 
           {/* My Gigs Tab - For Artists, Musicians, and Professionals */}
