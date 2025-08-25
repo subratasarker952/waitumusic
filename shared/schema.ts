@@ -76,9 +76,33 @@ export const managementTiers = pgTable("management_tiers", {
   id: serial("id").primaryKey(),
   name: text("name").notNull(),
   description: text("description"),
-  maxDiscountPercentage: integer("max_discount_percentage").notNull(),
-  appliesTo: jsonb("applies_to").default(['artist', 'musician']), // Professional roles excluded from Publisher
+  appliesTo: text("applies_to").array().default(['artist', 'musician']), // Professional roles excluded from Publisher
 });
+
+
+export const rolesManagement = pgTable("roles_management", {
+  id: serial("id").primaryKey(),
+  name: text("name").notNull(), 
+  canApply: boolean("can_apply").default(false),
+
+  // Universal percentages
+  opphubMarketplaceDiscount: integer("opphub_marketplace_discount").default(0),
+  servicesDiscount: integer("services_discount").default(0),
+  adminCommission: integer("admin_commission").default(0),
+
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+export const userRoles = pgTable("user_roles", {
+  id: serial("id").primaryKey(),
+  userId: integer("user_id").references(() => users.id).notNull(),
+  roleId: integer("role_id").references(() => rolesManagement.id).notNull(),
+  createdAt: timestamp("created_at").defaultNow(),
+}, (t) => ({
+  userRoleUnique: unique().on(t.userId, t.roleId), // unique constraint
+}));
+
 
 export const userSecondaryPerformanceTalents = pgTable("user_secondary_performance_talents", {
   id: serial("id").primaryKey(),
@@ -821,6 +845,7 @@ export const managementTransitions = pgTable("management_transitions", {
 export const managementApplications = pgTable("management_applications", {
   id: serial("id").primaryKey(),
   applicantUserId: integer("applicant_user_id").references(() => users.id).notNull(),
+  requestedRoleId: integer("requested_role_id").references(() => roles.id).notNull(), // NEW
   requestedManagementTierId: integer("requested_management_tier_id").references(() => managementTiers.id).notNull(),
   applicationReason: text("application_reason").notNull(),
   businessPlan: text("business_plan"),
@@ -829,6 +854,9 @@ export const managementApplications = pgTable("management_applications", {
   socialMediaMetrics: jsonb("social_media_metrics"),
   contractTerms: jsonb("contract_terms").notNull(),
   status: text("status").notNull().default('pending'), // 'pending', 'under_review', 'approved', 'contract_generated', 'awaiting_signatures', 'signed', 'completed', 'rejected'
+  termInMonths: integer("term_in_months"), // NEW optional
+  endDate: timestamp("end_date"), // NEW optional
+  notes: text("notes"), // NEW optional
   submittedAt: timestamp("submitted_at").defaultNow(),
   reviewedAt: timestamp("reviewed_at"),
   reviewedByUserId: integer("reviewed_by_user_id").references(() => users.id),
@@ -840,6 +868,7 @@ export const managementApplications = pgTable("management_applications", {
   createdAt: timestamp("created_at").defaultNow(),
   updatedAt: timestamp("updated_at").defaultNow(),
 });
+
 
 // Management contract signatures for application contracts
 export const managementApplicationSignatures = pgTable("management_application_signatures", {
@@ -2227,7 +2256,7 @@ export type InsertMerchandise = z.infer<typeof insertMerchandiseSchema>;
 export type Booking = typeof bookings.$inferSelect;
 export type InsertBooking = z.infer<typeof insertBookingSchema>;
 
-export type Role = typeof roles.$inferSelect;
+export type Role = typeof rolesManagement.$inferSelect;
 export type ManagementTier = typeof managementTiers.$inferSelect;
 
 // Primary talent types - removed as table doesn't exist

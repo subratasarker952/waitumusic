@@ -34,7 +34,6 @@ export default function Register() {
     queryKey: ['/api/roles'],
   });
 
-
   const form = useForm<RegisterFormData>({
     resolver: zodResolver(registerSchema),
     defaultValues: {
@@ -65,9 +64,12 @@ export default function Register() {
     }
   };
 
-  const publicRoles = Array.isArray(roles) ? roles.filter((role: any) => 
-    ['fan', 'artist', 'musician', 'professional'].includes(role.name)
-  ) : [];
+  // Filter roles that the user can actually select
+  const publicRoles = Array.isArray(roles)
+    ? roles.filter((role: any) =>
+      ['fan', 'artist', 'musician', 'professional'].includes(role.name.toLowerCase())
+    )
+    : [];
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary to-secondary px-4 py-8">
@@ -144,7 +146,7 @@ export default function Register() {
                     </FormItem>
                   )}
                 />
-                
+
                 <FormField
                   control={form.control}
                   name="password"
@@ -173,9 +175,9 @@ export default function Register() {
                   )}
                 />
 
-                <Button 
-                  type="submit" 
-                  className="w-full gradient-primary" 
+                <Button
+                  type="submit"
+                  className="w-full gradient-primary"
                   disabled={isLoading}
                 >
                   {isLoading ? (

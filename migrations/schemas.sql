@@ -1124,16 +1124,18 @@ CREATE TABLE "management_applications" (
 	"signed_at" timestamp,
 	"completed_at" timestamp,
 	"rejection_reason" text,
+  	"term_in_months" INT,         -- কত মাসের জন্য
+  	"end_date" TIMESTAMP,         -- expiry date
+  	"notes" TEXT,                 -- admin extra note
 	"created_at" timestamp DEFAULT now(),
 	"updated_at" timestamp DEFAULT now()
 );
 --> statement-breakpoint
 CREATE TABLE "management_tiers" (
-	"id" serial PRIMARY KEY NOT NULL,
-	"name" text NOT NULL,
-	"description" text,
-	"max_discount_percentage" integer NOT NULL,
-	"applies_to" jsonb DEFAULT '["artist","musician"]'::jsonb
+    "id" serial PRIMARY KEY,
+    "name" text NOT NULL,
+    "description" text,
+    "applies_to" text[] DEFAULT ARRAY['artist','musician']
 );
 --> statement-breakpoint
 CREATE TABLE "management_transitions" (
@@ -2010,6 +2012,7 @@ CREATE TABLE "roles" (
 	CONSTRAINT "roles_name_unique" UNIQUE("name")
 );
 
+-- Example Data
 INSERT INTO roles (id, name)
 VALUES 
   (1, 'superadmin'),
@@ -2022,6 +2025,48 @@ VALUES
   (8, 'professional'),
   (9, 'fan')
 ON DUPLICATE KEY UPDATE name = VALUES(name);
+
+--> statement-breakpoint
+CREATE TABLE "roles_management" (
+	"id" SERIAL PRIMARY KEY,
+	"name" TEXT NOT NULL,                 
+	"can_apply" BOOLEAN DEFAULT FALSE,
+
+	"opphub_marketplace_discount" INTEGER DEFAULT 0,   
+	"services_discount" INTEGER DEFAULT 0,            
+ 	"admin_commission" INTEGER DEFAULT 0,             
+
+	"created_at" TIMESTAMP DEFAULT NOW(),
+	"updated_at" TIMESTAMP DEFAULT NOW()
+);
+
+-- INSERT INTO roles_management (
+--   id, 
+--   name, 
+--   can_apply, 
+--   opphub_marketplace_discount, 
+--   services_discount, 
+--   admin_commission
+-- )
+-- VALUES
+--   (1, 'SuperAdmin', FALSE, 0, 0, 0),
+--   (2, 'Admin', FALSE, 0, 0, 0),
+--   (3, 'Managed Artist', TRUE, 10, 5, 10),
+--   (4, 'Artist', TRUE, 5, 0, 15),
+--   (5, 'Managed Musician', TRUE, 10, 5, 10),
+--   (6, 'Musician', TRUE, 5, 0, 15),
+--   (7, 'Contracted Professional', TRUE, 10, 5, 10),
+--   (8, 'Professional', TRUE, 5, 0, 15),
+--   (9, 'Fan', TRUE, 0, 0, 0);
+
+--> statement-breakpoint
+CREATE TABLE "user_roles" (
+    "id" SERIAL PRIMARY KEY,
+    "userId" INTEGER REFERENCES users(id) NOT NULL,
+    "roleId" INTEGER REFERENCES roles_management(id) NOT NULL,
+    "createdAt" TIMESTAMP DEFAULT NOW(),
+    UNIQUE("userId", "roleId")
+);
 
 --> statement-breakpoint
 CREATE TABLE "service_assignments" (

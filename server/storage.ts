@@ -116,7 +116,9 @@ import {
   // MediaHub Document Management imports
   mediaHubDocuments, documentPermissions,
   type MediaHubDocument, type InsertMediaHubDocument,
-  type DocumentPermission, type InsertDocumentPermission
+  type DocumentPermission, type InsertDocumentPermission,
+  rolesManagement,
+  userRoles
 } from "@shared/schema";
 import { eq, and, or, desc, lte, gte, isNotNull, sql, inArray } from "drizzle-orm";
 import { db } from "./db";
@@ -1285,9 +1287,9 @@ export class MemStorage {
     throw new Error("User profiles are normalized across multiple tables - not implemented in MemStorage");
   }
 
-  async getRoles(): Promise<Role[]> {
-    return this.roles;
-  }
+  // async getRoles(): Promise<Role[]> {
+  //   return this.roles;
+  // }
 
   async getManagementTiers(): Promise<ManagementTier[]> {
     return this.managementTiers;
@@ -1916,6 +1918,76 @@ export class DatabaseStorage implements IStorage {
     return this.getUser(id);
   }
 
+// START NEW CODEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
+
+  // get all roles
+  async getRoles() {
+    return await db.select().from(rolesManagement).orderBy(rolesManagement.id);
+  }
+
+    /** Assign a role to a user */
+    async assignRoleToUser(userId: number, roleId: number) {
+      const [role] = await db
+        .insert(userRoles)
+        .values({ userId, roleId })
+        .onConflictDoNothing() // avoid duplicate userId+roleId
+        .returning();
+      return role;
+    }
+  
+ // Check if user has a specific role
+ async userHasRole(userId: number, roleId: number): Promise<boolean> {
+  const res = await db
+    .select()
+    .from(userRoles)
+    .where(and(
+      eq(userRoles.userId, userId),
+      eq(userRoles.roleId, roleId)
+    ));
+
+  return res.length > 0;
+}
+
+// Get all roleIds for a user
+async getUserRoles(userId: number): Promise<number[]> {
+  const res = await db
+    .select({ roleId: userRoles.roleId })
+    .from(userRoles)
+    .where(eq(userRoles.userId, userId));
+
+  return res.map(r => r.roleId);
+}
+
+async getUserRolesWithDetails(userId: number) {
+  return await db
+    .select({
+      id: rolesManagement.id,
+      name: rolesManagement.name,
+      canApply: rolesManagement.canApply,
+      opphubMarketplaceDiscount: rolesManagement.opphubMarketplaceDiscount,
+      servicesDiscount: rolesManagement.servicesDiscount,
+      adminCommission: rolesManagement.adminCommission
+    })
+    .from(userRoles)
+    .innerJoin(rolesManagement, eq(userRoles.roleId, rolesManagement.id))
+    .where(eq(userRoles.userId, userId));
+}
+
+// Assign a role to a user
+async addRoleToUser(userId: number, roleId: number) {
+  return await db.insert(userRoles).values({ userId, roleId }).onConflictDoNothing();
+}
+
+// Remove a role from a user
+async removeRoleFromUser(userId: number, roleId: number) {
+  return await db
+    .delete(userRoles)
+    .where(and(
+      eq(userRoles.userId, userId),
+      eq(userRoles.roleId, roleId)
+    ));
+}
+// END NEW CODEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
   // Enhanced user management with role information
   async getUserWithRoles(id: number): Promise<{
     id: number;
@@ -2127,28 +2199,28 @@ export class DatabaseStorage implements IStorage {
 
   // Data integrity system support methods - removed duplicates
 
-  // Check if user has role (primary or secondary)
-  async userHasRole(userId: number, roleId: number): Promise<boolean> {
-    const user = await this.getUser(userId);
-    if (!user) return false;
+  // // Check if user has role (primary or secondary)
+  // async userHasRole(userId: number, roleId: number): Promise<boolean> {
+  //   const user = await this.getUser(userId);
+  //   if (!user) return false;
     
-    // Check primary role
-    if (user.roleId === roleId) return true;
+  //   // Check primary role
+  //   if (user.roleId === roleId) return true;
     
-    // Check secondary roles
-    const secondaryRoles = user.secondaryRoles as number[] || [];
-    return secondaryRoles.includes(roleId);
-  }
+  //   // Check secondary roles
+  //   const secondaryRoles = user.secondaryRoles as number[] || [];
+  //   return secondaryRoles.includes(roleId);
+  // }
 
-  // Get all roles for a user (primary + secondary)
-  async getUserRoles(userId: number): Promise<number[]> {
-    const user = await this.getUser(userId);
-    if (!user) return [];
+  // // Get all roles for a user (primary + secondary)
+  // async getUserRoles(userId: number): Promise<number[]> {
+  //   const user = await this.getUser(userId);
+  //   if (!user) return [];
     
-    const roles = [user.roleId];
-    const secondaryRoles = user.secondaryRoles as number[] || [];
-    return [...roles, ...secondaryRoles];
-  }
+  //   const roles = [user.roleId];
+  //   const secondaryRoles = user.secondaryRoles as number[] || [];
+  //   return [...roles, ...secondaryRoles];
+  // }
 
   // UserProfile methods temporarily removed - using normalized user data tables
   async getUserProfile(id: number): Promise<User | undefined> {
@@ -2166,9 +2238,9 @@ export class DatabaseStorage implements IStorage {
     return {};
   }
 
-  async getRoles(): Promise<Role[]> {
-    return await db.select().from(roles);
-  }
+  // async getRoles(): Promise<Role[]> {
+  //   return await db.select().from(roles);
+  // }
 
   // Get role by ID
   async getRoleById(roleId: number): Promise<Role | undefined> {

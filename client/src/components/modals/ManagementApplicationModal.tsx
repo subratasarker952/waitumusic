@@ -64,6 +64,19 @@ interface ManagementApplicationModalProps {
   onSuccess?: () => void;
 }
 
+const roleTypeToId: Record<string, number> = {
+  superadmin: 1,
+  admin: 2,
+  managed_artist: 3,
+  artist: 4,
+  managed_musician: 5,
+  musician: 6,
+  managed_professional: 7,
+  professional: 8,
+  fan: 9,
+};
+
+
 export default function ManagementApplicationModal({
   isOpen,
   onOpenChange,
@@ -117,11 +130,16 @@ export default function ManagementApplicationModal({
 
   const onSubmit = async (data: ManagementApplicationForm) => {
     setIsSubmitting(true);
-    console.log(data)
+    const roleId = roleTypeToId[data.requestedRoleType]
+
+    const payload = {
+      ...data,
+      requestedRoleId: roleId,
+    };
     try {
       await apiRequest("/api/management-applications", {
         method: "POST",
-        body: JSON.stringify(data),
+        body: JSON.stringify(payload),
       });
 
       toast({
@@ -136,7 +154,7 @@ export default function ManagementApplicationModal({
       console.error("Error submitting application:", error);
       toast({
         title: "Error",
-        description: "Failed to submit application. Please try again.",
+        description: error.message || "Failed to submit application. Please try again.",
         variant: "destructive",
       });
     } finally {
