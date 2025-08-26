@@ -18,7 +18,7 @@ export default function AuthorizedRoute({
   children,
   fallback
 }: AuthorizedRouteProps) {
-  const { user, role, isLoading } = useAuth();
+  const { user, roles, isLoading } = useAuth();
   const [location] = useLocation();
 
   if (isLoading) {
@@ -29,7 +29,7 @@ export default function AuthorizedRoute({
     );
   }
 
-  if (!user) {
+  if (!user || !roles || roles.length === 0) {
     return fallback || (
       <div className="min-h-screen w-full flex items-center justify-center bg-gray-50">
         <Card className="w-full max-w-md mx-4">
@@ -47,10 +47,10 @@ export default function AuthorizedRoute({
     );
   }
 
-  const userRoleId = user?.roleId;
-  const userRoleName = role?.name || role;
+  // Multi-role access check: allow if any role has access
+  const hasAccess = roles.some(r => canAccessPage(r.id, location));
 
-  if (userRoleId && !canAccessPage(userRoleId, location)) {
+  if (!hasAccess) {
     return fallback || (
       <div className="min-h-screen w-full flex items-center justify-center bg-gray-50">
         <Card className="w-full max-w-md mx-4">
@@ -65,7 +65,7 @@ export default function AuthorizedRoute({
             {process.env.NODE_ENV === 'development' && (
               <div className="mt-4 p-2 bg-gray-100 rounded text-xs">
                 <p>Debug Info:</p>
-                <p>Your role: {userRoleName} (ID: {userRoleId})</p>
+                <p>Your roles: {roles.map(r => `${r.name} (ID: ${r.id})`).join(', ')}</p>
                 <p>Path: {location}</p>
               </div>
             )}

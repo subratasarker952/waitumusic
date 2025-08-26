@@ -38,7 +38,6 @@ export const users = pgTable("users", {
   email: text("email").notNull().unique(),
   passwordHash: text("password_hash").notNull(),
   fullName: text("full_name").notNull(),
-  roleId: integer("role_id").references(() => roles.id).notNull(),
   phoneNumber: text("phone_number"),
   gender: text("gender"), // male, female, non-binary, prefer_not_to_say
   status: text("status").notNull().default("active"),
@@ -3308,8 +3307,30 @@ export type InsertFinancialAuditLog = z.infer<typeof insertFinancialAuditLogSche
 
 
 // Relations
-export const usersRelations = relations(users, ({ one, many }) => ({
-  role: one(roles, { fields: [users.roleId], references: [roles.id] }),
+// export const usersRelations = relations(users, ({ one, many }) => ({
+//   role: one(roles, { fields: [users.roleId], references: [roles.id] }),
+//   artist: one(artists, { fields: [users.id], references: [artists.userId] }),
+//   musician: one(musicians, { fields: [users.id], references: [musicians.userId] }),
+//   professional: one(professionals, { fields: [users.id], references: [professionals.userId] }),
+//   songs: many(songs),
+//   albums: many(albums),
+//   merchandise: many(merchandise),
+//   bookingsAsBooker: many(bookings, { relationName: "bookerBookings" }),
+//   bookingsAsArtist: many(bookings, { relationName: "artistBookings" }),
+//   // Normalized user data relations
+//   secondaryRoles: many(userSecondaryRoles),
+//   socialLinks: many(userSocialLinks),
+//   stageNames: many(userStageNames),
+//   genres: many(userGenres),
+//   skillsAndInstruments: many(userSkillsAndInstruments),
+//   specializations: many(userSpecializations),
+//   technicalRequirements: many(userTechnicalRequirements),
+//   hospitalityRequirements: many(userHospitalityRequirements),
+//   performanceSpecs: many(userPerformanceSpecs),
+//   availability: many(userAvailability),
+// }));
+
+export const usersRelations = relations(users, ({ many, one }) => ({
   artist: one(artists, { fields: [users.id], references: [artists.userId] }),
   musician: one(musicians, { fields: [users.id], references: [musicians.userId] }),
   professional: one(professionals, { fields: [users.id], references: [professionals.userId] }),
@@ -3318,6 +3339,10 @@ export const usersRelations = relations(users, ({ one, many }) => ({
   merchandise: many(merchandise),
   bookingsAsBooker: many(bookings, { relationName: "bookerBookings" }),
   bookingsAsArtist: many(bookings, { relationName: "artistBookings" }),
+
+  // নতুন Many-to-Many relation
+  roles: many(userRoles),  
+
   // Normalized user data relations
   secondaryRoles: many(userSecondaryRoles),
   socialLinks: many(userSocialLinks),
@@ -3330,6 +3355,13 @@ export const usersRelations = relations(users, ({ one, many }) => ({
   performanceSpecs: many(userPerformanceSpecs),
   availability: many(userAvailability),
 }));
+
+
+export const userRolesRelations = relations(userRoles, ({ one }) => ({
+  user: one(users, { fields: [userRoles.userId], references: [users.id] }),
+  role: one(rolesManagement, { fields: [userRoles.roleId], references: [rolesManagement.id] }),
+}));
+
 
 // Add relations for normalized user data tables
 export const userSecondaryRolesRelations = relations(userSecondaryRoles, ({ one }) => ({

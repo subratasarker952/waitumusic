@@ -2062,10 +2062,10 @@ CREATE TABLE "roles_management" (
 --> statement-breakpoint
 CREATE TABLE "user_roles" (
     "id" SERIAL PRIMARY KEY,
-    "userId" INTEGER REFERENCES users(id) NOT NULL,
-    "roleId" INTEGER REFERENCES roles_management(id) NOT NULL,
-    "createdAt" TIMESTAMP DEFAULT NOW(),
-    UNIQUE("userId", "roleId")
+    "user_id" INTEGER REFERENCES users(id) NOT NULL,
+    "role_id" INTEGER REFERENCES roles_management(id) NOT NULL,
+    "created_at" TIMESTAMP DEFAULT NOW(),
+    UNIQUE("user_id", "role_id")
 );
 
 --> statement-breakpoint
@@ -2524,7 +2524,6 @@ CREATE TABLE "users" (
 	"email" text NOT NULL,
 	"password_hash" text NOT NULL,
 	"full_name" text NOT NULL,
-	"role_id" integer NOT NULL,
 	"phone_number" text,
 	"gender" text,
 	"status" text DEFAULT 'active' NOT NULL,

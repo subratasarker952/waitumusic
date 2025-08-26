@@ -148,38 +148,31 @@ export async function registerRoutes(app: Express): Promise<Server> {
       }
 
 
-      // Get role-specific data
-      let roleData = null;
-      const roles = await storage.getRoles();
-      const userRole = roles.find(role => role.id === user.roleId);
+      const roles = await storage.getUserRoles(user.id);
 
-      if (userRole) {
-        switch (user.roleId) {
-          case 3: // Star Talent (managed artist)
-          case 4: // Rising Artist
-            roleData = await storage.getArtist(userId);
-            break;
-          case 5: // Studio Pro (managed musician)
-          case 6: // Session Player
-            roleData = await storage.getMusician(userId);
-            break;
-          case 7: // Industry Expert (managed professional)
-          case 8: // Music Professional
-            roleData = await storage.getProfessional(userId);
-            break;
+      // 6. Fetch role-specific data (optional, based on first role)
+      const roleData = [];
+
+      for (const role of roles) {
+        let data = {};
+        if ([3, 4].includes(role.id)) {
+          data = await storage.getArtist(user.id);
+        } else if ([5, 6].includes(role.id)) {
+          data = await storage.getMusician(user.id);
+        } else if ([7, 8].includes(role.id)) {
+          data = await storage.getProfessional(user.id);
         }
+        roleData.push({ role, data });
       }
-
-
 
       const { passwordHash, ...userWithoutPassword } = user;
 
       res.json({
-        id: user.id,
-        email: user.email,
-        fullName: user.fullName,
-        roleId: user.roleId,
-        user: { ...userWithoutPassword, roleData }
+        user: {
+          ...userWithoutPassword,
+          roles,
+          roleData
+        }
       });
     } catch (error) {
       console.error('Get current user error:', error);
@@ -238,30 +231,168 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // });
 
 
+  // app.post("/api/auth/register", validate(schemas.registerSchema), async (req: Request, res: Response) => {
+  //   try {
+  //     const userData = req.body;
+
+  //     // Check if user already exists
+  //     const existingUser = await storage.getUserByEmail(userData.email);
+  //     if (existingUser) {
+  //       return res.status(400).json({ message: "User already exists" });
+  //     }
+
+  //     // Hash password
+  //     const password = await bcrypt.hash(userData.password, 12);
+
+  //     // Create user
+  //     const user = await storage.createUser({
+  //       ...userData,
+  //       passwordHash:password,
+  //       roleId: userData.roleId || 9, // default fan role
+  //     });
+
+  //     // Create role-specific blank entry with isComplete = false
+  //     switch (user.roleId) {
+  //       case 3: // Star Talent (managed artist)
+  //       case 4: // Rising Artist
+  //         await storage.createArtist({
+  //           userId: user.id,
+  //           stageName: "",
+  //           bio: "",
+  //           epkUrl: "",
+  //           primaryGenre: "",
+  //           basePrice: null,
+  //           idealPerformanceRate: null,
+  //           minimumAcceptableRate: null,
+  //           isManaged: false,
+  //           managementTierId: null,
+  //           bookingFormPictureUrl: "",
+  //           isRegisteredWithPro: false,
+  //           performingRightsOrganization: "",
+  //           ipiNumber: "",
+  //           primaryTalentId: 1, 
+  //           isDemo: false,
+  //           isComplete: false,
+  //         });
+  //         break;
+
+  //       case 5: // Studio Pro (managed musician)
+  //       case 6: // Session Player
+  //         await storage.createMusician({
+  //           userId: user.id,
+  //           stageName: "",
+  //           primaryGenre: "",
+  //           basePrice: null,
+  //           idealPerformanceRate: null,
+  //           minimumAcceptableRate: null,
+  //           isManaged: false,
+  //           managementTierId: null,
+  //           bookingFormPictureUrl: "",
+  //           isRegisteredWithPro: false,
+  //           performingRightsOrganization: "",
+  //           ipiNumber: "",
+  //           primaryTalentId: 1, // Default instrument id
+  //           isDemo: false,
+  //           isComplete: false,
+  //         });
+  //         break;
+
+  //       case 7: // Industry Expert (managed professional)
+  //       case 8: // Music Professional
+  //         await storage.createProfessional({
+  //           userId: user.id,
+  //           basePrice: null,
+  //           idealServiceRate: null,
+  //           minimumAcceptableRate: null,
+  //           isManaged: false,
+  //           managementTierId: null,
+  //           bookingFormPictureUrl: "",
+  //           primaryTalentId: 1, // Default talent id
+  //           isDemo: false,
+  //           isComplete: false,
+  //         });
+  //         break;
+  //     }
+
+  //     // Generate JWT token
+  //     const token = jwt.sign(
+  //       { userId: user.id, email: user.email, roleId: user.roleId },
+  //       JWT_SECRET,
+  //       { expiresIn: "24h" }
+  //     );
+
+
+
+  //     // Get role-specific data
+  //     let roleData = null;
+  //     const roles = await storage.getRoles();
+  //     const userRole = roles.find(role => role.id === user.roleId);
+
+  //     if (userRole) {
+  //       switch (user.roleId) {
+  //         case 3:
+  //         case 4:
+  //           roleData = await storage.getArtist(user.id);
+  //           break;
+  //         case 5:
+  //         case 6:
+  //           roleData = await storage.getMusician(user.id);
+  //           break;
+  //         case 7:
+  //         case 8:
+  //           roleData = await storage.getProfessional(user.id);
+  //           break;
+  //         default:
+  //           roleData = {}; 
+  //       }
+  //     }
+
+  //     const { passwordHash, ...userWithoutPassword } = user;
+
+
+  //     res.status(201).json({
+  //       message: "User created successfully",
+  //       token,
+  //       user:{... userWithoutPassword, roleData},
+  //     });
+  //   } catch (error) {
+  //     console.error(error);
+  //     if (error instanceof z.ZodError) {
+  //       return res.status(400).json({ message: "Validation error", errors: error.errors });
+  //     }
+  //     res.status(500).json({ message: "Internal server error" });
+  //   }
+  // }
+  // );
+
+  // ------------------ Registration ------------------
   app.post("/api/auth/register", validate(schemas.registerSchema), async (req: Request, res: Response) => {
     try {
       const userData = req.body;
 
-      // Check if user already exists
+      // 1. Check if user already exists
       const existingUser = await storage.getUserByEmail(userData.email);
       if (existingUser) {
         return res.status(400).json({ message: "User already exists" });
       }
 
-      // Hash password
-      const password = await bcrypt.hash(userData.password, 12);
+      // 2. Hash password
+      const passwordHash = await bcrypt.hash(userData.password, 12);
 
-      // Create user
+      // 3. Create user (without role_id)
       const user = await storage.createUser({
         ...userData,
-        passwordHash:password,
-        roleId: userData.roleId || 9, // default fan role
+        passwordHash,
       });
 
-      // Create role-specific blank entry with isComplete = false
-      switch (user.roleId) {
-        case 3: // Star Talent (managed artist)
-        case 4: // Rising Artist
+      // 4. Assign default role (Fan if not provided)
+      const defaultRoleId = userData.roleId || 9; // Fan role
+      await storage.addUserRole(user.id, defaultRoleId);
+
+      // 5. Create role-specific blank entry
+      switch (defaultRoleId) {
+        case 3: // Managed Artist
+        case 4: // Artist
           await storage.createArtist({
             userId: user.id,
             stageName: "",
@@ -277,14 +408,13 @@ export async function registerRoutes(app: Express): Promise<Server> {
             isRegisteredWithPro: false,
             performingRightsOrganization: "",
             ipiNumber: "",
-            primaryTalentId: 1, 
+            primaryTalentId: 1,
             isDemo: false,
             isComplete: false,
           });
           break;
-
-        case 5: // Studio Pro (managed musician)
-        case 6: // Session Player
+        case 5: // Managed Musician
+        case 6: // Musician
           await storage.createMusician({
             userId: user.id,
             stageName: "",
@@ -298,14 +428,13 @@ export async function registerRoutes(app: Express): Promise<Server> {
             isRegisteredWithPro: false,
             performingRightsOrganization: "",
             ipiNumber: "",
-            primaryTalentId: 1, // Default instrument id
+            primaryTalentId: 1,
             isDemo: false,
             isComplete: false,
           });
           break;
-
-        case 7: // Industry Expert (managed professional)
-        case 8: // Music Professional
+        case 7: // Managed Professional
+        case 8: // Professional
           await storage.createProfessional({
             userId: user.id,
             basePrice: null,
@@ -314,221 +443,283 @@ export async function registerRoutes(app: Express): Promise<Server> {
             isManaged: false,
             managementTierId: null,
             bookingFormPictureUrl: "",
-            primaryTalentId: 1, // Default talent id
+            primaryTalentId: 1,
             isDemo: false,
             isComplete: false,
           });
           break;
+        // Fan (9) বা অন্যান্য → blank table প্রয়োজন নেই
       }
 
-      // Generate JWT token
+      // 6. Generate JWT token
       const token = jwt.sign(
-        { userId: user.id, email: user.email, roleId: user.roleId },
+        { userId: user.id, email: user.email },
         JWT_SECRET,
         { expiresIn: "24h" }
       );
 
+      // 7. Fetch all user roles
+      const roles = await storage.getUserRoles(user.id); // returns array of roles
 
+      // 8. Fetch role-specific data (optional, based on first role)
+      const roleData = [];
 
-      // Get role-specific data
-      let roleData = null;
-      const roles = await storage.getRoles();
-      const userRole = roles.find(role => role.id === user.roleId);
-
-      if (userRole) {
-        switch (user.roleId) {
-          case 3: // Star Talent (managed artist)
-          case 4: // Rising Artist
-            roleData = await storage.getArtist(user.id);
-            break;
-          case 5: // Studio Pro (managed musician)
-          case 6: // Session Player
-            roleData = await storage.getMusician(user.id);
-            break;
-          case 7: // Industry Expert (managed professional)
-          case 8: // Music Professional
-            roleData = await storage.getProfessional(user.id);
-            break;
+      for (const role of roles) {
+        let data = {};
+        if ([3, 4].includes(role.id)) {
+          data = await storage.getArtist(user.id);
+        } else if ([5, 6].includes(role.id)) {
+          data = await storage.getMusician(user.id);
+        } else if ([7, 8].includes(role.id)) {
+          data = await storage.getProfessional(user.id);
         }
+        roleData.push({ role, data });
       }
 
-      const { passwordHash, ...userWithoutPassword } = user;
-
-
+      // 9. Return response
+      const { passwordHash: _, ...userWithoutPassword } = user;
       res.status(201).json({
         message: "User created successfully",
         token,
-        user:{... userWithoutPassword, roleData},
+        user: {
+          ...userWithoutPassword,
+          roles,
+          roleData
+        },
       });
+
     } catch (error) {
+      console.error(error);
       if (error instanceof z.ZodError) {
-        return res
-          .status(400)
-          .json({ message: "Validation error", errors: error.errors });
+        return res.status(400).json({ message: "Validation error", errors: error.errors });
       }
       res.status(500).json({ message: "Internal server error" });
     }
-  }
-  );
+  });
 
 
+  // app.post("/api/auth/login", validate(schemas.loginSchema), async (req: Request, res: Response) => {
+  //   try {
+  //     const { email, password } = req.body;
+  //     console.log('DEBUG: Login attempt for email:', email);
 
+  //     // Handle demo mode login for all demo users
+  //     if (DEMO_MODE_ENABLED && password === 'demo123') {
+  //       console.log('DEBUG: Demo mode login detected for:', email);
 
+  //       // Check if this is a demo user email
+  //       const isDemoEmail = email.startsWith('demo.') && email.endsWith('@waitumusic.com');
+
+  //       if (isDemoEmail) {
+  //         // Check if demo user exists
+  //         let demoUser = await storage.getUserByEmail(email);
+
+  //         if (!demoUser) {
+  //           console.log('DEBUG: Demo user not found in database:', email);
+  //           return res.status(401).json({ message: "Demo user not found. Please ensure demo users are properly seeded." });
+  //         }
+
+  //         // For demo users, always accept 'demo123' as password
+  //         const token = jwt.sign(
+  //           { userId: demoUser.id, email: demoUser.email, roleId: demoUser.roleId },
+  //           JWT_SECRET,
+  //           { expiresIn: '24h' }
+  //         );
+
+  //         console.log('DEBUG: Demo login successful for user:', demoUser.id, demoUser.email);
+  //         return res.json({
+  //           message: "Login successful",
+  //           token,
+  //           user: {
+  //             id: demoUser.id,
+  //             email: demoUser.email,
+  //             fullName: demoUser.fullName,
+  //             roleId: demoUser.roleId
+  //           }
+  //         });
+  //       }
+  //     }
+
+  //     // Special handling for demo.superadmin@waitumusic.com creation
+  //     if (DEMO_MODE_ENABLED && email === 'demo.superadmin@waitumusic.com' && password === 'demo123') {
+  //       let demoUser = await storage.getUserByEmail(email);
+
+  //       if (!demoUser) {
+  //         console.log('DEBUG: Creating demo superadmin user...');
+  //         const demoPasswordHash = await bcrypt.hash('demo123', 10);
+  //         demoUser = await storage.createUser({
+  //           email: 'demo.superadmin@waitumusic.com',
+  //           passwordHash: demoPasswordHash,
+  //           fullName: 'Demo Superadmin',
+  //           roleId: 1, // Superadmin role
+  //           status: 'active'
+  //         });
+
+  //         await storage.createUserProfile({
+  //           userId: demoUser.id,
+  //           bio: 'Demo Superadmin Account',
+  //           phoneNumber: '+1-555-DEMO-001'
+  //         });
+
+  //         console.log('DEBUG: Demo superadmin user created successfully');
+
+  //         const token = jwt.sign(
+  //           { userId: demoUser.id, email: demoUser.email, roleId: demoUser.roleId },
+  //           JWT_SECRET,
+  //           { expiresIn: '24h' }
+  //         );
+
+  //         return res.json({
+  //           message: "Login successful",
+  //           token,
+  //           user: {
+  //             id: demoUser.id,
+  //             email: demoUser.email,
+  //             fullName: demoUser.fullName,
+  //             roleId: demoUser.roleId
+  //           }
+  //         });
+  //       }
+  //     }
+
+  //     // Find user
+  //     console.log('DEBUG: Looking up user by email...');
+  //     const user = await storage.getUserByEmail(email);
+  //     console.log('DEBUG: User lookup result:', user ? 'found' : 'not found', user?.id);
+
+  //     if (!user) {
+  //       return res.status(401).json({ message: "Invalid credentials" });
+  //     }
+
+  //     console.log('DEBUG: User data:', { id: user.id, email: user.email, roleId: user.roleId });
+
+  //     // Check password
+  //     console.log('DEBUG: Checking password...');
+  //     const isValidPassword = await bcrypt.compare(password, user.passwordHash);
+  //     console.log('DEBUG: Password valid:', isValidPassword);
+
+  //     if (!isValidPassword) {
+  //       return res.status(401).json({ message: "Invalid credentials" });
+  //     }
+
+  //     // Update last login
+  //     console.log('DEBUG: Updating last login...');
+  //     await storage.updateUser(user.id, { lastLogin: new Date() });
+
+  //     // Generate JWT token
+  //     console.log('DEBUG: Generating JWT token...');
+  //     const token = jwt.sign(
+  //       { userId: user.id, email: user.email, roleId: user.roleId },
+  //       JWT_SECRET,
+  //       { expiresIn: '24h' }
+  //     );
+
+  //     console.log('DEBUG: Login successful for user:', user.id);
+
+  //        // Get role-specific data
+  //        let roleData = null;
+  //        const roles = await storage.getRoles();
+  //        const userRole = roles.find(role => role.id === user.roleId);
+
+  //        if (userRole) {
+  //         switch (user.roleId) {
+  //           case 3:
+  //           case 4:
+  //             roleData = await storage.getArtist(user.id);
+  //             break;
+  //           case 5:
+  //           case 6:
+  //             roleData = await storage.getMusician(user.id);
+  //             break;
+  //           case 7:
+  //           case 8:
+  //             roleData = await storage.getProfessional(user.id);
+  //             break;
+  //           default:
+  //             roleData = {}; // Fan বা Admin এর জন্য
+  //         }
+  //       }
+
+  //        const { passwordHash, ...userWithoutPassword } = user;
+
+  //     res.json({
+  //       message: "Login successful",
+  //       token,
+  //       user:{... userWithoutPassword, roleData},
+  //     });
+  //   } catch (error) {
+  //     console.error(error);
+  //     if (error instanceof z.ZodError) {
+  //       return res.status(400).json({ message: "Validation error", errors: error.errors });
+  //     }
+  //     res.status(500).json({ message: "Internal server error" });
+  //   }
+  // });
+
+  // User profile routes
+
+  // ------------------ Login ------------------
   app.post("/api/auth/login", validate(schemas.loginSchema), async (req: Request, res: Response) => {
     try {
       const { email, password } = req.body;
-      console.log('DEBUG: Login attempt for email:', email);
 
-      // Handle demo mode login for all demo users
-      if (DEMO_MODE_ENABLED && password === 'demo123') {
-        console.log('DEBUG: Demo mode login detected for:', email);
-
-        // Check if this is a demo user email
-        const isDemoEmail = email.startsWith('demo.') && email.endsWith('@waitumusic.com');
-
-        if (isDemoEmail) {
-          // Check if demo user exists
-          let demoUser = await storage.getUserByEmail(email);
-
-          if (!demoUser) {
-            console.log('DEBUG: Demo user not found in database:', email);
-            return res.status(401).json({ message: "Demo user not found. Please ensure demo users are properly seeded." });
-          }
-
-          // For demo users, always accept 'demo123' as password
-          const token = jwt.sign(
-            { userId: demoUser.id, email: demoUser.email, roleId: demoUser.roleId },
-            JWT_SECRET,
-            { expiresIn: '24h' }
-          );
-
-          console.log('DEBUG: Demo login successful for user:', demoUser.id, demoUser.email);
-          return res.json({
-            message: "Login successful",
-            token,
-            user: {
-              id: demoUser.id,
-              email: demoUser.email,
-              fullName: demoUser.fullName,
-              roleId: demoUser.roleId
-            }
-          });
-        }
-      }
-
-      // Special handling for demo.superadmin@waitumusic.com creation
-      if (DEMO_MODE_ENABLED && email === 'demo.superadmin@waitumusic.com' && password === 'demo123') {
-        let demoUser = await storage.getUserByEmail(email);
-
-        if (!demoUser) {
-          console.log('DEBUG: Creating demo superadmin user...');
-          const demoPasswordHash = await bcrypt.hash('demo123', 10);
-          demoUser = await storage.createUser({
-            email: 'demo.superadmin@waitumusic.com',
-            passwordHash: demoPasswordHash,
-            fullName: 'Demo Superadmin',
-            roleId: 1, // Superadmin role
-            status: 'active'
-          });
-
-          await storage.createUserProfile({
-            userId: demoUser.id,
-            bio: 'Demo Superadmin Account',
-            phoneNumber: '+1-555-DEMO-001'
-          });
-
-          console.log('DEBUG: Demo superadmin user created successfully');
-
-          const token = jwt.sign(
-            { userId: demoUser.id, email: demoUser.email, roleId: demoUser.roleId },
-            JWT_SECRET,
-            { expiresIn: '24h' }
-          );
-
-          return res.json({
-            message: "Login successful",
-            token,
-            user: {
-              id: demoUser.id,
-              email: demoUser.email,
-              fullName: demoUser.fullName,
-              roleId: demoUser.roleId
-            }
-          });
-        }
-      }
-
-      // Find user
-      console.log('DEBUG: Looking up user by email...');
+      // 1. Find user
       const user = await storage.getUserByEmail(email);
-      console.log('DEBUG: User lookup result:', user ? 'found' : 'not found', user?.id);
+      if (!user) return res.status(401).json({ message: "Invalid credentials" });
 
-      if (!user) {
-        return res.status(401).json({ message: "Invalid credentials" });
-      }
-
-      console.log('DEBUG: User data:', { id: user.id, email: user.email, roleId: user.roleId });
-
-      // Check password
-      console.log('DEBUG: Checking password...');
+      // 2. Check password
       const isValidPassword = await bcrypt.compare(password, user.passwordHash);
-      console.log('DEBUG: Password valid:', isValidPassword);
+      if (!isValidPassword) return res.status(401).json({ message: "Invalid credentials" });
 
-      if (!isValidPassword) {
-        return res.status(401).json({ message: "Invalid credentials" });
-      }
-
-      // Update last login
-      console.log('DEBUG: Updating last login...');
+      // 3. Update last login
       await storage.updateUser(user.id, { lastLogin: new Date() });
 
-      // Generate JWT token
-      console.log('DEBUG: Generating JWT token...');
+      // 4. Generate JWT token
       const token = jwt.sign(
-        { userId: user.id, email: user.email, roleId: user.roleId },
+        { userId: user.id, email: user.email },
         JWT_SECRET,
         { expiresIn: '24h' }
       );
 
-      console.log('DEBUG: Login successful for user:', user.id);
+      // 5. Fetch all user roles
+      const roles = await storage.getUserRoles(user.id);
 
-         // Get role-specific data
-         let roleData = null;
-         const roles = await storage.getRoles();
-         const userRole = roles.find(role => role.id === user.roleId);
-   
-         if (userRole) {
-           switch (user.roleId) {
-             case 3: // Star Talent (managed artist)
-             case 4: // Rising Artist
-               roleData = await storage.getArtist(user.id);
-               break;
-             case 5: // Studio Pro (managed musician)
-             case 6: // Session Player
-               roleData = await storage.getMusician(user.id);
-               break;
-             case 7: // Industry Expert (managed professional)
-             case 8: // Music Professional
-               roleData = await storage.getProfessional(user.id);
-               break;
-           }
-         }
-   
-         const { passwordHash, ...userWithoutPassword } = user;
-   
+      // 6. Fetch role-specific data (optional, based on first role)
+      const roleData = [];
+
+      for (const role of roles) {
+        let data = {};
+        if ([3, 4].includes(role.id)) {
+          data = await storage.getArtist(user.id);
+        } else if ([5, 6].includes(role.id)) {
+          data = await storage.getMusician(user.id);
+        } else if ([7, 8].includes(role.id)) {
+          data = await storage.getProfessional(user.id);
+        }
+        roleData.push({ role, data });
+      }
+      // 7. Return response
+      const { passwordHash: _, ...userWithoutPassword } = user;
       res.json({
         message: "Login successful",
         token,
-        user:{... userWithoutPassword, roleData},
+        user: {
+          ...userWithoutPassword,
+          roles,
+          roleData
+        },
       });
+
     } catch (error) {
-      console.error('DEBUG: Login error details:', error);
-      logError(error, ErrorSeverity.ERROR, { endpoint: '/api/auth/login', email: req.body.email });
-      res.status(500).json({ message: "Internal server error", debug: error.message });
+      console.error(error);
+      if (error instanceof z.ZodError) {
+        return res.status(400).json({ message: "Validation error", errors: error.errors });
+      }
+      res.status(500).json({ message: "Internal server error" });
     }
   });
 
-  // User profile routes
+
   app.get("/api/user/profile", authenticateToken, requirePerm('view_content'), async (req: Request, res: Response) => {
     try {
       const userId = req.user?.userId;
@@ -549,18 +740,20 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
       if (userRole) {
         switch (user.roleId) {
-          case 3: // Star Talent (managed artist)
-          case 4: // Rising Artist
-            roleData = await storage.getArtist(userId);
+          case 3:
+          case 4:
+            roleData = await storage.getArtist(user.id);
             break;
-          case 5: // Studio Pro (managed musician)
-          case 6: // Session Player
-            roleData = await storage.getMusician(userId);
+          case 5:
+          case 6:
+            roleData = await storage.getMusician(user.id);
             break;
-          case 7: // Industry Expert (managed professional)
-          case 8: // Music Professional
-            roleData = await storage.getProfessional(userId);
+          case 7:
+          case 8:
+            roleData = await storage.getProfessional(user.id);
             break;
+          default:
+            roleData = {}; // Fan বা Admin এর জন্য
         }
       }
 
@@ -1473,7 +1666,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       const albumId = parseInt(req.params.id);
 
-      const cacheKey = generateCacheKey('albums',  albumId);
+      const cacheKey = generateCacheKey('albums', albumId);
       const albumData = await withCache(cacheKey, async () => {
         const album = await storage.getAlbum(albumId);
 
@@ -2002,62 +2195,133 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // Bookings route for talent users - see their assigned bookings
-  app.get("/api/bookings/user", authenticateToken, requirePerm('view_bookings'), async (req: Request, res: Response) => {
-    try {
-      const userId = req.user?.userId;
-      if (!userId) {
-        return res.status(401).json({ message: "Invalid token" });
-      }
+  // app.get("/api/bookings/user", authenticateToken, requirePerm('view_bookings'), async (req: Request, res: Response) => {
+  //   try {
+  //     const userId = req.user?.userId;
+  //     if (!userId) {
+  //       return res.status(401).json({ message: "Invalid token" });
+  //     }
 
-      const user = await storage.getUser(userId);
-      if (!user) {
-        return res.status(404).json({ message: "User not found" });
-      }
+  //     const user = await storage.getUser(userId);
+  //     if (!user) {
+  //       return res.status(404).json({ message: "User not found" });
+  //     }
 
-      // For talent users (artists, musicians, professionals), show assigned bookings
-      if ([3, 4, 5, 6, 7, 8].includes(user.roleId)) {
-        // Get bookings where this user is assigned
-        const assignedBookings = await db
-          .select({
-            id: schema.bookings.id,
-            bookerUserId: schema.bookings.bookerUserId,
-            primaryArtistUserId: schema.bookings.primaryArtistUserId,
-            eventName: schema.bookings.eventName,
-            eventType: schema.bookings.eventType,
-            eventDate: schema.bookings.eventDate,
-            venueName: schema.bookings.venueName,
-            venueAddress: schema.bookings.venueAddress,
-            requirements: schema.bookings.requirements,
-            status: schema.bookings.status,
-            totalBudget: schema.bookings.totalBudget,
-            finalPrice: schema.bookings.finalPrice,
-            createdAt: schema.bookings.createdAt,
-            assignmentRole: schema.bookingAssignmentsMembers.roleInBooking,
-            assignmentStatus: schema.bookingAssignmentsMembers.status,
-            assignedAt: schema.bookingAssignmentsMembers.assignedAt
-          })
-          .from(schema.bookings)
-          .innerJoin(
-            schema.bookingAssignmentsMembers,
-            and(
-              eq(schema.bookingAssignmentsMembers.bookingId, schema.bookings.id),
-              eq(schema.bookingAssignmentsMembers.userId, userId),
-              eq(schema.bookingAssignmentsMembers.status, 'active')
+  //     // For talent users (artists, musicians, professionals), show assigned bookings
+  //     if ([3, 4, 5, 6, 7, 8].includes(user.roleId)) {
+  //       // Get bookings where this user is assigned
+  //       const assignedBookings = await db
+  //         .select({
+  //           id: schema.bookings.id,
+  //           bookerUserId: schema.bookings.bookerUserId,
+  //           primaryArtistUserId: schema.bookings.primaryArtistUserId,
+  //           eventName: schema.bookings.eventName,
+  //           eventType: schema.bookings.eventType,
+  //           eventDate: schema.bookings.eventDate,
+  //           venueName: schema.bookings.venueName,
+  //           venueAddress: schema.bookings.venueAddress,
+  //           requirements: schema.bookings.requirements,
+  //           status: schema.bookings.status,
+  //           totalBudget: schema.bookings.totalBudget,
+  //           finalPrice: schema.bookings.finalPrice,
+  //           createdAt: schema.bookings.createdAt,
+  //           assignmentRole: schema.bookingAssignmentsMembers.roleInBooking,
+  //           assignmentStatus: schema.bookingAssignmentsMembers.status,
+  //           assignedAt: schema.bookingAssignmentsMembers.assignedAt
+  //         })
+  //         .from(schema.bookings)
+  //         .innerJoin(
+  //           schema.bookingAssignmentsMembers,
+  //           and(
+  //             eq(schema.bookingAssignmentsMembers.bookingId, schema.bookings.id),
+  //             eq(schema.bookingAssignmentsMembers.userId, userId),
+  //             eq(schema.bookingAssignmentsMembers.status, 'active')
+  //           )
+  //         )
+  //         .orderBy(desc(schema.bookings.createdAt));
+
+  //       res.json(assignedBookings);
+  //     } else {
+  //       // For other users, use the regular booking query
+  //       const bookings = await storage.getBookingsByUser(userId);
+  //       res.json(bookings);
+  //     }
+  //   } catch (error) {
+  //     logError(error, ErrorSeverity.ERROR, { endpoint: '/api/bookings/user', userId: req.user?.userId });
+  //     res.status(500).json({ message: "Internal server error" });
+  //   }
+  // });
+  app.get(
+    "/api/bookings/user",
+    authenticateToken,
+    requirePerm('view_bookings'),
+    async (req: Request, res: Response) => {
+      try {
+        const userId = req.user?.userId;
+        if (!userId) {
+          return res.status(401).json({ message: "Invalid token" });
+        }
+  
+        const user = await storage.getUser(userId);
+        if (!user) {
+          return res.status(404).json({ message: "User not found" });
+        }
+  
+        // Get all roles of user
+        const roles = await storage.getUserRoles(user.id);
+        const roleIds = roles.map(r => r.id);
+  
+        // Talent roles = artist, musician, professional
+        const talentRoles = [3, 4, 5, 6, 7, 8];
+  
+        if (roleIds.some(r => talentRoles.includes(r))) {
+          // Get bookings where this user is assigned
+          const assignedBookings = await db
+            .select({
+              id: schema.bookings.id,
+              bookerUserId: schema.bookings.bookerUserId,
+              primaryArtistUserId: schema.bookings.primaryArtistUserId,
+              eventName: schema.bookings.eventName,
+              eventType: schema.bookings.eventType,
+              eventDate: schema.bookings.eventDate,
+              venueName: schema.bookings.venueName,
+              venueAddress: schema.bookings.venueAddress,
+              requirements: schema.bookings.requirements,
+              status: schema.bookings.status,
+              totalBudget: schema.bookings.totalBudget,
+              finalPrice: schema.bookings.finalPrice,
+              createdAt: schema.bookings.createdAt,
+              assignmentRole: schema.bookingAssignmentsMembers.roleInBooking,
+              assignmentStatus: schema.bookingAssignmentsMembers.status,
+              assignedAt: schema.bookingAssignmentsMembers.assignedAt
+            })
+            .from(schema.bookings)
+            .innerJoin(
+              schema.bookingAssignmentsMembers,
+              and(
+                eq(schema.bookingAssignmentsMembers.bookingId, schema.bookings.id),
+                eq(schema.bookingAssignmentsMembers.userId, userId),
+                eq(schema.bookingAssignmentsMembers.status, 'active')
+              )
             )
-          )
-          .orderBy(desc(schema.bookings.createdAt));
-
-        res.json(assignedBookings);
-      } else {
-        // For other users, use the regular booking query
-        const bookings = await storage.getBookingsByUser(userId);
-        res.json(bookings);
+            .orderBy(desc(schema.bookings.createdAt));
+  
+          res.json(assignedBookings);
+        } else {
+          // For fans/others → bookings created by them
+          const bookings = await storage.getBookingsByUser(userId);
+          res.json(bookings);
+        }
+      } catch (error) {
+        logError(error, ErrorSeverity.ERROR, {
+          endpoint: '/api/bookings/user',
+          userId: req.user?.userId
+        });
+        res.status(500).json({ message: "Internal server error" });
       }
-    } catch (error) {
-      logError(error, ErrorSeverity.ERROR, { endpoint: '/api/bookings/user', userId: req.user?.userId });
-      res.status(500).json({ message: "Internal server error" });
     }
-  });
+  );
+  
 
   // Get booking details for talent users (includes contracts, technical riders, etc.)
   app.get("/api/bookings/:id/talent-view", authenticateToken, requirePerm('view_bookings'), validateParams(schemas.idParamSchema), async (req: Request, res: Response) => {
@@ -3195,141 +3459,267 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // Dashboard stats - role-specific data
+  // app.get("/api/dashboard/stats", authenticateToken, async (req: Request, res: Response) => {
+  //   try {
+  //     const userId = req.user?.userId;
+  //     if (!userId) {
+  //       return res.status(401).json({ message: "User not authenticated" });
+  //     }
+  //     const user = await storage.getUser(userId);
+  //     if (!user) {
+  //       return res.status(404).json({ message: "User not found" });
+  //     }
+  //     const roles = await storage.getUserRoles(user.id);
+      
+  //     if (!roles) {
+  //       return res.status(404).json({ message: "User role not found" });
+  //     }
+
+  //     const allBookings = await storage.getAllBookings();
+  //     const artists = await storage.getArtists();
+
+  //     let stats: any = {};
+
+  //     switch (user.roleId) {
+  //       case 1: // Superadmin
+  //         const allUsers = await storage.getAllUsers();
+  //         const totalRevenue = allBookings.reduce((sum: number, booking: any) => {
+  //           return sum + (parseFloat(booking.totalBudget?.toString() || '0') || 0);
+  //         }, 0);
+
+  //         stats = {
+  //           totalUsers: allUsers.length,
+  //           totalArtists: artists.length,
+  //           totalBookings: allBookings.length,
+  //           totalRevenue: Math.round(totalRevenue),
+  //           confirmedBookings: allBookings.filter((b: any) => b.status === 'confirmed').length,
+  //           pendingBookings: allBookings.filter((b: any) => b.status === 'pending').length,
+  //           recentActivity: allBookings.slice(0, 10),
+  //           systemHealth: {
+  //             serverStatus: 'active',
+  //             performance: 'good',
+  //             alerts: []
+  //           }
+  //         };
+  //         break;
+
+  //       case 2: // Admin
+  //         const adminRevenue = allBookings.reduce((sum: number, booking: any) => {
+  //           return sum + (parseFloat(booking.totalBudget?.toString() || '0') || 0);
+  //         }, 0);
+
+  //         stats = {
+  //           managedUsers: artists.filter(a => a.isManaged).length,
+  //           totalBookings: allBookings.length,
+  //           revenue: Math.round(adminRevenue),
+  //           pendingApprovals: allBookings.filter((b: any) => b.status === 'pending').length,
+  //           recentActivity: allBookings.slice(0, 8)
+  //         };
+  //         break;
+
+  //       case 3: // Star Talent (managed artist)
+  //       case 4: // Rising Artist
+  //         const artistBookings = allBookings.filter((b: any) => b.primaryArtistUserId === userId);
+  //         const artistRevenue = artistBookings.reduce((sum: number, booking: any) => {
+  //           return sum + (parseFloat(booking.totalBudget?.toString() || '0') || 0);
+  //         }, 0);
+
+  //         stats = {
+  //           totalBookings: artistBookings.length,
+  //           revenue: Math.round(artistRevenue),
+  //           upcomingPerformances: artistBookings.filter((b: any) => new Date(b.eventDate) > new Date()).length,
+  //           fanEngagement: 85, // Could be calculated from actual data
+  //           recentActivity: artistBookings.slice(0, 5)
+  //         };
+  //         break;
+
+  //       case 5: // Studio Pro (managed musician)
+  //       case 6: // Session Player
+  //         // Get bookings where user is assigned
+  //         const musicianAssignedIds = await db
+  //           .select({ bookingId: schema.bookingAssignments.bookingId })
+  //           .from(schema.bookingAssignments)
+  //           .where(eq(schema.bookingAssignments.assignedUserId, userId))
+  //           .union(
+  //             db
+  //               .select({ bookingId: schema.bookingAssignmentsMembers.bookingId })
+  //               .from(schema.bookingAssignmentsMembers)
+  //               .where(eq(schema.bookingAssignmentsMembers.userId, userId))
+  //           );
+
+  //         const musicianBookingIds = musicianAssignedIds.map(a => a.bookingId);
+  //         const musicianBookings = allBookings.filter((b: any) => musicianBookingIds.includes(b.id));
+  //         const sessionRevenue = musicianBookings.reduce((sum: number, booking: any) => {
+  //           return sum + (parseFloat(booking.totalBudget?.toString() || '0') * 0.1); // Example session fee
+  //         }, 0);
+
+  //         stats = {
+  //           sessions: musicianBookings.length,
+  //           revenue: Math.round(sessionRevenue),
+  //           upcomingSessions: musicianBookings.filter((b: any) => new Date(b.eventDate) > new Date()).length,
+  //           rating: 4.7,
+  //           recentActivity: musicianBookings.slice(0, 5)
+  //         };
+  //         break;
+
+  //       case 7: // Industry Expert (managed professional)
+  //       case 8: // Music Professional
+  //         // For professionals, we need to track consultations/services
+  //         stats = {
+  //           consultations: 0, // Would need consultation tracking
+  //           clients: 0,
+  //           revenue: 0,
+  //           upcomingAppointments: 0,
+  //           recentActivity: []
+  //         };
+  //         break;
+
+  //       case 'fan':
+  //       default:
+  //         const userBookings = allBookings.filter((b: any) => b.bookerUserId === userId);
+
+  //         stats = {
+  //           bookings: userBookings.length,
+  //           upcomingEvents: userBookings.filter((b: any) => new Date(b.eventDate) > new Date()).length,
+  //           favoriteArtists: 0, // Would need favorites tracking
+  //           recentActivity: userBookings.slice(0, 5)
+  //         };
+  //         break;
+  //     }
+
+  //     res.json({stats});
+  //   } catch (error) {
+  //     logError(error, ErrorSeverity.ERROR, { endpoint: '/api/dashboard/stats', userId: req.user?.userId });
+  //     res.status(500).json({ message: "Internal server error" });
+  //   }
+  // });
   app.get("/api/dashboard/stats", authenticateToken, async (req: Request, res: Response) => {
     try {
       const userId = req.user?.userId;
       if (!userId) {
         return res.status(401).json({ message: "User not authenticated" });
       }
+  
       const user = await storage.getUser(userId);
       if (!user) {
         return res.status(404).json({ message: "User not found" });
       }
-      const roles = await storage.getRoles();
-      const userRole = roles.find(role => role.id === user.roleId);
-
-      if (!userRole) {
+  
+      const roles = await storage.getUserRoles(user.id); // array of roles
+      if (!roles || roles.length === 0) {
         return res.status(404).json({ message: "User role not found" });
       }
-
+  
       const allBookings = await storage.getAllBookings();
       const artists = await storage.getArtists();
-
+  
       let stats: any = {};
-
-      switch (user.roleId) {
-        case 1: // Superadmin
-          const allUsers = await storage.getAllUsers();
-          const totalRevenue = allBookings.reduce((sum: number, booking: any) => {
-            return sum + (parseFloat(booking.totalBudget?.toString() || '0') || 0);
-          }, 0);
-
-          stats = {
-            totalUsers: allUsers.length,
-            totalArtists: artists.length,
-            totalBookings: allBookings.length,
-            totalRevenue: Math.round(totalRevenue),
-            confirmedBookings: allBookings.filter((b: any) => b.status === 'confirmed').length,
-            pendingBookings: allBookings.filter((b: any) => b.status === 'pending').length,
-            recentActivity: allBookings.slice(0, 10),
-            systemHealth: {
-              serverStatus: 'active',
-              performance: 'good',
-              alerts: []
-            }
-          };
-          break;
-
-        case 2: // Admin
-          const adminRevenue = allBookings.reduce((sum: number, booking: any) => {
-            return sum + (parseFloat(booking.totalBudget?.toString() || '0') || 0);
-          }, 0);
-
-          stats = {
-            managedUsers: artists.filter(a => a.isManaged).length,
-            totalBookings: allBookings.length,
-            revenue: Math.round(adminRevenue),
-            pendingApprovals: allBookings.filter((b: any) => b.status === 'pending').length,
-            recentActivity: allBookings.slice(0, 8)
-          };
-          break;
-
-        case 3: // Star Talent (managed artist)
-        case 4: // Rising Artist
-          const artistBookings = allBookings.filter((b: any) => b.primaryArtistUserId === userId);
-          const artistRevenue = artistBookings.reduce((sum: number, booking: any) => {
-            return sum + (parseFloat(booking.totalBudget?.toString() || '0') || 0);
-          }, 0);
-
-          stats = {
-            totalBookings: artistBookings.length,
-            revenue: Math.round(artistRevenue),
-            upcomingPerformances: artistBookings.filter((b: any) => new Date(b.eventDate) > new Date()).length,
-            fanEngagement: 85, // Could be calculated from actual data
-            recentActivity: artistBookings.slice(0, 5)
-          };
-          break;
-
-        case 5: // Studio Pro (managed musician)
-        case 6: // Session Player
-          // Get bookings where user is assigned
-          const musicianAssignedIds = await db
-            .select({ bookingId: schema.bookingAssignments.bookingId })
-            .from(schema.bookingAssignments)
-            .where(eq(schema.bookingAssignments.assignedUserId, userId))
-            .union(
-              db
-                .select({ bookingId: schema.bookingAssignmentsMembers.bookingId })
-                .from(schema.bookingAssignmentsMembers)
-                .where(eq(schema.bookingAssignmentsMembers.userId, userId))
-            );
-
-          const musicianBookingIds = musicianAssignedIds.map(a => a.bookingId);
-          const musicianBookings = allBookings.filter((b: any) => musicianBookingIds.includes(b.id));
-          const sessionRevenue = musicianBookings.reduce((sum: number, booking: any) => {
-            return sum + (parseFloat(booking.totalBudget?.toString() || '0') * 0.1); // Example session fee
-          }, 0);
-
-          stats = {
-            sessions: musicianBookings.length,
-            revenue: Math.round(sessionRevenue),
-            upcomingSessions: musicianBookings.filter((b: any) => new Date(b.eventDate) > new Date()).length,
-            rating: 4.7,
-            recentActivity: musicianBookings.slice(0, 5)
-          };
-          break;
-
-        case 7: // Industry Expert (managed professional)
-        case 8: // Music Professional
-          // For professionals, we need to track consultations/services
-          stats = {
-            consultations: 0, // Would need consultation tracking
-            clients: 0,
-            revenue: 0,
-            upcomingAppointments: 0,
-            recentActivity: []
-          };
-          break;
-
-        case 'fan':
-        default:
-          const userBookings = allBookings.filter((b: any) => b.bookerUserId === userId);
-
-          stats = {
-            bookings: userBookings.length,
-            upcomingEvents: userBookings.filter((b: any) => new Date(b.eventDate) > new Date()).length,
-            favoriteArtists: 0, // Would need favorites tracking
-            recentActivity: userBookings.slice(0, 5)
-          };
-          break;
+  
+      // role IDs বের করা
+      const roleIds = roles.map(r => r.id);
+  
+      if (roleIds.includes(1)) {
+        // Superadmin
+        const allUsers = await storage.getAllUsers();
+        const totalRevenue = allBookings.reduce((sum: number, booking: any) => {
+          return sum + (parseFloat(booking.totalBudget?.toString() || "0") || 0);
+        }, 0);
+  
+        stats = {
+          totalUsers: allUsers.length,
+          totalArtists: artists.length,
+          totalBookings: allBookings.length,
+          totalRevenue: Math.round(totalRevenue),
+          confirmedBookings: allBookings.filter((b: any) => b.status === "confirmed").length,
+          pendingBookings: allBookings.filter((b: any) => b.status === "pending").length,
+          recentActivity: allBookings.slice(0, 10),
+          systemHealth: {
+            serverStatus: "active",
+            performance: "good",
+            alerts: []
+          }
+        };
+      } else if (roleIds.includes(2)) {
+        // Admin
+        const adminRevenue = allBookings.reduce((sum: number, booking: any) => {
+          return sum + (parseFloat(booking.totalBudget?.toString() || "0") || 0);
+        }, 0);
+  
+        stats = {
+          managedUsers: artists.filter(a => a.isManaged).length,
+          totalBookings: allBookings.length,
+          revenue: Math.round(adminRevenue),
+          pendingApprovals: allBookings.filter((b: any) => b.status === "pending").length,
+          recentActivity: allBookings.slice(0, 8)
+        };
+      } else if (roleIds.some(r => [3, 4].includes(r))) {
+        // Artist
+        const artistBookings = allBookings.filter((b: any) => b.primaryArtistUserId === userId);
+        const artistRevenue = artistBookings.reduce((sum: number, booking: any) => {
+          return sum + (parseFloat(booking.totalBudget?.toString() || "0") || 0);
+        }, 0);
+  
+        stats = {
+          totalBookings: artistBookings.length,
+          revenue: Math.round(artistRevenue),
+          upcomingPerformances: artistBookings.filter((b: any) => new Date(b.eventDate) > new Date()).length,
+          fanEngagement: 85,
+          recentActivity: artistBookings.slice(0, 5)
+        };
+      } else if (roleIds.some(r => [5, 6].includes(r))) {
+        // Musician
+        const musicianAssignedIds = await db
+          .select({ bookingId: schema.bookingAssignments.bookingId })
+          .from(schema.bookingAssignments)
+          .where(eq(schema.bookingAssignments.assignedUserId, userId))
+          .union(
+            db
+              .select({ bookingId: schema.bookingAssignmentsMembers.bookingId })
+              .from(schema.bookingAssignmentsMembers)
+              .where(eq(schema.bookingAssignmentsMembers.userId, userId))
+          );
+  
+        const musicianBookingIds = musicianAssignedIds.map(a => a.bookingId);
+        const musicianBookings = allBookings.filter((b: any) => musicianBookingIds.includes(b.id));
+        const sessionRevenue = musicianBookings.reduce((sum: number, booking: any) => {
+          return sum + (parseFloat(booking.totalBudget?.toString() || "0") * 0.1);
+        }, 0);
+  
+        stats = {
+          sessions: musicianBookings.length,
+          revenue: Math.round(sessionRevenue),
+          upcomingSessions: musicianBookings.filter((b: any) => new Date(b.eventDate) > new Date()).length,
+          rating: 4.7,
+          recentActivity: musicianBookings.slice(0, 5)
+        };
+      } else if (roleIds.some(r => [7, 8].includes(r))) {
+        // Professional
+        stats = {
+          consultations: 0,
+          clients: 0,
+          revenue: 0,
+          upcomingAppointments: 0,
+          recentActivity: []
+        };
+      } else {
+        // Fan / Default
+        const userBookings = allBookings.filter((b: any) => b.bookerUserId === userId);
+  
+        stats = {
+          bookings: userBookings.length,
+          upcomingEvents: userBookings.filter((b: any) => new Date(b.eventDate) > new Date()).length,
+          favoriteArtists: 0,
+          recentActivity: userBookings.slice(0, 5)
+        };
       }
-
-      res.json({ ...stats, role: userRole?.name || 'unknown' });
+  
+      res.json({ stats });
     } catch (error) {
-      logError(error, ErrorSeverity.ERROR, { endpoint: '/api/dashboard/stats', userId: req.user?.userId });
+      logError(error, ErrorSeverity.ERROR, { endpoint: "/api/dashboard/stats", userId: req.user?.userId });
       res.status(500).json({ message: "Internal server error" });
     }
   });
+  
 
   // Get all bookings (admin only)
   app.get("/api/bookings/all", authenticateToken, requirePerm('admin_bookings'), async (req: Request, res: Response) => {
@@ -3346,57 +3736,106 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // Get user's bookings - role-specific
-  app.get("/api/bookings/user", authenticateToken, async (req: Request, res: Response) => {
-    try {
-      const userId = req.user?.userId;
-      if (!userId) {
-        return res.status(401).json({ message: "User not authenticated" });
-      }
-      const user = await storage.getUser(userId);
-      const roles = await storage.getRoles();
-      const userRole = roles.find(role => role.id === user?.roleId);
+//   app.get("/api/bookings/user", authenticateToken, async (req: Request, res: Response) => {
+//     try {
+//       const userId = req.user?.userId;
+//       if (!userId) {
+//         return res.status(401).json({ message: "User not authenticated" });
+//       }
+//       const user = await storage.getUser(userId);
+//       const roles = await storage.getUserRoles(user.id); // array of roles
+//       if (!roles || roles.length === 0) {
+//         return res.status(404).json({ message: "User role not found" });
+//       }
+//  \
+//       const allBookings = await storage.getAllBookings();
+//       let userBookings: any[] = [];
 
-      if (!userRole) {
-        return res.status(404).json({ message: "User role not found" });
-      }
+//       switch (user.roleId) {
+//         case 3: // Star Talent
+//         case 4: // Rising Artist
+//           userBookings = allBookings.filter((b: any) => b.primaryArtistUserId === userId);
+//           break;
+//         case 5: // Studio Pro
+//         case 6: // Session Player
+//           // Get bookings where user is assigned via booking_assignments or booking_assignments_members
+//           const assignedBookingIds = await db
+//             .select({ bookingId: schema.bookingAssignments.bookingId })
+//             .from(schema.bookingAssignments)
+//             .where(eq(schema.bookingAssignments.assignedUserId, userId))
+//             .union(
+//               db
+//                 .select({ bookingId: schema.bookingAssignmentsMembers.bookingId })
+//                 .from(schema.bookingAssignmentsMembers)
+//                 .where(eq(schema.bookingAssignmentsMembers.userId, userId))
+//             );
 
-      const allBookings = await storage.getAllBookings();
-      let userBookings: any[] = [];
+//           const assignedIds = assignedBookingIds.map(a => a.bookingId);
+//           userBookings = allBookings.filter((b: any) => assignedIds.includes(b.id));
+//           break;
+//         case 9: // Music Lover
+//         default:
+//           userBookings = allBookings.filter((b: any) => b.bookerUserId === userId);
+//           break;
+//       }
 
-      switch (user.roleId) {
-        case 3: // Star Talent
-        case 4: // Rising Artist
-          userBookings = allBookings.filter((b: any) => b.primaryArtistUserId === userId);
-          break;
-        case 5: // Studio Pro
-        case 6: // Session Player
-          // Get bookings where user is assigned via booking_assignments or booking_assignments_members
-          const assignedBookingIds = await db
-            .select({ bookingId: schema.bookingAssignments.bookingId })
-            .from(schema.bookingAssignments)
-            .where(eq(schema.bookingAssignments.assignedUserId, userId))
-            .union(
-              db
-                .select({ bookingId: schema.bookingAssignmentsMembers.bookingId })
-                .from(schema.bookingAssignmentsMembers)
-                .where(eq(schema.bookingAssignmentsMembers.userId, userId))
-            );
-
-          const assignedIds = assignedBookingIds.map(a => a.bookingId);
-          userBookings = allBookings.filter((b: any) => assignedIds.includes(b.id));
-          break;
-        case 9: // Music Lover
-        default:
-          userBookings = allBookings.filter((b: any) => b.bookerUserId === userId);
-          break;
-      }
-
-      res.json(userBookings);
-    } catch (error) {
-      logError(error, ErrorSeverity.ERROR, { endpoint: '/api/bookings/user', userId: req.user?.userId });
-      res.status(500).json({ message: "Internal server error" });
+//       res.json(userBookings);
+//     } catch (error) {
+//       logError(error, ErrorSeverity.ERROR, { endpoint: '/api/bookings/user', userId: req.user?.userId });
+//       res.status(500).json({ message: "Internal server error" });
+//     }
+//   });
+app.get("/api/bookings/user", authenticateToken, async (req: Request, res: Response) => {
+  try {
+    const userId = req.user?.userId;
+    if (!userId) {
+      return res.status(401).json({ message: "User not authenticated" });
     }
-  });
+
+    const user = await storage.getUser(userId);
+
+    const roles = await storage.getUserRoles(user.id); 
+
+    if (!roles || roles.length === 0) {
+      return res.status(404).json({ message: "User role not found" });
+    }
+
+    const roleIds = roles.map(r => r.id); // array of role ids
+    const allBookings = await storage.getAllBookings();
+    let userBookings: any[] = [];
+
+    if (roleIds.some(r => [3, 4].includes(r))) {
+      // Artist (Star Talent / Rising Artist)
+      userBookings = allBookings.filter((b: any) => b.primaryArtistUserId === userId);
+
+    } else if (roleIds.some(r => [5, 6].includes(r))) {
+      // Musician (Studio Pro / Session Player)
+      const assignedBookingIds = await db
+        .select({ bookingId: schema.bookingAssignments.bookingId })
+        .from(schema.bookingAssignments)
+        .where(eq(schema.bookingAssignments.assignedUserId, userId))
+        .union(
+          db
+            .select({ bookingId: schema.bookingAssignmentsMembers.bookingId })
+            .from(schema.bookingAssignmentsMembers)
+            .where(eq(schema.bookingAssignmentsMembers.userId, userId))
+        );
+
+      const assignedIds = assignedBookingIds.map(a => a.bookingId);
+      userBookings = allBookings.filter((b: any) => assignedIds.includes(b.id));
+
+    } else {
+      // Default (Fan / Music Lover / others)
+      userBookings = allBookings.filter((b: any) => b.bookerUserId === userId);
+    }
+
+    res.json(userBookings);
+  } catch (error) {
+    logError(error, ErrorSeverity.ERROR, { endpoint: "/api/bookings/user", userId: req.user?.userId });
+    res.status(500).json({ message: "Internal server error" });
+  }
+});
+
 
   // Create guest booking (no authentication required)
   app.post('/api/bookings/guest', async (req: Request, res: Response) => {
@@ -11119,49 +11558,49 @@ This is a preview of the performance engagement contract. Final agreement will i
 
   app.post('/api/management-applications', authenticateToken, async (req: Request, res: Response) => {
     try {
-      const { 
-        requestedManagementTierId, 
-        applicationReason, 
-        businessPlan, 
-        expectedRevenue, 
-        portfolioLinks, 
-        socialMediaMetrics 
+      const {
+        requestedManagementTierId,
+        applicationReason,
+        businessPlan,
+        expectedRevenue,
+        portfolioLinks,
+        socialMediaMetrics
       } = req.body;
-  
+
       const currentUserId = req.user?.userId;
-  
+
       if (!currentUserId || !requestedManagementTierId || !applicationReason) {
         return res.status(400).json({ message: 'Missing required fields' });
       }
-  
+
       // Verify user exists
       const user = await storage.getUser(currentUserId);
       if (!user) {
         return res.status(404).json({ message: 'User not found' });
       }
-  
+
       // Prevent admins/managed users from applying
       if ([1, 2, 3, 5, 7].includes(user.roleId)) {
         return res.status(400).json({ message: 'User is already managed or has admin privileges' });
       }
-  
+
       // Check existing pending applications
       const existingApplications = await storage.getManagementApplicationsByUser(currentUserId);
       const hasPendingApplication = existingApplications.some(app =>
         ['pending', 'under_review', 'approved', 'contract_generated', 'awaiting_signatures', 'signed'].includes(app.status)
       );
-  
+
       if (hasPendingApplication) {
         return res.status(400).json({ message: 'You already have a pending management application' });
       }
-  
+
       // Validate management tier
       const managementTiers = await storage.getManagementTiers();
       const tier = managementTiers.find(t => t.id === requestedManagementTierId);
       if (!tier) {
         return res.status(400).json({ message: 'Invalid management tier' });
       }
-  
+
       // Generate contract terms
       const isFullManagement = tier.name.toLowerCase().includes('full');
       const contractTerms = {
@@ -11191,13 +11630,13 @@ This is a preview of the performance engagement contract. Final agreement will i
           'Quarterly professional development sessions'
         ]
       };
-  
+
       // 🛠 sanitize optional fields
       const safeBusinessPlan = businessPlan && businessPlan.trim() !== "" ? businessPlan : null;
       const safeExpectedRevenue = expectedRevenue && expectedRevenue !== "" ? expectedRevenue : null;
       const safePortfolioLinks = portfolioLinks && Object.keys(portfolioLinks).length > 0 ? portfolioLinks : null;
       const safeSocialMediaMetrics = socialMediaMetrics && Object.keys(socialMediaMetrics).length > 0 ? socialMediaMetrics : null;
-  
+
       const application = await storage.createManagementApplication({
         applicantUserId: currentUserId,
         requestedManagementTierId,
@@ -11208,14 +11647,14 @@ This is a preview of the performance engagement contract. Final agreement will i
         socialMediaMetrics: safeSocialMediaMetrics,
         contractTerms
       });
-  
+
       res.status(201).json(application);
     } catch (error) {
       console.error('Create management application error:', error);
       res.status(500).json({ message: 'Failed to create management application' });
     }
   });
-  
+
 
   // Get management applications (admin/superadmin only)
   app.get('/api/management-applications', authenticateToken, requireRole([1, 2]), async (req: Request, res: Response) => {
@@ -11229,28 +11668,62 @@ This is a preview of the performance engagement contract. Final agreement will i
   });
 
   // Get user's management applications
-  app.get('/api/management-applications/user/:userId', authenticateToken, async (req: Request, res: Response) => {
-    try {
-      const userId = parseInt(req.params.userId);
-      const currentUserId = req.user?.userId;
+  // app.get('/api/management-applications/user/:userId', authenticateToken, async (req: Request, res: Response) => {
+  //   try {
+  //     const userId = parseInt(req.params.userId);
+  //     const currentUserId = req.user?.userId;
 
-      // Users can only view their own applications unless they're admin/superadmin
-      if (currentUserId !== userId) {
-        const user = await storage.getUser(currentUserId || 0);
-        if (!user || ![1, 2].includes(user.roleId)) {
-          return res.status(403).json({ message: "Insufficient permissions" });
-        }
-      }
+  //     // Users can only view their own applications unless they're admin/superadmin
+  //     if (currentUserId !== userId) {
+  //       const user = await storage.getUser(currentUserId || 0);
+  //       if (!user || ![1, 2].includes(user.roleId)) {
+  //         return res.status(403).json({ message: "Insufficient permissions" });
+  //       }
+  //     }
 
-      const applications = await storage.getManagementApplicationsByUser(userId);
-      res.json(applications);
-    } catch (error) {
-      console.error('Get user management applications error:', error);
-      res.status(500).json({ message: 'Failed to fetch user management applications' });
-    }
-  });
+  //     const applications = await storage.getManagementApplicationsByUser(userId);
+  //     res.json(applications);
+  //   } catch (error) {
+  //     console.error('Get user management applications error:', error);
+  //     res.status(500).json({ message: 'Failed to fetch user management applications' });
+  //   }
+  // });
 
   // Review management application by assigned admin
+  
+  app.get(
+    '/api/management-applications/user/:userId',
+    authenticateToken,
+    async (req: Request, res: Response) => {
+      try {
+        const userId = parseInt(req.params.userId);
+        const currentUserId = req.user?.userId;
+  
+        if (!currentUserId) {
+          return res.status(401).json({ message: "User not authenticated" });
+        }
+  
+        // Users can only view their own applications unless they're admin/superadmin
+        if (currentUserId !== userId) {
+          const roles = await storage.getUserRoles(currentUserId);
+          const roleIds = roles.map(r => r.id);
+  
+          // Only superadmin (1) or admin (2) can view other users' applications
+          if (!roleIds.some(id => [1, 2].includes(id))) {
+            return res.status(403).json({ message: "Insufficient permissions" });
+          }
+        }
+  
+        const applications = await storage.getManagementApplicationsByUser(userId);
+        res.json(applications);
+      } catch (error) {
+        console.error('Get user management applications error:', error);
+        res.status(500).json({ message: 'Failed to fetch user management applications' });
+      }
+    }
+  );
+  
+  
   app.post('/api/management-applications/:id/review', authenticateToken, requireRole([1, 2]), async (req: Request, res: Response) => {
     try {
       const applicationId = parseInt(req.params.id);

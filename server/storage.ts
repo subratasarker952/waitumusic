@@ -28,7 +28,7 @@ import {
   // Press release tables
   pressReleases, pressReleaseAssignments, pressReleaseMedia, pressReleaseDistribution,
   // Recipient management tables
-  recipientCategories, musicGenres, industryRecipients, contentDistribution, 
+  recipientCategories, musicGenres, industryRecipients, contentDistribution,
   recipientEngagements,
 
   type User, type InsertUser,
@@ -38,7 +38,7 @@ import {
   type Booking, type InsertBooking, type Role, type ManagementTier,
   type UserProfessionalPrimaryTalent, type InsertUserProfessionalPrimaryTalent,
   type Event, type Document, type UserInteraction, type InsertUserInteraction,
-  type UserPreferences, type InsertUserPreferences, type MusicRecommendation, 
+  type UserPreferences, type InsertUserPreferences, type MusicRecommendation,
   type InsertMusicRecommendation, type ArtistSimilarity, type InsertArtistSimilarity,
   type TrendingMetric, type InsertTrendingMetric, type CrossPromotionCampaign,
   type InsertCrossPromotionCampaign, type ServiceCategory, type InsertServiceCategory,
@@ -71,7 +71,7 @@ import {
   insertWaituServiceDiscountLimitSchema, insertIndividualDiscountPermissionSchema,
   type GlobalGenre, type InsertGlobalGenre, type CrossUpsellRelationship, type InsertCrossUpsellRelationship,
   // OppHub types
-  opportunityCategories, opportunities, opportunityApplications, oppHubSubscriptions, 
+  opportunityCategories, opportunities, opportunityApplications, oppHubSubscriptions,
   marketIntelligence, opportunitySources, opportunityMatches,
   type OpportunityCategory, type InsertOpportunityCategory, type Opportunity, type InsertOpportunity,
   type OpportunityApplication, type InsertOpportunityApplication, type OppHubSubscription, type InsertOppHubSubscription,
@@ -134,7 +134,7 @@ export interface IStorage {
   getUserByEmail(email: string): Promise<User | undefined>;
   createUser(user: InsertUser): Promise<User>;
   updateUser(id: number, updates: Partial<User>): Promise<User | undefined>;
-  
+
   // Enhanced user management with role information
   getUserWithRoles(id: number): Promise<{
     id: number;
@@ -143,9 +143,9 @@ export interface IStorage {
     roleId: number;
     roleName: string; // User's registration type (superadmin, admin, managed_artist, etc.)
     professionalRole?: string; // Only for artists/musicians/professionals - their actual role/position
-    secondaryRoles?: Array<{roleId: number; roleName: string}>;
+    secondaryRoles?: Array<{ roleId: number; roleName: string }>;
   } | undefined>;
-  
+
   getUsersForAssignment(roleIds?: number[]): Promise<Array<{
     id: number;
     email: string;
@@ -153,19 +153,19 @@ export interface IStorage {
     roleId: number;
     roleName: string; // User's registration type
     professionalRole?: string; // Their actual role/position (for artists/musicians/professionals)
-    secondaryRoles?: Array<{roleId: number; roleName: string}>;
+    secondaryRoles?: Array<{ roleId: number; roleName: string }>;
   }>>;
-  
+
   // Secondary role management
   addSecondaryRole(userId: number, roleId: number): Promise<void>;
   removeSecondaryRole(userId: number, roleId: number): Promise<void>;
-  getUserSecondaryRoles(userId: number): Promise<Array<{roleId: number; roleName: string}>>;
-  
+  getUserSecondaryRoles(userId: number): Promise<Array<{ roleId: number; roleName: string }>>;
+
   // Demo user management
-  getDemoUsers(): Promise<Array<{id: number, email: string, fullName: string, roleName: string}>>;
-  
+  getDemoUsers(): Promise<Array<{ id: number, email: string, fullName: string, roleName: string }>>;
+
   // User profiles - temporarily removed during schema migration
-  
+
   // Roles and management tiers
   getRoles(): Promise<Role[]>;
   getRoleById(roleId: number): Promise<Role | undefined>;
@@ -173,7 +173,7 @@ export interface IStorage {
   isUserManaged(roleId: number): boolean;
   getUserTypeCategory(roleId: number): 'artist' | 'musician' | 'professional' | 'admin' | 'fan';
   getManagementTiers(): Promise<ManagementTier[]>;
-  
+
   // Primary talents management methods
   getPrimaryTalents(): Promise<UserProfessionalPrimaryTalent[]>;
   createPrimaryTalent(data: z.infer<typeof insertUserProfessionalPrimaryTalentSchema>): Promise<UserProfessionalPrimaryTalent>;
@@ -181,35 +181,35 @@ export interface IStorage {
   updatePrimaryTalent(id: number, data: Partial<UserProfessionalPrimaryTalent>): Promise<UserProfessionalPrimaryTalent>;
   deletePrimaryTalent(id: number): Promise<void>;
   getPrimaryTalentsByRoleId(roleId: number): Promise<UserProfessionalPrimaryTalent[]>;
-  
+
   // Secondary talents management methods
-  getUserSecondaryPerformanceTalents(userId: number): Promise<Array<{talentName: string}>>;
-  getUserSecondaryProfessionalTalents(userId: number): Promise<Array<{talentName: string}>>;
-  
+  getUserSecondaryPerformanceTalents(userId: number): Promise<Array<{ talentName: string }>>;
+  getUserSecondaryProfessionalTalents(userId: number): Promise<Array<{ talentName: string }>>;
+
   // Role management
   createRole(role: Partial<Role>): Promise<Role>;
   updateRole(id: number, updates: Partial<Role>): Promise<Role | undefined>;
   deleteRole(id: number): Promise<boolean>;
   getUsersByRole(roleId: number): Promise<User[]>;
-  
+
   // Artists
   getArtist(userId: number): Promise<Artist | undefined>;
   getArtists(): Promise<Artist[]>;
   createArtist(artist: InsertArtist): Promise<Artist>;
   updateArtist(userId: number, updates: Partial<Artist>): Promise<Artist | undefined>;
-  updateArtistStageNames(userId: number, stageNames: Array<{name: string, isPrimary?: boolean, isForBookings?: boolean, usageType?: 'primary' | 'bookings' | 'both'}>): Promise<Artist | undefined>;
-  
+  updateArtistStageNames(userId: number, stageNames: Array<{ name: string, isPrimary?: boolean, isForBookings?: boolean, usageType?: 'primary' | 'bookings' | 'both' }>): Promise<Artist | undefined>;
+
   // Musicians
   getMusician(userId: number): Promise<Musician | undefined>;
   getMusicians(): Promise<Musician[]>;
   createMusician(musician: InsertMusician): Promise<Musician>;
-  updateMusicianStageNames(userId: number, stageNames: Array<{name: string, isPrimary?: boolean, isForBookings?: boolean, usageType?: 'primary' | 'bookings' | 'both'}>): Promise<Musician | undefined>;
-  
+  updateMusicianStageNames(userId: number, stageNames: Array<{ name: string, isPrimary?: boolean, isForBookings?: boolean, usageType?: 'primary' | 'bookings' | 'both' }>): Promise<Musician | undefined>;
+
   // Professionals
   getProfessional(userId: number): Promise<Professional | undefined>;
   getProfessionals(): Promise<Professional[]>;
   createProfessional(professional: InsertProfessional): Promise<Professional>;
-  
+
   // Songs
   getSong(id: number): Promise<Song | undefined>;
   getSongs(): Promise<Song[]>;
@@ -225,7 +225,7 @@ export interface IStorage {
   createVideo(video: InsertVideo): Promise<Video>;
   updateVideo(id: number, updates: Partial<Video>): Promise<Video | undefined>;
   deleteVideo(id: number): Promise<void>;
-  
+
   // Albums
   getAlbum(id: number): Promise<Album | undefined>;
   getAlbums(): Promise<Album[]>;
@@ -242,7 +242,7 @@ export interface IStorage {
   createCrossUpsellRelationship(relationship: InsertCrossUpsellRelationship): Promise<CrossUpsellRelationship>;
   getCrossUpsellsBySource(sourceType: string, sourceId: number): Promise<CrossUpsellRelationship[]>;
   deleteCrossUpsellRelationship(id: number): Promise<boolean>;
-  
+
   // Merchandise
   getMerchandise(id?: number): Promise<Merchandise | Merchandise[] | undefined>;
   getMerchandiseByArtist(artistUserId: number): Promise<Merchandise[]>;
@@ -252,23 +252,23 @@ export interface IStorage {
   // Splitsheets - OppHub AI Learning: Music industry specific data management
   getSplitsheets(): Promise<any[]>;
   createSplitsheet(splitsheet: any): Promise<any>;
-  
+
   // Contracts - OppHub AI Learning: Legal document management
   getContracts(): Promise<any[]>;
   createContract(contract: any): Promise<any>;
-  
+
   // Technical Riders - OppHub AI Learning: Performance specification management  
   getTechnicalRiders(): Promise<any[]>;
   createTechnicalRider(technicalRider: any): Promise<any>;
-  
+
   // ISRC Codes - OppHub AI Learning: Music identification code management
   getIsrcCodes(): Promise<any[]>;
   createIsrcCode(isrcCode: any): Promise<any>;
-  
+
   // Newsletters - OppHub AI Learning: Marketing communication management
   getNewsletters(): Promise<any[]>;
   createNewsletter(newsletter: any): Promise<any>;
-  
+
   // Bookings
   getBooking(id: number): Promise<Booking | undefined>;
   getBookings(): Promise<Booking[]>;
@@ -284,49 +284,49 @@ export interface IStorage {
   saveSetlist(setlistData: any): Promise<any>;
   getSetlistByBooking(bookingId: number): Promise<any>;
   updateSetlist(setlistId: number, updates: any): Promise<void>;
-  
+
   // All Users (for admin)
   getAllUsers(): Promise<User[]>;
-  
+
   // Events
   getEventsByArtist(artistUserId: number): Promise<Event[]>;
   getEventsByUser(userId: number): Promise<Event[]>;
   getUpcomingEvents(): Promise<Event[]>;
-  
+
   // Recommendation System
   // User Interactions
   createUserInteraction(interaction: InsertUserInteraction): Promise<UserInteraction>;
   getUserInteractions(userId: number): Promise<UserInteraction[]>;
   getAllUserInteractions(): Promise<UserInteraction[]>;
-  
+
   // User Preferences
   getUserPreferences(userId: number): Promise<UserPreferences | undefined>;
   updateUserPreferences(userId: number, preferences: Partial<InsertUserPreferences>): Promise<UserPreferences>;
-  
+
   // Music Recommendations
   createMusicRecommendation(recommendation: InsertMusicRecommendation): Promise<MusicRecommendation>;
   getUserRecommendations(userId: number, limit?: number): Promise<MusicRecommendation[]>;
   clearUserRecommendations(userId: number): Promise<void>;
   updateRecommendationEngagement(recommendationId: number, engagementType: 'viewed' | 'clicked'): Promise<void>;
-  
+
   // Artist Similarities
   createArtistSimilarity(similarity: InsertArtistSimilarity): Promise<ArtistSimilarity>;
   getArtistSimilarities(artistId: number): Promise<ArtistSimilarity[]>;
   getAllArtists(): Promise<Artist[]>;
   getArtistFans(artistId: number): Promise<number[]>;
-  
+
   // Trending Metrics
   incrementTrendingMetric(metric: Partial<InsertTrendingMetric>): Promise<void>;
   getTrendingSongs(timeframe: string): Promise<Song[]>;
-  
+
   // Cross Promotion
   getActiveCrossPromotionCampaigns(): Promise<CrossPromotionCampaign[]>;
   incrementCampaignImpressions(campaignId: number): Promise<void>;
-  
+
   // Additional helper methods
   getSongsByGenre(genre: string): Promise<Song[]>;
   getUserByUsername(username: string): Promise<User | undefined>;
-  
+
   // Admin dashboard specific methods
   getUsersCount(): Promise<number>;
   getActiveUsersCount(): Promise<number>;
@@ -351,14 +351,14 @@ export interface IStorage {
   // Service Categories
   getServiceCategories(): Promise<ServiceCategory[]>;
   createServiceCategory(category: InsertServiceCategory): Promise<ServiceCategory>;
-  
+
   // Admin Services
   getServices(): Promise<Service[]>;
   getService(id: number): Promise<Service | undefined>;
   createService(service: InsertService): Promise<Service>;
   updateService(id: number, updates: Partial<Service>): Promise<Service | undefined>;
   deleteService(id: number): Promise<boolean>;
-  
+
   // Service Assignments
   getServiceAssignments(): Promise<ServiceAssignment[]>;
   getServiceAssignmentsByUser(userId: number): Promise<ServiceAssignment[]>;
@@ -366,7 +366,7 @@ export interface IStorage {
   createServiceAssignment(assignment: InsertServiceAssignment): Promise<ServiceAssignment>;
   updateServiceAssignment(id: number, updates: Partial<ServiceAssignment>): Promise<ServiceAssignment | undefined>;
   deleteServiceAssignment(id: number): Promise<boolean>;
-  
+
   // User Services (self-created)
   getUserServices(userId: number): Promise<UserService[]>;
   getAllUserServices(): Promise<UserService[]>;
@@ -374,7 +374,7 @@ export interface IStorage {
   createUserService(userService: InsertUserService): Promise<UserService>;
   updateUserService(id: number, updates: Partial<UserService>): Promise<UserService | undefined>;
   deleteUserService(id: number): Promise<boolean>;
-  
+
   // Service Reviews
   getServiceReviews(serviceId?: number, userServiceId?: number): Promise<ServiceReview[]>;
   createServiceReview(review: InsertServiceReview): Promise<ServiceReview>;
@@ -385,47 +385,47 @@ export interface IStorage {
   createCurrency(currency: InsertCurrency): Promise<Currency>;
   updateCurrency(code: string, updates: Partial<Currency>): Promise<Currency | undefined>;
   updateCurrencyRate(code: string, rate: number): Promise<Currency | undefined>;
-  
+
   // Store bundles
   getBundles(): Promise<Bundle[]>;
   getBundle(id: number): Promise<Bundle | undefined>;
   getBundlesByArtist(artistUserId: number): Promise<Bundle[]>;
   createBundle(bundle: InsertBundle): Promise<Bundle>;
   updateBundle(id: number, updates: Partial<Bundle>): Promise<Bundle | undefined>;
-  
+
   // Bundle items
   getBundleItems(bundleId: number): Promise<BundleItem[]>;
   createBundleItem(item: InsertBundleItem): Promise<BundleItem>;
   deleteBundleItem(id: number): Promise<void>;
-  
+
   // Discount conditions
   getDiscountConditions(bundleId: number): Promise<DiscountCondition[]>;
   createDiscountCondition(condition: InsertDiscountCondition): Promise<DiscountCondition>;
   updateDiscountCondition(id: number, updates: Partial<DiscountCondition>): Promise<DiscountCondition | undefined>;
   validateDiscountCondition(conditionId: number, userValue: string): Promise<boolean>;
-  
+
   // Store currencies
   getStoreCurrencies(): Promise<StoreCurrency[]>;
   getStoreCurrency(code: string): Promise<StoreCurrency | undefined>;
   createStoreCurrency(currency: InsertStoreCurrency): Promise<StoreCurrency>;
   updateStoreCurrency(id: number, updates: Partial<StoreCurrency>): Promise<StoreCurrency | undefined>;
-  
+
   // Fan engagement
   createFanEngagement(engagement: InsertFanEngagement): Promise<FanEngagement>;
   getFanEngagement(userId: number, artistUserId: number): Promise<FanEngagement[]>;
-  
+
   // Assignment management - Admin assignments
   createAdminAssignment(assignment: InsertAdminAssignment): Promise<AdminAssignment>;
   getAdminAssignments(adminUserId?: number): Promise<AdminAssignment[]>;
   getAdminAssignment(id: number): Promise<AdminAssignment | undefined>;
   updateAdminAssignment(id: number, updates: Partial<AdminAssignment>): Promise<AdminAssignment | undefined>;
   removeAdminAssignment(id: number): Promise<void>;
-  
+
   // Enhanced instrument-based booking assignments
   getAllInstruments(activeOnly?: boolean): Promise<AllInstrument[]>;
   getInstrumentsByMixerGroup(mixerGroup: string): Promise<AllInstrument[]>;
   createAllInstrument(instrument: InsertAllInstrument): Promise<AllInstrument>;
-  
+
   // Enhanced booking assignments with instruments
   createBookingAssignmentMember(assignment: InsertBookingAssignmentsMember): Promise<BookingAssignmentsMember>;
   getBookingAssignmentMembers(bookingId: number): Promise<Array<BookingAssignmentsMember & {
@@ -437,7 +437,7 @@ export interface IStorage {
   updateBookingAssignmentMember(id: number, updates: Partial<BookingAssignmentsMember>): Promise<BookingAssignmentsMember | undefined>;
   removeBookingAssignmentMember(id: number): Promise<void>;
   assignUserToBooking(bookingId: number, userId: number, roleId: number, instrumentId: number | null, assignedBy: number, isMainTalent?: boolean): Promise<BookingAssignmentsMember>;
-  
+
   // Legacy booking assignments (kept for compatibility)
   createBookingAssignment(assignment: InsertBookingAssignment): Promise<BookingAssignment>;
   getBookingAssignments(): Promise<BookingAssignment[]>;
@@ -445,7 +445,7 @@ export interface IStorage {
   getBookingAssignment(id: number): Promise<BookingAssignment | undefined>;
   updateBookingAssignment(id: number, updates: Partial<BookingAssignment>): Promise<BookingAssignment | undefined>;
   removeBookingAssignment(id: number): Promise<void>;
-  
+
   // Assignment management - Artist-Musician assignments
   createArtistMusicianAssignment(assignment: InsertArtistMusicianAssignment): Promise<ArtistMusicianAssignment>;
   getArtistMusicianAssignments(artistUserId?: number): Promise<ArtistMusicianAssignment[]>;
@@ -455,7 +455,7 @@ export interface IStorage {
   getArtistMusicianAssignment(id: number): Promise<ArtistMusicianAssignment | undefined>;
   updateArtistMusicianAssignment(id: number, updates: Partial<ArtistMusicianAssignment>): Promise<ArtistMusicianAssignment | undefined>;
   removeArtistMusicianAssignment(id: number): Promise<void>;
-  
+
   // Assignment management - Service assignments
   createServiceAssignment(assignment: InsertServiceAssignment): Promise<ServiceAssignment>;
   getServiceAssignments(): Promise<ServiceAssignment[]>;
@@ -464,14 +464,14 @@ export interface IStorage {
   getServiceAssignment(id: number): Promise<ServiceAssignment | undefined>;
   updateServiceAssignment(id: number, updates: Partial<ServiceAssignment>): Promise<ServiceAssignment | undefined>;
   removeServiceAssignment(id: number): Promise<void>;
-  
+
   // Booking Media Management
   createBookingMediaFile(file: InsertBookingMediaFile): Promise<BookingMediaFile>;
   getBookingMediaFiles(bookingId: number): Promise<BookingMediaFile[]>;
   getBookingMediaFile(id: number): Promise<BookingMediaFile | undefined>;
   updateBookingMediaFile(id: number, updates: Partial<BookingMediaFile>): Promise<BookingMediaFile | undefined>;
   deleteBookingMediaFile(id: number): Promise<void>;
-  
+
   // Booking Media Access Control
   createBookingMediaAccess(access: InsertBookingMediaAccess): Promise<BookingMediaAccess>;
   getBookingMediaAccess(mediaFileId: number): Promise<BookingMediaAccess[]>;
@@ -479,12 +479,12 @@ export interface IStorage {
   updateBookingMediaAccess(id: number, updates: Partial<BookingMediaAccess>): Promise<BookingMediaAccess | undefined>;
   removeBookingMediaAccess(id: number): Promise<void>;
   checkUserMediaAccess(userId: number, mediaFileId: number, requiredLevel: string): Promise<boolean>;
-  
+
   // Booking Media Categories
   getBookingMediaCategories(): Promise<BookingMediaCategory[]>;
   createBookingMediaCategory(category: InsertBookingMediaCategory): Promise<BookingMediaCategory>;
   updateBookingMediaCategory(id: number, updates: Partial<BookingMediaCategory>): Promise<BookingMediaCategory | undefined>;
-  
+
   // Release Contract Management
   createReleaseContract(contract: InsertReleaseContract): Promise<ReleaseContract>;
   getReleaseContract(id: number): Promise<ReleaseContract | undefined>;
@@ -495,7 +495,7 @@ export interface IStorage {
   getReleaseContractSignatures(contractId: number): Promise<ReleaseContractSignature[]>;
   createManagementTransition(transition: InsertManagementTransition): Promise<ManagementTransition>;
   getManagementTransitions(userId: number): Promise<ManagementTransition[]>;
-  
+
   // Management Application System
   createManagementApplication(application: InsertManagementApplication): Promise<ManagementApplication>;
   getManagementApplication(id: number): Promise<ManagementApplication | undefined>;
@@ -504,25 +504,25 @@ export interface IStorage {
   updateManagementApplication(id: number, updates: Partial<ManagementApplication>): Promise<ManagementApplication | undefined>;
   createManagementApplicationSignature(signature: InsertManagementApplicationSignature): Promise<ManagementApplicationSignature>;
   getManagementApplicationSignatures(applicationId: number): Promise<ManagementApplicationSignature[]>;
-  
+
   // Service Discount Management
   createServiceDiscountOverride(override: InsertServiceDiscountOverride): Promise<ServiceDiscountOverride>;
   getServiceDiscountOverrides(userId: number): Promise<ServiceDiscountOverride[]>;
   getServiceDiscountOverride(userId: number, serviceId?: number, userServiceId?: number): Promise<ServiceDiscountOverride | undefined>;
   updateServiceDiscountOverride(id: number, updates: Partial<ServiceDiscountOverride>): Promise<ServiceDiscountOverride | undefined>;
   getMaxDiscountForUser(userId: number): Promise<number>;
-  
+
   // Management Application Review System
   createManagementApplicationReview(review: InsertManagementApplicationReview): Promise<ManagementApplicationReview>;
   getManagementApplicationReviews(applicationId: number): Promise<ManagementApplicationReview[]>;
   getManagementApplicationsByAssignedAdmin(adminUserId: number): Promise<ManagementApplication[]>;
-  
+
   // Legal Assignment System
   createLegalAssignment(assignment: InsertLegalAssignment): Promise<LegalAssignment>;
   getLegalAssignments(clientUserId: number): Promise<LegalAssignment[]>;
   getLawyerClients(lawyerUserId: number): Promise<LegalAssignment[]>;
   getAssignedLawyer(clientUserId: number, assignmentType?: string): Promise<LegalAssignment | undefined>;
-  
+
   // Application Legal Assignment System (Lawyers representing Wai'tuMusic)
   createApplicationLegalAssignment(assignment: InsertApplicationLegalAssignment): Promise<ApplicationLegalAssignment>;
   getApplicationLegalAssignments(applicationId: number): Promise<ApplicationLegalAssignment[]>;
@@ -564,7 +564,7 @@ export interface IStorage {
   getInvoicesByBooking(bookingId: number): Promise<Invoice[]>;
   updateInvoiceStatus(id: number, status: string): Promise<Invoice | undefined>;
   generateInvoiceNumber(): Promise<string>;
-  
+
   // Financial Automation - Payout Request Management
   createPayoutRequest(payoutRequest: InsertPayoutRequest): Promise<PayoutRequest>;
   getPayoutRequest(id: number): Promise<PayoutRequest | undefined>;
@@ -573,29 +573,29 @@ export interface IStorage {
   getPayoutRequestsByPerformer(performerUserId: number): Promise<PayoutRequest[]>;
   updatePayoutRequestStatus(id: number, status: string): Promise<PayoutRequest | undefined>;
   generatePayoutRequestNumber(): Promise<string>;
-  
+
   // Financial Automation - Document Linkage System
   createDocumentLinkage(linkage: InsertDocumentLinkage): Promise<DocumentLinkage>;
   getDocumentLinkages(sourceType: string, sourceId: number): Promise<DocumentLinkage[]>;
   getLinkedDocuments(documentType: string, documentId: number): Promise<DocumentLinkage[]>;
-  
+
   // Financial Automation - Payment Transaction Tracking
   createPaymentTransaction(transaction: InsertPaymentTransaction): Promise<PaymentTransaction>;
   getPaymentTransaction(id: number): Promise<PaymentTransaction | undefined>;
   getPaymentTransactionsByBooking(bookingId: number): Promise<PaymentTransaction[]>;
   getPaymentTransactionsByInvoice(invoiceId: number): Promise<PaymentTransaction[]>;
   updatePaymentTransactionStatus(id: number, status: string): Promise<PaymentTransaction | undefined>;
-  
+
   // Financial Automation - Audit Trail
   createFinancialAuditLog(auditLog: InsertFinancialAuditLog): Promise<FinancialAuditLog>;
   getFinancialAuditLogs(entityType: string, entityId: number): Promise<FinancialAuditLog[]>;
-  
+
   // Financial Automation - Payments & Receipts (Enhanced)
   createPayment(payment: InsertPayment): Promise<Payment>;
   getPayment(id: number): Promise<Payment | undefined>;
   getPaymentsByBooking(bookingId: number): Promise<Payment[]>;
   updatePaymentStatus(id: number, status: string): Promise<Payment | undefined>;
-  
+
   createReceipt(receipt: InsertReceipt): Promise<Receipt>;
   getReceipt(id: number): Promise<Receipt | undefined>;
   getReceiptsByBooking(bookingId: number): Promise<Receipt[]>;
@@ -674,19 +674,19 @@ export interface IStorage {
   updatePressReleaseDistributionStatus(id: number, status: string, responseType?: string): Promise<PressReleaseDistribution | null>;
 
   // ==================== RECIPIENT MANAGEMENT METHODS ====================
-  
+
   // Recipient Categories
   getRecipientCategories(): Promise<RecipientCategory[]>;
   createRecipientCategory(category: InsertRecipientCategory): Promise<RecipientCategory>;
   updateRecipientCategory(id: number, updates: Partial<InsertRecipientCategory>): Promise<RecipientCategory | null>;
   deleteRecipientCategory(id: number): Promise<boolean>;
-  
+
   // Music Genres
   getMusicGenres(): Promise<MusicGenre[]>;
   createMusicGenre(genre: InsertMusicGenre): Promise<MusicGenre>;
   updateMusicGenre(id: number, updates: Partial<InsertMusicGenre>): Promise<MusicGenre | null>;
   deleteMusicGenre(id: number): Promise<boolean>;
-  
+
   // Industry Recipients
   getIndustryRecipients(filters?: { categoryId?: number; genreIds?: number[]; status?: string }): Promise<IndustryRecipient[]>;
   getIndustryRecipientById(id: number): Promise<IndustryRecipient | null>;
@@ -694,7 +694,7 @@ export interface IStorage {
   updateIndustryRecipient(id: number, updates: Partial<InsertIndustryRecipient>): Promise<IndustryRecipient | null>;
   deleteIndustryRecipient(id: number): Promise<boolean>;
   searchIndustryRecipients(query: string): Promise<IndustryRecipient[]>;
-  
+
   // Content Distribution (Unified for Newsletters and Press Releases)
   getContentDistribution(contentType: string, contentId: number): Promise<ContentDistribution | null>;
   createContentDistribution(distribution: InsertContentDistribution): Promise<ContentDistribution>;
@@ -702,12 +702,12 @@ export interface IStorage {
   deleteContentDistribution(id: number): Promise<boolean>;
   getContentDistributionsByType(contentType: string): Promise<ContentDistribution[]>;
   getContentDistributionAnalytics(contentType: string, contentId: number): Promise<ContentDistribution | null>;
-  
+
   // Recipient Engagements
   getRecipientEngagements(filters?: { recipientId?: number; contentType?: string; contentId?: number }): Promise<RecipientEngagement[]>;
   createRecipientEngagement(engagement: InsertRecipientEngagement): Promise<RecipientEngagement>;
   updateRecipientEngagement(id: number, updates: Partial<InsertRecipientEngagement>): Promise<RecipientEngagement | null>;
-  
+
   // Enhanced Recipient Matching Methods
   getMatchingRecipients(contentGenres: number[], categoryIds?: number[], minimumInfluence?: number): Promise<IndustryRecipient[]>;
   getRecipientsByCategory(categoryId: number): Promise<IndustryRecipient[]>;
@@ -764,7 +764,7 @@ export interface IStorage {
   updateTextContent(id: number, data: any): Promise<any>;
   deleteTextContent(id: number): Promise<boolean>;
   getTextContentByComponent(componentLocation: string): Promise<any[]>;
-  
+
   // Typography Control
   getAllTypographyStyles(): Promise<any[]>;
   getTypographyByKey(typographyKey: string): Promise<any | null>;
@@ -772,7 +772,7 @@ export interface IStorage {
   updateTypographyStyle(id: number, data: any): Promise<any>;
   deleteTypographyStyle(id: number): Promise<boolean>;
   getTypographyByCategory(category: string): Promise<any[]>;
-  
+
   // Color Scheme Management
   getAllColorSchemes(): Promise<any[]>;
   getDefaultColorScheme(): Promise<any | null>;
@@ -780,27 +780,27 @@ export interface IStorage {
   updateColorScheme(id: number, data: any): Promise<any>;
   deleteColorScheme(id: number): Promise<boolean>;
   setDefaultColorScheme(id: number): Promise<boolean>;
-  
+
   // Color Management
   getColorsForScheme(schemeId: number): Promise<any[]>;
   createColor(data: any): Promise<any>;
   updateColor(id: number, data: any): Promise<any>;
   deleteColor(id: number): Promise<boolean>;
-  
+
   // Component Styling
   getAllComponentStyles(): Promise<any[]>;
   getComponentStylesByType(componentType: string): Promise<any[]>;
   createComponentStyle(data: any): Promise<any>;
   updateComponentStyle(id: number, data: any): Promise<any>;
   deleteComponentStyle(id: number): Promise<boolean>;
-  
+
   // Layout Controls
   getAllLayoutControls(): Promise<any[]>;
   getLayoutControlsByCategory(category: string): Promise<any[]>;
   createLayoutControl(data: any): Promise<any>;
   updateLayoutControl(id: number, data: any): Promise<any>;
   deleteLayoutControl(id: number): Promise<boolean>;
-  
+
   // Theme Management
   getAllThemes(): Promise<any[]>;
   getDefaultTheme(): Promise<any | null>;
@@ -809,7 +809,7 @@ export interface IStorage {
   deleteTheme(id: number): Promise<boolean>;
   generateThemeCSS(themeId: number): Promise<string>;
   applyTheme(themeId: number): Promise<boolean>;
-  
+
   // MediaHub Document Management
   getBookingDocuments(bookingId: number): Promise<any[]>;
   isUserAssignedToBooking(userId: number, bookingId: number): Promise<boolean>;
@@ -836,7 +836,7 @@ export class MemStorage {
   private managementTiers: ManagementTier[];
   private events: Map<number, Event>;
   private documents: Map<number, Document>;
-  
+
   private currentUserId: number;
   private currentSongId: number;
   private currentAlbumId: number;
@@ -857,10 +857,10 @@ export class MemStorage {
     this.bookings = new Map();
     this.events = new Map();
     this.documents = new Map();
-    
+
     // Initialize demo data
     this.initializeDemoBookings();
-    
+
     this.currentUserId = 1;
     this.currentSongId = 1;
     this.currentAlbumId = 1;
@@ -868,7 +868,7 @@ export class MemStorage {
     this.currentBookingId = 1;
     this.currentEventId = 1;
     this.currentDocumentId = 1;
-    
+
     // Initialize default roles and management tiers
     this.roles = [
       { id: 1, name: "superadmin" },
@@ -881,31 +881,31 @@ export class MemStorage {
       { id: 8, name: "professional" },
       { id: 9, name: "fan" }
     ];
-    
+
     this.managementTiers = [
-      { 
-        id: 1, 
-        name: "Publisher", 
+      {
+        id: 1,
+        name: "Publisher",
         description: "We publish your music worldwide. Full creative control, standard service fees.",
         maxDiscountPercentage: 10,
         appliesTo: ['artist', 'musician']
       },
-      { 
-        id: 2, 
-        name: "Representation", 
+      {
+        id: 2,
+        name: "Representation",
         description: "We handle your music business professionally without managing your career. Enjoy discounted services and industry representation.",
         maxDiscountPercentage: 50,
         appliesTo: ['artist', 'musician', 'professional']
       },
-      { 
-        id: 3, 
-        name: "Full Management", 
+      {
+        id: 3,
+        name: "Full Management",
         description: "Our team takes full responsibility for your career development, music releases, and strategic growth—with services included at no extra cost.",
         maxDiscountPercentage: 100,
         appliesTo: ['artist', 'musician', 'professional']
       }
     ];
-    
+
     this.initializeDemoData();
   }
 
@@ -1046,7 +1046,7 @@ export class MemStorage {
       id: 1,
       clientName: "Wedding Celebration Inc",
       clientEmail: "sarah@weddingcelebration.com",
-      eventName: "Sarah & Mike's Wedding Reception", 
+      eventName: "Sarah & Mike's Wedding Reception",
       eventDate: new Date("2025-08-15"),
       eventTime: "19:00",
       venueName: "Grand Ballroom Hotel",
@@ -1071,7 +1071,7 @@ export class MemStorage {
     const booking2: Booking = {
       id: 2,
       clientName: "Corporate Events LLC",
-      clientEmail: "events@corporateevents.com", 
+      clientEmail: "events@corporateevents.com",
       eventName: "Annual Company Gala",
       eventDate: "2025-09-20",
       eventTime: "18:30",
@@ -1081,7 +1081,7 @@ export class MemStorage {
       guestCount: 300,
       duration: "3 hours",
       specificRequirements: "Background music during dinner, energetic dance set after 9pm",
-      totalBudget: "8000.00", 
+      totalBudget: "8000.00",
       status: "confirmed",
       createdAt: new Date(),
       bookerUserId: 3,
@@ -1153,7 +1153,7 @@ export class MemStorage {
           )
         )
         .orderBy(desc(enhancedSplitsheets.createdAt));
-      
+
       return splitsheets;
     } catch (error) {
       console.error('Error fetching user enhanced splitsheets:', error);
@@ -1219,17 +1219,17 @@ export class MemStorage {
         email: users.email,
         roleId: users.roleId
       })
-      .from(users)
-      .where(
-        and(
-          inArray(users.roleId, [3, 4, 5, 6, 7, 8]), // Artist, Managed Artist, Musician, Managed Musician, Professional, Managed Professional
-          or(
-            sql`LOWER(${users.fullName}) LIKE LOWER(${`%${search}%`})`,
-            sql`LOWER(${users.email}) LIKE LOWER(${`%${search}%`})`
+        .from(users)
+        .where(
+          and(
+            inArray(users.roleId, [3, 4, 5, 6, 7, 8]), // Artist, Managed Artist, Musician, Managed Musician, Professional, Managed Professional
+            or(
+              sql`LOWER(${users.fullName}) LIKE LOWER(${`%${search}%`})`,
+              sql`LOWER(${users.email}) LIKE LOWER(${`%${search}%`})`
+            )
           )
         )
-      )
-      .limit(10);
+        .limit(10);
 
       return talentUsers;
     } catch (error) {
@@ -1263,7 +1263,7 @@ export class MemStorage {
   async updateUser(id: number, updates: Partial<User>): Promise<User | undefined> {
     const user = this.users.get(id);
     if (!user) return undefined;
-    
+
     const updatedUser = { ...user, ...updates };
     this.users.set(id, updatedUser);
     return updatedUser;
@@ -1315,16 +1315,16 @@ export class MemStorage {
       isDemo: artist.isDemo || false,
       isComplete: artist.isComplete || false,
     };
-  
+
     this.artists.set(artist.userId, artistRecord);
     return artistRecord;
   }
-  
-  
+
+
   async updateArtist(userId: number, updates: Partial<Artist>): Promise<Artist | undefined> {
     const artist = this.artists.get(userId);
     if (!artist) return undefined;
-    
+
     const updatedArtist = { ...artist, ...updates };
     this.artists.set(userId, updatedArtist);
     return updatedArtist;
@@ -1427,7 +1427,7 @@ export class MemStorage {
   async updateSong(id: number, updates: Partial<Song>): Promise<Song | undefined> {
     const song = this.songs.get(id);
     if (!song) return undefined;
-    
+
     const updatedSong = { ...song, ...updates };
     this.songs.set(id, updatedSong);
     return updatedSong;
@@ -1540,7 +1540,7 @@ export class MemStorage {
   async updateBookingStatus(id: number, status: string): Promise<Booking | undefined> {
     const booking = this.bookings.get(id);
     if (!booking) return undefined;
-    
+
     const updatedBooking = { ...booking, status };
     this.bookings.set(id, updatedBooking);
     return updatedBooking;
@@ -1552,14 +1552,14 @@ export class MemStorage {
 
   async getEventsByUser(userId: number): Promise<Event[]> {
     // Get events for user based on their role - could be artist events or booked events
-    return Array.from(this.events.values()).filter(event => 
+    return Array.from(this.events.values()).filter(event =>
       event.artistUserId === userId || event.bookerUserId === userId
     );
   }
 
   async getUpcomingEvents(): Promise<Event[]> {
     const now = new Date();
-    return Array.from(this.events.values()).filter(event => 
+    return Array.from(this.events.values()).filter(event =>
       event.eventDatetime && new Date(event.eventDatetime) > now
     );
   }
@@ -1567,9 +1567,9 @@ export class MemStorage {
   async updateBooking(id: number, updates: Partial<Booking>): Promise<Booking | undefined> {
     const booking = this.bookings.get(id);
     if (!booking) return undefined;
-    
-    const updatedBooking = { 
-      ...booking, 
+
+    const updatedBooking = {
+      ...booking,
       ...updates,
       updatedAt: new Date(),
       lastModified: new Date()
@@ -1732,8 +1732,8 @@ export class MemStorage {
   }
 
   async createService(service: InsertService): Promise<Service> {
-    return { 
-      id: 1, 
+    return {
+      id: 1,
       name: service.name,
       description: service.description || null,
       basePrice: service.basePrice || null,
@@ -1741,7 +1741,7 @@ export class MemStorage {
       unit: service.unit || null,
       categoryId: service.categoryId || null,
       createdByUserId: service.createdByUserId,
-      isActive: true, 
+      isActive: true,
       createdAt: new Date()
     };
   }
@@ -1918,76 +1918,89 @@ export class DatabaseStorage implements IStorage {
     return this.getUser(id);
   }
 
-// START NEW CODEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
+  // START NEW CODEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
 
   // get all roles
   async getRoles() {
     return await db.select().from(rolesManagement).orderBy(rolesManagement.id);
   }
 
-    /** Assign a role to a user */
-    async assignRoleToUser(userId: number, roleId: number) {
-      const [role] = await db
-        .insert(userRoles)
-        .values({ userId, roleId })
-        .onConflictDoNothing() // avoid duplicate userId+roleId
-        .returning();
-      return role;
-    }
-  
- // Check if user has a specific role
- async userHasRole(userId: number, roleId: number): Promise<boolean> {
-  const res = await db
-    .select()
-    .from(userRoles)
-    .where(and(
-      eq(userRoles.userId, userId),
-      eq(userRoles.roleId, roleId)
-    ));
+  /** Assign a role to a user */
+  async assignRoleToUser(userId: number, roleId: number) {
+    const [role] = await db
+      .insert(userRoles)
+      .values({ userId, roleId })
+      .onConflictDoNothing() // avoid duplicate userId+roleId
+      .returning();
+    return role;
+  }
 
-  return res.length > 0;
-}
+  // Check if user has a specific role
+  async userHasRole(userId: number, roleId: number): Promise<boolean> {
+    const res = await db
+      .select()
+      .from(userRoles)
+      .where(and(
+        eq(userRoles.userId, userId),
+        eq(userRoles.roleId, roleId)
+      ));
 
-// Get all roleIds for a user
-async getUserRoles(userId: number): Promise<number[]> {
-  const res = await db
-    .select({ roleId: userRoles.roleId })
-    .from(userRoles)
-    .where(eq(userRoles.userId, userId));
+    return res.length > 0;
+  }
 
-  return res.map(r => r.roleId);
-}
+  // Get all roleIds for a user
+  async getUserRoleIds(userId: number): Promise<number[]> {
+    const res = await db
+      .select({ roleId: userRoles.roleId })
+      .from(userRoles)
+      .where(eq(userRoles.userId, userId));
+    return res.map(r => r.roleId);
+  }
 
-async getUserRolesWithDetails(userId: number) {
-  return await db
-    .select({
-      id: rolesManagement.id,
-      name: rolesManagement.name,
-      canApply: rolesManagement.canApply,
-      opphubMarketplaceDiscount: rolesManagement.opphubMarketplaceDiscount,
-      servicesDiscount: rolesManagement.servicesDiscount,
-      adminCommission: rolesManagement.adminCommission
-    })
-    .from(userRoles)
-    .innerJoin(rolesManagement, eq(userRoles.roleId, rolesManagement.id))
-    .where(eq(userRoles.userId, userId));
-}
+  async getUserRolesWithDetails(userId: number) {
+    return await db
+      .select({
+        id: rolesManagement.id,
+        name: rolesManagement.name,
+        canApply: rolesManagement.canApply,
+        opphubMarketplaceDiscount: rolesManagement.opphubMarketplaceDiscount,
+        servicesDiscount: rolesManagement.servicesDiscount,
+        adminCommission: rolesManagement.adminCommission
+      })
+      .from(userRoles)
+      .innerJoin(rolesManagement, eq(userRoles.roleId, rolesManagement.id))
+      .where(eq(userRoles.userId, userId));
+  }
 
-// Assign a role to a user
-async addRoleToUser(userId: number, roleId: number) {
-  return await db.insert(userRoles).values({ userId, roleId }).onConflictDoNothing();
-}
+  async getUserRoles(userId: number) {
+    const res = await db
+      .select({
+        roleId: userRoles.roleId,
+        name: roles.name,
+      })
+      .from(userRoles)
+      .innerJoin(roles, eq(userRoles.roleId, roles.id))
+      .where(eq(userRoles.userId, userId));
 
-// Remove a role from a user
-async removeRoleFromUser(userId: number, roleId: number) {
-  return await db
-    .delete(userRoles)
-    .where(and(
-      eq(userRoles.userId, userId),
-      eq(userRoles.roleId, roleId)
-    ));
-}
-// END NEW CODEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
+    return res.map(r => ({ id: r.roleId, name: r.name }));
+  }
+
+
+  // Insert into user_roles
+  async addUserRole(userId: number, roleId: number) {
+    return db.insert(userRoles).values({ userId, roleId }).onConflictDoNothing();
+  }
+
+  // Remove a role from a user
+  async removeRoleFromUser(userId: number, roleId: number) {
+    return await db
+      .delete(userRoles)
+      .where(and(
+        eq(userRoles.userId, userId),
+        eq(userRoles.roleId, roleId)
+      ));
+  }
+  // END NEW CODEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
   // Enhanced user management with role information
   async getUserWithRoles(id: number): Promise<{
     id: number;
@@ -1996,7 +2009,7 @@ async removeRoleFromUser(userId: number, roleId: number) {
     roleId: number;
     roleName: string; // User's registration type (superadmin, admin, managed_artist, etc.)
     professionalRole?: string; // Only for artists/musicians/professionals - their actual role/position
-    secondaryRoles?: Array<{roleId: number; roleName: string}>;
+    secondaryRoles?: Array<{ roleId: number; roleName: string }>;
   } | undefined> {
     try {
       // Get user with role name (registration type)
@@ -2059,7 +2072,7 @@ async removeRoleFromUser(userId: number, roleId: number) {
     roleId: number;
     roleName: string; // User's registration type
     professionalRole?: string; // Their actual role/position (for artists/musicians/professionals)
-    secondaryRoles?: Array<{roleId: number; roleName: string}>;
+    secondaryRoles?: Array<{ roleId: number; roleName: string }>;
   }>> {
     try {
       // Get users with role names (registration types)
@@ -2124,7 +2137,7 @@ async removeRoleFromUser(userId: number, roleId: number) {
           roleName: role.roleName
         });
         return acc;
-      }, {} as Record<number, Array<{roleId: number; roleName: string}>>);
+      }, {} as Record<number, Array<{ roleId: number; roleName: string }>>);
 
       // Combine results
       return usersWithProfessionalRoles.map(user => ({
@@ -2163,7 +2176,7 @@ async removeRoleFromUser(userId: number, roleId: number) {
     }
   }
 
-  async getUserSecondaryRoles(userId: number): Promise<Array<{roleId: number; roleName: string}>> {
+  async getUserSecondaryRoles(userId: number): Promise<Array<{ roleId: number; roleName: string }>> {
     try {
       const result = await db
         .select({
@@ -2181,7 +2194,7 @@ async removeRoleFromUser(userId: number, roleId: number) {
     }
   }
 
-  async getDemoUsers(): Promise<Array<{id: number, email: string, fullName: string, roleName: string}>> {
+  async getDemoUsers(): Promise<Array<{ id: number, email: string, fullName: string, roleName: string }>> {
     const result = await db
       .select({
         id: users.id,
@@ -2193,7 +2206,7 @@ async removeRoleFromUser(userId: number, roleId: number) {
       .innerJoin(roles, eq(users.roleId, roles.id))
       .where(eq(users.isDemo, true))
       .orderBy(roles.id, users.fullName);
-    
+
     return result;
   }
 
@@ -2203,10 +2216,10 @@ async removeRoleFromUser(userId: number, roleId: number) {
   // async userHasRole(userId: number, roleId: number): Promise<boolean> {
   //   const user = await this.getUser(userId);
   //   if (!user) return false;
-    
+
   //   // Check primary role
   //   if (user.roleId === roleId) return true;
-    
+
   //   // Check secondary roles
   //   const secondaryRoles = user.secondaryRoles as number[] || [];
   //   return secondaryRoles.includes(roleId);
@@ -2216,7 +2229,7 @@ async removeRoleFromUser(userId: number, roleId: number) {
   // async getUserRoles(userId: number): Promise<number[]> {
   //   const user = await this.getUser(userId);
   //   if (!user) return [];
-    
+
   //   const roles = [user.roleId];
   //   const secondaryRoles = user.secondaryRoles as number[] || [];
   //   return [...roles, ...secondaryRoles];
@@ -2409,15 +2422,15 @@ async removeRoleFromUser(userId: number, roleId: number) {
     return this.getMusician(userId);
   }
 
-  async updateArtistStageNames(userId: number, stageNames: Array<{name: string, isPrimary?: boolean, isForBookings?: boolean, usageType?: 'primary' | 'bookings' | 'both'}>): Promise<Artist | undefined> {
+  async updateArtistStageNames(userId: number, stageNames: Array<{ name: string, isPrimary?: boolean, isForBookings?: boolean, usageType?: 'primary' | 'bookings' | 'both' }>): Promise<Artist | undefined> {
     console.log('Updating artist stage names for user:', userId, 'with data:', stageNames);
-    
+
     // Ensure at least one primary name exists
     const hasPrimary = stageNames.some(sn => sn.isPrimary || sn.usageType === 'primary' || sn.usageType === 'both');
     if (!hasPrimary && stageNames.length > 0) {
       stageNames[0] = { ...stageNames[0], isPrimary: true, usageType: 'primary' };
     }
-    
+
     // Process each stage name to set proper usage type
     const processedStageNames = stageNames.map(sn => ({
       name: sn.name,
@@ -2425,25 +2438,25 @@ async removeRoleFromUser(userId: number, roleId: number) {
       isForBookings: sn.isForBookings || sn.usageType === 'bookings' || sn.usageType === 'both',
       usageType: sn.usageType || (sn.isPrimary ? 'primary' : 'bookings')
     }));
-    
+
     await db
       .update(artists)
       .set({ stageNames: processedStageNames })
       .where(eq(artists.userId, userId));
-    
+
     console.log('Successfully updated artist stage names');
     return this.getArtist(userId);
   }
 
-  async updateMusicianStageNames(userId: number, stageNames: Array<{name: string, isPrimary?: boolean, isForBookings?: boolean, usageType?: 'primary' | 'bookings' | 'both'}>): Promise<Musician | undefined> {
+  async updateMusicianStageNames(userId: number, stageNames: Array<{ name: string, isPrimary?: boolean, isForBookings?: boolean, usageType?: 'primary' | 'bookings' | 'both' }>): Promise<Musician | undefined> {
     console.log('Updating musician stage names for user:', userId, 'with data:', stageNames);
-    
+
     // Ensure at least one primary name exists
     const hasPrimary = stageNames.some(sn => sn.isPrimary || sn.usageType === 'primary' || sn.usageType === 'both');
     if (!hasPrimary && stageNames.length > 0) {
       stageNames[0] = { ...stageNames[0], isPrimary: true, usageType: 'primary' };
     }
-    
+
     // Process each stage name to set proper usage type
     const processedStageNames = stageNames.map(sn => ({
       name: sn.name,
@@ -2451,12 +2464,12 @@ async removeRoleFromUser(userId: number, roleId: number) {
       isForBookings: sn.isForBookings || sn.usageType === 'bookings' || sn.usageType === 'both',
       usageType: sn.usageType || (sn.isPrimary ? 'primary' : 'bookings')
     }));
-    
+
     await db
       .update(musicians)
       .set({ stageNames: processedStageNames })
       .where(eq(musicians.userId, userId));
-      
+
     console.log('Successfully updated musician stage names');
     return this.getMusician(userId);
   }
@@ -2479,7 +2492,7 @@ async removeRoleFromUser(userId: number, roleId: number) {
   // Global professions management
   async getGlobalProfessions(): Promise<any[]> {
     const results = await db.select().from(globalProfessions).orderBy(globalProfessions.category, globalProfessions.name);
-    
+
     // Group by category
     const grouped = results.reduce((acc, profession) => {
       if (!acc[profession.category]) {
@@ -2488,7 +2501,7 @@ async removeRoleFromUser(userId: number, roleId: number) {
       acc[profession.category].push(profession);
       return acc;
     }, {} as Record<string, any[]>);
-    
+
     return grouped;
   }
 
@@ -2676,7 +2689,7 @@ async removeRoleFromUser(userId: number, roleId: number) {
       ...merchandiseData,
       categoryId: merchandiseData.categoryId || 1 // Default to "Apparel" category
     };
-    
+
     const [createdMerchandise] = await db
       .insert(merchandise)
       .values(dataWithCategory)
@@ -2720,12 +2733,12 @@ async removeRoleFromUser(userId: number, roleId: number) {
   async getAllBookings(): Promise<Booking[]> {
     try {
       const bookingsList = await db.select().from(bookings);
-      
+
       // Enrich booking data with artist information for display
       const enrichedBookings = await Promise.all(
         bookingsList.map(async (booking) => {
           let primaryArtist = null;
-          
+
           if (booking.primaryArtistUserId) {
             const artist = await this.getArtist(booking.primaryArtistUserId);
             if (artist) {
@@ -2733,7 +2746,7 @@ async removeRoleFromUser(userId: number, roleId: number) {
               const primaryStageName = artist.stageNames && Array.isArray(artist.stageNames) && artist.stageNames.length > 0
                 ? (typeof artist.stageNames[0] === 'object' ? artist.stageNames[0].name : artist.stageNames[0])
                 : 'Unknown Artist';
-                
+
               primaryArtist = {
                 userId: artist.userId,
                 stageName: primaryStageName,
@@ -2743,7 +2756,7 @@ async removeRoleFromUser(userId: number, roleId: number) {
               };
             }
           }
-          
+
           return {
             ...booking,
             primaryArtist,
@@ -2755,7 +2768,7 @@ async removeRoleFromUser(userId: number, roleId: number) {
           };
         })
       );
-      
+
       return enrichedBookings;
     } catch (error) {
       console.error('Error fetching bookings:', error);
@@ -2824,7 +2837,7 @@ async removeRoleFromUser(userId: number, roleId: number) {
   async updateUserPreferences(userId: number, preferences: Partial<InsertUserPreferences>): Promise<UserPreferences> {
     // Check if preferences exist, if not create them
     const existing = await this.getUserPreferences(userId);
-    
+
     if (existing) {
       await db
         .update(userPreferences)
@@ -2835,7 +2848,7 @@ async removeRoleFromUser(userId: number, roleId: number) {
         .insert(userPreferences)
         .values({ userId, ...preferences });
     }
-    
+
     return this.getUserPreferences(userId) as Promise<UserPreferences>;
   }
 
@@ -2864,10 +2877,10 @@ async removeRoleFromUser(userId: number, roleId: number) {
   }
 
   async updateRecommendationEngagement(recommendationId: number, engagementType: 'viewed' | 'clicked'): Promise<void> {
-    const updateData = engagementType === 'viewed' 
+    const updateData = engagementType === 'viewed'
       ? { viewedAt: new Date() }
       : { clickedAt: new Date() };
-    
+
     await db
       .update(musicRecommendations)
       .set(updateData)
@@ -2911,7 +2924,7 @@ async removeRoleFromUser(userId: number, roleId: number) {
         )
       ))
       .groupBy(userInteractions.userId);
-    
+
     return interactions.map(i => i.userId);
   }
 
@@ -2946,7 +2959,7 @@ async removeRoleFromUser(userId: number, roleId: number) {
   async getTrendingSongs(timeframe: string): Promise<Song[]> {
     // Get top songs based on trending metrics
     const trendingSongIds = await db
-      .select({ 
+      .select({
         songId: trendingMetrics.songId,
         totalCount: sql<number>`sum(${trendingMetrics.count})`.as('totalCount')
       })
@@ -2983,7 +2996,7 @@ async removeRoleFromUser(userId: number, roleId: number) {
   async incrementCampaignImpressions(campaignId: number): Promise<void> {
     await db
       .update(crossPromotionCampaigns)
-      .set({ 
+      .set({
         impressions: sql`${crossPromotionCampaigns.impressions} + 1`
       })
       .where(eq(crossPromotionCampaigns.id, campaignId));
@@ -3008,7 +3021,7 @@ async removeRoleFromUser(userId: number, roleId: number) {
       .from(songs)
       .innerJoin(artists, eq(songs.artistUserId, artists.userId))
       .where(eq(artists.genre, genre));
-    
+
     return artistSongs;
   }
 
@@ -3081,7 +3094,7 @@ async removeRoleFromUser(userId: number, roleId: number) {
       .leftJoin(users, eq(serviceAssignments.assignedUserId, users.id))
       .leftJoin(services, eq(serviceAssignments.serviceId, services.id))
       .where(eq(serviceAssignments.isActive, true));
-    
+
     return assignments as ServiceAssignment[];
   }
 
@@ -3118,7 +3131,7 @@ async removeRoleFromUser(userId: number, roleId: number) {
       .update(serviceAssignments)
       .set(updates)
       .where(eq(serviceAssignments.id, id));
-    
+
     const [updated] = await db
       .select()
       .from(serviceAssignments)
@@ -3385,7 +3398,7 @@ async removeRoleFromUser(userId: number, roleId: number) {
         VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)
         RETURNING *
       `;
-      
+
       const result = await pool.query(sql, [
         objective.bookingId,
         objective.objectiveType,
@@ -3400,7 +3413,7 @@ async removeRoleFromUser(userId: number, roleId: number) {
         JSON.stringify(objective.tags || []),
         JSON.stringify(objective.relatedProfessionals || [])
       ]);
-      
+
       return result.rows[0];
     } catch (error) {
       console.error('Error creating internal objective:', error);
@@ -3415,7 +3428,7 @@ async removeRoleFromUser(userId: number, roleId: number) {
         WHERE booking_id = $1 
         ORDER BY created_at DESC
       `;
-      
+
       const result = await pool.query(sql, [bookingId]);
       return result.rows;
     } catch (error) {
@@ -3432,7 +3445,7 @@ async removeRoleFromUser(userId: number, roleId: number) {
         WHERE id = $2 
         RETURNING *
       `;
-      
+
       const result = await pool.query(sql, [status, objectiveId]);
       return result.rows[0];
     } catch (error) {
@@ -3449,7 +3462,7 @@ async removeRoleFromUser(userId: number, roleId: number) {
         VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
         RETURNING *
       `;
-      
+
       const result = await pool.query(sql, [
         assignment.bookingId,
         assignment.professionalUserId,
@@ -3461,7 +3474,7 @@ async removeRoleFromUser(userId: number, roleId: number) {
         assignment.budget || 0,
         assignment.status || 'pending'
       ]);
-      
+
       return result.rows[0];
     } catch (error) {
       console.error('Error creating professional assignment:', error);
@@ -3476,7 +3489,7 @@ async removeRoleFromUser(userId: number, roleId: number) {
         WHERE professional_user_id = $1 
         ORDER BY last_updated DESC
       `;
-      
+
       const result = await pool.query(sql, [professionalUserId]);
       return result.rows;
     } catch (error) {
@@ -3493,7 +3506,7 @@ async removeRoleFromUser(userId: number, roleId: number) {
         VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
         RETURNING *
       `;
-      
+
       const result = await pool.query(sql, [
         project.bookingId,
         project.projectName,
@@ -3505,7 +3518,7 @@ async removeRoleFromUser(userId: number, roleId: number) {
         JSON.stringify(project.deliverables || []),
         JSON.stringify(project.budget || {})
       ]);
-      
+
       return result.rows[0];
     } catch (error) {
       console.error('Error creating cross-platform project:', error);
@@ -3521,7 +3534,7 @@ async removeRoleFromUser(userId: number, roleId: number) {
         VALUES ($1, $2, $3, $4, $5, $6)
         RETURNING *
       `;
-      
+
       const result = await pool.query(sql, [
         equipment.professionalUserId,
         equipment.equipmentType,
@@ -3530,7 +3543,7 @@ async removeRoleFromUser(userId: number, roleId: number) {
         JSON.stringify(equipment.specifications || {}),
         equipment.condition || 'good'
       ]);
-      
+
       return result.rows[0];
     } catch (error) {
       console.error('Error adding professional equipment:', error);
@@ -3544,15 +3557,15 @@ async removeRoleFromUser(userId: number, roleId: number) {
       // Calculate actual revenue projections based on real data
       const bookingsCount = await this.getAllBookings();
       const usersCount = await this.getAllUsers();
-      
+
       const monthlyBookingRevenue = bookingsCount.length * 150; // Average booking commission
       const monthlySubscriptionRevenue = usersCount.length * 0.15 * 89.99; // 15% subscription rate at avg tier
       const monthlyProfessionalServices = 50000; // Professional services revenue
       const monthlySplitsheetRevenue = 1000; // Splitsheet services
-      
+
       const monthlyTotal = monthlyBookingRevenue + monthlySubscriptionRevenue + monthlyProfessionalServices + monthlySplitsheetRevenue;
       const annualTotal = monthlyTotal * 12;
-      
+
       return {
         monthly: monthlyTotal,
         annual: annualTotal,
@@ -3651,7 +3664,7 @@ async removeRoleFromUser(userId: number, roleId: number) {
   async deleteBookingProfessionalAssignment(id: number): Promise<void> {
     await db.delete(bookingProfessionalAssignments).where(eq(bookingProfessionalAssignments.id, id));
   }
-  
+
   // OppHub professional guidance methods
   async createOppHubProfessionalGuidance(guidance: any): Promise<any> {
     const [result] = await db.insert(oppHubProfessionalGuidance).values(guidance).returning();
@@ -3674,7 +3687,7 @@ async removeRoleFromUser(userId: number, roleId: number) {
     } else if (userServiceId) {
       return await db.select().from(serviceReviews).where(eq(serviceReviews.userServiceId, userServiceId));
     }
-    
+
     return await db.select().from(serviceReviews);
   }
 
@@ -3802,7 +3815,7 @@ async removeRoleFromUser(userId: number, roleId: number) {
       .update(discountConditions)
       .set(updates)
       .where(eq(discountConditions.id, id));
-    
+
     const [updated] = await db
       .select()
       .from(discountConditions)
@@ -3815,17 +3828,17 @@ async removeRoleFromUser(userId: number, roleId: number) {
       .select()
       .from(discountConditions)
       .where(eq(discountConditions.id, conditionId));
-    
+
     if (!condition || !condition.isActive) return false;
-    
+
     // Check if within valid date range
     const now = new Date();
     if (condition.validFrom && new Date(condition.validFrom) > now) return false;
     if (condition.validUntil && new Date(condition.validUntil) < now) return false;
-    
+
     // Check usage limit
     if (condition.usageLimit && condition.currentUsage >= condition.usageLimit) return false;
-    
+
     // Validate condition based on type
     switch (condition.conditionType) {
       case 'ticket_id':
@@ -3838,7 +3851,7 @@ async removeRoleFromUser(userId: number, roleId: number) {
             eq(fanEngagement.engagementValue, userValue)
           ));
         return engagement.length > 0;
-      
+
       case 'ppv_code':
         // Check if user has valid PPV code
         const ppvEngagement = await db
@@ -3849,7 +3862,7 @@ async removeRoleFromUser(userId: number, roleId: number) {
             eq(fanEngagement.engagementValue, userValue)
           ));
         return ppvEngagement.length > 0;
-      
+
       default:
         return condition.conditionValue === userValue;
     }
@@ -3885,7 +3898,7 @@ async removeRoleFromUser(userId: number, roleId: number) {
       .update(storeCurrencies)
       .set({ ...updates, lastUpdated: new Date() })
       .where(eq(storeCurrencies.id, id));
-    
+
     const [updated] = await db
       .select()
       .from(storeCurrencies)
@@ -3919,13 +3932,13 @@ async removeRoleFromUser(userId: number, roleId: number) {
       .insert(adminAssignments)
       .values(assignment)
       .returning();
-    
+
     // Enrich with user names immediately
     const [adminUser, managedUser] = await Promise.all([
       this.getUser(assignment.adminUserId),
       this.getUser(assignment.managedUserId)
     ]);
-    
+
     return {
       ...created,
       adminName: adminUser?.fullName || 'Unknown Admin',
@@ -3938,13 +3951,13 @@ async removeRoleFromUser(userId: number, roleId: number) {
       .select()
       .from(adminAssignments)
       .where(eq(adminAssignments.isActive, true));
-    
+
     if (adminUserId) {
       baseQuery = baseQuery.where(eq(adminAssignments.adminUserId, adminUserId));
     }
-    
+
     const assignments = await baseQuery;
-    
+
     // Fetch user names for each assignment
     const enrichedAssignments = await Promise.all(
       assignments.map(async (assignment) => {
@@ -3952,7 +3965,7 @@ async removeRoleFromUser(userId: number, roleId: number) {
           this.getUser(assignment.adminUserId),
           this.getUser(assignment.managedUserId)
         ]);
-        
+
         return {
           ...assignment,
           adminName: adminUser?.fullName || 'Unknown Admin',
@@ -3960,7 +3973,7 @@ async removeRoleFromUser(userId: number, roleId: number) {
         };
       })
     );
-    
+
     return enrichedAssignments;
   }
 
@@ -3969,14 +3982,14 @@ async removeRoleFromUser(userId: number, roleId: number) {
       .select()
       .from(adminAssignments)
       .where(eq(adminAssignments.id, id));
-    
+
     if (!assignment) return undefined;
-    
+
     const [adminUser, managedUser] = await Promise.all([
       this.getUser(assignment.adminUserId),
       this.getUser(assignment.managedUserId)
     ]);
-    
+
     return {
       ...assignment,
       adminName: adminUser?.fullName || 'Unknown Admin',
@@ -4004,7 +4017,7 @@ async removeRoleFromUser(userId: number, roleId: number) {
       .insert(bookingAssignments)
       .values(assignment)
       .returning();
-    
+
     // Enrich with user name immediately
     const assignedUser = await this.getUser(assignment.assignedUserId);
     return {
@@ -4018,25 +4031,25 @@ async removeRoleFromUser(userId: number, roleId: number) {
       .select()
       .from(bookingAssignments)
       .where(eq(bookingAssignments.isActive, true));
-    
+
     if (bookingId) {
       baseQuery = baseQuery.where(eq(bookingAssignments.bookingId, bookingId));
     }
-    
+
     const assignments = await baseQuery;
-    
+
     // Fetch user names for each assignment
     const enrichedAssignments = await Promise.all(
       assignments.map(async (assignment) => {
         const assignedUser = await this.getUser(assignment.assignedUserId);
-        
+
         return {
           ...assignment,
           assignedUserName: assignedUser?.fullName || 'Unknown User'
         };
       })
     );
-    
+
     return enrichedAssignments;
   }
 
@@ -4048,18 +4061,18 @@ async removeRoleFromUser(userId: number, roleId: number) {
         eq(bookingAssignments.bookingId, bookingId),
         eq(bookingAssignments.isActive, true)
       ));
-    
+
     const enrichedAssignments = await Promise.all(
       assignments.map(async (assignment) => {
         const assignedUser = await this.getUser(assignment.assignedUserId);
-        
+
         return {
           ...assignment,
           assignedUserName: assignedUser?.fullName || 'Unknown User'
         };
       })
     );
-    
+
     return enrichedAssignments;
   }
 
@@ -4068,11 +4081,11 @@ async removeRoleFromUser(userId: number, roleId: number) {
       .select()
       .from(bookingAssignments)
       .where(eq(bookingAssignments.id, id));
-    
+
     if (!assignment) return undefined;
-    
+
     const assignedUser = await this.getUser(assignment.assignedUserId);
-    
+
     return {
       ...assignment,
       assignedUserName: assignedUser?.fullName || 'Unknown User'
@@ -4099,13 +4112,13 @@ async removeRoleFromUser(userId: number, roleId: number) {
       .insert(artistMusicianAssignments)
       .values(assignment)
       .returning();
-    
+
     // Enrich with user names immediately
     const [talentUser, assigneeUser] = await Promise.all([
       this.getUser(assignment.managedTalentId),
       this.getUser(assignment.assigneeId)
     ]);
-    
+
     return {
       ...created,
       talentName: talentUser?.fullName || 'Unknown Talent',
@@ -4118,13 +4131,13 @@ async removeRoleFromUser(userId: number, roleId: number) {
       .select()
       .from(artistMusicianAssignments)
       .where(eq(artistMusicianAssignments.isActive, true));
-    
+
     if (artistUserId) {
       baseQuery = baseQuery.where(eq(artistMusicianAssignments.artistUserId, artistUserId));
     }
-    
+
     const assignments = await baseQuery;
-    
+
     // Fetch user names for each assignment
     const enrichedAssignments = await Promise.all(
       assignments.map(async (assignment) => {
@@ -4132,7 +4145,7 @@ async removeRoleFromUser(userId: number, roleId: number) {
           this.getUser(assignment.artistUserId),
           this.getUser(assignment.musicianUserId)
         ]);
-        
+
         return {
           ...assignment,
           artistName: artistUser?.fullName || 'Unknown Artist',
@@ -4140,7 +4153,7 @@ async removeRoleFromUser(userId: number, roleId: number) {
         };
       })
     );
-    
+
     return enrichedAssignments;
   }
 
@@ -4152,14 +4165,14 @@ async removeRoleFromUser(userId: number, roleId: number) {
         eq(artistMusicianAssignments.managedTalentId, managedTalentId),
         eq(artistMusicianAssignments.isActive, true)
       ));
-    
+
     const enrichedAssignments = await Promise.all(
       assignments.map(async (assignment) => {
         const [talentUser, assigneeUser] = await Promise.all([
           this.getUser(assignment.managedTalentId),
           this.getUser(assignment.assigneeId)
         ]);
-        
+
         return {
           ...assignment,
           talentName: talentUser?.fullName || 'Unknown Talent',
@@ -4167,7 +4180,7 @@ async removeRoleFromUser(userId: number, roleId: number) {
         };
       })
     );
-    
+
     return enrichedAssignments;
   }
 
@@ -4179,14 +4192,14 @@ async removeRoleFromUser(userId: number, roleId: number) {
         eq(artistMusicianAssignments.assigneeId, assigneeId),
         eq(artistMusicianAssignments.isActive, true)
       ));
-    
+
     const enrichedAssignments = await Promise.all(
       assignments.map(async (assignment) => {
         const [talentUser, assigneeUser] = await Promise.all([
           this.getUser(assignment.managedTalentId),
           this.getUser(assignment.assigneeId)
         ]);
-        
+
         return {
           ...assignment,
           talentName: talentUser?.fullName || 'Unknown Talent',
@@ -4194,7 +4207,7 @@ async removeRoleFromUser(userId: number, roleId: number) {
         };
       })
     );
-    
+
     return enrichedAssignments;
   }
 
@@ -4209,14 +4222,14 @@ async removeRoleFromUser(userId: number, roleId: number) {
         ),
         eq(artistMusicianAssignments.isActive, true)
       ));
-    
+
     const enrichedAssignments = await Promise.all(
       assignments.map(async (assignment) => {
         const [talentUser, assigneeUser] = await Promise.all([
           this.getUser(assignment.managedTalentId),
           this.getUser(assignment.assigneeId)
         ]);
-        
+
         return {
           ...assignment,
           talentName: talentUser?.fullName || 'Unknown Talent',
@@ -4224,7 +4237,7 @@ async removeRoleFromUser(userId: number, roleId: number) {
         };
       })
     );
-    
+
     return enrichedAssignments;
   }
 
@@ -4233,14 +4246,14 @@ async removeRoleFromUser(userId: number, roleId: number) {
       .select()
       .from(artistMusicianAssignments)
       .where(eq(artistMusicianAssignments.id, id));
-    
+
     if (!assignment) return undefined;
-    
+
     const [talentUser, assigneeUser] = await Promise.all([
       this.getUser(assignment.managedTalentId),
       this.getUser(assignment.assigneeId)
     ]);
-    
+
     return {
       ...assignment,
       talentName: talentUser?.fullName || 'Unknown Talent',
@@ -4299,7 +4312,7 @@ async removeRoleFromUser(userId: number, roleId: number) {
       .update(bookingMediaFiles)
       .set(updates)
       .where(eq(bookingMediaFiles.id, id));
-    
+
     const [updated] = await db
       .select()
       .from(bookingMediaFiles)
@@ -4351,7 +4364,7 @@ async removeRoleFromUser(userId: number, roleId: number) {
       .update(bookingMediaAccess)
       .set(updates)
       .where(eq(bookingMediaAccess.id, id));
-    
+
     const [updated] = await db
       .select()
       .from(bookingMediaAccess)
@@ -4405,7 +4418,7 @@ async removeRoleFromUser(userId: number, roleId: number) {
       .update(bookingMediaCategories)
       .set(updates)
       .where(eq(bookingMediaCategories.id, id));
-    
+
     const [updated] = await db
       .select()
       .from(bookingMediaCategories)
@@ -4460,7 +4473,7 @@ async removeRoleFromUser(userId: number, roleId: number) {
       .from(releaseContracts)
       .leftJoin(users, eq(releaseContracts.managedArtistUserId, users.id))
       .orderBy(desc(releaseContracts.requestedAt));
-    
+
     return contracts as ReleaseContract[];
   }
 
@@ -4469,7 +4482,7 @@ async removeRoleFromUser(userId: number, roleId: number) {
       .update(releaseContracts)
       .set({ ...updates, updatedAt: new Date() })
       .where(eq(releaseContracts.id, id));
-    
+
     const [updated] = await db
       .select()
       .from(releaseContracts)
@@ -4547,7 +4560,7 @@ async removeRoleFromUser(userId: number, roleId: number) {
       .update(managementApplications)
       .set({ ...updates, updatedAt: new Date() })
       .where(eq(managementApplications.id, id));
-    
+
     const [updated] = await db
       .select()
       .from(managementApplications)
@@ -4728,7 +4741,7 @@ async removeRoleFromUser(userId: number, roleId: number) {
       .where(and(...conditions))
       .orderBy(desc(serviceDiscountOverrides.createdAt))
       .limit(1);
-    
+
     return override || undefined;
   }
 
@@ -4737,7 +4750,7 @@ async removeRoleFromUser(userId: number, roleId: number) {
       .update(serviceDiscountOverrides)
       .set(updates)
       .where(eq(serviceDiscountOverrides.id, id));
-    
+
     const [updated] = await db
       .select()
       .from(serviceDiscountOverrides)
@@ -4759,15 +4772,15 @@ async removeRoleFromUser(userId: number, roleId: number) {
 
     // Get management tier info for default discounts
     const managementTiers = await this.getManagementTiers();
-    
+
     // Check if user is managed (roleId 3, 5, 7)
     if ([3, 5, 7].includes(user.roleId)) {
       const artist = await this.getArtist(userId);
       const musician = await this.getMusician(userId);
       const professional = await this.getProfessional(userId);
-      
+
       const managementTierId = artist?.managementTierId || musician?.managementTierId || professional?.managementTierId;
-      
+
       if (managementTierId) {
         const tier = managementTiers.find(t => t.id === managementTierId);
         if (tier) {
@@ -4804,11 +4817,11 @@ async removeRoleFromUser(userId: number, roleId: number) {
       .select()
       .from(adminAssignments)
       .where(eq(adminAssignments.adminUserId, adminUserId));
-    
+
     if (adminAssignments.length === 0) return [];
-    
+
     const managedUserIds = adminAssignments.map(a => a.managedUserId);
-    
+
     return await db
       .select()
       .from(managementApplications)
@@ -4866,7 +4879,7 @@ async removeRoleFromUser(userId: number, roleId: number) {
       .where(and(...conditions))
       .orderBy(desc(legalAssignments.assignedAt))
       .limit(1);
-    
+
     return assignment || undefined;
   }
 
@@ -4918,7 +4931,7 @@ async removeRoleFromUser(userId: number, roleId: number) {
 
     // Only managed professionals (roleId 7) can represent Wai'tuMusic without conflict
     const isManagedProfessional = professional.roleId === 7;
-    
+
     // Check if professional is assigned to any managed users (artists, musicians, professionals)
     const clientAssignments = await db
       .select({
@@ -4942,7 +4955,7 @@ async removeRoleFromUser(userId: number, roleId: number) {
     // Check each client assignment for conflicts
     for (const assignment of clientAssignments) {
       const isClientManaged = [3, 5, 7].includes(assignment.clientRole); // Managed Artist, Managed Musician, Managed Professional
-      
+
       if (isClientManaged) {
         // If professional is representing a managed user, they cannot represent Wai'tuMusic (conflict of interest)
         // unless the professional is also a managed professional (representing Wai'tuMusic)
@@ -4986,26 +4999,26 @@ async removeRoleFromUser(userId: number, roleId: number) {
     for (const professional of allProfessionals) {
       // Get professional record to check if they're non-performance related
       const professionalRecord = await this.getProfessional(professional.id);
-      
+
       if (!professionalRecord) continue;
 
       // Filter for non-performance related professionals (legal, consulting, administrative services)
       const nonPerformanceSpecialties = [
-        'Legal Services', 'Business Consulting', 'Marketing Consulting', 
+        'Legal Services', 'Business Consulting', 'Marketing Consulting',
         'Financial Advisory', 'Contract Negotiation', 'Rights Management',
         'Legal Counsel', 'Business Development', 'Strategic Planning'
       ];
-      
-      const isNonPerformance = nonPerformanceSpecialties.some(specialty => 
+
+      const isNonPerformance = nonPerformanceSpecialties.some(specialty =>
         professionalRecord.specialty?.toLowerCase().includes(specialty.toLowerCase())
       ) || professionalRecord.specialty?.toLowerCase().includes('consulting') ||
-         professionalRecord.specialty?.toLowerCase().includes('legal') ||
-         professionalRecord.specialty?.toLowerCase().includes('advisory');
+        professionalRecord.specialty?.toLowerCase().includes('legal') ||
+        professionalRecord.specialty?.toLowerCase().includes('advisory');
 
       if (!isNonPerformance) continue; // Skip performance-related professionals
 
       const conflictCheck = await this.checkLegalConflictOfInterest(professional.id);
-      
+
       if (!conflictCheck.hasConflict) {
         availableProfessionals.push({
           ...professional,
@@ -5075,7 +5088,7 @@ async removeRoleFromUser(userId: number, roleId: number) {
       bookingId: stagePlot.bookingId,
       createdBy: stagePlot.createdBy,
     };
-    
+
     const result = await db.insert(stagePlots).values(cleanData).returning();
     return result[0];
   }
@@ -5111,7 +5124,7 @@ async removeRoleFromUser(userId: number, roleId: number) {
       bookingId: patchList.bookingId,
       createdBy: patchList.createdBy,
     };
-    
+
     const result = await db.insert(mixerPatchLists).values(cleanData).returning();
     return result[0];
   }
@@ -5137,7 +5150,7 @@ async removeRoleFromUser(userId: number, roleId: number) {
     if (storedSetlist) {
       return storedSetlist;
     }
-    
+
     // Return null if no setlist found (don't return demo data)
     return null;
   }
@@ -5162,7 +5175,7 @@ async removeRoleFromUser(userId: number, roleId: number) {
       totalDuration: template.totalDuration,
       createdBy: template.createdBy,
     };
-    
+
     const result = await db.insert(setlistTemplates).values(cleanData).returning();
     return result[0];
   }
@@ -5454,7 +5467,7 @@ async removeRoleFromUser(userId: number, roleId: number) {
       .select({ count: invoices.id })
       .from(invoices)
       .then(result => result.length);
-    
+
     const year = new Date().getFullYear();
     const paddedCount = String(count + 1).padStart(6, '0');
     return `INV-${year}-${paddedCount}`;
@@ -5502,7 +5515,7 @@ async removeRoleFromUser(userId: number, roleId: number) {
       .select({ count: payoutRequests.id })
       .from(payoutRequests)
       .then(result => result.length);
-    
+
     const year = new Date().getFullYear();
     const paddedCount = String(count + 1).padStart(6, '0');
     return `PAYOUT-${year}-${paddedCount}`;
@@ -5626,7 +5639,7 @@ async removeRoleFromUser(userId: number, roleId: number) {
       .select({ count: receipts.id })
       .from(receipts)
       .then(result => result.length);
-    
+
     const year = new Date().getFullYear();
     const paddedCount = String(count + 1).padStart(6, '0');
     return `REC-${year}-${paddedCount}`;
@@ -5736,7 +5749,7 @@ async removeRoleFromUser(userId: number, roleId: number) {
   async incrementWebsiteViews(id: number): Promise<void> {
     await db
       .update(websiteIntegrations)
-      .set({ 
+      .set({
         viewCount: sql`${websiteIntegrations.viewCount} + 1`,
         lastViewed: new Date()
       })
@@ -5866,12 +5879,12 @@ async removeRoleFromUser(userId: number, roleId: number) {
         basePrice: artists.basePrice
       }
     })
-    .from(userFavorites)
-    .leftJoin(users, eq(userFavorites.favoriteUserId, users.id))
-    .leftJoin(artists, eq(userFavorites.favoriteUserId, artists.userId))
-    .where(eq(userFavorites.userId, userId))
-    .orderBy(desc(userFavorites.createdAt));
-    
+      .from(userFavorites)
+      .leftJoin(users, eq(userFavorites.favoriteUserId, users.id))
+      .leftJoin(artists, eq(userFavorites.favoriteUserId, artists.userId))
+      .where(eq(userFavorites.userId, userId))
+      .orderBy(desc(userFavorites.createdAt));
+
     return result;
   }
 
@@ -5883,7 +5896,7 @@ async removeRoleFromUser(userId: number, roleId: number) {
         eq(userFavorites.favoriteUserId, favoriteUserId)
       ))
       .limit(1);
-    
+
     return result.length > 0;
   }
 
@@ -5911,39 +5924,39 @@ async removeRoleFromUser(userId: number, roleId: number) {
   async getOpportunities(filters?: { status?: string; isDemo?: boolean; categoryId?: number; isVerified?: boolean }): Promise<any[]> {
     try {
       console.log('getOpportunities called with filters:', filters);
-      
+
       // Use Drizzle ORM select method like other working methods in this file
       let query = db.select().from(opportunities);
-      
+
       const conditions = [];
-      
+
       if (filters?.status) {
         conditions.push(eq(opportunities.status, filters.status));
       }
-      
+
       if (filters?.isDemo !== undefined) {
         conditions.push(eq(opportunities.isDemo, filters.isDemo));
       }
-      
+
       if (filters?.categoryId) {
         conditions.push(eq(opportunities.categoryId, filters.categoryId));
       }
-      
+
       if (filters?.isVerified !== undefined) {
         conditions.push(eq(opportunities.isVerified, filters.isVerified));
       }
-      
+
       if (conditions.length > 0) {
         query = query.where(and(...conditions));
       }
-      
+
       const result = await query
         .orderBy(desc(opportunities.createdAt))
         .limit(100);
-      
+
       console.log('Drizzle query result count:', result.length);
       console.log('First result sample:', result[0] ? JSON.stringify(result[0], null, 2) : 'No results');
-      
+
       return result;
     } catch (error) {
       console.error('Error fetching opportunities:', error);
@@ -6042,10 +6055,10 @@ async removeRoleFromUser(userId: number, roleId: number) {
         opportunityDeadline: opportunities.applicationDeadline,
         opportunityLocation: opportunities.location
       })
-      .from(oppHubApplicationGuidance)
-      .leftJoin(opportunities, eq(oppHubApplicationGuidance.opportunityId, opportunities.id))
-      .where(eq(oppHubApplicationGuidance.targetUserId, userId))
-      .orderBy(desc(oppHubApplicationGuidance.priorityLevel), desc(oppHubApplicationGuidance.confidenceScore));
+        .from(oppHubApplicationGuidance)
+        .leftJoin(opportunities, eq(oppHubApplicationGuidance.opportunityId, opportunities.id))
+        .where(eq(oppHubApplicationGuidance.targetUserId, userId))
+        .orderBy(desc(oppHubApplicationGuidance.priorityLevel), desc(oppHubApplicationGuidance.confidenceScore));
 
       if (opportunityId) {
         query = query.where(eq(oppHubApplicationGuidance.opportunityId, opportunityId));
@@ -6109,14 +6122,14 @@ async removeRoleFromUser(userId: number, roleId: number) {
         opportunityTitle: opportunities.title,
         opportunityOrganizer: opportunities.organizer
       })
-      .from(oppHubDeadlineTracking)
-      .leftJoin(opportunities, eq(oppHubDeadlineTracking.opportunityId, opportunities.id))
-      .where(and(
-        eq(oppHubDeadlineTracking.userId, userId),
-        eq(oppHubDeadlineTracking.isActive, true)
-      ))
-      .orderBy(asc(oppHubDeadlineTracking.deadlineDate))
-      .execute();
+        .from(oppHubDeadlineTracking)
+        .leftJoin(opportunities, eq(oppHubDeadlineTracking.opportunityId, opportunities.id))
+        .where(and(
+          eq(oppHubDeadlineTracking.userId, userId),
+          eq(oppHubDeadlineTracking.isActive, true)
+        ))
+        .orderBy(asc(oppHubDeadlineTracking.deadlineDate))
+        .execute();
     } catch (error) {
       console.error('Error getting deadline tracking:', error);
       return [];
@@ -6167,18 +6180,18 @@ async removeRoleFromUser(userId: number, roleId: number) {
         opportunityOrganizer: opportunities.organizer,
         opportunityDeadline: opportunities.applicationDeadline
       })
-      .from(oppHubApplicationGuidance)
-      .leftJoin(users, eq(oppHubApplicationGuidance.targetUserId, users.id))
-      .leftJoin(artists, eq(oppHubApplicationGuidance.targetUserId, artists.userId))
-      .leftJoin(opportunities, eq(oppHubApplicationGuidance.opportunityId, opportunities.id))
-      .where(gte(oppHubApplicationGuidance.priorityLevel, 3)) // Only managed artists (priority 3+)
-      .orderBy(
-        desc(oppHubApplicationGuidance.priorityLevel), 
-        desc(oppHubApplicationGuidance.confidenceScore),
-        desc(oppHubApplicationGuidance.generatedAt)
-      )
-      .limit(limit)
-      .execute();
+        .from(oppHubApplicationGuidance)
+        .leftJoin(users, eq(oppHubApplicationGuidance.targetUserId, users.id))
+        .leftJoin(artists, eq(oppHubApplicationGuidance.targetUserId, artists.userId))
+        .leftJoin(opportunities, eq(oppHubApplicationGuidance.opportunityId, opportunities.id))
+        .where(gte(oppHubApplicationGuidance.priorityLevel, 3)) // Only managed artists (priority 3+)
+        .orderBy(
+          desc(oppHubApplicationGuidance.priorityLevel),
+          desc(oppHubApplicationGuidance.confidenceScore),
+          desc(oppHubApplicationGuidance.generatedAt)
+        )
+        .limit(limit)
+        .execute();
     } catch (error) {
       console.error('Error getting all managed artist guidance:', error);
       return [];
@@ -6199,7 +6212,7 @@ async removeRoleFromUser(userId: number, roleId: number) {
   async getOpportunityApplications(filters?: { opportunityId?: number; applicantUserId?: number; isDemo?: boolean }): Promise<OpportunityApplication[]> {
     try {
       let conditions: any[] = [];
-      
+
       if (filters?.opportunityId) {
         conditions.push(eq(opportunityApplications.opportunityId, filters.opportunityId));
       }
@@ -6209,13 +6222,13 @@ async removeRoleFromUser(userId: number, roleId: number) {
       if (filters?.isDemo !== undefined) {
         conditions.push(eq(opportunityApplications.isDemo, filters.isDemo));
       }
-      
+
       let query = db.select().from(opportunityApplications);
-      
+
       if (conditions.length > 0) {
         query = query.where(conditions.length === 1 ? conditions[0] : and(...conditions));
       }
-      
+
       const result = await query.orderBy(desc(opportunityApplications.appliedAt));
       return result;
     } catch (error) {
@@ -6226,12 +6239,12 @@ async removeRoleFromUser(userId: number, roleId: number) {
 
   async createOpportunityApplication(application: InsertOpportunityApplication): Promise<OpportunityApplication> {
     const result = await db.insert(opportunityApplications).values(application).returning();
-    
+
     // Increment application count for the opportunity
     await db.update(opportunities)
       .set({ applicationCount: sql`${opportunities.applicationCount} + 1` })
       .where(eq(opportunities.id, application.opportunityId!));
-    
+
     return result[0];
   }
 
@@ -6243,15 +6256,15 @@ async removeRoleFromUser(userId: number, roleId: number) {
   }
 
   async updateOpportunityApplicationStatus(id: number, status: string, reviewNotes?: string, reviewedBy?: number): Promise<OpportunityApplication | null> {
-    const updateData: any = { 
-      status, 
+    const updateData: any = {
+      status,
       reviewedAt: new Date(),
       updatedAt: new Date()
     };
-    
+
     if (reviewNotes) updateData.reviewNotes = reviewNotes;
     if (reviewedBy) updateData.reviewedBy = reviewedBy;
-    
+
     const result = await db.update(opportunityApplications)
       .set(updateData)
       .where(eq(opportunityApplications.id, id))
@@ -6261,14 +6274,14 @@ async removeRoleFromUser(userId: number, roleId: number) {
 
   async getOppHubSubscriptions(filters?: { userId?: number; status?: string }): Promise<OppHubSubscription[]> {
     let query = db.select().from(oppHubSubscriptions);
-    
+
     if (filters?.userId) {
       query = query.where(eq(oppHubSubscriptions.userId, filters.userId));
     }
     if (filters?.status) {
       query = query.where(eq(oppHubSubscriptions.status, filters.status));
     }
-    
+
     const result = await query.orderBy(desc(oppHubSubscriptions.startDate));
     return result;
   }
@@ -6307,14 +6320,14 @@ async removeRoleFromUser(userId: number, roleId: number) {
 
   async getMarketIntelligence(filters?: { status?: string; sourceType?: string }): Promise<MarketIntelligence[]> {
     let query = db.select().from(marketIntelligence);
-    
+
     if (filters?.status) {
       query = query.where(eq(marketIntelligence.status, filters.status));
     }
     if (filters?.sourceType) {
       query = query.where(eq(marketIntelligence.sourceType, filters.sourceType));
     }
-    
+
     const result = await query.orderBy(desc(marketIntelligence.processedAt));
     return result;
   }
@@ -6325,14 +6338,14 @@ async removeRoleFromUser(userId: number, roleId: number) {
   }
 
   async updateMarketIntelligenceStatus(id: number, status: string, reviewNotes?: string, reviewedBy?: number): Promise<MarketIntelligence | null> {
-    const updateData: any = { 
-      status, 
+    const updateData: any = {
+      status,
       updatedAt: new Date()
     };
-    
+
     if (reviewNotes) updateData.reviewNotes = reviewNotes;
     if (reviewedBy) updateData.reviewedBy = reviewedBy;
-    
+
     const result = await db.update(marketIntelligence)
       .set(updateData)
       .where(eq(marketIntelligence.id, id))
@@ -6354,7 +6367,7 @@ async removeRoleFromUser(userId: number, roleId: number) {
 
   async updateOpportunitySourceLastScraped(id: number, opportunitiesFound: number): Promise<void> {
     await db.update(opportunitySources)
-      .set({ 
+      .set({
         lastScraped: new Date(),
         opportunitiesFound,
         updatedAt: new Date()
@@ -6364,14 +6377,14 @@ async removeRoleFromUser(userId: number, roleId: number) {
 
   async getOpportunityMatches(filters?: { artistId?: number; opportunityId?: number }): Promise<OpportunityMatch[]> {
     let query = db.select().from(opportunityMatches);
-    
+
     if (filters?.artistId) {
       query = query.where(eq(opportunityMatches.artistId, filters.artistId));
     }
     if (filters?.opportunityId) {
       query = query.where(eq(opportunityMatches.opportunityId, filters.opportunityId));
     }
-    
+
     const result = await query.orderBy(desc(opportunityMatches.matchScore));
     return result;
   }
@@ -6382,15 +6395,15 @@ async removeRoleFromUser(userId: number, roleId: number) {
   }
 
   async updateOpportunityMatchInteraction(id: number, interactionType: string): Promise<void> {
-    const updateData: any = { 
+    const updateData: any = {
       interactionType,
       updatedAt: new Date()
     };
-    
+
     if (interactionType === 'viewed') {
       updateData.viewedAt = new Date();
     }
-    
+
     await db.update(opportunityMatches)
       .set(updateData)
       .where(eq(opportunityMatches.id, id));
@@ -6399,11 +6412,11 @@ async removeRoleFromUser(userId: number, roleId: number) {
   // PRO Registration methods implementation
   async getPRORegistrations(userId?: number): Promise<PRORegistration[]> {
     let query = db.select().from(proRegistrations);
-    
+
     if (userId) {
       query = query.where(eq(proRegistrations.userId, userId));
     }
-    
+
     const result = await query.orderBy(desc(proRegistrations.createdAt));
     return result;
   }
@@ -6425,7 +6438,7 @@ async removeRoleFromUser(userId: number, roleId: number) {
       ...updates,
       updatedAt: new Date()
     };
-    
+
     const result = await db.update(proRegistrations)
       .set(updateData)
       .where(eq(proRegistrations.id, id))
@@ -6450,7 +6463,7 @@ async removeRoleFromUser(userId: number, roleId: number) {
       ...updates,
       updatedAt: new Date()
     };
-    
+
     const result = await db.update(proWorks)
       .set(updateData)
       .where(eq(proWorks.id, id))
@@ -6499,7 +6512,7 @@ async removeRoleFromUser(userId: number, roleId: number) {
     try {
       const codes = await db.select().from(isrcCodes);
       let maxId = 0;
-      
+
       codes.forEach(code => {
         // Parse ISRC format: DM-A0D-YY-NN-XXX
         const parts = code.isrcCode.split('-');
@@ -6510,7 +6523,7 @@ async removeRoleFromUser(userId: number, roleId: number) {
           }
         }
       });
-      
+
       return maxId;
     } catch (error) {
       console.error('Error getting highest artist ID from ISRC:', error);
@@ -6562,15 +6575,15 @@ async removeRoleFromUser(userId: number, roleId: number) {
           // Get their artist/musician details for name matching
           const artist = await this.getArtist(user.id);
           const musician = await this.getMusician(user.id);
-          
+
           const displayName = artist?.stageNames?.[0]?.name || musician?.stageNames?.[0]?.name || user.fullName;
-          
+
           // Generate their first ISRC to establish their NN identifier
           const currentYear = new Date().getFullYear().toString().slice(-2);
           const artistId = await this.getOrAssignArtistId(displayName);
-          
+
           const placeholderIsrc = `DM-A0D-${currentYear}-${artistId.padStart(2, '0')}-001`;
-          
+
           await this.createIsrcCode({
             userId: user.id,
             artistId: parseInt(artistId),
@@ -6592,7 +6605,7 @@ async removeRoleFromUser(userId: number, roleId: number) {
     // Check predefined IDs first
     const predefinedIds: Record<string, string> = {
       'Lí-Lí Octave': '00',
-      'LI-LI OCTAVE': '00', 
+      'LI-LI OCTAVE': '00',
       'LIANNE MARILDA MARISA LETANG': '00',
       'JCro': '01',
       'JCRO': '01',
@@ -6637,18 +6650,18 @@ async removeRoleFromUser(userId: number, roleId: number) {
   // Press Release Management
   async getPressReleases(filters?: { artistId?: number; status?: string }): Promise<PressRelease[]> {
     let query = db.select().from(pressReleases);
-    
+
     if (filters?.artistId) {
       query = query.where(eq(pressReleases.primaryArtistId, filters.artistId));
     }
-    
+
     if (filters?.status) {
       const statusCondition = eq(pressReleases.status, filters.status);
-      query = filters?.artistId ? 
+      query = filters?.artistId ?
         query.where(and(eq(pressReleases.primaryArtistId, filters.artistId), statusCondition)) :
         query.where(statusCondition);
     }
-    
+
     return await query.orderBy(desc(pressReleases.createdAt));
   }
 
@@ -6662,7 +6675,7 @@ async removeRoleFromUser(userId: number, roleId: number) {
       .select()
       .from(pressReleases)
       .where(eq(pressReleases.id, id));
-    
+
     return pressRelease || null;
   }
 
@@ -6672,7 +6685,7 @@ async removeRoleFromUser(userId: number, roleId: number) {
       .set({ ...updates, updatedAt: new Date() } as any)
       .where(eq(pressReleases.id, id))
       .returning();
-    
+
     return updated || null;
   }
 
@@ -6684,7 +6697,7 @@ async removeRoleFromUser(userId: number, roleId: number) {
   async publishPressRelease(id: number, publishedBy: number): Promise<PressRelease | null> {
     const [updated] = await db
       .update(pressReleases)
-      .set({ 
+      .set({
         status: 'published',
         publishedAt: new Date(),
         lastModifiedBy: publishedBy,
@@ -6692,7 +6705,7 @@ async removeRoleFromUser(userId: number, roleId: number) {
       } as any)
       .where(eq(pressReleases.id, id))
       .returning();
-    
+
     return updated || null;
   }
 
@@ -6734,7 +6747,7 @@ async removeRoleFromUser(userId: number, roleId: number) {
       .set({ ...updates, updatedAt: new Date() } as any)
       .where(eq(pressReleaseMedia.id, id))
       .returning();
-    
+
     return updated || null;
   }
 
@@ -6758,26 +6771,26 @@ async removeRoleFromUser(userId: number, roleId: number) {
   }
 
   async updatePressReleaseDistributionStatus(id: number, status: string, responseType?: string): Promise<PressReleaseDistribution | null> {
-    const updates: any = { 
+    const updates: any = {
       status,
       updatedAt: new Date()
     };
-    
+
     if (responseType) {
       updates.responseType = responseType;
       updates.responseReceived = new Date();
     }
-    
+
     const [updated] = await db
       .update(pressReleaseDistribution)
       .set(updates)
       .where(eq(pressReleaseDistribution.id, id))
       .returning();
-    
+
     return updated || null;
   }
   // ==================== OPPHUB AI METHODS ====================
-  
+
   // All duplicate opportunity methods removed - keeping original implementations with comprehensive error handling
 
   // Duplicate opportunity application methods removed - keeping originals at lines 5539 and 5546
@@ -6789,7 +6802,7 @@ async removeRoleFromUser(userId: number, roleId: number) {
   // Duplicate opportunity sources and matches methods removed - keeping originals at lines 5644-5686
 
   // ==================== RECIPIENT MANAGEMENT METHODS IMPLEMENTATION ====================
-  
+
   // Recipient Categories
   async getRecipientCategories(): Promise<RecipientCategory[]> {
     return await db.select().from(recipientCategories).orderBy(recipientCategories.priority, recipientCategories.displayName);
@@ -6806,7 +6819,7 @@ async removeRoleFromUser(userId: number, roleId: number) {
       .set(updates)
       .where(eq(recipientCategories.id, id))
       .returning();
-    
+
     return updated || null;
   }
 
@@ -6831,7 +6844,7 @@ async removeRoleFromUser(userId: number, roleId: number) {
       .set(updates)
       .where(eq(musicGenres.id, id))
       .returning();
-    
+
     return updated || null;
   }
 
@@ -6843,25 +6856,25 @@ async removeRoleFromUser(userId: number, roleId: number) {
   // Industry Recipients
   async getIndustryRecipients(filters?: { categoryId?: number; genreIds?: number[]; status?: string }): Promise<IndustryRecipient[]> {
     let query = db.select().from(industryRecipients);
-    
+
     const conditions = [];
-    
+
     if (filters?.categoryId) {
       conditions.push(eq(industryRecipients.categoryId, filters.categoryId));
     }
-    
+
     if (filters?.status) {
       conditions.push(eq(industryRecipients.status, filters.status));
     }
-    
+
     if (filters?.genreIds && filters.genreIds.length > 0) {
       conditions.push(sql`${industryRecipients.preferredGenres} && ${JSON.stringify(filters.genreIds)}`);
     }
-    
+
     if (conditions.length > 0) {
       query = query.where(and(...conditions));
     }
-    
+
     return await query.orderBy(desc(industryRecipients.influence), industryRecipients.name);
   }
 
@@ -6870,7 +6883,7 @@ async removeRoleFromUser(userId: number, roleId: number) {
       .select()
       .from(industryRecipients)
       .where(eq(industryRecipients.id, id));
-    
+
     return recipient || null;
   }
 
@@ -6885,7 +6898,7 @@ async removeRoleFromUser(userId: number, roleId: number) {
       .set({ ...updates, updatedAt: new Date() })
       .where(eq(industryRecipients.id, id))
       .returning();
-    
+
     return updated || null;
   }
 
@@ -6917,7 +6930,7 @@ async removeRoleFromUser(userId: number, roleId: number) {
         eq(contentDistribution.contentType, contentType),
         eq(contentDistribution.contentId, contentId)
       ));
-    
+
     return distribution || null;
   }
 
@@ -6932,7 +6945,7 @@ async removeRoleFromUser(userId: number, roleId: number) {
       .set(updates)
       .where(eq(contentDistribution.id, id))
       .returning();
-    
+
     return updated || null;
   }
 
@@ -6957,32 +6970,32 @@ async removeRoleFromUser(userId: number, roleId: number) {
         eq(contentDistribution.contentType, contentType),
         eq(contentDistribution.contentId, contentId)
       ));
-    
+
     return analytics || null;
   }
 
   // Recipient Engagements
   async getRecipientEngagements(filters?: { recipientId?: number; contentType?: string; contentId?: number }): Promise<RecipientEngagement[]> {
     let query = db.select().from(recipientEngagements);
-    
+
     const conditions = [];
-    
+
     if (filters?.recipientId) {
       conditions.push(eq(recipientEngagements.recipientId, filters.recipientId));
     }
-    
+
     if (filters?.contentType) {
       conditions.push(eq(recipientEngagements.contentType, filters.contentType));
     }
-    
+
     if (filters?.contentId) {
       conditions.push(eq(recipientEngagements.contentId, filters.contentId));
     }
-    
+
     if (conditions.length > 0) {
       query = query.where(and(...conditions));
     }
-    
+
     return await query.orderBy(desc(recipientEngagements.engagementDate));
   }
 
@@ -6997,31 +7010,31 @@ async removeRoleFromUser(userId: number, roleId: number) {
       .set(updates)
       .where(eq(recipientEngagements.id, id))
       .returning();
-    
+
     return updated || null;
   }
 
   // Enhanced Recipient Matching Methods
   async getMatchingRecipients(contentGenres: number[], categoryIds?: number[], minimumInfluence?: number): Promise<IndustryRecipient[]> {
     let query = db.select().from(industryRecipients);
-    
+
     const conditions = [eq(industryRecipients.status, 'active')];
-    
+
     // Genre matching - recipients who cover at least one of the content genres
     if (contentGenres.length > 0) {
       conditions.push(sql`${industryRecipients.preferredGenres} && ${JSON.stringify(contentGenres)}`);
     }
-    
+
     // Category filtering
     if (categoryIds && categoryIds.length > 0) {
       conditions.push(inArray(industryRecipients.categoryId, categoryIds));
     }
-    
+
     // Minimum influence filter
     if (minimumInfluence && minimumInfluence > 0) {
       conditions.push(gte(industryRecipients.influence, minimumInfluence));
     }
-    
+
     return await query
       .where(and(...conditions))
       .orderBy(desc(industryRecipients.influence), desc(industryRecipients.responseRate), industryRecipients.name);
@@ -7088,7 +7101,7 @@ async removeRoleFromUser(userId: number, roleId: number) {
         const result = await db.execute(sql.raw(query, [albumId]));
         return result.rows;
       }
-      
+
       const result = await db.execute(sql.raw(query));
       return result.rows;
     } catch (error) {
@@ -7104,7 +7117,7 @@ async removeRoleFromUser(userId: number, roleId: number) {
         VALUES ($1, $2, $3, $4, NOW())
         RETURNING *
       `, [assignment.albumId, assignment.merchandiseId, assignment.assignedBy, assignment.assignmentNotes]));
-      
+
       return result.rows[0];
     } catch (error) {
       console.error('Error creating album merchandise assignment:', error);
@@ -7133,7 +7146,7 @@ async removeRoleFromUser(userId: number, roleId: number) {
     }
   }
   // ==================== MISSING API METHODS IMPLEMENTATION ====================
-  
+
   // Fix 1: Merchandise API - OppHub AI Learning: Database schema alignment
 
 
@@ -7178,7 +7191,7 @@ async removeRoleFromUser(userId: number, roleId: number) {
         VALUES (${splitsheet.songTitle || 'Untitled Song'}, ${JSON.stringify(splitsheet.writers || [])}, ${JSON.stringify(splitsheet.percentages || [])}, ${splitsheet.audioFilePath || null})
         RETURNING *
       `);
-      
+
       return result.rows[0];
     } catch (error) {
       console.error('Create splitsheet error:', error);
@@ -7216,7 +7229,7 @@ async removeRoleFromUser(userId: number, roleId: number) {
         VALUES (${contract.type || 'general'}, ${contract.terms || ''}, ${'draft'})
         RETURNING *
       `);
-      
+
       console.log('✅ Contract database result:', result.rows[0]);
       return result.rows[0];
     } catch (error) {
@@ -7251,7 +7264,7 @@ async removeRoleFromUser(userId: number, roleId: number) {
         VALUES (${JSON.stringify(technicalRider.requirements || [])}, ${JSON.stringify(technicalRider.specifications || {})}, ${technicalRider.eventName || 'Event requirements'})
         RETURNING *
       `);
-      
+
       return result.rows[0];
     } catch (error) {
       console.error('Create technical rider error:', error);
@@ -7294,13 +7307,13 @@ async removeRoleFromUser(userId: number, roleId: number) {
     try {
       // Create newsletter with proper user ID handling
       const createdBy = newsletter.created_by || 24; // Use superadmin as default
-      
+
       const result = await db.execute(sql`
         INSERT INTO newsletters (title, content, status, created_by)
         VALUES (${newsletter.title || 'Untitled Newsletter'}, ${newsletter.content || ''}, ${'draft'}, ${createdBy})
         RETURNING *
       `);
-      
+
       return result.rows[0];
     } catch (error) {
       console.error('Create newsletter error:', error);
@@ -7374,7 +7387,7 @@ async removeRoleFromUser(userId: number, roleId: number) {
       const startOfMonth = new Date();
       startOfMonth.setDate(1);
       startOfMonth.setHours(0, 0, 0, 0);
-      
+
       const result = await db.select({ count: sql`COUNT(*)` })
         .from(users)
         .where(gte(users.createdAt, startOfMonth));
@@ -7409,8 +7422,8 @@ async removeRoleFromUser(userId: number, roleId: number) {
 
   async getTotalRevenue(): Promise<number> {
     try {
-      const result = await db.select({ 
-        total: sql`COALESCE(SUM(CAST(final_price AS DECIMAL)), 0)` 
+      const result = await db.select({
+        total: sql`COALESCE(SUM(CAST(final_price AS DECIMAL)), 0)`
       }).from(bookings).where(eq(bookings.status, 'completed'));
       return Number(result[0].total) || 0;
     } catch (error) {
@@ -7424,9 +7437,9 @@ async removeRoleFromUser(userId: number, roleId: number) {
       const startOfMonth = new Date();
       startOfMonth.setDate(1);
       startOfMonth.setHours(0, 0, 0, 0);
-      
-      const result = await db.select({ 
-        total: sql`COALESCE(SUM(CAST(final_price AS DECIMAL)), 0)` 
+
+      const result = await db.select({
+        total: sql`COALESCE(SUM(CAST(final_price AS DECIMAL)), 0)`
       }).from(bookings)
         .where(and(
           eq(bookings.status, 'completed'),
@@ -7444,9 +7457,9 @@ async removeRoleFromUser(userId: number, roleId: number) {
       const startOfWeek = new Date();
       startOfWeek.setDate(startOfWeek.getDate() - startOfWeek.getDay());
       startOfWeek.setHours(0, 0, 0, 0);
-      
-      const result = await db.select({ 
-        total: sql`COALESCE(SUM(CAST(final_price AS DECIMAL)), 0)` 
+
+      const result = await db.select({
+        total: sql`COALESCE(SUM(CAST(final_price AS DECIMAL)), 0)`
       }).from(bookings)
         .where(and(
           eq(bookings.status, 'completed'),
@@ -7461,8 +7474,8 @@ async removeRoleFromUser(userId: number, roleId: number) {
 
   async getPendingPayouts(): Promise<number> {
     try {
-      const result = await db.select({ 
-        total: sql`COALESCE(SUM(CAST(final_price AS DECIMAL)) * 0.88, 0)` 
+      const result = await db.select({
+        total: sql`COALESCE(SUM(CAST(final_price AS DECIMAL)) * 0.88, 0)`
       }).from(bookings)
         .where(and(
           eq(bookings.status, 'completed'),
@@ -7509,7 +7522,7 @@ async removeRoleFromUser(userId: number, roleId: number) {
         db.select({ count: sql`COUNT(*)` }).from(albums),
         db.select({ count: sql`COUNT(*)` }).from(merchandise)
       ]);
-      
+
       return Number(songsResult[0].count) + Number(albumsResult[0].count) + Number(merchandiseResult[0].count);
     } catch (error) {
       console.error('Error getting content items count:', error);
@@ -7524,13 +7537,13 @@ async removeRoleFromUser(userId: number, roleId: number) {
         bookings: sql`COUNT(bookings.id)`,
         revenue: sql`COALESCE(SUM(CAST(bookings.final_price AS DECIMAL)), 0)`
       })
-      .from(bookings)
-      .innerJoin(users, eq(bookings.primaryArtistUserId, users.id))
-      .leftJoin(artists, eq(users.id, artists.user_id))
-      .where(eq(bookings.status, 'completed'))
-      .groupBy(users.id, artists.id)
-      .orderBy(sql`COUNT(bookings.id) DESC`)
-      .limit(5);
+        .from(bookings)
+        .innerJoin(users, eq(bookings.primaryArtistUserId, users.id))
+        .leftJoin(artists, eq(users.id, artists.user_id))
+        .where(eq(bookings.status, 'completed'))
+        .groupBy(users.id, artists.id)
+        .orderBy(sql`COUNT(bookings.id) DESC`)
+        .limit(5);
 
       return result.map(row => ({
         name: String(row.name),
@@ -7621,17 +7634,17 @@ async removeRoleFromUser(userId: number, roleId: number) {
         specialRequests: bookings.specialRequests,
         technicalRiderRequired: sql`CASE WHEN bookings.technical_rider_required THEN true ELSE false END`
       })
-      .from(bookings)
-      .innerJoin(users, eq(bookings.primaryArtistUserId, users.id))
-      .innerJoin(sql`users booker`, eq(bookings.bookerUserId, sql`booker.id`))
-      .leftJoin(artists, eq(users.id, artists.user_id))
-      .where(or(
-        eq(bookings.status, 'pending'),
-        eq(bookings.status, 'pending_approval'),
-        eq(bookings.status, 'approved'),
-        eq(bookings.status, 'declined')
-      ))
-      .orderBy(desc(bookings.createdAt));
+        .from(bookings)
+        .innerJoin(users, eq(bookings.primaryArtistUserId, users.id))
+        .innerJoin(sql`users booker`, eq(bookings.bookerUserId, sql`booker.id`))
+        .leftJoin(artists, eq(users.id, artists.user_id))
+        .where(or(
+          eq(bookings.status, 'pending'),
+          eq(bookings.status, 'pending_approval'),
+          eq(bookings.status, 'approved'),
+          eq(bookings.status, 'declined')
+        ))
+        .orderBy(desc(bookings.createdAt));
 
       return result;
     } catch (error) {
@@ -7650,10 +7663,10 @@ async removeRoleFromUser(userId: number, roleId: number) {
         date: bookings.createdAt,
         status: sql`CASE WHEN bookings.status = 'completed' THEN 'completed' ELSE 'pending' END`
       })
-      .from(bookings)
-      .innerJoin(users, eq(bookings.bookerUserId, users.id))
-      .orderBy(desc(bookings.createdAt))
-      .limit(50);
+        .from(bookings)
+        .innerJoin(users, eq(bookings.bookerUserId, users.id))
+        .orderBy(desc(bookings.createdAt))
+        .limit(50);
 
       return result;
     } catch (error) {
@@ -7799,7 +7812,7 @@ async removeRoleFromUser(userId: number, roleId: number) {
   }
 
   // ==================== ADMIN TALENT ASSIGNMENT METHODS ====================
-  
+
   // Get admin talent assignments (real database queries only)
   async getAdminTalentAssignments(talentUserId?: number): Promise<any[]> {
     try {
@@ -7822,7 +7835,7 @@ async removeRoleFromUser(userId: number, roleId: number) {
         LEFT JOIN professionals p ON admin_user.id = p.user_id
         WHERE ata.is_active = true
       `;
-      
+
       if (talentUserId) {
         query = sql`
           SELECT 
@@ -7844,7 +7857,7 @@ async removeRoleFromUser(userId: number, roleId: number) {
           WHERE ata.is_active = true AND ata.talent_user_id = ${talentUserId}
         `;
       }
-      
+
       const result = await db.execute(query);
       return result.rows;
     } catch (error) {
@@ -7922,7 +7935,7 @@ async removeRoleFromUser(userId: number, roleId: number) {
     return primaryTalent;
   }
 
-  async getPrimaryTalentById(id: number, userType: 'artist' | 'musician' | 'professional'): Promise<{id: number, name: string, player_name: string} | undefined> {
+  async getPrimaryTalentById(id: number, userType: 'artist' | 'musician' | 'professional'): Promise<{ id: number, name: string, player_name: string } | undefined> {
     if (userType === 'professional') {
       // Use professional talents table
       const [primaryTalent] = await db.select({
@@ -7961,14 +7974,14 @@ async removeRoleFromUser(userId: number, roleId: number) {
   }
 
   // Secondary talents management methods
-  async getUserSecondaryPerformanceTalents(userId: number): Promise<Array<{talentName: string}>> {
+  async getUserSecondaryPerformanceTalents(userId: number): Promise<Array<{ talentName: string }>> {
     return await db.select({
       talentName: userSecondaryPerformanceTalents.talentName
     }).from(userSecondaryPerformanceTalents)
       .where(eq(userSecondaryPerformanceTalents.userId, userId));
   }
 
-  async getUserSecondaryProfessionalTalents(userId: number): Promise<Array<{talentName: string}>> {
+  async getUserSecondaryProfessionalTalents(userId: number): Promise<Array<{ talentName: string }>> {
     return await db.select({
       talentName: userSecondaryProfessionalTalents.talentName
     }).from(userSecondaryProfessionalTalents)
@@ -7978,7 +7991,7 @@ async removeRoleFromUser(userId: number, roleId: number) {
   // ================== SETLIST MANAGEMENT METHODS ==================
 
   // ================== SONG SEARCH METHODS ==================
-  
+
   async searchSongs(query: string): Promise<Song[]> {
     try {
       return await db.select()
@@ -7993,7 +8006,7 @@ async removeRoleFromUser(userId: number, roleId: number) {
       return [];
     }
   }
-  
+
   async getSongByYoutubeId(youtubeId: string): Promise<Song | undefined> {
     try {
       const [song] = await db.select()
@@ -8006,16 +8019,16 @@ async removeRoleFromUser(userId: number, roleId: number) {
       return undefined;
     }
   }
-  
+
   // ================== ENHANCED BOOKING ASSIGNMENT METHODS ==================
-  
+
   async getAllInstruments(activeOnly?: boolean): Promise<AllInstrument[]> {
     let query = db.select().from(allInstruments);
-    
+
     if (activeOnly) {
       query = query.where(eq(allInstruments.isActive, true));
     }
-    
+
     return await query.orderBy(allInstruments.displayPriority, allInstruments.name);
   }
 
@@ -8106,11 +8119,11 @@ async removeRoleFromUser(userId: number, roleId: number) {
   }
 
   async assignUserToBooking(
-    bookingId: number, 
-    userId: number, 
-    roleId: number, 
-    instrumentId: number | null, 
-    assignedBy: number, 
+    bookingId: number,
+    userId: number,
+    roleId: number,
+    instrumentId: number | null,
+    assignedBy: number,
     isMainTalent: boolean = false
   ): Promise<BookingAssignmentsMember> {
     // Prepare assignment data
@@ -8176,7 +8189,7 @@ async removeRoleFromUser(userId: number, roleId: number) {
           eq(bookingAssignmentsMembers.userId, userId)
         )
       );
-    
+
     return assignments.length > 0;
   }
 
@@ -8191,7 +8204,7 @@ async removeRoleFromUser(userId: number, roleId: number) {
           eq(documentPermissions.canView, true)
         )
       );
-    
+
     return !!permission;
   }
 
@@ -8210,7 +8223,7 @@ async removeRoleFromUser(userId: number, roleId: number) {
           eq(bookings.bookerId, userId)
         )
       );
-    
+
     if (booking) return true;
 
     // Check if user is admin (roleId 1 or 2)
@@ -8218,7 +8231,7 @@ async removeRoleFromUser(userId: number, roleId: number) {
       .select()
       .from(users)
       .where(eq(users.id, userId));
-    
+
     return user && (user.roleId === 1 || user.roleId === 2);
   }
 
@@ -8237,7 +8250,7 @@ async removeRoleFromUser(userId: number, roleId: number) {
         uploadedAt: new Date()
       })
       .returning();
-    
+
     return created;
   }
 
@@ -8276,7 +8289,7 @@ async removeRoleFromUser(userId: number, roleId: number) {
       .select()
       .from(mediaHubDocuments)
       .where(eq(mediaHubDocuments.id, documentId));
-    
+
     return doc;
   }
 
@@ -8290,7 +8303,7 @@ async removeRoleFromUser(userId: number, roleId: number) {
     const result = await db
       .delete(mediaHubDocuments)
       .where(eq(mediaHubDocuments.id, documentId));
-    
+
     return true;
   }
 }

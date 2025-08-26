@@ -70,31 +70,17 @@ import {
   ConsultationManagementModal
 } from '@/components/modals/ComprehensiveModalSystem';
 import { Index } from 'drizzle-orm/mysql-core';
+import { useAuth } from '@/contexts/AuthContext';
 
-// Helper function to get role display names
-const getRoleDisplayName = (roleId: number): string => {
-  const roleNames = {
-    1: 'Superadmin',
-    2: 'Admin',
-    3: 'Managed Artist',
-    4: 'Artist',
-    5: 'Managed Musician',
-    6: 'Musician',
-    7: 'Managed Professional',
-    8: 'Professional',
-    9: 'Fan'
-  };
-  return roleNames[roleId as keyof typeof roleNames] || `Role ${roleId}`;
-};
 
 interface UnifiedDashboardProps {
-  user: any;
   stats: any;
   bookings: any;
   applications: any;
 }
 
-export default function UnifiedDashboard({ stats, bookings, user, applications }: UnifiedDashboardProps) {
+export default function UnifiedDashboard({ stats, bookings, applications }: UnifiedDashboardProps) {
+  const { user, isLoading, roles } = useAuth();
   const [, setLocation] = useLocation();
   const { toast } = useToast();
   const queryClient = useQueryClient();
@@ -142,26 +128,14 @@ export default function UnifiedDashboard({ stats, bookings, user, applications }
   const { measurePerformance, optimizeCache } = usePerformanceOptimization();
 
   // Data queries with performance optimization
-  const { data: songs, isLoading: songsLoading } = useQuery({
+  const { data: songs=[], isLoading: songsLoading } = useQuery({
     queryKey: ['/api/songs'],
-    queryFn: async () => {
-      return measurePerformance(async () => {
-        const response = await apiRequest('/api/songs');
-        return await response.json();
-      }, 'songs_fetch');
-    },
     staleTime: 300000, // 5 minutes
     gcTime: 600000, // 10 minutes
   });
 
-  const { data: artists, isLoading: artistsLoading } = useQuery({
+  const { data: artists=[], isLoading: artistsLoading } = useQuery({
     queryKey: ['/api/artists'],
-    queryFn: async () => {
-      return measurePerformance(async () => {
-        const response = await apiRequest('/api/artists');
-        return await response.json();
-      }, 'artists_fetch');
-    },
     staleTime: 300000,
     gcTime: 600000,
   });
@@ -190,40 +164,50 @@ export default function UnifiedDashboard({ stats, bookings, user, applications }
     );
   }
 
-  // Get user role information
-  const userRole = user.roleId;
-  const isAdmin = [1, 2].includes(userRole);
-  const isSuperadmin = userRole === 1;
-  const isManaged = [3, 5, 7].includes(userRole);
-  const isArtist = [3, 4].includes(userRole);
-  const isMusicianProfile = [5, 6].includes(userRole);
-  const isManagedMusician = userRole === 5;
-  const isProfessional = [7, 8].includes(userRole);
-  const isFan = userRole === 9;
+  // Get user roles from context (already available in useAuth)
+  const userRoles = roles?.map(r => r.id) || [];
 
-  // PRO registration eligibility: Artists, Musicians, and Music-related Professionals
-  const musicProfessionalTypes = [
-    'background_vocalist', 'producer', 'arranger', 'composer', 'songwriter',
-    'dj', 'music_director', 'sound_engineer', 'mixing_engineer', 'mastering_engineer',
-    'music_producer', 'beat_maker', 'orchestrator', 'lyricist', 'jingle_writer'
-  ];
-  const isPROEligible = isArtist || isMusicianProfile ||
-    (isProfessional && user.roleData?.specializations?.some((spec: string) =>
-      musicProfessionalTypes.includes(spec.toLowerCase().replace(/\s+/g, '_'))
-    ));
+  // Helper functions
+  const hasRole = (ids: number[]) => userRoles.some(r => ids.includes(r));
 
-  // Filter data based on user
-  const userSongs = songs?.filter((song: any) => song.artistUserId === user?.id) || [];
+  const isAdmin = hasRole([1, 2]);
+  const isSuperadmin = userRoles.includes(1);
+  const isManaged = hasRole([3, 5, 7]);
+  const isArtist = hasRole([3, 4]);
+  const isMusicianProfile = hasRole([5, 6]);
+  const isManagedMusician = userRoles.includes(5);
+  const isProfessional = hasRole([7, 8]);
+  const isFan = hasRole([9]);
 
-  const userBookings = bookings?.filter((b: any) =>
-    b.musician_user_id === user?.id ||
-    b.professional_user_id === user?.id ||
-    b.booker_user_id === user?.id ||
-    b.artist_user_id === user?.id
+// PRO registration eligibility: Artists, Musicians, and Music-related Professionals
+const musicProfessionalTypes = [
+  'background_vocalist', 'producer', 'arranger', 'composer', 'songwriter',
+  'dj', 'music_director', 'sound_engineer', 'mixing_engineer', 'mastering_engineer',
+  'music_producer', 'beat_maker', 'orchestrator', 'lyricist', 'jingle_writer'
+];
+
+const isPROEligible =  isArtist ||  isMusicianProfile ||  (isProfessional &&
+    user?.roleData?.some((role: any) =>
+      role.data?.specializations?.some((spec: string) =>
+        musicProfessionalTypes.includes(spec.toLowerCase().replace(/\s+/g, '_'))
+      )
+    )
+  );
+
+// Filter data based on user
+const userSongs =  songs?.filter((song: any) => song.artistUserId === user?.id) || [];
+
+const userBookings =
+  bookings?.filter(
+    (b: any) =>
+      b.musician_user_id === user?.id ||
+      b.professional_user_id === user?.id ||
+      b.booker_user_id === user?.id ||
+      b.artist_user_id === user?.id
   ) || [];
 
-  const userApplications = applications?.filter((a: any) => a.applicantUserId === user?.id) || [];
-
+const userApplications =
+  applications?.filter((a: any) => a.applicantUserId === user?.id) || [];
   // Event handlers
 
   const handleUploadMusic = () => setMusicUploadOpen(true);
@@ -407,8 +391,8 @@ export default function UnifiedDashboard({ stats, bookings, user, applications }
             {isMusicianProfile && <Headphones className="h-3 w-3 mr-1" />}
             {isProfessional && <Briefcase className="h-3 w-3 mr-1" />}
             {isFan && <Heart className="h-3 w-3 mr-1" />}
-            <span className="hidden sm:inline">{getRoleDisplayName(userRole)}</span>
-            <span className="sm:hidden">{getRoleDisplayName(userRole).split(' ')[0]}</span>
+            {/* <span className="hidden sm:inline">{getRoleDisplayName(userRole)}</span>
+            <span className="sm:hidden">{getRoleDisplayName(userRole).split(' ')[0]}</span> */}
           </Badge>
         </div>
 
@@ -630,7 +614,7 @@ export default function UnifiedDashboard({ stats, bookings, user, applications }
               )}
 
               {/* Admin Management Hub */}
-              {userRole === 2 && (
+              {isAdmin && (
                 <div className="bg-gradient-to-r from-purple-50 to-indigo-50 dark:from-purple-950/20 dark:to-indigo-950/20 rounded-lg p-3">
                   <h3 className="text-sm font-medium text-purple-700 dark:text-purple-300 mb-2 flex items-center gap-2">
                     <Shield className="h-4 w-4" />
@@ -1086,7 +1070,7 @@ export default function UnifiedDashboard({ stats, bookings, user, applications }
                                 )}
                               </div>
                               <Button
-                                
+
                                 variant="destructive"
                                 className="flex-shrink-0"
                                 onClick={() => handleDeleteSong(song.id, song.title)}
@@ -1302,7 +1286,7 @@ export default function UnifiedDashboard({ stats, bookings, user, applications }
             <Card>
               <CardHeader>
                 <CardTitle className="text-lg sm:text-xl">
-                  {selectedApplication ?` ApplicationId ${selectedApplication.id} Details` : "All Applications"}
+                  {selectedApplication ? ` ApplicationId ${selectedApplication.id} Details` : "All Applications"}
                 </CardTitle>
               </CardHeader>
 
@@ -1321,7 +1305,7 @@ export default function UnifiedDashboard({ stats, bookings, user, applications }
                                     Application # {app.id}
                                   </h3>
                                   <Button
-                                    
+
                                     className=""
                                     onClick={() => setSelectedApplication(app)}
                                   >
@@ -1364,7 +1348,7 @@ export default function UnifiedDashboard({ stats, bookings, user, applications }
                               Application # {selectedApplication.id}
                             </h3>
                             <Button
-                              
+
                               onClick={() => setSelectedApplication(null)}
                             >
                               Less Detailes
@@ -1376,7 +1360,7 @@ export default function UnifiedDashboard({ stats, bookings, user, applications }
                               {selectedApplication.applicationReason || "N/A"}
                             </p>
                             <p>
-                              <strong>Status:</strong> {selectedApplication.status} 
+                              <strong>Status:</strong> {selectedApplication.status}
                             </p>
                             <p>
                               <strong>Submitted:</strong>
@@ -1487,7 +1471,7 @@ export default function UnifiedDashboard({ stats, bookings, user, applications }
           )}
 
           {/* Admin Tabs - Complete Administration Suite */}
-          {userRole === 2 && (
+          {isAdmin && (
             <>
               {/* User Management Tab */}
               <TabsContent value="admin-users" className="space-y-4 sm:space-y-6">
@@ -1649,7 +1633,7 @@ export default function UnifiedDashboard({ stats, bookings, user, applications }
                   </CardHeader>
                   <CardContent>
                     <EnhancedNewsletterManagement
-                      userRole={userRole}
+                      userRole={userRoles[0]}
                       userId={user?.id || 0}
                     />
                   </CardContent>
@@ -1670,7 +1654,7 @@ export default function UnifiedDashboard({ stats, bookings, user, applications }
                   </CardHeader>
                   <CardContent>
                     <PressReleaseManagement
-                      userRole={userRole}
+                      userRole={userRoles[0]}
                       userId={user?.id || 0}
                     />
                   </CardContent>

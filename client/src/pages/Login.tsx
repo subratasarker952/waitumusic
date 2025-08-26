@@ -69,21 +69,7 @@ export default function Login() {
     }
   };
 
-  // Fetch demo users only when demo mode is enabled
-  const { data: demoUsers } = useQuery({
-    queryKey: ['/api/demo-users'],
-    enabled: (demoModeData as any)?.demoMode === true,
-    staleTime: 5 * 60 * 1000, // Cache for 5 minutes
-  });
-  // {console.log(demoUsers)}
 
-  const isDemoModeEnabled = (demoModeData as any)?.demoMode ?? false;
-
-  const handleDemoLogin = async (email: string, password: string) => {
-    form.setValue('email', email);
-    form.setValue('password', password);
-    await onSubmit({ email, password });
-  };
 
   const handleOnboardingComplete = () => {
     if (newUserId) {
@@ -165,38 +151,6 @@ export default function Login() {
                 </Button>
               </form>
             </Form>
-
-            {isDemoModeEnabled && demoUsers && Array.isArray(demoUsers) && demoUsers.length > 0 && (
-              <div className="mt-6">
-                <div className="relative">
-                  <div className="absolute inset-0 flex items-center">
-                    <div className="w-full border-t border-gray-300" />
-                  </div>
-                  <div className="relative flex justify-center text-sm">
-                    <span className="px-2 bg-white text-gray-500">{LOGIN_CONTENT.demoSection.title}</span>
-                  </div>
-                </div>
-
-                <div className="mt-4 space-y-2 max-h-48 overflow-y-auto">
-                
-                  {demoUsers.map((demo: any, index: number) => (
-                    <Button
-                      key={index}
-                      variant="outline"
-                      className="w-full text-left justify-start"
-                      onClick={() => handleDemoLogin(demo.email, 'demo123')}
-                      disabled={isLoading}
-                    >
-                      <div>
-                        {/* <div className="font-medium">{demo.fullName}</div>
-                        <div className="text-xs text-blue-600 font-medium">{getCreativeRoleName(demo.roleName)}</div> */}
-                        <div className="text-xs text-gray-500">{demo.email} {demo.roleName}</div>
-                      </div>
-                    </Button>
-                  ))}
-                </div>
-              </div>
-            )}
 
             <div className="mt-6 text-center text-sm">
               <span className="text-gray-600">{LOGIN_CONTENT.footer.noAccount} </span>
