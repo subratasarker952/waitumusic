@@ -25,7 +25,8 @@ import {
   BarChart3, Clock, MapPin, Play, ShoppingCart, Award,
   Globe, Wrench, Database, UserCheck, BookOpen,
   CreditCard, Camera, Video, Image, FolderOpen, Trash2, Music2, Crown, Mail, X, Utensils,
-  List
+  List,
+  Notebook
 } from 'lucide-react';
 
 // Modal Components
@@ -391,8 +392,12 @@ const userApplications =
             {isMusicianProfile && <Headphones className="h-3 w-3 mr-1" />}
             {isProfessional && <Briefcase className="h-3 w-3 mr-1" />}
             {isFan && <Heart className="h-3 w-3 mr-1" />}
-            {/* <span className="hidden sm:inline">{getRoleDisplayName(userRole)}</span>
-            <span className="sm:hidden">{getRoleDisplayName(userRole).split(' ')[0]}</span> */}
+
+            <div>
+              {
+               !!roles && roles.map(role=> <span key={role.id}>{role.name}</span>)
+              }
+            </div>
           </Badge>
         </div>
 
@@ -446,7 +451,7 @@ const userApplications =
             <div className="space-y-4 mb-6">
 
               {/* Artist/Musician Creative Hub */}
-              {(isArtist || isMusicianProfile) && (
+              {(isArtist || isMusicianProfile || isProfessional) && (
                 <div className="bg-gradient-to-r from-purple-50 to-pink-50 dark:from-purple-950/20 dark:to-pink-950/20 rounded-lg p-3">
                   <h3 className="text-sm font-medium text-purple-700 dark:text-purple-300 mb-2 flex items-center gap-2">
                     <Music className="h-4 w-4" />
@@ -592,7 +597,7 @@ const userApplications =
                     <Heart className="h-4 w-4" />
                     Fan Experience
                   </h3>
-                  <TabsList className="grid w-full grid-cols-4 gap-1">
+                  <TabsList className="grid w-full grid-cols-3 gap-4 h-full">
                     <TabsTrigger value="overview" className="text-xs flex items-center gap-1">
                       <Crown className="h-3 w-3" />
                       Overview
@@ -600,6 +605,14 @@ const userApplications =
                     <TabsTrigger value="profile" className="text-xs flex items-center gap-1">
                       <Star className="h-3 w-3" />
                       Profile
+                    </TabsTrigger>
+                    <TabsTrigger value="bookings" className="text-xs flex items-center gap-1">
+                      <Notebook className="h-3 w-3" />
+                      Bookings
+                    </TabsTrigger>
+                    <TabsTrigger value="applications" className="text-xs flex items-center gap-1">
+                      <Notebook className="h-3 w-3" />
+                      Applications
                     </TabsTrigger>
                     <TabsTrigger value="favorites" className="text-xs flex items-center gap-1">
                       <Heart className="h-3 w-3" />
@@ -1632,10 +1645,7 @@ const userApplications =
                     </p>
                   </CardHeader>
                   <CardContent>
-                    <EnhancedNewsletterManagement
-                      userRole={userRoles[0]}
-                      userId={user?.id || 0}
-                    />
+                    <EnhancedNewsletterManagement />
                   </CardContent>
                 </Card>
               </TabsContent>
@@ -1653,10 +1663,7 @@ const userApplications =
                     </p>
                   </CardHeader>
                   <CardContent>
-                    <PressReleaseManagement
-                      userRole={userRoles[0]}
-                      userId={user?.id || 0}
-                    />
+                    <PressReleaseManagement />
                   </CardContent>
                 </Card>
               </TabsContent>

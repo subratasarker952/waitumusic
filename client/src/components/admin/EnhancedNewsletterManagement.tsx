@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 
-interface EnhancedNewsletterManagementProps {
-  userRole: string;
-  userId: number;
-}
+// interface EnhancedNewsletterManagementProps {
+//   userRole: string;
+//   userId: number;
+// }
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -385,7 +385,8 @@ function AddRecipientModal({
   );
 }
 
-export default function EnhancedNewsletterManagement({ userRole, userId }: EnhancedNewsletterManagementProps) {
+// export default function EnhancedNewsletterManagement({ userRole, userId }: EnhancedNewsletterManagementProps) {
+  export default function EnhancedNewsletterManagement() {
   const { toast } = useToast();
   const queryClient = useQueryClient();
   

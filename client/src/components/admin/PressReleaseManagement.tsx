@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 
-interface PressReleaseManagementProps {
-  userRole: string;
-  userId: number;
-}
+// interface PressReleaseManagementProps {
+//   userRole: string;
+//   userId: number;
+// }
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { apiRequest } from '@/lib/queryClient';
 import { Button } from '@/components/ui/button';
@@ -80,7 +80,8 @@ interface Artist {
   isManaged: boolean;
 }
 
-export default function PressReleaseManagement({ userRole, userId }: PressReleaseManagementProps) {
+// export default function PressReleaseManagement({ userRole, userId }: PressReleaseManagementProps) {
+export default function PressReleaseManagement() {
   const [selectedRelease, setSelectedRelease] = useState<PressRelease | null>(null);
   const [isViewModalOpen, setIsViewModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
