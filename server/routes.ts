@@ -811,9 +811,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
       if (!userId) {
         return res.status(401).json({ message: "User ID not found in token" });
       }
-
+  
       const updates = req.body;
-
+  
       // 1️⃣ Update basic user fields
       const basicUserData = {
         fullName: updates.fullName,
@@ -822,72 +822,76 @@ export async function registerRoutes(app: Express): Promise<Server> {
         avatarUrl: updates.avatarUrl,
         coverImageUrl: updates.coverImageUrl
       };
-
+  
       const updatedUser = await storage.updateUser(userId, basicUserData);
       if (!updatedUser) {
         return res.status(404).json({ message: "User not found" });
       }
-
-      // 2️⃣ Update role-specific data
-      let roleData = null;
-
-      switch (req.user?.roleId) {
-        case 3: // Star Talent (managed artist)
-        case 4: // Rising Artist
-          roleData = await storage.updateArtist(userId, {
+  
+      // 2️⃣ Fetch roles for the user
+      const roles = await storage.getUserRoles(userId);
+  
+      // 3️⃣ Update role-specific data
+      const roleData = [];
+  
+      for (const role of roles) {
+        let data = null;
+  
+        // Artist roles
+        if ([3, 4].includes(role.id)) {
+          data = await storage.updateArtist(userId, {
             stageName: updates.stageName,
             bio: updates.bio,
             primaryGenre: updates.primaryGenre,
-            basePrice: updates.basePrice ? updates.basePrice : null,
-            idealPerformanceRate: updates.idealPerformanceRate ? updates.idealPerformanceRate : null,
-            minimumAcceptableRate: updates.minimumAcceptableRate ? updates.minimumAcceptableRate : null,
+            basePrice: updates.basePrice ?? null,
+            idealPerformanceRate: updates.idealPerformanceRate ?? null,
+            minimumAcceptableRate: updates.minimumAcceptableRate ?? null,
             epkUrl: updates.epkUrl,
             bookingFormPictureUrl: updates.bookingFormPictureUrl,
             primaryTalentId: updates.primaryTalentId,
             isComplete: true
           });
-          break;
-
-        case 5: // Studio Pro (managed musician)
-        case 6: // Session Player
-          roleData = await storage.updateMusician(userId, {
+        }
+  
+        // Musician roles
+        else if ([5, 6].includes(role.id)) {
+          data = await storage.updateMusician(userId, {
             stageName: updates.stageName,
             bio: updates.bio,
             primaryGenre: updates.primaryGenre,
-            basePrice: updates.basePrice ? updates.basePrice : null,
-            idealPerformanceRate: updates.idealPerformanceRate ? updates.idealPerformanceRate : null,
-            minimumAcceptableRate: updates.minimumAcceptableRate ? updates.minimumAcceptableRate : null,
+            basePrice: updates.basePrice ?? null,
+            idealPerformanceRate: updates.idealPerformanceRate ?? null,
+            minimumAcceptableRate: updates.minimumAcceptableRate ?? null,
             primaryTalentId: updates.primaryTalentId,
             isComplete: true
           });
-          break;
-
-        case 7: // Industry Expert (managed professional)
-        case 8: // Music Professional
-          roleData = await storage.updateProfessional(userId, {
+        }
+  
+        // Professional roles
+        else if ([7, 8].includes(role.id)) {
+          data = await storage.updateProfessional(userId, {
             bio: updates.bio,
             websiteUrl: updates.websiteUrl,
             primaryTalentId: updates.primaryTalentId,
             isComplete: true
           });
-          break;
+        }
+  
+        roleData.push({ role, data });
       }
-
+  
       const { passwordHash, ...userWithoutPassword } = updatedUser;
-
+  
       res.json({
-        id: updatedUser.id,
-        email: updatedUser.email,
-        fullName: updatedUser.fullName,
-        roleId: updatedUser.roleId,
-        user: { ...userWithoutPassword, roleData }
+        user: { ...userWithoutPassword, roles, roleData }
       });
-
+  
     } catch (error) {
       console.error("Error updating profile:", error);
       res.status(500).json({ message: "Internal server error" });
     }
   });
+  
 
 
   // Get user subscription status for hospitality requirements
@@ -1973,7 +1977,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // Instruments API endpoint for technical rider
-  app.get("/api/instruments", authenticateToken, requirePerm('view_content'), validateQuery(schemas.searchInstrumentsSchema), async (req: Request, res: Response) => {
+  app.get("/api/instruments", authenticateToken, validateQuery(schemas.searchInstrumentsSchema), async (req: Request, res: Response) => {
     try {
       const searchTerm = req.query.search as string;
 
@@ -1988,7 +1992,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
             )
           )
           .orderBy(schema.allInstruments.mixerGroup, schema.allInstruments.displayPriority);
+
         res.json(instruments);
+        
       } else {
         const cacheKey = generateCacheKey('instruments');
         const instruments = await withCache(cacheKey, async () => {

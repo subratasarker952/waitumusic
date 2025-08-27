@@ -84,49 +84,53 @@ export default function ProfileEditForm({
     queryKey: ["/api/instruments"],
     enabled: isArtist || isMusicianProfile || isProfessional,
   });
-  // Fetch user data
-  const { data:userResponse } = useQuery({
-    queryKey: ["/api/current-user"],
-  });
+
+
+
   
-
- useEffect(() => {
-  if (userResponse) {
-    const {user} = userResponse;
-
-    // Basic user info
-    setFormData((prev) => ({
-      ...prev,
-      fullName: user.fullName || "",
-      email: user.email || "",
-      phoneNumber: user.phoneNumber || "",
-      privacySetting: user.privacySetting || "public",
-      profilePictureUrl: user.avatarUrl || "",
-      profileBannerUrl: user.coverImageUrl || "",
-    }));
-
-    // Role-specific
-    if (user.roleData) {
-      const rd = user.roleData;
+  useEffect(() => {
+    if (user) {
+      // Basic user info
       setFormData((prev) => ({
         ...prev,
-        stageName: rd.stageName || "",
-        bio: rd.bio || "",
-        primaryGenre: rd.primaryGenre || "",
-        basePrice: rd.basePrice || "",
-        idealPerformanceRate: rd.idealPerformanceRate || "",
-        minimumAcceptableRate: rd.minimumAcceptableRate || "",
-        epkUrl: rd.epkUrl || "",
-        bookingFormPictureUrl: rd.bookingFormPictureUrl || "",
-        websiteUrl: rd.websiteUrl || "",
-        primaryTalentId: rd.primaryTalentId || null,
+        fullName: user.fullName || "",
+        email: user.email || "",
+        phoneNumber: user.phoneNumber || "",
+        privacySetting: user.privacySetting || "public",
+        profilePictureUrl: user.avatarUrl || "",
+        profileBannerUrl: user.coverImageUrl || "",
       }));
-      setHasProfile(true);
-    } else {
-      setHasProfile(false);
+  
+      // Multi-role support
+      if (user.roleData && user.roleData.length > 0) {
+        const mergedRoleData = user.roleData.reduce((acc, roleEntry) => {
+          const rd = roleEntry.data || {};
+          return {
+            ...acc,
+            stageName: rd.stageName || acc.stageName || "",
+            bio: rd.bio || acc.bio || "",
+            primaryGenre: rd.primaryGenre || acc.primaryGenre || "",
+            basePrice: rd.basePrice || acc.basePrice || "",
+            idealPerformanceRate: rd.idealPerformanceRate || acc.idealPerformanceRate || "",
+            minimumAcceptableRate: rd.minimumAcceptableRate || acc.minimumAcceptableRate || "",
+            epkUrl: rd.epkUrl || acc.epkUrl || "",
+            bookingFormPictureUrl: rd.bookingFormPictureUrl || acc.bookingFormPictureUrl || "",
+            websiteUrl: rd.websiteUrl || acc.websiteUrl || "",
+            primaryTalentId: rd.primaryTalentId || acc.primaryTalentId || null,
+          };
+        }, {});
+  
+        setFormData((prev) => ({
+          ...prev,
+          ...mergedRoleData
+        }));
+  
+        setHasProfile(true);
+      } else {
+        setHasProfile(false);
+      }
     }
-  }
-}, [userResponse]);
+  }, [user]);
 
   const updateProfileMutation = useMutation({
     mutationFn: async (data: any) => {

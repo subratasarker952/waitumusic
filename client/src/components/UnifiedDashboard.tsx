@@ -72,6 +72,8 @@ import {
 } from '@/components/modals/ComprehensiveModalSystem';
 import { Index } from 'drizzle-orm/mysql-core';
 import { useAuth } from '@/contexts/AuthContext';
+import { RoleBadges } from './RoleBadge';
+import DashboardHeader from './DashboardHeader';
 
 
 interface UnifiedDashboardProps {
@@ -129,13 +131,13 @@ export default function UnifiedDashboard({ stats, bookings, applications }: Unif
   const { measurePerformance, optimizeCache } = usePerformanceOptimization();
 
   // Data queries with performance optimization
-  const { data: songs=[], isLoading: songsLoading } = useQuery({
+  const { data: songs = [], isLoading: songsLoading } = useQuery({
     queryKey: ['/api/songs'],
     staleTime: 300000, // 5 minutes
     gcTime: 600000, // 10 minutes
   });
 
-  const { data: artists=[], isLoading: artistsLoading } = useQuery({
+  const { data: artists = [], isLoading: artistsLoading } = useQuery({
     queryKey: ['/api/artists'],
     staleTime: 300000,
     gcTime: 600000,
@@ -180,14 +182,14 @@ export default function UnifiedDashboard({ stats, bookings, applications }: Unif
   const isProfessional = hasRole([7, 8]);
   const isFan = hasRole([9]);
 
-// PRO registration eligibility: Artists, Musicians, and Music-related Professionals
-const musicProfessionalTypes = [
-  'background_vocalist', 'producer', 'arranger', 'composer', 'songwriter',
-  'dj', 'music_director', 'sound_engineer', 'mixing_engineer', 'mastering_engineer',
-  'music_producer', 'beat_maker', 'orchestrator', 'lyricist', 'jingle_writer'
-];
+  // PRO registration eligibility: Artists, Musicians, and Music-related Professionals
+  const musicProfessionalTypes = [
+    'background_vocalist', 'producer', 'arranger', 'composer', 'songwriter',
+    'dj', 'music_director', 'sound_engineer', 'mixing_engineer', 'mastering_engineer',
+    'music_producer', 'beat_maker', 'orchestrator', 'lyricist', 'jingle_writer'
+  ];
 
-const isPROEligible =  isArtist ||  isMusicianProfile ||  (isProfessional &&
+  const isPROEligible = isArtist || isMusicianProfile || (isProfessional &&
     user?.roleData?.some((role: any) =>
       role.data?.specializations?.some((spec: string) =>
         musicProfessionalTypes.includes(spec.toLowerCase().replace(/\s+/g, '_'))
@@ -195,20 +197,20 @@ const isPROEligible =  isArtist ||  isMusicianProfile ||  (isProfessional &&
     )
   );
 
-// Filter data based on user
-const userSongs =  songs?.filter((song: any) => song.artistUserId === user?.id) || [];
+  // Filter data based on user
+  const userSongs = songs?.filter((song: any) => song.artistUserId === user?.id) || [];
 
-const userBookings =
-  bookings?.filter(
-    (b: any) =>
-      b.musician_user_id === user?.id ||
-      b.professional_user_id === user?.id ||
-      b.booker_user_id === user?.id ||
-      b.artist_user_id === user?.id
-  ) || [];
+  const userBookings =
+    bookings?.filter(
+      (b: any) =>
+        b.musician_user_id === user?.id ||
+        b.professional_user_id === user?.id ||
+        b.booker_user_id === user?.id ||
+        b.artist_user_id === user?.id
+    ) || [];
 
-const userApplications =
-  applications?.filter((a: any) => a.applicantUserId === user?.id) || [];
+  const userApplications =
+    applications?.filter((a: any) => a.applicantUserId === user?.id) || [];
   // Event handlers
 
   const handleUploadMusic = () => setMusicUploadOpen(true);
@@ -364,43 +366,9 @@ const userApplications =
     // For all other roles, render unified dashboard with role-specific sections
     return (
       <div className="space-y-4 sm:space-y-6 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+
         {/* Header - Mobile Optimized */}
-        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-          <div className="flex-1">
-            <h1 className="text-2xl sm:text-3xl font-bold">
-              {isFan ? 'Welcome Back!' :
-                isArtist ? 'Artist Dashboard' :
-                  isMusicianProfile ? 'Musician Dashboard' :
-                    isProfessional ? 'Professional Dashboard' : 'Dashboard'}
-            </h1>
-            <p className="text-sm sm:text-base text-muted-foreground mt-1">
-              {isFan ? 'Discover music, follow artists, and book experiences' :
-                isArtist ? 'Manage your music career and bookings' :
-                  isMusicianProfile ? 'Manage your session work and bookings' :
-                    isProfessional ? 'Manage your consulting services and clients' : 'Manage your account'}
-            </p>
-          </div>
-          <Badge variant="outline" className={`
-            flex-shrink-0 ${isManaged ? "text-green-600 border-green-600" :
-              isArtist ? "text-purple-600 border-purple-600" :
-                isMusicianProfile ? "text-blue-600 border-blue-600" :
-                  isProfessional ? "text-orange-600 border-orange-600" :
-                    "text-pink-600 border-pink-600"
-            }`}>
-            {isManaged && <Check className="h-3 w-3 mr-1" />}
-            {isArtist && <Music className="h-3 w-3 mr-1" />}
-            {isMusicianProfile && <Headphones className="h-3 w-3 mr-1" />}
-            {isProfessional && <Briefcase className="h-3 w-3 mr-1" />}
-            {isFan && <Heart className="h-3 w-3 mr-1" />}
-
-            <div>
-              {
-               !!roles && roles.map(role=> <span key={role.id}>{role.name}</span>)
-              }
-            </div>
-          </Badge>
-        </div>
-
+        <RoleBadges roles={roles} />
 
 
         {/* Mobile Dropdown Navigation - Musical Organization */}
@@ -408,39 +376,39 @@ const userApplications =
           <Select value={activeTab} onValueChange={handleTabChange}>
             <SelectTrigger className="w-full h-12 text-base">
               <SelectValue placeholder={
-                isArtist ? "🎨 Creative Studio" :
-                  isMusicianProfile ? "🎧 Session Workshop" :
-                    isProfessional ? "💼 Professional Suite" :
-                      isFan ? "💖 Fan Experience" : "🎵 Dashboard"
+                userRoles.includes(3) ? "🎨 Creative Studio" :
+                  userRoles.includes(5) ? "🎧 Session Workshop" :
+                    userRoles.includes(7) ? "💼 Professional Suite" :
+                      userRoles.includes(9) ? "💖 Fan Experience" : "🎵 Dashboard"
               } />
             </SelectTrigger>
+
             <SelectContent>
-              {/* Creative Studio/Session Workshop */}
-              <SelectItem value="overview">🏰 Overview ({isArtist ? 'Studio' : isMusicianProfile ? 'Workshop' : 'Dashboard'})</SelectItem>
-              <SelectItem value="profile">⭐ Profile ({isArtist ? 'Studio' : isMusicianProfile ? 'Workshop' : 'Profile'})</SelectItem>
+              <SelectItem value="overview">🏰 Overview</SelectItem>
+              <SelectItem value="profile">⭐ Profile</SelectItem>
 
               {/* Performance & Production */}
-              {!isFan && <SelectItem value="calendar">📅 Calendar (Schedule)</SelectItem>}
-              {(isArtist || isManagedMusician) && <SelectItem value="music">🎵 Music (Production)</SelectItem>}
-              {isMusicianProfile && <SelectItem value="equipment">🎧 Instruments (Equipment)</SelectItem>}
+              {userRoles.some(id => [3, 4, 5, 6, 7, 8].includes(id)) && <SelectItem value="calendar">📅 Calendar (Schedule)</SelectItem>}
+              {userRoles.some(id => [3, 5].includes(id)) && <SelectItem value="music">🎵 Music (Production)</SelectItem>}
+              {userRoles.some(id => [5, 6].includes(id)) && <SelectItem value="equipment">🎧 Instruments (Equipment)</SelectItem>}
 
               {/* Business & Opportunities */}
-              {isProfessional && <SelectItem value="services">💼 Services (Business)</SelectItem>}
-              {!isProfessional && <SelectItem value="bookings">📋 Bookings (Business)</SelectItem>}
-              {user && <SelectItem value="applications">📋 Applications (Business)</SelectItem>}
-              {(isArtist || isMusicianProfile || isProfessional) && <SelectItem value="gigs">🎤 My Gigs (Performances)</SelectItem>}
+              {userRoles.includes(7) && <SelectItem value="services">💼 Services (Business)</SelectItem>}
+              {!userRoles.includes(7) && <SelectItem value="bookings">📋 Bookings (Business)</SelectItem>}
+              <SelectItem value="applications">📋 Applications (Business)</SelectItem>
+              {userRoles.some(id => [3, 4, 5, 6, 7, 8].includes(id)) && <SelectItem value="gigs">🎤 My Gigs (Performances)</SelectItem>}
 
               {/* Commercial & Legal */}
-              {isArtist && !isFan && <SelectItem value="merchandise">🛒 Merchandise (Commercial)</SelectItem>}
+              {userRoles.includes(3) && <SelectItem value="merchandise">🛒 Merchandise (Commercial)</SelectItem>}
               {isPROEligible && <SelectItem value="pro-registration">📝 PRO Registration (Legal)</SelectItem>}
-              {isManaged && (isArtist || isManagedMusician) && <SelectItem value="splitsheets">📄 Splitsheets (Legal)</SelectItem>}
+              {userRoles.some(id => [3, 5].includes(id)) && <SelectItem value="splitsheets">📄 Splitsheets (Legal)</SelectItem>}
 
               {/* Fan Experience */}
-              {isFan && <SelectItem value="favorites">❤️ Favorites (Fan)</SelectItem>}
-              {isFan && <SelectItem value="purchases">🛒 Purchases (Fan)</SelectItem>}
+              {userRoles.includes(9) && <SelectItem value="favorites">❤️ Favorites (Fan)</SelectItem>}
+              {userRoles.includes(9) && <SelectItem value="purchases">🛒 Purchases (Fan)</SelectItem>}
 
               {/* Knowledge Center */}
-              {isProfessional && <SelectItem value="knowledge">📚 Knowledge Base (Resources)</SelectItem>}
+              {userRoles.includes(7) && <SelectItem value="knowledge">📚 Knowledge Base (Resources)</SelectItem>}
             </SelectContent>
           </Select>
         </div>
@@ -449,54 +417,53 @@ const userApplications =
         <Tabs value={activeTab} onValueChange={handleTabChange} className="w-full">
           <div className="hidden sm:block">
             <div className="space-y-4 mb-6">
+              {/* Artist/Musician/Professional Hub */}
 
-              {/* Artist/Musician Creative Hub */}
-              {(isArtist || isMusicianProfile || isProfessional) && (
+              {roles.length > 0 && (
                 <div className="bg-gradient-to-r from-purple-50 to-pink-50 dark:from-purple-950/20 dark:to-pink-950/20 rounded-lg p-3">
                   <h3 className="text-sm font-medium text-purple-700 dark:text-purple-300 mb-2 flex items-center gap-2">
                     <Music className="h-4 w-4" />
-                    {isArtist ? 'Creative Studio' : 'Session Workshop'}
+                    {[
+                      isArtist ? 'Creative Studio' : null,
+                      isMusicianProfile ? 'Session Workshop' : null,
+                      isProfessional ? 'Professional Suite' : null
+                    ].filter(Boolean).join(' / ')}
                   </h3>
                   <TabsList className="grid w-full grid-cols-3 gap-1">
                     <TabsTrigger value="overview" className="text-xs flex items-center gap-1">
-                      <Crown className="h-3 w-3" />
-                      Overview
+                      <Crown className="h-3 w-3" /> Overview
                     </TabsTrigger>
                     <TabsTrigger value="profile" className="text-xs flex items-center gap-1">
-                      <Star className="h-3 w-3" />
-                      Profile
+                      <Star className="h-3 w-3" /> Profile
                     </TabsTrigger>
-                    {!isFan && (
+                    {roles.some(r => [3, 4, 5, 6, 7, 8].includes(r.id)) && (
                       <TabsTrigger value="calendar" className="text-xs flex items-center gap-1">
-                        <Calendar className="h-3 w-3" />
-                        Calendar
+                        <Calendar className="h-3 w-3" /> Calendar
                       </TabsTrigger>
                     )}
                   </TabsList>
                 </div>
               )}
 
+
               {/* Performance & Production Hub */}
-              {(isArtist || isMusicianProfile) && (
+              {roles.some(r => [3, 4, 5, 6].includes(r.id)) && (
                 <div className="bg-gradient-to-r from-emerald-50 to-teal-50 dark:from-emerald-950/20 dark:to-teal-950/20 rounded-lg p-3">
                   <h3 className="text-sm font-medium text-emerald-700 dark:text-emerald-300 mb-2 flex items-center gap-2">
-                    <Mic className="h-4 w-4" />
-                    Performance & Production
+                    <Mic className="h-4 w-4" /> Performance & Production
                   </h3>
                   <div className="grid grid-cols-2 gap-1">
-                    {(isArtist || isManagedMusician) && (
+                    {roles.some(r => [3, 4, 5].includes(r.id)) && (
                       <TabsList className="grid w-full grid-cols-1">
                         <TabsTrigger value="music" className="text-xs flex items-center gap-1">
-                          <Music className="h-3 w-3" />
-                          Music
+                          <Music className="h-3 w-3" /> Music
                         </TabsTrigger>
                       </TabsList>
                     )}
-                    {isMusicianProfile && (
+                    {roles.some(r => [5, 6].includes(r.id)) && (
                       <TabsList className="grid w-full grid-cols-1">
                         <TabsTrigger value="equipment" className="text-xs flex items-center gap-1">
-                          <Headphones className="h-3 w-3" />
-                          Instruments
+                          <Headphones className="h-3 w-3" /> Instruments
                         </TabsTrigger>
                       </TabsList>
                     )}
@@ -504,48 +471,38 @@ const userApplications =
                 </div>
               )}
 
+
               {/* Business & Booking Suite */}
-              {(isArtist || isMusicianProfile || isProfessional) && (
+              {roles.some(r => [3, 4, 5, 6, 7, 8].includes(r.id)) && (
                 <div className="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-950/20 dark:to-indigo-950/20 rounded-lg p-3">
                   <h3 className="text-sm font-medium text-blue-700 dark:text-blue-300 mb-2 flex items-center gap-2">
-                    <Briefcase className="h-4 w-4" />
-                    Business & Opportunities
+                    <Briefcase className="h-4 w-4" /> Business & Opportunities
                   </h3>
                   <div className="grid grid-cols-3 gap-1">
-                    {!isProfessional && (
+                    {roles.some(r => [3, 4, 5, 6].includes(r.id)) && (
                       <>
                         <TabsList className="grid w-full grid-cols-1">
                           <TabsTrigger value="bookings" className="text-xs flex items-center gap-1">
-                            <Calendar className="h-3 w-3" />
-                            Bookings
+                            <Calendar className="h-3 w-3" /> Bookings
                           </TabsTrigger>
                         </TabsList>
                         <TabsList className="grid w-full grid-cols-1">
                           <TabsTrigger value="applications" className="text-xs flex items-center gap-1">
-                            <List className="h-3 w-3" />
-                            Applications
+                            <List className="h-3 w-3" /> Applications
                           </TabsTrigger>
                         </TabsList>
                         <TabsList className="grid w-full grid-cols-1">
                           <TabsTrigger value="gigs" className="text-xs flex items-center gap-1">
-                            <Music2 className="h-3 w-3" />
-                            My Gigs
+                            <Music2 className="h-3 w-3" /> My Gigs
                           </TabsTrigger>
                         </TabsList>
                       </>
                     )}
-                    {isProfessional && (
+                    {roles.some(r => [7, 8].includes(r.id)) && (
                       <>
                         <TabsList className="grid w-full grid-cols-1">
                           <TabsTrigger value="services" className="text-xs flex items-center gap-1">
-                            <Briefcase className="h-3 w-3" />
-                            Services
-                          </TabsTrigger>
-                        </TabsList>
-                        <TabsList className="grid w-full grid-cols-1">
-                          <TabsTrigger value="gigs" className="text-xs flex items-center gap-1">
-                            <Music2 className="h-3 w-3" />
-                            My Gigs
+                            <Briefcase className="h-3 w-3" /> Services
                           </TabsTrigger>
                         </TabsList>
                       </>
@@ -555,121 +512,98 @@ const userApplications =
               )}
 
               {/* Commercial & Legal Hub */}
-              {(isArtist || isManagedMusician || isPROEligible) && (
+              {roles.some(r => [3, 5].includes(r.id)) || isPROEligible ? (
                 <div className="bg-gradient-to-r from-orange-50 to-red-50 dark:from-orange-950/20 dark:to-red-950/20 rounded-lg p-3">
                   <h3 className="text-sm font-medium text-orange-700 dark:text-orange-300 mb-2 flex items-center gap-2">
-                    <ShoppingCart className="h-4 w-4" />
-                    Commercial & Legal
+                    <ShoppingCart className="h-4 w-4" /> Commercial & Legal
                   </h3>
                   <div className="grid grid-cols-3 gap-1">
-                    {isArtist && !isFan && (
+                    {roles.some(r => r.id === 3) && (
                       <TabsList className="grid w-full grid-cols-1">
                         <TabsTrigger value="merchandise" className="text-xs flex items-center gap-1">
-                          <ShoppingCart className="h-3 w-3" />
-                          Merch
+                          <ShoppingCart className="h-3 w-3" /> Merch
                         </TabsTrigger>
                       </TabsList>
                     )}
                     {isPROEligible && (
                       <TabsList className="grid w-full grid-cols-1">
                         <TabsTrigger value="pro-registration" className="text-xs flex items-center gap-1">
-                          <FileText className="h-3 w-3" />
-                          PRO
+                          <FileText className="h-3 w-3" /> PRO
                         </TabsTrigger>
                       </TabsList>
                     )}
-                    {isManaged && (isArtist || isManagedMusician) && (
+                    {roles.some(r => [3, 5].includes(r.id)) && isManaged && (
                       <TabsList className="grid w-full grid-cols-1">
                         <TabsTrigger value="splitsheets" className="text-xs flex items-center gap-1">
-                          <FileText className="h-3 w-3" />
-                          Splits
+                          <FileText className="h-3 w-3" /> Splits
                         </TabsTrigger>
                       </TabsList>
                     )}
                   </div>
                 </div>
-              )}
+              ) : null}
 
               {/* Fan Experience Hub */}
-              {isFan && (
+              {roles.some(r => r.id === 9) && (
                 <div className="bg-gradient-to-r from-pink-50 to-rose-50 dark:from-pink-950/20 dark:to-rose-950/20 rounded-lg p-3">
                   <h3 className="text-sm font-medium text-pink-700 dark:text-pink-300 mb-2 flex items-center gap-2">
-                    <Heart className="h-4 w-4" />
-                    Fan Experience
+                    <Heart className="h-4 w-4" /> Fan Experience
                   </h3>
-                  <TabsList className="grid w-full grid-cols-3 gap-4 h-full">
-                    <TabsTrigger value="overview" className="text-xs flex items-center gap-1">
-                      <Crown className="h-3 w-3" />
-                      Overview
-                    </TabsTrigger>
-                    <TabsTrigger value="profile" className="text-xs flex items-center gap-1">
-                      <Star className="h-3 w-3" />
-                      Profile
-                    </TabsTrigger>
+                  <TabsList className="grid w-full grid-cols-4 gap-4 h-full">
                     <TabsTrigger value="bookings" className="text-xs flex items-center gap-1">
-                      <Notebook className="h-3 w-3" />
-                      Bookings
+                      <Notebook className="h-3 w-3" /> Bookings
                     </TabsTrigger>
                     <TabsTrigger value="applications" className="text-xs flex items-center gap-1">
-                      <Notebook className="h-3 w-3" />
-                      Applications
+                      <Notebook className="h-3 w-3" /> Applications
                     </TabsTrigger>
                     <TabsTrigger value="favorites" className="text-xs flex items-center gap-1">
-                      <Heart className="h-3 w-3" />
-                      Favorites
+                      <Heart className="h-3 w-3" /> Favorites
                     </TabsTrigger>
                     <TabsTrigger value="purchases" className="text-xs flex items-center gap-1">
-                      <ShoppingCart className="h-3 w-3" />
-                      Purchases
+                      <ShoppingCart className="h-3 w-3" /> Purchases
                     </TabsTrigger>
                   </TabsList>
                 </div>
               )}
 
+
               {/* Admin Management Hub */}
               {isAdmin && (
                 <div className="bg-gradient-to-r from-purple-50 to-indigo-50 dark:from-purple-950/20 dark:to-indigo-950/20 rounded-lg p-3">
                   <h3 className="text-sm font-medium text-purple-700 dark:text-purple-300 mb-2 flex items-center gap-2">
-                    <Shield className="h-4 w-4" />
-                    Admin Control Center
+                    <Shield className="h-4 w-4" /> Admin Control Center
                   </h3>
                   <div className="grid grid-cols-3 gap-1">
                     <TabsList className="grid w-full grid-cols-1">
                       <TabsTrigger value="admin-users" className="text-xs flex items-center gap-1">
-                        <Users className="h-3 w-3" />
-                        Users
+                        <Users className="h-3 w-3" /> Users
                       </TabsTrigger>
                     </TabsList>
                     <TabsList className="grid w-full grid-cols-1">
                       <TabsTrigger value="admin-system" className="text-xs flex items-center gap-1">
-                        <Settings className="h-3 w-3" />
-                        System
+                        <Settings className="h-3 w-3" /> System
                       </TabsTrigger>
                     </TabsList>
                     <TabsList className="grid w-full grid-cols-1">
                       <TabsTrigger value="admin-data" className="text-xs flex items-center gap-1">
-                        <Database className="h-3 w-3" />
-                        Data
+                        <Database className="h-3 w-3" /> Data
                       </TabsTrigger>
                     </TabsList>
                   </div>
                   <div className="grid grid-cols-3 gap-1 mt-1">
                     <TabsList className="grid w-full grid-cols-1">
                       <TabsTrigger value="newsletters" className="text-xs flex items-center gap-1">
-                        <Mail className="h-3 w-3" />
-                        Newsletter
+                        <Mail className="h-3 w-3" /> Newsletter
                       </TabsTrigger>
                     </TabsList>
                     <TabsList className="grid w-full grid-cols-1">
                       <TabsTrigger value="press-releases" className="text-xs flex items-center gap-1">
-                        <FileText className="h-3 w-3" />
-                        Press
+                        <FileText className="h-3 w-3" /> Press
                       </TabsTrigger>
                     </TabsList>
                     <TabsList className="grid w-full grid-cols-1">
                       <TabsTrigger value="admin-security" className="text-xs flex items-center gap-1">
-                        <Shield className="h-3 w-3" />
-                        Security
+                        <Shield className="h-3 w-3" /> Security
                       </TabsTrigger>
                     </TabsList>
                   </div>
@@ -680,150 +614,138 @@ const userApplications =
               {isProfessional && (
                 <div className="bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-950/20 dark:to-emerald-950/20 rounded-lg p-3">
                   <h3 className="text-sm font-medium text-green-700 dark:text-green-300 mb-2 flex items-center gap-2">
-                    <BookOpen className="h-4 w-4" />
-                    Knowledge Center
+                    <BookOpen className="h-4 w-4" /> Knowledge Center
                   </h3>
                   <TabsList className="grid w-full grid-cols-1 gap-1">
                     <TabsTrigger value="knowledge" className="text-xs flex items-center gap-1">
-                      <BookOpen className="h-3 w-3" />
-                      Knowledge Base
+                      <BookOpen className="h-3 w-3" /> Knowledge Base
                     </TabsTrigger>
                   </TabsList>
                 </div>
               )}
-
             </div>
           </div>
 
-          {/* Overview Tab - Mobile Optimized */}
+
+          {/* ------------------ OVERVIEW TAB ------------------ */}
           <TabsContent value="overview" className="space-y-4 sm:space-y-6">
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
-              {/* Role-specific metrics */}
-              {isArtist && (
+              {/* Artist Metrics */}
+              {roles.some(r => [3, 4].includes(r.id)) && (
                 <>
                   <Card>
-                    <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                    <CardHeader className="flex justify-between pb-2">
                       <CardTitle className="text-sm font-medium">Monthly Bookings</CardTitle>
                       <Calendar className="h-4 w-4 text-muted-foreground" />
                     </CardHeader>
                     <CardContent>
                       <div className="text-2xl font-bold">{userBookings.length}</div>
-                      <p className="text-xs text-muted-foreground">
-                        +12% from last month
-                      </p>
+                      <p className="text-xs text-muted-foreground">+12% from last month</p>
                     </CardContent>
                   </Card>
                   <Card>
-                    <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                    <CardHeader className="flex justify-between pb-2">
                       <CardTitle className="text-sm font-medium">Total Songs</CardTitle>
                       <Music className="h-4 w-4 text-muted-foreground" />
                     </CardHeader>
                     <CardContent>
                       <div className="text-2xl font-bold">{userSongs.length}</div>
-                      <p className="text-xs text-muted-foreground">
-                        Released tracks
-                      </p>
+                      <p className="text-xs text-muted-foreground">Released tracks</p>
                     </CardContent>
                   </Card>
                 </>
               )}
 
-              {isMusicianProfile && (
+              {/* Musician Metrics */}
+              {roles.some(r => [5, 6].includes(r.id)) && (
                 <>
                   <Card>
-                    <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                    <CardHeader className="flex justify-between pb-2">
                       <CardTitle className="text-sm font-medium">Monthly Sessions</CardTitle>
                       <Headphones className="h-4 w-4 text-muted-foreground" />
                     </CardHeader>
                     <CardContent>
                       <div className="text-2xl font-bold">{userBookings.length}</div>
-                      <p className="text-xs text-muted-foreground">
-                        +8% from last month
-                      </p>
+                      <p className="text-xs text-muted-foreground">+8% from last month</p>
                     </CardContent>
                   </Card>
                   <Card>
-                    <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                    <CardHeader className="flex justify-between pb-2">
                       <CardTitle className="text-sm font-medium">Session Revenue</CardTitle>
                       <DollarSign className="h-4 w-4 text-muted-foreground" />
                     </CardHeader>
                     <CardContent>
                       <div className="text-2xl font-bold">$2,450</div>
-                      <p className="text-xs text-muted-foreground">
-                        +15% from last month
-                      </p>
+                      <p className="text-xs text-muted-foreground">+15% from last month</p>
                     </CardContent>
                   </Card>
                 </>
               )}
 
-              {isProfessional && (
+              {/* Professional Metrics */}
+              {roles.some(r => [7, 8].includes(r.id)) && (
                 <>
                   <Card>
-                    <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                    <CardHeader className="flex justify-between pb-2">
                       <CardTitle className="text-sm font-medium">Monthly Consultations</CardTitle>
                       <Briefcase className="h-4 w-4 text-muted-foreground" />
                     </CardHeader>
                     <CardContent>
                       <div className="text-2xl font-bold">{userBookings.length}</div>
-                      <p className="text-xs text-muted-foreground">
-                        +20% from last month
-                      </p>
+                      <p className="text-xs text-muted-foreground">+20% from last month</p>
                     </CardContent>
                   </Card>
                   <Card>
-                    <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                    <CardHeader className="flex justify-between pb-2">
                       <CardTitle className="text-sm font-medium">Active Clients</CardTitle>
                       <Users className="h-4 w-4 text-muted-foreground" />
                     </CardHeader>
                     <CardContent>
                       <div className="text-2xl font-bold">18</div>
-                      <p className="text-xs text-muted-foreground">
-                        +3 new this month
-                      </p>
+                      <p className="text-xs text-muted-foreground">+3 new this month</p>
                     </CardContent>
                   </Card>
                 </>
               )}
 
-              {isFan && (
+              {/* Fan Metrics */}
+              {roles.some(r => r.id === 9) && (
                 <>
                   <Card>
-                    <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                    <CardHeader className="flex justify-between pb-2">
                       <CardTitle className="text-sm font-medium">Following</CardTitle>
                       <Heart className="h-4 w-4 text-muted-foreground" />
                     </CardHeader>
                     <CardContent>
                       <div className="text-2xl font-bold">12</div>
-                      <p className="text-xs text-muted-foreground">
-                        Artists followed
-                      </p>
+                      <p className="text-xs text-muted-foreground">Artists followed</p>
                     </CardContent>
                   </Card>
                   <Card>
-                    <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                    <CardHeader className="flex justify-between pb-2">
                       <CardTitle className="text-sm font-medium">Purchases</CardTitle>
                       <ShoppingCart className="h-4 w-4 text-muted-foreground" />
                     </CardHeader>
                     <CardContent>
                       <div className="text-2xl font-bold">24</div>
-                      <p className="text-xs text-muted-foreground">
-                        Songs purchased
-                      </p>
+                      <p className="text-xs text-muted-foreground">Songs purchased</p>
                     </CardContent>
                   </Card>
                 </>
               )}
 
-              {/* Common metrics */}
+              {/* Common Metrics */}
               <Card>
-                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardHeader className="flex justify-between pb-2">
                   <CardTitle className="text-sm font-medium">
-                    {isProfessional ? 'Revenue' : isArtist ? 'Earnings' : isMusicianProfile ? 'Ratings' : 'Downloads'}
+                    {roles.some(r => [7, 8].includes(r.id)) ? 'Revenue' :
+                      roles.some(r => [3, 4].includes(r.id)) ? 'Earnings' :
+                        roles.some(r => [5, 6].includes(r.id)) ? 'Ratings' :
+                          'Downloads'}
                   </CardTitle>
-                  {isProfessional || isArtist ? (
+                  {roles.some(r => [7, 8, 3, 4].includes(r.id)) ? (
                     <DollarSign className="h-4 w-4 text-muted-foreground" />
-                  ) : isMusicianProfile ? (
+                  ) : roles.some(r => [5, 6].includes(r.id)) ? (
                     <Star className="h-4 w-4 text-muted-foreground" />
                   ) : (
                     <Download className="h-4 w-4 text-muted-foreground" />
@@ -831,12 +753,14 @@ const userApplications =
                 </CardHeader>
                 <CardContent>
                   <div className="text-2xl font-bold">
-                    {isProfessional ? '$5,200' : isArtist ? '$3,400' : isMusicianProfile ? '4.9' : '156'}
+                    {roles.some(r => [7, 8].includes(r.id)) ? '$5,200' :
+                      roles.some(r => [3, 4].includes(r.id)) ? '$3,400' :
+                        roles.some(r => [5, 6].includes(r.id)) ? '4.9' : '156'}
                   </div>
                   <p className="text-xs text-muted-foreground">
-                    {isProfessional ? '+25% from last month' :
-                      isArtist ? '+18% from last month' :
-                        isMusicianProfile ? 'Average rating' : 'Total downloads'}
+                    {roles.some(r => [7, 8].includes(r.id)) ? '+25% from last month' :
+                      roles.some(r => [3, 4].includes(r.id)) ? '+18% from last month' :
+                        roles.some(r => [5, 6].includes(r.id)) ? 'Average rating' : 'Total downloads'}
                   </p>
                 </CardContent>
               </Card>
@@ -849,14 +773,14 @@ const userApplications =
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
-                  {userBookings.slice(0, 3).map((booking: any, index: Index) => (
+                  {userBookings.slice(0, 3).map((booking: any, index: number) => (
                     <div key={booking.id || index} className="flex items-center space-x-4">
                       <div className="w-2 h-2 bg-primary rounded-full"></div>
                       <div className="flex-1">
                         <p className="font-medium">
-                          {isArtist ? `Performance booked for ${booking.eventName || 'Event'}` :
-                            isMusicianProfile ? `Session scheduled for ${booking.eventName || 'Session'}` :
-                              isProfessional ? `Consultation scheduled with ${booking.clientName || 'Client'}` :
+                          {roles.some(r => [3, 4].includes(r.id)) ? `Performance booked for ${booking.eventName || 'Event'}` :
+                            roles.some(r => [5, 6].includes(r.id)) ? `Session scheduled for ${booking.eventName || 'Session'}` :
+                              roles.some(r => [7, 8].includes(r.id)) ? `Consultation scheduled with ${booking.clientName || 'Client'}` :
                                 `Booking: ${booking.eventName || 'Event'}`}
                         </p>
                         <p className="text-sm text-muted-foreground">
@@ -872,6 +796,8 @@ const userApplications =
               </CardContent>
             </Card>
           </TabsContent>
+
+
 
           {/* Profile Tab - Mobile Optimized */}
           <TabsContent value="profile" className="space-y-4 sm:space-y-6">
@@ -996,6 +922,8 @@ const userApplications =
               </Card>
             )}
           </TabsContent>
+
+          
 
           {/* Calendar Tab - Mobile Optimized */}
           <TabsContent value="calendar" className="space-y-4 sm:space-y-6">
