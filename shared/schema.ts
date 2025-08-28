@@ -289,6 +289,7 @@ export const professionals = pgTable("professionals", {
   managementTierId: integer("management_tier_id").references(() => managementTiers.id),
   bookingFormPictureUrl: text("booking_form_picture_url"),
   primaryTalentId: integer("primary_talent_id").references(() => userProfessionalPrimaryTalents.id),
+  websiteUrl: text("website_url"),
   isDemo: boolean("is_demo").default(false),
   isComplete: boolean("is_complete").default(false),
 });
@@ -844,7 +845,7 @@ export const managementTransitions = pgTable("management_transitions", {
 export const managementApplications = pgTable("management_applications", {
   id: serial("id").primaryKey(),
   applicantUserId: integer("applicant_user_id").references(() => users.id).notNull(),
-  requestedRoleId: integer("requested_role_id").references(() => roles.id).notNull(), // NEW
+  requestedRoleId: integer("requested_role_id").references(() => rolesManagement.id).notNull(), 
   requestedManagementTierId: integer("requested_management_tier_id").references(() => managementTiers.id).notNull(),
   applicationReason: text("application_reason").notNull(),
   businessPlan: text("business_plan"),
@@ -865,7 +866,7 @@ export const managementApplications = pgTable("management_applications", {
   completedAt: timestamp("completed_at"),
   rejectionReason: text("rejection_reason"),
   createdAt: timestamp("created_at").defaultNow(),
-  updatedAt: timestamp("updated_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),               
 });
 
 

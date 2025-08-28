@@ -135,6 +135,7 @@ export default function UnifiedDashboard({ stats, bookings, applications }: Unif
     queryKey: ['/api/songs'],
     staleTime: 300000, // 5 minutes
     gcTime: 600000, // 10 minutes
+    retry: 1
   });
 
   const { data: artists = [], isLoading: artistsLoading } = useQuery({
@@ -144,16 +145,14 @@ export default function UnifiedDashboard({ stats, bookings, applications }: Unif
   });
 
   // Large dataset optimization for artists
-  const {
-    filteredData: filteredArtists,
-    isProcessing: isFilteringArtists
-  } = useLargeDatasetOptimization(
-    artists || [],
-    '',
-    (artist, query) =>
-      (artist as any).stageName?.toLowerCase().includes(query.toLowerCase()) ||
-      (artist as any).bio?.toLowerCase().includes(query.toLowerCase())
-  );
+  const { filteredData: filteredArtists, isProcessing: isFilteringArtists } =
+    useLargeDatasetOptimization(
+      artists || [],
+      '',
+      (artist, query) =>
+        (artist as any).stageName?.toLowerCase().includes(query.toLowerCase()) ||
+        (artist as any).bio?.toLowerCase().includes(query.toLowerCase())
+    );
 
   // Error boundary protection
   if (!user) {
@@ -417,16 +416,61 @@ export default function UnifiedDashboard({ stats, bookings, applications }: Unif
         <Tabs value={activeTab} onValueChange={handleTabChange} className="w-full">
           <div className="hidden sm:block">
             <div className="space-y-4 mb-6">
-              {/* Artist/Musician/Professional Hub */}
 
-              {roles.length > 0 && (
+              {/* Admin Management Hub */}
+              {roles?.some(r => [1, 2].includes(r.id)) && (
+                <div className="bg-gradient-to-r from-purple-50 to-indigo-50 dark:from-purple-950/20 dark:to-indigo-950/20 rounded-xl p-4 shadow-md">
+                  <h3 className="text-sm font-semibold text-purple-700 dark:text-purple-300 mb-4 flex items-center gap-2">
+                    <Shield className="h-5 w-5" />
+                    Admin Control Center
+                  </h3>
+
+                  <TabsList className="grid w-full grid-cols-2 md:grid-cols-4 gap-3 h-full">
+                    <TabsTrigger value="overview" className="text-xs flex items-center gap-1 justify-center py-2 px-2 rounded-lg hover:bg-purple-100 dark:hover:bg-purple-900 transition">
+                      <Crown className="h-4 w-4" /> Overview
+                    </TabsTrigger>
+
+                    <TabsTrigger value="profile" className="text-xs flex items-center gap-1 justify-center py-2 px-2 rounded-lg hover:bg-purple-100 dark:hover:bg-purple-900 transition">
+                      <Star className="h-4 w-4" /> Profile
+                    </TabsTrigger>
+
+                    <TabsTrigger value="admin-users" className="text-xs flex items-center gap-1 justify-center py-2 px-2 rounded-lg hover:bg-purple-100 dark:hover:bg-purple-900 transition">
+                      <Users className="h-4 w-4" /> Users
+                    </TabsTrigger>
+
+                    <TabsTrigger value="admin-system" className="text-xs flex items-center gap-1 justify-center py-2 px-2 rounded-lg hover:bg-purple-100 dark:hover:bg-purple-900 transition">
+                      <Settings className="h-4 w-4" /> System
+                    </TabsTrigger>
+
+                    <TabsTrigger value="admin-data" className="text-xs flex items-center gap-1 justify-center py-2 px-2 rounded-lg hover:bg-purple-100 dark:hover:bg-purple-900 transition">
+                      <Database className="h-4 w-4" /> Data
+                    </TabsTrigger>
+
+                    <TabsTrigger value="newsletters" className="text-xs flex items-center gap-1 justify-center py-2 px-2 rounded-lg hover:bg-purple-100 dark:hover:bg-purple-900 transition">
+                      <Mail className="h-4 w-4" /> Newsletter
+                    </TabsTrigger>
+
+                    <TabsTrigger value="press-releases" className="text-xs flex items-center gap-1 justify-center py-2 px-2 rounded-lg hover:bg-purple-100 dark:hover:bg-purple-900 transition">
+                      <FileText className="h-4 w-4" /> Press
+                    </TabsTrigger>
+
+                    <TabsTrigger value="admin-security" className="text-xs flex items-center gap-1 justify-center py-2 px-2 rounded-lg hover:bg-purple-100 dark:hover:bg-purple-900 transition">
+                      <Shield className="h-4 w-4" /> Security
+                    </TabsTrigger>
+                  </TabsList>
+                </div>
+              )}
+
+
+              {/* Artist/Musician/Professional Hub */}
+              {roles.some(r => [3, 4, 5, 6, 7, 8, 9].includes(r.id)) && (
                 <div className="bg-gradient-to-r from-purple-50 to-pink-50 dark:from-purple-950/20 dark:to-pink-950/20 rounded-lg p-3">
                   <h3 className="text-sm font-medium text-purple-700 dark:text-purple-300 mb-2 flex items-center gap-2">
                     <Music className="h-4 w-4" />
-                    {[
-                      isArtist ? 'Creative Studio' : null,
-                      isMusicianProfile ? 'Session Workshop' : null,
-                      isProfessional ? 'Professional Suite' : null
+                    {[isFan ? 'Fan Experience' : null,
+                    isArtist ? 'Creative Studio' : null,
+                    isMusicianProfile ? 'Session Workshop' : null,
+                    isProfessional ? 'Professional Suite' : null
                     ].filter(Boolean).join(' / ')}
                   </h3>
                   <TabsList className="grid w-full grid-cols-3 gap-1">
@@ -473,46 +517,29 @@ export default function UnifiedDashboard({ stats, bookings, applications }: Unif
 
 
               {/* Business & Booking Suite */}
-              {roles.some(r => [3, 4, 5, 6, 7, 8].includes(r.id)) && (
-                <div className="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-950/20 dark:to-indigo-950/20 rounded-lg p-3">
-                  <h3 className="text-sm font-medium text-blue-700 dark:text-blue-300 mb-2 flex items-center gap-2">
-                    <Briefcase className="h-4 w-4" /> Business & Opportunities
-                  </h3>
-                  <div className="grid grid-cols-3 gap-1">
-                    {roles.some(r => [3, 4, 5, 6].includes(r.id)) && (
-                      <>
-                        <TabsList className="grid w-full grid-cols-1">
-                          <TabsTrigger value="bookings" className="text-xs flex items-center gap-1">
-                            <Calendar className="h-3 w-3" /> Bookings
-                          </TabsTrigger>
-                        </TabsList>
-                        <TabsList className="grid w-full grid-cols-1">
-                          <TabsTrigger value="applications" className="text-xs flex items-center gap-1">
-                            <List className="h-3 w-3" /> Applications
-                          </TabsTrigger>
-                        </TabsList>
-                        <TabsList className="grid w-full grid-cols-1">
-                          <TabsTrigger value="gigs" className="text-xs flex items-center gap-1">
-                            <Music2 className="h-3 w-3" /> My Gigs
-                          </TabsTrigger>
-                        </TabsList>
-                      </>
-                    )}
-                    {roles.some(r => [7, 8].includes(r.id)) && (
-                      <>
-                        <TabsList className="grid w-full grid-cols-1">
-                          <TabsTrigger value="services" className="text-xs flex items-center gap-1">
-                            <Briefcase className="h-3 w-3" /> Services
-                          </TabsTrigger>
-                        </TabsList>
-                      </>
-                    )}
-                  </div>
-                </div>
-              )}
+              {/* {roles.some(r => [1, 2, 3, 4, 5, 6, 7, 8, 9].includes(r.id)) && ( */}
+              <div className="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-950/20 dark:to-indigo-950/20 rounded-lg p-3">
+                <h3 className="text-sm font-medium text-blue-700 dark:text-blue-300 mb-2 flex items-center gap-2">
+                  <Briefcase className="h-4 w-4" /> Business & Opportunities
+                </h3>
+                <TabsList className="grid w-full grid-cols-3 gap-4">
+                  <TabsTrigger value="bookings" className="text-xs flex items-center gap-1">
+                    <Calendar className="h-3 w-3" /> Bookings
+                  </TabsTrigger>
+
+                  <TabsTrigger value="applications" className="text-xs flex items-center gap-1">
+                    <List className="h-3 w-3" /> Applications
+                  </TabsTrigger>
+
+                  <TabsTrigger value="gigs" className="text-xs flex items-center gap-1">
+                    <Music2 className="h-3 w-3" /> My Gigs
+                  </TabsTrigger>
+                </TabsList>
+              </div>
+              {/* )} */}
 
               {/* Commercial & Legal Hub */}
-              {roles.some(r => [3, 5].includes(r.id)) || isPROEligible ? (
+              {(roles.some(r => [3, 5].includes(r.id)) || isPROEligible) && (
                 <div className="bg-gradient-to-r from-orange-50 to-red-50 dark:from-orange-950/20 dark:to-red-950/20 rounded-lg p-3">
                   <h3 className="text-sm font-medium text-orange-700 dark:text-orange-300 mb-2 flex items-center gap-2">
                     <ShoppingCart className="h-4 w-4" /> Commercial & Legal
@@ -532,7 +559,7 @@ export default function UnifiedDashboard({ stats, bookings, applications }: Unif
                         </TabsTrigger>
                       </TabsList>
                     )}
-                    {roles.some(r => [3, 5].includes(r.id)) && isManaged && (
+                    {roles.some(r => [3, 5].includes(r.id)) && (
                       <TabsList className="grid w-full grid-cols-1">
                         <TabsTrigger value="splitsheets" className="text-xs flex items-center gap-1">
                           <FileText className="h-3 w-3" /> Splits
@@ -541,7 +568,24 @@ export default function UnifiedDashboard({ stats, bookings, applications }: Unif
                     )}
                   </div>
                 </div>
-              ) : null}
+              )}
+
+              {/* Professional Knowledge Center */}
+              {roles.some(r => [7, 8].includes(r.id)) && (
+                <div className="bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-950/20 dark:to-emerald-950/20 rounded-lg p-3">
+                  <h3 className="text-sm font-medium text-green-700 dark:text-green-300 mb-2 flex items-center gap-2">
+                    <BookOpen className="h-4 w-4" /> Knowledge Center
+                  </h3>
+                  <TabsList className="grid w-full grid-cols-2 gap-4">
+                    <TabsTrigger value="knowledge" className="text-xs flex items-center gap-1">
+                      <BookOpen className="h-3 w-3" /> Knowledge Base
+                    </TabsTrigger>
+                    <TabsTrigger value="services" className="text-xs flex items-center gap-1">
+                      <Briefcase className="h-3 w-3" /> Services
+                    </TabsTrigger>
+                  </TabsList>
+                </div>
+              )}
 
               {/* Fan Experience Hub */}
               {roles.some(r => r.id === 9) && (
@@ -549,13 +593,7 @@ export default function UnifiedDashboard({ stats, bookings, applications }: Unif
                   <h3 className="text-sm font-medium text-pink-700 dark:text-pink-300 mb-2 flex items-center gap-2">
                     <Heart className="h-4 w-4" /> Fan Experience
                   </h3>
-                  <TabsList className="grid w-full grid-cols-4 gap-4 h-full">
-                    <TabsTrigger value="bookings" className="text-xs flex items-center gap-1">
-                      <Notebook className="h-3 w-3" /> Bookings
-                    </TabsTrigger>
-                    <TabsTrigger value="applications" className="text-xs flex items-center gap-1">
-                      <Notebook className="h-3 w-3" /> Applications
-                    </TabsTrigger>
+                  <TabsList className="grid w-full grid-cols-2 gap-4 h-full">
                     <TabsTrigger value="favorites" className="text-xs flex items-center gap-1">
                       <Heart className="h-3 w-3" /> Favorites
                     </TabsTrigger>
@@ -566,63 +604,6 @@ export default function UnifiedDashboard({ stats, bookings, applications }: Unif
                 </div>
               )}
 
-
-              {/* Admin Management Hub */}
-              {isAdmin && (
-                <div className="bg-gradient-to-r from-purple-50 to-indigo-50 dark:from-purple-950/20 dark:to-indigo-950/20 rounded-lg p-3">
-                  <h3 className="text-sm font-medium text-purple-700 dark:text-purple-300 mb-2 flex items-center gap-2">
-                    <Shield className="h-4 w-4" /> Admin Control Center
-                  </h3>
-                  <div className="grid grid-cols-3 gap-1">
-                    <TabsList className="grid w-full grid-cols-1">
-                      <TabsTrigger value="admin-users" className="text-xs flex items-center gap-1">
-                        <Users className="h-3 w-3" /> Users
-                      </TabsTrigger>
-                    </TabsList>
-                    <TabsList className="grid w-full grid-cols-1">
-                      <TabsTrigger value="admin-system" className="text-xs flex items-center gap-1">
-                        <Settings className="h-3 w-3" /> System
-                      </TabsTrigger>
-                    </TabsList>
-                    <TabsList className="grid w-full grid-cols-1">
-                      <TabsTrigger value="admin-data" className="text-xs flex items-center gap-1">
-                        <Database className="h-3 w-3" /> Data
-                      </TabsTrigger>
-                    </TabsList>
-                  </div>
-                  <div className="grid grid-cols-3 gap-1 mt-1">
-                    <TabsList className="grid w-full grid-cols-1">
-                      <TabsTrigger value="newsletters" className="text-xs flex items-center gap-1">
-                        <Mail className="h-3 w-3" /> Newsletter
-                      </TabsTrigger>
-                    </TabsList>
-                    <TabsList className="grid w-full grid-cols-1">
-                      <TabsTrigger value="press-releases" className="text-xs flex items-center gap-1">
-                        <FileText className="h-3 w-3" /> Press
-                      </TabsTrigger>
-                    </TabsList>
-                    <TabsList className="grid w-full grid-cols-1">
-                      <TabsTrigger value="admin-security" className="text-xs flex items-center gap-1">
-                        <Shield className="h-3 w-3" /> Security
-                      </TabsTrigger>
-                    </TabsList>
-                  </div>
-                </div>
-              )}
-
-              {/* Professional Knowledge Center */}
-              {isProfessional && (
-                <div className="bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-950/20 dark:to-emerald-950/20 rounded-lg p-3">
-                  <h3 className="text-sm font-medium text-green-700 dark:text-green-300 mb-2 flex items-center gap-2">
-                    <BookOpen className="h-4 w-4" /> Knowledge Center
-                  </h3>
-                  <TabsList className="grid w-full grid-cols-1 gap-1">
-                    <TabsTrigger value="knowledge" className="text-xs flex items-center gap-1">
-                      <BookOpen className="h-3 w-3" /> Knowledge Base
-                    </TabsTrigger>
-                  </TabsList>
-                </div>
-              )}
             </div>
           </div>
 
@@ -923,7 +904,7 @@ export default function UnifiedDashboard({ stats, bookings, applications }: Unif
             )}
           </TabsContent>
 
-          
+
 
           {/* Calendar Tab - Mobile Optimized */}
           <TabsContent value="calendar" className="space-y-4 sm:space-y-6">
@@ -941,7 +922,7 @@ export default function UnifiedDashboard({ stats, bookings, applications }: Unif
           </TabsContent>
 
           {/* Role-specific tabs */}
-          {(isArtist || isManagedMusician) && (
+          {roles.some(r => [3, 4, 5].includes(r.id)) && (
             <TabsContent value="music" className="space-y-6">
               <Card>
                 <CardHeader>
@@ -975,7 +956,7 @@ export default function UnifiedDashboard({ stats, bookings, applications }: Unif
                     />
                   </div>
 
-                  {isManaged && (
+                  {roles.some(r => [3, 5].includes(r.id)) && (
                     <div className="border-t pt-4">
                       <h4 className="font-medium mb-2 text-emerald-700 dark:text-emerald-300">YouTube Video Integration</h4>
                       <Button
@@ -1034,7 +1015,7 @@ export default function UnifiedDashboard({ stats, bookings, applications }: Unif
             </TabsContent>
           )}
 
-          {(isArtist || isFan) && (
+          {roles.some(r => [3, 4, 9].includes(r.id)) && (
             <TabsContent value="merchandise" className="space-y-4 sm:space-y-6">
               <Card>
                 <CardHeader>
@@ -1081,7 +1062,7 @@ export default function UnifiedDashboard({ stats, bookings, applications }: Unif
             </TabsContent>
           )}
 
-          {isMusicianProfile && (
+          {roles.some(r => [5, 6].includes(r.id)) && (
             <TabsContent value="equipment" className="space-y-4 sm:space-y-6">
               <Card>
                 <CardHeader>
@@ -1097,7 +1078,7 @@ export default function UnifiedDashboard({ stats, bookings, applications }: Unif
             </TabsContent>
           )}
 
-          {isProfessional && (
+          {roles.some(r => [7, 8].includes(r.id)) && (
             <>
               <TabsContent value="services" className="space-y-4 sm:space-y-6">
                 <Card>
@@ -1181,47 +1162,47 @@ export default function UnifiedDashboard({ stats, bookings, applications }: Unif
             </>
           )}
 
-          {!isProfessional && (
-            <TabsContent value="bookings" className="space-y-4 sm:space-y-6">
-              <Card>
-                <CardHeader>
-                  <CardTitle className="text-lg sm:text-xl">
-                    {isArtist ? 'Performance Bookings' :
-                      isMusicianProfile ? 'Session Bookings' :
-                        'Event Bookings'}
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-3 sm:space-y-4">
-                    {userBookings.map((booking: any) => (
-                      <Card key={booking.id}>
-                        <CardContent className="p-3 sm:p-4">
-                          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
-                            <div className="flex-1 min-w-0">
-                              <h4 className="font-medium text-sm sm:text-base truncate">{booking.eventName || 'Event'}</h4>
-                              <p className="text-xs sm:text-sm text-muted-foreground">
-                                {booking.eventDate ? new Date(booking.eventDate).toLocaleDateString() : 'Date TBD'}
-                              </p>
-                            </div>
-                            <Button
-                              size="sm"
-                              className="w-full sm:w-auto flex-shrink-0"
-                              onClick={() => handleViewBooking(booking)}
-                            >
-                              View Details
-                            </Button>
+          {/* {roles.some(r => [1, 2, 3, 4, 5, 6, 9].includes(r.id)) && ( */}
+          <TabsContent value="bookings" className="space-y-4 sm:space-y-6">
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-lg sm:text-xl">
+                  {isArtist ? 'Performance Bookings' :
+                    isMusicianProfile ? 'Session Bookings' :
+                      'Event Bookings'}
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-3 sm:space-y-4">
+                  {userBookings.map((booking: any) => (
+                    <Card key={booking.id}>
+                      <CardContent className="p-3 sm:p-4">
+                        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+                          <div className="flex-1 min-w-0">
+                            <h4 className="font-medium text-sm sm:text-base truncate">{booking.eventName || 'Event'}</h4>
+                            <p className="text-xs sm:text-sm text-muted-foreground">
+                              {booking.eventDate ? new Date(booking.eventDate).toLocaleDateString() : 'Date TBD'}
+                            </p>
                           </div>
-                        </CardContent>
-                      </Card>
-                    ))}
-                    {userBookings.length === 0 && (
-                      <p className="text-muted-foreground text-center py-6 sm:py-8">No bookings yet</p>
-                    )}
-                  </div>
-                </CardContent>
-              </Card>
-            </TabsContent>
-          )}
+                          <Button
+                            size="sm"
+                            className="w-full sm:w-auto flex-shrink-0"
+                            onClick={() => handleViewBooking(booking)}
+                          >
+                            View Details
+                          </Button>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  ))}
+                  {userBookings.length === 0 && (
+                    <p className="text-muted-foreground text-center py-6 sm:py-8">No bookings yet</p>
+                  )}
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
+          {/* )} */}
 
           <TabsContent value="applications" className="space-y-4 sm:space-y-6">
             <Card>
@@ -1343,16 +1324,14 @@ export default function UnifiedDashboard({ stats, bookings, applications }: Unif
             </Card>
           </TabsContent>
 
-
-
           {/* My Gigs Tab - For Artists, Musicians, and Professionals */}
-          {(isArtist || isMusicianProfile || isProfessional) && !isFan && !isAdmin && !isSuperadmin && (
-            <TabsContent value="gigs" className="space-y-4 sm:space-y-6">
-              <GigComponent />
-            </TabsContent>
-          )}
+          {/* {roles.some(r => [3, 4, 5, 6, 7, 8].includes(r.id)) && ( */}
+          <TabsContent value="gigs" className="space-y-4 sm:space-y-6">
+            <GigComponent />
+          </TabsContent>
+          {/* )} */}
 
-          {isFan && (
+          {roles.some(r => [9].includes(r.id)) && (
             <>
               <TabsContent value="favorites" className="space-y-4 sm:space-y-6">
                 <Card>

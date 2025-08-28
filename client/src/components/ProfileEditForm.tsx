@@ -67,10 +67,9 @@ export default function ProfileEditForm({
     profilePictureUrl: user?.avatarUrl || "",
     profileBannerUrl: user?.coverImageUrl || "",
     privacySetting: user?.privacySetting || "public",
-    primaryTalentId: null as number | null,
+    primaryTalentId: null,
   });
 
- 
 
   const [uploadingFiles, setUploadingFiles] = useState({
     epk: false,
@@ -107,16 +106,16 @@ export default function ProfileEditForm({
           const rd = roleEntry.data || {};
           return {
             ...acc,
-            stageName: rd.stageName || acc.stageName || "",
-            bio: rd.bio || acc.bio || "",
-            primaryGenre: rd.primaryGenre || acc.primaryGenre || "",
-            basePrice: rd.basePrice || acc.basePrice || "",
-            idealPerformanceRate: rd.idealPerformanceRate || acc.idealPerformanceRate || "",
-            minimumAcceptableRate: rd.minimumAcceptableRate || acc.minimumAcceptableRate || "",
-            epkUrl: rd.epkUrl || acc.epkUrl || "",
-            bookingFormPictureUrl: rd.bookingFormPictureUrl || acc.bookingFormPictureUrl || "",
-            websiteUrl: rd.websiteUrl || acc.websiteUrl || "",
-            primaryTalentId: rd.primaryTalentId || acc.primaryTalentId || null,
+            stageName: rd.stageName ?? acc.stageName ?? "",
+            bio: rd.bio ?? acc.bio ?? "",
+            primaryGenre: rd.primaryGenre ?? acc.primaryGenre ?? "",
+            basePrice: rd.basePrice ?? acc.basePrice ?? "",
+            idealPerformanceRate: rd.idealPerformanceRate ?? acc.idealPerformanceRate ?? "",
+            minimumAcceptableRate: rd.minimumAcceptableRate ?? acc.minimumAcceptableRate ?? "",
+            epkUrl: rd.epkUrl ?? acc.epkUrl ?? "",
+            bookingFormPictureUrl: rd.bookingFormPictureUrl ?? acc.bookingFormPictureUrl ?? "",
+            websiteUrl: rd.websiteUrl ?? acc.websiteUrl ?? "",
+            primaryTalentId: rd.primaryTalentId ?? acc.primaryTalentId ?? 1, 
           };
         }, {});
   
@@ -131,10 +130,13 @@ export default function ProfileEditForm({
       }
     }
   }, [user]);
-
+  
   const updateProfileMutation = useMutation({
     mutationFn: async (data: any) => {
       // Validate required fields
+
+      console.log(data)
+    
        const roleDataPayload: any = {
         fullName: data.fullName,
         phoneNumber: data.phoneNumber,
@@ -154,7 +156,7 @@ export default function ProfileEditForm({
         epkUrl: data.epkUrl,
         bookingFormPictureUrl: data.bookingFormPictureUrl,
         websiteUrl: data.websiteUrl,
-        primaryTalentId: data.primaryTalentId,
+        primaryTalentId: data.primaryTalentId ,
       };
 
       await apiRequest(`/api/user/profile`, {
@@ -295,7 +297,7 @@ export default function ProfileEditForm({
           </div>
 
           {/* Profile Picture Upload - Available to all non-fan users */}
-          {!isFan && (
+          {(isArtist || isMusicianProfile || isProfessional )&& (
             <div className="space-y-2">
               <Label htmlFor="profilePictureUrl">Profile Picture</Label>
               <div className="flex gap-2">
@@ -363,7 +365,7 @@ export default function ProfileEditForm({
           )}
 
           {/* Profile Banner Upload - Available to managed users or users with active subscription */}
-          {!isFan && (isManaged || hasActiveSubscription) && (
+          {( isArtist || isMusicianProfile || isProfessional ) && (isManaged || hasActiveSubscription) && (
             <div className="space-y-2">
               <Label htmlFor="profileBannerUrl">Profile Banner</Label>
               <div className="flex gap-2">

@@ -1107,6 +1107,7 @@ CREATE TABLE "management_application_signatures" (
 --> statement-breakpoint
 CREATE TABLE "management_applications" (
 	"id" serial PRIMARY KEY NOT NULL,
+	"requested_role_id" integer NOT NULL,
 	"applicant_user_id" integer NOT NULL,
 	"requested_management_tier_id" integer NOT NULL,
 	"application_reason" text NOT NULL,
@@ -1124,9 +1125,9 @@ CREATE TABLE "management_applications" (
 	"signed_at" timestamp,
 	"completed_at" timestamp,
 	"rejection_reason" text,
-  	"term_in_months" INT,         -- কত মাসের জন্য
-  	"end_date" TIMESTAMP,         -- expiry date
-  	"notes" TEXT,                 -- admin extra note
+  	"term_in_months" integer,         -- কত মাসের জন্য
+  	"end_date" timestamp,         -- expiry date
+  	"notes" text,                 -- admin extra note
 	"created_at" timestamp DEFAULT now(),
 	"updated_at" timestamp DEFAULT now()
 );
@@ -1833,6 +1834,7 @@ CREATE TABLE "professionals" (
 	"is_managed" boolean DEFAULT false,
 	"management_tier_id" integer,
 	"booking_form_picture_url" text,
+	"website_url" text,
 	"primary_talent_id" integer,
 	"is_demo" boolean DEFAULT false,
 	"is_complete" boolean DEFAULT false

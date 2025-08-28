@@ -247,7 +247,6 @@ function DashboardContent() {
   const isAdminRole = userRoleIds.some(id => [1, 2].includes(id));
   const isSuperAdmin = userRoleIds.includes(1);
 
-  console.log(userRoleIds, isAdminRole, isSuperAdmin)
   // --- Queries ---
   const { data: stats, isLoading: statsLoading, error: statsError } = useQuery({
     queryKey: ['/api/dashboard/stats'],
@@ -258,27 +257,32 @@ function DashboardContent() {
 
   const { data: allBookings, isLoading: allBookingsLoading, error: allBookingsError } = useQuery({
     queryKey: ['/api/bookings/all'],
-    enabled: !!user && isAdminRole,
+    enabled: !!user && !!isAdminRole,
     retry: 1,
   });
+
 
   const { data: userBookings, isLoading: userBookingsLoading, error: userBookingsError } = useQuery({
     queryKey: ['/api/bookings/user'],
-    enabled: !!user && !!isAdminRole,
+    enabled: !!user && !isAdminRole,
     retry: 1,
   });
+
 
   const { data: allApplications, isLoading: allApplicationsLoading, error: allApplicationsError } = useQuery({
     queryKey: ['/api/management-applications'],
-    enabled: !!user && isAdminRole,
-    retry: 1,
-  });
-
-  const { data: userApplications, isLoading: userApplicationsLoading, error: userApplicationsError } = useQuery({
-    queryKey: [`/api/management-applications/user/${user.id}`],
     enabled: !!user && !!isAdminRole,
     retry: 1,
   });
+
+
+  const { data: userApplications, isLoading: userApplicationsLoading, error: userApplicationsError } = useQuery({
+    queryKey: [`/api/management-applications/user`],
+    enabled: !!user && !isAdminRole,
+    retry: 1,
+  });
+
+  
 
   // --- Error Handling ---
   if (statsError || allBookingsError || userBookingsError || allApplicationsError || userApplicationsError) {

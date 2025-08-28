@@ -12,12 +12,8 @@ const roleConfig: Record<string, { color: string; Icon: any }> = {
 export function RoleBadges({ roles }: { roles: { id: number; name: string }[] }) {
   return (
     <div className="flex justify-between flex-col md:flex-row gap-4 text-center">
-      <div>
-        <h1 className="text-2xl sm:text-3xl font-bold">Unified Dashboard</h1>
-        <p className="text-sm sm:text-base text-muted-foreground mt-1">
-          Manage everything in one place
-        </p>
-      </div>
+      
+      <h1 className="text-2xl sm:text-3xl font-bold">Welcome Back!</h1>
 
       <div className="flex gap-2 justify-center items-center">
         {roles.map(role => {

@@ -2408,17 +2408,25 @@ export class DatabaseStorage implements IStorage {
 
   async updateArtist(userId: number, updates: Partial<Artist>): Promise<Artist | undefined> {
     await db
-      .update(artists)
-      .set(updates)
-      .where(eq(artists.userId, userId));
+      .insert(artists)
+      .values({ userId, ...updates })
+      .onConflictDoUpdate({
+        target: artists.userId,
+        set: updates,
+      });
+
     return this.getArtist(userId);
   }
 
   async updateMusician(userId: number, updates: Partial<Musician>): Promise<Musician | undefined> {
     await db
-      .update(musicians)
-      .set(updates)
-      .where(eq(musicians.userId, userId));
+      .insert(musicians)
+      .values({ userId, ...updates })
+      .onConflictDoUpdate({
+        target: musicians.userId,
+        set: updates,
+      });
+
     return this.getMusician(userId);
   }
 
@@ -2478,15 +2486,21 @@ export class DatabaseStorage implements IStorage {
 
   // Update professional profile with specializations and availability
   async updateProfessional(userId: number, updates: any): Promise<Professional | undefined> {
-    const [updated] = await db
-      .update(professionals)
-      .set({
+    const [row] = await db
+      .insert(professionals)
+      .values({
+        userId,
         ...updates,
-        userId, // Ensure userId is set
       })
-      .where(eq(professionals.userId, userId))
+      .onConflictDoUpdate({
+        target: professionals.userId, // userId conflict হলে update করবে
+        set: {
+          ...updates,
+        },
+      })
       .returning();
-    return updated || undefined;
+
+    return row || undefined;
   }
 
   // Global professions management
@@ -2730,51 +2744,91 @@ export class DatabaseStorage implements IStorage {
     return this.getBooking(id);
   }
 
-  async getAllBookings(): Promise<Booking[]> {
+  // async getAllBookings(): Promise<Booking[]> {
+  //   try {
+  //     const bookingsList = await db.select().from(bookings);
+
+  //     // Enrich booking data with artist information for display
+  //     const enrichedBookings = await Promise.all(
+  //       bookingsList.map(async (booking) => {
+  //         let primaryArtist = null;
+
+  //         if (booking.primaryArtistUserId) {
+  //           const artist = await this.getArtist(booking.primaryArtistUserId);
+  //           if (artist) {
+  //             // Extract the primary stage name from stageNames array
+  //             const primaryStageName = artist.stageNames && Array.isArray(artist.stageNames) && artist.stageNames.length > 0
+  //               ? (typeof artist.stageNames[0] === 'object' ? artist.stageNames[0].name : artist.stageNames[0])
+  //               : 'Unknown Artist';
+
+  //             primaryArtist = {
+  //               userId: artist.userId,
+  //               stageName: primaryStageName,
+  //               stageNames: artist.stageNames || [],
+  //               genre: artist.primaryGenre,
+  //               isManaged: artist.isManaged
+  //             };
+  //           }
+  //         }
+
+  //         return {
+  //           ...booking,
+  //           primaryArtist,
+  //           // Ensure proper naming for frontend
+  //           eventName: booking.eventName,
+  //           venueName: booking.venueName,
+  //           bookerName: booking.isGuestBooking ? booking.guestName : null,
+  //           clientName: booking.isGuestBooking ? booking.guestName : null
+  //         };
+  //       })
+  //     );
+
+  //     return enrichedBookings;
+  //   } catch (error) {
+  //     console.error('Error fetching bookings:', error);
+  //     return [];
+  //   }
+  // }
+
+  async getAllBookings(): Promise<any[]> {
     try {
-      const bookingsList = await db.select().from(bookings);
-
-      // Enrich booking data with artist information for display
-      const enrichedBookings = await Promise.all(
-        bookingsList.map(async (booking) => {
-          let primaryArtist = null;
-
-          if (booking.primaryArtistUserId) {
-            const artist = await this.getArtist(booking.primaryArtistUserId);
-            if (artist) {
-              // Extract the primary stage name from stageNames array
-              const primaryStageName = artist.stageNames && Array.isArray(artist.stageNames) && artist.stageNames.length > 0
-                ? (typeof artist.stageNames[0] === 'object' ? artist.stageNames[0].name : artist.stageNames[0])
-                : 'Unknown Artist';
-
-              primaryArtist = {
-                userId: artist.userId,
-                stageName: primaryStageName,
-                stageNames: artist.stageNames || [],
-                genre: artist.primaryGenre,
-                isManaged: artist.isManaged
-              };
-            }
-          }
-
-          return {
-            ...booking,
-            primaryArtist,
-            // Ensure proper naming for frontend
-            eventName: booking.eventName,
-            venueName: booking.venueName,
-            bookerName: booking.isGuestBooking ? booking.guestName : null,
-            clientName: booking.isGuestBooking ? booking.guestName : null
-          };
+      const results = await db
+        .select({
+          bookingId: bookings.id,
+          eventName: bookings.eventName,
+          venueName: bookings.venueName,
+          guestName: bookings.isGuestBooking ? bookings.guestName : null,
+          isGuestBooking: bookings.isGuestBooking,
+          primaryArtistUserId: bookings.primaryArtistUserId,
+  
+          // Artist fields
+          artistStageName: artists.stageName,
+          artistBio: artists.bio,
+          artistEpkUrl: artists.epkUrl,
+          artistPrimaryGenre: artists.primaryGenre,
+          artistBasePrice: artists.basePrice,
+          artistIdealPerformanceRate: artists.idealPerformanceRate,
+          artistMinimumAcceptableRate: artists.minimumAcceptableRate,
+          artistIsManaged: artists.isManaged,
+          artistManagementTierId: artists.managementTierId,
+          artistBookingFormPictureUrl: artists.bookingFormPictureUrl,
+          artistIsRegisteredWithPro: artists.isRegisteredWithPro,
+          artistPerformingRightsOrganization: artists.performingRightsOrganization,
+          artistIpiNumber: artists.ipiNumber,
+          artistPrimaryTalentId: artists.primaryTalentId,
+          artistIsDemo: artists.isDemo,
+          artistIsComplete: artists.isComplete,
         })
-      );
-
-      return enrichedBookings;
+        .from(bookings)
+        .leftJoin(artists, eq(bookings.primaryArtistUserId, artists.userId));
+  
+      return results;
     } catch (error) {
-      console.error('Error fetching bookings:', error);
+      console.error("Error fetching bookings with artists:", error);
       return [];
     }
   }
+  
 
   async getBookingsByArtist(artistUserId: number): Promise<Booking[]> {
     return await db.select().from(bookings).where(eq(bookings.primaryArtistUserId, artistUserId));

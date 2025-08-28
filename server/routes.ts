@@ -54,6 +54,7 @@ import * as schemas from './middleware/validation-schemas';
 import { requirePermission as requirePerm, requireOwnershipOrAdmin, requireAdmin, requireRole } from './middleware/permission-validator';
 import { logError, ErrorSeverity, getRequestContext } from './utils/error-logger';
 import { withCache, cacheHelpers, generateCacheKey, invalidateCache } from './utils/query-cache';
+import BookingStageNameSelector from "@/components/booking/BookingStageNameSelector";
 
 const JWT_SECRET = process.env.JWT_SECRET || "waitumusic-demo-secret-key-2025";
 const DEMO_MODE_ENABLED = process.env.DEMO_MODE_ENABLED !== "false"; // Default to true, set to "false" to disable
@@ -90,6 +91,31 @@ function extractYouTubeId(url: string): string | null {
 }
 
 // Middleware for JWT authentication
+// function authenticateToken(req: Request, res: Response, next: Function) {
+//   const authHeader = req.headers['authorization'];
+//   const token = authHeader && authHeader.split(' ')[1];
+
+//   if (!token) {
+//     return res.status(401).json({ message: 'Access token required' });
+//   }
+
+//   try {
+//     const decoded = jwt.verify(token, JWT_SECRET) as { userId: number; email: string;  };
+//     req.user = decoded;
+//     next();
+//   } catch (err: unknown) {
+//     const errorMessage = err instanceof Error ? err.message : 'Unknown error';
+//     console.error('Token verification error:', errorMessage);
+//     const error = err as Error;
+//     if (error.name === 'TokenExpiredError') {
+//       return res.status(401).json({ message: 'Token expired', expired: true });
+//     } else if (error.name === 'JsonWebTokenError') {
+//       return res.status(401).json({ message: 'Invalid token format' });
+//     } else {
+//       return res.status(403).json({ message: 'Invalid or expired token' });
+//     }
+//   }
+// }
 function authenticateToken(req: Request, res: Response, next: Function) {
   const authHeader = req.headers['authorization'];
   const token = authHeader && authHeader.split(' ')[1];
@@ -99,20 +125,12 @@ function authenticateToken(req: Request, res: Response, next: Function) {
   }
 
   try {
-    const decoded = jwt.verify(token, JWT_SECRET) as { userId: number; email: string; roleId: number };
-    req.user = decoded;
+    const decoded = jwt.verify(token, JWT_SECRET) as { userId: number; email: string };
+    req.user = decoded; // attach user info
     next();
   } catch (err: unknown) {
-    const errorMessage = err instanceof Error ? err.message : 'Unknown error';
-    console.error('Token verification error:', errorMessage);
-    const error = err as Error;
-    if (error.name === 'TokenExpiredError') {
-      return res.status(401).json({ message: 'Token expired', expired: true });
-    } else if (error.name === 'JsonWebTokenError') {
-      return res.status(401).json({ message: 'Invalid token format' });
-    } else {
-      return res.status(403).json({ message: 'Invalid or expired token' });
-    }
+    console.error('Token verification error:', err);
+    return res.status(401).json({ message: 'Invalid or expired token' }); // always 401 if invalid
   }
 }
 
@@ -811,9 +829,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
       if (!userId) {
         return res.status(401).json({ message: "User ID not found in token" });
       }
-  
+
       const updates = req.body;
-  
+
       // 1️⃣ Update basic user fields
       const basicUserData = {
         fullName: updates.fullName,
@@ -822,76 +840,78 @@ export async function registerRoutes(app: Express): Promise<Server> {
         avatarUrl: updates.avatarUrl,
         coverImageUrl: updates.coverImageUrl
       };
-  
+
       const updatedUser = await storage.updateUser(userId, basicUserData);
       if (!updatedUser) {
         return res.status(404).json({ message: "User not found" });
       }
-  
+
       // 2️⃣ Fetch roles for the user
       const roles = await storage.getUserRoles(userId);
-  
-      // 3️⃣ Update role-specific data
-      const roleData = [];
-  
-      for (const role of roles) {
-        let data = null;
-  
-        // Artist roles
-        if ([3, 4].includes(role.id)) {
-          data = await storage.updateArtist(userId, {
-            stageName: updates.stageName,
-            bio: updates.bio,
-            primaryGenre: updates.primaryGenre,
-            basePrice: updates.basePrice ?? null,
-            idealPerformanceRate: updates.idealPerformanceRate ?? null,
-            minimumAcceptableRate: updates.minimumAcceptableRate ?? null,
-            epkUrl: updates.epkUrl,
-            bookingFormPictureUrl: updates.bookingFormPictureUrl,
-            primaryTalentId: updates.primaryTalentId,
-            isComplete: true
-          });
-        }
-  
-        // Musician roles
-        else if ([5, 6].includes(role.id)) {
-          data = await storage.updateMusician(userId, {
-            stageName: updates.stageName,
-            bio: updates.bio,
-            primaryGenre: updates.primaryGenre,
-            basePrice: updates.basePrice ?? null,
-            idealPerformanceRate: updates.idealPerformanceRate ?? null,
-            minimumAcceptableRate: updates.minimumAcceptableRate ?? null,
-            primaryTalentId: updates.primaryTalentId,
-            isComplete: true
-          });
-        }
-  
-        // Professional roles
-        else if ([7, 8].includes(role.id)) {
-          data = await storage.updateProfessional(userId, {
-            bio: updates.bio,
-            websiteUrl: updates.websiteUrl,
-            primaryTalentId: updates.primaryTalentId,
-            isComplete: true
-          });
-        }
-  
-        roleData.push({ role, data });
-      }
-  
+
+
+      // 3️⃣ Update role-specific data (parallel execution)
+      const roleData = await Promise.all(
+        roles.map(async (role) => {
+          let data = null;
+
+          // Artist roles
+          if ([3, 4].includes(role.id)) {
+            data = await storage.updateArtist(userId, {
+              stageName: updates.stageName,
+              bio: updates.bio,
+              primaryGenre: updates.primaryGenre,
+              basePrice: updates.basePrice ?? null,
+              idealPerformanceRate: updates.idealPerformanceRate ?? null,
+              minimumAcceptableRate: updates.minimumAcceptableRate ?? null,
+              epkUrl: updates.epkUrl,
+              bookingFormPictureUrl: updates.bookingFormPictureUrl,
+              primaryTalentId: updates.primaryTalentId,
+              isComplete: true
+            });
+          }
+
+          // Musician roles
+          else if ([5, 6].includes(role.id)) {
+            data = await storage.updateMusician(userId, {
+              stageName: updates.stageName,
+              bio: updates.bio,
+              primaryGenre: updates.primaryGenre,
+              basePrice: updates.basePrice ?? null,
+              idealPerformanceRate: updates.idealPerformanceRate ?? null,
+              minimumAcceptableRate: updates.minimumAcceptableRate ?? null,
+              primaryTalentId: updates.primaryTalentId,
+              isComplete: true
+            });
+          }
+
+          // Professional roles
+          else if ([7, 8].includes(role.id)) {
+            data = await storage.updateProfessional(userId, {
+              bio: updates.bio,
+              websiteUrl: updates.websiteUrl,
+              primaryTalentId: updates.primaryTalentId,
+              isComplete: true
+            });
+          }
+
+          return { role, data };
+        })
+      );
+
       const { passwordHash, ...userWithoutPassword } = updatedUser;
-  
+
       res.json({
         user: { ...userWithoutPassword, roles, roleData }
       });
-  
+
     } catch (error) {
       console.error("Error updating profile:", error);
       res.status(500).json({ message: "Internal server error" });
     }
   });
-  
+
+
 
 
   // Get user subscription status for hospitality requirements
@@ -1994,7 +2014,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
           .orderBy(schema.allInstruments.mixerGroup, schema.allInstruments.displayPriority);
 
         res.json(instruments);
-        
+
       } else {
         const cacheKey = generateCacheKey('instruments');
         const instruments = await withCache(cacheKey, async () => {
@@ -2257,77 +2277,73 @@ export async function registerRoutes(app: Express): Promise<Server> {
   //     res.status(500).json({ message: "Internal server error" });
   //   }
   // });
-  app.get(
-    "/api/bookings/user",
-    authenticateToken,
-    requirePerm('view_bookings'),
-    async (req: Request, res: Response) => {
-      try {
-        const userId = req.user?.userId;
-        if (!userId) {
-          return res.status(401).json({ message: "Invalid token" });
-        }
-  
-        const user = await storage.getUser(userId);
-        if (!user) {
-          return res.status(404).json({ message: "User not found" });
-        }
-  
-        // Get all roles of user
-        const roles = await storage.getUserRoles(user.id);
-        const roleIds = roles.map(r => r.id);
-  
-        // Talent roles = artist, musician, professional
-        const talentRoles = [3, 4, 5, 6, 7, 8];
-  
-        if (roleIds.some(r => talentRoles.includes(r))) {
-          // Get bookings where this user is assigned
-          const assignedBookings = await db
-            .select({
-              id: schema.bookings.id,
-              bookerUserId: schema.bookings.bookerUserId,
-              primaryArtistUserId: schema.bookings.primaryArtistUserId,
-              eventName: schema.bookings.eventName,
-              eventType: schema.bookings.eventType,
-              eventDate: schema.bookings.eventDate,
-              venueName: schema.bookings.venueName,
-              venueAddress: schema.bookings.venueAddress,
-              requirements: schema.bookings.requirements,
-              status: schema.bookings.status,
-              totalBudget: schema.bookings.totalBudget,
-              finalPrice: schema.bookings.finalPrice,
-              createdAt: schema.bookings.createdAt,
-              assignmentRole: schema.bookingAssignmentsMembers.roleInBooking,
-              assignmentStatus: schema.bookingAssignmentsMembers.status,
-              assignedAt: schema.bookingAssignmentsMembers.assignedAt
-            })
-            .from(schema.bookings)
-            .innerJoin(
-              schema.bookingAssignmentsMembers,
-              and(
-                eq(schema.bookingAssignmentsMembers.bookingId, schema.bookings.id),
-                eq(schema.bookingAssignmentsMembers.userId, userId),
-                eq(schema.bookingAssignmentsMembers.status, 'active')
-              )
-            )
-            .orderBy(desc(schema.bookings.createdAt));
-  
-          res.json(assignedBookings);
-        } else {
-          // For fans/others → bookings created by them
-          const bookings = await storage.getBookingsByUser(userId);
-          res.json(bookings);
-        }
-      } catch (error) {
-        logError(error, ErrorSeverity.ERROR, {
-          endpoint: '/api/bookings/user',
-          userId: req.user?.userId
-        });
-        res.status(500).json({ message: "Internal server error" });
+  app.get("/api/bookings/user", authenticateToken, async (req: Request, res: Response) => {
+    try {
+      const userId = req.user?.userId;
+      if (!userId) {
+        return res.status(401).json({ message: "Invalid token" });
       }
+
+      const user = await storage.getUser(userId);
+      if (!user) {
+        return res.status(404).json({ message: "User not found" });
+      }
+
+      // Get all roles of user
+      const roles = await storage.getUserRoles(user.id);
+      const roleIds = roles.map(r => r.id);
+
+      // Talent roles = artist, musician, professional
+      const talentRoles = [3, 4, 5, 6, 7, 8];
+
+      if (roleIds.some(r => talentRoles.includes(r))) {
+        // Get bookings where this user is assigned
+        const assignedBookings = await db
+          .select({
+            id: schema.bookings.id,
+            bookerUserId: schema.bookings.bookerUserId,
+            primaryArtistUserId: schema.bookings.primaryArtistUserId,
+            eventName: schema.bookings.eventName,
+            eventType: schema.bookings.eventType,
+            eventDate: schema.bookings.eventDate,
+            venueName: schema.bookings.venueName,
+            venueAddress: schema.bookings.venueAddress,
+            requirements: schema.bookings.requirements,
+            status: schema.bookings.status,
+            totalBudget: schema.bookings.totalBudget,
+            finalPrice: schema.bookings.finalPrice,
+            createdAt: schema.bookings.createdAt,
+            assignmentRole: schema.bookingAssignmentsMembers.roleInBooking,
+            assignmentStatus: schema.bookingAssignmentsMembers.status,
+            assignedAt: schema.bookingAssignmentsMembers.assignedAt
+          })
+          .from(schema.bookings)
+          .innerJoin(
+            schema.bookingAssignmentsMembers,
+            and(
+              eq(schema.bookingAssignmentsMembers.bookingId, schema.bookings.id),
+              eq(schema.bookingAssignmentsMembers.userId, userId),
+              eq(schema.bookingAssignmentsMembers.status, 'active')
+            )
+          )
+          .orderBy(desc(schema.bookings.createdAt));
+
+        res.json(assignedBookings);
+      } else {
+        // For fans/others → bookings created by them
+        const bookings = await storage.getBookingsByUser(userId);
+        res.json(bookings);
+      }
+    } catch (error) {
+      logError(error, ErrorSeverity.ERROR, {
+        endpoint: '/api/bookings/user',
+        userId: req.user?.userId
+      });
+      res.status(500).json({ message: "Internal server error" });
     }
+  }
   );
-  
+
 
   // Get booking details for talent users (includes contracts, technical riders, etc.)
   app.get("/api/bookings/:id/talent-view", authenticateToken, requirePerm('view_bookings'), validateParams(schemas.idParamSchema), async (req: Request, res: Response) => {
@@ -3476,7 +3492,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   //       return res.status(404).json({ message: "User not found" });
   //     }
   //     const roles = await storage.getUserRoles(user.id);
-      
+
   //     if (!roles) {
   //       return res.status(404).json({ message: "User role not found" });
   //     }
@@ -3605,32 +3621,32 @@ export async function registerRoutes(app: Express): Promise<Server> {
       if (!userId) {
         return res.status(401).json({ message: "User not authenticated" });
       }
-  
+
       const user = await storage.getUser(userId);
       if (!user) {
         return res.status(404).json({ message: "User not found" });
       }
-  
+
       const roles = await storage.getUserRoles(user.id); // array of roles
       if (!roles || roles.length === 0) {
         return res.status(404).json({ message: "User role not found" });
       }
-  
+
       const allBookings = await storage.getAllBookings();
       const artists = await storage.getArtists();
-  
+
       let stats: any = {};
-  
+
       // role IDs বের করা
       const roleIds = roles.map(r => r.id);
-  
+
       if (roleIds.includes(1)) {
         // Superadmin
         const allUsers = await storage.getAllUsers();
         const totalRevenue = allBookings.reduce((sum: number, booking: any) => {
           return sum + (parseFloat(booking.totalBudget?.toString() || "0") || 0);
         }, 0);
-  
+
         stats = {
           totalUsers: allUsers.length,
           totalArtists: artists.length,
@@ -3650,7 +3666,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         const adminRevenue = allBookings.reduce((sum: number, booking: any) => {
           return sum + (parseFloat(booking.totalBudget?.toString() || "0") || 0);
         }, 0);
-  
+
         stats = {
           managedUsers: artists.filter(a => a.isManaged).length,
           totalBookings: allBookings.length,
@@ -3664,7 +3680,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         const artistRevenue = artistBookings.reduce((sum: number, booking: any) => {
           return sum + (parseFloat(booking.totalBudget?.toString() || "0") || 0);
         }, 0);
-  
+
         stats = {
           totalBookings: artistBookings.length,
           revenue: Math.round(artistRevenue),
@@ -3684,13 +3700,13 @@ export async function registerRoutes(app: Express): Promise<Server> {
               .from(schema.bookingAssignmentsMembers)
               .where(eq(schema.bookingAssignmentsMembers.userId, userId))
           );
-  
+
         const musicianBookingIds = musicianAssignedIds.map(a => a.bookingId);
         const musicianBookings = allBookings.filter((b: any) => musicianBookingIds.includes(b.id));
         const sessionRevenue = musicianBookings.reduce((sum: number, booking: any) => {
           return sum + (parseFloat(booking.totalBudget?.toString() || "0") * 0.1);
         }, 0);
-  
+
         stats = {
           sessions: musicianBookings.length,
           revenue: Math.round(sessionRevenue),
@@ -3710,7 +3726,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       } else {
         // Fan / Default
         const userBookings = allBookings.filter((b: any) => b.bookerUserId === userId);
-  
+
         stats = {
           bookings: userBookings.length,
           upcomingEvents: userBookings.filter((b: any) => new Date(b.eventDate) > new Date()).length,
@@ -3718,17 +3734,17 @@ export async function registerRoutes(app: Express): Promise<Server> {
           recentActivity: userBookings.slice(0, 5)
         };
       }
-  
+
       res.json({ stats });
     } catch (error) {
       logError(error, ErrorSeverity.ERROR, { endpoint: "/api/dashboard/stats", userId: req.user?.userId });
       res.status(500).json({ message: "Internal server error" });
     }
   });
-  
+
 
   // Get all bookings (admin only)
-  app.get("/api/bookings/all", authenticateToken, requirePerm('admin_bookings'), async (req: Request, res: Response) => {
+  app.get("/api/bookings/all", authenticateToken, async (req: Request, res: Response) => {
     try {
       const cacheKey = generateCacheKey('all-bookings');
       const allBookings = await withCache(cacheKey, async () => {
@@ -3742,105 +3758,129 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // Get user's bookings - role-specific
-//   app.get("/api/bookings/user", authenticateToken, async (req: Request, res: Response) => {
-//     try {
-//       const userId = req.user?.userId;
-//       if (!userId) {
-//         return res.status(401).json({ message: "User not authenticated" });
-//       }
-//       const user = await storage.getUser(userId);
-//       const roles = await storage.getUserRoles(user.id); // array of roles
-//       if (!roles || roles.length === 0) {
-//         return res.status(404).json({ message: "User role not found" });
-//       }
-//  \
-//       const allBookings = await storage.getAllBookings();
-//       let userBookings: any[] = [];
+  //   app.get("/api/bookings/user", authenticateToken, async (req: Request, res: Response) => {
+  //     try {
+  //       const userId = req.user?.userId;
+  //       if (!userId) {
+  //         return res.status(401).json({ message: "User not authenticated" });
+  //       }
+  //       const user = await storage.getUser(userId);
+  //       const roles = await storage.getUserRoles(user.id); // array of roles
+  //       if (!roles || roles.length === 0) {
+  //         return res.status(404).json({ message: "User role not found" });
+  //       }
+  //  \
+  //       const allBookings = await storage.getAllBookings();
+  //       let userBookings: any[] = [];
 
-//       switch (user.roleId) {
-//         case 3: // Star Talent
-//         case 4: // Rising Artist
-//           userBookings = allBookings.filter((b: any) => b.primaryArtistUserId === userId);
-//           break;
-//         case 5: // Studio Pro
-//         case 6: // Session Player
-//           // Get bookings where user is assigned via booking_assignments or booking_assignments_members
-//           const assignedBookingIds = await db
-//             .select({ bookingId: schema.bookingAssignments.bookingId })
-//             .from(schema.bookingAssignments)
-//             .where(eq(schema.bookingAssignments.assignedUserId, userId))
-//             .union(
-//               db
-//                 .select({ bookingId: schema.bookingAssignmentsMembers.bookingId })
-//                 .from(schema.bookingAssignmentsMembers)
-//                 .where(eq(schema.bookingAssignmentsMembers.userId, userId))
-//             );
+  //       switch (user.roleId) {
+  //         case 3: // Star Talent
+  //         case 4: // Rising Artist
+  //           userBookings = allBookings.filter((b: any) => b.primaryArtistUserId === userId);
+  //           break;
+  //         case 5: // Studio Pro
+  //         case 6: // Session Player
+  //           // Get bookings where user is assigned via booking_assignments or booking_assignments_members
+  //           const assignedBookingIds = await db
+  //             .select({ bookingId: schema.bookingAssignments.bookingId })
+  //             .from(schema.bookingAssignments)
+  //             .where(eq(schema.bookingAssignments.assignedUserId, userId))
+  //             .union(
+  //               db
+  //                 .select({ bookingId: schema.bookingAssignmentsMembers.bookingId })
+  //                 .from(schema.bookingAssignmentsMembers)
+  //                 .where(eq(schema.bookingAssignmentsMembers.userId, userId))
+  //             );
 
-//           const assignedIds = assignedBookingIds.map(a => a.bookingId);
-//           userBookings = allBookings.filter((b: any) => assignedIds.includes(b.id));
-//           break;
-//         case 9: // Music Lover
-//         default:
-//           userBookings = allBookings.filter((b: any) => b.bookerUserId === userId);
-//           break;
-//       }
+  //           const assignedIds = assignedBookingIds.map(a => a.bookingId);
+  //           userBookings = allBookings.filter((b: any) => assignedIds.includes(b.id));
+  //           break;
+  //         case 9: // Music Lover
+  //         default:
+  //           userBookings = allBookings.filter((b: any) => b.bookerUserId === userId);
+  //           break;
+  //       }
 
-//       res.json(userBookings);
-//     } catch (error) {
-//       logError(error, ErrorSeverity.ERROR, { endpoint: '/api/bookings/user', userId: req.user?.userId });
-//       res.status(500).json({ message: "Internal server error" });
-//     }
-//   });
-app.get("/api/bookings/user", authenticateToken, async (req: Request, res: Response) => {
-  try {
-    const userId = req.user?.userId;
-    if (!userId) {
-      return res.status(401).json({ message: "User not authenticated" });
+  //       res.json(userBookings);
+  //     } catch (error) {
+  //       logError(error, ErrorSeverity.ERROR, { endpoint: '/api/bookings/user', userId: req.user?.userId });
+  //       res.status(500).json({ message: "Internal server error" });
+  //     }
+  //   });
+
+  app.get("/api/bookings/user", authenticateToken, async (req: Request, res: Response) => {
+    try {
+      const userId = req.user?.userId;
+      if (!userId) {
+        return res.status(401).json({ message: "User not authenticated" });
+      }
+
+      // Fetch all bookings related to this user by role
+      const [artistBookings, musicianBookings, fanBookings] = await Promise.all([
+        // Artist bookings (primary artist)
+        db.select().from(schema.bookings).where(eq(schema.bookings.primaryArtistUserId, userId)),
+
+        // Musician bookings (assigned in assignments or members)
+        (async () => {
+          const assignedBookingIds = await db
+            .select({ bookingId: schema.bookingAssignments.bookingId })
+            .from(schema.bookingAssignments)
+            .where(eq(schema.bookingAssignments.assignedUserId, userId))
+            .union(
+              db
+                .select({ bookingId: schema.bookingAssignmentsMembers.bookingId })
+                .from(schema.bookingAssignmentsMembers)
+                .where(eq(schema.bookingAssignmentsMembers.userId, userId))
+            );
+          const assignedIds = assignedBookingIds.map(a => a.bookingId);
+          if (assignedIds.length === 0) return [];
+          return db.select().from(schema.bookings).whereIn(schema.bookings.id, assignedIds);
+        })(),
+
+        // Fan bookings (booked by this user)
+        db.select().from(schema.bookings).where(eq(schema.bookings.bookerUserId, userId))
+      ]);
+
+      // Merge all bookings, removing duplicates if any
+      const allUserBookingsMap = new Map<number, any>();
+      [...artistBookings, ...musicianBookings, ...fanBookings].forEach(b => {
+        allUserBookingsMap.set(b.id, b);
+      });
+
+      const userBookings = Array.from(allUserBookingsMap.values());
+
+      // Optionally enrich bookings with primary artist info
+      const enrichedBookings = await Promise.all(
+        userBookings.map(async booking => {
+          if (!booking.primaryArtistUserId) return booking;
+
+          const artist = await storage.getArtist(booking.primaryArtistUserId);
+          if (!artist) return booking;
+
+          const primaryStageName = Array.isArray(artist.stageNames) && artist.stageNames.length > 0
+            ? (typeof artist.stageNames[0] === "object" ? artist.stageNames[0].name : artist.stageNames[0])
+            : "Unknown Artist";
+
+          return {
+            ...booking,
+            primaryArtist: {
+              userId: artist.userId,
+              stageName: primaryStageName,
+              stageNames: artist.stageNames || [],
+              genre: artist.primaryGenre,
+              isManaged: artist.isManaged
+            }
+          };
+        })
+      );
+
+      res.json(enrichedBookings);
+    } catch (error) {
+      logError(error, ErrorSeverity.ERROR, { endpoint: "/api/bookings/user", userId: req.user?.userId });
+      res.status(500).json({ message: "Internal server error" });
     }
+  });
 
-    const user = await storage.getUser(userId);
-
-    const roles = await storage.getUserRoles(user.id); 
-
-    if (!roles || roles.length === 0) {
-      return res.status(404).json({ message: "User role not found" });
-    }
-
-    const roleIds = roles.map(r => r.id); // array of role ids
-    const allBookings = await storage.getAllBookings();
-    let userBookings: any[] = [];
-
-    if (roleIds.some(r => [3, 4].includes(r))) {
-      // Artist (Star Talent / Rising Artist)
-      userBookings = allBookings.filter((b: any) => b.primaryArtistUserId === userId);
-
-    } else if (roleIds.some(r => [5, 6].includes(r))) {
-      // Musician (Studio Pro / Session Player)
-      const assignedBookingIds = await db
-        .select({ bookingId: schema.bookingAssignments.bookingId })
-        .from(schema.bookingAssignments)
-        .where(eq(schema.bookingAssignments.assignedUserId, userId))
-        .union(
-          db
-            .select({ bookingId: schema.bookingAssignmentsMembers.bookingId })
-            .from(schema.bookingAssignmentsMembers)
-            .where(eq(schema.bookingAssignmentsMembers.userId, userId))
-        );
-
-      const assignedIds = assignedBookingIds.map(a => a.bookingId);
-      userBookings = allBookings.filter((b: any) => assignedIds.includes(b.id));
-
-    } else {
-      // Default (Fan / Music Lover / others)
-      userBookings = allBookings.filter((b: any) => b.bookerUserId === userId);
-    }
-
-    res.json(userBookings);
-  } catch (error) {
-    logError(error, ErrorSeverity.ERROR, { endpoint: "/api/bookings/user", userId: req.user?.userId });
-    res.status(500).json({ message: "Internal server error" });
-  }
-});
 
 
   // Create guest booking (no authentication required)
@@ -11418,7 +11458,6 @@ This is a preview of the performance engagement contract. Final agreement will i
       const tiers = await db
         .select()
         .from(managementTiers)
-        .orderBy(managementTiers.maxDiscountPercentage);
       res.json(tiers);
     } catch (error) {
       console.error('Get management tiers error:', error);
@@ -11427,55 +11466,55 @@ This is a preview of the performance engagement contract. Final agreement will i
   });
 
   // Get all management applications (superadmin/admin only)
-  app.get('/api/management-applications', authenticateToken, requireRole([1, 2]), async (req: Request, res: Response) => {
-    try {
-      const currentUserId = req.user?.userId;
-      const user = await storage.getUser(currentUserId || 0);
+  // app.get('/api/management-applications', authenticateToken, requireRole([1, 2]), async (req: Request, res: Response) => {
+  //   try {
+  //     const currentUserId = req.user?.userId;
+  //     const user = await storage.getUser(currentUserId || 0);
 
-      if (!user) {
-        return res.status(404).json({ message: 'User not found' });
-      }
+  //     if (!user) {
+  //       return res.status(404).json({ message: 'User not found' });
+  //     }
 
-      let applications;
-      if (user.roleId === 1) { // Superadmin - see all applications
-        applications = await db
-          .select({
-            id: managementApplications.id,
-            applicantUserId: managementApplications.applicantUserId,
-            applicantName: users.fullName,
-            applicantEmail: users.email,
-            requestedManagementTierId: managementApplications.requestedManagementTierId,
-            applicationReason: managementApplications.applicationReason,
-            businessPlan: managementApplications.businessPlan,
-            expectedRevenue: managementApplications.expectedRevenue,
-            portfolioLinks: managementApplications.portfolioLinks,
-            socialMediaMetrics: managementApplications.socialMediaMetrics,
-            contractTerms: managementApplications.contractTerms,
-            status: managementApplications.status,
-            submittedAt: managementApplications.submittedAt,
-            reviewedAt: managementApplications.reviewedAt,
-            reviewedByUserId: managementApplications.reviewedByUserId,
-            approvedAt: managementApplications.approvedAt,
-            approvedByUserId: managementApplications.approvedByUserId,
-            signedAt: managementApplications.signedAt,
-            completedAt: managementApplications.completedAt,
-            rejectionReason: managementApplications.rejectionReason,
-            createdAt: managementApplications.createdAt,
-            updatedAt: managementApplications.updatedAt
-          })
-          .from(managementApplications)
-          .leftJoin(users, eq(managementApplications.applicantUserId, users.id))
-          .orderBy(desc(managementApplications.submittedAt));
-      } else { // Admin - see applications from their assigned users
-        applications = await storage.getManagementApplicationsByAssignedAdmin(user.id);
-      }
+  //     let applications;
+  //     if (user.roleId === 1) { // Superadmin - see all applications
+  //       applications = await db
+  //         .select({
+  //           id: managementApplications.id,
+  //           applicantUserId: managementApplications.applicantUserId,
+  //           applicantName: users.fullName,
+  //           applicantEmail: users.email,
+  //           requestedManagementTierId: managementApplications.requestedManagementTierId,
+  //           applicationReason: managementApplications.applicationReason,
+  //           businessPlan: managementApplications.businessPlan,
+  //           expectedRevenue: managementApplications.expectedRevenue,
+  //           portfolioLinks: managementApplications.portfolioLinks,
+  //           socialMediaMetrics: managementApplications.socialMediaMetrics,
+  //           contractTerms: managementApplications.contractTerms,
+  //           status: managementApplications.status,
+  //           submittedAt: managementApplications.submittedAt,
+  //           reviewedAt: managementApplications.reviewedAt,
+  //           reviewedByUserId: managementApplications.reviewedByUserId,
+  //           approvedAt: managementApplications.approvedAt,
+  //           approvedByUserId: managementApplications.approvedByUserId,
+  //           signedAt: managementApplications.signedAt,
+  //           completedAt: managementApplications.completedAt,
+  //           rejectionReason: managementApplications.rejectionReason,
+  //           createdAt: managementApplications.createdAt,
+  //           updatedAt: managementApplications.updatedAt
+  //         })
+  //         .from(managementApplications)
+  //         .leftJoin(users, eq(managementApplications.applicantUserId, users.id))
+  //         .orderBy(desc(managementApplications.submittedAt));
+  //     } else { // Admin - see applications from their assigned users
+  //       applications = await storage.getManagementApplicationsByAssignedAdmin(user.id);
+  //     }
 
-      res.json(applications);
-    } catch (error) {
-      console.error('Get management applications error:', error);
-      res.status(500).json({ message: 'Failed to fetch management applications' });
-    }
-  });
+  //     res.json(applications);
+  //   } catch (error) {
+  //     console.error('Get management applications error:', error);
+  //     res.status(500).json({ message: 'Failed to fetch management applications' });
+  //   }
+  // });
 
   // Submit management application (non-admin users applying to become Managed Artists)
   // app.post('/api/management-applications', authenticateToken, async (req: Request, res: Response) => {
@@ -11663,7 +11702,7 @@ This is a preview of the performance engagement contract. Final agreement will i
 
 
   // Get management applications (admin/superadmin only)
-  app.get('/api/management-applications', authenticateToken, requireRole([1, 2]), async (req: Request, res: Response) => {
+  app.get('/api/management-applications', authenticateToken, async (req: Request, res: Response) => {
     try {
       const applications = await storage.getPendingManagementApplications();
       res.json(applications);
@@ -11696,40 +11735,19 @@ This is a preview of the performance engagement contract. Final agreement will i
   // });
 
   // Review management application by assigned admin
-  
-  app.get(
-    '/api/management-applications/user/:userId',
-    authenticateToken,
-    async (req: Request, res: Response) => {
-      try {
-        const userId = parseInt(req.params.userId);
-        const currentUserId = req.user?.userId;
-  
-        if (!currentUserId) {
-          return res.status(401).json({ message: "User not authenticated" });
-        }
-  
-        // Users can only view their own applications unless they're admin/superadmin
-        if (currentUserId !== userId) {
-          const roles = await storage.getUserRoles(currentUserId);
-          const roleIds = roles.map(r => r.id);
-  
-          // Only superadmin (1) or admin (2) can view other users' applications
-          if (!roleIds.some(id => [1, 2].includes(id))) {
-            return res.status(403).json({ message: "Insufficient permissions" });
-          }
-        }
-  
-        const applications = await storage.getManagementApplicationsByUser(userId);
-        res.json(applications);
-      } catch (error) {
-        console.error('Get user management applications error:', error);
-        res.status(500).json({ message: 'Failed to fetch user management applications' });
-      }
+  app.get('/api/management-applications/user', authenticateToken, async (req: Request, res: Response) => {
+    try {
+      const currentUserId = req.user?.userId;
+      const applications = await storage.getManagementApplicationsByUser(currentUserId);
+      res.json(applications);
+    } catch (error) {
+      console.error('Get user management applications error:', error);
+      res.status(500).json({ message: 'Failed to fetch user management applications' });
     }
+  }
   );
-  
-  
+
+
   app.post('/api/management-applications/:id/review', authenticateToken, requireRole([1, 2]), async (req: Request, res: Response) => {
     try {
       const applicationId = parseInt(req.params.id);
