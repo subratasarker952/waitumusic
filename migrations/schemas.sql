@@ -1125,9 +1125,9 @@ CREATE TABLE "management_applications" (
 	"signed_at" timestamp,
 	"completed_at" timestamp,
 	"rejection_reason" text,
-  	"term_in_months" integer,         -- কত মাসের জন্য
-  	"end_date" timestamp,         -- expiry date
-  	"notes" text,                 -- admin extra note
+  	"term_in_months" integer,         
+  	"end_date" timestamp,         
+  	"notes" text,                 
 	"created_at" timestamp DEFAULT now(),
 	"updated_at" timestamp DEFAULT now()
 );

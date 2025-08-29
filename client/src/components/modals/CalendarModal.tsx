@@ -15,15 +15,15 @@ interface CalendarModalProps {
   title?: string;
 }
 
-export default function CalendarModal({ 
-  open, 
-  onOpenChange, 
+export default function CalendarModal({
+  open,
+  onOpenChange,
   mode = 'block',
-  title 
+  title
 }: CalendarModalProps) {
   const { toast } = useToast();
   const [selectedDates, setSelectedDates] = useState<Date[]>([]);
-  const [eventData, setEventData] = useState({
+  const [formData, setEventData] = useState({
     title: '',
     description: '',
     startTime: '',
@@ -34,7 +34,7 @@ export default function CalendarModal({
 
   const handleDateSelect = (date: Date | undefined) => {
     if (!date) return;
-    
+
     setSelectedDates(prev => {
       const exists = prev.some(d => d.toDateString() === date.toDateString());
       if (exists) {
@@ -64,14 +64,15 @@ export default function CalendarModal({
 
     try {
       // Here you would make an API call based on the mode
-      const action = mode === 'block' ? 'blocked' : 
-                   mode === 'schedule' ? 'scheduled' : 'updated';
-      
+      const action = mode === 'block' ? 'blocked' : mode === 'schedule' ? 'scheduled' : 'updated';
+
+      console.log(formData)
+
       toast({
         title: `Calendar ${action.charAt(0).toUpperCase() + action.slice(1)}`,
         description: `${selectedDates.length} date(s) have been ${action}.`,
       });
-      
+
       onOpenChange(false);
       setSelectedDates([]);
       setEventData({
@@ -134,7 +135,7 @@ export default function CalendarModal({
                 </span>
               )}
             </div>
-            
+
             <div className="flex justify-center">
               <Calendar
                 mode="single"
@@ -165,13 +166,13 @@ export default function CalendarModal({
           {mode === 'schedule' && (
             <div className="space-y-4">
               <h3 className="text-lg font-medium">Event Details</h3>
-              
+
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="space-y-2">
                   <Label htmlFor="title">Event Title</Label>
                   <Input
                     id="title"
-                    value={eventData.title}
+                    value={formData.title}
                     onChange={(e) => handleInputChange('title', e.target.value)}
                     placeholder="Enter event title"
                   />
@@ -181,7 +182,7 @@ export default function CalendarModal({
                   <Label htmlFor="location">Location</Label>
                   <Input
                     id="location"
-                    value={eventData.location}
+                    value={formData.location}
                     onChange={(e) => handleInputChange('location', e.target.value)}
                     placeholder="Event location"
                   />
@@ -192,7 +193,7 @@ export default function CalendarModal({
                   <Input
                     id="startTime"
                     type="time"
-                    value={eventData.startTime}
+                    value={formData.startTime}
                     onChange={(e) => handleInputChange('startTime', e.target.value)}
                   />
                 </div>
@@ -202,7 +203,7 @@ export default function CalendarModal({
                   <Input
                     id="endTime"
                     type="time"
-                    value={eventData.endTime}
+                    value={formData.endTime}
                     onChange={(e) => handleInputChange('endTime', e.target.value)}
                   />
                 </div>
@@ -212,7 +213,7 @@ export default function CalendarModal({
                 <Label htmlFor="description">Description</Label>
                 <Textarea
                   id="description"
-                  value={eventData.description}
+                  value={formData.description}
                   onChange={(e) => handleInputChange('description', e.target.value)}
                   placeholder="Event description..."
                   rows={3}
@@ -223,7 +224,7 @@ export default function CalendarModal({
                 <Label htmlFor="notes">Notes</Label>
                 <Textarea
                   id="notes"
-                  value={eventData.notes}
+                  value={formData.notes}
                   onChange={(e) => handleInputChange('notes', e.target.value)}
                   placeholder="Additional notes..."
                   rows={2}
@@ -236,12 +237,12 @@ export default function CalendarModal({
           {mode === 'block' && (
             <div className="space-y-4">
               <h3 className="text-lg font-medium">Block Details</h3>
-              
+
               <div className="space-y-2">
                 <Label htmlFor="reason">Reason for Blocking</Label>
                 <Textarea
                   id="reason"
-                  value={eventData.notes}
+                  value={formData.notes}
                   onChange={(e) => handleInputChange('notes', e.target.value)}
                   placeholder="Optional: Reason for blocking these dates..."
                   rows={2}
@@ -266,9 +267,9 @@ export default function CalendarModal({
           </Button>
           <Button onClick={handleSave}>
             <Save className="h-4 w-4 mr-2" />
-            {mode === 'block' ? 'Block Dates' : 
-             mode === 'schedule' ? 'Schedule Event' : 
-             'Update Availability'}
+            {mode === 'block' ? 'Block Dates' :
+              mode === 'schedule' ? 'Schedule Event' :
+                'Update Availability'}
           </Button>
         </div>
       </DialogContent>
