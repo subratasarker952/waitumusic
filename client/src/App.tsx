@@ -280,10 +280,10 @@ function Router() {
           </AuthorizedRoute>
         </Route>
         
-        <Route path="/management-walkthrough">
-          <AuthorizedRoute>
+        <Route path="/management-walkthrough/:id">
+          {/* <AuthorizedRoute> */}
             <ManagementApplicationWalkthrough />
-          </AuthorizedRoute>
+          {/* </AuthorizedRoute> */}
         </Route>
         
         <Route path="/enhanced-profile-test">

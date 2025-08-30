@@ -11601,104 +11601,128 @@ This is a preview of the performance engagement contract. Final agreement will i
   //   }
   // });
 
-  app.post('/api/management-applications', authenticateToken, async (req: Request, res: Response) => {
-    try {
-      const {
-        requestedManagementTierId,
-        applicationReason,
-        businessPlan,
-        expectedRevenue,
-        portfolioLinks,
-        socialMediaMetrics
-      } = req.body;
+  // POST /api/management-applications
+  app.post(
+    "/api/management-applications",
+    authenticateToken,
+    async (req: Request, res: Response) => {
+      try {
+        const {
+          requestedManagementTierId,
+          requestedRoleId,
+          applicationReason,
+          businessPlan,
+          expectedRevenue,
+          portfolioLinks,
+          socialMediaMetrics,
+        } = req.body;
 
-      const currentUserId = req.user?.userId;
+        const currentUserId = req.user?.userId;
 
-      if (!currentUserId || !requestedManagementTierId || !applicationReason) {
-        return res.status(400).json({ message: 'Missing required fields' });
+        if (
+          !currentUserId ||
+          !requestedManagementTierId ||
+          !requestedRoleId ||
+          !applicationReason
+        ) {
+          return res.status(400).json({ message: "Missing required fields" });
+        }
+
+        // ✅ Verify user exists
+        const user = await storage.getUser(currentUserId);
+        if (!user) {
+          return res.status(404).json({ message: "User not found" });
+        }
+
+
+        // ✅ Fetch all user roles
+        const userRoles = await storage.getUserRoles(currentUserId);
+        if (userRoles.some(r => r.id === requestedRoleId)) {
+          return res.status(400).json({ message: 'You already have this role and cannot apply again' });
+        }
+
+        // ✅ Check existing pending applications
+        const existingApplications =
+          await storage.getManagementApplicationsByUser(currentUserId);
+        const hasPendingApplication = existingApplications.some((app) =>
+          [
+            "pending",
+            "under_review",
+            "approved",
+            "contract_generated",
+            "awaiting_signatures",
+            "signed",
+          ].includes(app.status)
+        );
+
+        if (hasPendingApplication) {
+          return res.status(400).json({
+            message: "You already have a pending management application",
+          });
+        }
+
+        // ✅ Validate management tier
+        const managementTiers = await storage.getManagementTiers();
+        const tier = managementTiers.find(
+          (t) => t.id === requestedManagementTierId
+        );
+        if (!tier) {
+          return res.status(400).json({ message: "Invalid management tier" });
+        }
+
+        // ✅ Validate role
+        const role = await storage.getRoleById(requestedRoleId);
+        if (!role) {
+          return res.status(400).json({ message: "Invalid management role" });
+        }
+
+        if (!role.canApply) {
+          return res
+            .status(403)
+            .json({ message: "This role cannot apply for management" });
+        }
+
+        // ✅ Generate contract terms from role
+        const contractTerms = {
+          marketplaceDiscount: role.opphubMarketplaceDiscount,
+          servicesDiscount: role.servicesDiscount,
+          adminCommission: role.adminCommission,
+          minimumCommitmentMonths: 12,
+          termination: {
+            noticePeriod: 30,
+            earlyTerminationFee: 1000,
+          },
+        };
+
+        // ✅ Sanitize optional fields
+        const safeBusinessPlan = businessPlan && businessPlan.trim() !== "" ? businessPlan : null;
+        const safeExpectedRevenue = expectedRevenue && expectedRevenue !== "" ? expectedRevenue : null;
+        const safePortfolioLinks = portfolioLinks && Object.keys(portfolioLinks).length > 0 ? portfolioLinks : null;
+        const safeSocialMediaMetrics = socialMediaMetrics && Object.keys(socialMediaMetrics).length > 0 ? socialMediaMetrics : null;
+
+        // ✅ Create application
+        const application = await storage.createManagementApplication({
+          applicantUserId: currentUserId,
+          requestedManagementTierId,
+          requestedRoleId,
+          applicationReason,
+          businessPlan: safeBusinessPlan,
+          expectedRevenue: safeExpectedRevenue,
+          portfolioLinks: safePortfolioLinks,
+          socialMediaMetrics: safeSocialMediaMetrics,
+          contractTerms,
+        });
+
+        res.status(201).json(application);
+      } catch (error) {
+        console.error("Create management application error:", error);
+        res
+          .status(500)
+          .json({ message: "Failed to create management application" });
       }
-
-      // Verify user exists
-      const user = await storage.getUser(currentUserId);
-      if (!user) {
-        return res.status(404).json({ message: 'User not found' });
-      }
-
-      // Prevent admins/managed users from applying
-      if ([1, 2, 3, 5, 7].includes(user.roleId)) {
-        return res.status(400).json({ message: 'User is already managed or has admin privileges' });
-      }
-
-      // Check existing pending applications
-      const existingApplications = await storage.getManagementApplicationsByUser(currentUserId);
-      const hasPendingApplication = existingApplications.some(app =>
-        ['pending', 'under_review', 'approved', 'contract_generated', 'awaiting_signatures', 'signed'].includes(app.status)
-      );
-
-      if (hasPendingApplication) {
-        return res.status(400).json({ message: 'You already have a pending management application' });
-      }
-
-      // Validate management tier
-      const managementTiers = await storage.getManagementTiers();
-      const tier = managementTiers.find(t => t.id === requestedManagementTierId);
-      if (!tier) {
-        return res.status(400).json({ message: 'Invalid management tier' });
-      }
-
-      // Generate contract terms
-      const isFullManagement = tier.name.toLowerCase().includes('full');
-      const contractTerms = {
-        managementType: isFullManagement ? 'full_management' : 'administration',
-        maxDiscountPercentage: isFullManagement ? 100 : 50,
-        minimumCommitmentMonths: 12,
-        revenueSharePercentage: isFullManagement ? 15.0 : 10.0,
-        exclusivityRequired: isFullManagement,
-        marketingSupport: isFullManagement ? 'comprehensive' : 'standard',
-        professionalDevelopment: isFullManagement ? 'unlimited' : 'quarterly',
-        termination: {
-          noticePeriod: isFullManagement ? 60 : 30,
-          earlyTerminationFee: isFullManagement ? 2500 : 1000
-        },
-        benefits: isFullManagement ? [
-          'Up to 100% discount on all WaituMusic services',
-          'Dedicated management team',
-          'Priority booking and promotion',
-          'Comprehensive marketing campaigns',
-          'Unlimited professional development sessions',
-          'Exclusive label events and networking'
-        ] : [
-          'Up to 50% discount on WaituMusic services',
-          'Shared management resources',
-          'Standard booking assistance',
-          'Basic marketing support',
-          'Quarterly professional development sessions'
-        ]
-      };
-
-      // 🛠 sanitize optional fields
-      const safeBusinessPlan = businessPlan && businessPlan.trim() !== "" ? businessPlan : null;
-      const safeExpectedRevenue = expectedRevenue && expectedRevenue !== "" ? expectedRevenue : null;
-      const safePortfolioLinks = portfolioLinks && Object.keys(portfolioLinks).length > 0 ? portfolioLinks : null;
-      const safeSocialMediaMetrics = socialMediaMetrics && Object.keys(socialMediaMetrics).length > 0 ? socialMediaMetrics : null;
-
-      const application = await storage.createManagementApplication({
-        applicantUserId: currentUserId,
-        requestedManagementTierId,
-        applicationReason,
-        businessPlan: safeBusinessPlan,
-        expectedRevenue: safeExpectedRevenue,
-        portfolioLinks: safePortfolioLinks,
-        socialMediaMetrics: safeSocialMediaMetrics,
-        contractTerms
-      });
-
-      res.status(201).json(application);
-    } catch (error) {
-      console.error('Create management application error:', error);
-      res.status(500).json({ message: 'Failed to create management application' });
     }
-  });
+  );
+
 
 
   // Get management applications (admin/superadmin only)
@@ -11734,10 +11758,9 @@ This is a preview of the performance engagement contract. Final agreement will i
   //   }
   // });
 
-  // Review management application by assigned admin
   app.get('/api/management-applications/user', authenticateToken, async (req: Request, res: Response) => {
     try {
-      const currentUserId = req.user?.userId;
+      const currentUserId = parseInt(req.user.userId);
       const applications = await storage.getManagementApplicationsByUser(currentUserId);
       res.json(applications);
     } catch (error) {
@@ -11747,7 +11770,7 @@ This is a preview of the performance engagement contract. Final agreement will i
   }
   );
 
-
+  // Review management application by assigned admin
   app.post('/api/management-applications/:id/review', authenticateToken, requireRole([1, 2]), async (req: Request, res: Response) => {
     try {
       const applicationId = parseInt(req.params.id);
@@ -12101,6 +12124,22 @@ This is a preview of the performance engagement contract. Final agreement will i
       res.status(500).json({ message: 'Failed to sign contract' });
     }
   });
+
+  // get management application by id
+  app.get('/api/management-applications/:id', authenticateToken, async (req: Request, res: Response) => {
+    try {
+      const applicationId = parseInt(req.params.id);
+      const application = await storage.getManagementApplication(applicationId);
+      if (!application) {
+        return res.status(404).json({ message: 'Management application not found' });
+      }
+      res.json(application);
+    } catch (error) {
+      console.error('Get user management applications error:', error);
+      res.status(500).json({ message: 'Failed to fetch user management applications' });
+    }
+  });
+
 
   // Assign lawyer to client for contract review
   app.post('/api/legal-assignments', authenticateToken, requireRole([1, 2]), async (req: Request, res: Response) => {

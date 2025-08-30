@@ -31,6 +31,7 @@ import {
 } from "@/components/ui/select";
 import { Separator } from "@/components/ui/separator";
 import { Clock } from "lucide-react";
+import { queryClient } from "@/lib/queryClient";
 
 const managementApplicationSchema = z.object({
   requestedRoleType: z.enum(
@@ -142,6 +143,11 @@ export default function ManagementApplicationModal({
         body: JSON.stringify(payload),
       });
 
+      // ✅ এখানে query invalidate করো
+      queryClient.invalidateQueries({queryKey:["/api/management-applications"]});
+      queryClient.invalidateQueries({queryKey:["/api/management-applications/user"]});
+
+
       toast({
         title: "Application submitted successfully",
         description: "Your management application has been submitted for review.",
@@ -154,7 +160,7 @@ export default function ManagementApplicationModal({
       console.error("Error submitting application:", error);
       toast({
         title: "Error",
-        description: error.message || "Failed to submit application. Please try again.",
+        description: "Failed to submit application. Please try again.",
         variant: "destructive",
       });
     } finally {

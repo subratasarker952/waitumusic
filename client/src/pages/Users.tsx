@@ -6,10 +6,10 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { 
-  Users as UsersIcon, 
-  UserCheck, 
-  Search, 
+import {
+  Users as UsersIcon,
+  UserCheck,
+  Search,
   Filter,
   Edit,
   Eye,
@@ -81,12 +81,12 @@ export default function Users() {
 
   // Filter users based on search and role
   const filteredUsers = users.filter(u => {
-    const matchesSearch = !searchTerm || 
+    const matchesSearch = !searchTerm ||
       u.fullName?.toLowerCase().includes(searchTerm.toLowerCase()) ||
       u.email?.toLowerCase().includes(searchTerm.toLowerCase());
-    
+
     const matchesRole = !roleFilter || roleFilter === 'all' || u.roleId.toString() === roleFilter;
-    
+
     return matchesSearch && matchesRole;
   });
 
@@ -101,29 +101,29 @@ export default function Users() {
   };
 
   return (
-    <AuthorizedRoute>
+    <div>
       <div className="container mx-auto px-4 py-8 space-y-6">
-        {/* Header */}
+
         <div className="flex items-center justify-between">
-          <div className="flex items-center gap-4">
-            <Button 
-              variant="outline" 
-              size="sm"
-              onClick={() => setLocation('/dashboard')}
-            >
-              <ArrowLeft className="h-4 w-4 mr-2" />
-              Back to Dashboard
-            </Button>
-            <div>
-              <h1 className="text-3xl font-bold">Platform Users</h1>
-              <p className="text-muted-foreground">Comprehensive user management system</p>
-            </div>
-          </div>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => setLocation('/dashboard')}
+          >
+            <ArrowLeft className="h-4 w-4 mr-2" />
+            Back to Dashboard
+          </Button>
           <Badge variant="outline" className="text-primary border-primary">
             <Shield className="h-3 w-3 mr-1" />
             {user?.roleId === 1 ? 'Superadmin' : 'Admin'} Access
           </Badge>
         </div>
+        {/* Header */}
+          <div>
+            <h1 className="text-3xl font-bold">Platform Users</h1>
+            <p className="text-muted-foreground">Comprehensive user management system</p>
+          </div>
+
 
         {/* Filter Controls */}
         <Card>
@@ -198,7 +198,7 @@ export default function Users() {
                             <span className="ml-1">{getRoleName(userData.roleId, dbRoles || [])}</span>
                           </Badge>
                         </div>
-                        
+
                         <div className="text-sm">
                           <p className="text-muted-foreground">
                             Status: <span className={userData.status === 'active' ? 'text-green-600' : 'text-red-600'}>
@@ -209,10 +209,10 @@ export default function Users() {
                             ID: {userData.id}
                           </p>
                         </div>
-                        
+
                         <div className="flex gap-2">
-                          <Button 
-                            size="sm" 
+                          <Button
+                            size="sm"
                             variant="outline"
                             onClick={() => handleViewUser(userData)}
                             className="flex-1"
@@ -221,8 +221,8 @@ export default function Users() {
                             View
                           </Button>
                           {(user?.roleId === 1 || (user?.roleId === 2 && ![1, 2].includes(userData.roleId))) && (
-                            <Button 
-                              size="sm" 
+                            <Button
+                              size="sm"
                               onClick={() => handleEditUser(userData)}
                               className="flex-1"
                             >
@@ -259,6 +259,6 @@ export default function Users() {
           mode={modalMode}
         />
       )}
-    </AuthorizedRoute>
+    </div>
   );
 }

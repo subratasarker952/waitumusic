@@ -2256,13 +2256,34 @@ export class DatabaseStorage implements IStorage {
   // }
 
   // Get role by ID
-  async getRoleById(roleId: number): Promise<Role | undefined> {
+  // async getRoleById(roleId: number): Promise<Role | undefined> {
+  //   try {
+  //     const [role] = await db.select().from(roles).where(eq(roles.id, roleId));
+  //     return role;
+  //   } catch (error) {
+  //     console.error('Error fetching role by ID:', error);
+  //     return undefined;
+  //   }
+  // }
+
+  async getRoleById(roleId: number): Promise<Role | null> {
     try {
-      const [role] = await db.select().from(roles).where(eq(roles.id, roleId));
-      return role;
-    } catch (error) {
-      console.error('Error fetching role by ID:', error);
-      return undefined;
+      const [role] = await db.select().from(rolesManagement).where(eq(rolesManagement.id, roleId));
+      if (!role) return null;
+
+      return {
+        id: role.id,
+        name: role.name,
+        canApply: role.canApply, 
+        opphubMarketplaceDiscount: role.opphubMarketplaceDiscount,
+        servicesDiscount: role.servicesDiscount,
+        adminCommission: role.adminCommission,
+        createdAt: role.createdAt,
+        updatedAt: role.updatedAt,
+      };
+    } catch (err) {
+      console.error('Error fetching role by ID:', err);
+      return null;
     }
   }
 
@@ -2800,7 +2821,7 @@ export class DatabaseStorage implements IStorage {
           guestName: bookings.isGuestBooking ? bookings.guestName : null,
           isGuestBooking: bookings.isGuestBooking,
           primaryArtistUserId: bookings.primaryArtistUserId,
-  
+
           // Artist fields
           artistStageName: artists.stageName,
           artistBio: artists.bio,
@@ -2821,14 +2842,14 @@ export class DatabaseStorage implements IStorage {
         })
         .from(bookings)
         .leftJoin(artists, eq(bookings.primaryArtistUserId, artists.userId));
-  
+
       return results;
     } catch (error) {
       console.error("Error fetching bookings with artists:", error);
       return [];
     }
   }
-  
+
 
   async getBookingsByArtist(artistUserId: number): Promise<Booking[]> {
     return await db.select().from(bookings).where(eq(bookings.primaryArtistUserId, artistUserId));

@@ -260,7 +260,7 @@ function DashboardContent() {
     enabled: !!user && !!isAdminRole,
     retry: 1,
   });
-
+  
 
   const { data: userBookings, isLoading: userBookingsLoading, error: userBookingsError } = useQuery({
     queryKey: ['/api/bookings/user'],
@@ -275,7 +275,9 @@ function DashboardContent() {
     retry: 1,
   });
 
-
+  
+  
+  
   const { data: userApplications, isLoading: userApplicationsLoading, error: userApplicationsError } = useQuery({
     queryKey: [`/api/management-applications/user`],
     enabled: !!user && !isAdminRole,
@@ -293,7 +295,7 @@ function DashboardContent() {
       allApplicationsError,
       userApplicationsError,
     });
-
+    
     const errorMsg =
       statsError?.message ||
       allBookingsError?.message ||
@@ -301,16 +303,16 @@ function DashboardContent() {
       allApplicationsError?.message ||
       userApplicationsError?.message ||
       'Dashboard loading error';
-
-    fetch('/api/opphub/report-error', {
-      method: 'POST',
+      
+      fetch('/api/opphub/report-error', {
+        method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         error: `Dashboard Error: ${errorMsg}`,
         context: 'dashboard_loading_failure',
       }),
     }).catch(console.error);
-
+    
     return (
       <div className="container mx-auto px-4 py-8">
         <div className="text-center">
@@ -344,10 +346,10 @@ function DashboardContent() {
       </div>
     );
   }
-
+  
   const bookings = isAdminRole ? allBookings || [] : userBookings || [];
   const applications = isAdminRole ? allApplications || [] : userApplications || [];
-
+  
   return (
     <div className="container mx-auto px-4 py-8">
       {isSuperAdmin && (
@@ -357,7 +359,7 @@ function DashboardContent() {
               <Badge
                 variant="secondary"
                 className="bg-purple-100 text-purple-800 dark:bg-purple-800 dark:text-purple-100"
-              >
+                >
                 SuperAdmin Access
               </Badge>
               <span className="text-sm text-gray-600 dark:text-gray-300">

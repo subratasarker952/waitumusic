@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useLocation, useRoute } from 'wouter';
 import { useToast } from '@/hooks/use-toast';
@@ -74,6 +74,10 @@ import { Index } from 'drizzle-orm/mysql-core';
 import { useAuth } from '@/contexts/AuthContext';
 import { RoleBadges } from './RoleBadge';
 import DashboardHeader from './DashboardHeader';
+import { Textarea } from './ui/textarea';
+import { Input } from './ui/input';
+import { FormProvider, useForm } from 'react-hook-form';
+import { Form, FormControl, FormField, FormItem, FormLabel } from './ui/form';
 
 
 interface UnifiedDashboardProps {
@@ -83,6 +87,7 @@ interface UnifiedDashboardProps {
 }
 
 export default function UnifiedDashboard({ stats, bookings, applications }: UnifiedDashboardProps) {
+  // console.log(stats, bookings, applications)
   const { user, isLoading, roles } = useAuth();
   const [, setLocation] = useLocation();
   const { toast } = useToast();
@@ -207,10 +212,6 @@ export default function UnifiedDashboard({ stats, bookings, applications }: Unif
         b.booker_user_id === user?.id ||
         b.artist_user_id === user?.id
     ) || [];
-
-  const userApplications =
-    applications?.filter((a: any) => a.applicantUserId === user?.id) || [];
-  // Event handlers
 
   const handleUploadMusic = () => setMusicUploadOpen(true);
 
@@ -1208,15 +1209,13 @@ export default function UnifiedDashboard({ stats, bookings, applications }: Unif
             <Card>
               <CardHeader>
                 <CardTitle className="text-lg sm:text-xl">
-                  {selectedApplication ? ` ApplicationId ${selectedApplication.id} Details` : "All Applications"}
+                  All Applications
                 </CardTitle>
               </CardHeader>
 
               <CardContent>
-                {!selectedApplication ? (
-                  // ----------------- LIST VIEW -----------------
                   <div className="space-y-3 sm:space-y-4">
-                    {userApplications.map((app: any) => (
+                    {applications.map((app: any) => (
                       <Card key={app.id}>
                         <CardContent className="p-3">
                           <div className="flex items-center justify-between gap-3">
@@ -1226,23 +1225,18 @@ export default function UnifiedDashboard({ stats, bookings, applications }: Unif
                                   <h3 className="text-lg font-semibold">
                                     Application # {app.id}
                                   </h3>
-                                  <Button
-
-                                    className=""
-                                    onClick={() => setSelectedApplication(app)}
-                                  >
+                                  <Button onClick={() => setLocation(`/management-walkthrough/${app.id}`)}>
                                     View Details
                                   </Button>
                                 </div>
                                 <p>
-                                  <strong>Reason:</strong>
-                                  {app.applicationReason || "N/A"}
+                                  <strong>Reason:</strong> {app.applicationReason || "N/A"}
                                 </p>
                                 <p>
                                   <strong>Status:</strong> {app.status}
                                 </p>
                                 <p>
-                                  <strong>Submitted:</strong>
+                                  <strong>Submitted:</strong>{" "}
                                   {new Date(app.submittedAt).toLocaleString()}
                                 </p>
                               </div>
@@ -1252,77 +1246,17 @@ export default function UnifiedDashboard({ stats, bookings, applications }: Unif
                       </Card>
                     ))}
 
-                    {userApplications.length === 0 && (
+                    {applications.length === 0 && (
                       <p className="text-muted-foreground text-center py-6 sm:py-8">
                         No Applications yet
                       </p>
                     )}
                   </div>
-                ) : (
-                  // ----------------- DETAILS VIEW -----------------
-                  <div className="space-y-4">
-                    <Card>
-                      <CardContent className='p-3'>
-                        {/* Basic Info (all users can see) */}
-                        <div className="space-y-2">
-                          <div className="flex justify-between items-center gap-3">
-                            <h3 className="text-lg font-semibold">
-                              Application # {selectedApplication.id}
-                            </h3>
-                            <Button
-
-                              onClick={() => setSelectedApplication(null)}
-                            >
-                              Less Detailes
-                            </Button>
-                          </div>
-                          <div className="space-y-2">
-                            <p>
-                              <strong>Reason:</strong>
-                              {selectedApplication.applicationReason || "N/A"}
-                            </p>
-                            <p>
-                              <strong>Status:</strong> {selectedApplication.status}
-                            </p>
-                            <p>
-                              <strong>Submitted:</strong>
-                              {new Date(selectedApplication.submittedAt).toLocaleString()}
-                            </p>
-                          </div>
-
-                        </div>
-                        {/* Admin only extra info */}
-                        {isAdmin && (
-                          <div className="space-y-3 border-t pt-4">
-                            <p>
-                              <strong>Business Plan:</strong>
-                              {selectedApplication.businessPlan || "N/A"}
-                            </p>
-                            <p>
-                              <strong>Expected Revenue:</strong>
-                              {selectedApplication.expectedRevenue || "N/A"}
-                            </p>
-                            <p>
-                              <strong>Portfolio Links:</strong>
-                              {JSON.stringify(selectedApplication.portfolioLinks)}
-                            </p>
-                            <p>
-                              <strong>Social Media Metrics:</strong>
-                              {JSON.stringify(selectedApplication.socialMediaMetrics)}
-                            </p>
-                            <p>
-                              <strong>Contract Terms:</strong>
-                              {JSON.stringify(selectedApplication.contractTerms)}
-                            </p>
-                          </div>
-                        )}
-                      </CardContent>
-                    </Card>
-                  </div>
-                )}
               </CardContent>
             </Card>
           </TabsContent>
+
+
 
           {/* My Gigs Tab - For Artists, Musicians, and Professionals */}
           {/* {roles.some(r => [3, 4, 5, 6, 7, 8].includes(r.id)) && ( */}
