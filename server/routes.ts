@@ -11771,61 +11771,120 @@ This is a preview of the performance engagement contract. Final agreement will i
   );
 
   // Review management application by assigned admin
-  app.post('/api/management-applications/:id/review', authenticateToken, requireRole([1, 2]), async (req: Request, res: Response) => {
+  // app.post('/api/management-applications/:id/review', authenticateToken, async (req: Request, res: Response) => {
+  //   try {
+  //     const applicationId = parseInt(req.params.id);
+  //     const { reviewStatus, reviewComments } = req.body;
+  //     const currentUserId = req.user?.userId;
+
+  //     const application = await storage.getManagementApplication(applicationId);
+  //     if (!application) {
+  //       return res.status(404).json({ message: 'Management application not found' });
+  //     }
+
+  //     // Get current user role to determine review type
+  //     const user = await storage.getUser(currentUserId || 0);
+  //     const roles = await storage.getRoles();
+  //     const userRole = roles.find(role => role.id === user?.roleId);
+
+  //     // Create review record
+  //     await storage.createManagementApplicationReview({
+  //       applicationId,
+  //       reviewerUserId: currentUserId || 0,
+  //       reviewerRole: user?.roleId === 1 ? 'superadmin' : 'assigned_admin',
+  //       reviewStatus,
+  //       reviewComments
+  //     });
+
+  //     // Update application status based on review
+  //     let newStatus = application.status;
+  //     if (reviewStatus === 'approved') {
+  //       newStatus = 'approved';
+  //       await storage.updateManagementApplication(applicationId, {
+  //         status: newStatus,
+  //         reviewedAt: new Date(),
+  //         reviewedByUserId: currentUserId,
+  //         approvedAt: new Date(),
+  //         approvedByUserId: currentUserId
+  //       });
+  //     } else if (reviewStatus === 'rejected') {
+  //       // When declined/rejected, mark as completed but don't change user role
+  //       newStatus = 'completed';
+  //       await storage.updateManagementApplication(applicationId, {
+  //         status: newStatus,
+  //         reviewedAt: new Date(),
+  //         reviewedByUserId: currentUserId,
+  //         rejectionReason: reviewComments,
+  //         completedAt: new Date()
+  //       });
+  //       // Note: User role remains unchanged when application is declined
+  //     }
+
+  //     res.json({ success: true, newStatus });
+  //   } catch (error) {
+  //     console.error('Review management application error:', error);
+  //     res.status(500).json({ message: 'Failed to review management application' });
+  //   }
+  // });
+
+  // Review management application by assigned admin
+// Review management application by assigned admin
+app.post( "/api/management-applications/:id/review",  authenticateToken,  async (req: Request, res: Response) => {
     try {
       const applicationId = parseInt(req.params.id);
-      const { reviewStatus, reviewComments } = req.body;
+      const { reviewStatus, reviewComments, termInMonths, notes } = req.body;
       const currentUserId = req.user?.userId;
 
+      if (!currentUserId) return res.status(401).json({ message: "Unauthorized" });
+
       const application = await storage.getManagementApplication(applicationId);
-      if (!application) {
-        return res.status(404).json({ message: 'Management application not found' });
-      }
+      if (!application)
+        return res.status(404).json({ message: "Application not found" });
 
-      // Get current user role to determine review type
-      const user = await storage.getUser(currentUserId || 0);
-      const roles = await storage.getRoles();
-      const userRole = roles.find(role => role.id === user?.roleId);
+      // ✅ Determine reviewer role
+      const roles = await storage.getUserRoles(currentUserId);
+      const roleIds = roles.map(r => r.id);
+      const reviewerRole = [1, 2].includes(roleIds) ? "superadmin" : "admin";
 
-      // Create review record
+      // ✅ Create review record
       await storage.createManagementApplicationReview({
         applicationId,
-        reviewerUserId: currentUserId || 0,
-        reviewerRole: user?.roleId === 1 ? 'superadmin' : 'assigned_admin',
+        reviewerUserId: currentUserId,
+        reviewerRole,
         reviewStatus,
-        reviewComments
+        reviewComments,
       });
 
-      // Update application status based on review
-      let newStatus = application.status;
-      if (reviewStatus === 'approved') {
-        newStatus = 'approved';
-        await storage.updateManagementApplication(applicationId, {
-          status: newStatus,
-          reviewedAt: new Date(),
-          reviewedByUserId: currentUserId,
-          approvedAt: new Date(),
-          approvedByUserId: currentUserId
-        });
-      } else if (reviewStatus === 'rejected') {
-        // When declined/rejected, mark as completed but don't change user role
-        newStatus = 'completed';
-        await storage.updateManagementApplication(applicationId, {
-          status: newStatus,
-          reviewedAt: new Date(),
-          reviewedByUserId: currentUserId,
-          rejectionReason: reviewComments,
-          completedAt: new Date()
-        });
-        // Note: User role remains unchanged when application is declined
+      // ✅ Update application
+      let updateData: any = {
+        reviewedAt: new Date(),
+        reviewedByUserId: currentUserId,
+        notes: notes ?? application.notes,
+        termInMonths: termInMonths ?? application.termInMonths,
+      };
+
+      if (reviewStatus === "approved") {
+        updateData.status = "approved";
+        updateData.approvedAt = new Date();
+        updateData.approvedByUserId = currentUserId;
+      } else if (reviewStatus === "rejected") {
+        updateData.status = "completed";
+        updateData.completedAt = new Date();
+        updateData.rejectionReason = reviewComments;
+      } else if (reviewStatus === "under_review") {
+        updateData.status = "under_review";
       }
 
-      res.json({ success: true, newStatus });
+      await storage.updateManagementApplication(applicationId, updateData);
+
+      res.json({ success: true, newStatus: updateData.status });
     } catch (error) {
-      console.error('Review management application error:', error);
-      res.status(500).json({ message: 'Failed to review management application' });
+      console.error("Review management application error:", error);
+      res.status(500).json({ message: "Failed to review management application" });
     }
-  });
+  }
+);
+
 
   // Generate contract for approved application (superadmin only)
   app.post('/api/management-applications/:id/generate-contract', authenticateToken, requireRole([1]), async (req: Request, res: Response) => {

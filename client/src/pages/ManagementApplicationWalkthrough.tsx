@@ -24,6 +24,8 @@ import {
 import { useLocation, useParams } from 'wouter';
 import { useQuery } from '@tanstack/react-query';
 import { LoadingSpinner } from '@/components/ui/loading-spinner';
+import { Textarea } from '@/components/ui/textarea';
+import { Input } from '@/components/ui/input';
 
 export default function ManagementApplicationWalkthrough() {
   const [, setLocation] = useLocation()
@@ -32,6 +34,9 @@ export default function ManagementApplicationWalkthrough() {
   const { id } = useParams()
   const [applicationId, setApplicationId] = useState<number | null>(null);
   const [applicationData, setApplicationData] = useState<any>(null);
+  const [reviewComments, setReviewComments] = useState<string>('')
+  const [notes, setNotes] = useState<string>('')
+  const [termInMonths, setTermInMonths] = useState<number>(12)
 
   const { data: application, isLoading: applicationLoading, error: applicationError } = useQuery({
     queryKey: [`/api/management-applications/${id}`],
@@ -40,12 +45,12 @@ export default function ManagementApplicationWalkthrough() {
   console.log(application)
 
   const steps = [
-    { id: 1, title: "Application Submission", status: "pending", icon: FileText },
+    { id: 1, title: "Application Data", status: "pending", icon: FileText },
     { id: 2, title: "Admin Review", status: "pending", icon: Users },
-    { id: 3, title: "Professional Assignment", status: "pending", icon: Scale },
-    { id: 4, title: "Contract Generation", status: "pending", icon: FileText },
-    { id: 5, title: "Multi-Party Signing", status: "pending", icon: UserCheck },
-    { id: 6, title: "Role Transition", status: "pending", icon: Crown }
+    // { id: 3, title: "Professional Assignment", status: "pending", icon: Scale },
+    { id: 3, title: "Contract Generation", status: "pending", icon: FileText },
+    { id: 4, title: "Multi-Party Signing", status: "pending", icon: UserCheck },
+    { id: 5, title: "Role Transition", status: "pending", icon: Crown }
   ];
 
   const [stepStatuses, setStepStatuses] = useState(
@@ -97,21 +102,52 @@ export default function ManagementApplicationWalkthrough() {
   };
 
   // Step 2: Admin Review
-  const reviewApplication = async () => {
+  // const reviewApplication = async () => {
+  //   if (!applicationId) return;
+
+  //   try {
+  //     await apiRequest('POST', `/api/management-applications/${applicationId}/review`, {
+  //       reviewStatus: 'approved',
+  //       reviewComments: 'Application demonstrates strong potential for Full Management tier. Applicant shows excellent growth metrics and professional presentation.'
+  //     });
+
+  //     setStepStatuses(prev => ({ ...prev, 2: "completed" }));
+  //     setCurrentStep(3);
+
+  //     toast({
+  //       title: "Application Approved",
+  //       description: "Application reviewed and approved by superadmin",
+  //     });
+  //   } catch (error) {
+  //     toast({
+  //       title: "Review Failed",
+  //       description: "Failed to review application",
+  //       variant: "destructive",
+  //     });
+  //   }
+  // };
+  const reviewApplication = async (status: "approved" | "rejected" | "under_review") => {
     if (!applicationId) return;
 
     try {
-      await apiRequest('POST', `/api/management-applications/${applicationId}/review`, {
-        reviewStatus: 'approved',
-        reviewComments: 'Application demonstrates strong potential for Full Management tier. Applicant shows excellent growth metrics and professional presentation.'
+      const payload = {
+        reviewStatus: status,
+        reviewComments,
+        notes,
+        termInMonths
+      }
+
+      await apiRequest(`/api/management-applications/${applicationId}/review`, {
+        method: 'POST',
+        body: payload
       });
 
       setStepStatuses(prev => ({ ...prev, 2: "completed" }));
       setCurrentStep(3);
 
       toast({
-        title: "Application Approved",
-        description: "Application reviewed and approved by superadmin",
+        title: status === "approved" ? "Application Approved" : status === "rejected" ? "Application Rejected" : "Marked Under Review",
+        description: `Application review completed with status: ${status}`,
       });
     } catch (error) {
       toast({
@@ -121,6 +157,7 @@ export default function ManagementApplicationWalkthrough() {
       });
     }
   };
+
 
   // Step 3: Assign Professional
   const assignLawyer = async () => {
@@ -339,7 +376,7 @@ export default function ManagementApplicationWalkthrough() {
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <FileText className="w-5 h-5" />
-                Step 1: Application Submission
+                Step 1: Application Data
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
@@ -347,16 +384,12 @@ export default function ManagementApplicationWalkthrough() {
                 <div>
                   {/* Header */}
                   <h3 className="text-xl font-bold">
-                    Application #{application.id}
-                    <span className="text-sm text-muted-foreground">
-                      ({application.status})
-                    </span>
+                    Application # {application.id} <span className="text-sm text-muted-foreground">({application.status})</span>
                   </h3>
 
 
                   {/* Applicant Info */}
                   <div className="space-y-2">
-                    <h4 className="font-semibold text-lg">Applicant Info</h4>
                     <p>
                       <strong>User ID:</strong> {application.applicantUserId}
                     </p>
@@ -411,7 +444,8 @@ export default function ManagementApplicationWalkthrough() {
                     <div className="space-y-1">
                       <strong>Contract Terms:</strong>
                       <ul className="list-disc ml-6 text-gray-700">
-                        <li>Termination: {JSON.stringify(application.contractTerms.termination)}</li>
+                        <li>Notice Period: {application.contractTerms.termination.noticePeriod} Days</li>
+                        <li>Early Termination Fee: $ {application.contractTerms.termination.earlyTerminationFee} </li>
                         <li>Admin Commission: {application.contractTerms.adminCommission}%</li>
                         <li>Services Discount: {application.contractTerms.servicesDiscount}%</li>
                         <li>Marketplace Discount: {application.contractTerms.marketplaceDiscount}%</li>
@@ -450,7 +484,7 @@ export default function ManagementApplicationWalkthrough() {
           </Card>
         </TabsContent>
 
-        <TabsContent value="2" className="space-y-4">
+        {/* <TabsContent value="2" className="space-y-4">
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
@@ -481,14 +515,82 @@ export default function ManagementApplicationWalkthrough() {
                 </div>
               )}
 
-              <Button onClick={reviewApplication} disabled={stepStatuses[2] === "completed" || !applicationId}>
+              <Button className='w-full' onClick={reviewApplication} disabled={stepStatuses[2] === "completed" || !applicationId}>
                 {stepStatuses[2] === "completed" ? "Application Approved" : "Approve Application"}
               </Button>
             </CardContent>
           </Card>
+        </TabsContent> */}
+
+        <TabsContent value="2" className="space-y-4">
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Users className="w-5 h-5" />
+                Step 2: Admin Review
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className='space-y-6'>
+
+
+                <Textarea
+                  placeholder="Enter review comments..."
+                  value={reviewComments}
+                  onChange={(e) => setReviewComments(e.target.value)}
+                />
+
+                <Input
+                  type="number"
+                  placeholder="Term (months)"
+                  value={termInMonths.toString()}
+                  onChange={(e) => setTermInMonths(parseInt(e.target.value))}
+                />
+
+                <Textarea
+                  placeholder="Notes (optional)"
+                  value={notes}
+                  onChange={(e) => setNotes(e.target.value)}
+                />
+
+
+              </div>
+
+              {/* Review Buttons */}
+              <div className="flex flex-col md:flex-row gap-3 mt-4">
+                <Button
+                  className="w-full"
+                  variant="default"
+                  onClick={() => reviewApplication("approved")}
+                  disabled={stepStatuses[2] === "completed" || !applicationId}
+                >
+                  Approve
+                </Button>
+
+                <Button
+                  className="w-full"
+                  variant="destructive"
+                  onClick={() => reviewApplication("rejected")}
+                  disabled={stepStatuses[2] === "completed" || !applicationId}
+                >
+                  Reject
+                </Button>
+
+                <Button
+                  className="w-full"
+                  variant="outline"
+                  onClick={() => reviewApplication("under_review")}
+                  disabled={stepStatuses[2] === "completed" || !applicationId}
+                >
+                  Under Review
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
         </TabsContent>
 
-        <TabsContent value="3" className="space-y-4">
+
+        {/* <TabsContent value="3" className="space-y-4">
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
@@ -531,14 +633,14 @@ export default function ManagementApplicationWalkthrough() {
                 </p>
               </div>
 
-              <Button onClick={assignLawyer} disabled={stepStatuses[3] === "completed" || !applicationId}>
+              <Button className='w-full' onClick={assignLawyer} disabled={stepStatuses[3] === "completed" || !applicationId}>
                 {stepStatuses[3] === "completed" ? "Professional Assigned" : "Assign Professional"}
               </Button>
             </CardContent>
           </Card>
-        </TabsContent>
+        </TabsContent> */}
 
-        <TabsContent value="4" className="space-y-4">
+        <TabsContent value="3" className="space-y-4">
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
@@ -579,14 +681,14 @@ export default function ManagementApplicationWalkthrough() {
                 </div>
               </div>
 
-              <Button onClick={generateContract} disabled={stepStatuses[4] === "completed" || !applicationId}>
-                {stepStatuses[4] === "completed" ? "Contract Generated" : "Generate Contract"}
+              <Button className='w-full' onClick={generateContract} disabled={stepStatuses[4] === "completed" || !applicationId}>
+                {stepStatuses[3] === "completed" ? "Contract Generated" : "Generate Contract"}
               </Button>
             </CardContent>
           </Card>
         </TabsContent>
 
-        <TabsContent value="5" className="space-y-4">
+        <TabsContent value="4" className="space-y-4">
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
@@ -638,14 +740,14 @@ export default function ManagementApplicationWalkthrough() {
                 </div>
               </div>
 
-              <Button onClick={signContract} disabled={stepStatuses[5] === "completed" || !applicationId}>
-                {stepStatuses[5] === "completed" ? "Contract Signed" : "Execute Signing Process"}
+              <Button className='w-full' onClick={signContract} disabled={stepStatuses[5] === "completed" || !applicationId}>
+                {stepStatuses[4] === "completed" ? "Contract Signed" : "Execute Signing Process"}
               </Button>
             </CardContent>
           </Card>
         </TabsContent>
 
-        <TabsContent value="6" className="space-y-4">
+        <TabsContent value="5" className="space-y-4">
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
