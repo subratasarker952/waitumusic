@@ -2,8 +2,9 @@ import PDFKit from 'pdfkit';
 
 export interface ContractData {
   contractType: 'publisher' | 'representation' | 'full_management' | 'professional_services';
-  artistFullName: string;
-  artistStageName?: string;
+  fullName: string;
+  email: string;
+  phoneNumber?: string;
   artistAddress: string;
   artistPRO?: string;
   artistIPI?: string;
@@ -48,11 +49,11 @@ function generatePublishingContract(doc: PDFKit.PDFDocument, data: ContractData)
   // Parties
   doc.text('THE PARTIES ARE:');
   doc.moveDown();
-  
+
   doc.text('1. Wai\'tuMusic having its registered office at C/o Krystallion Incorporated, 31 Bath Estate, P.O. Box 1350, Roseau, Dominica: (the "Publisher")');
   doc.moveDown();
-  
-  doc.text(`2. ${data.artistFullName}, of ${data.artistAddress},`);
+
+  doc.text(`2. ${data.fullName}, of ${data.email}, of ${data.phoneNumber}`);
   if (data.artistPRO) {
     doc.text(`(PRO) ${data.artistPRO},`);
   }
@@ -91,32 +92,27 @@ function generateAdministrationContract(doc: PDFKit.PDFDocument, data: ContractD
   // Parties
   doc.text('BETWEEN:');
   doc.moveDown();
-  
+
   doc.text('(A) Wai\'tuMusic C/o Krystallion Incorporated, P.O. Box 1350, Roseau, Dominica -');
   doc.text('(Hereinafter referred to as "Administration")');
   doc.moveDown();
-  
+
   doc.text('and');
   doc.moveDown();
-  
+
   doc.text('(B)');
-  doc.text(`[Artist Full Name]: ${data.artistFullName}`);
+  doc.text(`[Full Name]: ${data.fullName}`);
   doc.moveDown();
-  
-  if (data.artistStageName) {
-    doc.text('professionally known as');
-    doc.text(`[Artist Stage Name(s)]: ${data.artistStageName}`);
-    doc.moveDown();
-  }
-  
-  doc.text(`of [Artist Address]: ${data.artistAddress}`);
+
+
+  doc.text(`of [Contact info]: Email: ${data.email} ; Phone: ${data.phoneNumber} `);
   doc.moveDown();
-  
+
   if (data.artistPRO && data.artistIPI) {
-    doc.text(`and [Artist PRO / IPI Number]: ${data.artistPRO} / ${data.artistIPI}`);
+    doc.text(`and [PRO / IPI Number]: ${data.artistPRO} / ${data.artistIPI}`);
     doc.moveDown();
   }
-  
+
   doc.text('(Hereinafter referred to as "Artist")');
   doc.moveDown(2);
 
@@ -150,32 +146,26 @@ function generateManagementContract(doc: PDFKit.PDFDocument, data: ContractData)
   // Parties
   doc.text('BETWEEN:');
   doc.moveDown();
-  
+
   doc.text('(A) Wai\'tuMusic C/o Krystallion Incorporated, P.O. Box 1350, Roseau, Dominica -');
   doc.text('(Hereinafter referred to as "Management")');
   doc.moveDown();
-  
+
   doc.text('and');
   doc.moveDown();
-  
+
   doc.text('(B)');
-  doc.text(`(Artist Full Name): ${data.artistFullName}`);
+  doc.text(`(Full Name): ${data.fullName}`);
   doc.moveDown();
-  
-  if (data.artistStageName) {
-    doc.text('professionally known as');
-    doc.text(`(Artist Stage Name(s)): ${data.artistStageName}`);
-    doc.moveDown();
-  }
-  
-  doc.text(`of (Artist Address): ${data.artistAddress}`);
+
+  doc.text(`of (Contact info): Email: ${data.email} ; Phone: ${data.phoneNumber} `);
   doc.moveDown();
-  
+
   if (data.artistPRO && data.artistIPI) {
-    doc.text(`and (Artist PRO / IPI Number): ${data.artistPRO} / ${data.artistIPI}`);
+    doc.text(`and (PRO / IPI Number): ${data.artistPRO} / ${data.artistIPI}`);
     doc.moveDown();
   }
-  
+
   doc.text('(Hereinafter referred to as "Artist")');
   doc.moveDown(2);
 
@@ -211,11 +201,11 @@ function generateProfessionalServicesContract(doc: PDFKit.PDFDocument, data: Con
   // Parties
   doc.text('THE PARTIES ARE:');
   doc.moveDown();
-  
+
   doc.text('1. Wai\'tuMusic having its registered office at C/o Krystallion Incorporated, 31 Bath Estate, P.O. Box 1350, Roseau, Dominica: (the "Company")');
   doc.moveDown();
-  
-  doc.text(`2. ${data.artistFullName}, of ${data.artistAddress},`);
+
+  doc.text(`2. ${data.fullName}, of ${data.email}, of ${data.phoneNumber}`);
   doc.text(`Professional specializing in ${data.serviceCategory || 'Professional Services'}: (the "Professional")`);
   doc.moveDown();
 
@@ -223,7 +213,7 @@ function generateProfessionalServicesContract(doc: PDFKit.PDFDocument, data: Con
   doc.fontSize(14).text('SCOPE OF SERVICES', { underline: true });
   doc.fontSize(12);
   doc.moveDown();
-  
+
   const serviceTerms = getProfessionalServiceTerms(data.professionalType || 'business');
   doc.text(serviceTerms.scope);
   doc.moveDown();
@@ -281,7 +271,7 @@ function getProfessionalServiceTerms(professionalType: string) {
 
 function addSignatureSection(doc: PDFKit.PDFDocument, party1: string, party2: string): void {
   doc.addPage();
-  
+
   doc.fontSize(12).text('IN WITNESS WHEREOF, the parties hereto have executed this Agreement the day and year herein above first written:');
   doc.moveDown(2);
 
@@ -318,7 +308,7 @@ function addSignatureSection(doc: PDFKit.PDFDocument, party1: string, party2: st
 export function getContractTypeFromTier(tierId: number): ContractData['contractType'] {
   switch (tierId) {
     case 1: return 'publisher';
-    case 2: return 'representation';  
+    case 2: return 'representation';
     case 3: return 'full_management';
     default: throw new Error(`Invalid tier ID: ${tierId}`);
   }

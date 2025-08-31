@@ -11828,8 +11828,8 @@ This is a preview of the performance engagement contract. Final agreement will i
   // });
 
   // Review management application by assigned admin
-// Review management application by assigned admin
-app.post( "/api/management-applications/:id/review",  authenticateToken,  async (req: Request, res: Response) => {
+  // Review management application by assigned admin
+  app.post("/api/management-applications/:id/review", authenticateToken, async (req: Request, res: Response) => {
     try {
       const applicationId = parseInt(req.params.id);
       const { reviewStatus, reviewComments, termInMonths, notes } = req.body;
@@ -11871,8 +11871,6 @@ app.post( "/api/management-applications/:id/review",  authenticateToken,  async 
         updateData.status = "completed";
         updateData.completedAt = new Date();
         updateData.rejectionReason = reviewComments;
-      } else if (reviewStatus === "under_review") {
-        updateData.status = "under_review";
       }
 
       await storage.updateManagementApplication(applicationId, updateData);
@@ -11883,11 +11881,11 @@ app.post( "/api/management-applications/:id/review",  authenticateToken,  async 
       res.status(500).json({ message: "Failed to review management application" });
     }
   }
-);
+  );
 
 
   // Generate contract for approved application (superadmin only)
-  app.post('/api/management-applications/:id/generate-contract', authenticateToken, requireRole([1]), async (req: Request, res: Response) => {
+  app.post('/api/management-applications/:id/generate-contract', authenticateToken, async (req: Request, res: Response) => {
     try {
       const applicationId = parseInt(req.params.id);
       const currentUserId = req.user?.userId;
@@ -11897,7 +11895,9 @@ app.post( "/api/management-applications/:id/review",  authenticateToken,  async 
         return res.status(404).json({ message: 'Management application not found' });
       }
 
-      if (application.status !== 'approved') {
+      const { contractTerms, status, termInMonths } = application
+
+      if (status !== 'approved') {
         return res.status(400).json({ message: 'Application must be approved before generating contract' });
       }
 
@@ -11915,61 +11915,68 @@ app.post( "/api/management-applications/:id/review",  authenticateToken,  async 
       }
 
       // Update status to contract_generated
-      await storage.updateManagementApplication(applicationId, {
-        status: 'contract_generated'
-      });
+      await storage.updateManagementApplication(applicationId, { status: 'contract_generated' });
 
       // Determine contract type based on management tier and user type
       let contractType: ContractData['contractType'];
       let professionalType: string | undefined;
       let serviceCategory: string | undefined;
 
-      if (applicant.roleId === 7 || applicant.roleId === 8) { // Managed or Independent Professional
+      const roles = await storage.getUserRoles(applicant.id)
+      const roleIds = roles.map(r => r.id)
+      // check application requested role
+      const requestedRoleId = application.requestedRoleId;
+
+      // যদি requested role professional / managed professional  হয়
+      if ([7, 8].includes(requestedRoleId)) {
         contractType = 'professional_services';
+
         const professional = await storage.getProfessional(applicant.id);
-        if (professional?.specializations && professional.specializations.length > 0) {
+        if (professional?.specializations?.length) {
           serviceCategory = professional.specializations[0];
-          professionalType = serviceCategory.toLowerCase().includes('legal') ? 'legal' :
-            serviceCategory.toLowerCase().includes('marketing') ? 'marketing' :
-              serviceCategory.toLowerCase().includes('financial') ? 'financial' :
-                serviceCategory.toLowerCase().includes('brand') ? 'brand' : 'business';
+          professionalType =
+            serviceCategory.toLowerCase().includes('legal') ? 'legal' :
+              serviceCategory.toLowerCase().includes('marketing') ? 'marketing' :
+                serviceCategory.toLowerCase().includes('financial') ? 'financial' :
+                  serviceCategory.toLowerCase().includes('brand') ? 'brand' : 'business';
         }
       } else {
+        // fallback → tier থেকে contract type
         contractType = getContractTypeFromTier(application.requestedManagementTierId);
       }
 
       // Generate actual contract using real templates
       const contractData = {
         contractType,
-        artistFullName: applicant.fullName,
-        artistStageName: applicant.fullName, // Could be enhanced with actual stage name data
-        artistAddress: 'Address on file', // Could be enhanced with actual address
+        fullName: applicant.fullName,
+        email: applicant.email,
+        phoneNumber: applicant.phoneNumber,
         professionalType,
         serviceCategory,
-        artistPRO: undefined, // Could be enhanced with PRO data
-        artistIPI: undefined, // Could be enhanced with IPI data
-        contractDate: new Date().toLocaleDateString('en-US', {
-          year: 'numeric',
-          month: 'long',
-          day: 'numeric'
+        artistPRO: undefined, // optional future data
+        artistIPI: undefined, // optional future data
+        contractDate: new Date().toLocaleDateString("en-US", {
+          year: "numeric",
+          month: "long",
+          day: "numeric",
         }),
-        termLength: '1 year',
-        ...getTierCommissions(application.requestedManagementTierId)
+        termLength: `${termInMonths} months`,
+        ...contractTerms ?? {}, // adminCommission, marketplaceDiscount, etc.
       };
 
       // Check if applicant has assigned lawyer
-      const assignedLawyer = await storage.getAssignedLawyer(application.applicantUserId, 'management_contract');
+      // const assignedLawyer = await storage.getAssignedLawyer(application.applicantUserId, 'management_contract');
 
       res.json({
         success: true,
         contractGenerated: true,
         contractData,
         tierName: tier.name,
-        hasAssignedLawyer: !!assignedLawyer,
-        assignedLawyer: assignedLawyer ? {
-          lawyerId: assignedLawyer.lawyerUserId,
-          assignmentId: assignedLawyer.id
-        } : null
+        // hasAssignedLawyer: !!assignedLawyer,
+        // assignedLawyer: assignedLawyer ? {
+        //   lawyerId: assignedLawyer.lawyerUserId,
+        //   assignmentId: assignedLawyer.id
+        // } : null
       });
     } catch (error) {
       console.error('Generate contract error:', error);
@@ -11978,7 +11985,7 @@ app.post( "/api/management-applications/:id/review",  authenticateToken,  async 
   });
 
   // Download contract PDF for approved application (superadmin only)
-  app.get('/api/management-applications/:id/contract-pdf', authenticateToken, requireRole([1]), async (req: Request, res: Response) => {
+  app.get('/api/management-applications/:id/contract-pdf', authenticateToken, async (req: Request, res: Response) => {
     try {
       const applicationId = parseInt(req.params.id);
 
@@ -11986,6 +11993,8 @@ app.post( "/api/management-applications/:id/review",  authenticateToken,  async 
       if (!application) {
         return res.status(404).json({ message: 'Management application not found' });
       }
+
+      const { contractTerms, status, termInMonths } = application
 
       if (!['contract_generated', 'awaiting_signatures', 'signed'].includes(application.status)) {
         return res.status(400).json({ message: 'Contract not generated yet' });
@@ -12009,35 +12018,46 @@ app.post( "/api/management-applications/:id/review",  authenticateToken,  async 
       let professionalType: string | undefined;
       let serviceCategory: string | undefined;
 
-      if (applicant.roleId === 7 || applicant.roleId === 8) { // Managed or Independent Professional
+      const roles = await storage.getUserRoles(applicant.id)
+      const roleIds = roles.map(r => r.id)
+      // check application requested role
+      const requestedRoleId = application.requestedRoleId;
+
+      // যদি requested role professional / managed professional  হয়
+      if ([7, 8].includes(requestedRoleId)) {
         contractType = 'professional_services';
+
         const professional = await storage.getProfessional(applicant.id);
-        if (professional?.specializations && professional.specializations.length > 0) {
+        if (professional?.specializations?.length) {
           serviceCategory = professional.specializations[0];
-          professionalType = serviceCategory.toLowerCase().includes('legal') ? 'legal' :
-            serviceCategory.toLowerCase().includes('marketing') ? 'marketing' :
-              serviceCategory.toLowerCase().includes('financial') ? 'financial' :
-                serviceCategory.toLowerCase().includes('brand') ? 'brand' : 'business';
+          professionalType =
+            serviceCategory.toLowerCase().includes('legal') ? 'legal' :
+              serviceCategory.toLowerCase().includes('marketing') ? 'marketing' :
+                serviceCategory.toLowerCase().includes('financial') ? 'financial' :
+                  serviceCategory.toLowerCase().includes('brand') ? 'brand' : 'business';
         }
       } else {
+        // fallback → tier থেকে contract type
         contractType = getContractTypeFromTier(application.requestedManagementTierId);
       }
 
-      // Generate contract data
+      // Generate actual contract using real templates
       const contractData = {
         contractType,
-        artistFullName: applicant.fullName,
-        artistStageName: applicant.fullName,
-        artistAddress: 'Address on file',
+        fullName: applicant.fullName,
+        email: applicant.email,
+        phoneNumber: applicant.phoneNumber,
         professionalType,
         serviceCategory,
-        contractDate: new Date().toLocaleDateString('en-US', {
-          year: 'numeric',
-          month: 'long',
-          day: 'numeric'
+        artistPRO: undefined, // optional future data
+        artistIPI: undefined, // optional future data
+        contractDate: new Date().toLocaleDateString("en-US", {
+          year: "numeric",
+          month: "long",
+          day: "numeric",
         }),
-        termLength: '1 year',
-        ...getTierCommissions(application.requestedManagementTierId)
+        termLength: `${termInMonths} months`,
+        ...contractTerms ?? {}, // adminCommission, marketplaceDiscount, etc.
       };
 
       // Generate PDF using real contract templates
