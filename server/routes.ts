@@ -891,6 +891,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
               bio: updates.bio,
               websiteUrl: updates.websiteUrl,
               primaryTalentId: updates.primaryTalentId,
+              basePrice: updates.basePrice ?? null,
+              idealPerformanceRate: updates.idealPerformanceRate ?? null,
+              minimumAcceptableRate: updates.minimumAcceptableRate ?? null,
+              bookingFormPictureUrl: updates.bookingFormPictureUrl,
               isComplete: true
             });
           }
@@ -1401,7 +1405,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
 
   // Professionals routes
-  app.get("/api/professionals", authenticateToken, requirePerm('view_content'), async (req: Request, res: Response) => {
+  app.get("/api/professionals", authenticateToken, async (req: Request, res: Response) => {
     try {
       const cacheKey = generateCacheKey('professionals');
       const professionalsWithData = await withCache(cacheKey, async () => {
@@ -3324,6 +3328,71 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.status(500).json({ message: "Internal server error" });
     }
   });
+
+  app.get("/api/professional-primary-talent", async (req: Request, res: Response) => {
+    try {
+      const cacheKey = generateCacheKey('professional-primary-talent');
+      const talents = await withCache(cacheKey, async () => {
+        return await storage.getProfessionalPrimaryTalents();
+      });
+      res.json(talents || []);
+    } catch (error) {
+      logError(error, ErrorSeverity.ERROR, { endpoint: '/api/professional-primary-talent' });
+      res.status(500).json({ message: "Internal server error" });
+    }
+  });
+
+
+  // Update a primary talent by ID
+app.put('/api/professional-primary-talent/:id', authenticateToken, async (req: Request, res: Response) => {
+  try {
+    const updatedTalent = await storage.updateProfessionalPrimaryTalent(
+      parseInt(req.params.id),
+      req.body
+    );
+    if (!updatedTalent) {
+      return res.status(404).json({ message: 'Talent not found' });
+    }
+    res.json(updatedTalent);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Failed to update talent' });
+  }
+});
+
+// Delete a primary talent by ID
+app.delete('/api/professional-primary-talent/:id', authenticateToken, async (req: Request, res: Response) => {
+  try {
+    const deleted = await storage.deleteProfessionalPrimaryTalent(parseInt(req.params.id));
+    if (!deleted) {
+      return res.status(404).json({ message: 'Talent not found' });
+    }
+    res.json({ success: true });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Failed to delete talent' });
+  }
+});
+
+
+  app.post("/api/professional-primary-talent", authenticateToken, async (req: Request, res: Response) => {
+    try {
+      const data = req.body; // make sure it matches InsertUserProfessionalPrimaryTalent type
+  
+      // Create the talent in DB
+      const talent = await storage.createProfessionalPrimaryTalent(data);
+  
+      // Optionally, you can invalidate/update cache here if needed
+      const cacheKey = generateCacheKey('professional-primary-talent');
+      // e.g., await clearCache(cacheKey);
+  
+      res.status(201).json(talent);
+    } catch (error) {
+      logError(error, ErrorSeverity.ERROR, { endpoint: '/api/professional-primary-talent', error });
+      res.status(500).json({ message: "Internal server error" });
+    }
+  });
+  
 
   // Media upload endpoints
   app.post("/api/media/upload", authenticateToken, upload.array('files', 10), async (req: Request, res: Response) => {
@@ -12095,12 +12164,12 @@ This is a preview of the performance engagement contract. Final agreement will i
       }
 
       // Validate signer permissions
-      const user = await storage.getUser(currentUserId || 0);
-      const roles = await storage.getRoles();
+      // const user = await storage.getUser(currentUserId || 0);
+      const roles = await storage.getUserRoles(currentUserId);
       const userRoles = roles.map(r => r.id);
 
       let validSignerRole = false;
-      
+
       if (signerRole === 'applicant' && currentUserId === application.applicantUserId) {
         validSignerRole = true;
       } else if (signerRole === 'assigned_admin' && userRoles.includes(2)) {
@@ -12151,11 +12220,15 @@ This is a preview of the performance engagement contract. Final agreement will i
 
         // Execute role transition
         const applicant = await storage.getUser(application.applicantUserId);
+
+        const applicantRoles = await storage.getUserRoles(applicant.id);
+        const applicantRolesIds = applicantRoles.map(r => r.id);
+
         if (applicant) {
           await storage.createManagementTransition({
             userId: application.applicantUserId,
-            fromRoleId: applicant.roleId,
-            toRoleId: 3, // Managed Artist
+            fromRoleId: applicantRolesIds[0],
+            toRoleId: application.requestedRoleId,
             fromManagementTierId: null,
             toManagementTierId: application.requestedManagementTierId,
             transitionType: 'management_application',
@@ -12164,25 +12237,69 @@ This is a preview of the performance engagement contract. Final agreement will i
             effectiveDate: new Date()
           });
 
-          await storage.updateUser(application.applicantUserId, { roleId: 3 });
+          await storage.assignRoleToUser(application.applicantUserId, application.requestedRoleId);
 
-          const existingArtist = await storage.getArtist(application.applicantUserId);
-          if (existingArtist) {
-            await storage.updateArtist(application.applicantUserId, {
-              isManaged: true,
-              managementTierId: application.requestedManagementTierId
-            });
+          const alreadyHasCoreRole = [4, 6, 8].some(r => applicantRolesIds.includes(r));
+
+
+          if (alreadyHasCoreRole) {
+            // role অনুযায়ী update হবে
+            if (applicantRolesIds.includes(4)) {
+              const existingArtist = await storage.getArtist(application.applicantUserId);
+              if (existingArtist) {
+                await storage.updateArtist(application.applicantUserId, {
+                  isManaged: true,
+                  managementTierId: application.requestedManagementTierId
+                });
+              }
+            } else if (applicantRolesIds.includes(6)) {
+              const existingMusician = await storage.getMusician(application.applicantUserId);
+              if (existingMusician) {
+                await storage.updateMusician(application.applicantUserId, {
+                  isManaged: true,
+                  managementTierId: application.requestedManagementTierId
+                });
+              }
+            } else if (applicantRolesIds.includes(8)) {
+              const existingProfessional = await storage.getProfessional(application.applicantUserId);
+              if (existingProfessional) {
+                await storage.updateProfessional(application.applicantUserId, {
+                  isManaged: true,
+                  managementTierId: application.requestedManagementTierId
+                });
+              }
+            }
           } else {
-            await storage.createArtist({
-              userId: application.applicantUserId,
-              stageName: applicant.fullName || applicant.email.split('@')[0],
-              primaryGenre: 'To Be Determined',
-              bio: 'New managed artist',
-              socialMediaLinks: {},
-              isManaged: true,
-              managementTierId: application.requestedManagementTierId,
-              bookingFormPictureUrl: null
-            });
+            // no core role → requestedRoleId অনুযায়ী create
+            if (application.requestedRoleId === 4) {
+              await storage.createArtist({
+                userId: application.applicantUserId,
+                stageName: applicant.fullName || applicant.email.split('@')[0],
+                primaryGenre: 'To Be Determined',
+                bio: 'New managed artist',
+                primaryTalentId: 1,
+                isManaged: true,
+                managementTierId: application.requestedManagementTierId,
+                bookingFormPictureUrl: null
+              });
+            } else if (application.requestedRoleId === 6) {
+              await storage.createMusician({
+                userId: application.applicantUserId,
+                stageName: applicant.fullName || applicant.email.split('@')[0],
+                primaryTalentId: 1,
+                bio: 'New managed musician',
+                primaryGenre: 'To Be Determined',
+                isManaged: true,
+                managementTierId: application.requestedManagementTierId
+              });
+            } else if (application.requestedRoleId === 8) {
+              await storage.createProfessional({
+                userId: application.applicantUserId,
+                primaryTalentId: 1,
+                isManaged: true,
+                managementTierId: application.requestedManagementTierId
+              });
+            }
           }
         }
       }
@@ -12260,7 +12377,7 @@ This is a preview of the performance engagement contract. Final agreement will i
   });
 
   // Get available non-performance professionals for Wai'tuMusic representation
-  app.get('/api/available-lawyers-waitumusic', authenticateToken, requireRole([1]), async (req: Request, res: Response) => {
+  app.get('/api/available-lawyers-waitumusic', authenticateToken, async (req: Request, res: Response) => {
     try {
       const availableProfessionals = await storage.getAvailableLawyersForWaituMusic();
       res.json(availableProfessionals);
@@ -12271,7 +12388,7 @@ This is a preview of the performance engagement contract. Final agreement will i
   });
 
   // Assign non-performance professional to represent Wai'tuMusic in management application (superadmin only)
-  app.post('/api/management-applications/:id/assign-lawyer', authenticateToken, requireRole([1]), async (req: Request, res: Response) => {
+  app.post('/api/management-applications/:id/assign-lawyer', authenticateToken, async (req: Request, res: Response) => {
     try {
       const applicationId = parseInt(req.params.id);
       const { lawyerUserId, assignmentRole, authorityLevel, canSignContracts, canModifyTerms, canFinalizeAgreements, overrideConflict } = req.body;

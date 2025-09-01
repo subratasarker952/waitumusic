@@ -56,7 +56,7 @@ export const userProfessionalPrimaryTalents = pgTable("user_professional_primary
   id: serial("id").primaryKey(),
   name: text("name").notNull().unique(),
   creativeTalentName: text("creative_talent_name"), // Optional fancy display name
-  userTypeId: integer("user_type_id").references(() => roles.id).notNull(), // Links to professional roles (7=managed_professional, 8=professional)
+  userTypeId: integer("user_type_id").references(() => rolesManagement.id).notNull(), // Links to professional roles (7=managed_professional, 8=professional)
   description: text("description"),
   isDefault: boolean("is_default").default(false), // for default selections
   sortOrder: integer("sort_order").default(0),

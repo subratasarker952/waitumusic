@@ -81,12 +81,17 @@ export default function ProfileEditForm({
   // Fetch available instruments/skills for all talent users (artists, musicians, professionals)
   const { data: availableInstruments = [] } = useQuery({
     queryKey: ["/api/instruments"],
-    enabled: isArtist || isMusicianProfile || isProfessional,
+    enabled: isArtist || isMusicianProfile,
   });
 
 
+  // Fetch available professional primary talent (professionals)
+  const { data: professionalTalents = [] } = useQuery({
+    queryKey: ["/api/professional-primary-talent"],
+    enabled: isProfessional,
+  });
 
-  
+
   useEffect(() => {
     if (user) {
       // Basic user info
@@ -99,7 +104,7 @@ export default function ProfileEditForm({
         profilePictureUrl: user.avatarUrl || "",
         profileBannerUrl: user.coverImageUrl || "",
       }));
-  
+
       // Multi-role support
       if (user.roleData && user.roleData.length > 0) {
         const mergedRoleData = user.roleData.reduce((acc, roleEntry) => {
@@ -115,29 +120,27 @@ export default function ProfileEditForm({
             epkUrl: rd.epkUrl ?? acc.epkUrl ?? "",
             bookingFormPictureUrl: rd.bookingFormPictureUrl ?? acc.bookingFormPictureUrl ?? "",
             websiteUrl: rd.websiteUrl ?? acc.websiteUrl ?? "",
-            primaryTalentId: rd.primaryTalentId ?? acc.primaryTalentId ?? 1, 
+            primaryTalentId: rd.primaryTalentId ?? acc.primaryTalentId ?? 1,
           };
         }, {});
-  
+
         setFormData((prev) => ({
           ...prev,
           ...mergedRoleData
         }));
-  
+
         setHasProfile(true);
       } else {
         setHasProfile(false);
       }
     }
   }, [user]);
-  
+
   const updateProfileMutation = useMutation({
     mutationFn: async (data: any) => {
       // Validate required fields
 
-      console.log(data)
-    
-       const roleDataPayload: any = {
+      const roleDataPayload: any = {
         fullName: data.fullName,
         phoneNumber: data.phoneNumber,
         privacySetting: data.privacySetting,
@@ -156,7 +159,7 @@ export default function ProfileEditForm({
         epkUrl: data.epkUrl,
         bookingFormPictureUrl: data.bookingFormPictureUrl,
         websiteUrl: data.websiteUrl,
-        primaryTalentId: data.primaryTalentId ,
+        primaryTalentId: data.primaryTalentId,
       };
 
       await apiRequest(`/api/user/profile`, {
@@ -297,7 +300,7 @@ export default function ProfileEditForm({
           </div>
 
           {/* Profile Picture Upload - Available to all non-fan users */}
-          {(isArtist || isMusicianProfile || isProfessional )&& (
+          {(isArtist || isMusicianProfile || isProfessional) && (
             <div className="space-y-2">
               <Label htmlFor="profilePictureUrl">Profile Picture</Label>
               <div className="flex gap-2">
@@ -365,7 +368,7 @@ export default function ProfileEditForm({
           )}
 
           {/* Profile Banner Upload - Available to managed users or users with active subscription */}
-          {( isArtist || isMusicianProfile || isProfessional ) && (isManaged || hasActiveSubscription) && (
+          {(isArtist || isMusicianProfile || isProfessional) && (isManaged || hasActiveSubscription) && (
             <div className="space-y-2">
               <Label htmlFor="profileBannerUrl">Profile Banner</Label>
               <div className="flex gap-2">
@@ -459,7 +462,7 @@ export default function ProfileEditForm({
           </div>
 
           {/* Bio */}
-          {(isArtist ||isMusicianProfile|| isProfessional) && (
+          {(isArtist || isMusicianProfile) && (
             <div className="space-y-2">
               <Label htmlFor="bio">Bio</Label>
               <Textarea
@@ -473,7 +476,7 @@ export default function ProfileEditForm({
           )}
 
           {/* Primary Talent Selection for Artists, Musicians and Professionals */}
-          {(isArtist || isMusicianProfile || isProfessional) && (
+          {(isArtist || isMusicianProfile) && (
             <div className="space-y-2">
               <Label htmlFor="primaryTalent">
                 <Music className="h-4 w-4 inline mr-1" />
@@ -518,20 +521,56 @@ export default function ProfileEditForm({
             </div>
           )}
 
+          {/* Primary Talent Selection for Artists, Musicians and Professionals */}
+          {(isProfessional) && (
+            <div className="space-y-2">
+              <Label htmlFor="primaryTalent">
+                <Music className="h-4 w-4 inline mr-1" />
+                Primary Talent/Skill
+              </Label>
+              <Select
+                value={String(formData.primaryTalentId || "")}
+                onValueChange={(value) =>
+                  handleInputChange(
+                    "primaryTalentId",
+                    value ? parseInt(value) : null
+                  )
+                }
+              >
+                <SelectTrigger id="primaryTalent">
+                  <SelectValue placeholder="Select your primary talent or skill" />
+                </SelectTrigger>
+                <SelectContent>
+                  {/* Sort instruments to show vocals first for artists */}
+                  {(professionalTalents as any[])
+                    .map((talent: any) => (
+                      <SelectItem
+                        key={talent.id}
+                        value={String(talent.id)}
+                      >
+                        {talent.name}
+                      </SelectItem>
+                    ))}
+                </SelectContent>
+              </Select>
+
+            </div>
+          )}
+
+          {(isArtist || isMusicianProfile) &&<div className="space-y-2">
+            <Label htmlFor="primaryGenre">Primary Genre</Label>
+            <Input
+              id="primaryGenre"
+              value={formData.primaryGenre}
+              onChange={(e) =>
+                handleInputChange("primaryGenre", e.target.value)
+              }
+              placeholder="e.g., Jazz, Rock, Pop"
+            />
+          </div>}
           {/* Artist-specific fields */}
-          {isArtist && (
+          {(isArtist || isMusicianProfile || isProfessional) && (
             <>
-              <div className="space-y-2">
-                <Label htmlFor="primaryGenre">Primary Genre</Label>
-                <Input
-                  id="primaryGenre"
-                  value={formData.primaryGenre}
-                  onChange={(e) =>
-                    handleInputChange("primaryGenre", e.target.value)
-                  }
-                  placeholder="e.g., Jazz, Rock, Pop"
-                />
-              </div>
 
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div className="space-y-2">

@@ -48,7 +48,7 @@ export default function ManagementApplicationWalkthrough() {
   const steps = [
     { id: 1, title: "Application Data", status: "pending", icon: FileText },
     { id: 2, title: "Admin Review", status: "pending", icon: Users },
-    // { id: 3, title: "Professional Assignment", status: "pending", icon: Scale },
+    { id: 3, title: "Professional Assignment", status: "pending", icon: Scale },
     { id: 3, title: "Contract Generation", status: "pending", icon: FileText },
     { id: 4, title: "Multi-Party Signing", status: "pending", icon: UserCheck },
     { id: 5, title: "Role Transition", status: "pending", icon: Crown }
@@ -57,6 +57,7 @@ export default function ManagementApplicationWalkthrough() {
   const [stepStatuses, setStepStatuses] = useState(
     steps.reduce((acc, step) => ({ ...acc, [step.id]: "pending" }), {})
   );
+
 
   // Step 1: Create Application
   const startReview = async () => {
@@ -83,30 +84,6 @@ export default function ManagementApplicationWalkthrough() {
   };
 
   // Step 2: Admin Review
-  // const reviewApplication = async () => {
-  //   if (!applicationId) return;
-
-  //   try {
-  //     await apiRequest('POST', `/api/management-applications/${applicationId}/review`, {
-  //       reviewStatus: 'approved',
-  //       reviewComments: 'Application demonstrates strong potential for Full Management tier. Applicant shows excellent growth metrics and professional presentation.'
-  //     });
-
-  //     setStepStatuses(prev => ({ ...prev, 2: "completed" }));
-  //     setCurrentStep(3);
-
-  //     toast({
-  //       title: "Application Approved",
-  //       description: "Application reviewed and approved by superadmin",
-  //     });
-  //   } catch (error) {
-  //     toast({
-  //       title: "Review Failed",
-  //       description: "Failed to review application",
-  //       variant: "destructive",
-  //     });
-  //   }
-  // };
   const reviewApplication = async (status: "approved" | "rejected") => {
     if (!applicationId) return;
 
@@ -140,84 +117,128 @@ export default function ManagementApplicationWalkthrough() {
   };
 
 
-  //// Step 3: Assign Professional
-  // const assignLawyer = async () => {
-  //   if (!applicationId) return;
+  // ✅ helper function
+  function getAssignmentPayload(professional: any) {
+    switch (professional.specialty?.toLowerCase()) {
+      case "legal services":
+      case "legal counsel":
+        return {
+          lawyerUserId: professional.id,
+          assignmentRole: "waitumusic_representative",
+          authorityLevel: "full_authority",
+          canSignContracts: true,
+          canModifyTerms: true,
+          canFinalizeAgreements: true,
+        };
 
-  //   try {
-  //     // Get available non-performance professionals for Wai'tuMusic representation
-  //     const response = await apiRequest('GET', '/api/available-lawyers-waitumusic');
-  //     const availableProfessionals = await response.json();
+      case "business consulting":
+      case "strategic planning":
+        return {
+          lawyerUserId: professional.id,
+          assignmentRole: "business_consultant",
+          authorityLevel: "limited_authority",
+          canSignContracts: false,
+          canModifyTerms: true,
+          canFinalizeAgreements: false,
+        };
 
-  //     if (availableProfessionals.length === 0) {
-  //       toast({
-  //         title: "No Professionals Available",
-  //         description: "No non-performance professionals available to represent Wai'tuMusic",
-  //         variant: "destructive",
-  //       });
-  //       return;
-  //     }
+      case "financial advisory":
+        return {
+          lawyerUserId: professional.id,
+          assignmentRole: "financial_advisor",
+          authorityLevel: "limited_authority",
+          canSignContracts: false,
+          canModifyTerms: false,
+          canFinalizeAgreements: false,
+        };
 
-  //     // Find the first professional without conflicts
-  //     const clearProfessional = availableProfessionals.find((prof: any) => prof.conflictStatus === 'clear');
+      default:
+        return {
+          lawyerUserId: professional.id,
+          assignmentRole: "general_support",
+          authorityLevel: "limited_authority",
+          canSignContracts: false,
+          canModifyTerms: false,
+          canFinalizeAgreements: false,
+        };
+    }
+  }
 
-  //     if (!clearProfessional) {
-  //       toast({
-  //         title: "Conflict Alert",
-  //         description: "All professionals have potential conflicts. Override would be required.",
-  //         variant: "destructive",
-  //       });
-  //       return;
-  //     }
+  // Step 3: Assign Professional
+  const assignLawyer = async () => {
+    if (!applicationId) return;
 
-  //     await apiRequest('POST', `/api/management-applications/${applicationId}/assign-lawyer`, {
-  //       lawyerUserId: clearProfessional.id,
-  //       assignmentRole: 'waitumusic_representative',
-  //       authorityLevel: 'full_authority',
-  //       canSignContracts: true,
-  //       canModifyTerms: true,
-  //       canFinalizeAgreements: true
-  //     });
+    try {
+      const response = await apiRequest("/api/available-lawyers-waitumusic", { method: "GET" });
+      const availableProfessionals = await response.json();
 
-  //     setStepStatuses(prev => ({ ...prev, 3: "completed" }));
-  //     setCurrentStep(4);
+      if (availableProfessionals.length === 0) {
+        toast({
+          title: "No Professionals Available",
+          description: "No non-performance professionals available to represent Wai'tuMusic",
+          variant: "destructive",
+        });
+        return;
+      }
 
-  //     toast({
-  //       title: "Professional Assigned",
-  //       description: `${clearProfessional.fullName} (${clearProfessional.specialty}) assigned to represent Wai'tuMusic (no conflicts)`,
-  //     });
-  //   } catch (error: any) {
-  //     const errorData = await error.response?.json();
+      const clearProfessional = availableProfessionals.find((prof: any) => prof.conflictStatus === "clear");
 
-  //     if (errorData?.requiresOverride) {
-  //       toast({
-  //         title: "Conflict Detected",
-  //         description: "Assignment requires superadmin conflict override",
-  //         variant: "destructive",
-  //       });
-  //     } else {
-  //       toast({
-  //         title: "Assignment Failed",
-  //         description: "Failed to assign professional",
-  //         variant: "destructive",
-  //       });
-  //     }
-  //   }
-  // };
+      if (!clearProfessional) {
+        toast({
+          title: "Conflict Alert",
+          description: "All professionals have potential conflicts. Override would be required.",
+          variant: "destructive",
+        });
+        return;
+      }
+
+      // ✅ build payload dynamically
+      const payload = getAssignmentPayload(clearProfessional);
+
+      await apiRequest(`/api/management-applications/${applicationId}/assign-lawyer`, {
+        method: "POST",
+        body: payload,
+      });
+
+      setStepStatuses(prev => ({ ...prev, 3: "completed" }));
+      setCurrentStep(4);
+
+      toast({
+        title: "Professional Assigned",
+        description: `${clearProfessional.fullName} (${clearProfessional.specialty}) assigned to represent Wai'tuMusic (no conflicts)`,
+      });
+    } catch (error: any) {
+      let errorData = null;
+      try {
+        errorData = await error.response?.json();
+      } catch { }
+
+      if (errorData?.requiresOverride) {
+        toast({
+          title: "Conflict Detected",
+          description: "Assignment requires superadmin conflict override",
+          variant: "destructive",
+        });
+      } else {
+        toast({
+          title: "Assignment Failed",
+          description: "Failed to assign professional",
+          variant: "destructive",
+        });
+      }
+    }
+  };
 
   // Step 3: Generate Contract
   const generateContract = async () => {
     if (!applicationId) return;
 
     try {
-      const res = await apiRequest(`/api/management-applications/${applicationId}/generate-contract`, {
-        method: 'POST',
-        body: {}
-      });
+      const res = await apiRequest(`/api/management-applications/${applicationId}/generate-contract`, { method: 'POST', body: {} });
 
       console.log(res)
-      setStepStatuses(prev => ({ ...prev, 3: "completed" }));
-      setCurrentStep(4);
+      setStepStatuses(prev => ({ ...prev, 4: "completed" }));
+      setCurrentStep(5);
 
       toast({
         title: "Contract Generated",
@@ -238,27 +259,35 @@ export default function ManagementApplicationWalkthrough() {
 
     try {
       // Simulate applicant signature
-      await apiRequest('POST', `/api/management-applications/${applicationId}/sign`, {
-        signatureData: `applicant-signature-${Date.now()}`,
-        signerRole: 'applicant'
+      await apiRequest(`/api/management-applications/${applicationId}/sign`, {
+        method: 'POST', body: {
+          signatureData: `applicant-signature-${Date.now()}`,
+          signerRole: 'applicant'
+        }
       });
 
       // Simulate assigned admin signature
-      await apiRequest('POST', `/api/management-applications/${applicationId}/sign`, {
-        signatureData: `admin-signature-${Date.now()}`,
-        signerRole: 'assigned_admin'
+      await apiRequest(`/api/management-applications/${applicationId}/sign`, {
+        method: 'POST', body: {
+          signatureData: `admin-signature-${Date.now()}`,
+          signerRole: 'assigned_admin'
+        }
       });
 
       // Simulate lawyer signature (representing Wai'tuMusic)
-      await apiRequest('POST', `/api/management-applications/${applicationId}/sign`, {
-        signatureData: `lawyer-signature-${Date.now()}`,
-        signerRole: 'lawyer'
+      await apiRequest(`/api/management-applications/${applicationId}/sign`, {
+        method: 'POST', body: {
+          signatureData: `lawyer-signature-${Date.now()}`,
+          signerRole: 'lawyer'
+        }
       });
 
       // Final superadmin confirmation
-      await apiRequest('POST', `/api/management-applications/${applicationId}/sign`, {
-        signatureData: `superadmin-signature-${Date.now()}`,
-        signerRole: 'superadmin'
+      await apiRequest(`/api/management-applications/${applicationId}/sign`, {
+        method: 'POST', body: {
+          signatureData: `superadmin-signature-${Date.now()}`,
+          signerRole: 'superadmin'
+        }
       });
 
       setStepStatuses(prev => ({ ...prev, 5: "completed", 6: "completed" }));
@@ -307,7 +336,7 @@ export default function ManagementApplicationWalkthrough() {
           <CardTitle>Workflow Progress</CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-6">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-6">
             {steps.map((step, index) => {
               const Icon = step.icon;
               const isCompleted = stepStatuses[step.id] === "completed";
@@ -344,7 +373,7 @@ export default function ManagementApplicationWalkthrough() {
 
       {/* Step Details */}
       <Tabs value={currentStep.toString()}>
-        <TabsList className="grid w-full grid-cols-5">
+        <TabsList className="grid w-full grid-cols-6">
           {steps.map((step) => (
             <TabsTrigger
               key={step.id}
@@ -469,44 +498,6 @@ export default function ManagementApplicationWalkthrough() {
           </Card>
         </TabsContent>
 
-        {/* <TabsContent value="2" className="space-y-4">
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Users className="w-5 h-5" />
-                Step 2: Admin Review
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="bg-green-50 p-4 rounded-lg">
-                <h4 className="font-medium mb-2">What happens in this step:</h4>
-                <ul className="space-y-1 text-sm text-muted-foreground">
-                  <li>• Assigned admin or superadmin reviews application details</li>
-                  <li>• Business case and revenue projections are evaluated</li>
-                  <li>• Decision made to approve, reject, or request changes</li>
-                  <li>• Review comments and reasoning documented</li>
-                </ul>
-              </div>
-
-              {applicationData && (
-                <div className="border p-4 rounded-lg">
-                  <h4 className="font-medium mb-2">Application Details:</h4>
-                  <p className="text-sm text-muted-foreground mb-2">
-                    <strong>Business:</strong> {applicationData.businessDescription}
-                  </p>
-                  <div className="text-sm text-muted-foreground">
-                    <strong>Status:</strong> <Badge variant="secondary">Pending Review</Badge>
-                  </div>
-                </div>
-              )}
-
-              <Button className='w-full' onClick={reviewApplication} disabled={stepStatuses[2] === "completed" || !applicationId}>
-                {stepStatuses[2] === "completed" ? "Application Approved" : "Approve Application"}
-              </Button>
-            </CardContent>
-          </Card>
-        </TabsContent> */}
-
         <TabsContent value="2" className="space-y-4">
           <Card>
             <CardHeader>
@@ -517,7 +508,7 @@ export default function ManagementApplicationWalkthrough() {
             </CardHeader>
             <CardContent className="space-y-4">
               <div className='space-y-6'>
-                <div>
+                <div className='space-y-3'>
                   <Label>Review Comments</Label>
                   <Textarea
                     placeholder="Enter review comments..."
@@ -526,7 +517,7 @@ export default function ManagementApplicationWalkthrough() {
                   />
                 </div>
 
-                <div>
+                <div className='space-y-3'>
                   <Label>Term (months)</Label>
                   <Input
                     type="number"
@@ -537,7 +528,7 @@ export default function ManagementApplicationWalkthrough() {
                   />
                 </div>
 
-                <div>
+                <div className='space-y-3'>
                   <Label>Notes (optional)</Label>
                   <Textarea
                     placeholder="Notes (optional)"
@@ -573,8 +564,7 @@ export default function ManagementApplicationWalkthrough() {
           </Card>
         </TabsContent>
 
-
-        {/* <TabsContent value="3" className="space-y-4">
+        <TabsContent value="3" className="space-y-4">
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
@@ -622,14 +612,14 @@ export default function ManagementApplicationWalkthrough() {
               </Button>
             </CardContent>
           </Card>
-        </TabsContent> */}
+        </TabsContent>
 
-        <TabsContent value="3" className="space-y-4">
+        <TabsContent value="4" className="space-y-4">
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <FileText className="w-5 h-5" />
-                Step 3: Contract Generation
+                Step 4: Contract Generation
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
@@ -652,19 +642,19 @@ export default function ManagementApplicationWalkthrough() {
               </div> : <LoadingSpinner />}
 
 
-              <Button className='w-full' onClick={() => generateContract()} disabled={stepStatuses[3] === "completed" || !applicationId}>
-                {stepStatuses[3] === "completed" ? "Contract Generated" : "Generate Contract"}
+              <Button className='w-full' onClick={() => generateContract()} disabled={stepStatuses[4] === "completed" || !applicationId}>
+                {stepStatuses[4] === "completed" ? "Contract Generated" : "Generate Contract"}
               </Button>
             </CardContent>
           </Card>
         </TabsContent>
 
-        <TabsContent value="4" className="space-y-4">
+        <TabsContent value="5" className="space-y-4">
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <UserCheck className="w-5 h-5" />
-                Step 4: Multi-Party Signing
+                Step 5: Multi-Party Signing
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
@@ -711,14 +701,14 @@ export default function ManagementApplicationWalkthrough() {
                 </div>
               </div>
 
-              <Button className='w-full' onClick={signContract} disabled={stepStatuses[4] === "completed" || !applicationId}>
-                {stepStatuses[4] === "completed" ? "Contract Signed" : "Execute Signing Process"}
+              <Button className='w-full' onClick={signContract} disabled={stepStatuses[5] === "completed" || !applicationId}>
+                {stepStatuses[5] === "completed" ? "Contract Signed" : "Execute Signing Process"}
               </Button>
             </CardContent>
           </Card>
         </TabsContent>
 
-        <TabsContent value="5" className="space-y-4">
+        <TabsContent value="6" className="space-y-4">
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">

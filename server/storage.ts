@@ -2274,7 +2274,7 @@ export class DatabaseStorage implements IStorage {
       return {
         id: role.id,
         name: role.name,
-        canApply: role.canApply, 
+        canApply: role.canApply,
         opphubMarketplaceDiscount: role.opphubMarketplaceDiscount,
         servicesDiscount: role.servicesDiscount,
         adminCommission: role.adminCommission,
@@ -5062,59 +5062,120 @@ export class DatabaseStorage implements IStorage {
   }
 
   // Get available professionals who can represent Wai'tuMusic without conflict
+
+  // async getAvailableLawyersForWaituMusic(): Promise<any[]> {
+  //   // Get all professionals (both managed and independent) for comprehensive analysis
+  //   const allProfessionals = await db
+  //     .select()
+  //     .from(users)
+  //     .where(or(eq(users.roleId, 7), eq(users.roleId, 8))); // Managed and Independent professionals
+
+  //   const availableProfessionals = [];
+
+  //   for (const professional of allProfessionals) {
+  //     // Get professional record to check if they're non-performance related
+  //     const professionalRecord = await this.getProfessional(professional.id);
+
+  //     if (!professionalRecord) continue;
+
+  //     // Filter for non-performance related professionals (legal, consulting, administrative services)
+  //     const nonPerformanceSpecialties = [
+  //       'Legal Services', 'Business Consulting', 'Marketing Consulting',
+  //       'Financial Advisory', 'Contract Negotiation', 'Rights Management',
+  //       'Legal Counsel', 'Business Development', 'Strategic Planning'
+  //     ];
+
+  //     const isNonPerformance = nonPerformanceSpecialties.some(specialty =>
+  //       professionalRecord.specialty?.toLowerCase().includes(specialty.toLowerCase())
+  //     ) || professionalRecord.specialty?.toLowerCase().includes('consulting') ||
+  //       professionalRecord.specialty?.toLowerCase().includes('legal') ||
+  //       professionalRecord.specialty?.toLowerCase().includes('advisory');
+
+  //     if (!isNonPerformance) continue; // Skip performance-related professionals
+
+  //     const conflictCheck = await this.checkLegalConflictOfInterest(professional.id);
+
+  //     if (!conflictCheck.hasConflict) {
+  //       availableProfessionals.push({
+  //         ...professional,
+  //         specialty: professionalRecord.specialty || 'Professional Services',
+  //         hourlyRate: professionalRecord.hourlyRate || 0,
+  //         isAvailable: true,
+  //         conflictStatus: 'clear',
+  //         serviceType: 'non_performance'
+  //       });
+  //     } else {
+  //       // Include but mark as having conflicts (for superadmin override consideration)
+  //       availableProfessionals.push({
+  //         ...professional,
+  //         specialty: professionalRecord.specialty || 'Professional Services',
+  //         hourlyRate: professionalRecord.hourlyRate || 0,
+  //         isAvailable: false,
+  //         conflictStatus: 'conflict',
+  //         conflictDetails: conflictCheck.conflictDetails,
+  //         serviceType: 'non_performance'
+  //       });
+  //     }
+  //   }
+
+  //   return availableProfessionals;
+  // }
+
   async getAvailableLawyersForWaituMusic(): Promise<any[]> {
-    // Get all professionals (both managed and independent) for comprehensive analysis
+    const professionalRoleIds = [7, 8]; // managed & independent professionals
+
     const allProfessionals = await db
-      .select()
+      .select({
+        id: users.id,
+        fullName: users.fullName,
+        email: users.email,
+        roleId: userRoles.roleId,
+        isManaged: professionals.isManaged,
+        managementTierId: professionals.managementTierId,
+        hourlyRate: professionals.idealServiceRate,
+        talentName: userProfessionalPrimaryTalents.name, // মূল specialty
+      })
       .from(users)
-      .where(or(eq(users.roleId, 7), eq(users.roleId, 8))); // Managed and Independent professionals
+      .innerJoin(userRoles, eq(users.id, userRoles.userId))
+      .innerJoin(professionals, eq(users.id, professionals.userId))
+      .innerJoin(
+        userProfessionalPrimaryTalents,
+        eq(professionals.primaryTalentId, userProfessionalPrimaryTalents.id)
+      )
+      .where(inArray(userRoles.roleId, professionalRoleIds));
+
+    const nonPerformanceSpecialties = [
+      "Legal Services", "Business Consulting", "Marketing Consulting",
+      "Financial Advisory", "Contract Negotiation", "Rights Management",
+      "Legal Counsel", "Business Development", "Strategic Planning"
+    ];
 
     const availableProfessionals = [];
-
     for (const professional of allProfessionals) {
-      // Get professional record to check if they're non-performance related
-      const professionalRecord = await this.getProfessional(professional.id);
+      const specialty = professional.talentName ?? "Professional Services";
 
-      if (!professionalRecord) continue;
+      // Check non-performance
+      const isNonPerformance =
+        nonPerformanceSpecialties.some(s =>
+          specialty.toLowerCase().includes(s.toLowerCase())
+        ) ||
+        specialty.toLowerCase().includes("consulting") ||
+        specialty.toLowerCase().includes("legal") ||
+        specialty.toLowerCase().includes("advisory");
 
-      // Filter for non-performance related professionals (legal, consulting, administrative services)
-      const nonPerformanceSpecialties = [
-        'Legal Services', 'Business Consulting', 'Marketing Consulting',
-        'Financial Advisory', 'Contract Negotiation', 'Rights Management',
-        'Legal Counsel', 'Business Development', 'Strategic Planning'
-      ];
+      if (!isNonPerformance) continue;
 
-      const isNonPerformance = nonPerformanceSpecialties.some(specialty =>
-        professionalRecord.specialty?.toLowerCase().includes(specialty.toLowerCase())
-      ) || professionalRecord.specialty?.toLowerCase().includes('consulting') ||
-        professionalRecord.specialty?.toLowerCase().includes('legal') ||
-        professionalRecord.specialty?.toLowerCase().includes('advisory');
-
-      if (!isNonPerformance) continue; // Skip performance-related professionals
-
+      // Conflict check
       const conflictCheck = await this.checkLegalConflictOfInterest(professional.id);
 
-      if (!conflictCheck.hasConflict) {
-        availableProfessionals.push({
-          ...professional,
-          specialty: professionalRecord.specialty || 'Professional Services',
-          hourlyRate: professionalRecord.hourlyRate || 0,
-          isAvailable: true,
-          conflictStatus: 'clear',
-          serviceType: 'non_performance'
-        });
-      } else {
-        // Include but mark as having conflicts (for superadmin override consideration)
-        availableProfessionals.push({
-          ...professional,
-          specialty: professionalRecord.specialty || 'Professional Services',
-          hourlyRate: professionalRecord.hourlyRate || 0,
-          isAvailable: false,
-          conflictStatus: 'conflict',
-          conflictDetails: conflictCheck.conflictDetails,
-          serviceType: 'non_performance'
-        });
-      }
+      availableProfessionals.push({
+        ...professional,
+        specialty,
+        isAvailable: !conflictCheck.hasConflict,
+        conflictStatus: conflictCheck.hasConflict ? "conflict" : "clear",
+        conflictDetails: conflictCheck.conflictDetails ?? null,
+        serviceType: "non_performance"
+      });
     }
 
     return availableProfessionals;
@@ -8005,9 +8066,33 @@ export class DatabaseStorage implements IStorage {
     return await db.select().from(userProfessionalPrimaryTalents).orderBy(userProfessionalPrimaryTalents.sortOrder, userProfessionalPrimaryTalents.name);
   }
 
+  // 
   async createProfessionalPrimaryTalent(data: InsertUserProfessionalPrimaryTalent): Promise<UserProfessionalPrimaryTalent> {
     const [primaryTalent] = await db.insert(userProfessionalPrimaryTalents).values(data).returning();
     return primaryTalent;
+  }
+
+  // Update a professional primary talent by ID
+  async updateProfessionalPrimaryTalent(
+    id: number,
+    data: Partial<InsertUserProfessionalPrimaryTalent>
+  ): Promise<UserProfessionalPrimaryTalent | null> {
+    const [updatedTalent] = await db
+      .update(userProfessionalPrimaryTalents)
+      .set(data)
+      .where(eq(userProfessionalPrimaryTalents.id, id))
+      .returning();
+
+    return updatedTalent || null;
+  }
+
+  // Delete a professional primary talent by ID
+  async deleteProfessionalPrimaryTalent(id: number): Promise<boolean> {
+    const result = await db
+      .delete(userProfessionalPrimaryTalents)
+      .where(eq(userProfessionalPrimaryTalents.id, id));
+
+    return result > 0; // true if deleted, false if not found
   }
 
   async getPrimaryTalentById(id: number, userType: 'artist' | 'musician' | 'professional'): Promise<{ id: number, name: string, player_name: string } | undefined> {
