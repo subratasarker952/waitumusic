@@ -7334,7 +7334,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.post('/api/admin-assignments', authenticateToken, requireRole([1]), async (req: Request, res: Response) => {
+  app.post('/api/admin-assignments', authenticateToken, async (req: Request, res: Response) => {
     try {
       const assignmentData = {
         ...req.body,
@@ -7348,7 +7348,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.delete('/api/admin-assignments/:id', authenticateToken, requireRole([1]), async (req: Request, res: Response) => {
+  app.delete('/api/admin-assignments/:id', authenticateToken, async (req: Request, res: Response) => {
     try {
       const id = parseInt(req.params.id);
       await storage.removeAdminAssignment(id);
@@ -12097,12 +12097,13 @@ This is a preview of the performance engagement contract. Final agreement will i
       // Validate signer permissions
       const user = await storage.getUser(currentUserId || 0);
       const roles = await storage.getRoles();
-      const userRole = roles.find(role => role.id === user?.roleId);
+      const userRoles = roles.map(r => r.id);
 
       let validSignerRole = false;
+      
       if (signerRole === 'applicant' && currentUserId === application.applicantUserId) {
         validSignerRole = true;
-      } else if (signerRole === 'assigned_admin' && user?.roleId === 2) {
+      } else if (signerRole === 'assigned_admin' && userRoles.includes(2)) {
         // Verify admin is assigned to this user
         const adminAssignments = await storage.getAdminAssignments();
         const isAssigned = adminAssignments.some(a =>
@@ -12113,7 +12114,7 @@ This is a preview of the performance engagement contract. Final agreement will i
         // Verify lawyer is assigned to this client for this contract type
         const legalAssignment = await storage.getAssignedLawyer(application.applicantUserId, 'management_contract');
         validSignerRole = legalAssignment?.lawyerUserId === currentUserId;
-      } else if (signerRole === 'superadmin' && user?.roleId === 1) {
+      } else if (signerRole === 'superadmin' && userRoles.includes(1)) {
         validSignerRole = true;
       }
 
