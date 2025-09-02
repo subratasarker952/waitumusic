@@ -888,11 +888,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
           // Professional roles
           else if ([7, 8].includes(role.id)) {
             data = await storage.updateProfessional(userId, {
-              bio: updates.bio,
               websiteUrl: updates.websiteUrl,
               primaryTalentId: updates.primaryTalentId,
               basePrice: updates.basePrice ?? null,
-              idealPerformanceRate: updates.idealPerformanceRate ?? null,
+              idealServiceRate: updates.idealPerformanceRate ?? null,
               minimumAcceptableRate: updates.minimumAcceptableRate ?? null,
               bookingFormPictureUrl: updates.bookingFormPictureUrl,
               isComplete: true
@@ -3344,55 +3343,71 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
 
   // Update a primary talent by ID
-app.put('/api/professional-primary-talent/:id', authenticateToken, async (req: Request, res: Response) => {
-  try {
-    const updatedTalent = await storage.updateProfessionalPrimaryTalent(
-      parseInt(req.params.id),
-      req.body
-    );
-    if (!updatedTalent) {
-      return res.status(404).json({ message: 'Talent not found' });
+  app.put('/api/professional-primary-talent/:id', authenticateToken, async (req: Request, res: Response) => {
+    try {
+      const updatedTalent = await storage.updateProfessionalPrimaryTalent(
+        parseInt(req.params.id),
+        req.body
+      );
+      if (!updatedTalent) {
+        return res.status(404).json({ message: 'Talent not found' });
+      }
+      res.json(updatedTalent);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: 'Failed to update talent' });
     }
-    res.json(updatedTalent);
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: 'Failed to update talent' });
-  }
-});
+  });
 
-// Delete a primary talent by ID
-app.delete('/api/professional-primary-talent/:id', authenticateToken, async (req: Request, res: Response) => {
-  try {
-    const deleted = await storage.deleteProfessionalPrimaryTalent(parseInt(req.params.id));
-    if (!deleted) {
-      return res.status(404).json({ message: 'Talent not found' });
+  // Delete a primary talent by ID
+  app.delete('/api/professional-primary-talent/:id', authenticateToken, async (req: Request, res: Response) => {
+    try {
+      const deleted = await storage.deleteProfessionalPrimaryTalent(parseInt(req.params.id));
+      if (!deleted) {
+        return res.status(404).json({ message: 'Talent not found' });
+      }
+      res.json({ success: true });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: 'Failed to delete talent' });
     }
-    res.json({ success: true });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: 'Failed to delete talent' });
-  }
-});
+  });
 
 
   app.post("/api/professional-primary-talent", authenticateToken, async (req: Request, res: Response) => {
     try {
       const data = req.body; // make sure it matches InsertUserProfessionalPrimaryTalent type
-  
+
       // Create the talent in DB
       const talent = await storage.createProfessionalPrimaryTalent(data);
-  
+
       // Optionally, you can invalidate/update cache here if needed
       const cacheKey = generateCacheKey('professional-primary-talent');
       // e.g., await clearCache(cacheKey);
-  
+
       res.status(201).json(talent);
     } catch (error) {
       logError(error, ErrorSeverity.ERROR, { endpoint: '/api/professional-primary-talent', error });
       res.status(500).json({ message: "Internal server error" });
     }
   });
-  
+
+  // GET DEFAULT PROFESSIONAL
+  app.get("/api/default-professional", authenticateToken, async (req: Request, res: Response) => {
+    try {
+      const professional = await storage.getDefaultProfessional();
+
+      if (!professional) {
+        return res.status(404).json({ message: "No default professional found" });
+      }
+
+      res.json(professional);
+    } catch (error) {
+      logError(error, ErrorSeverity.ERROR, { endpoint: "/api/default-professional" });
+      res.status(500).json({ message: "Internal server error" });
+    }
+  });
+
 
   // Media upload endpoints
   app.post("/api/media/upload", authenticateToken, upload.array('files', 10), async (req: Request, res: Response) => {
@@ -11797,7 +11812,7 @@ This is a preview of the performance engagement contract. Final agreement will i
   // Get management applications (admin/superadmin only)
   app.get('/api/management-applications', authenticateToken, async (req: Request, res: Response) => {
     try {
-      const applications = await storage.getPendingManagementApplications();
+      const applications = await storage.getManagementApplications();
       res.json(applications);
     } catch (error) {
       console.error('Get management applications error:', error);

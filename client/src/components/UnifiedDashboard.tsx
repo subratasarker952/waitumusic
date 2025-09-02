@@ -359,7 +359,7 @@ export default function UnifiedDashboard({ stats, bookings, applications }: Unif
   // Render role-specific dashboard content
   const renderDashboardContent = () => {
     if (isSuperadmin) {
-      return <SuperadminDashboard stats={stats} bookings={bookings} user={user} />;
+      return <SuperadminDashboard stats={stats} bookings={bookings} user={user} applications={applications} />;
     }
 
     // All users including admins now use the unified dashboard system

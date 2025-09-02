@@ -115,7 +115,7 @@ export default function ProfileEditForm({
             bio: rd.bio ?? acc.bio ?? "",
             primaryGenre: rd.primaryGenre ?? acc.primaryGenre ?? "",
             basePrice: rd.basePrice ?? acc.basePrice ?? "",
-            idealPerformanceRate: rd.idealPerformanceRate ?? acc.idealPerformanceRate ?? "",
+            idealPerformanceRate: rd.idealPerformanceRate ?? acc.idealPerformanceRate ?? rd.idealServiceRate ?? acc.idealServiceRate ?? "",
             minimumAcceptableRate: rd.minimumAcceptableRate ?? acc.minimumAcceptableRate ?? "",
             epkUrl: rd.epkUrl ?? acc.epkUrl ?? "",
             bookingFormPictureUrl: rd.bookingFormPictureUrl ?? acc.bookingFormPictureUrl ?? "",
@@ -557,7 +557,7 @@ export default function ProfileEditForm({
             </div>
           )}
 
-          {(isArtist || isMusicianProfile) &&<div className="space-y-2">
+          {(isArtist || isMusicianProfile) && <div className="space-y-2">
             <Label htmlFor="primaryGenre">Primary Genre</Label>
             <Input
               id="primaryGenre"
@@ -617,72 +617,78 @@ export default function ProfileEditForm({
               </div>
 
               {/* EPK Upload/URL */}
-              <div className="space-y-4">
-                <div className="space-y-2">
-                  <Label htmlFor="epkUrl">EPK (Electronic Press Kit)</Label>
-                  <div className="flex gap-2">
-                    <Input
-                      id="epkUrl"
-                      type="url"
-                      value={formData.epkUrl}
-                      onChange={(e) =>
-                        handleInputChange("epkUrl", e.target.value)
-                      }
-                      placeholder="https://your-epk-url.com or upload file below"
-                      className="flex-1"
-                    />
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <span className="text-sm text-muted-foreground">
-                      Or upload EPK file:
-                    </span>
-                    <label className="cursor-pointer">
-                      <input
-                        type="file"
-                        accept=".pdf,.doc,.docx,.txt"
-                        onChange={(e) => {
-                          const file = e.target.files?.[0];
-                          if (file) handleFileUpload(file, "epk");
-                        }}
-                        className="hidden"
+              {
+                isArtist && <div>
+                  <div className="space-y-2">
+                    <Label htmlFor="epkUrl">EPK (Electronic Press Kit)</Label>
+                    <div className="flex gap-2">
+                      <Input
+                        id="epkUrl"
+                        type="url"
+                        value={formData.epkUrl}
+                        onChange={(e) =>
+                          handleInputChange("epkUrl", e.target.value)
+                        }
+                        placeholder="https://your-epk-url.com or upload file below"
+                        className="flex-1"
                       />
-                      <Button
-                        type="button"
-                        variant="outline"
-                        size="sm"
-                        disabled={uploadingFiles.epk}
-                        asChild
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <span className="text-sm text-muted-foreground">
+                        Or upload EPK file:
+                      </span>
+                      <label className="cursor-pointer">
+                        <input
+                          type="file"
+                          accept=".pdf,.doc,.docx,.txt"
+                          onChange={(e) => {
+                            const file = e.target.files?.[0];
+                            if (file) handleFileUpload(file, "epk");
+                          }}
+                          className="hidden"
+                        />
+                        <Button
+                          type="button"
+                          variant="outline"
+                          size="sm"
+                          disabled={uploadingFiles.epk}
+                          asChild
+                        >
+                          <span>
+                            {uploadingFiles.epk ? (
+                              <RefreshCw className="h-4 w-4 mr-1 animate-spin" />
+                            ) : (
+                              <FileText className="h-4 w-4 mr-1" />
+                            )}
+                            {uploadingFiles.epk ? "Uploading..." : "Upload EPK"}
+                          </span>
+                        </Button>
+                      </label>
+                    </div>
+                  </div>
+
+                  {/* Preview uploaded files */}
+                  {formData.epkUrl && (
+                    <div className="text-sm text-muted-foreground">
+                      <span className="font-medium">Current EPK:</span>{" "}
+                      <a
+                        href={formData.epkUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-blue-600 hover:underline"
                       >
-                        <span>
-                          {uploadingFiles.epk ? (
-                            <RefreshCw className="h-4 w-4 mr-1 animate-spin" />
-                          ) : (
-                            <FileText className="h-4 w-4 mr-1" />
-                          )}
-                          {uploadingFiles.epk ? "Uploading..." : "Upload EPK"}
-                        </span>
-                      </Button>
-                    </label>
-                  </div>
+                        {formData.epkUrl.includes("/uploads/")
+                          ? "Uploaded file"
+                          : "External URL"}
+                      </a>
+                    </div>
+                  )}
                 </div>
+              }
 
-                {/* Preview uploaded files */}
-                {formData.epkUrl && (
-                  <div className="text-sm text-muted-foreground">
-                    <span className="font-medium">Current EPK:</span>{" "}
-                    <a
-                      href={formData.epkUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-blue-600 hover:underline"
-                    >
-                      {formData.epkUrl.includes("/uploads/")
-                        ? "Uploaded file"
-                        : "External URL"}
-                    </a>
-                  </div>
-                )}
 
+
+              <div className="space-y-4">
                 {/* Booking Photo Upload/URL */}
                 <div className="space-y-2">
                   <Label htmlFor="bookingFormPictureUrl">

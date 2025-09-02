@@ -272,16 +272,14 @@ function DashboardContent() {
   const { data: allApplications, isLoading: allApplicationsLoading, error: allApplicationsError } = useQuery({
     queryKey: ['/api/management-applications'],
     enabled: !!user && !!isAdminRole,
-    retry: 1,
   });
-
+console.log(allApplications)
   
   
   
   const { data: userApplications, isLoading: userApplicationsLoading, error: userApplicationsError } = useQuery({
     queryKey: [`/api/management-applications/user`],
     enabled: !!user && !isAdminRole,
-    retry: 1,
   });
 
   

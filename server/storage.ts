@@ -4629,6 +4629,12 @@ export class DatabaseStorage implements IStorage {
       .where(eq(managementApplications.status, 'pending'))
       .orderBy(desc(managementApplications.submittedAt));
   }
+  async getManagementApplications(): Promise<ManagementApplication[]> {
+    return await db
+      .select()
+      .from(managementApplications)
+      .orderBy(desc(managementApplications.submittedAt));
+  }
 
   async updateManagementApplication(id: number, updates: Partial<ManagementApplication>): Promise<ManagementApplication | undefined> {
     await db
@@ -8093,6 +8099,17 @@ export class DatabaseStorage implements IStorage {
       .where(eq(userProfessionalPrimaryTalents.id, id));
 
     return result > 0; // true if deleted, false if not found
+  }
+
+
+  async getDefaultProfessional(): Promise<UserProfessionalPrimaryTalent | null> {
+    const [professional] = await db
+      .select()
+      .from(userProfessionalPrimaryTalents)
+      .where(eq(userProfessionalPrimaryTalents.isDefault, true))
+      .limit(1);
+  
+    return professional || null;
   }
 
   async getPrimaryTalentById(id: number, userType: 'artist' | 'musician' | 'professional'): Promise<{ id: number, name: string, player_name: string } | undefined> {
