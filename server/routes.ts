@@ -889,11 +889,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
           else if ([7, 8].includes(role.id)) {
             data = await storage.updateProfessional(userId, {
               websiteUrl: updates.websiteUrl,
-              primaryTalentId: updates.primaryTalentId,
-              basePrice: updates.basePrice ?? null,
-              idealServiceRate: updates.idealPerformanceRate ?? null,
-              minimumAcceptableRate: updates.minimumAcceptableRate ?? null,
-              bookingFormPictureUrl: updates.bookingFormPictureUrl,
+              primaryTalentId: updates.professionalPrimaryTalentId,
+              basePrice: updates.professionalBasePrice ?? null,
+              idealServiceRate: updates.professionalIdealPerformanceRate ?? null,
+              minimumAcceptableRate: updates.professionalMinimumAcceptableRate ?? null,
+              bookingFormPictureUrl: updates.professionalBookingFormPictureUrl,
               isComplete: true
             });
           }
@@ -12403,31 +12403,99 @@ This is a preview of the performance engagement contract. Final agreement will i
   });
 
   // Assign non-performance professional to represent Wai'tuMusic in management application (superadmin only)
+  // app.post('/api/management-applications/:id/assign-lawyer', authenticateToken, async (req: Request, res: Response) => {
+  //   try {
+  //     const applicationId = parseInt(req.params.id);
+  //     const { lawyerUserId, assignmentRole, authorityLevel, canSignContracts, canModifyTerms, canFinalizeAgreements, overrideConflict } = req.body;
+  //     const currentUserId = req.user?.userId;
+
+  //     if (!lawyerUserId || !assignmentRole || !authorityLevel) {
+  //       return res.status(400).json({ message: 'Missing required fields' });
+  //     }
+
+  //     // Verify application exists
+  //     const application = await storage.getManagementApplication(applicationId);
+  //     if (!application) {
+  //       return res.status(404).json({ message: 'Management application not found' });
+  //     }
+
+  //     // Verify user is a professional
+  //     const professional = await storage.getProfessional(lawyerUserId);
+  //     if (!professional) {
+  //       return res.status(400).json({ message: 'Selected user must be a registered professional' });
+  //     }
+
+  //     // Check for conflict of interest
+  //     const conflictCheck = await storage.checkLegalConflictOfInterest(lawyerUserId);
+
+  //     if (conflictCheck.hasConflict && !overrideConflict) {
+  //       return res.status(409).json({
+  //         message: 'Conflict of interest detected',
+  //         conflictDetails: conflictCheck.conflictDetails,
+  //         requiresOverride: true
+  //       });
+  //     }
+
+  //     // If conflict override is requested, log the decision
+  //     if (conflictCheck.hasConflict && overrideConflict) {
+  //       console.warn(`CONFLICT OVERRIDE: Superadmin ${currentUserId} assigned professional ${lawyerUserId} despite conflicts:`, conflictCheck.conflictDetails);
+  //     }
+
+  //     // Create assignment
+  //     const assignment = await storage.createApplicationLegalAssignment({
+  //       applicationId,
+  //       lawyerUserId,
+  //       assignmentRole,
+  //       authorityLevel,
+  //       canSignContracts: !!canSignContracts,
+  //       canModifyTerms: !!canModifyTerms,
+  //       canFinalizeAgreements: !!canFinalizeAgreements,
+  //       assignedByUserId: currentUserId || 0
+  //     });
+
+  //     res.status(201).json({
+  //       assignment,
+  //       conflictOverridden: conflictCheck.hasConflict && overrideConflict,
+  //       conflictDetails: conflictCheck.hasConflict ? conflictCheck.conflictDetails : undefined
+  //     });
+  //   } catch (error) {
+  //     console.error('Assign professional to application error:', error);
+  //     res.status(500).json({ message: 'Failed to assign professional to application' });
+  //   }
+  // });
+
   app.post('/api/management-applications/:id/assign-lawyer', authenticateToken, async (req: Request, res: Response) => {
     try {
       const applicationId = parseInt(req.params.id);
-      const { lawyerUserId, assignmentRole, authorityLevel, canSignContracts, canModifyTerms, canFinalizeAgreements, overrideConflict } = req.body;
+      const DEFAULT_PROFESSIONAL_ID = 9; // <-- তোমার default professional এর ID
+  
+      const {
+        lawyerUserId = DEFAULT_PROFESSIONAL_ID,
+        assignmentRole = "general_support",
+        authorityLevel = "limited_authority",
+        canSignContracts,
+        canModifyTerms,
+        canFinalizeAgreements,
+        overrideConflict
+      } = req.body;
+  
       const currentUserId = req.user?.userId;
-
-      if (!lawyerUserId || !assignmentRole || !authorityLevel) {
-        return res.status(400).json({ message: 'Missing required fields' });
-      }
-
+  
       // Verify application exists
       const application = await storage.getManagementApplication(applicationId);
       if (!application) {
         return res.status(404).json({ message: 'Management application not found' });
       }
-
-      // Verify user is a professional
+  
+      // Verify professional
       const professional = await storage.getProfessional(lawyerUserId);
       if (!professional) {
-        return res.status(400).json({ message: 'Selected user must be a registered professional' });
+        return res.status(400).json({ message: 'Selected (or default) user must be a registered professional' });
       }
-
-      // Check for conflict of interest
+  
+      // Conflict check
       const conflictCheck = await storage.checkLegalConflictOfInterest(lawyerUserId);
-
+  
       if (conflictCheck.hasConflict && !overrideConflict) {
         return res.status(409).json({
           message: 'Conflict of interest detected',
@@ -12435,12 +12503,11 @@ This is a preview of the performance engagement contract. Final agreement will i
           requiresOverride: true
         });
       }
-
-      // If conflict override is requested, log the decision
+  
       if (conflictCheck.hasConflict && overrideConflict) {
         console.warn(`CONFLICT OVERRIDE: Superadmin ${currentUserId} assigned professional ${lawyerUserId} despite conflicts:`, conflictCheck.conflictDetails);
       }
-
+  
       // Create assignment
       const assignment = await storage.createApplicationLegalAssignment({
         applicationId,
@@ -12452,7 +12519,7 @@ This is a preview of the performance engagement contract. Final agreement will i
         canFinalizeAgreements: !!canFinalizeAgreements,
         assignedByUserId: currentUserId || 0
       });
-
+  
       res.status(201).json({
         assignment,
         conflictOverridden: conflictCheck.hasConflict && overrideConflict,
@@ -12463,6 +12530,7 @@ This is a preview of the performance engagement contract. Final agreement will i
       res.status(500).json({ message: 'Failed to assign professional to application' });
     }
   });
+  
 
   // Get lawyers assigned to management application
   app.get('/api/management-applications/:id/lawyers', authenticateToken, requireRole([1, 2]), async (req: Request, res: Response) => {

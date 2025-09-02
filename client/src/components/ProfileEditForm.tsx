@@ -68,6 +68,11 @@ export default function ProfileEditForm({
     profileBannerUrl: user?.coverImageUrl || "",
     privacySetting: user?.privacySetting || "public",
     primaryTalentId: null,
+    professionalPrimaryTalentId: null,
+    professionalBasePrice: "",
+    professionalIdealPerformanceRate: "",
+    professionalMinimumAcceptableRate: "",
+    professionalBookingFormPictureUrl: ""
   });
 
 
@@ -160,6 +165,11 @@ export default function ProfileEditForm({
         bookingFormPictureUrl: data.bookingFormPictureUrl,
         websiteUrl: data.websiteUrl,
         primaryTalentId: data.primaryTalentId,
+        professionalPrimaryTalentId: data.professionalPrimaryTalentId,
+        professionalBasePrice: data.professionalBasePrice,
+        professionalIdealPerformanceRate: data.professionalIdealPerformanceRate,
+        professionalMinimumAcceptableRate: data.professionalMinimumAcceptableRate,
+        professionalBookingFormPictureUrl: data.professionalBookingFormPictureUrl
       };
 
       await apiRequest(`/api/user/profile`, {
@@ -298,6 +308,8 @@ export default function ProfileEditForm({
               />
             </div>
           </div>
+
+
 
           {/* Profile Picture Upload - Available to all non-fan users */}
           {(isArtist || isMusicianProfile || isProfessional) && (
@@ -446,52 +458,155 @@ export default function ProfileEditForm({
                 }
               />
             </div>
-            {(isArtist || isMusicianProfile) && (
-              <div className="space-y-2">
-                <Label htmlFor="stageName">Stage Name</Label>
-                <Input
-                  id="stageName"
-                  value={formData.stageName}
-                  onChange={(e) =>
-                    handleInputChange("stageName", e.target.value)
-                  }
-                  placeholder="Your stage/performance name"
-                />
-              </div>
+
+
+            {(isArtist) && (
+              <>
+                <div className="space-y-2">
+                  <Label htmlFor="artistStageName">Artist Stage Name</Label>
+                  <Input
+                    id="artistStageName"
+                    value={formData.artistStageName}
+                    onChange={(e) =>
+                      handleInputChange("artistStageName", e.target.value)
+                    }
+                    placeholder="Your stage/performance name"
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="artistBio">Artist Bio</Label>
+                  <Textarea
+                    id="artistBio"
+                    value={formData.artistBio}
+                    onChange={(e) => handleInputChange("artistBio", e.target.value)}
+                    placeholder="Tell us about yourself..."
+                    rows={4}
+                  />
+                </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+              </>
+            )}
+
+            {(isMusicianProfile) && (
+              <>
+                <div className="space-y-2">
+                  <Label htmlFor="musicianStageName">Musician Stage Name</Label>
+                  <Input
+                    id="musicianStageName"
+                    value={formData.musicianStageName}
+                    onChange={(e) =>
+                      handleInputChange("musicianStageName", e.target.value)
+                    }
+                    placeholder="Your stage/performance name"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="musicianBio">Musician Bio</Label>
+                  <Textarea
+                    id="musicianBio"
+                    value={formData.musicianBio}
+                    onChange={(e) => handleInputChange("musicianBio", e.target.value)}
+                    placeholder="Tell us about yourself..."
+                    rows={4}
+                  />
+                </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+              </>
             )}
           </div>
 
-          {/* Bio */}
-          {(isArtist || isMusicianProfile) && (
-            <div className="space-y-2">
-              <Label htmlFor="bio">Bio</Label>
-              <Textarea
-                id="bio"
-                value={formData.bio}
-                onChange={(e) => handleInputChange("bio", e.target.value)}
-                placeholder="Tell us about yourself..."
-                rows={4}
-              />
-            </div>
-          )}
+
 
           {/* Primary Talent Selection for Artists, Musicians and Professionals */}
           {(isArtist || isMusicianProfile) && (
             <div className="space-y-2">
-              <Label htmlFor="primaryTalent">
+              <Label htmlFor="artistPrimaryTalent">
                 <Music className="h-4 w-4 inline mr-1" />
-                Primary Talent/Skill
+                Artist Primary Talent/Skill
               </Label>
               <Select
                 value={String(formData.primaryTalentId || "")}
                 onValueChange={(value) =>
                   handleInputChange(
-                    "primaryTalentId",
+                    "artistPrimaryTalentId",
                     value ? parseInt(value) : null
                   )
                 }
               >
-                <SelectTrigger id="primaryTalent">
+                <SelectTrigger id="artistPrimaryTalent">
+                  <SelectValue placeholder="Select your primary talent or skill" />
+                </SelectTrigger>
+                <SelectContent>
+                  {/* Sort instruments to show vocals first for artists */}
+                  {(availableInstruments as any[])
+                    .sort((a, b) => {
+                      // For artists, prioritize vocals mixer_group
+                      if (isArtist && a.mixer_group === "vocals") return -1;
+                      if (isArtist && b.mixer_group === "vocals") return 1;
+                      return a.name.localeCompare(b.name);
+                    })
+                    .map((instrument: any) => (
+                      <SelectItem
+                        key={instrument.id}
+                        value={String(instrument.id)}
+                      >
+                        {instrument.name} - {instrument.category}
+                      </SelectItem>
+                    ))}
+                </SelectContent>
+              </Select>
+              <p className="text-sm text-muted-foreground">
+                {isArtist
+                  ? "Select your primary performance skill (e.g., Lead Vocals, Guitar, etc.)"
+                  : "This helps identify your main expertise for bookings and assignments"}
+              </p>
+            </div>
+          )}
+          {(isMusicianProfile) && (
+            <div className="space-y-2">
+              <Label htmlFor="musicianPrimaryTalent">
+                <Music className="h-4 w-4 inline mr-1" />
+                Musician Primary Talent/Skill
+              </Label>
+              <Select
+                value={String(formData.primaryTalentId || "")}
+                onValueChange={(value) =>
+                  handleInputChange(
+                    "musicianPrimaryTalentId",
+                    value ? parseInt(value) : null
+                  )
+                }
+              >
+                <SelectTrigger id="musicianPrimaryTalent">
                   <SelectValue placeholder="Select your primary talent or skill" />
                 </SelectTrigger>
                 <SelectContent>
@@ -529,10 +644,10 @@ export default function ProfileEditForm({
                 Primary Talent/Skill
               </Label>
               <Select
-                value={String(formData.primaryTalentId || "")}
+                value={String(formData.professionalPrimaryTalentId || "")}
                 onValueChange={(value) =>
                   handleInputChange(
-                    "primaryTalentId",
+                    "professionalPrimaryTalentId",
                     value ? parseInt(value) : null
                   )
                 }
@@ -557,21 +672,32 @@ export default function ProfileEditForm({
             </div>
           )}
 
-          {(isArtist || isMusicianProfile) && <div className="space-y-2">
-            <Label htmlFor="primaryGenre">Primary Genre</Label>
+          {(isArtist) && <div className="space-y-2">
+            <Label htmlFor="artistPrimaryGenre">Artist Primary Genre</Label>
             <Input
-              id="primaryGenre"
+              id="artistPrimaryGenre"
               value={formData.primaryGenre}
               onChange={(e) =>
-                handleInputChange("primaryGenre", e.target.value)
+                handleInputChange("artistPrimaryGenre", e.target.value)
               }
               placeholder="e.g., Jazz, Rock, Pop"
             />
           </div>}
-          {/* Artist-specific fields */}
+
+          {(isMusicianProfile) && <div className="space-y-2">
+            <Label htmlFor="MusicianPrimaryGenre">Musician Primary Genre</Label>
+            <Input
+              id="MusicianPrimaryGenre"
+              value={formData.primaryGenre}
+              onChange={(e) =>
+                handleInputChange("MusicianPrimaryGenre", e.target.value)
+              }
+              placeholder="e.g., Jazz, Rock, Pop"
+            />
+          </div>}
+
           {(isArtist || isMusicianProfile || isProfessional) && (
             <>
-
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div className="space-y-2">
                   <Label htmlFor="basePrice">Base Price ($)</Label>
@@ -688,20 +814,20 @@ export default function ProfileEditForm({
 
 
 
-              <div className="space-y-4">
+              {isArtist && <div className="space-y-4">
                 {/* Booking Photo Upload/URL */}
                 <div className="space-y-2">
-                  <Label htmlFor="bookingFormPictureUrl">
-                    Booking Form Picture
+                  <Label htmlFor="artistBookingFormPictureUrl">
+                    Artist Booking Form Picture
                   </Label>
                   <div className="flex gap-2">
                     <Input
-                      id="bookingFormPictureUrl"
+                      id="artistBookingFormPictureUrl"
                       type="url"
                       value={formData.bookingFormPictureUrl}
                       onChange={(e) =>
                         handleInputChange(
-                          "bookingFormPictureUrl",
+                          "artistBookingFormPictureUrl",
                           e.target.value
                         )
                       }
@@ -760,47 +886,397 @@ export default function ProfileEditForm({
                     </a>
                   </div>
                 )}
-              </div>
+              </div>}
+
+              {isMusicianProfile && <div className="space-y-4">
+                {/* Booking Photo Upload/URL */}
+                <div className="space-y-2">
+                  <Label htmlFor="musicianBookingFormPictureUrl">
+                    Musician Booking Form Picture
+                  </Label>
+                  <div className="flex gap-2">
+                    <Input
+                      id="musicianBookingFormPictureUrl"
+                      type="url"
+                      value={formData.bookingFormPictureUrl}
+                      onChange={(e) =>
+                        handleInputChange(
+                          "musicianBookingFormPictureUrl",
+                          e.target.value
+                        )
+                      }
+                      placeholder="https://your-picture-url.com/image.jpg or upload file below"
+                      className="flex-1"
+                    />
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <span className="text-sm text-muted-foreground">
+                      Or upload image:
+                    </span>
+                    <label className="cursor-pointer">
+                      <input
+                        type="file"
+                        accept="image/*"
+                        onChange={(e) => {
+                          const file = e.target.files?.[0];
+                          if (file) handleFileUpload(file, "bookingPhoto");
+                        }}
+                        className="hidden"
+                      />
+                      <Button
+                        type="button"
+                        variant="outline"
+                        size="sm"
+                        disabled={uploadingFiles.bookingPhoto}
+                        asChild
+                      >
+                        <span>
+                          {uploadingFiles.bookingPhoto ? (
+                            <RefreshCw className="h-4 w-4 mr-1 animate-spin" />
+                          ) : (
+                            <Image className="h-4 w-4 mr-1" />
+                          )}
+                          {uploadingFiles.bookingPhoto
+                            ? "Uploading..."
+                            : "Upload Photo"}
+                        </span>
+                      </Button>
+                    </label>
+                  </div>
+                </div>
+
+                {formData.bookingFormPictureUrl && (
+                  <div className="text-sm text-muted-foreground">
+                    <span className="font-medium">Current booking photo:</span>{" "}
+                    <a
+                      href={formData.bookingFormPictureUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-blue-600 hover:underline"
+                    >
+                      {formData.bookingFormPictureUrl.includes("/uploads/")
+                        ? "Uploaded image"
+                        : "External URL"}
+                    </a>
+                  </div>
+                )}
+              </div>}
+
+
             </>
           )}
 
-          {/* Musician-specific fields */}
-          {isMusicianProfile && !isArtist && (
+
+
+          {(isArtist) && (
+            <>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="artistBasePrice">Artist Base Price ($)</Label>
+                  <Input
+                    id="artistBasePrice"
+                    type="number"
+                    value={formData.basePrice}
+                    onChange={(e) =>
+                      handleInputChange("artistBasePrice", e.target.value)
+                    }
+                    placeholder="0.00"
+                    step="0.01"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="artistIdealPerformanceRate">Ideal Rate ($)</Label>
+                  <Input
+                    id="artistIdealPerformanceRate"
+                    type="number"
+                    value={formData.artistIdealPerformanceRate}
+                    onChange={(e) =>
+                      handleInputChange("artistIdealPerformanceRate", e.target.value)
+                    }
+                    placeholder="0.00"
+                    step="0.01"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="artistMinimumAcceptableRate">
+                    Artist Minimum Rate ($)
+                  </Label>
+                  <Input
+                    id="artistMinimumAcceptableRate"
+                    type="number"
+                    value={formData.artistMinimumAcceptableRate}
+                    onChange={(e) =>
+                      handleInputChange("artistMinimumAcceptableRate", e.target.value)
+                    }
+                    placeholder="0.00"
+                    step="0.01"
+                  />
+                </div>
+              </div>
+
+              {/* EPK Upload/URL */}
+              {
+                isArtist && <div>
+                  <div className="space-y-2">
+                    <Label htmlFor="epkUrl">EPK (Electronic Press Kit)</Label>
+                    <div className="flex gap-2">
+                      <Input
+                        id="epkUrl"
+                        type="url"
+                        value={formData.epkUrl}
+                        onChange={(e) =>
+                          handleInputChange("epkUrl", e.target.value)
+                        }
+                        placeholder="https://your-epk-url.com or upload file below"
+                        className="flex-1"
+                      />
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <span className="text-sm text-muted-foreground">
+                        Or upload EPK file:
+                      </span>
+                      <label className="cursor-pointer">
+                        <input
+                          type="file"
+                          accept=".pdf,.doc,.docx,.txt"
+                          onChange={(e) => {
+                            const file = e.target.files?.[0];
+                            if (file) handleFileUpload(file, "epk");
+                          }}
+                          className="hidden"
+                        />
+                        <Button
+                          type="button"
+                          variant="outline"
+                          size="sm"
+                          disabled={uploadingFiles.epk}
+                          asChild
+                        >
+                          <span>
+                            {uploadingFiles.epk ? (
+                              <RefreshCw className="h-4 w-4 mr-1 animate-spin" />
+                            ) : (
+                              <FileText className="h-4 w-4 mr-1" />
+                            )}
+                            {uploadingFiles.epk ? "Uploading..." : "Upload EPK"}
+                          </span>
+                        </Button>
+                      </label>
+                    </div>
+                  </div>
+
+                  {/* Preview uploaded files */}
+                  {formData.epkUrl && (
+                    <div className="text-sm text-muted-foreground">
+                      <span className="font-medium">Current EPK:</span>{" "}
+                      <a
+                        href={formData.epkUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-blue-600 hover:underline"
+                      >
+                        {formData.epkUrl.includes("/uploads/")
+                          ? "Uploaded file"
+                          : "External URL"}
+                      </a>
+                    </div>
+                  )}
+                </div>
+              }
+
+
+
+              {isArtist && <div className="space-y-4">
+                {/* Booking Photo Upload/URL */}
+                <div className="space-y-2">
+                  <Label htmlFor="artistBookingFormPictureUrl">
+                    Artist Booking Form Picture
+                  </Label>
+                  <div className="flex gap-2">
+                    <Input
+                      id="artistBookingFormPictureUrl"
+                      type="url"
+                      value={formData.bookingFormPictureUrl}
+                      onChange={(e) =>
+                        handleInputChange(
+                          "artistBookingFormPictureUrl",
+                          e.target.value
+                        )
+                      }
+                      placeholder="https://your-picture-url.com/image.jpg or upload file below"
+                      className="flex-1"
+                    />
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <span className="text-sm text-muted-foreground">
+                      Or upload image:
+                    </span>
+                    <label className="cursor-pointer">
+                      <input
+                        type="file"
+                        accept="image/*"
+                        onChange={(e) => {
+                          const file = e.target.files?.[0];
+                          if (file) handleFileUpload(file, "bookingPhoto");
+                        }}
+                        className="hidden"
+                      />
+                      <Button
+                        type="button"
+                        variant="outline"
+                        size="sm"
+                        disabled={uploadingFiles.bookingPhoto}
+                        asChild
+                      >
+                        <span>
+                          {uploadingFiles.bookingPhoto ? (
+                            <RefreshCw className="h-4 w-4 mr-1 animate-spin" />
+                          ) : (
+                            <Image className="h-4 w-4 mr-1" />
+                          )}
+                          {uploadingFiles.bookingPhoto
+                            ? "Uploading..."
+                            : "Upload Photo"}
+                        </span>
+                      </Button>
+                    </label>
+                  </div>
+                </div>
+
+                {formData.bookingFormPictureUrl && (
+                  <div className="text-sm text-muted-foreground">
+                    <span className="font-medium">Current booking photo:</span>{" "}
+                    <a
+                      href={formData.bookingFormPictureUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-blue-600 hover:underline"
+                    >
+                      {formData.bookingFormPictureUrl.includes("/uploads/")
+                        ? "Uploaded image"
+                        : "External URL"}
+                    </a>
+                  </div>
+                )}
+              </div>}
+
+
+
+
+            </>
+          )}
+
+
+          {isMusicianProfile && <div className="space-y-4">
+            {/* Booking Photo Upload/URL */}
+            <div className="space-y-2">
+              <Label htmlFor="musicianBookingFormPictureUrl">
+                Musician Booking Form Picture
+              </Label>
+              <div className="flex gap-2">
+                <Input
+                  id="musicianBookingFormPictureUrl"
+                  type="url"
+                  value={formData.bookingFormPictureUrl}
+                  onChange={(e) =>
+                    handleInputChange(
+                      "musicianBookingFormPictureUrl",
+                      e.target.value
+                    )
+                  }
+                  placeholder="https://your-picture-url.com/image.jpg or upload file below"
+                  className="flex-1"
+                />
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="text-sm text-muted-foreground">
+                  Or upload image:
+                </span>
+                <label className="cursor-pointer">
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={(e) => {
+                      const file = e.target.files?.[0];
+                      if (file) handleFileUpload(file, "bookingPhoto");
+                    }}
+                    className="hidden"
+                  />
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    disabled={uploadingFiles.bookingPhoto}
+                    asChild
+                  >
+                    <span>
+                      {uploadingFiles.bookingPhoto ? (
+                        <RefreshCw className="h-4 w-4 mr-1 animate-spin" />
+                      ) : (
+                        <Image className="h-4 w-4 mr-1" />
+                      )}
+                      {uploadingFiles.bookingPhoto
+                        ? "Uploading..."
+                        : "Upload Photo"}
+                    </span>
+                  </Button>
+                </label>
+              </div>
+            </div>
+
+            {formData.bookingFormPictureUrl && (
+              <div className="text-sm text-muted-foreground">
+                <span className="font-medium">Current booking photo:</span>{" "}
+                <a
+                  href={formData.bookingFormPictureUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-blue-600 hover:underline"
+                >
+                  {formData.bookingFormPictureUrl.includes("/uploads/")
+                    ? "Uploaded image"
+                    : "External URL"}
+                </a>
+              </div>
+            )}
+          </div>}
+
+          {isMusicianProfile && (
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div className="space-y-2">
-                <Label htmlFor="basePrice">Base Price ($)</Label>
+                <Label htmlFor="musicianBasePrice">Musician Base Price ($)</Label>
                 <Input
-                  id="basePrice"
+                  id="musicianBasePrice"
                   type="number"
-                  value={formData.basePrice}
+                  value={formData.musicianBasePrice}
                   onChange={(e) =>
-                    handleInputChange("basePrice", e.target.value)
+                    handleInputChange("musicianBasePrice", e.target.value)
                   }
                   placeholder="0.00"
                   step="0.01"
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="idealPerformanceRate">Ideal Rate ($)</Label>
+                <Label htmlFor="musicianIdealPerformanceRate">Musician Ideal Rate ($)</Label>
                 <Input
-                  id="idealPerformanceRate"
+                  id="musicianIdealPerformanceRate"
                   type="number"
-                  value={formData.idealPerformanceRate}
+                  value={formData.musicianIdealPerformanceRate}
                   onChange={(e) =>
-                    handleInputChange("idealPerformanceRate", e.target.value)
+                    handleInputChange("musicianIdealPerformanceRate", e.target.value)
                   }
                   placeholder="0.00"
                   step="0.01"
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="minimumAcceptableRate">Minimum Rate ($)</Label>
+                <Label htmlFor="musicianMinimumAcceptableRate">Musician Minimum Rate ($)</Label>
                 <Input
-                  id="minimumAcceptableRate"
+                  id="musicianMinimumAcceptableRate"
                   type="number"
-                  value={formData.minimumAcceptableRate}
+                  value={formData.musicianMinimumAcceptableRate}
                   onChange={(e) =>
-                    handleInputChange("minimumAcceptableRate", e.target.value)
+                    handleInputChange("musicianMinimumAcceptableRate", e.target.value)
                   }
                   placeholder="0.00"
                   step="0.01"
@@ -809,8 +1285,207 @@ export default function ProfileEditForm({
             </div>
           )}
 
+
+
           {/* Professional-specific fields */}
-          {isProfessional && (
+          {isProfessional && (<>
+
+
+
+
+
+            {isProfessional && <div className="space-y-4">
+              {/* Booking Photo Upload/URL */}
+              <div className="space-y-2">
+                <Label htmlFor="professionalBookingFormPictureUrl">
+                  Professional Booking Form Picture
+                </Label>
+                <div className="flex gap-2">
+                  <Input
+                    id="professionalBookingFormPictureUrl"
+                    type="url"
+                    value={formData.bookingFormPictureUrl}
+                    onChange={(e) =>
+                      handleInputChange(
+                        "professionalBookingFormPictureUrl",
+                        e.target.value
+                      )
+                    }
+                    placeholder="https://your-picture-url.com/image.jpg or upload file below"
+                    className="flex-1"
+                  />
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="text-sm text-muted-foreground">
+                    Or upload image:
+                  </span>
+                  <label className="cursor-pointer">
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={(e) => {
+                        const file = e.target.files?.[0];
+                        if (file) handleFileUpload(file, "bookingPhoto");
+                      }}
+                      className="hidden"
+                    />
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="sm"
+                      disabled={uploadingFiles.bookingPhoto}
+                      asChild
+                    >
+                      <span>
+                        {uploadingFiles.bookingPhoto ? (
+                          <RefreshCw className="h-4 w-4 mr-1 animate-spin" />
+                        ) : (
+                          <Image className="h-4 w-4 mr-1" />
+                        )}
+                        {uploadingFiles.bookingPhoto
+                          ? "Uploading..."
+                          : "Upload Photo"}
+                      </span>
+                    </Button>
+                  </label>
+                </div>
+              </div>
+
+              {formData.bookingFormPictureUrl && (
+                <div className="text-sm text-muted-foreground">
+                  <span className="font-medium">Current booking photo:</span>{" "}
+                  <a
+                    href={formData.bookingFormPictureUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-blue-600 hover:underline"
+                  >
+                    {formData.bookingFormPictureUrl.includes("/uploads/")
+                      ? "Uploaded image"
+                      : "External URL"}
+                  </a>
+                </div>
+              )}
+            </div>}
+            {isProfessional && (
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="professionalBasePrice">Professional Base Price ($)</Label>
+                  <Input
+                    id="professionalBasePrice"
+                    type="number"
+                    value={formData.professionalBasePrice}
+                    onChange={(e) =>
+                      handleInputChange("professionalBasePrice", e.target.value)
+                    }
+                    placeholder="0.00"
+                    step="0.01"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="professionalIdealPerformanceRate">Professional Ideal Rate ($)</Label>
+                  <Input
+                    id="professionalIdealPerformanceRate"
+                    type="number"
+                    value={formData.professionalIdealPerformanceRate}
+                    onChange={(e) =>
+                      handleInputChange("professionalIdealPerformanceRate", e.target.value)
+                    }
+                    placeholder="0.00"
+                    step="0.01"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="professionalMinimumAcceptableRate">Professional Minimum Rate ($)</Label>
+                  <Input
+                    id="professionalMinimumAcceptableRate"
+                    type="number"
+                    value={formData.professionalMinimumAcceptableRate}
+                    onChange={(e) =>
+                      handleInputChange("professionalMinimumAcceptableRate", e.target.value)
+                    }
+                    placeholder="0.00"
+                    step="0.01"
+                  />
+                </div>
+              </div>
+            )}
+
+
+            {isProfessional && <div className="space-y-4">
+              {/* Booking Photo Upload/URL */}
+              <div className="space-y-2">
+                <Label htmlFor="professionalBookingFormPictureUrl">
+                  Professional Booking Form Picture
+                </Label>
+                <div className="flex gap-2">
+                  <Input
+                    id="professionalBookingFormPictureUrl"
+                    type="url"
+                    value={formData.professionalBookingFormPictureUrl}
+                    onChange={(e) =>
+                      handleInputChange(
+                        "professionalBookingFormPictureUrl",
+                        e.target.value
+                      )
+                    }
+                    placeholder="https://your-picture-url.com/image.jpg or upload file below"
+                    className="flex-1"
+                  />
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="text-sm text-muted-foreground">
+                    Or upload image:
+                  </span>
+                  <label className="cursor-pointer">
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={(e) => {
+                        const file = e.target.files?.[0];
+                        if (file) handleFileUpload(file, "professionalBookingPhoto");
+                      }}
+                      className="hidden"
+                    />
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="sm"
+                      disabled={uploadingFiles.professionalBookingPhoto}
+                      asChild
+                    >
+                      <span>
+                        {uploadingFiles.professionalBookingPhoto ? (
+                          <RefreshCw className="h-4 w-4 mr-1 animate-spin" />
+                        ) : (
+                          <Image className="h-4 w-4 mr-1" />
+                        )}
+                        {uploadingFiles.professionalBookingPhoto
+                          ? "Uploading..."
+                          : "Upload Photo"}
+                      </span>
+                    </Button>
+                  </label>
+                </div>
+              </div>
+
+              {formData.professionalBookingFormPictureUrl && (
+                <div className="text-sm text-muted-foreground">
+                  <span className="font-medium">Current booking photo:</span>{" "}
+                  <a
+                    href={formData.professionalBookingFormPictureUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-blue-600 hover:underline"
+                  >
+                    {formData.professionalBookingFormPictureUrl.includes("/uploads/")
+                      ? "Uploaded image"
+                      : "External URL"}
+                  </a>
+                </div>
+              )}
+            </div>}
+
             <div className="space-y-2">
               <Label htmlFor="websiteUrl">Website URL</Label>
               <Input
@@ -823,22 +1498,53 @@ export default function ProfileEditForm({
                 placeholder="https://your-website.com"
               />
             </div>
+
+            {isProfessional && <div className="flex items-center space-x-2">
+              <Switch
+                id="professionalPrivacy"
+                checked={formData.professionalPrivacySetting === "public"}
+                onCheckedChange={(checked) =>
+                  handleInputChange(
+                    "professionalPrivacySetting",
+                    checked ? "public" : "private"
+                  )
+                }
+              />
+              <Label htmlFor="professionalPrivacy"> Professional Public Profile</Label>
+            </div>}
+          </>
           )}
 
           {/* Privacy Settings */}
-          <div className="flex items-center space-x-2">
+          {isArtist && <div className="flex items-center space-x-2">
             <Switch
-              id="privacy"
-              checked={formData.privacySetting === "public"}
+              id="artistPrivacy"
+              checked={formData.artistPrivacySetting === "public"}
               onCheckedChange={(checked) =>
                 handleInputChange(
-                  "privacySetting",
+                  "artistPrivacySetting",
                   checked ? "public" : "private"
                 )
               }
             />
-            <Label htmlFor="privacy">Public Profile</Label>
-          </div>
+            <Label htmlFor="artistPrivacy"> Artist Public Profile</Label>
+          </div>}
+
+          {isMusicianProfile && <div className="flex items-center space-x-2">
+            <Switch
+              id="musicianPrivacy"
+              checked={formData.musicianPrivacySetting === "public"}
+              onCheckedChange={(checked) =>
+                handleInputChange(
+                  "musicianPrivacySetting",
+                  checked ? "public" : "private"
+                )
+              }
+            />
+            <Label htmlFor="musicianPrivacy"> Musician Public Profile</Label>
+          </div>}
+
+
 
           {/* Submit Button */}
           <Button
