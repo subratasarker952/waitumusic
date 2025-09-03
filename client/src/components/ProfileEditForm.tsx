@@ -60,6 +60,7 @@ export default function ProfileEditForm({
     profileBannerUrl: user?.coverImageUrl || "",
     privacySetting: user?.privacySetting || "public",
 
+    artistPrimaryTalentId: null,
     artistStageName: "",
     artistBio: "",
     artistPrimaryGenre: "",
@@ -69,6 +70,7 @@ export default function ProfileEditForm({
     epkUrl: "",
     artistBookingFormPictureUrl: "",
 
+    musicianPrimaryTalentId: null,
     musicianStageName: "",
     musicianBio: "",
     musicianPrimaryGenre: "",
@@ -78,8 +80,7 @@ export default function ProfileEditForm({
     musicianBookingFormPictureUrl: "",
 
 
-    primaryTalentId: null,
-    professionalPrimaryTalentId: null,
+    professionalPrimaryTalentId: 1,
     professionalBasePrice: "",
     professionalIdealPerformanceRate: "",
     professionalMinimumAcceptableRate: "",
@@ -110,50 +111,88 @@ export default function ProfileEditForm({
     enabled: isProfessional,
   });
 
-
   useEffect(() => {
-    if (user) {
-      // Basic user info
-      setFormData((prev) => ({
-        ...prev,
-        fullName: user.fullName || "",
-        email: user.email || "",
-        phoneNumber: user.phoneNumber || "",
-        privacySetting: user.privacySetting || "public",
-        profilePictureUrl: user.avatarUrl || "",
-        profileBannerUrl: user.coverImageUrl || "",
-      }));
+    if (!user) return;
+    if (!user.roleData || user.roleData.length === 0) return;
 
-      // Multi-role support
-      if (user.roleData && user.roleData.length > 0) {
-        const mergedRoleData = user.roleData.reduce((acc, roleEntry) => {
-          const rd = roleEntry.data || {};
+    // 🟢 Basic user info
+    setFormData((prev) => ({
+      ...prev,
+      fullName: user.fullName || "",
+      email: user.email || "",
+      phoneNumber: user.phoneNumber || "",
+      privacySetting: user.privacySetting || "public",
+      profilePictureUrl: user.avatarUrl || "",
+      profileBannerUrl: user.coverImageUrl || "",
+    }));
+
+    // 🟢 Multi-role support
+    if (user.roleData && user.roleData.length > 0) {
+      const mergedRoleData = user.roleData.reduce((acc, roleEntry) => {
+        const rd = roleEntry.data || {};
+        const roleId = roleEntry.role?.id;
+
+        // 🎤 Artist (roleId 3,4)
+        if ([3, 4].includes(roleId)) {
           return {
             ...acc,
-            stageName: rd.stageName ?? acc.stageName ?? "",
-            bio: rd.bio ?? acc.bio ?? "",
-            primaryGenre: rd.primaryGenre ?? acc.primaryGenre ?? "",
-            basePrice: rd.basePrice ?? acc.basePrice ?? "",
-            idealPerformanceRate: rd.idealPerformanceRate ?? acc.idealPerformanceRate ?? rd.idealServiceRate ?? acc.idealServiceRate ?? "",
-            minimumAcceptableRate: rd.minimumAcceptableRate ?? acc.minimumAcceptableRate ?? "",
+            artistStageName: rd.stageName ?? acc.artistStageName ?? "",
+            artistBio: rd.bio ?? acc.artistBio ?? "",
+            artistPrimaryGenre: rd.primaryGenre ?? acc.artistPrimaryGenre ?? "",
+            artistBasePrice: rd.basePrice ?? acc.artistBasePrice ?? "",
+            artistIdealPerformanceRate: rd.idealPerformanceRate ?? acc.artistIdealPerformanceRate ?? "",
+            artistMinimumAcceptableRate: rd.minimumAcceptableRate ?? acc.artistMinimumAcceptableRate ?? "",
+            artistPrimaryTalentId: rd.primaryTalentId ?? acc.artistPrimaryTalentId ?? null,
             epkUrl: rd.epkUrl ?? acc.epkUrl ?? "",
-            bookingFormPictureUrl: rd.bookingFormPictureUrl ?? acc.bookingFormPictureUrl ?? "",
-            websiteUrl: rd.websiteUrl ?? acc.websiteUrl ?? "",
-            primaryTalentId: rd.primaryTalentId ?? acc.primaryTalentId ?? 1,
+            artistBookingFormPictureUrl: rd.bookingFormPictureUrl ?? acc.artistBookingFormPictureUrl ?? "",
           };
-        }, {});
+        }
 
-        setFormData((prev) => ({
-          ...prev,
-          ...mergedRoleData
-        }));
+        // 🎸 Musician (roleId 5,6)
+        if ([5, 6].includes(roleId)) {
+          return {
+            ...acc,
+            musicianStageName: rd.stageName ?? acc.musicianStageName ?? "",
+            musicianBio: rd.bio ?? acc.musicianBio ?? "",
+            musicianPrimaryGenre: rd.primaryGenre ?? acc.musicianPrimaryGenre ?? "",
+            musicianBasePrice: rd.basePrice ?? acc.musicianBasePrice ?? "",
+            musicianIdealPerformanceRate: rd.idealPerformanceRate ?? acc.musicianIdealPerformanceRate ?? "",
+            musicianMinimumAcceptableRate: rd.minimumAcceptableRate ?? acc.musicianMinimumAcceptableRate ?? "",
+            musicianPrimaryTalentId: rd.primaryTalentId ?? acc.musicianPrimaryTalentId ?? null,
+            musicianBookingFormPictureUrl: rd.bookingFormPictureUrl ?? acc.musicianBookingFormPictureUrl ?? "",
+          };
+        }
 
-        setHasProfile(true);
-      } else {
-        setHasProfile(false);
-      }
+        // 👔 Professional (roleId 7,8)
+        if ([7, 8].includes(roleId)) {
+          return {
+            ...acc,
+            professionalBasePrice: rd.basePrice ?? acc.professionalBasePrice ?? "",
+            professionalIdealPerformanceRate: rd.idealServiceRate ?? acc.professionalIdealPerformanceRate ?? "",
+            professionalMinimumAcceptableRate: rd.minimumAcceptableRate ?? acc.professionalMinimumAcceptableRate ?? "",
+            professionalPrimaryTalentId: rd.primaryTalentId ?? acc.professionalPrimaryTalentId ?? null,
+            professionalBookingFormPictureUrl: rd.bookingFormPictureUrl ?? acc.professionalBookingFormPictureUrl ?? "",
+            websiteUrl: rd.websiteUrl ?? acc.websiteUrl ?? "",
+          };
+        }
+
+        return acc;
+      }, {} as any);
+
+      setFormData((prev) => ({
+        ...prev,
+        ...mergedRoleData,
+      }));
+
+      setHasProfile(true);
+    } else {
+      setHasProfile(false);
     }
-  }, [user]);
+
+  }, [user?.roleData]);
+
+
+
 
   const updateProfileMutation = useMutation({
     mutationFn: async (data: any) => {
@@ -340,7 +379,7 @@ export default function ProfileEditForm({
                 }
               />
             </div>
-            
+
             <div className="space-y-2">
               <Label htmlFor="email">Email</Label>
               <Input
@@ -993,7 +1032,7 @@ export default function ProfileEditForm({
                 Primary Talent/Skill
               </Label>
               <Select
-                value={String(formData.professionalPrimaryTalentId || "")}
+                value={String(formData.professionalPrimaryTalentId || null)}
                 onValueChange={(value) =>
                   handleInputChange(
                     "professionalPrimaryTalentId",
