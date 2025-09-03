@@ -858,15 +858,15 @@ export async function registerRoutes(app: Express): Promise<Server> {
           // Artist roles
           if ([3, 4].includes(role.id)) {
             data = await storage.updateArtist(userId, {
-              stageName: updates.stageName,
-              bio: updates.bio,
-              primaryGenre: updates.primaryGenre,
-              basePrice: updates.basePrice ?? null,
-              idealPerformanceRate: updates.idealPerformanceRate ?? null,
-              minimumAcceptableRate: updates.minimumAcceptableRate ?? null,
+              stageName: updates.artistStageName,
+              bio: updates.artistBio,
+              primaryGenre: updates.artistPrimaryGenre,
+              basePrice: updates.artistBasePrice ?? null,
+              idealPerformanceRate: updates.artistIdealPerformanceRate ?? null,
+              minimumAcceptableRate: updates.artistMinimumAcceptableRate ?? null,
               epkUrl: updates.epkUrl,
-              bookingFormPictureUrl: updates.bookingFormPictureUrl,
-              primaryTalentId: updates.primaryTalentId,
+              bookingFormPictureUrl: updates.artistBookingFormPictureUrl,
+              primaryTalentId: updates.artistPrimaryTalentId,
               isComplete: true
             });
           }
@@ -874,13 +874,13 @@ export async function registerRoutes(app: Express): Promise<Server> {
           // Musician roles
           else if ([5, 6].includes(role.id)) {
             data = await storage.updateMusician(userId, {
-              stageName: updates.stageName,
-              bio: updates.bio,
-              primaryGenre: updates.primaryGenre,
-              basePrice: updates.basePrice ?? null,
-              idealPerformanceRate: updates.idealPerformanceRate ?? null,
-              minimumAcceptableRate: updates.minimumAcceptableRate ?? null,
-              primaryTalentId: updates.primaryTalentId,
+              stageName: updates.musicianStageName,
+              bio: updates.musicianBio,
+              primaryGenre: updates.musicianPrimaryGenre,
+              basePrice: updates.musicianBasePrice ?? null,
+              idealPerformanceRate: updates.musicianIdealPerformanceRate ?? null,
+              minimumAcceptableRate: updates.musicianMinimumAcceptableRate ?? null,
+              primaryTalentId: updates.musicianPrimaryTalentId,
               isComplete: true
             });
           }
