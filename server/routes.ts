@@ -12396,6 +12396,7 @@ This is a preview of the performance engagement contract. Final agreement will i
     try {
       const availableProfessionals = await storage.getAvailableLawyersForWaituMusic();
       res.json(availableProfessionals);
+
     } catch (error) {
       console.error('Get available professionals error:', error);
       res.status(500).json({ message: 'Failed to get available professionals' });
@@ -12467,35 +12468,34 @@ This is a preview of the performance engagement contract. Final agreement will i
   app.post('/api/management-applications/:id/assign-lawyer', authenticateToken, async (req: Request, res: Response) => {
     try {
       const applicationId = parseInt(req.params.id);
-      const DEFAULT_PROFESSIONAL_ID = 9; // <-- তোমার default professional এর ID
-  
+      const currentUserId = req.user?.userId;
+
       const {
-        lawyerUserId = DEFAULT_PROFESSIONAL_ID,
-        assignmentRole = "general_support",
-        authorityLevel = "limited_authority",
+        lawyerUserId=8,
+        assignmentRole,
+        authorityLevel,
         canSignContracts,
         canModifyTerms,
         canFinalizeAgreements,
-        overrideConflict
+        overrideConflict = false
       } = req.body;
-  
-      const currentUserId = req.user?.userId;
-  
+
       // Verify application exists
       const application = await storage.getManagementApplication(applicationId);
       if (!application) {
         return res.status(404).json({ message: 'Management application not found' });
       }
-  
-      // Verify professional
-      const professional = await storage.getProfessional(lawyerUserId);
+
+      // Resolve professional
+      const professional =  await storage.getProfessional(lawyerUserId) 
+
       if (!professional) {
-        return res.status(400).json({ message: 'Selected (or default) user must be a registered professional' });
+        return res.status(400).json({ message: 'No professional available for assignment' });
       }
-  
+
       // Conflict check
-      const conflictCheck = await storage.checkLegalConflictOfInterest(lawyerUserId);
-  
+      const conflictCheck = await storage.checkLegalConflictOfInterest(professional.userId);
+
       if (conflictCheck.hasConflict && !overrideConflict) {
         return res.status(409).json({
           message: 'Conflict of interest detected',
@@ -12503,15 +12503,15 @@ This is a preview of the performance engagement contract. Final agreement will i
           requiresOverride: true
         });
       }
-  
+
       if (conflictCheck.hasConflict && overrideConflict) {
-        console.warn(`CONFLICT OVERRIDE: Superadmin ${currentUserId} assigned professional ${lawyerUserId} despite conflicts:`, conflictCheck.conflictDetails);
+        console.warn(`CONFLICT OVERRIDE: Superadmin ${currentUserId} assigned professional ${professional.userId} despite conflicts:`, conflictCheck.conflictDetails);
       }
-  
+
       // Create assignment
       const assignment = await storage.createApplicationLegalAssignment({
         applicationId,
-        lawyerUserId,
+        lawyerUserId: professional.userId,
         assignmentRole,
         authorityLevel,
         canSignContracts: !!canSignContracts,
@@ -12519,18 +12519,22 @@ This is a preview of the performance engagement contract. Final agreement will i
         canFinalizeAgreements: !!canFinalizeAgreements,
         assignedByUserId: currentUserId || 0
       });
-  
+
       res.status(201).json({
         assignment,
+        professional, // extra info for frontend
         conflictOverridden: conflictCheck.hasConflict && overrideConflict,
         conflictDetails: conflictCheck.hasConflict ? conflictCheck.conflictDetails : undefined
       });
+
     } catch (error) {
       console.error('Assign professional to application error:', error);
       res.status(500).json({ message: 'Failed to assign professional to application' });
     }
   });
-  
+
+
+
 
   // Get lawyers assigned to management application
   app.get('/api/management-applications/:id/lawyers', authenticateToken, requireRole([1, 2]), async (req: Request, res: Response) => {

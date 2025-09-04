@@ -43,7 +43,10 @@ export default function ManagementApplicationWalkthrough() {
     queryKey: [`/api/management-applications/${id}`],
   });
 
-  console.log(application)
+  const { data: availableLawyer, isLoading: availableLawyerLoading, error: availableLawerError } = useQuery({
+    queryKey: [`/api/available-lawyers-waitumusic`],
+  });
+
 
   const steps = [
     { id: 1, title: "Application Data", status: "pending", icon: FileText },
@@ -120,7 +123,8 @@ export default function ManagementApplicationWalkthrough() {
   // ✅ helper function
   function getAssignmentPayload(professional: any) {
     const specialty = professional.specialty?.toLowerCase() || "";
-  
+
+    // Legal professionals
     if (specialty.includes("legal")) {
       return {
         lawyerUserId: professional.id,
@@ -131,8 +135,9 @@ export default function ManagementApplicationWalkthrough() {
         canFinalizeAgreements: true,
       };
     }
-  
-    if (specialty.includes("business") || specialty.includes("strategic")) {
+
+    // Business / Strategic consultants
+    if (specialty.includes("business") || specialty.includes("strategic") || specialty.includes("marketing")) {
       return {
         lawyerUserId: professional.id,
         assignmentRole: "business_consultant",
@@ -142,8 +147,9 @@ export default function ManagementApplicationWalkthrough() {
         canFinalizeAgreements: false,
       };
     }
-  
-    if (specialty.includes("financial")) {
+
+    // Financial advisors
+    if (specialty.includes("financial") || specialty.includes("advisory")) {
       return {
         lawyerUserId: professional.id,
         assignmentRole: "financial_advisor",
@@ -153,7 +159,8 @@ export default function ManagementApplicationWalkthrough() {
         canFinalizeAgreements: false,
       };
     }
-  
+
+    // Default / general support
     return {
       lawyerUserId: professional.id,
       assignmentRole: "general_support",
@@ -163,22 +170,24 @@ export default function ManagementApplicationWalkthrough() {
       canFinalizeAgreements: false,
     };
   }
-  
+
   // Step 3: Assign Professional
   const assignLawyer = async () => {
     if (!applicationId) return;
-  
+
     try {
       // Get available non-performance professionals for Wai'tuMusic
       const response = await apiRequest("/api/available-lawyers-waitumusic", { method: "GET" });
       const availableProfessionals = await response.json();
-  
-      let assignedProfessional;
-  
+
+      console.log("Available Professionals:", availableProfessionals);
+
+      let assignedProfessional: any = null;
+
       if (availableProfessionals.length > 0) {
         // Try to find a clear professional (no conflicts)
         assignedProfessional = availableProfessionals.find((prof: any) => prof.conflictStatus === "clear");
-  
+
         if (!assignedProfessional) {
           // If none are clear, pick the first professional as fallback
           assignedProfessional = availableProfessionals[0];
@@ -188,38 +197,33 @@ export default function ManagementApplicationWalkthrough() {
             variant: "destructive",
           });
         }
-      } else {
-        // No professional available, fallback to default professional
-        const defaultResponse = await apiRequest("/api/default-professional", { method: "GET" });
-        assignedProfessional = await defaultResponse.json();
-  
-        toast({
-          title: "Default Professional Assigned",
-          description: `${assignedProfessional.fullName} assigned as default professional`,
-        });
       }
-  
+
       // Build assignment payload dynamically
-      const payload = getAssignmentPayload(assignedProfessional);
-  
+      // If assignedProfessional is null, backend will auto fallback to default professional
+      const payload = assignedProfessional ? getAssignmentPayload(assignedProfessional) : {};
+
       await apiRequest(`/api/management-applications/${applicationId}/assign-lawyer`, {
         method: "POST",
         body: payload,
       });
-  
+
       setStepStatuses(prev => ({ ...prev, 3: "completed" }));
       setCurrentStep(4);
-  
+
       toast({
         title: "Professional Assigned",
-        description: `${assignedProfessional.fullName} (${assignedProfessional.specialty}) assigned successfully`,
+        description: assignedProfessional
+          ? `${assignedProfessional.fullName} (${assignedProfessional.specialty}) assigned successfully`
+          : "Default professional automatically assigned by system",
       });
+
     } catch (error: any) {
       let errorData = null;
       try {
         errorData = await error.response?.json();
-      } catch {}
-  
+      } catch { }
+
       toast({
         title: "Assignment Failed",
         description: errorData?.requiresOverride

@@ -44,10 +44,7 @@ export default function ProfileEditForm({
   isFan,
   hasActiveSubscription = false,
 }: ProfileEditFormProps) {
-  // State to track if the user has a profile
-  const [hasProfile, setHasProfile] = useState(false);
 
-  // console.log(user)
 
   const { toast } = useToast();
   const queryClient = useQueryClient();
@@ -80,7 +77,7 @@ export default function ProfileEditForm({
     musicianBookingFormPictureUrl: "",
 
 
-    professionalPrimaryTalentId: 1,
+    professionalPrimaryTalentId: null,
     professionalBasePrice: "",
     professionalIdealPerformanceRate: "",
     professionalMinimumAcceptableRate: "",
@@ -115,82 +112,72 @@ export default function ProfileEditForm({
     if (!user) return;
     if (!user.roleData || user.roleData.length === 0) return;
 
-    // 🟢 Basic user info
-    setFormData((prev) => ({
-      ...prev,
+    // 🟢 Base fields
+    let nextFormData: any = {
       fullName: user.fullName || "",
       email: user.email || "",
       phoneNumber: user.phoneNumber || "",
       privacySetting: user.privacySetting || "public",
       profilePictureUrl: user.avatarUrl || "",
       profileBannerUrl: user.coverImageUrl || "",
-    }));
+    };
 
-    // 🟢 Multi-role support
-    if (user.roleData && user.roleData.length > 0) {
-      const mergedRoleData = user.roleData.reduce((acc, roleEntry) => {
-        const rd = roleEntry.data || {};
-        const roleId = roleEntry.role?.id;
+    // 🟢 Merge role-based fields
+    nextFormData = user.roleData.reduce((acc, roleEntry) => {
+      const rd = roleEntry.data || {};
+      const roleId = roleEntry.role?.id;
 
-        // 🎤 Artist (roleId 3,4)
-        if ([3, 4].includes(roleId)) {
-          return {
-            ...acc,
-            artistStageName: rd.stageName ?? acc.artistStageName ?? "",
-            artistBio: rd.bio ?? acc.artistBio ?? "",
-            artistPrimaryGenre: rd.primaryGenre ?? acc.artistPrimaryGenre ?? "",
-            artistBasePrice: rd.basePrice ?? acc.artistBasePrice ?? "",
-            artistIdealPerformanceRate: rd.idealPerformanceRate ?? acc.artistIdealPerformanceRate ?? "",
-            artistMinimumAcceptableRate: rd.minimumAcceptableRate ?? acc.artistMinimumAcceptableRate ?? "",
-            artistPrimaryTalentId: rd.primaryTalentId ?? acc.artistPrimaryTalentId ?? null,
-            epkUrl: rd.epkUrl ?? acc.epkUrl ?? "",
-            artistBookingFormPictureUrl: rd.bookingFormPictureUrl ?? acc.artistBookingFormPictureUrl ?? "",
-          };
-        }
+      // 🎤 Artist (roleId 3,4)
+      if ([3, 4].includes(roleId)) {
+        return {
+          ...acc,
+          artistStageName: rd.stageName ?? acc.artistStageName ?? "",
+          artistBio: rd.bio ?? acc.artistBio ?? "",
+          artistPrimaryGenre: rd.primaryGenre ?? acc.artistPrimaryGenre ?? "",
+          artistBasePrice: rd.basePrice ?? acc.artistBasePrice ?? "",
+          artistIdealPerformanceRate: rd.idealPerformanceRate ?? acc.artistIdealPerformanceRate ?? "",
+          artistMinimumAcceptableRate: rd.minimumAcceptableRate ?? acc.artistMinimumAcceptableRate ?? "",
+          artistPrimaryTalentId: rd.primaryTalentId ?? acc.artistPrimaryTalentId ?? null,
+          epkUrl: rd.epkUrl ?? acc.epkUrl ?? "",
+          artistBookingFormPictureUrl: rd.bookingFormPictureUrl ?? acc.artistBookingFormPictureUrl ?? "",
+        };
+      }
 
-        // 🎸 Musician (roleId 5,6)
-        if ([5, 6].includes(roleId)) {
-          return {
-            ...acc,
-            musicianStageName: rd.stageName ?? acc.musicianStageName ?? "",
-            musicianBio: rd.bio ?? acc.musicianBio ?? "",
-            musicianPrimaryGenre: rd.primaryGenre ?? acc.musicianPrimaryGenre ?? "",
-            musicianBasePrice: rd.basePrice ?? acc.musicianBasePrice ?? "",
-            musicianIdealPerformanceRate: rd.idealPerformanceRate ?? acc.musicianIdealPerformanceRate ?? "",
-            musicianMinimumAcceptableRate: rd.minimumAcceptableRate ?? acc.musicianMinimumAcceptableRate ?? "",
-            musicianPrimaryTalentId: rd.primaryTalentId ?? acc.musicianPrimaryTalentId ?? null,
-            musicianBookingFormPictureUrl: rd.bookingFormPictureUrl ?? acc.musicianBookingFormPictureUrl ?? "",
-          };
-        }
+      // 🎸 Musician (roleId 5,6)
+      if ([5, 6].includes(roleId)) {
+        return {
+          ...acc,
+          musicianStageName: rd.stageName ?? acc.musicianStageName ?? "",
+          musicianBio: rd.bio ?? acc.musicianBio ?? "",
+          musicianPrimaryGenre: rd.primaryGenre ?? acc.musicianPrimaryGenre ?? "",
+          musicianBasePrice: rd.basePrice ?? acc.musicianBasePrice ?? "",
+          musicianIdealPerformanceRate: rd.idealPerformanceRate ?? acc.musicianIdealPerformanceRate ?? "",
+          musicianMinimumAcceptableRate: rd.minimumAcceptableRate ?? acc.musicianMinimumAcceptableRate ?? "",
+          musicianPrimaryTalentId: rd.primaryTalentId ?? acc.musicianPrimaryTalentId ?? null,
+          musicianBookingFormPictureUrl: rd.bookingFormPictureUrl ?? acc.musicianBookingFormPictureUrl ?? "",
+        };
+      }
 
-        // 👔 Professional (roleId 7,8)
-        if ([7, 8].includes(roleId)) {
-          return {
-            ...acc,
-            professionalBasePrice: rd.basePrice ?? acc.professionalBasePrice ?? "",
-            professionalIdealPerformanceRate: rd.idealServiceRate ?? acc.professionalIdealPerformanceRate ?? "",
-            professionalMinimumAcceptableRate: rd.minimumAcceptableRate ?? acc.professionalMinimumAcceptableRate ?? "",
-            professionalPrimaryTalentId: rd.primaryTalentId ?? acc.professionalPrimaryTalentId ?? null,
-            professionalBookingFormPictureUrl: rd.bookingFormPictureUrl ?? acc.professionalBookingFormPictureUrl ?? "",
-            websiteUrl: rd.websiteUrl ?? acc.websiteUrl ?? "",
-          };
-        }
+      // 👔 Professional (roleId 7,8)
+      if ([7, 8].includes(roleId)) {
+        return {
+          ...acc,
+          professionalPrimaryTalentId: rd.primaryTalentId ?? acc.professionalPrimaryTalentId ?? null,
+          professionalBasePrice: rd.basePrice ?? acc.professionalBasePrice ?? "",
+          professionalIdealPerformanceRate: rd.idealServiceRate ?? acc.professionalIdealPerformanceRate ?? "",
+          professionalMinimumAcceptableRate: rd.minimumAcceptableRate ?? acc.professionalMinimumAcceptableRate ?? "",
+          professionalBookingFormPictureUrl: rd.bookingFormPictureUrl ?? acc.professionalBookingFormPictureUrl ?? "",
+          websiteUrl: rd.websiteUrl ?? acc.websiteUrl ?? "",
+        };
+      }
 
-        return acc;
-      }, {} as any);
+      return acc;
+    }, nextFormData);
 
-      setFormData((prev) => ({
-        ...prev,
-        ...mergedRoleData,
-      }));
+    // 🟢 Single update
+    setFormData(nextFormData);
 
-      setHasProfile(true);
-    } else {
-      setHasProfile(false);
-    }
-
-  }, [user?.roleData]);
-
+  }, [user]);
 
 
 

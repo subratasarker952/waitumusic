@@ -5003,57 +5003,130 @@ export class DatabaseStorage implements IStorage {
   }
 
   // Check for conflict of interest when assigning professionals (non-performance related)
+  // async checkLegalConflictOfInterest(professionalUserId: number): Promise<{ hasConflict: boolean; conflictDetails?: any[] }> {
+  //   // Get the professional's role to determine if they can represent Wai'tuMusic
+  //   const professional = await this.getUser(professionalUserId);
+  //   if (!professional) {
+  //     return { hasConflict: true, conflictDetails: [{ type: 'invalid_user', message: 'Professional not found' }] };
+  //   }
+
+  //   // Only managed professionals (roleId 7) can represent Wai'tuMusic without conflict
+  //   const isManagedProfessional = professional.roleId === 7;
+
+  //   // Check if professional is assigned to any managed users (artists, musicians, professionals)
+  //   const clientAssignments = await db
+  //     .select({
+  //       id: legalAssignments.id,
+  //       clientUserId: legalAssignments.clientUserId,
+  //       assignmentType: legalAssignments.assignmentType,
+  //       clientRole: users.roleId,
+  //       clientName: users.fullName,
+  //       clientEmail: users.email
+  //     })
+  //     .from(legalAssignments)
+  //     .innerJoin(users, eq(legalAssignments.clientUserId, users.id))
+  //     .where(and(
+  //       eq(legalAssignments.lawyerUserId, professionalUserId),
+  //       eq(legalAssignments.isActive, true)
+  //     ));
+
+  //   const conflictDetails: any[] = [];
+  //   let hasConflict = false;
+
+  //   // Check each client assignment for conflicts
+  //   for (const assignment of clientAssignments) {
+  //     const isClientManaged = [3, 5, 7].includes(assignment.clientRole); // Managed Artist, Managed Musician, Managed Professional
+
+  //     if (isClientManaged) {
+  //       // If professional is representing a managed user, they cannot represent Wai'tuMusic (conflict of interest)
+  //       // unless the professional is also a managed professional (representing Wai'tuMusic)
+  //       if (!isManagedProfessional) {
+  //         hasConflict = true;
+  //         conflictDetails.push({
+  //           type: 'client_conflict',
+  //           message: `Professional represents managed ${this.getRoleName(assignment.clientRole)} ${assignment.clientName}`,
+  //           clientName: assignment.clientName,
+  //           clientRole: assignment.clientRole,
+  //           assignmentType: assignment.assignmentType
+  //         });
+  //       }
+  //     }
+  //   }
+
+  //   // If professional is not a managed professional, they cannot represent Wai'tuMusic
+  //   if (!isManagedProfessional) {
+  //     hasConflict = true;
+  //     conflictDetails.push({
+  //       type: 'role_restriction',
+  //       message: 'Only managed professionals can represent Wai\'tuMusic in non-performance matters',
+  //       professionalRole: professional.roleId,
+  //       professionalName: professional.fullName
+  //     });
+  //   }
+
+  //   return { hasConflict, conflictDetails: conflictDetails.length > 0 ? conflictDetails : undefined };
+  // }
+
   async checkLegalConflictOfInterest(professionalUserId: number): Promise<{ hasConflict: boolean; conflictDetails?: any[] }> {
-    // Get the professional's role to determine if they can represent Wai'tuMusic
-    const professional = await this.getUser(professionalUserId);
+    // Get professional + role from userRoles
+    const professional = await db
+      .select({
+        id: users.id,
+        fullName: users.fullName,
+        email: users.email,
+        roleId: userRoles.roleId
+      })
+      .from(users)
+      .innerJoin(userRoles, eq(users.id, userRoles.userId))
+      .where(eq(users.id, professionalUserId))
+      .limit(1)
+      .then(res => res[0]);
+  
     if (!professional) {
-      return { hasConflict: true, conflictDetails: [{ type: 'invalid_user', message: 'Professional not found' }] };
+      return { 
+        hasConflict: true, 
+        conflictDetails: [{ type: 'invalid_user', message: 'Professional not found' }] 
+      };
     }
-
-    // Only managed professionals (roleId 7) can represent Wai'tuMusic without conflict
-    const isManagedProfessional = professional.roleId === 7;
-
-    // Check if professional is assigned to any managed users (artists, musicians, professionals)
+  
+    const isManagedProfessional = professional.roleId === 7; // Only managed professionals can represent Wai'tuMusic
+  
+    // Check active assignments
     const clientAssignments = await db
       .select({
         id: legalAssignments.id,
         clientUserId: legalAssignments.clientUserId,
         assignmentType: legalAssignments.assignmentType,
-        clientRole: users.roleId,
         clientName: users.fullName,
+        clientRoleId: userRoles.roleId,
         clientEmail: users.email
       })
       .from(legalAssignments)
       .innerJoin(users, eq(legalAssignments.clientUserId, users.id))
+      .innerJoin(userRoles, eq(users.id, userRoles.userId))
       .where(and(
         eq(legalAssignments.lawyerUserId, professionalUserId),
         eq(legalAssignments.isActive, true)
       ));
-
+  
     const conflictDetails: any[] = [];
     let hasConflict = false;
-
-    // Check each client assignment for conflicts
+  
     for (const assignment of clientAssignments) {
-      const isClientManaged = [3, 5, 7].includes(assignment.clientRole); // Managed Artist, Managed Musician, Managed Professional
-
-      if (isClientManaged) {
-        // If professional is representing a managed user, they cannot represent Wai'tuMusic (conflict of interest)
-        // unless the professional is also a managed professional (representing Wai'tuMusic)
-        if (!isManagedProfessional) {
-          hasConflict = true;
-          conflictDetails.push({
-            type: 'client_conflict',
-            message: `Professional represents managed ${this.getRoleName(assignment.clientRole)} ${assignment.clientName}`,
-            clientName: assignment.clientName,
-            clientRole: assignment.clientRole,
-            assignmentType: assignment.assignmentType
-          });
-        }
+      const isClientManaged = [3, 5, 7].includes(assignment.clientRoleId); // Managed Artist/Musician/Professional
+  
+      if (isClientManaged && !isManagedProfessional) {
+        hasConflict = true;
+        conflictDetails.push({
+          type: 'client_conflict',
+          message: `Professional represents managed ${this.getRoleName(assignment.clientRoleId)} ${assignment.clientName}`,
+          clientName: assignment.clientName,
+          clientRole: assignment.clientRoleId,
+          assignmentType: assignment.assignmentType
+        });
       }
     }
-
-    // If professional is not a managed professional, they cannot represent Wai'tuMusic
+  
     if (!isManagedProfessional) {
       hasConflict = true;
       conflictDetails.push({
@@ -5063,9 +5136,11 @@ export class DatabaseStorage implements IStorage {
         professionalName: professional.fullName
       });
     }
-
-    return { hasConflict, conflictDetails: conflictDetails.length > 0 ? conflictDetails : undefined };
+  
+    return { hasConflict, conflictDetails: conflictDetails.length ? conflictDetails : undefined };
   }
+  
+  
 
   // Get available professionals who can represent Wai'tuMusic without conflict
 
@@ -5129,7 +5204,7 @@ export class DatabaseStorage implements IStorage {
 
   async getAvailableLawyersForWaituMusic(): Promise<any[]> {
     const professionalRoleIds = [7, 8]; // managed & independent professionals
-
+  
     const allProfessionals = await db
       .select({
         id: users.id,
@@ -5139,53 +5214,45 @@ export class DatabaseStorage implements IStorage {
         isManaged: professionals.isManaged,
         managementTierId: professionals.managementTierId,
         hourlyRate: professionals.idealServiceRate,
-        talentName: userProfessionalPrimaryTalents.name, // মূল specialty
+        talentName: userProfessionalPrimaryTalents.name
       })
       .from(users)
       .innerJoin(userRoles, eq(users.id, userRoles.userId))
       .innerJoin(professionals, eq(users.id, professionals.userId))
-      .innerJoin(
-        userProfessionalPrimaryTalents,
-        eq(professionals.primaryTalentId, userProfessionalPrimaryTalents.id)
-      )
+      .innerJoin(userProfessionalPrimaryTalents, eq(professionals.primaryTalentId, userProfessionalPrimaryTalents.id))
       .where(inArray(userRoles.roleId, professionalRoleIds));
-
-    const nonPerformanceSpecialties = [
-      "Legal Services", "Business Consulting", "Marketing Consulting",
-      "Financial Advisory", "Contract Negotiation", "Rights Management",
-      "Legal Counsel", "Business Development", "Strategic Planning"
+  
+    const nonPerformanceKeywords = [
+      "legal", "consulting", "advisory",
+      "business", "financial", "marketing",
+      "strategic", "rights", "contract"
     ];
-
-    const availableProfessionals = [];
-    for (const professional of allProfessionals) {
+  
+    // Process all professionals concurrently
+    const availableProfessionals = await Promise.all(allProfessionals.map(async (professional) => {
       const specialty = professional.talentName ?? "Professional Services";
-
-      // Check non-performance
-      const isNonPerformance =
-        nonPerformanceSpecialties.some(s =>
-          specialty.toLowerCase().includes(s.toLowerCase())
-        ) ||
-        specialty.toLowerCase().includes("consulting") ||
-        specialty.toLowerCase().includes("legal") ||
-        specialty.toLowerCase().includes("advisory");
-
-      if (!isNonPerformance) continue;
-
-      // Conflict check
+  
+      const isNonPerformance = nonPerformanceKeywords.some(keyword =>
+        specialty.toLowerCase().includes(keyword)
+      );
+  
+      if (!isNonPerformance) return null; // skip performance professionals
+  
       const conflictCheck = await this.checkLegalConflictOfInterest(professional.id);
-
-      availableProfessionals.push({
+  
+      return {
         ...professional,
         specialty,
         isAvailable: !conflictCheck.hasConflict,
         conflictStatus: conflictCheck.hasConflict ? "conflict" : "clear",
         conflictDetails: conflictCheck.conflictDetails ?? null,
         serviceType: "non_performance"
-      });
-    }
-
-    return availableProfessionals;
+      };
+    }));
+  
+    return availableProfessionals.filter(Boolean); // remove nulls
   }
+  
 
 
 
@@ -8108,7 +8175,7 @@ export class DatabaseStorage implements IStorage {
       .from(userProfessionalPrimaryTalents)
       .where(eq(userProfessionalPrimaryTalents.isDefault, true))
       .limit(1);
-  
+
     return professional || null;
   }
 
