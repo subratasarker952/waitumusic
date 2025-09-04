@@ -4973,6 +4973,8 @@ export class DatabaseStorage implements IStorage {
     return created;
   }
 
+  
+
   async getApplicationLegalAssignments(applicationId: number): Promise<ApplicationLegalAssignment[]> {
     return await db
       .select()
@@ -5081,16 +5083,16 @@ export class DatabaseStorage implements IStorage {
       .where(eq(users.id, professionalUserId))
       .limit(1)
       .then(res => res[0]);
-  
+
     if (!professional) {
-      return { 
-        hasConflict: true, 
-        conflictDetails: [{ type: 'invalid_user', message: 'Professional not found' }] 
+      return {
+        hasConflict: true,
+        conflictDetails: [{ type: 'invalid_user', message: 'Professional not found' }]
       };
     }
-  
+
     const isManagedProfessional = professional.roleId === 7; // Only managed professionals can represent Wai'tuMusic
-  
+
     // Check active assignments
     const clientAssignments = await db
       .select({
@@ -5108,13 +5110,13 @@ export class DatabaseStorage implements IStorage {
         eq(legalAssignments.lawyerUserId, professionalUserId),
         eq(legalAssignments.isActive, true)
       ));
-  
+
     const conflictDetails: any[] = [];
     let hasConflict = false;
-  
+
     for (const assignment of clientAssignments) {
       const isClientManaged = [3, 5, 7].includes(assignment.clientRoleId); // Managed Artist/Musician/Professional
-  
+
       if (isClientManaged && !isManagedProfessional) {
         hasConflict = true;
         conflictDetails.push({
@@ -5126,7 +5128,7 @@ export class DatabaseStorage implements IStorage {
         });
       }
     }
-  
+
     if (!isManagedProfessional) {
       hasConflict = true;
       conflictDetails.push({
@@ -5136,11 +5138,11 @@ export class DatabaseStorage implements IStorage {
         professionalName: professional.fullName
       });
     }
-  
+
     return { hasConflict, conflictDetails: conflictDetails.length ? conflictDetails : undefined };
   }
-  
-  
+
+
 
   // Get available professionals who can represent Wai'tuMusic without conflict
 
@@ -5204,7 +5206,7 @@ export class DatabaseStorage implements IStorage {
 
   async getAvailableLawyersForWaituMusic(): Promise<any[]> {
     const professionalRoleIds = [7, 8]; // managed & independent professionals
-  
+
     const allProfessionals = await db
       .select({
         id: users.id,
@@ -5221,25 +5223,24 @@ export class DatabaseStorage implements IStorage {
       .innerJoin(professionals, eq(users.id, professionals.userId))
       .innerJoin(userProfessionalPrimaryTalents, eq(professionals.primaryTalentId, userProfessionalPrimaryTalents.id))
       .where(inArray(userRoles.roleId, professionalRoleIds));
-  
-    const nonPerformanceKeywords = [
-      "legal", "consulting", "advisory",
-      "business", "financial", "marketing",
-      "strategic", "rights", "contract"
-    ];
-  
+
+      const nonPerformanceKeywords = [
+        "default", "professional", "music", "legal", "consulting", "advisory",
+        "business", "financial", "marketing", "strategic", "rights", "contract"
+      ];      
+
     // Process all professionals concurrently
     const availableProfessionals = await Promise.all(allProfessionals.map(async (professional) => {
       const specialty = professional.talentName ?? "Professional Services";
-  
+
       const isNonPerformance = nonPerformanceKeywords.some(keyword =>
         specialty.toLowerCase().includes(keyword)
       );
-  
+
       if (!isNonPerformance) return null; // skip performance professionals
-  
+
       const conflictCheck = await this.checkLegalConflictOfInterest(professional.id);
-  
+
       return {
         ...professional,
         specialty,
@@ -5249,10 +5250,10 @@ export class DatabaseStorage implements IStorage {
         serviceType: "non_performance"
       };
     }));
-  
+
     return availableProfessionals.filter(Boolean); // remove nulls
   }
-  
+
 
 
 
@@ -8168,11 +8169,18 @@ export class DatabaseStorage implements IStorage {
     return result > 0; // true if deleted, false if not found
   }
 
-
-  async getDefaultProfessional(): Promise<UserProfessionalPrimaryTalent | null> {
+  async getDefaultProfessional() {
     const [professional] = await db
-      .select()
+      .select({
+        userId: users.id,
+        fullName: users.fullName,
+        email: users.email,
+        talentId: userProfessionalPrimaryTalents.id,
+        talentName: userProfessionalPrimaryTalents.name
+      })
       .from(userProfessionalPrimaryTalents)
+      .innerJoin(professionals, eq(professionals.primaryTalentId, userProfessionalPrimaryTalents.id))
+      .innerJoin(users, eq(professionals.userId, users.id))
       .where(eq(userProfessionalPrimaryTalents.isDefault, true))
       .limit(1);
 

@@ -12465,73 +12465,86 @@ This is a preview of the performance engagement contract. Final agreement will i
   //   }
   // });
 
-  app.post('/api/management-applications/:id/assign-lawyer', authenticateToken, async (req: Request, res: Response) => {
+  app.post("/api/management-applications/:id/assign-lawyer", authenticateToken, async (req: Request, res: Response) => {
     try {
+
       const applicationId = parseInt(req.params.id);
       const currentUserId = req.user?.userId;
 
       const {
-        lawyerUserId=8,
+        lawyerUserId,
         assignmentRole,
         authorityLevel,
         canSignContracts,
         canModifyTerms,
         canFinalizeAgreements,
-        overrideConflict = false
+        overrideConflict = false,
       } = req.body;
 
-      // Verify application exists
+      // 1. Check Application exists
       const application = await storage.getManagementApplication(applicationId);
+
       if (!application) {
-        return res.status(404).json({ message: 'Management application not found' });
+        return res.status(404).json({ message: "Management application not found" });
       }
 
-      // Resolve professional
-      const professional =  await storage.getProfessional(lawyerUserId) 
+      // 2. Resolve professional (fallback: default professional)
+      let professional = lawyerUserId ? await storage.getProfessional(lawyerUserId) : null;
 
       if (!professional) {
-        return res.status(400).json({ message: 'No professional available for assignment' });
+        professional = await storage.getProfessional(8);
       }
 
-      // Conflict check
-      const conflictCheck = await storage.checkLegalConflictOfInterest(professional.userId);
+      if (!professional) {
+        return res.status(400).json({ message: "No professional available for assignment" });
+      }
+
+      // 3. Conflict Check
+      const conflictCheck = await storage.checkLegalConflictOfInterest(
+        professional.userId
+      );
 
       if (conflictCheck.hasConflict && !overrideConflict) {
         return res.status(409).json({
-          message: 'Conflict of interest detected',
+          message: "Conflict of interest detected",
           conflictDetails: conflictCheck.conflictDetails,
-          requiresOverride: true
+          requiresOverride: true,
         });
       }
 
       if (conflictCheck.hasConflict && overrideConflict) {
-        console.warn(`CONFLICT OVERRIDE: Superadmin ${currentUserId} assigned professional ${professional.userId} despite conflicts:`, conflictCheck.conflictDetails);
+        console.warn(
+          `⚠️ CONFLICT OVERRIDE: Superadmin ${currentUserId} assigned professional ${professional.userId} despite conflicts:`,
+          conflictCheck.conflictDetails
+        );
       }
 
-      // Create assignment
+      // 4. Create Assignment
       const assignment = await storage.createApplicationLegalAssignment({
         applicationId,
         lawyerUserId: professional.userId,
-        assignmentRole,
+        assignmentRole:assignmentRole ,
         authorityLevel,
         canSignContracts: !!canSignContracts,
         canModifyTerms: !!canModifyTerms,
         canFinalizeAgreements: !!canFinalizeAgreements,
-        assignedByUserId: currentUserId || 0
+        assignedByUserId: currentUserId || 0,
       });
 
+      // 5. Return Response
       res.status(201).json({
         assignment,
-        professional, // extra info for frontend
+        professional, // full object for frontend
         conflictOverridden: conflictCheck.hasConflict && overrideConflict,
-        conflictDetails: conflictCheck.hasConflict ? conflictCheck.conflictDetails : undefined
+        conflictDetails: conflictCheck.hasConflict ? conflictCheck.conflictDetails : undefined,
       });
-
     } catch (error) {
-      console.error('Assign professional to application error:', error);
-      res.status(500).json({ message: 'Failed to assign professional to application' });
+      console.error("❌ Assign professional to application error:", error);
+      res.status(500).json({ message: "Failed to assign professional to application" });
     }
-  });
+  }
+  );
+
 
 
 

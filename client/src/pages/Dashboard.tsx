@@ -273,7 +273,6 @@ function DashboardContent() {
     queryKey: ['/api/management-applications'],
     enabled: !!user && !!isAdminRole,
   });
-console.log(allApplications)
   
   
   

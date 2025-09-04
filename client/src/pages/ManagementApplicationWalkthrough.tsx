@@ -5,22 +5,7 @@ import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useToast } from '@/hooks/use-toast';
 import { apiRequest } from '@/lib/queryClient';
-import {
-  ArrowRight,
-  CheckCircle,
-  Clock,
-  FileText,
-  Users,
-  UserCheck,
-  Scale,
-  Star,
-  Crown,
-  Shield,
-  Edit,
-  Eye,
-  ArrowLeft,
-  Check
-} from 'lucide-react';
+import { ArrowRight, CheckCircle, Clock, FileText, Users, UserCheck, Scale, Star, Crown, Shield, Edit, Eye, ArrowLeft, Check } from 'lucide-react';
 import { useLocation, useParams } from 'wouter';
 import { useQuery } from '@tanstack/react-query';
 import { LoadingSpinner } from '@/components/ui/loading-spinner';
@@ -38,6 +23,7 @@ export default function ManagementApplicationWalkthrough() {
   const [reviewComments, setReviewComments] = useState<string>('')
   const [notes, setNotes] = useState<string>('')
   const [termInMonths, setTermInMonths] = useState<number>(12)
+  const [selectedProfessional, setSelectedProfessional] = useState(null)
 
   const { data: application, isLoading: applicationLoading, error: applicationError } = useQuery({
     queryKey: [`/api/management-applications/${id}`],
@@ -46,6 +32,8 @@ export default function ManagementApplicationWalkthrough() {
   const { data: availableLawyer, isLoading: availableLawyerLoading, error: availableLawerError } = useQuery({
     queryKey: [`/api/available-lawyers-waitumusic`],
   });
+
+  console.log(availableLawyer)
 
 
   const steps = [
@@ -173,14 +161,12 @@ export default function ManagementApplicationWalkthrough() {
 
   // Step 3: Assign Professional
   const assignLawyer = async () => {
-    if (!applicationId) return;
+
 
     try {
       // Get available non-performance professionals for Wai'tuMusic
-      const response = await apiRequest("/api/available-lawyers-waitumusic", { method: "GET" });
-      const availableProfessionals = await response.json();
+      const availableProfessionals = await apiRequest("/api/available-lawyers-waitumusic", { method: "GET" });
 
-      console.log("Available Professionals:", availableProfessionals);
 
       let assignedProfessional: any = null;
 
@@ -199,14 +185,17 @@ export default function ManagementApplicationWalkthrough() {
         }
       }
 
-      // Build assignment payload dynamically
-      // If assignedProfessional is null, backend will auto fallback to default professional
+      setSelectedProfessional(assignedProfessional)
+
+      // // Build assignment payload dynamically
+      // // If assignedProfessional is null, backend will auto fallback to default professional
       const payload = assignedProfessional ? getAssignmentPayload(assignedProfessional) : {};
 
-      await apiRequest(`/api/management-applications/${applicationId}/assign-lawyer`, {
+      const res = await apiRequest(`/api/management-applications/${applicationId}/assign-lawyer`, {
         method: "POST",
         body: payload,
       });
+      console.log(res)
 
       setStepStatuses(prev => ({ ...prev, 3: "completed" }));
       setCurrentStep(4);
@@ -219,10 +208,8 @@ export default function ManagementApplicationWalkthrough() {
       });
 
     } catch (error: any) {
-      let errorData = null;
-      try {
-        errorData = await error.response?.json();
-      } catch { }
+
+      let errorData = await error.response?.json();
 
       toast({
         title: "Assignment Failed",
@@ -611,8 +598,46 @@ export default function ManagementApplicationWalkthrough() {
                   System automatically prevents conflicts of interest.
                 </p>
               </div>
+              <div>
 
-              <Button className='w-full' onClick={assignLawyer} disabled={stepStatuses[3] === "completed" || !applicationId}>
+                {selectedProfessional?.conflictStatus && (
+                  <div
+                    className={`p-3 rounded border ${selectedProfessional?.conflictStatus === "clear"
+                      ? "bg-green-50 border-green-200"
+                      : "bg-amber-50 border-amber-200"
+                      }`}
+                  >
+                    <h5
+                      className={`font-medium mb-1 ${selectedProfessional?.conflictStatus === "clear"
+                        ? "text-green-800"
+                        : "text-amber-800"
+                        }`}
+                    >
+                      Conflict Status:
+                    </h5>
+                    <p
+                      className={`text-sm ${selectedProfessional?.conflictStatus === "clear"
+                        ? "text-green-700"
+                        : "text-amber-700"
+                        }`}
+                    >
+                      {selectedProfessional?.conflictStatus === "clear"
+                        ? "No conflict detected. Professional is available to represent Wai'tuMusic."
+                        : "Professional represents managed users. Conflict detected!"}
+                    </p>
+
+                    {selectedProfessional?.conflictDetails && (
+                      <ul className="mt-2 text-xs text-amber-800 list-disc list-inside">
+                        {selectedProfessional?.conflictDetails.map((c: any, idx: number) => (
+                          <li key={idx}>{c.message}</li>
+                        ))}
+                      </ul>
+                    )}
+                  </div>
+                )}
+              </div>
+
+              <Button className='w-full' onClick={() => assignLawyer()} disabled={stepStatuses[3] === "completed" || !applicationId}>
                 {stepStatuses[3] === "completed" ? "Professional Assigned" : "Assign Professional"}
               </Button>
             </CardContent>
