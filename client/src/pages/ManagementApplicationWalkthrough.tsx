@@ -147,8 +147,8 @@ export default function ManagementApplicationWalkthrough() {
           status === "approved"
             ? "Application Approved"
             : status === "rejected"
-            ? "Application Rejected"
-            : "Marked Under Review",
+              ? "Application Rejected"
+              : "Marked Under Review",
         description: `Application review completed with status: ${status}`,
       });
     } catch (error) {
@@ -217,28 +217,22 @@ export default function ManagementApplicationWalkthrough() {
 
   // Step 3: Assign Professional
   const assignLawyer = async () => {
+    if (!applicationId) return;
+
     try {
       // If assignedProfessional is null, backend will auto fallback to default professional
-      const payload = selectedProfessional
-        ? getAssignmentPayload(selectedProfessional)
-        : {};
+      const payload = selectedProfessional ? getAssignmentPayload(selectedProfessional) : {};
 
-      const res = await apiRequest(
-        `/api/management-applications/${applicationId}/assign-lawyer`,
-        {
-          method: "POST",
-          body: payload,
-        }
+      const res = await apiRequest(`/api/management-applications/${applicationId}/assign-lawyer`, { method: "POST", body: payload, }
       );
-      console.log(res);
 
       setStepStatuses((prev) => ({ ...prev, 3: "completed" }));
       setCurrentStep(4);
 
       toast({
         title: "Professional Assigned",
-        description: selectedProfessional
-          ? `${selectedProfessional.fullName} (${selectedProfessional.specialty}) assigned successfully`
+        description: selectedProfessional ?
+          `${selectedProfessional.fullName} (${selectedProfessional.specialty}) assigned successfully`
           : "Default professional automatically assigned by system",
       });
     } catch (error: any) {
@@ -259,12 +253,10 @@ export default function ManagementApplicationWalkthrough() {
     if (!applicationId) return;
 
     try {
-      const res = await apiRequest(
-        `/api/management-applications/${applicationId}/generate-contract`,
-        { method: "POST", body: {} }
-      );
+      const res = await apiRequest(`/api/management-applications/${applicationId}/generate-contract`, { method: "POST", body: {} });
 
       console.log(res);
+
       setStepStatuses((prev) => ({ ...prev, 4: "completed" }));
       setCurrentStep(5);
 
@@ -285,54 +277,76 @@ export default function ManagementApplicationWalkthrough() {
   const signContract = async () => {
     if (!applicationId) return;
 
+    // try {
+    //   // Simulate applicant signature
+    //   await apiRequest(`/api/management-applications/${applicationId}/sign`, {
+    //     method: "POST",
+    //     body: {
+    //       signatureData: `applicant-signature-${Date.now()}`,
+    //       signerRole: "applicant",
+    //     },
+    //   });
+
+    //   // Simulate assigned admin signature
+    //   await apiRequest(`/api/management-applications/${applicationId}/sign`, {
+    //     method: "POST",
+    //     body: {
+    //       signatureData: `admin-signature-${Date.now()}`,
+    //       signerRole: "assigned_admin",
+    //     },
+    //   });
+
+    //   // Simulate lawyer signature (representing Wai'tuMusic)
+    //   await apiRequest(`/api/management-applications/${applicationId}/sign`, {
+    //     method: "POST",
+    //     body: {
+    //       signatureData: `lawyer-signature-${Date.now()}`,
+    //       signerRole: "lawyer",
+    //     },
+    //   });
+
+    //   // Final superadmin confirmation
+    //   await apiRequest(`/api/management-applications/${applicationId}/sign`, {
+    //     method: "POST",
+    //     body: {
+    //       signatureData: `superadmin-signature-${Date.now()}`,
+    //       signerRole: "superadmin",
+    //     },
+    //   });
+
+    //   setStepStatuses((prev) => ({ ...prev, 5: "completed", 6: "completed" }));
+    //   setCurrentStep(6);
+
+    //   toast({
+    //     title: "Contract Completed",
+    //     description: "All parties have signed. Role transition executed!",
+    //   });
+    // } catch (error) {
+    //   toast({
+    //     title: "Signing Failed",
+    //     description: "Failed to complete contract signing process",
+    //     variant: "destructive",
+    //   });
+    // }
+
+    if (!applicationId) return;
+
     try {
-      // Simulate applicant signature
-      await apiRequest(`/api/management-applications/${applicationId}/sign`, {
+      await apiRequest(`/api/management-applications/${applicationId}/admin-sign`, {
         method: "POST",
-        body: {
-          signatureData: `applicant-signature-${Date.now()}`,
-          signerRole: "applicant",
-        },
       });
 
-      // Simulate assigned admin signature
-      await apiRequest(`/api/management-applications/${applicationId}/sign`, {
-        method: "POST",
-        body: {
-          signatureData: `admin-signature-${Date.now()}`,
-          signerRole: "assigned_admin",
-        },
-      });
-
-      // Simulate lawyer signature (representing Wai'tuMusic)
-      await apiRequest(`/api/management-applications/${applicationId}/sign`, {
-        method: "POST",
-        body: {
-          signatureData: `lawyer-signature-${Date.now()}`,
-          signerRole: "lawyer",
-        },
-      });
-
-      // Final superadmin confirmation
-      await apiRequest(`/api/management-applications/${applicationId}/sign`, {
-        method: "POST",
-        body: {
-          signatureData: `superadmin-signature-${Date.now()}`,
-          signerRole: "superadmin",
-        },
+      toast({
+        title: "Signatures Completed",
+        description: "Admin signed. All signatures auto-filled!",
       });
 
       setStepStatuses((prev) => ({ ...prev, 5: "completed", 6: "completed" }));
       setCurrentStep(6);
-
-      toast({
-        title: "Contract Completed",
-        description: "All parties have signed. Role transition executed!",
-      });
     } catch (error) {
       toast({
         title: "Signing Failed",
-        description: "Failed to complete contract signing process",
+        description: "Failed to complete auto-sign",
         variant: "destructive",
       });
     }
@@ -381,13 +395,12 @@ export default function ManagementApplicationWalkthrough() {
                   <div
                     className={`
                     w-12 h-12 rounded-full flex items-center justify-center border-2 mb-2
-                    ${
-                      isCompleted
+                    ${isCompleted
                         ? "bg-green-500 border-green-500 text-white"
                         : isCurrent
-                        ? "bg-blue-500 border-blue-500 text-white"
-                        : "bg-gray-100 border-gray-300 text-gray-500"
-                    }
+                          ? "bg-blue-500 border-blue-500 text-white"
+                          : "bg-gray-100 border-gray-300 text-gray-500"
+                      }
                   `}
                   >
                     {isCompleted ? (
@@ -397,13 +410,12 @@ export default function ManagementApplicationWalkthrough() {
                     )}
                   </div>
                   <span
-                    className={`text-sm font-medium text-center ${
-                      isCompleted
-                        ? "text-green-600"
-                        : isCurrent
+                    className={`text-sm font-medium text-center ${isCompleted
+                      ? "text-green-600"
+                      : isCurrent
                         ? "text-blue-600"
                         : "text-gray-500"
-                    }`}
+                      }`}
                   >
                     {step.title}
                   </span>
@@ -657,103 +669,107 @@ export default function ManagementApplicationWalkthrough() {
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
+              {/* Step explanation */}
               <div className="bg-purple-50 p-4 rounded-lg">
                 <h4 className="font-medium mb-2">What happens in this step:</h4>
                 <ul className="space-y-1 text-sm text-muted-foreground">
-                  <li>
-                    • Superadmin assigns non-performance professional to
-                    represent Wai'tuMusic
-                  </li>
-                  <li>
-                    • Only managed professionals can represent Wai'tuMusic
-                    without conflicts
-                  </li>
-                  <li>
-                    • Professional authority level configured (full,
-                    review-only, advisory)
-                  </li>
+                  <li>• Superadmin assigns non-performance professional to represent Wai'tuMusic</li>
+                  <li>• Only managed professionals can represent Wai'tuMusic without conflicts</li>
+                  <li>• Professional authority level configured (full, review-only, advisory)</li>
                   <li>• Contract signing and modification permissions set</li>
-                  <li>
-                    • Professional can act on behalf of Wai'tuMusic in
-                    non-performance matters
-                  </li>
+                  <li>• Professional can act on behalf of Wai'tuMusic in non-performance matters</li>
                 </ul>
               </div>
 
+              {/* Professional details */}
+              <div className="border rounded-lg p-4 space-y-2">
+                <h4 className="font-semibold">Professional Details</h4>
+                <div className="grid grid-cols-2 gap-3 text-sm">
+                  <div>
+                    <span className="font-medium">Name:</span>
+                    <p className="text-muted-foreground">{selectedProfessional?.fullName}</p>
+                  </div>
+                  <div>
+                    <span className="font-medium">Email:</span>
+                    <p className="text-muted-foreground">{selectedProfessional?.email}</p>
+                  </div>
+                  <div>
+                    <span className="font-medium">Role ID:</span>
+                    <p className="text-muted-foreground">{selectedProfessional?.roleId}</p>
+                  </div>
+                  <div>
+                    <span className="font-medium">Service Type:</span>
+                    <p className="text-muted-foreground">{selectedProfessional?.serviceType}</p>
+                  </div>
+                  <div>
+                    <span className="font-medium">Hourly Rate:</span>
+                    <p className="text-muted-foreground">
+                      {selectedProfessional?.hourlyRate
+                        ? `$${selectedProfessional.hourlyRate}`
+                        : "N/A"}
+                    </p>
+                  </div>
+                  <div>
+                    <span className="font-medium">Specialty:</span>
+                    <p className="text-muted-foreground">{selectedProfessional?.specialty}</p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Assignment info */}
               <div className="grid grid-cols-3 gap-4">
                 <div className="border p-3 rounded">
                   <span className="font-medium">Assignment Role:</span>
-                  <p className="text-sm text-muted-foreground">
-                    Wai'tuMusic Representative
-                  </p>
+                  <p className="text-sm text-muted-foreground">{selectedProfessional?.assignmentRole ?? "N/A"}</p>
                 </div>
                 <div className="border p-3 rounded">
                   <span className="font-medium">Authority Level:</span>
-                  <p className="text-sm text-muted-foreground">
-                    Full Authority
-                  </p>
+                  <p className="text-sm text-muted-foreground">{selectedProfessional?.authorityLevel ?? "N/A"}</p>
                 </div>
                 <div className="border p-3 rounded">
-                  <span className="font-medium">Service Type:</span>
-                  <p className="text-sm text-muted-foreground">
-                    Non-Performance
-                  </p>
+                  <span className="font-medium">Status:</span>
+                  <p className="text-sm text-muted-foreground">{selectedProfessional?.isAvailable ? "Available" : "Unavailable"}</p>
                 </div>
               </div>
 
-              <div className="bg-amber-50 p-3 rounded border border-amber-200">
-                <h5 className="font-medium text-amber-800 mb-1">
-                  Conflict Prevention:
-                </h5>
-                <p className="text-sm text-amber-700">
-                  Professionals representing managed users cannot represent
-                  Wai'tuMusic unless they are managed professionals themselves.
-                  System automatically prevents conflicts of interest.
-                </p>
-              </div>
-              <div>
-                {selectedProfessional?.conflictStatus && (
-                  <div
-                    className={`p-3 rounded border ${
-                      selectedProfessional?.conflictStatus === "clear"
-                        ? "bg-green-50 border-green-200"
-                        : "bg-amber-50 border-amber-200"
+              {/* Conflict section */}
+              {selectedProfessional?.conflictStatus && (
+                <div
+                  className={`p-3 rounded border ${selectedProfessional.conflictStatus === "clear"
+                    ? "bg-green-50 border-green-200"
+                    : "bg-amber-50 border-amber-200"
                     }`}
+                >
+                  <h5
+                    className={`font-medium mb-1 ${selectedProfessional.conflictStatus === "clear"
+                      ? "text-green-800"
+                      : "text-amber-800"
+                      }`}
                   >
-                    <h5
-                      className={`font-medium mb-1 ${
-                        selectedProfessional?.conflictStatus === "clear"
-                          ? "text-green-800"
-                          : "text-amber-800"
+                    Conflict Status:
+                  </h5>
+                  <p
+                    className={`text-sm ${selectedProfessional.conflictStatus === "clear"
+                      ? "text-green-700"
+                      : "text-amber-700"
                       }`}
-                    >
-                      Conflict Status:
-                    </h5>
-                    <p
-                      className={`text-sm ${
-                        selectedProfessional?.conflictStatus === "clear"
-                          ? "text-green-700"
-                          : "text-amber-700"
-                      }`}
-                    >
-                      {selectedProfessional?.conflictStatus === "clear"
-                        ? "No conflict detected. Professional is available to represent Wai'tuMusic."
-                        : "Professional represents managed users. Conflict detected!"}
-                    </p>
+                  >
+                    {selectedProfessional.conflictStatus === "clear"
+                      ? "No conflict detected. Professional is available to represent Wai'tuMusic."
+                      : "Professional represents managed users. Conflict detected!"}
+                  </p>
 
-                    {selectedProfessional?.conflictDetails && (
-                      <ul className="mt-2 text-xs text-amber-800 list-disc list-inside">
-                        {selectedProfessional?.conflictDetails.map(
-                          (c: any, idx: number) => (
-                            <li key={idx}>{c.message}</li>
-                          )
-                        )}
-                      </ul>
-                    )}
-                  </div>
-                )}
-              </div>
+                  {selectedProfessional.conflictDetails && (
+                    <ul className="mt-2 text-xs text-amber-800 list-disc list-inside">
+                      {selectedProfessional.conflictDetails.map((c: any, idx: number) => (
+                        <li key={idx}>{c.message}</li>
+                      ))}
+                    </ul>
+                  )}
+                </div>
+              )}
 
+              {/* Action button */}
               <Button
                 className="w-full"
                 onClick={() => assignLawyer()}
@@ -880,7 +896,7 @@ export default function ManagementApplicationWalkthrough() {
 
               <Button
                 className="w-full"
-                onClick={signContract}
+                onClick={() => signContract()}
                 disabled={stepStatuses[5] === "completed" || !applicationId}
               >
                 {stepStatuses[5] === "completed"
