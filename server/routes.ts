@@ -16157,7 +16157,7 @@ This is a preview of the performance engagement contract. Final agreement will i
       // 1️⃣ Check admin permissions
       const roles = await storage.getUserRoles(currentUserId);
 
-      if (!roles.some((r) => r.id === 2)) // 2 = admin
+      if (!roles.some((r) => r.id === 2 || )) // 2 = admin
         return res.status(403).json({ message: "Not admin" });
 
       // 2️⃣ Auto-fill all signatures
