@@ -1,40 +1,62 @@
-import { useState } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { useToast } from '@/hooks/use-toast';
-import { apiRequest } from '@/lib/queryClient';
-import { ArrowRight, CheckCircle, Clock, FileText, Users, UserCheck, Scale, Star, Crown, Shield, Edit, Eye, ArrowLeft, Check } from 'lucide-react';
-import { useLocation, useParams } from 'wouter';
-import { useQuery } from '@tanstack/react-query';
-import { LoadingSpinner } from '@/components/ui/loading-spinner';
-import { Textarea } from '@/components/ui/textarea';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
+import { useState } from "react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { useToast } from "@/hooks/use-toast";
+import { apiRequest } from "@/lib/queryClient";
+import {
+  ArrowRight,
+  CheckCircle,
+  Clock,
+  FileText,
+  Users,
+  UserCheck,
+  Scale,
+  Star,
+  Crown,
+  Shield,
+  Edit,
+  Eye,
+  ArrowLeft,
+  Check,
+} from "lucide-react";
+import { useLocation, useParams } from "wouter";
+import { useQuery } from "@tanstack/react-query";
+import { LoadingSpinner } from "@/components/ui/loading-spinner";
+import { Textarea } from "@/components/ui/textarea";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 
 export default function ManagementApplicationWalkthrough() {
-  const [, setLocation] = useLocation()
+  const [, setLocation] = useLocation();
   const { toast } = useToast();
   const [currentStep, setCurrentStep] = useState(1);
-  const { id } = useParams()
+  const { id } = useParams();
   const [applicationId, setApplicationId] = useState<number | null>(null);
   const [applicationData, setApplicationData] = useState<any>(null);
-  const [reviewComments, setReviewComments] = useState<string>('')
-  const [notes, setNotes] = useState<string>('')
-  const [termInMonths, setTermInMonths] = useState<number>(12)
-  const [selectedProfessional, setSelectedProfessional] = useState(null)
+  const [reviewComments, setReviewComments] = useState<string>("");
+  const [notes, setNotes] = useState<string>("");
+  const [termInMonths, setTermInMonths] = useState<number>(12);
+  const [selectedProfessional, setSelectedProfessional] = useState(null);
 
-  const { data: application, isLoading: applicationLoading, error: applicationError } = useQuery({
+  const {
+    data: application,
+    isLoading: applicationLoading,
+    error: applicationError,
+  } = useQuery({
     queryKey: [`/api/management-applications/${id}`],
   });
 
-  const { data: availableLawyer, isLoading: availableLawyerLoading, error: availableLawerError } = useQuery({
+  const {
+    data: availableLawyer,
+    isLoading: availableLawyerLoading,
+    error: availableLawerError,
+  } = useQuery({
     queryKey: [`/api/available-lawyers-waitumusic`],
   });
 
-  console.log(availableLawyer)
-
+  console.log(availableLawyer);
 
   const steps = [
     { id: 1, title: "Application Data", status: "pending", icon: FileText },
@@ -42,23 +64,22 @@ export default function ManagementApplicationWalkthrough() {
     { id: 3, title: "Professional Assignment", status: "pending", icon: Scale },
     { id: 4, title: "Contract Generation", status: "pending", icon: FileText },
     { id: 5, title: "Multi-Party Signing", status: "pending", icon: UserCheck },
-    { id: 6, title: "Role Transition", status: "pending", icon: Crown }
+    { id: 6, title: "Role Transition", status: "pending", icon: Crown },
   ];
 
   const [stepStatuses, setStepStatuses] = useState(
     steps.reduce((acc, step) => ({ ...acc, [step.id]: "pending" }), {})
   );
 
-
   // Step 1: Create Application
   const startReview = async () => {
     try {
       setApplicationId(application.id);
       setApplicationData(application);
-      setReviewComments(application?.notes)
-      setNotes(application?.notes)
+      setReviewComments(application?.notes);
+      setNotes(application?.notes);
 
-      setStepStatuses(prev => ({ ...prev, 1: "completed" }));
+      setStepStatuses((prev) => ({ ...prev, 1: "completed" }));
       setCurrentStep(2);
 
       toast({
@@ -83,19 +104,51 @@ export default function ManagementApplicationWalkthrough() {
         reviewStatus: status,
         reviewComments,
         notes,
-        termInMonths
-      }
+        termInMonths,
+      };
 
       await apiRequest(`/api/management-applications/${applicationId}/review`, {
-        method: 'POST',
-        body: payload
+        method: "POST",
+        body: payload,
       });
 
-      setStepStatuses(prev => ({ ...prev, 2: "completed" }));
+      // Get available non-performance professionals for Wai'tuMusic
+      const availableProfessionals = await apiRequest(
+        "/api/available-lawyers-waitumusic",
+        { method: "GET" }
+      );
+
+      let assignedProfessional: any = null;
+
+      if (availableProfessionals.length > 0) {
+        // Try to find a clear professional (no conflicts)
+        assignedProfessional = availableProfessionals.find(
+          (prof: any) => prof.conflictStatus === "clear"
+        );
+
+        if (!assignedProfessional) {
+          // If none are clear, pick the first professional as fallback
+          assignedProfessional = availableProfessionals[0];
+          toast({
+            title: "Fallback Assignment",
+            description: `No clear professionals available, defaulting to ${assignedProfessional.fullName}`,
+            variant: "destructive",
+          });
+        }
+      }
+
+      setSelectedProfessional(assignedProfessional);
+
+      setStepStatuses((prev) => ({ ...prev, 2: "completed" }));
       setCurrentStep(3);
 
       toast({
-        title: status === "approved" ? "Application Approved" : status === "rejected" ? "Application Rejected" : "Marked Under Review",
+        title:
+          status === "approved"
+            ? "Application Approved"
+            : status === "rejected"
+            ? "Application Rejected"
+            : "Marked Under Review",
         description: `Application review completed with status: ${status}`,
       });
     } catch (error) {
@@ -106,7 +159,6 @@ export default function ManagementApplicationWalkthrough() {
       });
     }
   };
-
 
   // ✅ helper function
   function getAssignmentPayload(professional: any) {
@@ -125,7 +177,11 @@ export default function ManagementApplicationWalkthrough() {
     }
 
     // Business / Strategic consultants
-    if (specialty.includes("business") || specialty.includes("strategic") || specialty.includes("marketing")) {
+    if (
+      specialty.includes("business") ||
+      specialty.includes("strategic") ||
+      specialty.includes("marketing")
+    ) {
       return {
         lawyerUserId: professional.id,
         assignmentRole: "business_consultant",
@@ -161,54 +217,31 @@ export default function ManagementApplicationWalkthrough() {
 
   // Step 3: Assign Professional
   const assignLawyer = async () => {
-
-
     try {
-      // Get available non-performance professionals for Wai'tuMusic
-      const availableProfessionals = await apiRequest("/api/available-lawyers-waitumusic", { method: "GET" });
+      // If assignedProfessional is null, backend will auto fallback to default professional
+      const payload = selectedProfessional
+        ? getAssignmentPayload(selectedProfessional)
+        : {};
 
-
-      let assignedProfessional: any = null;
-
-      if (availableProfessionals.length > 0) {
-        // Try to find a clear professional (no conflicts)
-        assignedProfessional = availableProfessionals.find((prof: any) => prof.conflictStatus === "clear");
-
-        if (!assignedProfessional) {
-          // If none are clear, pick the first professional as fallback
-          assignedProfessional = availableProfessionals[0];
-          toast({
-            title: "Fallback Assignment",
-            description: `No clear professionals available, defaulting to ${assignedProfessional.fullName}`,
-            variant: "destructive",
-          });
+      const res = await apiRequest(
+        `/api/management-applications/${applicationId}/assign-lawyer`,
+        {
+          method: "POST",
+          body: payload,
         }
-      }
+      );
+      console.log(res);
 
-      setSelectedProfessional(assignedProfessional)
-
-      // // Build assignment payload dynamically
-      // // If assignedProfessional is null, backend will auto fallback to default professional
-      const payload = assignedProfessional ? getAssignmentPayload(assignedProfessional) : {};
-
-      const res = await apiRequest(`/api/management-applications/${applicationId}/assign-lawyer`, {
-        method: "POST",
-        body: payload,
-      });
-      console.log(res)
-
-      setStepStatuses(prev => ({ ...prev, 3: "completed" }));
+      setStepStatuses((prev) => ({ ...prev, 3: "completed" }));
       setCurrentStep(4);
 
       toast({
         title: "Professional Assigned",
-        description: assignedProfessional
-          ? `${assignedProfessional.fullName} (${assignedProfessional.specialty}) assigned successfully`
+        description: selectedProfessional
+          ? `${selectedProfessional.fullName} (${selectedProfessional.specialty}) assigned successfully`
           : "Default professional automatically assigned by system",
       });
-
     } catch (error: any) {
-
       let errorData = await error.response?.json();
 
       toast({
@@ -226,10 +259,13 @@ export default function ManagementApplicationWalkthrough() {
     if (!applicationId) return;
 
     try {
-      const res = await apiRequest(`/api/management-applications/${applicationId}/generate-contract`, { method: 'POST', body: {} });
+      const res = await apiRequest(
+        `/api/management-applications/${applicationId}/generate-contract`,
+        { method: "POST", body: {} }
+      );
 
-      console.log(res)
-      setStepStatuses(prev => ({ ...prev, 4: "completed" }));
+      console.log(res);
+      setStepStatuses((prev) => ({ ...prev, 4: "completed" }));
       setCurrentStep(5);
 
       toast({
@@ -252,37 +288,41 @@ export default function ManagementApplicationWalkthrough() {
     try {
       // Simulate applicant signature
       await apiRequest(`/api/management-applications/${applicationId}/sign`, {
-        method: 'POST', body: {
+        method: "POST",
+        body: {
           signatureData: `applicant-signature-${Date.now()}`,
-          signerRole: 'applicant'
-        }
+          signerRole: "applicant",
+        },
       });
 
       // Simulate assigned admin signature
       await apiRequest(`/api/management-applications/${applicationId}/sign`, {
-        method: 'POST', body: {
+        method: "POST",
+        body: {
           signatureData: `admin-signature-${Date.now()}`,
-          signerRole: 'assigned_admin'
-        }
+          signerRole: "assigned_admin",
+        },
       });
 
       // Simulate lawyer signature (representing Wai'tuMusic)
       await apiRequest(`/api/management-applications/${applicationId}/sign`, {
-        method: 'POST', body: {
+        method: "POST",
+        body: {
           signatureData: `lawyer-signature-${Date.now()}`,
-          signerRole: 'lawyer'
-        }
+          signerRole: "lawyer",
+        },
       });
 
       // Final superadmin confirmation
       await apiRequest(`/api/management-applications/${applicationId}/sign`, {
-        method: 'POST', body: {
+        method: "POST",
+        body: {
           signatureData: `superadmin-signature-${Date.now()}`,
-          signerRole: 'superadmin'
-        }
+          signerRole: "superadmin",
+        },
       });
 
-      setStepStatuses(prev => ({ ...prev, 5: "completed", 6: "completed" }));
+      setStepStatuses((prev) => ({ ...prev, 5: "completed", 6: "completed" }));
       setCurrentStep(6);
 
       toast({
@@ -298,14 +338,13 @@ export default function ManagementApplicationWalkthrough() {
     }
   };
 
-
   return (
     <div className="container mx-auto p-6 space-y-6">
       <div className="flex items-center justify-between">
         <Button
           variant="outline"
           size="sm"
-          onClick={() => setLocation('/dashboard')}
+          onClick={() => setLocation("/dashboard")}
         >
           <ArrowLeft className="h-4 w-4 mr-2" />
           Back to Dashboard
@@ -317,10 +356,13 @@ export default function ManagementApplicationWalkthrough() {
       </div>
 
       <div>
-        <h1 className="text-3xl font-bold">Management Application Walkthrough</h1>
-        <p className="text-muted-foreground">Interactive demonstration of the complete workflow</p>
+        <h1 className="text-3xl font-bold">
+          Management Application Walkthrough
+        </h1>
+        <p className="text-muted-foreground">
+          Interactive demonstration of the complete workflow
+        </p>
       </div>
-
 
       {/* Progress Timeline */}
       <Card>
@@ -336,18 +378,33 @@ export default function ManagementApplicationWalkthrough() {
 
               return (
                 <div key={step.id} className="flex flex-col items-center">
-                  <div className={`
+                  <div
+                    className={`
                     w-12 h-12 rounded-full flex items-center justify-center border-2 mb-2
-                    ${isCompleted ? 'bg-green-500 border-green-500 text-white' :
-                      isCurrent ? 'bg-blue-500 border-blue-500 text-white' :
-                        'bg-gray-100 border-gray-300 text-gray-500'}
-                  `}>
-                    {isCompleted ? <CheckCircle className="w-6 h-6" /> : <Icon className="w-6 h-6" />}
+                    ${
+                      isCompleted
+                        ? "bg-green-500 border-green-500 text-white"
+                        : isCurrent
+                        ? "bg-blue-500 border-blue-500 text-white"
+                        : "bg-gray-100 border-gray-300 text-gray-500"
+                    }
+                  `}
+                  >
+                    {isCompleted ? (
+                      <CheckCircle className="w-6 h-6" />
+                    ) : (
+                      <Icon className="w-6 h-6" />
+                    )}
                   </div>
-                  <span className={`text-sm font-medium text-center ${isCompleted ? 'text-green-600' :
-                    isCurrent ? 'text-blue-600' :
-                      'text-gray-500'
-                    }`}>
+                  <span
+                    className={`text-sm font-medium text-center ${
+                      isCompleted
+                        ? "text-green-600"
+                        : isCurrent
+                        ? "text-blue-600"
+                        : "text-gray-500"
+                    }`}
+                  >
                     {step.title}
                   </span>
                   {index < steps.length - 1 && (
@@ -386,105 +443,142 @@ export default function ManagementApplicationWalkthrough() {
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
-              {application ? <div className="flex items-center justify-between gap-3">
-                <div>
-                  {/* Header */}
-                  <h3 className="text-xl font-bold">
-                    Application # {application.id} <span className="text-sm text-muted-foreground">({application.status})</span>
-                  </h3>
-
-
-                  {/* Applicant Info */}
-                  <div className="space-y-2">
-                    <p>
-                      <strong>User ID:</strong> {application.applicantUserId}
-                    </p>
-                    <p>
-                      <strong>Requested Role:</strong> {application.requestedRoleId}
-                    </p>
-                    <p>
-                      <strong>Requested Tier:</strong>  {application.requestedManagementTierId}
-                    </p>
-                  </div>
-
-                  {/* Reason */}
-                  <div className="space-y-2">
-                    <h4 className="font-semibold text-lg">Reason</h4>
-                    <p className="text-gray-700">{application.applicationReason}</p>
-                  </div>
-
+              {application ? (
+                <div className="flex items-center justify-between gap-3">
                   <div>
-                    <strong>Business Plan:</strong>
-                    <p className="text-gray-700">{application.businessPlan}</p>
-                  </div>
+                    {/* Header */}
+                    <h3 className="text-xl font-bold">
+                      Application # {application.id}{" "}
+                      <span className="text-sm text-muted-foreground">
+                        ({application.status})
+                      </span>
+                    </h3>
 
-                  <div>
-                    <strong>Expected Revenue:</strong>{" "}
-                    {application.expectedRevenue}
-                  </div>
-
-                  <div>
-                    <strong>Portfolio Links:</strong>{" "}
-                    <a
-                      href={application.portfolioLinks}
-                      target="_blank"
-                      className="text-blue-600 underline"
-                    >
-                      {application.portfolioLinks}
-                    </a>
-                  </div>
-
-                  <div>
-                    <strong>Social Media:</strong>{" "}
-                    <a
-                      href={application.socialMediaMetrics}
-                      target="_blank"
-                      className="text-blue-600 underline"
-                    >
-                      {application.socialMediaMetrics}
-                    </a>
-                  </div>
-
-                  {/* Contract Terms */}
-                  {application.contractTerms && (
-                    <div className="space-y-1">
-                      <strong>Contract Terms:</strong>
-                      <ul className="list-disc ml-6 text-gray-700">
-                        <li>Notice Period: {application.contractTerms.termination.noticePeriod} Days</li>
-                        <li>Early Termination Fee: $ {application.contractTerms.termination.earlyTerminationFee} </li>
-                        <li>Admin Commission: {application.contractTerms.adminCommission}%</li>
-                        <li>Services Discount: {application.contractTerms.servicesDiscount}%</li>
-                        <li>Marketplace Discount: {application.contractTerms.marketplaceDiscount}%</li>
-                        <li>Min Commitment: {application.contractTerms.minimumCommitmentMonths} months</li>
-                      </ul>
+                    {/* Applicant Info */}
+                    <div className="space-y-2">
+                      <p>
+                        <strong>User ID:</strong> {application.applicantUserId}
+                      </p>
+                      <p>
+                        <strong>Requested Role:</strong>{" "}
+                        {application.requestedRoleId}
+                      </p>
+                      <p>
+                        <strong>Requested Tier:</strong>{" "}
+                        {application.requestedManagementTierId}
+                      </p>
                     </div>
-                  )}
 
+                    {/* Reason */}
+                    <div className="space-y-2">
+                      <h4 className="font-semibold text-lg">Reason</h4>
+                      <p className="text-gray-700">
+                        {application.applicationReason}
+                      </p>
+                    </div>
 
+                    <div>
+                      <strong>Business Plan:</strong>
+                      <p className="text-gray-700">
+                        {application.businessPlan}
+                      </p>
+                    </div>
 
-                  {/* Dates */}
-                  <div className="space-y-2 border-t pt-4">
-                    <h4 className="font-semibold text-lg">Timeline</h4>
-                    <p>
-                      <strong>Submitted At:</strong>{" "}
-                      {new Date(application.submittedAt).toLocaleString()}
-                    </p>
-                    <p>
-                      <strong>Created At:</strong>{" "}
-                      {new Date(application.createdAt).toLocaleString()}
-                    </p>
-                    <p>
-                      <strong>Updated At:</strong>{" "}
-                      {new Date(application.updatedAt).toLocaleString()}
-                    </p>
+                    <div>
+                      <strong>Expected Revenue:</strong>{" "}
+                      {application.expectedRevenue}
+                    </div>
+
+                    <div>
+                      <strong>Portfolio Links:</strong>{" "}
+                      <a
+                        href={application.portfolioLinks}
+                        target="_blank"
+                        className="text-blue-600 underline"
+                      >
+                        {application.portfolioLinks}
+                      </a>
+                    </div>
+
+                    <div>
+                      <strong>Social Media:</strong>{" "}
+                      <a
+                        href={application.socialMediaMetrics}
+                        target="_blank"
+                        className="text-blue-600 underline"
+                      >
+                        {application.socialMediaMetrics}
+                      </a>
+                    </div>
+
+                    {/* Contract Terms */}
+                    {application.contractTerms && (
+                      <div className="space-y-1">
+                        <strong>Contract Terms:</strong>
+                        <ul className="list-disc ml-6 text-gray-700">
+                          <li>
+                            Notice Period:{" "}
+                            {application.contractTerms.termination.noticePeriod}{" "}
+                            Days
+                          </li>
+                          <li>
+                            Early Termination Fee: ${" "}
+                            {
+                              application.contractTerms.termination
+                                .earlyTerminationFee
+                            }{" "}
+                          </li>
+                          <li>
+                            Admin Commission:{" "}
+                            {application.contractTerms.adminCommission}%
+                          </li>
+                          <li>
+                            Services Discount:{" "}
+                            {application.contractTerms.servicesDiscount}%
+                          </li>
+                          <li>
+                            Marketplace Discount:{" "}
+                            {application.contractTerms.marketplaceDiscount}%
+                          </li>
+                          <li>
+                            Min Commitment:{" "}
+                            {application.contractTerms.minimumCommitmentMonths}{" "}
+                            months
+                          </li>
+                        </ul>
+                      </div>
+                    )}
+
+                    {/* Dates */}
+                    <div className="space-y-2 border-t pt-4">
+                      <h4 className="font-semibold text-lg">Timeline</h4>
+                      <p>
+                        <strong>Submitted At:</strong>{" "}
+                        {new Date(application.submittedAt).toLocaleString()}
+                      </p>
+                      <p>
+                        <strong>Created At:</strong>{" "}
+                        {new Date(application.createdAt).toLocaleString()}
+                      </p>
+                      <p>
+                        <strong>Updated At:</strong>{" "}
+                        {new Date(application.updatedAt).toLocaleString()}
+                      </p>
+                    </div>
                   </div>
                 </div>
-              </div>
-                : <LoadingSpinner />}
+              ) : (
+                <LoadingSpinner />
+              )}
 
-
-              <Button className='w-full' onClick={() => startReview()} disabled={stepStatuses[1] === "completed"}>
-                {stepStatuses[1] === "completed" ? "Starting.." : "Start to Review"}
+              <Button
+                className="w-full"
+                onClick={() => startReview()}
+                disabled={stepStatuses[1] === "completed"}
+              >
+                {stepStatuses[1] === "completed"
+                  ? "Starting.."
+                  : "Start to Review"}
               </Button>
             </CardContent>
           </Card>
@@ -499,8 +593,8 @@ export default function ManagementApplicationWalkthrough() {
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
-              <div className='space-y-6'>
-                <div className='space-y-3'>
+              <div className="space-y-6">
+                <div className="space-y-3">
                   <Label>Review Comments</Label>
                   <Textarea
                     placeholder="Enter review comments..."
@@ -509,7 +603,7 @@ export default function ManagementApplicationWalkthrough() {
                   />
                 </div>
 
-                <div className='space-y-3'>
+                <div className="space-y-3">
                   <Label>Term (months)</Label>
                   <Input
                     type="number"
@@ -520,7 +614,7 @@ export default function ManagementApplicationWalkthrough() {
                   />
                 </div>
 
-                <div className='space-y-3'>
+                <div className="space-y-3">
                   <Label>Notes (optional)</Label>
                   <Textarea
                     placeholder="Notes (optional)"
@@ -528,8 +622,6 @@ export default function ManagementApplicationWalkthrough() {
                     onChange={(e) => setNotes(e.target.value)}
                   />
                 </div>
-
-
               </div>
 
               {/* Review Buttons */}
@@ -568,58 +660,81 @@ export default function ManagementApplicationWalkthrough() {
               <div className="bg-purple-50 p-4 rounded-lg">
                 <h4 className="font-medium mb-2">What happens in this step:</h4>
                 <ul className="space-y-1 text-sm text-muted-foreground">
-                  <li>• Superadmin assigns non-performance professional to represent Wai'tuMusic</li>
-                  <li>• Only managed professionals can represent Wai'tuMusic without conflicts</li>
-                  <li>• Professional authority level configured (full, review-only, advisory)</li>
+                  <li>
+                    • Superadmin assigns non-performance professional to
+                    represent Wai'tuMusic
+                  </li>
+                  <li>
+                    • Only managed professionals can represent Wai'tuMusic
+                    without conflicts
+                  </li>
+                  <li>
+                    • Professional authority level configured (full,
+                    review-only, advisory)
+                  </li>
                   <li>• Contract signing and modification permissions set</li>
-                  <li>• Professional can act on behalf of Wai'tuMusic in non-performance matters</li>
+                  <li>
+                    • Professional can act on behalf of Wai'tuMusic in
+                    non-performance matters
+                  </li>
                 </ul>
               </div>
 
               <div className="grid grid-cols-3 gap-4">
                 <div className="border p-3 rounded">
                   <span className="font-medium">Assignment Role:</span>
-                  <p className="text-sm text-muted-foreground">Wai'tuMusic Representative</p>
+                  <p className="text-sm text-muted-foreground">
+                    Wai'tuMusic Representative
+                  </p>
                 </div>
                 <div className="border p-3 rounded">
                   <span className="font-medium">Authority Level:</span>
-                  <p className="text-sm text-muted-foreground">Full Authority</p>
+                  <p className="text-sm text-muted-foreground">
+                    Full Authority
+                  </p>
                 </div>
                 <div className="border p-3 rounded">
                   <span className="font-medium">Service Type:</span>
-                  <p className="text-sm text-muted-foreground">Non-Performance</p>
+                  <p className="text-sm text-muted-foreground">
+                    Non-Performance
+                  </p>
                 </div>
               </div>
 
               <div className="bg-amber-50 p-3 rounded border border-amber-200">
-                <h5 className="font-medium text-amber-800 mb-1">Conflict Prevention:</h5>
+                <h5 className="font-medium text-amber-800 mb-1">
+                  Conflict Prevention:
+                </h5>
                 <p className="text-sm text-amber-700">
-                  Professionals representing managed users cannot represent Wai'tuMusic unless they are managed professionals themselves.
+                  Professionals representing managed users cannot represent
+                  Wai'tuMusic unless they are managed professionals themselves.
                   System automatically prevents conflicts of interest.
                 </p>
               </div>
               <div>
-
                 {selectedProfessional?.conflictStatus && (
                   <div
-                    className={`p-3 rounded border ${selectedProfessional?.conflictStatus === "clear"
-                      ? "bg-green-50 border-green-200"
-                      : "bg-amber-50 border-amber-200"
-                      }`}
+                    className={`p-3 rounded border ${
+                      selectedProfessional?.conflictStatus === "clear"
+                        ? "bg-green-50 border-green-200"
+                        : "bg-amber-50 border-amber-200"
+                    }`}
                   >
                     <h5
-                      className={`font-medium mb-1 ${selectedProfessional?.conflictStatus === "clear"
-                        ? "text-green-800"
-                        : "text-amber-800"
-                        }`}
+                      className={`font-medium mb-1 ${
+                        selectedProfessional?.conflictStatus === "clear"
+                          ? "text-green-800"
+                          : "text-amber-800"
+                      }`}
                     >
                       Conflict Status:
                     </h5>
                     <p
-                      className={`text-sm ${selectedProfessional?.conflictStatus === "clear"
-                        ? "text-green-700"
-                        : "text-amber-700"
-                        }`}
+                      className={`text-sm ${
+                        selectedProfessional?.conflictStatus === "clear"
+                          ? "text-green-700"
+                          : "text-amber-700"
+                      }`}
                     >
                       {selectedProfessional?.conflictStatus === "clear"
                         ? "No conflict detected. Professional is available to represent Wai'tuMusic."
@@ -628,17 +743,25 @@ export default function ManagementApplicationWalkthrough() {
 
                     {selectedProfessional?.conflictDetails && (
                       <ul className="mt-2 text-xs text-amber-800 list-disc list-inside">
-                        {selectedProfessional?.conflictDetails.map((c: any, idx: number) => (
-                          <li key={idx}>{c.message}</li>
-                        ))}
+                        {selectedProfessional?.conflictDetails.map(
+                          (c: any, idx: number) => (
+                            <li key={idx}>{c.message}</li>
+                          )
+                        )}
                       </ul>
                     )}
                   </div>
                 )}
               </div>
 
-              <Button className='w-full' onClick={() => assignLawyer()} disabled={stepStatuses[3] === "completed" || !applicationId}>
-                {stepStatuses[3] === "completed" ? "Professional Assigned" : "Assign Professional"}
+              <Button
+                className="w-full"
+                onClick={() => assignLawyer()}
+                disabled={stepStatuses[3] === "completed" || !applicationId}
+              >
+                {stepStatuses[3] === "completed"
+                  ? "Professional Assigned"
+                  : "Assign Professional"}
               </Button>
             </CardContent>
           </Card>
@@ -653,27 +776,47 @@ export default function ManagementApplicationWalkthrough() {
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
-              {application ? <div className="space-y-6">
-                {/* Auto-populated from rolesManagement */}
-                <div>
-                  <Label>Admin Commission (%)</Label>
-                  <Input value={applicationData?.contractTerms?.adminCommission} disabled />
+              {application ? (
+                <div className="space-y-6">
+                  {/* Auto-populated from rolesManagement */}
+                  <div>
+                    <Label>Admin Commission (%)</Label>
+                    <Input
+                      value={applicationData?.contractTerms?.adminCommission}
+                      disabled
+                    />
+                  </div>
+
+                  <div>
+                    <Label>Marketplace Discount (%)</Label>
+                    <Input
+                      value={
+                        applicationData?.contractTerms?.marketplaceDiscount
+                      }
+                      disabled
+                    />
+                  </div>
+
+                  <div>
+                    <Label>Services Discount (%)</Label>
+                    <Input
+                      value={applicationData?.contractTerms?.servicesDiscount}
+                      disabled
+                    />
+                  </div>
                 </div>
+              ) : (
+                <LoadingSpinner />
+              )}
 
-                <div>
-                  <Label>Marketplace Discount (%)</Label>
-                  <Input value={applicationData?.contractTerms?.marketplaceDiscount} disabled />
-                </div>
-
-                <div>
-                  <Label>Services Discount (%)</Label>
-                  <Input value={applicationData?.contractTerms?.servicesDiscount} disabled />
-                </div>
-              </div> : <LoadingSpinner />}
-
-
-              <Button className='w-full' onClick={() => generateContract()} disabled={stepStatuses[4] === "completed" || !applicationId}>
-                {stepStatuses[4] === "completed" ? "Contract Generated" : "Generate Contract"}
+              <Button
+                className="w-full"
+                onClick={() => generateContract()}
+                disabled={stepStatuses[4] === "completed" || !applicationId}
+              >
+                {stepStatuses[4] === "completed"
+                  ? "Contract Generated"
+                  : "Generate Contract"}
               </Button>
             </CardContent>
           </Card>
@@ -692,8 +835,12 @@ export default function ManagementApplicationWalkthrough() {
                 <h4 className="font-medium mb-2">What happens in this step:</h4>
                 <ul className="space-y-1 text-sm text-muted-foreground">
                   <li>• Applicant signs contract digitally</li>
-                  <li>• Assigned admin signs on behalf of administrative oversight</li>
-                  <li>• Assigned lawyer signs representing Wai'tuMusic interests</li>
+                  <li>
+                    • Assigned admin signs on behalf of administrative oversight
+                  </li>
+                  <li>
+                    • Assigned lawyer signs representing Wai'tuMusic interests
+                  </li>
                   <li>• Superadmin provides final confirmation signature</li>
                 </ul>
               </div>
@@ -731,8 +878,14 @@ export default function ManagementApplicationWalkthrough() {
                 </div>
               </div>
 
-              <Button className='w-full' onClick={signContract} disabled={stepStatuses[5] === "completed" || !applicationId}>
-                {stepStatuses[5] === "completed" ? "Contract Signed" : "Execute Signing Process"}
+              <Button
+                className="w-full"
+                onClick={signContract}
+                disabled={stepStatuses[5] === "completed" || !applicationId}
+              >
+                {stepStatuses[5] === "completed"
+                  ? "Contract Signed"
+                  : "Execute Signing Process"}
               </Button>
             </CardContent>
           </Card>
@@ -750,7 +903,9 @@ export default function ManagementApplicationWalkthrough() {
               <div className="bg-green-100 p-4 rounded-lg border border-green-200">
                 <div className="flex items-center gap-2 mb-2">
                   <CheckCircle className="w-5 h-5 text-green-600" />
-                  <h4 className="font-medium text-green-800">Workflow Complete!</h4>
+                  <h4 className="font-medium text-green-800">
+                    Workflow Complete!
+                  </h4>
                 </div>
                 <ul className="space-y-1 text-sm text-green-700">
                   <li>• User role upgraded to Managed Artist (roleId: 3)</li>
@@ -778,9 +933,12 @@ export default function ManagementApplicationWalkthrough() {
               </div>
 
               <div className="text-center pt-4">
-                <h3 className="text-lg font-medium mb-2">🎉 Application Process Complete!</h3>
+                <h3 className="text-lg font-medium mb-2">
+                  🎉 Application Process Complete!
+                </h3>
                 <p className="text-muted-foreground">
-                  The user now has full access to managed artist benefits and Wai'tuMusic's comprehensive service catalog.
+                  The user now has full access to managed artist benefits and
+                  Wai'tuMusic's comprehensive service catalog.
                 </p>
               </div>
             </CardContent>
@@ -796,7 +954,12 @@ export default function ManagementApplicationWalkthrough() {
             setCurrentStep(1);
             setApplicationId(null);
             setApplicationData(null);
-            setStepStatuses(steps.reduce((acc, step) => ({ ...acc, [step.id]: "pending" }), {}));
+            setStepStatuses(
+              steps.reduce(
+                (acc, step) => ({ ...acc, [step.id]: "pending" }),
+                {}
+              )
+            );
           }}
         >
           Reset Walkthrough
