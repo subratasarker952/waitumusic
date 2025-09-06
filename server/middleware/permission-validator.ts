@@ -145,35 +145,74 @@ export function requireAllPermissions(...permissions: string[]) {
 }
 
 // Check if user is in specific role groups
+// export function requireRole(...roleIds: (number | number[])[]) {
+//   return async (req: Request, res: Response, next: NextFunction) => {
+//     try {
+//       if (!req.user) {
+//         return res.status(401).json({ error: 'Authentication required' });
+//       }
+
+//       const user = await storage.getUser(req.user.userId);
+//       if (!user) {
+//         return res.status(401).json({ error: 'User not found' });
+//       }
+
+//       // Flatten the roleIds array in case it's passed as requireRole([1,2]) instead of requireRole(1,2)
+//       const allowedRoles = roleIds.flat() as number[];
+      
+//       if (!allowedRoles.includes(user.roleId)) {
+//         return res.status(403).json({ 
+//           error: 'Access denied',
+//           message: 'Your role does not have access to this resource'
+//         });
+//       }
+
+//       next();
+//     } catch (error) {
+//       console.error('Role check error:', error);
+//       return res.status(500).json({ error: 'Role validation failed' });
+//     }
+//   };
+// }
+
 export function requireRole(...roleIds: (number | number[])[]) {
   return async (req: Request, res: Response, next: NextFunction) => {
     try {
       if (!req.user) {
-        return res.status(401).json({ error: 'Authentication required' });
+        return res.status(401).json({ error: "Authentication required" });
       }
 
+      // User info load
       const user = await storage.getUser(req.user.userId);
       if (!user) {
-        return res.status(401).json({ error: 'User not found' });
+        return res.status(401).json({ error: "User not found" });
       }
 
-      // Flatten the roleIds array in case it's passed as requireRole([1,2]) instead of requireRole(1,2)
+      // Load all roles for this user
+      const userRoles = await storage.getUserRoles(user.id); 
+      const userRoleIds = userRoles.map((r: any) => r.id);
+
+      // Flatten allowed roles
       const allowedRoles = roleIds.flat() as number[];
-      
-      if (!allowedRoles.includes(user.roleId)) {
-        return res.status(403).json({ 
-          error: 'Access denied',
-          message: 'Your role does not have access to this resource'
+
+      // Check intersection
+      const hasRole = userRoleIds.some((id: number) => allowedRoles.includes(id));
+
+      if (!hasRole) {
+        return res.status(403).json({
+          error: "Access denied",
+          message: `Your roles (${userRoleIds.join(", ")}) do not have access. Allowed roles: ${allowedRoles.join(", ")}`
         });
       }
 
       next();
     } catch (error) {
-      console.error('Role check error:', error);
-      return res.status(500).json({ error: 'Role validation failed' });
+      console.error("Role check error:", error);
+      return res.status(500).json({ error: "Role validation failed" });
     }
   };
 }
+
 
 // Check if user is admin (roleId 1 or 2)
 export function requireAdmin(req: Request, res: Response, next: NextFunction) {

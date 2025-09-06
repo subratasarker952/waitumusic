@@ -1075,8 +1075,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
           subscriptionType: isManaged
             ? "managed"
             : user.isDemo
-              ? "demo"
-              : "premium",
+            ? "demo"
+            : "premium",
           hasHospitalityAccess: isManaged || user.isDemo, // Grant access to managed and demo users
         });
       } catch (error) {
@@ -2021,8 +2021,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
         });
 
         console.log(
-          `Total search results: ${results.length} (${results.filter((r) => r.source === "platform").length
-          } platform, ${results.filter((r) => r.source === "youtube").length
+          `Total search results: ${results.length} (${
+            results.filter((r) => r.source === "platform").length
+          } platform, ${
+            results.filter((r) => r.source === "youtube").length
           } YouTube)`
         );
 
@@ -3079,12 +3081,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
         // Validate action
         if (!["approve", "reject", "counter_offer"].includes(action)) {
-          return res
-            .status(400)
-            .json({
-              message:
-                "Invalid action. Must be approve, reject, or counter_offer",
-            });
+          return res.status(400).json({
+            message:
+              "Invalid action. Must be approve, reject, or counter_offer",
+          });
         }
 
         // Validate counter offer if provided
@@ -3094,19 +3094,15 @@ export async function registerRoutes(app: Express): Promise<Server> {
             typeof counterOffer !== "string" ||
             counterOffer.trim().length === 0
           ) {
-            return res
-              .status(400)
-              .json({
-                message:
-                  "Counter offer details are required when submitting a counter offer",
-              });
+            return res.status(400).json({
+              message:
+                "Counter offer details are required when submitting a counter offer",
+            });
           }
           if (counterOffer.length > 1000) {
-            return res
-              .status(400)
-              .json({
-                message: "Counter offer details cannot exceed 1000 characters",
-              });
+            return res.status(400).json({
+              message: "Counter offer details cannot exceed 1000 characters",
+            });
           }
         }
 
@@ -3245,14 +3241,15 @@ export async function registerRoutes(app: Express): Promise<Server> {
               primaryUser.roleId === 6)
           ) {
             const assignmentRole = "Main Booked Talent";
-            const assignmentNotes = `Primary talent - ${primaryUser.roleId === 3
-              ? "managed artist"
-              : primaryUser.roleId === 4
+            const assignmentNotes = `Primary talent - ${
+              primaryUser.roleId === 3
+                ? "managed artist"
+                : primaryUser.roleId === 4
                 ? "artist"
                 : primaryUser.roleId === 5
-                  ? "managed musician"
-                  : "musician"
-              }`;
+                ? "managed musician"
+                : "musician"
+            }`;
 
             await storage.createBookingAssignment({
               bookingId: booking.id,
@@ -3281,18 +3278,21 @@ export async function registerRoutes(app: Express): Promise<Server> {
               if (user.roleId === 3 || user.roleId === 5) {
                 // Managed Artist or Managed Musician
                 assignmentRole = "Main Booked Talent";
-                assignmentNotes = `Multi-talent booking - ${user.roleId === 3 ? "managed artist" : "managed musician"
-                  }`;
+                assignmentNotes = `Multi-talent booking - ${
+                  user.roleId === 3 ? "managed artist" : "managed musician"
+                }`;
               } else if (user.roleId === 4 || user.roleId === 6) {
                 // Regular Artist or Musician
                 assignmentRole = "Main Booked Talent";
-                assignmentNotes = `Multi-talent booking - ${user.roleId === 4 ? "artist" : "musician"
-                  }`;
+                assignmentNotes = `Multi-talent booking - ${
+                  user.roleId === 4 ? "artist" : "musician"
+                }`;
               } else if (user.roleId === 7 || user.roleId === 8) {
                 // Professional roles
                 assignmentRole = "Supporting Professional";
-                assignmentNotes = `Multi-talent booking - ${user.roleId === 7 ? "managed professional" : "professional"
-                  }`;
+                assignmentNotes = `Multi-talent booking - ${
+                  user.roleId === 7 ? "managed professional" : "professional"
+                }`;
               }
             }
 
@@ -3307,13 +3307,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
         }
 
         cacheHelpers.invalidateBookingCache();
-        res
-          .status(201)
-          .json({
-            ...booking,
-            multiTalentBooking,
-            additionalTalentsCount: additionalTalentUserIds?.length || 0,
-          });
+        res.status(201).json({
+          ...booking,
+          multiTalentBooking,
+          additionalTalentsCount: additionalTalentUserIds?.length || 0,
+        });
       } catch (error) {
         logError(error, ErrorSeverity.ERROR, {
           endpoint: "/api/bookings",
@@ -5353,11 +5351,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
         // Validate required fields
         if (!documentType || !documentId || !accessType) {
-          return res
-            .status(400)
-            .json({
-              message: "Document type, ID, and access type are required",
-            });
+          return res.status(400).json({
+            message: "Document type, ID, and access type are required",
+          });
         }
 
         // Generate unique token
@@ -5386,8 +5382,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
           .returning();
 
         // Generate the full URL
-        const shareUrl = `${process.env.BASE_URL || "http://localhost:5000"
-          }/share/${linkToken}`;
+        const shareUrl = `${
+          process.env.BASE_URL || "http://localhost:5000"
+        }/share/${linkToken}`;
 
         res.json({
           link,
@@ -5594,11 +5591,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
           !engagementType ||
           !["viewed", "clicked"].includes(engagementType)
         ) {
-          return res
-            .status(400)
-            .json({
-              message: "Valid engagement type required (viewed/clicked)",
-            });
+          return res.status(400).json({
+            message: "Valid engagement type required (viewed/clicked)",
+          });
         }
 
         await recommendationEngine.trackRecommendationEngagement(
@@ -7578,12 +7573,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const lastRequest = (globalThis as any).contactRateLimit.get(clientIP);
       if (lastRequest && now - lastRequest < 60000) {
         // 1 minute cooldown
-        return res
-          .status(429)
-          .json({
-            message:
-              "Too many requests. Please wait before sending another message.",
-          });
+        return res.status(429).json({
+          message:
+            "Too many requests. Please wait before sending another message.",
+        });
       }
 
       (globalThis as any).contactRateLimit.set(clientIP, now);
@@ -7717,11 +7710,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
         const { WORLD_CURRENCIES } = await import("./currencyService");
         res.json(WORLD_CURRENCIES);
       } catch (error: any) {
-        res
-          .status(500)
-          .json({
-            message: "Error fetching world currencies: " + error.message,
-          });
+        res.status(500).json({
+          message: "Error fetching world currencies: " + error.message,
+        });
       }
     }
   );
@@ -7956,11 +7947,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
         // Validate input
         if (!userId || !forecastType || !method) {
-          return res
-            .status(400)
-            .json({
-              message: "Missing required fields: userId, forecastType, method",
-            });
+          return res.status(400).json({
+            message: "Missing required fields: userId, forecastType, method",
+          });
         }
 
         const forecast = await revenueAnalyticsService.generateForecast(
@@ -8184,8 +8173,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
             },
           ],
           lyrics: `[Verse 1]\nSample lyrics for ${title}\nBy ${artist}\n\n[Chorus]\nSample chorus section\nWith chord progression\n\n[Verse 2]\nSecond verse content\nContinues the story`,
-          chordChart: `${title} - ${artist}\nKey: ${key || "C"
-            }\n\nVerse: C - Am - F - G\nChorus: F - C - G - Am\nBridge: Dm - G - C - Am`,
+          chordChart: `${title} - ${artist}\nKey: ${
+            key || "C"
+          }\n\nVerse: C - Am - F - G\nChorus: F - C - G - Am\nBridge: Dm - G - C - Am`,
         };
 
         res.json(chordChart);
@@ -8219,11 +8209,15 @@ export async function registerRoutes(app: Express): Promise<Server> {
         // Mock AI optimization using OppHub internal intelligence
         const optimizedRecommendation = {
           recommendedFlow: currentSetlist || [],
-          reasoningExplanation: `Based on the ${eventInfo.eventType
-            } event for ${eventInfo.expectedAttendance
-            } attendees, I recommend a ${eventInfo.energyFlow
-            } energy progression. This setlist maximizes audience engagement while showcasing the talents of ${assignedTalent?.length || 0
-            } assigned performers.`,
+          reasoningExplanation: `Based on the ${
+            eventInfo.eventType
+          } event for ${
+            eventInfo.expectedAttendance
+          } attendees, I recommend a ${
+            eventInfo.energyFlow
+          } energy progression. This setlist maximizes audience engagement while showcasing the talents of ${
+            assignedTalent?.length || 0
+          } assigned performers.`,
           energyAnalysis: {
             openingStrategy: `Start with medium-energy crowd-pleasers to establish connection`,
             peakMoments: [3, 7, 12], // Song positions for peak energy
@@ -8364,9 +8358,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
             averageBPM:
               setlist?.length > 0
                 ? Math.round(
-                  setlist.reduce((acc, song) => acc + (song.bpm || 120), 0) /
-                  setlist.length
-                )
+                    setlist.reduce((acc, song) => acc + (song.bpm || 120), 0) /
+                      setlist.length
+                  )
                 : 0,
           },
           generatedAt: booking.setlistGeneratedAt || new Date().toISOString(),
@@ -8398,9 +8392,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
             includeDemo
               ? eq(schema.userTechnicalRequirements.userId, userId)
               : and(
-                eq(schema.userTechnicalRequirements.userId, userId),
-                eq(schema.userTechnicalRequirements.isDemo, true)
-              )
+                  eq(schema.userTechnicalRequirements.userId, userId),
+                  eq(schema.userTechnicalRequirements.isDemo, true)
+                )
           );
 
         res.json(technicalRequirements || []);
@@ -8429,9 +8423,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
             includeDemo
               ? eq(schema.userHospitalityRequirements.userId, userId)
               : and(
-                eq(schema.userHospitalityRequirements.userId, userId),
-                eq(schema.userHospitalityRequirements.isDemo, true)
-              )
+                  eq(schema.userHospitalityRequirements.userId, userId),
+                  eq(schema.userHospitalityRequirements.isDemo, true)
+                )
           );
 
         res.json(hospitalityRequirements || []);
@@ -8460,9 +8454,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
             includeDemo
               ? eq(schema.userPerformanceSpecs.userId, userId)
               : and(
-                eq(schema.userPerformanceSpecs.userId, userId),
-                eq(schema.userPerformanceSpecs.isDemo, true)
-              )
+                  eq(schema.userPerformanceSpecs.userId, userId),
+                  eq(schema.userPerformanceSpecs.isDemo, true)
+                )
           );
 
         res.json(performanceSpecs || []);
@@ -8491,9 +8485,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
             includeDemo
               ? eq(schema.userSkillsAndInstruments.userId, userId)
               : and(
-                eq(schema.userSkillsAndInstruments.userId, userId),
-                eq(schema.userSkillsAndInstruments.isDemo, true)
-              )
+                  eq(schema.userSkillsAndInstruments.userId, userId),
+                  eq(schema.userSkillsAndInstruments.isDemo, true)
+                )
           );
 
         res.json(secondaryTalents || []);
@@ -8862,9 +8856,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
         const whereCondition = includeDemo
           ? eq(schema.userTechnicalRequirements.userId, userId)
           : and(
-            eq(schema.userTechnicalRequirements.userId, userId),
-            eq(schema.userTechnicalRequirements.isDemo, true)
-          );
+              eq(schema.userTechnicalRequirements.userId, userId),
+              eq(schema.userTechnicalRequirements.isDemo, true)
+            );
 
         const [
           technicalRequirements,
@@ -8883,9 +8877,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
               includeDemo
                 ? eq(schema.userHospitalityRequirements.userId, userId)
                 : and(
-                  eq(schema.userHospitalityRequirements.userId, userId),
-                  eq(schema.userHospitalityRequirements.isDemo, true)
-                )
+                    eq(schema.userHospitalityRequirements.userId, userId),
+                    eq(schema.userHospitalityRequirements.isDemo, true)
+                  )
             ),
           db
             .select()
@@ -8894,9 +8888,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
               includeDemo
                 ? eq(schema.userPerformanceSpecs.userId, userId)
                 : and(
-                  eq(schema.userPerformanceSpecs.userId, userId),
-                  eq(schema.userPerformanceSpecs.isDemo, true)
-                )
+                    eq(schema.userPerformanceSpecs.userId, userId),
+                    eq(schema.userPerformanceSpecs.isDemo, true)
+                  )
             ),
           db
             .select()
@@ -8905,9 +8899,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
               includeDemo
                 ? eq(schema.userSkillsAndInstruments.userId, userId)
                 : and(
-                  eq(schema.userSkillsAndInstruments.userId, userId),
-                  eq(schema.userSkillsAndInstruments.isDemo, true)
-                )
+                    eq(schema.userSkillsAndInstruments.userId, userId),
+                    eq(schema.userSkillsAndInstruments.isDemo, true)
+                  )
             ),
         ]);
 
@@ -8982,12 +8976,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
         });
       } catch (error: any) {
         console.error("Error fetching dashboard stats:", error);
-        res
-          .status(500)
-          .json({
-            success: false,
-            error: "Failed to fetch dashboard statistics",
-          });
+        res.status(500).json({
+          success: false,
+          error: "Failed to fetch dashboard statistics",
+        });
       }
     }
   );
@@ -9039,12 +9031,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
         res.json(contentForModeration);
       } catch (error: any) {
         console.error("Error fetching content for moderation:", error);
-        res
-          .status(500)
-          .json({
-            success: false,
-            error: "Failed to fetch content for moderation",
-          });
+        res.status(500).json({
+          success: false,
+          error: "Failed to fetch content for moderation",
+        });
       }
     }
   );
@@ -9078,12 +9068,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
         res.json(recentTransactions);
       } catch (error: any) {
         console.error("Error fetching recent transactions:", error);
-        res
-          .status(500)
-          .json({
-            success: false,
-            error: "Failed to fetch recent transactions",
-          });
+        res.status(500).json({
+          success: false,
+          error: "Failed to fetch recent transactions",
+        });
       }
     }
   );
@@ -9222,8 +9210,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
         res.json({
           success: true,
           data: updatedContent,
-          message: `${contentType} ${approved ? "approved" : "declined"
-            } successfully`,
+          message: `${contentType} ${
+            approved ? "approved" : "declined"
+          } successfully`,
         });
       } catch (error: any) {
         console.error("Error updating content approval:", error);
@@ -9263,12 +9252,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
         res.json(config);
       } catch (error: any) {
         console.error("Error fetching system config:", error);
-        res
-          .status(500)
-          .json({
-            success: false,
-            error: "Failed to fetch system configuration",
-          });
+        res.status(500).json({
+          success: false,
+          error: "Failed to fetch system configuration",
+        });
       }
     }
   );
@@ -9298,12 +9285,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
         });
       } catch (error: any) {
         console.error("Error updating system config:", error);
-        res
-          .status(500)
-          .json({
-            success: false,
-            error: "Failed to update system configuration",
-          });
+        res.status(500).json({
+          success: false,
+          error: "Failed to update system configuration",
+        });
       }
     }
   );
@@ -9411,12 +9396,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
         const { name, displayName, permissions, isCustom = true } = req.body;
 
         if (!name || !displayName || !permissions) {
-          return res
-            .status(400)
-            .json({
-              success: false,
-              error: "Name, displayName, and permissions are required",
-            });
+          return res.status(400).json({
+            success: false,
+            error: "Name, displayName, and permissions are required",
+          });
         }
 
         // Check if role name already exists
@@ -9461,12 +9444,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
         const { displayName, permissions } = req.body;
 
         if (!roleId || !displayName || !permissions) {
-          return res
-            .status(400)
-            .json({
-              success: false,
-              error: "Role ID, displayName, and permissions are required",
-            });
+          return res.status(400).json({
+            success: false,
+            error: "Role ID, displayName, and permissions are required",
+          });
         }
 
         const updatedRole = await storage.updateRole(roleId, {
@@ -9589,12 +9570,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
         const { roleId } = req.body;
 
         if (!userId || !roleId) {
-          return res
-            .status(400)
-            .json({
-              success: false,
-              error: "User ID and Role ID are required",
-            });
+          return res.status(400).json({
+            success: false,
+            error: "User ID and Role ID are required",
+          });
         }
 
         // Verify user exists
@@ -9650,12 +9629,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
         const { userIds, roleId } = req.body;
 
         if (!userIds || !Array.isArray(userIds) || !roleId) {
-          return res
-            .status(400)
-            .json({
-              success: false,
-              error: "User IDs array and Role ID are required",
-            });
+          return res.status(400).json({
+            success: false,
+            error: "User IDs array and Role ID are required",
+          });
         }
 
         // Verify role exists
@@ -9742,12 +9719,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
         res.json({ success: true, data: matrix });
       } catch (error: any) {
         console.error("Error fetching role permissions matrix:", error);
-        res
-          .status(500)
-          .json({
-            success: false,
-            error: "Failed to fetch role permissions matrix",
-          });
+        res.status(500).json({
+          success: false,
+          error: "Failed to fetch role permissions matrix",
+        });
       }
     }
   );
@@ -9964,10 +9939,12 @@ export async function registerRoutes(app: Express): Promise<Server> {
                                                    WAI'TUMUSIC
                               ${booking.eventName || "Performance Engagement"}
   Service Provider                                                                                          Client
-  Wai'tuMusic                                                                               ${booking.clientName || "Client Name"
-          }
-  31 Bath Estate                                                                                         ${booking.clientAddress || "31 Bath Estate"
-          }
+  Wai'tuMusic                                                                               ${
+    booking.clientName || "Client Name"
+  }
+  31 Bath Estate                                                                                         ${
+    booking.clientAddress || "31 Bath Estate"
+  }
   Roseau                                                                                                 Roseau
   St George                                                                                              St George
   00152                                                                                                  00152
@@ -9981,33 +9958,37 @@ export async function registerRoutes(app: Express): Promise<Server> {
 Performance Engagement Contract
 This Performance Engagement Contract (the "Agreement") is made and entered into as of ${contractDate} by and between Wai'tuMusic,
 registered and existing under the laws of the Commonwealth of Dominica, with its principal place of business located at 31 Bath Estate,
-Roseau, Dominica (hereinafter referred to as "Service Provider"), and ${booking.clientName || "Client"
-          }, (hereinafter
+Roseau, Dominica (hereinafter referred to as "Service Provider"), and ${
+          booking.clientName || "Client"
+        }, (hereinafter
 referred to as the "Client").
 1. Engagement
 1.1 Engagement: Service Provider hereby engages the Artist(s) to perform for a live performance event
-called "${booking.eventName || "Live Performance"
-          }" (the "Event") scheduled to take place
-on ${eventDate} at ${booking.eventTime || "8:00 PM"} at ${booking.venueName || "Venue TBD"
-          }.
+called "${
+          booking.eventName || "Live Performance"
+        }" (the "Event") scheduled to take place
+on ${eventDate} at ${booking.eventTime || "8:00 PM"} at ${
+          booking.venueName || "Venue TBD"
+        }.
 1.2 Services: The Artist(s) agree to perform during the Event with the following talent assignment:
 
 ${assignedTalent
-            .map(
-              (talent: any) => `     • ${talent.name} - ${talent.role} (${talent.type})`
-            )
-            .join("\n")}
+  .map(
+    (talent: any) => `     • ${talent.name} - ${talent.role} (${talent.type})`
+  )
+  .join("\n")}
 2. Compensation
 2.1 Compensation: Service Provider agrees to pay the total sum of $${totalContractValue} as compensation for the services rendered under this
 Agreement.
-2.2 Payment: Payment shall be made according to the following terms: ${contractConfig.paymentTerms || "50% deposit, 50% on completion"
-          }.
+2.2 Payment: Payment shall be made according to the following terms: ${
+          contractConfig.paymentTerms || "50% deposit, 50% on completion"
+        }.
 2.3 Individual Talent Compensation:
 ${assignedTalent
-            .map(
-              (talent: any) => `     • ${talent.name}: $${talent.individualPrice || 0}`
-            )
-            .join("\n")}
+  .map(
+    (talent: any) => `     • ${talent.name}: $${talent.individualPrice || 0}`
+  )
+  .join("\n")}
 3. Rehearsal
 3.1 Rehearsal: The Artist(s) agree to participate in rehearsals for the Event as scheduled by Service Provider. Rehearsal dates and times will
 be communicated to the Artist(s) in advance.
@@ -10023,9 +10004,10 @@ be the sole property of Service Provider. Notwithstanding, intellectual property
 be respected.
 7. Termination
 7.1 Termination: Either party may terminate this Agreement for cause upon 30 days' written notice to the other party.
-7.2 Cancellation: ${contractConfig.cancellationPolicy ||
+7.2 Cancellation: ${
+          contractConfig.cancellationPolicy ||
           "72 hours notice required for cancellation"
-          }.
+        }.
 8. Indemnification
 8.1 Indemnification: The Artist(s) agree to indemnify and hold harmless Service Provider, its officers, directors, employees, and agents
 from and against any and all claims, damages, losses, liabilities, and expenses arising out of or in connection with the Artist(s)
@@ -10050,33 +10032,36 @@ Additional Considerations:
      Confidentiality: All information contained herein is considered strictly confidential, private and not for public consumption under
      penalty of law.
 
-${contractConfig.additionalTerms
-            ? `
+${
+  contractConfig.additionalTerms
+    ? `
 
 Additional Terms:
 ${contractConfig.additionalTerms}
 `
-            : ""
-          }
+    : ""
+}
 
 Service Provider                                                                                         Client
-                                                                                                    ${booking.clientName ||
-          "Client Name"
-          }
+                                                                                                    ${
+                                                                                                      booking.clientName ||
+                                                                                                      "Client Name"
+                                                                                                    }
 Wai'tuMusic
                                                                                                    Date : ${eventDate}
 Date : ${contractDate}
 
 CATEGORY-BASED PRICING STRUCTURE:
-${contractConfig.categoryPricing
-            ? Object.entries(contractConfig.categoryPricing)
-              .map(
-                ([category, price]: [string, any]) =>
-                  `- ${category}: $${price} (default rate)`
-              )
-              .join("\n")
-            : "Standard rates apply"
-          }
+${
+  contractConfig.categoryPricing
+    ? Object.entries(contractConfig.categoryPricing)
+        .map(
+          ([category, price]: [string, any]) =>
+            `- ${category}: $${price} (default rate)`
+        )
+        .join("\n")
+    : "Standard rates apply"
+}
 
 ADDITIONAL TERMS:
 ${contractConfig.additionalTerms || "None specified"}
@@ -10140,22 +10125,24 @@ PERFORMER DETAILS:
 - Performance Role: ${talent.role}
 - Talent Category: ${talent.type}
 - Event Assignment: ${booking.eventName}
-- Performance Date: ${booking.eventDate
+- Performance Date: ${
+              booking.eventDate
                 ? new Date(booking.eventDate).toLocaleDateString()
                 : "TBD"
-              }
+            }
 - Venue: ${booking.venueDetails || booking.venueName || "TBD"}
 
 FINANCIAL COMPENSATION:
 - Individual Performance Fee: $${compensation}
 - Payment Terms: ${paymentTerms}
 - Cancellation Policy: ${cancellationPolicy}
-${talent.counterOfferDeadline
-                ? `- Counter-Offer Response Deadline: ${new Date(
-                  talent.counterOfferDeadline
-                ).toLocaleDateString()}`
-                : ""
-              }
+${
+  talent.counterOfferDeadline
+    ? `- Counter-Offer Response Deadline: ${new Date(
+        talent.counterOfferDeadline
+      ).toLocaleDateString()}`
+    : ""
+}
 
 PERFORMANCE REQUIREMENTS:
 - Professional conduct and punctuality required
@@ -10171,27 +10158,31 @@ TECHNICAL SPECIFICATIONS:
 - Collaboration with other assigned talent as directed
 
 TRAVEL & ACCOMMODATION:
-${talent.type.includes("Managed")
-                ? "- Transportation and accommodation provided by Wai'tuMusic as per management agreement"
-                : "- Individual arrangements required unless otherwise specified"
-              }
-${talent.type.includes("Managed")
-                ? "- Per diem allowances included in management package"
-                : "- Meals and incidentals responsibility of performer"
-              }
+${
+  talent.type.includes("Managed")
+    ? "- Transportation and accommodation provided by Wai'tuMusic as per management agreement"
+    : "- Individual arrangements required unless otherwise specified"
+}
+${
+  talent.type.includes("Managed")
+    ? "- Per diem allowances included in management package"
+    : "- Meals and incidentals responsibility of performer"
+}
 
 SPECIAL TERMS & CONDITIONS:
 ${talent.additionalTerms || "Standard performance terms apply"}
 
 MANAGEMENT STATUS:
-${talent.type.includes("Managed")
-                ? "- This performer is under Wai'tuMusic management"
-                : "- Independent contractor agreement"
-              }
-${talent.type.includes("Managed")
-                ? "- Management oversight and support provided"
-                : "- Direct coordination with booking team required"
-              }
+${
+  talent.type.includes("Managed")
+    ? "- This performer is under Wai'tuMusic management"
+    : "- Independent contractor agreement"
+}
+${
+  talent.type.includes("Managed")
+    ? "- Management oversight and support provided"
+    : "- Direct coordination with booking team required"
+}
 
 LEGAL FRAMEWORK:
 - Contract governed by laws of performance jurisdiction
@@ -10445,11 +10436,9 @@ This is a preview of the performance engagement contract. Final agreement will i
         const isAdmin = userRole && [1, 2].includes(userRole);
 
         if (!isDJ && !isAdmin) {
-          return res
-            .status(403)
-            .json({
-              message: "Track separation is only available for DJs and admins",
-            });
+          return res.status(403).json({
+            message: "Track separation is only available for DJs and admins",
+          });
         }
 
         // Perform track separation using Spleeter
@@ -10855,11 +10844,9 @@ This is a preview of the performance engagement contract. Final agreement will i
 
         // Advanced features only available to managed users, their admins, and superadmin
         if (!isTargetManaged && currentUser?.roleId !== 1) {
-          return res
-            .status(403)
-            .json({
-              message: "Advanced insights only available for managed users",
-            });
+          return res.status(403).json({
+            message: "Advanced insights only available for managed users",
+          });
         }
 
         // Users can only view their own recommendations unless they're admin/superadmin
@@ -10923,11 +10910,9 @@ This is a preview of the performance engagement contract. Final agreement will i
 
         // Advanced features only available to managed users, their admins, and superadmin
         if (!isTargetManaged && currentUser?.roleId !== 1) {
-          return res
-            .status(403)
-            .json({
-              message: "Advanced insights only available for managed users",
-            });
+          return res.status(403).json({
+            message: "Advanced insights only available for managed users",
+          });
         }
 
         // Users can only view their own insights unless they're admin/superadmin
@@ -10987,11 +10972,9 @@ This is a preview of the performance engagement contract. Final agreement will i
 
         // Advanced features only available to managed users, their admins, and superadmin
         if (!isTargetManaged && currentUser?.roleId !== 1) {
-          return res
-            .status(403)
-            .json({
-              message: "Advanced insights only available for managed users",
-            });
+          return res.status(403).json({
+            message: "Advanced insights only available for managed users",
+          });
         }
 
         // Users can only refresh their own recommendations unless they're admin/superadmin
@@ -11607,8 +11590,8 @@ This is a preview of the performance engagement contract. Final agreement will i
             performer.roleId <= 4
               ? "Artist"
               : performer.roleId <= 6
-                ? "Musician"
-                : "Professional",
+              ? "Musician"
+              : "Professional",
           isManaged: isManaged,
 
           // Compensation
@@ -11639,8 +11622,8 @@ This is a preview of the performance engagement contract. Final agreement will i
           technicalRequirements: performerProfile?.technicalRiderProfile
             ?.setupRequirements
             ? JSON.stringify(
-              performerProfile.technicalRiderProfile.setupRequirements
-            )
+                performerProfile.technicalRiderProfile.setupRequirements
+              )
             : undefined,
           equipmentDetails:
             performerProfile?.instruments?.join(", ") || undefined,
@@ -11669,11 +11652,9 @@ This is a preview of the performance engagement contract. Final agreement will i
           "Performance engagement contract generation error:",
           error
         );
-        res
-          .status(500)
-          .json({
-            message: "Failed to generate performance engagement contract",
-          });
+        res.status(500).json({
+          message: "Failed to generate performance engagement contract",
+        });
       }
     }
   );
@@ -11727,10 +11708,11 @@ This is a preview of the performance engagement contract. Final agreement will i
         doc
           .fontSize(10)
           .text(
-            `Client: ${clientName ||
-            booker?.fullName ||
-            booking.guestName ||
-            "Guest Client"
+            `Client: ${
+              clientName ||
+              booker?.fullName ||
+              booking.guestName ||
+              "Guest Client"
             }`,
             50,
             220
@@ -11742,7 +11724,8 @@ This is a preview of the performance engagement contract. Final agreement will i
           )
           .text(`Date: ${eventDate || booking.eventDate || "TBD"}`, 50, 260)
           .text(
-            `Artist: ${artistProfile?.stageName || primaryArtist?.fullName || "TBD"
+            `Artist: ${
+              artistProfile?.stageName || primaryArtist?.fullName || "TBD"
             }`,
             50,
             280
@@ -11757,16 +11740,18 @@ This is a preview of the performance engagement contract. Final agreement will i
             doc
               .fontSize(10)
               .text(
-                `Payment ${index + 1}: $${payment.amount} (${payment.method || "Platform Payment"
+                `Payment ${index + 1}: $${payment.amount} (${
+                  payment.method || "Platform Payment"
                 })`,
                 50,
                 yPos
               )
               .text(`Status: ${payment.status || "Completed"}`, 50, yPos + 15)
               .text(
-                `Date: ${payment.processedAt
-                  ? new Date(payment.processedAt).toLocaleDateString()
-                  : new Date().toLocaleDateString()
+                `Date: ${
+                  payment.processedAt
+                    ? new Date(payment.processedAt).toLocaleDateString()
+                    : new Date().toLocaleDateString()
                 }`,
                 50,
                 yPos + 30
@@ -11832,22 +11817,22 @@ This is a preview of the performance engagement contract. Final agreement will i
           ...booking,
           primaryArtist: artistDetails
             ? {
-              stageName:
-                (artistDetails?.stageNames as string[])?.[0] ||
-                primaryArtist.fullName,
-              userId: primaryArtist.id,
-              fullName: primaryArtist.fullName,
-            }
+                stageName:
+                  (artistDetails?.stageNames as string[])?.[0] ||
+                  primaryArtist.fullName,
+                userId: primaryArtist.id,
+                fullName: primaryArtist.fullName,
+              }
             : null,
           booker: booker
             ? {
-              fullName: booker.fullName,
-              email: booker.email,
-            }
+                fullName: booker.fullName,
+                email: booker.email,
+              }
             : {
-              guestName: booking.guestName,
-              guestEmail: booking.guestEmail,
-            },
+                guestName: booking.guestName,
+                guestEmail: booking.guestEmail,
+              },
           assignedMusicians: [], // TODO: Implement assigned musicians retrieval
         };
 
@@ -12012,26 +11997,26 @@ This is a preview of the performance engagement contract. Final agreement will i
           ...booking,
           primaryArtist: artistDetails
             ? {
-              userId: primaryArtist.id,
-              fullName: primaryArtist.fullName,
-              stageName:
-                (artistDetails.stageNames as any)?.[0] ||
-                primaryArtist.fullName,
-              stageNames: artistDetails.stageNames,
-              isManaged: artistDetails.isManaged,
-              userType: talentType,
-              profile: await storage.getUserProfile(primaryArtist.id),
-            }
+                userId: primaryArtist.id,
+                fullName: primaryArtist.fullName,
+                stageName:
+                  (artistDetails.stageNames as any)?.[0] ||
+                  primaryArtist.fullName,
+                stageNames: artistDetails.stageNames,
+                isManaged: artistDetails.isManaged,
+                userType: talentType,
+                profile: await storage.getUserProfile(primaryArtist.id),
+              }
             : null,
           booker: booker
             ? {
-              fullName: booker.fullName,
-              email: booker.email,
-            }
+                fullName: booker.fullName,
+                email: booker.email,
+              }
             : {
-              guestName: booking.guestName,
-              guestEmail: booking.guestEmail,
-            },
+                guestName: booking.guestName,
+                guestEmail: booking.guestEmail,
+              },
           workflowData: parsedWorkflowData,
           assignedMusicians: [], // TODO: Implement assigned musicians retrieval
           contracts: [], // TODO: Implement contracts retrieval
@@ -12765,10 +12750,12 @@ This is a preview of the performance engagement contract. Final agreement will i
           performanceStartTime: "7:00 PM",
           performanceEndTime: "8:00 PM",
           performanceDuration: "60 minutes",
-          pricingTableTotal: `$${booking.finalPrice || booking.totalBudget || 0
-            }`,
-          pricingTable: `Total Budget: $${booking.finalPrice || booking.totalBudget || 0
-            }`,
+          pricingTableTotal: `$${
+            booking.finalPrice || booking.totalBudget || 0
+          }`,
+          pricingTable: `Total Budget: $${
+            booking.finalPrice || booking.totalBudget || 0
+          }`,
           performanceFormat: "in_person",
           soundSystemProvided: false,
           lightingProvided: false,
@@ -12903,12 +12890,10 @@ This is a preview of the performance engagement contract. Final agreement will i
               : "Failed to send test email",
           });
         } else {
-          res
-            .status(500)
-            .json({
-              success: false,
-              message: "Email server connection failed",
-            });
+          res.status(500).json({
+            success: false,
+            message: "Email server connection failed",
+          });
         }
       } catch (error) {
         console.error("Email test error:", error);
@@ -13162,9 +13147,10 @@ This is a preview of the performance engagement contract. Final agreement will i
           .text(`Event Name: ${booking.eventName}`, 50, 190)
           .text(`Event Type: ${booking.eventType}`, 50, 210)
           .text(
-            `Event Date: ${booking.eventDate
-              ? new Date(booking.eventDate).toLocaleDateString()
-              : "TBD"
+            `Event Date: ${
+              booking.eventDate
+                ? new Date(booking.eventDate).toLocaleDateString()
+                : "TBD"
             }`,
             50,
             230
@@ -13178,15 +13164,17 @@ This is a preview of the performance engagement contract. Final agreement will i
         doc
           .fontSize(10)
           .text(
-            `Primary Artist: ${artistDetails?.stageName || "TBD"} (${primaryArtist?.fullName || "TBD"
+            `Primary Artist: ${artistDetails?.stageName || "TBD"} (${
+              primaryArtist?.fullName || "TBD"
             })`,
             50,
             350
           )
           .text(
-            `Booker: ${booker
-              ? `${booker.fullName} (${booker.email})`
-              : `${booking.guestName} (${booking.guestEmail})`
+            `Booker: ${
+              booker
+                ? `${booker.fullName} (${booker.email})`
+                : `${booking.guestName} (${booking.guestEmail})`
             }`,
             50,
             370
@@ -14046,8 +14034,8 @@ This is a preview of the performance engagement contract. Final agreement will i
             managedStatus: storage.isUserManaged(user.roleId)
               ? "Fully Managed"
               : [4, 6, 8].includes(user.roleId)
-                ? "Unmanaged"
-                : "N/A",
+              ? "Unmanaged"
+              : "N/A",
             userType: await storage.getRoleName(user.roleId),
             subType: user.subType || null,
           }))
@@ -14304,11 +14292,9 @@ This is a preview of the performance engagement contract. Final agreement will i
             details: error.message,
           });
         } else {
-          res
-            .status(500)
-            .json({
-              message: "Failed to update user profile. Please try again.",
-            });
+          res.status(500).json({
+            message: "Failed to update user profile. Please try again.",
+          });
         }
       }
     }
@@ -14499,12 +14485,9 @@ This is a preview of the performance engagement contract. Final agreement will i
         // Verify the user is a Managed Artist (roleId 3)
         const targetUser = await storage.getUser(managedArtistUserId);
         if (!targetUser || targetUser.roleId !== 3) {
-          return res
-            .status(400)
-            .json({
-              message:
-                "Release contracts are only available for Managed Artists",
-            });
+          return res.status(400).json({
+            message: "Release contracts are only available for Managed Artists",
+          });
         }
 
         // Get artist record to include management tier info
@@ -14674,11 +14657,9 @@ This is a preview of the performance engagement contract. Final agreement will i
         const currentUserId = req.user?.userId;
 
         if (!serviceId || defaultMaxDiscountPercentage === undefined) {
-          return res
-            .status(400)
-            .json({
-              message: "Service ID and discount percentage are required",
-            });
+          return res.status(400).json({
+            message: "Service ID and discount percentage are required",
+          });
         }
 
         // Check if limit already exists
@@ -14736,12 +14717,10 @@ This is a preview of the performance engagement contract. Final agreement will i
           customMaxDiscountPercentage === undefined ||
           !reason
         ) {
-          return res
-            .status(400)
-            .json({
-              message:
-                "User ID, service ID, discount percentage, and reason are required",
-            });
+          return res.status(400).json({
+            message:
+              "User ID, service ID, discount percentage, and reason are required",
+          });
         }
 
         const permission = await storage.createIndividualDiscountPermission({
@@ -15225,11 +15204,9 @@ This is a preview of the performance engagement contract. Final agreement will i
         res.json(result);
       } catch (error) {
         console.error("Create/update professional availability error:", error);
-        res
-          .status(500)
-          .json({
-            message: "Failed to create/update professional availability",
-          });
+        res.status(500).json({
+          message: "Failed to create/update professional availability",
+        });
       }
     }
   );
@@ -15419,11 +15396,9 @@ This is a preview of the performance engagement contract. Final agreement will i
         // ✅ Fetch all user roles
         const userRoles = await storage.getUserRoles(currentUserId);
         if (userRoles.some((r) => r.id === requestedRoleId)) {
-          return res
-            .status(400)
-            .json({
-              message: "You already have this role and cannot apply again",
-            });
+          return res.status(400).json({
+            message: "You already have this role and cannot apply again",
+          });
         }
 
         // ✅ Check existing pending applications
@@ -15716,12 +15691,9 @@ This is a preview of the performance engagement contract. Final agreement will i
         const { contractTerms, status, termInMonths } = application;
 
         if (status !== "approved") {
-          return res
-            .status(400)
-            .json({
-              message:
-                "Application must be approved before generating contract",
-            });
+          return res.status(400).json({
+            message: "Application must be approved before generating contract",
+          });
         }
 
         // Get applicant user data
@@ -15764,12 +15736,12 @@ This is a preview of the performance engagement contract. Final agreement will i
             professionalType = serviceCategory.toLowerCase().includes("legal")
               ? "legal"
               : serviceCategory.toLowerCase().includes("marketing")
-                ? "marketing"
-                : serviceCategory.toLowerCase().includes("financial")
-                  ? "financial"
-                  : serviceCategory.toLowerCase().includes("brand")
-                    ? "brand"
-                    : "business";
+              ? "marketing"
+              : serviceCategory.toLowerCase().includes("financial")
+              ? "financial"
+              : serviceCategory.toLowerCase().includes("brand")
+              ? "brand"
+              : "business";
           }
         } else {
           // fallback → tier থেকে contract type
@@ -15882,12 +15854,12 @@ This is a preview of the performance engagement contract. Final agreement will i
             professionalType = serviceCategory.toLowerCase().includes("legal")
               ? "legal"
               : serviceCategory.toLowerCase().includes("marketing")
-                ? "marketing"
-                : serviceCategory.toLowerCase().includes("financial")
-                  ? "financial"
-                  : serviceCategory.toLowerCase().includes("brand")
-                    ? "brand"
-                    : "business";
+              ? "marketing"
+              : serviceCategory.toLowerCase().includes("financial")
+              ? "financial"
+              : serviceCategory.toLowerCase().includes("brand")
+              ? "brand"
+              : "business";
           }
         } else {
           // fallback → tier থেকে contract type
@@ -15895,6 +15867,10 @@ This is a preview of the performance engagement contract. Final agreement will i
             application.requestedManagementTierId
           );
         }
+
+        const signer = await storage.getManagementApplicationSignatures(
+          aplicationId
+        );
 
         // Generate actual contract using real templates
         const contractData = {
@@ -15913,6 +15889,7 @@ This is a preview of the performance engagement contract. Final agreement will i
           }),
           termLength: `${termInMonths} months`,
           ...(contractTerms ?? {}), // adminCommission, marketplaceDiscount, etc.
+          signetures,
         };
 
         // Generate PDF using real contract templates
@@ -15940,93 +15917,298 @@ This is a preview of the performance engagement contract. Final agreement will i
   );
 
   // Sign management contract
-  app.post("/api/management-applications/:id/sign", authenticateToken, async (req: Request, res: Response) => {
-    try {
-      const applicationId = parseInt(req.params.id);
-      const { signatureData, signerRole } = req.body;
-      const currentUserId = req.user?.userId;
+  app.post(
+    "/api/management-applications/:id/sign",
+    authenticateToken,
+    async (req: Request, res: Response) => {
+      try {
+        const applicationId = parseInt(req.params.id);
+        const { signatureData, signerRole } = req.body;
+        const currentUserId = req.user?.userId;
 
-      const application = await storage.getManagementApplication(applicationId);
-      if (!application) {
-        return res.status(404).json({ message: "Management application not found" });
+        const application = await storage.getManagementApplication(
+          applicationId
+        );
+        if (!application) {
+          return res
+            .status(404)
+            .json({ message: "Management application not found" });
+        }
+
+        if (
+          !["contract_generated", "awaiting_signatures"].includes(
+            application.status
+          )
+        ) {
+          return res
+            .status(400)
+            .json({ message: "Contract not ready for signing" });
+        }
+
+        // Validate signer permissions
+        // const user = await storage.getUser(currentUserId || 0);
+        const roles = await storage.getUserRoles(currentUserId);
+        const userRoles = roles.map((r) => r.id);
+
+        let validSignerRole = false;
+
+        if (
+          signerRole === "applicant" &&
+          currentUserId === application.applicantUserId
+        ) {
+          validSignerRole = true;
+        } else if (signerRole === "assigned_admin" && userRoles.includes(2)) {
+          // Verify admin is assigned to this user
+          const adminAssignments = await storage.getAdminAssignments();
+          const isAssigned = adminAssignments.some(
+            (a) =>
+              a.adminUserId === currentUserId &&
+              a.managedUserId === application.applicantUserId
+          );
+          validSignerRole = isAssigned;
+        } else if (signerRole === "lawyer") {
+          // Verify lawyer is assigned to this client for this contract type
+          const legalAssignment = await storage.getAssignedLawyer(
+            application.applicantUserId,
+            "management_contract"
+          );
+          validSignerRole = legalAssignment?.lawyerUserId === currentUserId;
+        } else if (signerRole === "superadmin" && userRoles.includes(1)) {
+          validSignerRole = true;
+        }
+
+        if (!validSignerRole) {
+          return res
+            .status(403)
+            .json({ message: "Insufficient permissions to sign as this role" });
+        }
+
+        // Create signature record
+        await storage.createManagementApplicationSignature({
+          applicationId,
+          userId: currentUserId || 0,
+          signerRole,
+          signatureType: "digital",
+          signatureData,
+          ipAddress: req.ip,
+          userAgent: req.get("User-Agent"),
+        });
+
+        // Check if all required signatures are present
+        const signatures = await storage.getManagementApplicationSignatures(
+          applicationId
+        );
+        const hasApplicantSignature = signatures.some(
+          (s) => s.signerRole === "applicant"
+        );
+        const hasAdminSignature = signatures.some(
+          (s) => s.signerRole === "assigned_admin"
+        );
+        const hasSuperadminSignature = signatures.some(
+          (s) => s.signerRole === "superadmin"
+        );
+
+        // Optional lawyer signature (only required if lawyer is assigned)
+        const assignedLawyer = await storage.getAssignedLawyer(
+          application.applicantUserId,
+          "management_contract"
+        );
+        const hasLawyerSignature =
+          !assignedLawyer || signatures.some((s) => s.signerRole === "lawyer");
+
+        let newStatus = application.status;
+        if (
+          hasApplicantSignature &&
+          hasAdminSignature &&
+          hasLawyerSignature &&
+          !hasSuperadminSignature
+        ) {
+          newStatus = "awaiting_signatures"; // Waiting for superadmin final approval
+        } else if (
+          hasApplicantSignature &&
+          hasAdminSignature &&
+          hasLawyerSignature &&
+          hasSuperadminSignature
+        ) {
+          newStatus = "completed";
+
+          // Execute role transition
+          const applicant = await storage.getUser(application.applicantUserId);
+
+          const applicantRoles = await storage.getUserRoles(applicant.id);
+          const applicantRolesIds = applicantRoles.map((r) => r.id);
+
+          if (applicant) {
+            await storage.createManagementTransition({
+              userId: application.applicantUserId,
+              fromRoleId: applicantRolesIds[0],
+              toRoleId: application.requestedRoleId,
+              fromManagementTierId: null,
+              toManagementTierId: application.requestedManagementTierId,
+              transitionType: "management_application",
+              processedByUserId: currentUserId || 0,
+              reason: `Management contract signed and completed - transition to Managed Artist status with tier ${application.requestedManagementTierId}`,
+              effectiveDate: new Date(),
+            });
+
+            await storage.assignRoleToUser(
+              application.applicantUserId,
+              application.requestedRoleId
+            );
+
+            const alreadyHasCoreRole = [4, 6, 8].some((r) =>
+              applicantRolesIds.includes(r)
+            );
+
+            if (alreadyHasCoreRole) {
+              // role অনুযায়ী update হবে
+              if (applicantRolesIds.includes(4)) {
+                const existingArtist = await storage.getArtist(
+                  application.applicantUserId
+                );
+                if (existingArtist) {
+                  await storage.updateArtist(application.applicantUserId, {
+                    isManaged: true,
+                    managementTierId: application.requestedManagementTierId,
+                  });
+                }
+              } else if (applicantRolesIds.includes(6)) {
+                const existingMusician = await storage.getMusician(
+                  application.applicantUserId
+                );
+                if (existingMusician) {
+                  await storage.updateMusician(application.applicantUserId, {
+                    isManaged: true,
+                    managementTierId: application.requestedManagementTierId,
+                  });
+                }
+              } else if (applicantRolesIds.includes(8)) {
+                const existingProfessional = await storage.getProfessional(
+                  application.applicantUserId
+                );
+                if (existingProfessional) {
+                  await storage.updateProfessional(
+                    application.applicantUserId,
+                    {
+                      isManaged: true,
+                      managementTierId: application.requestedManagementTierId,
+                    }
+                  );
+                }
+              }
+            } else {
+              // no core role → requestedRoleId অনুযায়ী create
+              if (application.requestedRoleId === 4) {
+                await storage.createArtist({
+                  userId: application.applicantUserId,
+                  stageName:
+                    applicant.fullName || applicant.email.split("@")[0],
+                  primaryGenre: "To Be Determined",
+                  bio: "New managed artist",
+                  primaryTalentId: 1,
+                  isManaged: true,
+                  managementTierId: application.requestedManagementTierId,
+                  bookingFormPictureUrl: null,
+                });
+              } else if (application.requestedRoleId === 6) {
+                await storage.createMusician({
+                  userId: application.applicantUserId,
+                  stageName:
+                    applicant.fullName || applicant.email.split("@")[0],
+                  primaryTalentId: 1,
+                  bio: "New managed musician",
+                  primaryGenre: "To Be Determined",
+                  isManaged: true,
+                  managementTierId: application.requestedManagementTierId,
+                });
+              } else if (application.requestedRoleId === 8) {
+                await storage.createProfessional({
+                  userId: application.applicantUserId,
+                  primaryTalentId: 1,
+                  isManaged: true,
+                  managementTierId: application.requestedManagementTierId,
+                });
+              }
+            }
+          }
+        }
+
+        // Update application status
+        await storage.updateManagementApplication(applicationId, {
+          status: newStatus,
+          signedAt: newStatus === "completed" ? new Date() : undefined,
+          completedAt: newStatus === "completed" ? new Date() : undefined,
+        });
+
+        res.json({
+          success: true,
+          newStatus,
+          allSignaturesComplete: newStatus === "completed",
+        });
+      } catch (error) {
+        console.error("Sign contract error:", error);
+        res.status(500).json({ message: "Failed to sign contract" });
       }
+    }
+  );
 
-      if (!["contract_generated", "awaiting_signatures"].includes(application.status)) {
-        return res.status(400).json({ message: "Contract not ready for signing" });
-      }
+  app.post(
+    "/api/management-applications/:id/admin-sign",
+    authenticateToken,
+    requireRole([1, 2]),
+    async (req: Request, res: Response) => {
+      try {
+        const applicationId = parseInt(req.params.id);
+        const currentUserId = req.user?.userId;
 
-      // Validate signer permissions
-      // const user = await storage.getUser(currentUserId || 0);
-      const roles = await storage.getUserRoles(currentUserId);
-      const userRoles = roles.map((r) => r.id);
+        const application = await storage.getManagementApplication(
+          applicationId
+        );
 
-      let validSignerRole = false;
+console.log(application)
+console.log(application)
+console.log(application)
+console.log(application)
+console.log(application)
+console.log(application)
+console.log(application)
+console.log(application)
+console.log(application)
+console.log(application)
 
-      if (signerRole === "applicant" && currentUserId === application.applicantUserId) {
-        validSignerRole = true;
-      } else if (signerRole === "assigned_admin" && userRoles.includes(2)) {
-        // Verify admin is assigned to this user
-        const adminAssignments = await storage.getAdminAssignments();
-        const isAssigned = adminAssignments.some((a) => a.adminUserId === currentUserId && a.managedUserId === application.applicantUserId);
-        validSignerRole = isAssigned;
-      } else if (signerRole === "lawyer") {
-        // Verify lawyer is assigned to this client for this contract type
-        const legalAssignment = await storage.getAssignedLawyer(application.applicantUserId, "management_contract");
-        validSignerRole = legalAssignment?.lawyerUserId === currentUserId;
-      } else if (signerRole === "superadmin" && userRoles.includes(1)) {
-        validSignerRole = true;
-      }
+        if (!application) return res.status(404).json({ message: "Not found" });
 
-      if (!validSignerRole) {
-        return res.status(403).json({ message: "Insufficient permissions to sign as this role" });
-      }
+        // 1️⃣ Check admin permissions
+        const roles = await storage.getUserRoles(currentUserId);
 
-      // Create signature record
-      await storage.createManagementApplicationSignature({
-        applicationId,
-        userId: currentUserId || 0,
-        signerRole,
-        signatureType: "digital",
-        signatureData,
-        ipAddress: req.ip,
-        userAgent: req.get("User-Agent"),
-      });
+        const allowedRoles = [1, 2]; // superadmin, admin
+        if (!roles.some((r) => allowedRoles.includes(r.id))) {
+          return res.status(403).json({ message: "Not admin or superadmin" });
+        }
 
-      // Check if all required signatures are present
-      const signatures = await storage.getManagementApplicationSignatures(
-        applicationId
-      );
-      const hasApplicantSignature = signatures.some(
-        (s) => s.signerRole === "applicant"
-      );
-      const hasAdminSignature = signatures.some(
-        (s) => s.signerRole === "assigned_admin"
-      );
-      const hasSuperadminSignature = signatures.some(
-        (s) => s.signerRole === "superadmin"
-      );
+        // 2️⃣ Auto-fill all signatures
+        const signatures = [
+          "applicant",
+          "assigned_admin",
+          "lawyer",
+          "superadmin",
+        ];
+        for (const signerRole of signatures) {
+          await storage.createManagementApplicationSignature({
+            applicationId,
+            userId:
+              signerRole === "applicant"
+                ? application.applicantUserId
+                : currentUserId,
+            signerRole,
+            signatureType: "digital",
+            signatureData: `auto-${signerRole}-${Date.now()}`,
+            ipAddress: req.ip,
+            userAgent: req.get("User-Agent"),
+          });
+        }
 
-      // Optional lawyer signature (only required if lawyer is assigned)
-      const assignedLawyer = await storage.getAssignedLawyer(application.applicantUserId, "management_contract");
-      const hasLawyerSignature = !assignedLawyer || signatures.some((s) => s.signerRole === "lawyer");
-
-      let newStatus = application.status;
-      if (
-        hasApplicantSignature &&
-        hasAdminSignature &&
-        hasLawyerSignature &&
-        !hasSuperadminSignature
-      ) {
-        newStatus = "awaiting_signatures"; // Waiting for superadmin final approval
-      } else if (
-        hasApplicantSignature &&
-        hasAdminSignature &&
-        hasLawyerSignature &&
-        hasSuperadminSignature
-      ) {
-        newStatus = "completed";
-
-        // Execute role transition
+        // 4️⃣ Execute role transition
         const applicant = await storage.getUser(application.applicantUserId);
 
         const applicantRoles = await storage.getUserRoles(applicant.id);
@@ -16044,11 +16226,6 @@ This is a preview of the performance engagement contract. Final agreement will i
             reason: `Management contract signed and completed - transition to Managed Artist status with tier ${application.requestedManagementTierId}`,
             effectiveDate: new Date(),
           });
-
-          await storage.assignRoleToUser(
-            application.applicantUserId,
-            application.requestedRoleId
-          );
 
           const alreadyHasCoreRole = [4, 6, 8].some((r) =>
             applicantRolesIds.includes(r)
@@ -16081,13 +16258,10 @@ This is a preview of the performance engagement contract. Final agreement will i
                 application.applicantUserId
               );
               if (existingProfessional) {
-                await storage.updateProfessional(
-                  application.applicantUserId,
-                  {
-                    isManaged: true,
-                    managementTierId: application.requestedManagementTierId,
-                  }
-                );
+                await storage.updateProfessional(application.applicantUserId, {
+                  isManaged: true,
+                  managementTierId: application.requestedManagementTierId,
+                });
               }
             }
           } else {
@@ -16095,8 +16269,7 @@ This is a preview of the performance engagement contract. Final agreement will i
             if (application.requestedRoleId === 4) {
               await storage.createArtist({
                 userId: application.applicantUserId,
-                stageName:
-                  applicant.fullName || applicant.email.split("@")[0],
+                stageName: applicant.fullName || applicant.email.split("@")[0],
                 primaryGenre: "To Be Determined",
                 bio: "New managed artist",
                 primaryTalentId: 1,
@@ -16107,8 +16280,7 @@ This is a preview of the performance engagement contract. Final agreement will i
             } else if (application.requestedRoleId === 6) {
               await storage.createMusician({
                 userId: application.applicantUserId,
-                stageName:
-                  applicant.fullName || applicant.email.split("@")[0],
+                stageName: applicant.fullName || applicant.email.split("@")[0],
                 primaryTalentId: 1,
                 bio: "New managed musician",
                 primaryGenre: "To Be Determined",
@@ -16125,95 +16297,53 @@ This is a preview of the performance engagement contract. Final agreement will i
             }
           }
         }
-      }
 
-      // Update application status
-      await storage.updateManagementApplication(applicationId, {
-        status: newStatus,
-        signedAt: newStatus === "completed" ? new Date() : undefined,
-        completedAt: newStatus === "completed" ? new Date() : undefined,
-      });
+        await storage.assignRoleToUser(
+          application.applicantUserId,
+          application.requestedRoleId
+        );
 
-      res.json({
-        success: true,
-        newStatus,
-        allSignaturesComplete: newStatus === "completed",
-      });
-    } catch (error) {
-      console.error("Sign contract error:", error);
-      res.status(500).json({ message: "Failed to sign contract" });
-    }
-  }
-  );
-
-  app.post("/api/management-applications/:id/admin-sign", authenticateToken, async (req: Request, res: Response) => {
-    try {
-      const applicationId = parseInt(req.params.id);
-      const currentUserId = req.user?.userId;
-
-      const application = await storage.getManagementApplication(applicationId);
-      if (!application) return res.status(404).json({ message: "Not found" });
-
-      // 1️⃣ Check admin permissions
-      const roles = await storage.getUserRoles(currentUserId);
-
-      if (!roles.some((r) => r.id === 2 || )) // 2 = admin
-        return res.status(403).json({ message: "Not admin" });
-
-      // 2️⃣ Auto-fill all signatures
-      const signatures = ["applicant", "assigned_admin", "lawyer", "superadmin"];
-      for (const signerRole of signatures) {
-        await storage.createManagementApplicationSignature({
-          applicationId,
-          userId: signerRole === "applicant" ? application.applicantUserId : currentUserId,
-          signerRole,
-          signatureType: "digital",
-          signatureData: `auto-${signerRole}-${Date.now()}`,
-          ipAddress: req.ip,
-          userAgent: req.get("User-Agent"),
+        // 3️⃣ Update status to completed
+        await storage.updateManagementApplication(applicationId, {
+          status: "completed",
+          signedAt: new Date(),
+          completedAt: new Date(),
         });
+
+        res.json({
+          success: true,
+          message: "Admin signed and all signatures auto-filled",
+        });
+      } catch (error) {
+        console.error("Admin auto-sign error:", error);
+        res.status(500).json({ message: "Failed to sign application" });
       }
-      
-
-      // 3️⃣ Update status to completed
-      await storage.updateManagementApplication(applicationId, {
-        status: "completed",
-        signedAt: new Date(),
-        completedAt: new Date(),
-      });
-
-      // 4️⃣ Execute role transition
-      await storage.executeRoleTransition(application, currentUserId);
-
-      res.json({ success: true, message: "Admin signed and all signatures auto-filled" });
-    } catch (error) {
-      console.error("Admin auto-sign error:", error);
-      res.status(500).json({ message: "Failed to sign application" });
     }
-  }
   );
-
 
   // get management application by id
-  app.get("/api/management-applications/:id", authenticateToken, async (req: Request, res: Response) => {
-    try {
-      const applicationId = parseInt(req.params.id);
-      const application = await storage.getManagementApplication(
-        applicationId
-      );
-      if (!application) {
-        return res
-          .status(404)
-          .json({ message: "Management application not found" });
+  app.get(
+    "/api/management-applications/:id",
+    authenticateToken,
+    async (req: Request, res: Response) => {
+      try {
+        const applicationId = parseInt(req.params.id);
+        const application = await storage.getManagementApplication(
+          applicationId
+        );
+        if (!application) {
+          return res
+            .status(404)
+            .json({ message: "Management application not found" });
+        }
+        res.json(application);
+      } catch (error) {
+        console.error("Get user management applications error:", error);
+        res
+          .status(500)
+          .json({ message: "Failed to fetch user management applications" });
       }
-      res.json(application);
-    } catch (error) {
-      console.error("Get user management applications error:", error);
-      res
-        .status(500)
-        .json({ message: "Failed to fetch user management applications" });
     }
-  }
   );
 
   // Assign lawyer to client for contract review
@@ -16734,11 +16864,9 @@ This is a preview of the performance engagement contract. Final agreement will i
 
         // Only the assigned musician can respond to their rate
         if (user.id !== parseInt(musicianId)) {
-          return res
-            .status(403)
-            .json({
-              message: "You can only respond to your own rate assignments",
-            });
+          return res.status(403).json({
+            message: "You can only respond to your own rate assignments",
+          });
         }
 
         const result = await storage.respondToPerformanceRate(
@@ -17431,8 +17559,9 @@ This is a preview of the performance engagement contract. Final agreement will i
 
                 // Song info column
                 doc.fillColor("black");
-                const songInfo = `${song.orderPosition || index + 1}. ${song.songTitle
-                  }\nby ${song.artistPerformer}`;
+                const songInfo = `${song.orderPosition || index + 1}. ${
+                  song.songTitle
+                }\nby ${song.artistPerformer}`;
                 doc.text(songInfo, additionalTableLeft + 5, additionalY + 5, {
                   width: additionalColWidths.songInfo - 10,
                   height: additionalRowHeight - 10,
@@ -17706,11 +17835,9 @@ This is a preview of the performance engagement contract. Final agreement will i
           user
         );
         if (![1, 2].includes(user.roleId)) {
-          return res
-            .status(403)
-            .json({
-              message: "Insufficient permissions to view invoice preview",
-            });
+          return res.status(403).json({
+            message: "Insufficient permissions to view invoice preview",
+          });
         }
 
         const preview = await financialAutomation.generateInvoicePreview(
@@ -17736,11 +17863,9 @@ This is a preview of the performance engagement contract. Final agreement will i
 
         // Check if user has permission to create proforma invoices
         if (![1, 2].includes(user.roleId)) {
-          return res
-            .status(403)
-            .json({
-              message: "Insufficient permissions to create proforma invoices",
-            });
+          return res.status(403).json({
+            message: "Insufficient permissions to create proforma invoices",
+          });
         }
 
         const invoiceId = await financialAutomation.createProformaInvoice(
@@ -17840,11 +17965,9 @@ This is a preview of the performance engagement contract. Final agreement will i
 
         // Check permissions
         if (![1, 2].includes(user.roleId)) {
-          return res
-            .status(403)
-            .json({
-              message: "Insufficient permissions to generate payout requests",
-            });
+          return res.status(403).json({
+            message: "Insufficient permissions to generate payout requests",
+          });
         }
 
         const payoutId =
@@ -17886,12 +18009,9 @@ This is a preview of the performance engagement contract. Final agreement will i
 
         // Check permissions
         if (![1, 2].includes(user.roleId)) {
-          return res
-            .status(403)
-            .json({
-              message:
-                "Insufficient permissions to create payment transactions",
-            });
+          return res.status(403).json({
+            message: "Insufficient permissions to create payment transactions",
+          });
         }
 
         const transactionId =
@@ -17977,11 +18097,9 @@ This is a preview of the performance engagement contract. Final agreement will i
           booking.mainArtistUserId === user.userId;
 
         if (!hasAccess) {
-          return res
-            .status(403)
-            .json({
-              message: "Insufficient permissions to view financial summary",
-            });
+          return res.status(403).json({
+            message: "Insufficient permissions to view financial summary",
+          });
         }
 
         const summary = await financialAutomation.getBookingFinancialSummary(
@@ -18019,11 +18137,9 @@ This is a preview of the performance engagement contract. Final agreement will i
           currentBooking.mainArtistUserId === user.userId;
 
         if (!hasAccess) {
-          return res
-            .status(403)
-            .json({
-              message: "Insufficient permissions to update booking status",
-            });
+          return res.status(403).json({
+            message: "Insufficient permissions to update booking status",
+          });
         }
 
         const oldStatus = currentBooking.status;
@@ -18193,11 +18309,9 @@ This is a preview of the performance engagement contract. Final agreement will i
 
         // Only superadmin and admin can view all payout requests
         if (![1, 2].includes(user.roleId)) {
-          return res
-            .status(403)
-            .json({
-              message: "Insufficient permissions to view payout requests",
-            });
+          return res.status(403).json({
+            message: "Insufficient permissions to view payout requests",
+          });
         }
 
         const payoutRequests = await storage.getAllPayoutRequests();
@@ -18220,11 +18334,9 @@ This is a preview of the performance engagement contract. Final agreement will i
 
         // Only superadmin and admin can approve payouts
         if (![1, 2].includes(user.roleId)) {
-          return res
-            .status(403)
-            .json({
-              message: "Insufficient permissions to approve payout requests",
-            });
+          return res.status(403).json({
+            message: "Insufficient permissions to approve payout requests",
+          });
         }
 
         const updatedPayout = await storage.updatePayoutRequestStatus(
@@ -18354,18 +18466,16 @@ This is a preview of the performance engagement contract. Final agreement will i
             req.body.slug
           );
           if (existing) {
-            return res
-              .status(400)
-              .json({
-                message: "Slug already exists. Please choose a different one.",
-              });
+            return res.status(400).json({
+              message: "Slug already exists. Please choose a different one.",
+            });
           }
         }
 
         // Allow superadmin/admin/assigned_admin to create for other users, otherwise use their own userId
         const targetUserId =
           (user.roleId === 1 || user.roleId === 2 || user.roleId === 3) &&
-            req.body.userId
+          req.body.userId
             ? req.body.userId
             : user.userId;
 
@@ -18381,22 +18491,18 @@ This is a preview of the performance engagement contract. Final agreement will i
       } catch (error) {
         console.error("Create website integration error:", error);
         if (error instanceof z.ZodError) {
-          return res
-            .status(400)
-            .json({
-              message: "Invalid integration data",
-              errors: error.errors,
-            });
+          return res.status(400).json({
+            message: "Invalid integration data",
+            errors: error.errors,
+          });
         }
         if (
           error instanceof Error &&
           error.message.includes("unique constraint")
         ) {
-          return res
-            .status(400)
-            .json({
-              message: "Slug already exists. Please choose a different one.",
-            });
+          return res.status(400).json({
+            message: "Slug already exists. Please choose a different one.",
+          });
         }
         res
           .status(500)
@@ -18439,11 +18545,9 @@ This is a preview of the performance engagement contract. Final agreement will i
             updates.slug
           );
           if (existing) {
-            return res
-              .status(400)
-              .json({
-                message: "Slug already exists. Please choose a different one.",
-              });
+            return res.status(400).json({
+              message: "Slug already exists. Please choose a different one.",
+            });
           }
         }
 
@@ -18458,11 +18562,9 @@ This is a preview of the performance engagement contract. Final agreement will i
           error instanceof Error &&
           error.message.includes("unique constraint")
         ) {
-          return res
-            .status(400)
-            .json({
-              message: "Slug already exists. Please choose a different one.",
-            });
+          return res.status(400).json({
+            message: "Slug already exists. Please choose a different one.",
+          });
         }
         res
           .status(500)
@@ -18548,11 +18650,9 @@ This is a preview of the performance engagement contract. Final agreement will i
           error instanceof Error &&
           error.message.includes("unique constraint")
         ) {
-          return res
-            .status(400)
-            .json({
-              message: "Slug already exists. Please choose a different one.",
-            });
+          return res.status(400).json({
+            message: "Slug already exists. Please choose a different one.",
+          });
         }
         res
           .status(500)
@@ -18860,12 +18960,10 @@ This is a preview of the performance engagement contract. Final agreement will i
       } catch (error) {
         console.error("Create competitive intelligence error:", error);
         if (error instanceof z.ZodError) {
-          return res
-            .status(400)
-            .json({
-              message: "Invalid intelligence data",
-              errors: error.errors,
-            });
+          return res.status(400).json({
+            message: "Invalid intelligence data",
+            errors: error.errors,
+          });
         }
         res
           .status(500)
@@ -19068,8 +19166,8 @@ This is a preview of the performance engagement contract. Final agreement will i
         const { bookingId } = req.query;
         const assignments = bookingId
           ? await storage.getBookingAssignmentsByBooking(
-            parseInt(bookingId as string)
-          )
+              parseInt(bookingId as string)
+            )
           : await storage.getBookingAssignments();
         res.json(assignments);
       } catch (error) {
@@ -19184,12 +19282,10 @@ This is a preview of the performance engagement contract. Final agreement will i
         const assignedBy = req.user?.userId;
 
         if (!bookingId || !assignedUserId || !assignmentRole) {
-          return res
-            .status(400)
-            .json({
-              message:
-                "Missing required fields: bookingId, assignedUserId, assignmentRole",
-            });
+          return res.status(400).json({
+            message:
+              "Missing required fields: bookingId, assignedUserId, assignmentRole",
+          });
         }
 
         // Create the assignment using the existing storage method
@@ -19200,8 +19296,9 @@ This is a preview of the performance engagement contract. Final agreement will i
           assignedBy: assignedBy,
           isActive: true,
           assignedAt: new Date(),
-          notes: `Assigned via booking assignment manager - ${assignmentType || "talent"
-            }`,
+          notes: `Assigned via booking assignment manager - ${
+            assignmentType || "talent"
+          }`,
         };
 
         const assignment = await storage.createBookingAssignment(
@@ -19324,11 +19421,9 @@ This is a preview of the performance engagement contract. Final agreement will i
         const assignedBy = req.user?.userId;
 
         if (!bookingId || !userId || !name || !type || !role) {
-          return res
-            .status(400)
-            .json({
-              message: "Missing required fields: userId, name, type, role",
-            });
+          return res.status(400).json({
+            message: "Missing required fields: userId, name, type, role",
+          });
         }
 
         // Create the assignment using the existing storage method
@@ -21343,8 +21438,8 @@ This is a preview of the performance engagement contract. Final agreement will i
             status: systemHealth.every((h) => h.status === "healthy")
               ? "healthy"
               : systemHealth.some((h) => h.status === "error")
-                ? "error"
-                : "warning",
+              ? "error"
+              : "warning",
             uptime: "99.9%",
             activeServices: 12,
             systemChecks: systemHealth,
@@ -22108,7 +22203,7 @@ This is a preview of the performance engagement contract. Final agreement will i
 
       const fee = proOpportunity
         ? parseFloat(proOpportunity.amount) ||
-        defaultFees[proName as keyof typeof defaultFees]
+          defaultFees[proName as keyof typeof defaultFees]
         : defaultFees[proName as keyof typeof defaultFees];
 
       res.json({
@@ -22468,12 +22563,9 @@ This is a preview of the performance engagement contract. Final agreement will i
 
         // Check if user is managed
         if (!user || ![3, 5, 7].includes(user.roleId)) {
-          return res
-            .status(403)
-            .json({
-              message:
-                "ISRC coding service is only available to managed artists",
-            });
+          return res.status(403).json({
+            message: "ISRC coding service is only available to managed artists",
+          });
         }
 
         // Process submission with OppHub
@@ -22837,9 +22929,11 @@ This is a preview of the performance engagement contract. Final agreement will i
           isrcGenerated: result.isrcGenerated,
           newUsersCreated: processedParticipants.filter((p) => p.newUserCreated)
             .length,
-          message: `Enhanced splitsheet created successfully. ${result.notificationsSent
-            } notifications sent. ${result.isrcGenerated ? "ISRC code generated." : ""
-            }`,
+          message: `Enhanced splitsheet created successfully. ${
+            result.notificationsSent
+          } notifications sent. ${
+            result.isrcGenerated ? "ISRC code generated." : ""
+          }`,
         });
       } catch (error) {
         console.error("Enhanced splitsheet creation error:", error);
@@ -22927,8 +23021,9 @@ This is a preview of the performance engagement contract. Final agreement will i
     tempPassword: string
   ): Promise<void> {
     try {
-      const loginUrl = `${process.env.BASE_URL || "http://localhost:5000"
-        }/login`;
+      const loginUrl = `${
+        process.env.BASE_URL || "http://localhost:5000"
+      }/login`;
 
       const emailHtml = `
         <div style="max-width: 600px; margin: 0 auto; padding: 20px; font-family: Arial, sans-serif;">
@@ -23745,11 +23840,9 @@ This is a preview of the performance engagement contract. Final agreement will i
         const userRole = req.user?.roleId;
         if (userRole !== 1) {
           // Only superadmin can update fees
-          return res
-            .status(403)
-            .json({
-              message: "Access denied. Superadmin privileges required.",
-            });
+          return res.status(403).json({
+            message: "Access denied. Superadmin privileges required.",
+          });
         }
 
         const id = parseInt(req.params.id);
@@ -23783,11 +23876,9 @@ This is a preview of the performance engagement contract. Final agreement will i
         const userRole = req.user?.roleId;
         if (userRole !== 1) {
           // Only superadmin can approve
-          return res
-            .status(403)
-            .json({
-              message: "Access denied. Superadmin privileges required.",
-            });
+          return res.status(403).json({
+            message: "Access denied. Superadmin privileges required.",
+          });
         }
 
         const id = parseInt(req.params.id);
@@ -24080,7 +24171,8 @@ This is a preview of the performance engagement contract. Final agreement will i
         res.setHeader("Content-Type", "application/sql");
         res.setHeader(
           "Content-Disposition",
-          `attachment; filename="database-backup-${new Date().toISOString().split("T")[0]
+          `attachment; filename="database-backup-${
+            new Date().toISOString().split("T")[0]
           }.sql"`
         );
         res.send(backupContent);
@@ -24251,7 +24343,8 @@ This is a preview of the performance engagement contract. Final agreement will i
         res.setHeader("Content-Type", "application/json");
         res.setHeader(
           "Content-Disposition",
-          `attachment; filename="waitumusic-data-export-${new Date().toISOString().split("T")[0]
+          `attachment; filename="waitumusic-data-export-${
+            new Date().toISOString().split("T")[0]
           }.json"`
         );
         res.json(exportData);
@@ -25036,11 +25129,9 @@ This is a preview of the performance engagement contract. Final agreement will i
         } = req.body;
 
         if (!releaseType || !primaryArtistId) {
-          return res
-            .status(400)
-            .json({
-              message: "Release type and primary artist ID are required",
-            });
+          return res.status(400).json({
+            message: "Release type and primary artist ID are required",
+          });
         }
 
         const options = {
@@ -25242,11 +25333,9 @@ This is a preview of the performance engagement contract. Final agreement will i
         const isAdminOrSuperadmin = userRole === 1 || userRole === 2; // Assuming 1=superadmin, 2=admin
 
         if (!isArtist && !isAdminOrSuperadmin) {
-          return res
-            .status(403)
-            .json({
-              message: "Not authorized to send updates for this artist",
-            });
+          return res.status(403).json({
+            message: "Not authorized to send updates for this artist",
+          });
         }
 
         if (!title || !content) {
@@ -25430,10 +25519,12 @@ This is a preview of the performance engagement contract. Final agreement will i
               <p><strong>Name:</strong> ${validatedData.name}</p>
               <p><strong>Email:</strong> ${validatedData.email}</p>
               <p><strong>Phone:</strong> ${validatedData.phone || "N/A"}</p>
-              <p><strong>Artist ID:</strong> ${validatedData.artistId || "N/A"
-                }</p>
-              <p><strong>Source:</strong> ${validatedData.source || "all-links-page"
-                }</p>
+              <p><strong>Artist ID:</strong> ${
+                validatedData.artistId || "N/A"
+              }</p>
+              <p><strong>Source:</strong> ${
+                validatedData.source || "all-links-page"
+              }</p>
               <p><strong>Message:</strong></p>
               <p>${validatedData.message}</p>
             `,
@@ -25785,7 +25876,8 @@ This is a preview of the performance engagement contract. Final agreement will i
         res.setHeader("Content-Type", "application/pdf");
         res.setHeader(
           "Content-Disposition",
-          `attachment; filename="Technical_Rider_${eventDetails?.eventName || "Event"
+          `attachment; filename="Technical_Rider_${
+            eventDetails?.eventName || "Event"
           }_${new Date().toISOString().split("T")[0]}.pdf"`
         );
 
@@ -25797,13 +25889,15 @@ This is a preview of the performance engagement contract. Final agreement will i
         doc.text("PROFESSIONAL TECHNICAL RIDER", 50, 50);
         doc.fontSize(14).font("Helvetica");
         doc.text(
-          `${eventDetails?.eventName || "Event"} - ${eventDetails?.venueName || "Venue"
+          `${eventDetails?.eventName || "Event"} - ${
+            eventDetails?.venueName || "Venue"
           }`,
           50,
           80
         );
         doc.text(
-          `Date: ${eventDetails?.eventDate || "TBD"} | Duration: ${eventDetails?.duration || "TBD"
+          `Date: ${eventDetails?.eventDate || "TBD"} | Duration: ${
+            eventDetails?.duration || "TBD"
           } minutes`,
           50,
           100
@@ -25899,7 +25993,8 @@ This is a preview of the performance engagement contract. Final agreement will i
               (element: any, index: number) => {
                 doc.fontSize(10).font("Helvetica");
                 doc.text(
-                  `• ${element.name}${element.assignedTo ? ` (${element.assignedTo})` : ""
+                  `• ${element.name}${
+                    element.assignedTo ? ` (${element.assignedTo})` : ""
                   }`,
                   70,
                   yPosition
@@ -26047,11 +26142,9 @@ This is a preview of the performance engagement contract. Final agreement will i
         // Ensure exactly one primary stage name
         const primaryNames = stageNames.filter((sn) => sn.isPrimary);
         if (primaryNames.length !== 1) {
-          return res
-            .status(400)
-            .json({
-              message: "Exactly one stage name must be marked as primary",
-            });
+          return res.status(400).json({
+            message: "Exactly one stage name must be marked as primary",
+          });
         }
 
         const updatedArtist = await storage.updateArtistStageNames(
@@ -26096,11 +26189,9 @@ This is a preview of the performance engagement contract. Final agreement will i
         // Ensure exactly one primary stage name
         const primaryNames = stageNames.filter((sn) => sn.isPrimary);
         if (primaryNames.length !== 1) {
-          return res
-            .status(400)
-            .json({
-              message: "Exactly one stage name must be marked as primary",
-            });
+          return res.status(400).json({
+            message: "Exactly one stage name must be marked as primary",
+          });
         }
 
         const updatedMusician = await storage.updateMusicianStageNames(
@@ -26355,12 +26446,10 @@ This is a preview of the performance engagement contract. Final agreement will i
           album.artistUserId === currentUserId;
 
         if (!canAssign) {
-          return res
-            .status(403)
-            .json({
-              message:
-                "Insufficient permissions to assign merchandise to this album",
-            });
+          return res.status(403).json({
+            message:
+              "Insufficient permissions to assign merchandise to this album",
+          });
         }
 
         // Verify merchandise exists
@@ -26475,8 +26564,9 @@ ${messageData.messageText}
         const documentsDir = path.join(process.cwd(), "booking-documents");
         await fs.mkdir(documentsDir, { recursive: true });
 
-        const filename = `booking-${messageData.bookingId
-          }-message-${Date.now()}.md`;
+        const filename = `booking-${
+          messageData.bookingId
+        }-message-${Date.now()}.md`;
         const filepath = path.join(documentsDir, filename);
         await fs.writeFile(filepath, markdownContent);
 
@@ -26548,12 +26638,10 @@ ${messageData.messageText}
         res.json({ success: true, data: program });
       } catch (error: any) {
         console.error("Error enrolling artist:", error);
-        res
-          .status(500)
-          .json({
-            success: false,
-            error: "Failed to enroll artist in program",
-          });
+        res.status(500).json({
+          success: false,
+          error: "Failed to enroll artist in program",
+        });
       }
     }
   );
@@ -26596,12 +26684,10 @@ ${messageData.messageText}
         res.json({ success: true, data: potential });
       } catch (error: any) {
         console.error("Error calculating earning potential:", error);
-        res
-          .status(500)
-          .json({
-            success: false,
-            error: "Failed to calculate earning potential",
-          });
+        res.status(500).json({
+          success: false,
+          error: "Failed to calculate earning potential",
+        });
       }
     }
   );
@@ -26621,12 +26707,10 @@ ${messageData.messageText}
         res.json({ success: true, data: categories });
       } catch (error: any) {
         console.error("Error fetching service categories:", error);
-        res
-          .status(500)
-          .json({
-            success: false,
-            error: "Failed to fetch service categories",
-          });
+        res.status(500).json({
+          success: false,
+          error: "Failed to fetch service categories",
+        });
       }
     }
   );
@@ -26665,12 +26749,10 @@ ${messageData.messageText}
         res.json({ success: true, data: categories });
       } catch (error: any) {
         console.error("Error fetching recipient categories:", error);
-        res
-          .status(500)
-          .json({
-            success: false,
-            error: "Failed to fetch recipient categories",
-          });
+        res.status(500).json({
+          success: false,
+          error: "Failed to fetch recipient categories",
+        });
       }
     }
   );
@@ -26684,12 +26766,10 @@ ${messageData.messageText}
         res.json({ success: true, data: category });
       } catch (error: any) {
         console.error("Error creating recipient category:", error);
-        res
-          .status(500)
-          .json({
-            success: false,
-            error: "Failed to create recipient category",
-          });
+        res.status(500).json({
+          success: false,
+          error: "Failed to create recipient category",
+        });
       }
     }
   );
@@ -26748,12 +26828,10 @@ ${messageData.messageText}
         res.json({ success: true, data: recipients });
       } catch (error: any) {
         console.error("Error fetching industry recipients:", error);
-        res
-          .status(500)
-          .json({
-            success: false,
-            error: "Failed to fetch industry recipients",
-          });
+        res.status(500).json({
+          success: false,
+          error: "Failed to fetch industry recipients",
+        });
       }
     }
   );
@@ -26771,12 +26849,10 @@ ${messageData.messageText}
         res.json({ success: true, data: recipient });
       } catch (error: any) {
         console.error("Error creating industry recipient:", error);
-        res
-          .status(500)
-          .json({
-            success: false,
-            error: "Failed to create industry recipient",
-          });
+        res.status(500).json({
+          success: false,
+          error: "Failed to create industry recipient",
+        });
       }
     }
   );
@@ -26815,12 +26891,10 @@ ${messageData.messageText}
         });
       } catch (error: any) {
         console.error("Error bulk creating industry recipients:", error);
-        res
-          .status(500)
-          .json({
-            success: false,
-            error: "Failed to bulk create industry recipients",
-          });
+        res.status(500).json({
+          success: false,
+          error: "Failed to bulk create industry recipients",
+        });
       }
     }
   );
@@ -26842,12 +26916,10 @@ ${messageData.messageText}
         res.json({ success: true, data: recipient });
       } catch (error: any) {
         console.error("Error updating industry recipient:", error);
-        res
-          .status(500)
-          .json({
-            success: false,
-            error: "Failed to update industry recipient",
-          });
+        res.status(500).json({
+          success: false,
+          error: "Failed to update industry recipient",
+        });
       }
     }
   );
@@ -26869,12 +26941,10 @@ ${messageData.messageText}
         res.json({ success: true });
       } catch (error: any) {
         console.error("Error deleting industry recipient:", error);
-        res
-          .status(500)
-          .json({
-            success: false,
-            error: "Failed to delete industry recipient",
-          });
+        res.status(500).json({
+          success: false,
+          error: "Failed to delete industry recipient",
+        });
       }
     }
   );
@@ -26893,12 +26963,10 @@ ${messageData.messageText}
         res.json({ success: true, data: distribution });
       } catch (error: any) {
         console.error("Error fetching content distribution:", error);
-        res
-          .status(500)
-          .json({
-            success: false,
-            error: "Failed to fetch content distribution",
-          });
+        res.status(500).json({
+          success: false,
+          error: "Failed to fetch content distribution",
+        });
       }
     }
   );
@@ -26916,12 +26984,10 @@ ${messageData.messageText}
         res.json({ success: true, data: distribution });
       } catch (error: any) {
         console.error("Error creating content distribution:", error);
-        res
-          .status(500)
-          .json({
-            success: false,
-            error: "Failed to create content distribution",
-          });
+        res.status(500).json({
+          success: false,
+          error: "Failed to create content distribution",
+        });
       }
     }
   );
@@ -26946,12 +27012,10 @@ ${messageData.messageText}
         res.json({ success: true, data: distribution });
       } catch (error: any) {
         console.error("Error updating content distribution:", error);
-        res
-          .status(500)
-          .json({
-            success: false,
-            error: "Failed to update content distribution",
-          });
+        res.status(500).json({
+          success: false,
+          error: "Failed to update content distribution",
+        });
       }
     }
   );
@@ -27038,12 +27102,10 @@ ${messageData.messageText}
         res.json({ success: true, data: newslettersWithRecipients });
       } catch (error: any) {
         console.error("Error fetching newsletters with recipients:", error);
-        res
-          .status(500)
-          .json({
-            success: false,
-            error: "Failed to fetch newsletters with recipients",
-          });
+        res.status(500).json({
+          success: false,
+          error: "Failed to fetch newsletters with recipients",
+        });
       }
     }
   );
@@ -27076,12 +27138,10 @@ ${messageData.messageText}
         res.json({ success: true, data: pressReleasesWithRecipients });
       } catch (error: any) {
         console.error("Error fetching press releases with recipients:", error);
-        res
-          .status(500)
-          .json({
-            success: false,
-            error: "Failed to fetch press releases with recipients",
-          });
+        res.status(500).json({
+          success: false,
+          error: "Failed to fetch press releases with recipients",
+        });
       }
     }
   );
@@ -27095,12 +27155,10 @@ ${messageData.messageText}
       res.json({ success: true, data: categories });
     } catch (error: any) {
       console.error("Error fetching recipient categories:", error);
-      res
-        .status(500)
-        .json({
-          success: false,
-          message: "Failed to fetch recipient categories",
-        });
+      res.status(500).json({
+        success: false,
+        message: "Failed to fetch recipient categories",
+      });
     }
   });
 
@@ -27152,12 +27210,10 @@ ${messageData.messageText}
       `);
 
         if (!result) {
-          return res
-            .status(404)
-            .json({
-              success: false,
-              message: "Song not found or unauthorized",
-            });
+          return res.status(404).json({
+            success: false,
+            message: "Song not found or unauthorized",
+          });
         }
 
         res.json({
@@ -27190,12 +27246,10 @@ ${messageData.messageText}
       `);
 
         if (!existingSong) {
-          return res
-            .status(404)
-            .json({
-              success: false,
-              message: "Song not found or unauthorized",
-            });
+          return res.status(404).json({
+            success: false,
+            message: "Song not found or unauthorized",
+          });
         }
 
         // Validate that title and ISRC remain the same
@@ -28330,7 +28384,8 @@ async function scanFileWithClamAV(
       res.setHeader("Content-Type", "application/pdf");
       res.setHeader(
         "Content-Disposition",
-        `attachment; filename="Booking_Contract_${bookingId}_${new Date().toISOString().split("T")[0]
+        `attachment; filename="Booking_Contract_${bookingId}_${
+          new Date().toISOString().split("T")[0]
         }.pdf"`
       );
 
@@ -28390,9 +28445,10 @@ async function scanFileWithClamAV(
         .fontSize(10)
         .font("Helvetica")
         .text(
-          `Start Date: ${booking.createdAt
-            ? new Date(booking.createdAt).toLocaleDateString()
-            : "TBD"
+          `Start Date: ${
+            booking.createdAt
+              ? new Date(booking.createdAt).toLocaleDateString()
+              : "TBD"
           }`,
           50,
           yPosition
@@ -28408,8 +28464,9 @@ async function scanFileWithClamAV(
         .text("Performance Engagement Contract", 50, yPosition);
       yPosition += 25;
 
-      const contractText = `This Performance Engagement Contract (the "Agreement") is made and entered into as of ${new Date().toLocaleDateString()} by and between Wai'tuMusic, registered and existing under the laws of the Commonwealth of Dominica, with its principal place of business located at 31 Bath Estate, Roseau, Dominica (hereinafter referred to as "Service Provider"), and ${booking.bookerName || "Client"
-        } (hereinafter referred to as the "Client").`;
+      const contractText = `This Performance Engagement Contract (the "Agreement") is made and entered into as of ${new Date().toLocaleDateString()} by and between Wai'tuMusic, registered and existing under the laws of the Commonwealth of Dominica, with its principal place of business located at 31 Bath Estate, Roseau, Dominica (hereinafter referred to as "Service Provider"), and ${
+        booking.bookerName || "Client"
+      } (hereinafter referred to as the "Client").`;
 
       doc
         .fontSize(10)
@@ -28421,14 +28478,17 @@ async function scanFileWithClamAV(
       const sections = [
         {
           title: "1. Engagement",
-          content: `1.1 Engagement: Service Provider hereby engages the Artist to perform for a live performance event called "${booking.eventName || "Performance Event"
-            }" scheduled to take place on ${booking.eventDate || "TBD"} at ${booking.venueName || "Venue TBD"
-            }.\n1.2 Services: The Artist agrees to perform during the Event as specified in the booking requirements.`,
+          content: `1.1 Engagement: Service Provider hereby engages the Artist to perform for a live performance event called "${
+            booking.eventName || "Performance Event"
+          }" scheduled to take place on ${booking.eventDate || "TBD"} at ${
+            booking.venueName || "Venue TBD"
+          }.\n1.2 Services: The Artist agrees to perform during the Event as specified in the booking requirements.`,
         },
         {
           title: "2. Compensation",
-          content: `2.1 Compensation: Service Provider agrees to pay the Artist the sum of $${booking.totalBudget || "0.00"
-            } as compensation for the services rendered under this Agreement.\n2.2 Payment: Payment shall be made to the Artist by [Payment Method] on [Date].`,
+          content: `2.1 Compensation: Service Provider agrees to pay the Artist the sum of $${
+            booking.totalBudget || "0.00"
+          } as compensation for the services rendered under this Agreement.\n2.2 Payment: Payment shall be made to the Artist by [Payment Method] on [Date].`,
         },
         {
           title: "3. Rehearsal",
@@ -28508,7 +28568,8 @@ async function scanFileWithClamAV(
         res.setHeader("Content-Type", "application/pdf");
         res.setHeader(
           "Content-Disposition",
-          `attachment; filename="Performance_Contract_${bookingId}_${new Date().toISOString().split("T")[0]
+          `attachment; filename="Performance_Contract_${bookingId}_${
+            new Date().toISOString().split("T")[0]
           }.pdf"`
         );
 
@@ -28532,7 +28593,8 @@ async function scanFileWithClamAV(
               .fontSize(16)
               .font("Helvetica-Bold")
               .text(
-                `INDIVIDUAL PERFORMANCE CONTRACT - ${talent.stageName || talent.fullName
+                `INDIVIDUAL PERFORMANCE CONTRACT - ${
+                  talent.stageName || talent.fullName
                 }`,
                 50,
                 yPosition
@@ -28558,9 +28620,11 @@ async function scanFileWithClamAV(
 
             yPosition += 60;
 
-            const performanceContract = `This Individual Performance Contract is made between Wai'tuMusic (Service Provider) and ${talent.stageName || talent.fullName
-              } (Performer) for the event "${booking.eventName || "Performance Event"
-              }" scheduled for ${booking.eventDate || "TBD"}.
+            const performanceContract = `This Individual Performance Contract is made between Wai'tuMusic (Service Provider) and ${
+              talent.stageName || talent.fullName
+            } (Performer) for the event "${
+              booking.eventName || "Performance Event"
+            }" scheduled for ${booking.eventDate || "TBD"}.
 
 PERFORMER DETAILS:
 • Name: ${talent.fullName}
@@ -29046,7 +29110,8 @@ This contract is subject to the main booking agreement and all terms therein.`;
 
               assignedMembers.add(member.name);
               console.log(
-                `✅ ${channelType.toUpperCase()}: ${member.name} → "${channel.input
+                `✅ ${channelType.toUpperCase()}: ${member.name} → "${
+                  channel.input
                 }" (1 channel only)`
               );
             }
