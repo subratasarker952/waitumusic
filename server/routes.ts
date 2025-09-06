@@ -3240,12 +3240,12 @@ export async function registerRoutes(app: Express): Promise<Server> {
           ) {
             const assignmentRole = "Main Booked Talent";
             const assignmentNotes = `Primary talent - ${primaryUser.roleId === 3
-                ? "managed artist"
-                : primaryUser.roleId === 4
-                  ? "artist"
-                  : primaryUser.roleId === 5
-                    ? "managed musician"
-                    : "musician"
+              ? "managed artist"
+              : primaryUser.roleId === 4
+                ? "artist"
+                : primaryUser.roleId === 5
+                  ? "managed musician"
+                  : "musician"
               }`;
 
             await storage.createBookingAssignment({
@@ -16127,7 +16127,6 @@ This is a preview of the performance engagement contract. Final agreement will i
           applicationId
         );
 
-        console.log(application)
 
         if (!application) return res.status(404).json({ message: "Not found" });
 
@@ -16183,6 +16182,7 @@ This is a preview of the performance engagement contract. Final agreement will i
           const alreadyHasCoreRole = [4, 6, 8].some((r) =>
             applicantRolesIds.includes(r)
           );
+          console.log(applicantRolesIds)
 
           if (alreadyHasCoreRole) {
             // role অনুযায়ী update হবে
@@ -16220,6 +16220,16 @@ This is a preview of the performance engagement contract. Final agreement will i
           } else {
             // no core role → requestedRoleId অনুযায়ী create
             if (application.requestedRoleId === 4) {
+              console.log({
+                userId: application.applicantUserId,
+                stageName: applicant.fullName || applicant.email.split("@")[0],
+                primaryGenre: "To Be Determined",
+                bio: "New managed artist",
+                primaryTalentId: 1,
+                isManaged: true,
+                managementTierId: application.requestedManagementTierId,
+                bookingFormPictureUrl: null,
+              })
               await storage.createArtist({
                 userId: application.applicantUserId,
                 stageName: applicant.fullName || applicant.email.split("@")[0],
@@ -16231,6 +16241,15 @@ This is a preview of the performance engagement contract. Final agreement will i
                 bookingFormPictureUrl: null,
               });
             } else if (application.requestedRoleId === 6) {
+              console.log({
+                userId: application.applicantUserId,
+                stageName: applicant.fullName || applicant.email.split("@")[0],
+                primaryTalentId: 1,
+                bio: "New managed musician",
+                primaryGenre: "To Be Determined",
+                isManaged: true,
+                managementTierId: application.requestedManagementTierId,
+              })
               await storage.createMusician({
                 userId: application.applicantUserId,
                 stageName: applicant.fullName || applicant.email.split("@")[0],
@@ -16241,6 +16260,12 @@ This is a preview of the performance engagement contract. Final agreement will i
                 managementTierId: application.requestedManagementTierId,
               });
             } else if (application.requestedRoleId === 8) {
+              console.log({
+                userId: application.applicantUserId,
+                primaryTalentId: 1,
+                isManaged: true,
+                managementTierId: application.requestedManagementTierId,
+              })
               await storage.createProfessional({
                 userId: application.applicantUserId,
                 primaryTalentId: 1,
