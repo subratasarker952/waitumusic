@@ -46,6 +46,7 @@ export default function ProfileEditForm({
 }: ProfileEditFormProps) {
 
 
+
   const { toast } = useToast();
   const queryClient = useQueryClient();
   const [formData, setFormData] = useState({
@@ -177,6 +178,9 @@ export default function ProfileEditForm({
     // 🟢 Single update
     setFormData(nextFormData);
 
+
+    console.log(formData)
+
   }, [user]);
 
 
@@ -184,6 +188,7 @@ export default function ProfileEditForm({
   const updateProfileMutation = useMutation({
     mutationFn: async (data: any) => {
       // Validate required fields
+      console.log(data)
 
       const roleDataPayload: any = {
         fullName: data.fullName,
@@ -204,7 +209,7 @@ export default function ProfileEditForm({
         artistBookingFormPictureUrl: data.artistBookingFormPictureUrl,
 
 
-        musicianPrimaryTalentId: data.primaryTalentId,
+        musicianPrimaryTalentId: data.musicianPrimaryTalentId,
         musicianStageName: data.musicianStageName,
         musicianBio: data.musicianBio,
         musicianPrimaryGenre: data.musicianPrimaryGenre,

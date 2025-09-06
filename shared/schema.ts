@@ -241,7 +241,7 @@ export const userAvailability = pgTable("user_availability", {
 // Artists table - exact specification
 export const artists = pgTable("artists", {
   userId: integer("user_id").references(() => users.id).primaryKey(),
-  stageName: text("stage_name").notNull(),
+  stageName: text("stage_name"),
   bio: text("bio"),
   epkUrl: text("epk_url"),
   primaryGenre: text("primary_genre"),
@@ -254,7 +254,7 @@ export const artists = pgTable("artists", {
   isRegisteredWithPro: boolean("is_registered_with_pro").default(false),
   performingRightsOrganization: text("performing_rights_organization"),
   ipiNumber: text("ipi_number"),
-  primaryTalentId: integer("primary_talent_id").references(() => allInstruments.id).notNull(),
+  primaryTalentId: integer("primary_talent_id").references(() => allInstruments.id).notNull().default(1),
   isDemo: boolean("is_demo").default(false),
   isComplete: boolean("is_complete").default(false),
 });
@@ -274,7 +274,7 @@ export const musicians = pgTable("musicians", {
   isRegisteredWithPro: boolean("is_registered_with_pro").default(false),
   performingRightsOrganization: text("performing_rights_organization"),
   ipiNumber: text("ipi_number"),
-  primaryTalentId: integer("primary_talent_id").references(() => allInstruments.id).notNull(),
+  primaryTalentId: integer("primary_talent_id").references(() => allInstruments.id).notNull().default(1),
   isDemo: boolean("is_demo").default(false),
   isComplete: boolean("is_complete").default(false),
 });
@@ -288,7 +288,7 @@ export const professionals = pgTable("professionals", {
   isManaged: boolean("is_managed").default(false),
   managementTierId: integer("management_tier_id").references(() => managementTiers.id),
   bookingFormPictureUrl: text("booking_form_picture_url"),
-  primaryTalentId: integer("primary_talent_id").references(() => userProfessionalPrimaryTalents.id),
+  primaryTalentId: integer("primary_talent_id").references(() => userProfessionalPrimaryTalents.id).notNull().default(1),
   websiteUrl: text("website_url"),
   isDemo: boolean("is_demo").default(false),
   isComplete: boolean("is_complete").default(false),

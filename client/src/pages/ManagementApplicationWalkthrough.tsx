@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -70,6 +70,58 @@ export default function ManagementApplicationWalkthrough() {
   const [stepStatuses, setStepStatuses] = useState(
     steps.reduce((acc, step) => ({ ...acc, [step.id]: "pending" }), {})
   );
+
+  useEffect(() => {
+    if (!application?.status) return;
+
+    let updatedStatuses = { ...stepStatuses };
+
+    switch (application.status) {
+      case "pending": {
+        updatedStatuses[1] = "completed";
+        updatedStatuses[2] = "completed";
+        break;
+      }
+      case "approved": {
+        updatedStatuses[1] = "completed";
+        updatedStatuses[2] = "completed";
+        updatedStatuses[3] = "completed";
+        break;
+      }
+      case "contract_generated": {
+        updatedStatuses[1] = "completed";
+        updatedStatuses[2] = "completed";
+        updatedStatuses[3] = "completed";
+        updatedStatuses[4] = "completed";
+        break;
+      }
+      case "awaiting_signatures": {
+        updatedStatuses[1] = "completed";
+        updatedStatuses[2] = "completed";
+        updatedStatuses[3] = "completed";
+        updatedStatuses[4] = "completed";
+        break;
+      }
+      case "signed": {
+        updatedStatuses[1] = "completed";
+        updatedStatuses[2] = "completed";
+        updatedStatuses[3] = "completed";
+        updatedStatuses[4] = "completed";
+        updatedStatuses[5] = "completed";
+        break;
+      }
+      case "completed": {
+        Object.keys(updatedStatuses).forEach(
+          (id) => (updatedStatuses[id] = "completed")
+        );
+        break;
+      }
+      default:
+        break;
+    }
+
+    setStepStatuses(updatedStatuses);
+  }, [application?.status]);
 
   // Step 1: Create Application
   const startReview = async () => {
@@ -586,10 +638,10 @@ export default function ManagementApplicationWalkthrough() {
               <Button
                 className="w-full"
                 onClick={() => startReview()}
-                disabled={stepStatuses[1] === "completed"}
+                // disabled={stepStatuses[1] === "completed"}
               >
-                {stepStatuses[1] === "completed"
-                  ? "Starting.."
+                {stepStatuses[2] === "completed"
+                  ? "Next"
                   : "Start to Review"}
               </Button>
             </CardContent>
@@ -642,7 +694,7 @@ export default function ManagementApplicationWalkthrough() {
                   className="w-full"
                   variant="default"
                   onClick={() => reviewApplication("approved")}
-                  disabled={stepStatuses[2] === "completed" || !applicationId}
+                  // disabled={stepStatuses[2] === "completed" || !applicationId}
                 >
                   Approve
                 </Button>
@@ -651,7 +703,7 @@ export default function ManagementApplicationWalkthrough() {
                   className="w-full"
                   variant="destructive"
                   onClick={() => reviewApplication("rejected")}
-                  disabled={stepStatuses[2] === "completed" || !applicationId}
+                  // disabled={stepStatuses[2] === "completed" || !applicationId}
                 >
                   Reject
                 </Button>
@@ -773,7 +825,7 @@ export default function ManagementApplicationWalkthrough() {
               <Button
                 className="w-full"
                 onClick={() => assignLawyer()}
-                disabled={stepStatuses[3] === "completed" || !applicationId}
+                // disabled={stepStatuses[3] === "completed" || !applicationId}
               >
                 {stepStatuses[3] === "completed"
                   ? "Professional Assigned"
@@ -828,7 +880,7 @@ export default function ManagementApplicationWalkthrough() {
               <Button
                 className="w-full"
                 onClick={() => generateContract()}
-                disabled={stepStatuses[4] === "completed" || !applicationId}
+                // disabled={stepStatuses[4] === "completed" || !applicationId}
               >
                 {stepStatuses[4] === "completed"
                   ? "Contract Generated"
@@ -897,7 +949,7 @@ export default function ManagementApplicationWalkthrough() {
               <Button
                 className="w-full"
                 onClick={() => signContract()}
-                disabled={stepStatuses[5] === "completed" || !applicationId}
+                // disabled={stepStatuses[5] === "completed" || !applicationId}
               >
                 {stepStatuses[5] === "completed"
                   ? "Contract Signed"

@@ -838,7 +838,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.get(
     "/api/user/profile",
     authenticateToken,
-    requirePerm("view_content"),
     async (req: Request, res: Response) => {
       try {
         const userId = req.user?.userId;
@@ -999,7 +998,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
                 isComplete: true,
               });
             }
-
+            
             // Musician roles
             else if ([5, 6].includes(role.id)) {
               data = await storage.updateMusician(userId, {
@@ -1008,10 +1007,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
                 primaryGenre: updates.musicianPrimaryGenre,
                 basePrice: updates.musicianBasePrice ?? null,
                 idealPerformanceRate:
-                  updates.musicianIdealPerformanceRate ?? null,
+                updates.musicianIdealPerformanceRate ?? null,
                 minimumAcceptableRate:
-                  updates.musicianMinimumAcceptableRate ?? null,
+                updates.musicianMinimumAcceptableRate ?? null,
                 primaryTalentId: updates.musicianPrimaryTalentId,
+                bookingFormPictureUrl: updates.musicianBookingFormPictureUrl,
                 isComplete: true,
               });
             }
@@ -16166,6 +16166,8 @@ This is a preview of the performance engagement contract. Final agreement will i
         const applicantRoles = await storage.getUserRoles(applicant.id);
         const applicantRolesIds = applicantRoles.map((r) => r.id);
 
+        console.log(applicantRolesIds)
+
         if (applicant) {
           await storage.createManagementTransition({
             userId: application.applicantUserId,
@@ -16182,7 +16184,6 @@ This is a preview of the performance engagement contract. Final agreement will i
           const alreadyHasCoreRole = [4, 6, 8].some((r) =>
             applicantRolesIds.includes(r)
           );
-          console.log(applicantRolesIds)
 
           if (alreadyHasCoreRole) {
             // role অনুযায়ী update হবে
