@@ -122,6 +122,7 @@ import {
   invalidateCache,
 } from "./utils/query-cache";
 import BookingStageNameSelector from "@/components/booking/BookingStageNameSelector";
+import { TerminalSquareIcon } from "lucide-react";
 
 const JWT_SECRET = process.env.JWT_SECRET || "waitumusic-demo-secret-key-2025";
 const DEMO_MODE_ENABLED = process.env.DEMO_MODE_ENABLED !== "false"; // Default to true, set to "false" to disable
@@ -998,7 +999,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
                 isComplete: true,
               });
             }
-            
+
             // Musician roles
             else if ([5, 6].includes(role.id)) {
               data = await storage.updateMusician(userId, {
@@ -1007,9 +1008,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
                 primaryGenre: updates.musicianPrimaryGenre,
                 basePrice: updates.musicianBasePrice ?? null,
                 idealPerformanceRate:
-                updates.musicianIdealPerformanceRate ?? null,
+                  updates.musicianIdealPerformanceRate ?? null,
                 minimumAcceptableRate:
-                updates.musicianMinimumAcceptableRate ?? null,
+                  updates.musicianMinimumAcceptableRate ?? null,
                 primaryTalentId: updates.musicianPrimaryTalentId,
                 bookingFormPictureUrl: updates.musicianBookingFormPictureUrl,
                 isComplete: true,
@@ -1052,13 +1053,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.get(
     "/api/user/subscription-status",
     authenticateToken,
-    requirePerm("view_content"),
     async (req: Request, res: Response) => {
       try {
         const userId = req.user?.userId;
-        if (!userId) {
-          return res.status(401).json({ message: "Invalid token" });
-        }
 
         const user = await storage.getUser(userId);
         if (!user) {
@@ -1067,7 +1064,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
         // Role IDs: 3=Managed Artist, 5=Managed Musician, 7=Managed Professional
         const managedRoles = [3, 5, 7];
-        const isManaged = managedRoles.includes(user.roleId);
+
+        const userRoles = await storage.getUserRoles(user.id);
+        const userRoleIds = userRoles.map((r: any) => r.id);
+
+        const isManaged = userRoleIds.some((id: number) => managedRoles.includes(id));
 
         res.json({
           isActive: isManaged || user.isDemo, // Managed users get free access, demo users get access
@@ -1090,8 +1091,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   );
 
   // Artist routes
-  // app.get("/api/artists", authenticateToken, requirePerm('view_content'), async (req: Request, res: Response) => {
-  //   try {
+  // app.get("/api/artists", authenticateToken,   //   try {
   //     const { page = '0', limit = '20' } = req.query;
   //     const offset = parseInt(page as string) * parseInt(limit as string);
 
@@ -1264,8 +1264,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   );
 
   // OLD
-  // app.get("/api/artists/:id", authenticateToken, requirePerm('view_content'), validateParams(schemas.idParamSchema), async (req: Request, res: Response) => {
-  //   try {
+  // app.get("/api/artists/:id", authenticateToken,   //   try {
   //     const artistUserId = parseInt(req.params.id);
 
   //     const artist = await storage.getArtist(artistUserId);
@@ -1302,7 +1301,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.get(
     "/api/artists/:id",
     authenticateToken,
-    requirePerm("view_content"),
     validateParams(schemas.idParamSchema),
     async (req: Request, res: Response) => {
       try {
@@ -1363,7 +1361,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.post(
     "/api/artists",
     authenticateToken,
-    requirePerm("upload_content"),
     validate(schemas.createArtistSchema),
     async (req: Request, res: Response) => {
       try {
@@ -1384,19 +1381,22 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.patch(
     "/api/artists/:id",
     authenticateToken,
-    requirePerm("upload_content"),
     validateParams(schemas.idParamSchema),
     async (req: Request, res: Response) => {
       try {
         const artistId = parseInt(req.params.id);
         const updates = req.body;
 
-        // Ensure user can only update their own artist profile (unless admin)
-        if (
-          req.user?.roleId !== 1 &&
-          req.user?.roleId !== 2 &&
-          req.user?.userId !== artistId
-        ) {
+        const userRoles = await storage.getUserRoles(req.userId);
+        const userRoleIds = userRoles.map((r: any) => r.id);
+
+        // Flatten allowed roles
+        const allowedRoles = [1, 2];
+
+        // Check intersection
+        const hasRole = userRoleIds.some((id: number) => allowedRoles.includes(id));
+
+        if (!hasRole || req.user?.userId !== artistId) {
           return res.status(403).json({ message: "Access denied" });
         }
 
@@ -1419,8 +1419,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   );
 
   // Musicians routes
-  // app.get("/api/musicians", authenticateToken, requirePerm('view_content'), async (req: Request, res: Response) => {
-  //   try {
+  // app.get("/api/musicians", authenticateToken,   //   try {
   //     const cacheKey = generateCacheKey('musicians');
   //     const musiciansWithData = await withCache(cacheKey, async () => {
   //       const musicians = await storage.getMusicians();
@@ -1468,7 +1467,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.get(
     "/api/musicians",
     authenticateToken,
-    requirePerm("view_content"),
     async (req: Request, res: Response) => {
       try {
         // ✅ Parse query params with Zod
@@ -2092,7 +2090,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.get(
     "/api/albums",
     authenticateToken,
-    requirePerm("view_content"),
     async (req: Request, res: Response) => {
       try {
         const cacheKey = generateCacheKey("albums");
@@ -2110,7 +2107,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.get(
     "/api/albums/:id",
     authenticateToken,
-    requirePerm("view_content"),
     validateParams(schemas.idParamSchema),
     async (req: Request, res: Response) => {
       try {
@@ -2146,7 +2142,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.post(
     "/api/albums",
     authenticateToken,
-    requirePerm("upload_content"),
     validate(schemas.createAlbumSchema),
     async (req: Request, res: Response) => {
       try {
@@ -2263,7 +2258,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.get(
     "/api/bookings/:bookingId/assignments",
     authenticateToken,
-    requirePerm("view_bookings"),
     validateParams(schemas.bookingIdParamSchema),
     async (req: Request, res: Response) => {
       try {
@@ -2302,7 +2296,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.get(
     "/api/instruments/:id",
     authenticateToken,
-    requirePerm("view_content"),
     validateParams(schemas.idParamSchema),
     async (req: Request, res: Response) => {
       try {
@@ -2333,7 +2326,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.get(
     "/api/users/:userId/talent-dropdown",
     authenticateToken,
-    requirePerm("view_content"),
     validateParams(schemas.userIdParamSchema),
     async (req: Request, res: Response) => {
       try {
@@ -2574,7 +2566,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.get(
     "/api/cross-upsell-relationships",
     authenticateToken,
-    requirePerm("view_content"),
     async (req: Request, res: Response) => {
       try {
         const cacheKey = generateCacheKey("cross-upsell-relationships");
@@ -2594,7 +2585,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.post(
     "/api/cross-upsell-relationships",
     authenticateToken,
-    requirePerm("manage_content"),
     validate(schemas.createCrossUpsellSchema),
     async (req: Request, res: Response) => {
       try {
@@ -2617,7 +2607,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.get(
     "/api/cross-upsell-relationships/:sourceType/:sourceId",
     authenticateToken,
-    requirePerm("view_content"),
     async (req: Request, res: Response) => {
       try {
         const { sourceType, sourceId } = req.params;
@@ -2646,7 +2635,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.get(
     "/api/videos",
     authenticateToken,
-    requirePerm("view_content"),
     validateQuery(schemas.paginationSchema),
     async (req: Request, res: Response) => {
       try {
@@ -2754,7 +2742,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.post(
     "/api/admin/database/backup",
     authenticateToken,
-    requirePerm("manage_database"),
     async (req: Request, res: Response) => {
       try {
         const userId = req.user?.userId;
@@ -2784,7 +2771,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.post(
     "/api/admin/database/optimize",
     authenticateToken,
-    requirePerm("manage_database"),
     async (req: Request, res: Response) => {
       try {
         // In production, this would run ANALYZE, VACUUM, and REINDEX
@@ -2808,7 +2794,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.get(
     "/api/admin/database/health",
     authenticateToken,
-    requirePerm("manage_database"),
     async (req: Request, res: Response) => {
       try {
         // In production, this would check actual database metrics
@@ -2856,8 +2841,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   );
 
   // Bookings route for talent users - see their assigned bookings
-  // app.get("/api/bookings/user", authenticateToken, requirePerm('view_bookings'), async (req: Request, res: Response) => {
-  //   try {
+  // app.get("/api/bookings/user", authenticateToken,   //   try {
   //     const userId = req.user?.userId;
   //     if (!userId) {
   //       return res.status(401).json({ message: "Invalid token" });
@@ -2989,7 +2973,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.get(
     "/api/bookings/:id/talent-view",
     authenticateToken,
-    requirePerm("view_bookings"),
     validateParams(schemas.idParamSchema),
     async (req: Request, res: Response) => {
       try {
@@ -3322,7 +3305,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.get(
     "/api/instruments/mixer-group/:group",
     authenticateToken,
-    requirePerm("view_content"),
     async (req: Request, res: Response) => {
       try {
         const mixerGroup = req.params.group;
@@ -3805,7 +3787,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.get(
     "/api/instruments/categories",
     authenticateToken,
-    requirePerm("view_content"),
     async (req: Request, res: Response) => {
       try {
         const cacheKey = generateCacheKey("instrument-categories");
@@ -3949,7 +3930,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.get(
     "/api/musicians/:userId/instrument-preferences",
     authenticateToken,
-    requirePerm("view_content"),
     validateParams(schemas.userIdParamSchema),
     async (req: Request, res: Response) => {
       try {
@@ -4010,7 +3990,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.post(
     "/api/musicians/:userId/instrument-preferences",
     authenticateToken,
-    requirePerm("manage_content"),
     validateParams(schemas.userIdParamSchema),
     async (req: Request, res: Response) => {
       try {
@@ -4040,7 +4019,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.patch(
     "/api/musicians/instrument-preferences/:id",
     authenticateToken,
-    requirePerm("manage_content"),
     validateParams(schemas.idParamSchema),
     async (req: Request, res: Response) => {
       try {
@@ -4074,7 +4052,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.delete(
     "/api/musicians/instrument-preferences/:id",
     authenticateToken,
-    requirePerm("manage_content"),
     validateParams(schemas.idParamSchema),
     async (req: Request, res: Response) => {
       try {
@@ -4107,7 +4084,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.get(
     "/api/musicians/:userId/recommended-instruments",
     authenticateToken,
-    requirePerm("view_content"),
     validateParams(schemas.userIdParamSchema),
     async (req: Request, res: Response) => {
       try {
@@ -4165,7 +4141,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.get(
     "/api/bookings/:id/assignments",
     authenticateToken,
-    requirePerm("view_bookings"),
     validateParams(schemas.idParamSchema),
     async (req: Request, res: Response) => {
       try {
@@ -4228,7 +4203,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.get(
     "/api/primary-roles",
     authenticateToken,
-    requirePerm("view_users"),
     async (req, res) => {
       try {
         const cacheKey = generateCacheKey("primary-roles");
@@ -4248,7 +4222,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.post(
     "/api/primary-roles",
     authenticateToken,
-    requirePerm("manage_users"),
     async (req, res) => {
       try {
         const validatedData = schema.insertUserPrimaryTalentSchema.parse(
@@ -4276,7 +4249,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.patch(
     "/api/primary-roles/:id",
     authenticateToken,
-    requirePerm("manage_users"),
     validateParams(schemas.idParamSchema),
     async (req, res) => {
       try {
@@ -4299,7 +4271,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.delete(
     "/api/primary-roles/:id",
     authenticateToken,
-    requirePerm("manage_users"),
     validateParams(schemas.idParamSchema),
     async (req, res) => {
       try {
@@ -4321,7 +4292,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.get(
     "/api/primary-roles/by-role/:roleId",
     authenticateToken,
-    requirePerm("view_users"),
     validateParams(schemas.roleIdParamSchema),
     async (req, res) => {
       try {
@@ -4540,7 +4510,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.get(
     "/api/media",
     authenticateToken,
-    requirePerm("view_content"),
     async (req: Request, res: Response) => {
       try {
         const mediaFiles = await storage.getMediaFiles();
@@ -4555,7 +4524,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.delete(
     "/api/media/:id",
     authenticateToken,
-    requirePerm("manage_content"),
     validateParams(schemas.idParamSchema),
     async (req: Request, res: Response) => {
       try {
@@ -5467,7 +5435,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.get(
     "/api/share-link/:id/stats",
     authenticateToken,
-    requirePerm("view_content"),
     validateParams(schemas.idParamSchema),
     async (req: Request, res: Response) => {
       try {
@@ -5668,7 +5635,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.post(
     "/api/admin/calculate-similarities",
     authenticateToken,
-    requirePerm("manage_content"),
     async (req: Request, res: Response) => {
       try {
         await recommendationEngine.calculateArtistSimilarities();
@@ -5706,7 +5672,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.post(
     "/api/service-categories",
     authenticateToken,
-    requirePerm("manage_content"),
     validate(schema.insertServiceCategorySchema),
     async (req: Request, res: Response) => {
       try {
@@ -5779,7 +5744,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.post(
     "/api/admin-services",
     authenticateToken,
-    requirePerm("manage_content"),
     validate(schema.insertServiceSchema),
     async (req: Request, res: Response) => {
       try {
@@ -5808,7 +5772,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.put(
     "/api/admin-services/:id",
     authenticateToken,
-    requirePerm("manage_content"),
     validateParams(schemas.idParamSchema),
     async (req: Request, res: Response) => {
       try {
@@ -5833,7 +5796,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.delete(
     "/api/admin-services/:id",
     authenticateToken,
-    requirePerm("manage_content"),
     validateParams(schemas.idParamSchema),
     async (req: Request, res: Response) => {
       try {
@@ -5855,7 +5817,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.get(
     "/api/service-assignments",
     authenticateToken,
-    requirePerm("view_users"),
     async (req: Request, res: Response) => {
       try {
         const cacheKey = generateCacheKey("service-assignments");
@@ -5906,7 +5867,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.post(
     "/api/service-assignments",
     authenticateToken,
-    requirePerm("manage_users"),
     validate(schema.insertServiceAssignmentSchema),
     async (req: Request, res: Response) => {
       try {
@@ -5944,7 +5904,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.put(
     "/api/service-assignments/:id",
     authenticateToken,
-    requirePerm("manage_users"),
     validateParams(schemas.idParamSchema),
     async (req: Request, res: Response) => {
       try {
@@ -5974,7 +5933,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.delete(
     "/api/service-assignments/:id",
     authenticateToken,
-    requirePerm("manage_users"),
     validateParams(schemas.idParamSchema),
     async (req: Request, res: Response) => {
       try {
@@ -6341,7 +6299,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.get(
     "/api/bookings/:id/playback-tracks",
     authenticateToken,
-    requirePerm("view_bookings"),
     validateParams(schemas.idParamSchema),
     async (req: Request, res: Response) => {
       try {
@@ -6383,7 +6340,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.post(
     "/api/bookings/:id/playback-tracks",
     authenticateToken,
-    requirePerm("manage_bookings"),
     validateParams(schemas.idParamSchema),
     async (req: Request, res: Response) => {
       try {
@@ -6433,7 +6389,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.post(
     "/api/playback-tracks/:id/analyze",
     authenticateToken,
-    requirePerm("manage_content"),
     validateParams(schemas.idParamSchema),
     async (req: Request, res: Response) => {
       try {
@@ -6540,7 +6495,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.post(
     "/api/playback-tracks/:id/separate",
     authenticateToken,
-    requirePerm("manage_content"),
     validateParams(schemas.idParamSchema),
     async (req: Request, res: Response) => {
       try {
@@ -6697,7 +6651,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.post(
     "/api/bookings/:id/dj-access",
     authenticateToken,
-    requirePerm("manage_bookings"),
     validateParams(schemas.idParamSchema),
     async (req: Request, res: Response) => {
       try {
@@ -6919,7 +6872,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.get(
     "/api/curators",
     authenticateToken,
-    requirePerm("manage_content"),
     async (req: Request, res: Response) => {
       try {
         const cacheKey = generateCacheKey("curators");
@@ -6938,7 +6890,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.post(
     "/api/curators",
     authenticateToken,
-    requirePerm("manage_content"),
     validate(schema.insertCuratorSchema),
     async (req: Request, res: Response) => {
       try {
@@ -6964,7 +6915,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.put(
     "/api/curators/:id",
     authenticateToken,
-    requirePerm("manage_content"),
     validateParams(schemas.idParamSchema),
     async (req: Request, res: Response) => {
       try {
@@ -6991,7 +6941,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.post(
     "/api/releases/:type/:id/curator-submissions",
     authenticateToken,
-    requirePerm("manage_content"),
     validateParams(schemas.idParamSchema),
     async (req: Request, res: Response) => {
       try {
@@ -14764,7 +14713,6 @@ This is a preview of the performance engagement contract. Final agreement will i
   app.patch(
     "/api/musicians/:id",
     authenticateToken,
-    requirePerm("upload_content"),
     validateParams(schemas.idParamSchema),
     async (req: Request, res: Response) => {
       try {
@@ -14805,7 +14753,6 @@ This is a preview of the performance engagement contract. Final agreement will i
   app.patch(
     "/api/professionals/:id",
     authenticateToken,
-    requirePerm("upload_content"),
     validateParams(schemas.idParamSchema),
     async (req: Request, res: Response) => {
       try {
@@ -15575,6 +15522,7 @@ This is a preview of the performance engagement contract. Final agreement will i
   app.post(
     "/api/management-applications/:id/review",
     authenticateToken,
+    requireRole([1, 2]),
     async (req: Request, res: Response) => {
       try {
         const applicationId = parseInt(req.params.id);
@@ -15604,12 +15552,20 @@ This is a preview of the performance engagement contract. Final agreement will i
           reviewComments,
         });
 
+        const startDate = application.submittedAt
+          ? new Date(application.submittedAt)
+          : new Date(); // fallback আজকের তারিখ
+
+        const endDate = new Date(startDate);
+        endDate.setMonth(endDate.getMonth() + (termInMonths ?? 12));
+
         // ✅ Update application
         let updateData: any = {
           reviewedAt: new Date(),
           reviewedByUserId: currentUserId,
           notes: notes ?? application.notes,
           termInMonths: termInMonths ?? application.termInMonths,
+          endDate
         };
 
         if (reviewStatus === "approved") {
@@ -16458,6 +16414,7 @@ This is a preview of the performance engagement contract. Final agreement will i
   app.post(
     "/api/management-applications/:id/assign-lawyer",
     authenticateToken,
+    requireRole([1, 2]),
     async (req: Request, res: Response) => {
       try {
         const applicationId = parseInt(req.params.id);

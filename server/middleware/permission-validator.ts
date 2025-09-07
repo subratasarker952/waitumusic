@@ -45,11 +45,11 @@ export function requirePermission(permission: string) {
       if (!roleName) {
         return res.status(403).json({ error: 'Invalid role' });
       }
-      
+
       const userPermissions = getUserPermissions(roleName);
-      
+
       if (!userPermissions.includes(permission)) {
-        return res.status(403).json({ 
+        return res.status(403).json({
           error: 'Insufficient permissions',
           required: permission,
           message: `You don't have permission to ${permission.replace(/_/g, ' ')}`
@@ -81,15 +81,15 @@ export function requireAnyPermission(...permissions: string[]) {
       if (!roleName) {
         return res.status(403).json({ error: 'Invalid role' });
       }
-      
+
       const userPermissions = getUserPermissions(roleName);
-      
-      const hasAnyPermission = permissions.some(permission => 
+
+      const hasAnyPermission = permissions.some(permission =>
         userPermissions.includes(permission)
       );
 
       if (!hasAnyPermission) {
-        return res.status(403).json({ 
+        return res.status(403).json({
           error: 'Insufficient permissions',
           required: permissions,
           message: 'You need at least one of the required permissions'
@@ -121,15 +121,15 @@ export function requireAllPermissions(...permissions: string[]) {
       if (!roleName) {
         return res.status(403).json({ error: 'Invalid role' });
       }
-      
+
       const userPermissions = getUserPermissions(roleName);
-      
-      const missingPermissions = permissions.filter(permission => 
+
+      const missingPermissions = permissions.filter(permission =>
         !userPermissions.includes(permission)
       );
 
       if (missingPermissions.length > 0) {
-        return res.status(403).json({ 
+        return res.status(403).json({
           error: 'Insufficient permissions',
           missing: missingPermissions,
           message: 'You need all of the required permissions'
@@ -159,7 +159,7 @@ export function requireAllPermissions(...permissions: string[]) {
 
 //       // Flatten the roleIds array in case it's passed as requireRole([1,2]) instead of requireRole(1,2)
 //       const allowedRoles = roleIds.flat() as number[];
-      
+
 //       if (!allowedRoles.includes(user.roleId)) {
 //         return res.status(403).json({ 
 //           error: 'Access denied',
@@ -189,7 +189,7 @@ export function requireRole(...roleIds: (number | number[])[]) {
       }
 
       // Load all roles for this user
-      const userRoles = await storage.getUserRoles(user.id); 
+      const userRoles = await storage.getUserRoles(user.id);
       const userRoleIds = userRoles.map((r: any) => r.id);
 
       // Flatten allowed roles
@@ -237,15 +237,22 @@ export function requireOwnershipOrAdmin(resourceUserIdField: string) {
         return res.status(401).json({ error: 'User not found' });
       }
 
+      const userRoles = await storage.getUserRoles(user.id);
+      const userRoleIds = userRoles.map((r: any) => r.id);
+
+
+      // Check intersection
+      const hasRole = userRoleIds.some((id: number) => [1, 2].includes(id));
+
       // Admins can access anything
-      if ([1, 2].includes(user.roleId)) {
+      if (hasRole) {
         return next();
       }
 
       // Check ownership
       const resourceUserId = req.params[resourceUserIdField] || req.body[resourceUserIdField];
       if (parseInt(resourceUserId) !== user.id) {
-        return res.status(403).json({ 
+        return res.status(403).json({
           error: 'Access denied',
           message: 'You can only access your own resources'
         });

@@ -38,7 +38,9 @@ export default function ManagementApplicationWalkthrough() {
   const [reviewComments, setReviewComments] = useState<string>("");
 
   const [notes, setNotes] = useState<string>("");
-  const [termInMonths, setTermInMonths] = useState<number>(12);
+  const [termInMonths, setTermInMonths] = useState<number>(0);
+
+  const [conflictClearProfessionals, setConflictClerarProfessionals] = useState([])
   const [selectedProfessional, setSelectedProfessional] = useState(null);
 
   const {
@@ -50,14 +52,13 @@ export default function ManagementApplicationWalkthrough() {
   });
 
   const {
-    data: availableLawyer,
-    isLoading: availableLawyerLoading,
-    error: availableLawerError,
+    data: availableLawyers,
+    isLoading: availableLawyersLoading,
+    error: availableLawersError,
   } = useQuery({
     queryKey: [`/api/available-lawyers-waitumusic`],
   });
 
-  console.log(availableLawyer);
 
   const steps = [
     { id: 1, title: "Application Data", status: "pending", icon: FileText },
@@ -123,15 +124,20 @@ export default function ManagementApplicationWalkthrough() {
     setStepStatuses(updatedStatuses);
   }, [application?.status]);
 
+  useEffect(() => {
+    if (!application) return;
+    console.log(application)
+    setApplicationId(application.id);
+    setApplicationData(application);
+
+    setTermInMonths(application.termInMonths || 12)
+    setReviewComments(application.notes || "");
+    setNotes(application.notes || "");
+  }, [application])
+
   // Step 1: Create Application
   const startReview = async () => {
     try {
-      setApplicationId(application.id);
-      setApplicationData(application);
-
-      setTermInMonths(application.termInMonths)
-      setReviewComments(application?.reviewComments);
-      setNotes(application?.notes);
 
       setStepStatuses((prev) => ({ ...prev, 1: "completed" }));
       setCurrentStep(2);
@@ -151,7 +157,11 @@ export default function ManagementApplicationWalkthrough() {
 
   // Step 2: Admin Review
   const reviewApplication = async (status: "approved" | "rejected") => {
-    if (!applicationId || !reviewComments || !termInMonths) return;
+    if (!applicationId || !reviewComments || !termInMonths) return toast({
+      title: 'Please fill up the form',
+      description: 'Review Comments and Term need',
+      variant: "destructive",
+    });
 
     try {
       const payload = {
@@ -166,27 +176,20 @@ export default function ManagementApplicationWalkthrough() {
         body: payload,
       });
 
-      // Get available non-performance professionals for Wai'tuMusic
-      const availableProfessionals = await apiRequest(
-        "/api/available-lawyers-waitumusic",
-        { method: "GET" }
-      );
-
       let assignedProfessional: any = null;
 
-      if (availableProfessionals.length > 0) {
+      if (availableLawyers.length > 0) {
         // Try to find a clear professional (no conflicts)
-        assignedProfessional = availableProfessionals.find(
+        assignedProfessional = availableLawyers.find(
           (prof: any) => prof.conflictStatus === "clear"
         );
 
         if (!assignedProfessional) {
           // If none are clear, pick the first professional as fallback
-          assignedProfessional = availableProfessionals[0];
+          assignedProfessional = availableLawyers[0];
           toast({
             title: "Fallback Assignment",
             description: `No clear professionals available, defaulting to ${assignedProfessional.fullName}`,
-            variant: "destructive",
           });
         }
       }
@@ -514,7 +517,7 @@ export default function ManagementApplicationWalkthrough() {
                   <div>
                     {/* Header */}
                     <h3 className="text-xl font-bold">
-                      Application # {application.id}{" "}
+                      Application # {application.id}
                       <span className="text-sm text-muted-foreground">
                         ({application.status})
                       </span>
@@ -526,11 +529,11 @@ export default function ManagementApplicationWalkthrough() {
                         <strong>User ID:</strong> {application.applicantUserId}
                       </p>
                       <p>
-                        <strong>Requested Role:</strong>{" "}
+                        <strong>Requested Role:</strong>
                         {application.requestedRoleId}
                       </p>
                       <p>
-                        <strong>Requested Tier:</strong>{" "}
+                        <strong>Requested Tier:</strong>
                         {application.requestedManagementTierId}
                       </p>
                     </div>
@@ -551,12 +554,12 @@ export default function ManagementApplicationWalkthrough() {
                     </div>
 
                     <div>
-                      <strong>Expected Revenue:</strong>{" "}
+                      <strong>Expected Revenue:</strong>
                       {application.expectedRevenue}
                     </div>
 
                     <div>
-                      <strong>Portfolio Links:</strong>{" "}
+                      <strong>Portfolio Links:</strong>
                       <a
                         href={application.portfolioLinks}
                         target="_blank"
@@ -567,7 +570,7 @@ export default function ManagementApplicationWalkthrough() {
                     </div>
 
                     <div>
-                      <strong>Social Media:</strong>{" "}
+                      <strong>Social Media:</strong>
                       <a
                         href={application.socialMediaMetrics}
                         target="_blank"
@@ -583,33 +586,25 @@ export default function ManagementApplicationWalkthrough() {
                         <strong>Contract Terms:</strong>
                         <ul className="list-disc ml-6 text-gray-700">
                           <li>
-                            Notice Period:{" "}
-                            {application.contractTerms.termination.noticePeriod}{" "}
-                            Days
+                            Notice Period: {application.contractTerms.termination.noticePeriod} Days
                           </li>
                           <li>
-                            Early Termination Fee: ${" "}
-                            {
-                              application.contractTerms.termination
-                                .earlyTerminationFee
-                            }{" "}
+                            Early Termination Fee: $ {application.contractTerms.termination.earlyTerminationFee}
                           </li>
                           <li>
-                            Admin Commission:{" "}
-                            {application.contractTerms.adminCommission}%
+                            Admin Commission:  {application.contractTerms.adminCommission}%
                           </li>
                           <li>
-                            Services Discount:{" "}
-                            {application.contractTerms.servicesDiscount}%
+                            Services Discount: {application.contractTerms.servicesDiscount}%
                           </li>
                           <li>
-                            Marketplace Discount:{" "}
-                            {application.contractTerms.marketplaceDiscount}%
+                            Marketplace Discount: {application.contractTerms.marketplaceDiscount}%
                           </li>
                           <li>
-                            Min Commitment:{" "}
-                            {application.contractTerms.minimumCommitmentMonths}{" "}
-                            months
+                            Term in Months: {application?.termInMonths} months
+                          </li>
+                          <li>
+                            End Date: {application?.endDate}
                           </li>
                         </ul>
                       </div>
@@ -619,15 +614,15 @@ export default function ManagementApplicationWalkthrough() {
                     <div className="space-y-2 border-t pt-4">
                       <h4 className="font-semibold text-lg">Timeline</h4>
                       <p>
-                        <strong>Submitted At:</strong>{" "}
+                        <strong>Submitted At:</strong>
                         {new Date(application.submittedAt).toLocaleString()}
                       </p>
                       <p>
-                        <strong>Created At:</strong>{" "}
+                        <strong>Created At:</strong>
                         {new Date(application.createdAt).toLocaleString()}
                       </p>
                       <p>
-                        <strong>Updated At:</strong>{" "}
+                        <strong>Updated At:</strong>
                         {new Date(application.updatedAt).toLocaleString()}
                       </p>
                     </div>
@@ -672,7 +667,7 @@ export default function ManagementApplicationWalkthrough() {
                 <div className="space-y-3">
                   <Label>Term (months)</Label>
                   <div>
-                    <select className="w-full p-6" value={termInMonths?.toString()} onChange={(e) => setTermInMonths(parseInt(e.target.value))} >
+                    <select className="w-full p-2 rounded-md" value={termInMonths?.toString()} onChange={(e) => setTermInMonths(parseInt(e.target.value))} >
                       <option value={"12"}>12 months / 1 year</option>
                       <option value={"24"}>24 nonths / 2 years </option>
                       <option value={"36"}>36 months / 3 years</option>
@@ -736,6 +731,47 @@ export default function ManagementApplicationWalkthrough() {
                   <li>• Professional can act on behalf of Wai'tuMusic in non-performance matters</li>
                 </ul>
               </div>
+
+              <div className="flex flex-col md:flex-row w-full gap-2">
+                <div className="flex-1 flex gap-2">
+                  <Button
+                    className="w-full"
+                    variant="default"
+                    // onClick={() => reviewApplication("rejected")}
+                  // disabled={stepStatuses[2] === "completed" || !applicationId}
+                  >
+                    Previous
+                  </Button>
+                  <Button
+                    className="w-full"
+                    variant="default"
+                    // onClick={() => reviewApplication("rejected")}
+                  // disabled={stepStatuses[2] === "completed" || !applicationId}
+                  >
+                    Next
+                  </Button>
+                </div>
+                <div className="flex-1 flex gap-2">
+                  <Button
+                    className="w-full"
+                    variant="default"
+                    // onClick={() => reviewApplication("rejected")}
+                  // disabled={stepStatuses[2] === "completed" || !applicationId}
+                  >
+                    Previous
+                  </Button>
+                  <Button
+                    className="w-full"
+                    variant="default"
+                    // onClick={() => reviewApplication("rejected")}
+                  // disabled={stepStatuses[2] === "completed" || !applicationId}
+                  >
+                    Next
+                  </Button>
+                </div>
+
+              </div>
+
 
               {/* Professional details */}
               <div className="border rounded-lg p-4 space-y-2">
