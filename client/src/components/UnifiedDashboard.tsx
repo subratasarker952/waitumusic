@@ -1205,55 +1205,233 @@ export default function UnifiedDashboard({ stats, bookings, applications }: Unif
           </TabsContent>
           {/* )} */}
 
-          <TabsContent value="applications" className="space-y-4 sm:space-y-6">
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-lg sm:text-xl">
-                  All Applications
-                </CardTitle>
-              </CardHeader>
 
-              <CardContent>
-                  <div className="space-y-3 sm:space-y-4">
-                    {applications.map((app: any) => (
-                      <Card key={app.id}>
-                        <CardContent className="p-3">
-                          <div className="flex items-center justify-between gap-3">
-                            <div className="flex-1 min-w-0">
-                              <div className="space-y-2">
-                                <div className="flex items-center justify-between gap-3">
-                                  <h3 className="text-lg font-semibold">
-                                    Application # {app.id}
-                                  </h3>
-                                  <Button onClick={() => setLocation(`/management-walkthrough/${app.id}`)}>
-                                    View Details
-                                  </Button>
+          <TabsContent value='applications'>
+
+            <Tabs defaultValue="pending" className='mt-6'>
+              <Card>
+                <CardHeader>
+                  <CardTitle className="text-lg sm:text-xl">
+                    Applications
+                  </CardTitle>
+                </CardHeader>
+
+                <CardContent>
+                  <TabsList className='w-full'>
+                    <TabsTrigger value="all">All </TabsTrigger>
+                    <TabsTrigger value="pending">Pending</TabsTrigger>
+                    <TabsTrigger value="approved">Approved</TabsTrigger>
+                    <TabsTrigger value="completed">Completed</TabsTrigger>
+                    <TabsTrigger value="rejected">Rejected</TabsTrigger>
+                  </TabsList>
+
+                  <TabsContent value="all" className="space-y-4 sm:space-y-6">
+                    <div className="space-y-3 sm:space-y-4">
+                      {applications.map((app: any) => (
+                        <Card key={app.id}>
+                          <CardContent className="p-3">
+                            <div className="flex items-center justify-between gap-3">
+                              <div className="flex-1 min-w-0">
+                                <div className="space-y-2">
+                                  <div className="flex items-center justify-between gap-3">
+                                    <h3 className="text-lg font-semibold">
+                                      Application # {app.id}
+                                    </h3>
+                                    {isAdmin && <Button onClick={() => setLocation(`/management-walkthrough/${app.id}`)}>
+                                      View Details
+                                    </Button>}
+                                  </div>
+                                  <p>
+                                    <strong>Reason:</strong> {app.applicationReason || "N/A"}
+                                  </p>
+                                  <p>
+                                    <strong>Status:</strong> {app.status}
+                                  </p>
+                                  <p>
+                                    <strong>Submitted:</strong>{" "}
+                                    {new Date(app.submittedAt).toLocaleString()}
+                                  </p>
                                 </div>
-                                <p>
-                                  <strong>Reason:</strong> {app.applicationReason || "N/A"}
-                                </p>
-                                <p>
-                                  <strong>Status:</strong> {app.status}
-                                </p>
-                                <p>
-                                  <strong>Submitted:</strong>{" "}
-                                  {new Date(app.submittedAt).toLocaleString()}
-                                </p>
                               </div>
                             </div>
-                          </div>
-                        </CardContent>
-                      </Card>
-                    ))}
+                          </CardContent>
+                        </Card>
+                      ))}
 
-                    {applications.length === 0 && (
-                      <p className="text-muted-foreground text-center py-6 sm:py-8">
-                        No Applications yet
-                      </p>
-                    )}
-                  </div>
-              </CardContent>
-            </Card>
+                      {applications.length === 0 && (
+                        <p className="text-muted-foreground text-center py-6 sm:py-8">
+                          No Applications yet
+                        </p>
+                      )}
+                    </div>
+                  </TabsContent>
+
+                  <TabsContent value="pending">
+                    <div className="space-y-3 sm:space-y-4">
+                      {applications?.filter((app: any) => app.status == 'pending')?.map((app: any) => (
+                        <Card key={app.id}>
+                          <CardContent className="p-3">
+                            <div className="flex items-center justify-between gap-3">
+                              <div className="flex-1 min-w-0">
+                                <div className="space-y-2">
+                                  <div className="flex items-center justify-between gap-3">
+                                    <h3 className="text-lg font-semibold">
+                                      Application # {app.id}
+                                    </h3>
+                                    {isAdmin && <Button onClick={() => setLocation(`/management-walkthrough/${app.id}`)}>
+                                      View Details
+                                    </Button>}
+                                  </div>
+                                  <p>
+                                    <strong>Reason:</strong> {app.applicationReason || "N/A"}
+                                  </p>
+                                  <p>
+                                    <strong>Status:</strong> {app.status}
+                                  </p>
+                                  <p>
+                                    <strong>Submitted:</strong>{" "}
+                                    {new Date(app.submittedAt).toLocaleString()}
+                                  </p>
+                                </div>
+                              </div>
+                            </div>
+                          </CardContent>
+                        </Card>
+                      ))}
+
+                      {applications.length === 0 && (
+                        <p className="text-muted-foreground text-center py-6 sm:py-8">
+                          No Applications yet
+                        </p>
+                      )}
+                    </div>
+                  </TabsContent>
+
+                  <TabsContent value="approved">
+                    <div className="space-y-3 sm:space-y-4">
+                      {applications?.filter((app: any) => app.status == 'approved')?.map((app: any) => (
+                        <Card key={app.id}>
+                          <CardContent className="p-3">
+                            <div className="flex items-center justify-between gap-3">
+                              <div className="flex-1 min-w-0">
+                                <div className="space-y-2">
+                                  <div className="flex items-center justify-between gap-3">
+                                    <h3 className="text-lg font-semibold">
+                                      Application # {app.id}
+                                    </h3>
+                                    {isAdmin && <Button onClick={() => setLocation(`/management-walkthrough/${app.id}`)}>
+                                      View Details
+                                    </Button>}
+                                  </div>
+                                  <p>
+                                    <strong>Reason:</strong> {app.applicationReason || "N/A"}
+                                  </p>
+                                  <p>
+                                    <strong>Status:</strong> {app.status}
+                                  </p>
+                                  <p>
+                                    <strong>Submitted:</strong>{" "}
+                                    {new Date(app.submittedAt).toLocaleString()}
+                                  </p>
+                                </div>
+                              </div>
+                            </div>
+                          </CardContent>
+                        </Card>
+                      ))}
+
+                      {applications.length === 0 && (
+                        <p className="text-muted-foreground text-center py-6 sm:py-8">
+                          No Applications yet
+                        </p>
+                      )}
+                    </div>
+                  </TabsContent>
+
+                  <TabsContent value="completed">
+                    <div className="space-y-3 sm:space-y-4">
+                      {applications?.filter((app: any) => app.status == 'completed')?.map((app: any) => (
+                        <Card key={app.id}>
+                          <CardContent className="p-3">
+                            <div className="flex items-center justify-between gap-3">
+                              <div className="flex-1 min-w-0">
+                                <div className="space-y-2">
+                                  <div className="flex items-center justify-between gap-3">
+                                    <h3 className="text-lg font-semibold">
+                                      Application # {app.id}
+                                    </h3>
+                                    {isAdmin && <Button onClick={() => setLocation(`/management-walkthrough/${app.id}`)}>
+                                      View Details
+                                    </Button>}
+                                  </div>
+                                  <p>
+                                    <strong>Reason:</strong> {app.applicationReason || "N/A"}
+                                  </p>
+                                  <p>
+                                    <strong>Status:</strong> {app.status}
+                                  </p>
+                                  <p>
+                                    <strong>Submitted:</strong>{" "}
+                                    {new Date(app.submittedAt).toLocaleString()}
+                                  </p>
+                                </div>
+                              </div>
+                            </div>
+                          </CardContent>
+                        </Card>
+                      ))}
+
+                      {applications.length === 0 && (
+                        <p className="text-muted-foreground text-center py-6 sm:py-8">
+                          No Applications yet
+                        </p>
+                      )}
+                    </div>
+                  </TabsContent>
+
+                  <TabsContent value="rejected">
+                    <div className="space-y-3 sm:space-y-4">
+                      {applications?.filter((app: any) => app.status == 'rejected')?.map((app: any) => (
+                        <Card key={app.id}>
+                          <CardContent className="p-3">
+                            <div className="flex items-center justify-between gap-3">
+                              <div className="flex-1 min-w-0">
+                                <div className="space-y-2">
+                                  <div className="flex items-center justify-between gap-3">
+                                    <h3 className="text-lg font-semibold">
+                                      Application # {app.id}
+                                    </h3>
+                                    {isAdmin && <Button onClick={() => setLocation(`/management-walkthrough/${app.id}`)}>
+                                      View Details
+                                    </Button>}
+                                  </div>
+                                  <p>
+                                    <strong>Reason:</strong> {app.applicationReason || "N/A"}
+                                  </p>
+                                  <p>
+                                    <strong>Status:</strong> {app.status}
+                                  </p>
+                                  <p>
+                                    <strong>Submitted:</strong>{" "}
+                                    {new Date(app.submittedAt).toLocaleString()}
+                                  </p>
+                                </div>
+                              </div>
+                            </div>
+                          </CardContent>
+                        </Card>
+                      ))}
+
+                      {applications.length === 0 && (
+                        <p className="text-muted-foreground text-center py-6 sm:py-8">
+                          No Applications yet
+                        </p>
+                      )}
+                    </div>
+                  </TabsContent>
+                </CardContent>
+              </Card>
+            </Tabs>
           </TabsContent>
 
 

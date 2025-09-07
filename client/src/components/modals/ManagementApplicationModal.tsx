@@ -48,6 +48,7 @@ const managementApplicationSchema = z.object({
     }
   ),
   requestedManagementTierId: z.number().optional(),
+  termInMonths: z.string().optional(),
   applicationReason: z
     .string()
     .min(50, "Please provide at least 50 characters explaining why you want this role"),
@@ -94,6 +95,7 @@ export default function ManagementApplicationModal({
       expectedRevenue: "",
       portfolioLinks: "",
       socialMediaMetrics: "",
+      termInMonths: ""
     },
   });
 
@@ -137,6 +139,7 @@ export default function ManagementApplicationModal({
       ...data,
       requestedRoleId: roleId,
     };
+    console.log(payload)
     try {
       await apiRequest("/api/management-applications", {
         method: "POST",
@@ -144,8 +147,8 @@ export default function ManagementApplicationModal({
       });
 
       // ✅ এখানে query invalidate করো
-      queryClient.invalidateQueries({queryKey:["/api/management-applications"]});
-      queryClient.invalidateQueries({queryKey:["/api/management-applications/user"]});
+      queryClient.invalidateQueries({ queryKey: ["/api/management-applications"] });
+      queryClient.invalidateQueries({ queryKey: ["/api/management-applications/user"] });
 
 
       toast({
@@ -313,6 +316,31 @@ export default function ManagementApplicationModal({
                   <FormControl>
                     <Textarea placeholder="Share your social media stats..." {...field} />
                   </FormControl>
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="termInMonths"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="text-lg font-semibold">Term In Months</FormLabel>
+                  <Select onValueChange={field.onChange}>
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select Months" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      <SelectItem value={"12"}> 12 months / 1 year </SelectItem>
+                      <SelectItem value={"24"}> 24 nonths / 2 years </SelectItem>
+                      <SelectItem value={"36"}> 36 months / 3 years</SelectItem>
+                      <SelectItem value={"48"}> 48 months / 4 years </SelectItem>
+                      <SelectItem value={"60"}> 60 months / 5 years </SelectItem>
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
                 </FormItem>
               )}
             />

@@ -858,6 +858,7 @@ export const managementApplications = pgTable("management_applications", {
   endDate: timestamp("end_date"), // NEW optional
   notes: text("notes"), // NEW optional
   submittedAt: timestamp("submitted_at").defaultNow(),
+  reviewComments: text("review_comments"),
   reviewedAt: timestamp("reviewed_at"),
   reviewedByUserId: integer("reviewed_by_user_id").references(() => users.id),
   approvedAt: timestamp("approved_at"),

@@ -15329,6 +15329,7 @@ This is a preview of the performance engagement contract. Final agreement will i
     async (req: Request, res: Response) => {
       try {
         const {
+          termInMonths,
           requestedManagementTierId,
           requestedRoleId,
           applicationReason,
@@ -15432,6 +15433,7 @@ This is a preview of the performance engagement contract. Final agreement will i
 
         // ✅ Create application
         const application = await storage.createManagementApplication({
+          termInMonths: parseInt(termInMonths),
           applicantUserId: currentUserId,
           requestedManagementTierId,
           requestedRoleId,
@@ -16165,8 +16167,6 @@ This is a preview of the performance engagement contract. Final agreement will i
 
         const applicantRoles = await storage.getUserRoles(applicant.id);
         const applicantRolesIds = applicantRoles.map((r) => r.id);
-
-        console.log(applicantRolesIds)
 
         if (applicant) {
           await storage.createManagementTransition({

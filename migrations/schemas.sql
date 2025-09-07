@@ -1128,6 +1128,7 @@ CREATE TABLE "management_applications" (
   	"term_in_months" integer,         
   	"end_date" timestamp,         
   	"notes" text,                 
+	"review_comments" text,
 	"created_at" timestamp DEFAULT now(),
 	"updated_at" timestamp DEFAULT now()
 );
