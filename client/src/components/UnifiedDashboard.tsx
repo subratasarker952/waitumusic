@@ -532,9 +532,9 @@ export default function UnifiedDashboard({ stats, bookings, applications }: Unif
                     <List className="h-3 w-3" /> Applications
                   </TabsTrigger>
 
-                  <TabsTrigger value="gigs" className="text-xs flex items-center gap-1">
+                 {roles.some(r => [2, 3, 4, 5, 6, 7, 8].includes(r.id)) && <TabsTrigger value="gigs" className="text-xs flex items-center gap-1">
                     <Music2 className="h-3 w-3" /> My Gigs
-                  </TabsTrigger>
+                  </TabsTrigger>}
                 </TabsList>
               </div>
               {/* )} */}

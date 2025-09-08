@@ -27,8 +27,8 @@ export default function Artists() {
   const { toast } = useToast();
   const [location, setLocation] = useLocation();
   const [searchTerm, setSearchTerm] = useState('');
-  const [genreFilter, setGenreFilter] = useState('');
-  const [managementFilter, setManagetmentFilter] = useState('');
+  const [genreFilter, setGenreFilter] = useState('all');
+  const [managementFilter, setManagetmentFilter] = useState('all');
   const [favorites, setFavorites] = useState(new Set());
 
   const { data: artists = [], isLoading: artistsLoading } = useQuery({
@@ -108,10 +108,8 @@ export default function Artists() {
         performer.user?.fullName?.toLowerCase().includes(searchTerm.toLowerCase()) ||
         performer.instrument?.toLowerCase().includes(searchTerm.toLowerCase());
 
-      const matchesGenre = !genreFilter || performer.genre === genreFilter || performer.primaryGenre === genreFilter;
-      const matchesManagement = !managementFilter ||
-        (managementFilter === 'managed' && performer.isManaged) ||
-        (managementFilter === 'independent' && !performer.isManaged);
+      const matchesGenre = !genreFilter || genreFilter === 'all' || performer.genre === genreFilter || performer.primaryGenre === genreFilter;
+      const matchesManagement = !managementFilter  || managementFilter === 'all' ||  (managementFilter === 'managed' && performer.isManaged) ||   (managementFilter === 'independent' && !performer.isManaged);
 
       return matchesSearch && matchesGenre && matchesManagement;
     })
@@ -130,6 +128,7 @@ export default function Artists() {
     ...(musicians ?? []).map((musician: any) => musician.primaryGenre).filter(Boolean)
   ])];
 
+  console.log(filteredPerformers)
   return (
     <div className="min-h-screen bg-background">
       {/* Hero Section */}
@@ -237,7 +236,7 @@ export default function Artists() {
                   <div className="text-center mb-4">
                     <Avatar className="w-24 h-24 mx-auto mb-3">
                       <AvatarImage
-                        src={performer?.avatarUrl}
+                        src={performer?.user?.avatarUrl}
                         alt={performer.stageNames?.find(sn => sn.isPrimary)?.name || performer.stageName || performer.user?.fullName}
                         className="object-cover"
                       />

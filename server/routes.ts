@@ -854,43 +854,33 @@ export async function registerRoutes(app: Express): Promise<Server> {
           return res.status(404).json({ message: "User not found" });
         }
 
-        // Get role-specific data
-        let roleData = null;
-        const roles = await storage.getRoles();
-        const userRole = roles.find((role) => role.id === user.roleId);
+        const roles = await storage.getUserRoles(user.id);
 
-        if (userRole) {
-          switch (user.roleId) {
-            case 3:
-            case 4:
-              roleData = await storage.getArtist(user.id);
-              break;
-            case 5:
-            case 6:
-              roleData = await storage.getMusician(user.id);
-              break;
-            case 7:
-            case 8:
-              roleData = await storage.getProfessional(user.id);
-              break;
-            default:
-              roleData = {}; // Fan বা Admin এর জন্য
+        // 6. Fetch role-specific data (optional, based on first role)
+        const roleData = [];
+
+        for (const role of roles) {
+          let data = {};
+          if ([3, 4].includes(role.id)) {
+            data = await storage.getArtist(user.id);
+          } else if ([5, 6].includes(role.id)) {
+            data = await storage.getMusician(user.id);
+          } else if ([7, 8].includes(role.id)) {
+            data = await storage.getProfessional(user.id);
           }
+          roleData.push({ role, data });
         }
+
+        const { passwordHash, ...userWithoutPassword } = user;
 
         res.json({
           user: {
-            id: user.id,
-            email: user.email,
-            fullName: user.fullName,
-            roleId: user.roleId,
-            status: user.status,
-            role: userRole?.name,
+            ...userWithoutPassword,
+            roles,
+            roleData,
           },
-          profile,
-          roleData,
-          role: userRole?.name,
         });
+
       } catch (error) {
         logError(error, ErrorSeverity.ERROR, {
           endpoint: "/api/user/profile",
@@ -15290,7 +15280,6 @@ This is a preview of the performance engagement contract. Final agreement will i
 
         if (
           !currentUserId ||
-          !requestedManagementTierId ||
           !requestedRoleId ||
           !applicationReason
         ) {
@@ -15332,12 +15321,14 @@ This is a preview of the performance engagement contract. Final agreement will i
         }
 
         // ✅ Validate management tier
-        const managementTiers = await storage.getManagementTiers();
-        const tier = managementTiers.find(
-          (t) => t.id === requestedManagementTierId
-        );
-        if (!tier) {
-          return res.status(400).json({ message: "Invalid management tier" });
+        if (requestedManagementTierId) {
+          const managementTiers = await storage.getManagementTiers();
+          const tier = managementTiers.find(
+            (t) => t.id === requestedManagementTierId
+          );
+          if (!tier) {
+            return res.status(400).json({ message: "Invalid management tier" });
+          }
         }
 
         // ✅ Validate role
@@ -15360,7 +15351,7 @@ This is a preview of the performance engagement contract. Final agreement will i
           minimumCommitmentMonths: 12,
           termination: {
             noticePeriod: 30,
-            earlyTerminationFee: 1000,
+            earlyTerminationFee: requestedManagementTierId == 3 ? 2500 : 1000,
           },
         };
 
@@ -16176,7 +16167,7 @@ This is a preview of the performance engagement contract. Final agreement will i
             }
           } else {
             // no core role → requestedRoleId অনুযায়ী create
-            if (application.requestedRoleId === 4) {
+            if (application.requestedRoleId === 3) {
               console.log({
                 userId: application.applicantUserId,
                 stageName: applicant.fullName || applicant.email.split("@")[0],
@@ -16197,7 +16188,28 @@ This is a preview of the performance engagement contract. Final agreement will i
                 managementTierId: application.requestedManagementTierId,
                 bookingFormPictureUrl: null,
               });
-            } else if (application.requestedRoleId === 6) {
+            } else if (application.requestedRoleId === 4) {
+              console.log({
+                userId: application.applicantUserId,
+                stageName: applicant.fullName || applicant.email.split("@")[0],
+                primaryGenre: "To Be Determined",
+                bio: "New managed artist",
+                primaryTalentId: 1,
+                isManaged: false,
+                managementTierId: null,
+                bookingFormPictureUrl: null,
+              })
+              await storage.createArtist({
+                userId: application.applicantUserId,
+                stageName: applicant.fullName || applicant.email.split("@")[0],
+                primaryGenre: "To Be Determined",
+                bio: "New managed artist",
+                primaryTalentId: 1,
+                isManaged: false,
+                managementTierId: null,
+                bookingFormPictureUrl: null,
+              });
+            } else if (application.requestedRoleId === 5) {
               console.log({
                 userId: application.applicantUserId,
                 stageName: applicant.fullName || applicant.email.split("@")[0],
@@ -16216,7 +16228,26 @@ This is a preview of the performance engagement contract. Final agreement will i
                 isManaged: true,
                 managementTierId: application.requestedManagementTierId,
               });
-            } else if (application.requestedRoleId === 8) {
+            } else if (application.requestedRoleId === 6) {
+              console.log({
+                userId: application.applicantUserId,
+                stageName: applicant.fullName || applicant.email.split("@")[0],
+                primaryTalentId: 1,
+                bio: "New managed musician",
+                primaryGenre: "To Be Determined",
+                isManaged: false,
+                managementTierId: null,
+              })
+              await storage.createMusician({
+                userId: application.applicantUserId,
+                stageName: applicant.fullName || applicant.email.split("@")[0],
+                primaryTalentId: 1,
+                bio: "New managed musician",
+                primaryGenre: "To Be Determined",
+                isManaged: false,
+                managementTierId: null,
+              });
+            } else if (application.requestedRoleId === 7) {
               console.log({
                 userId: application.applicantUserId,
                 primaryTalentId: 1,
@@ -16228,6 +16259,19 @@ This is a preview of the performance engagement contract. Final agreement will i
                 primaryTalentId: 1,
                 isManaged: true,
                 managementTierId: application.requestedManagementTierId,
+              });
+            } else if (application.requestedRoleId === 8) {
+              console.log({
+                userId: application.applicantUserId,
+                primaryTalentId: 1,
+                isManaged: false,
+                managementTierId: null,
+              })
+              await storage.createProfessional({
+                userId: application.applicantUserId,
+                primaryTalentId: 1,
+                isManaged: false,
+                managementTierId: null,
               });
             }
           }
