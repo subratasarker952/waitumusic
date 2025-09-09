@@ -43,7 +43,7 @@ type BookingFormData = z.infer<typeof bookingSchema>;
 export default function Booking() {
   const [selectedDates, setSelectedDates] = useState<Date[]>([]);
   const [activeTab, setActiveTab] = useState('new');
-  const { user, role } = useAuth();
+  const { user, roles } = useAuth();
   const { toast } = useToast();
   const queryClient = useQueryClient();
 
@@ -116,6 +116,8 @@ export default function Booking() {
 
     createBookingMutation.mutate(bookingData);
   };
+
+
 
   const eventTypes = [
     'Concert',

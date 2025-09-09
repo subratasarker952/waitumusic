@@ -3038,7 +3038,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.post(
     "/api/bookings/:id/talent-response",
     authenticateToken,
-    requirePermission("respond_to_bookings"),
     talentResponseRateLimit,
     async (req: Request, res: Response) => {
       try {
@@ -3148,10 +3147,149 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   );
 
+  // app.post(
+  //   "/api/bookings",
+  //   authenticateToken,
+  //   validate(schemas.createBookingSchema),
+  //   async (req: Request, res: Response) => {
+  //     try {
+  //       const bookingData = req.body;
+  //       const {
+  //         additionalTalentUserIds,
+  //         multiTalentBooking,
+  //         ...coreBookingData
+  //       } = bookingData;
+
+  //       // Fix eventDate to ensure proper Date object or null
+  //       if (coreBookingData.eventDate) {
+  //         if (typeof coreBookingData.eventDate === "string") {
+  //           try {
+  //             const dateObj = new Date(coreBookingData.eventDate);
+  //             if (isNaN(dateObj.getTime())) {
+  //               throw new Error("Invalid date format");
+  //             }
+  //             coreBookingData.eventDate = dateObj;
+  //           } catch (error) {
+  //             console.error("Date parsing error:", error);
+  //             return res
+  //               .status(400)
+  //               .json({ message: "Invalid event date format" });
+  //           }
+  //         } else if (!(coreBookingData.eventDate instanceof Date)) {
+  //           // If it's not a string and not a Date, set to null
+  //           coreBookingData.eventDate = null;
+  //         }
+  //       } else {
+  //         // Ensure null instead of undefined
+  //         coreBookingData.eventDate = null;
+  //       }
+
+  //       console.log(
+  //         "Processed eventDate:",
+  //         coreBookingData.eventDate,
+  //         "Type:",
+  //         typeof coreBookingData.eventDate
+  //       );
+
+  //       // Create the main booking
+  //       const booking = await storage.createBooking({
+  //         ...coreBookingData,
+  //         bookerUserId: req.user?.userId,
+  //       });
+
+  //       // Auto-assign primary artist as Main Booked Talent
+  //       if (coreBookingData.primaryArtistUserId) {
+  //         const primaryUser = await storage.getUser(
+  //           coreBookingData.primaryArtistUserId
+  //         );
+  //         if (
+  //           primaryUser &&
+  //           (primaryUser.roleId === 3 ||
+  //             primaryUser.roleId === 4 ||
+  //             primaryUser.roleId === 5 ||
+  //             primaryUser.roleId === 6)
+  //         ) {
+  //           const assignmentRole = "Main Booked Talent";
+  //           const assignmentNotes = `Primary talent - ${primaryUser.roleId === 3
+  //             ? "managed artist"
+  //             : primaryUser.roleId === 4
+  //               ? "artist"
+  //               : primaryUser.roleId === 5
+  //                 ? "managed musician"
+  //                 : "musician"
+  //             }`;
+
+  //           await storage.createBookingAssignment({
+  //             bookingId: booking.id,
+  //             assignedUserId: coreBookingData.primaryArtistUserId!,
+  //             assignmentRole,
+  //             assignedByUserId: req.user!.userId,
+  //             notes: assignmentNotes,
+  //           });
+  //         }
+  //       }
+
+  //       // If multi-talent booking, create booking assignments for additional talents
+  //       if (
+  //         multiTalentBooking &&
+  //         additionalTalentUserIds &&
+  //         additionalTalentUserIds.length > 0
+  //       ) {
+  //         for (const talentUserId of additionalTalentUserIds) {
+  //           // Get user data to determine proper assignment role
+  //           const user = await storage.getUser(talentUserId);
+  //           let assignmentRole = "Main Booked Talent"; // Default for managed talent
+  //           let assignmentNotes = "Multi-talent booking";
+
+  //           if (user) {
+  //             // Managed artists and musicians are main booked talent
+  //             if (user.roleId === 3 || user.roleId === 5) {
+  //               // Managed Artist or Managed Musician
+  //               assignmentRole = "Main Booked Talent";
+  //               assignmentNotes = `Multi-talent booking - ${user.roleId === 3 ? "managed artist" : "managed musician"
+  //                 }`;
+  //             } else if (user.roleId === 4 || user.roleId === 6) {
+  //               // Regular Artist or Musician
+  //               assignmentRole = "Main Booked Talent";
+  //               assignmentNotes = `Multi-talent booking - ${user.roleId === 4 ? "artist" : "musician"
+  //                 }`;
+  //             } else if (user.roleId === 7 || user.roleId === 8) {
+  //               // Professional roles
+  //               assignmentRole = "Supporting Professional";
+  //               assignmentNotes = `Multi-talent booking - ${user.roleId === 7 ? "managed professional" : "professional"
+  //                 }`;
+  //             }
+  //           }
+
+  //           await storage.createBookingAssignment({
+  //             bookingId: booking.id,
+  //             assignedUserId: talentUserId,
+  //             assignmentRole,
+  //             assignedByUserId: req.user!.userId,
+  //             notes: assignmentNotes,
+  //           });
+  //         }
+  //       }
+
+  //       cacheHelpers.invalidateBookingCache();
+  //       res.status(201).json({
+  //         ...booking,
+  //         multiTalentBooking,
+  //         additionalTalentsCount: additionalTalentUserIds?.length || 0,
+  //       });
+  //     } catch (error) {
+  //       logError(error, ErrorSeverity.ERROR, {
+  //         endpoint: "/api/bookings",
+  //         userId: req.user?.userId,
+  //       });
+  //       res.status(500).json({ message: "Internal server error" });
+  //     }
+  //   }
+  // );
+
   app.post(
     "/api/bookings",
     authenticateToken,
-    requireRole(ROLE_GROUPS.BOOKING_ENABLED),
     validate(schemas.createBookingSchema),
     async (req: Request, res: Response) => {
       try {
@@ -3162,7 +3300,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
           ...coreBookingData
         } = bookingData;
 
-        // Fix eventDate to ensure proper Date object or null
+        // --- Fix eventDate ---
         if (coreBookingData.eventDate) {
           if (typeof coreBookingData.eventDate === "string") {
             try {
@@ -3178,11 +3316,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
                 .json({ message: "Invalid event date format" });
             }
           } else if (!(coreBookingData.eventDate instanceof Date)) {
-            // If it's not a string and not a Date, set to null
             coreBookingData.eventDate = null;
           }
         } else {
-          // Ensure null instead of undefined
           coreBookingData.eventDate = null;
         }
 
@@ -3193,37 +3329,29 @@ export async function registerRoutes(app: Express): Promise<Server> {
           typeof coreBookingData.eventDate
         );
 
-        // Create the main booking
+        // --- Create booking ---
         const booking = await storage.createBooking({
           ...coreBookingData,
           bookerUserId: req.user?.userId,
         });
 
-        // Auto-assign primary artist as Main Booked Talent
+        // --- Assign primary artist ---
         if (coreBookingData.primaryArtistUserId) {
-          const primaryUser = await storage.getUser(
-            coreBookingData.primaryArtistUserId
-          );
-          if (
-            primaryUser &&
-            (primaryUser.roleId === 3 ||
-              primaryUser.roleId === 4 ||
-              primaryUser.roleId === 5 ||
-              primaryUser.roleId === 6)
-          ) {
+          const primaryUser = await storage.getUser(coreBookingData.primaryArtistUserId);
+          const roles = await storage.getUserRoles(coreBookingData.primaryArtistUserId);
+          const roleIds = roles.map(r => r.id);
+
+          if (roleIds.some(id => [3, 4, 5, 6].includes(id))) {
             const assignmentRole = "Main Booked Talent";
-            const assignmentNotes = `Primary talent - ${primaryUser.roleId === 3
-              ? "managed artist"
-              : primaryUser.roleId === 4
-                ? "artist"
-                : primaryUser.roleId === 5
-                  ? "managed musician"
-                  : "musician"
+            const assignmentNotes = `Primary talent - ${roleIds.includes(3) ? "managed artist"
+                : roleIds.includes(4) ? "artist"
+                  : roleIds.includes(5) ? "managed musician"
+                    : "musician"
               }`;
 
             await storage.createBookingAssignment({
               bookingId: booking.id,
-              assignedUserId: coreBookingData.primaryArtistUserId!,
+              assignedUserId: coreBookingData.primaryArtistUserId,
               assignmentRole,
               assignedByUserId: req.user!.userId,
               notes: assignmentNotes,
@@ -3231,36 +3359,28 @@ export async function registerRoutes(app: Express): Promise<Server> {
           }
         }
 
-        // If multi-talent booking, create booking assignments for additional talents
-        if (
-          multiTalentBooking &&
-          additionalTalentUserIds &&
-          additionalTalentUserIds.length > 0
-        ) {
+        // --- Assign additional talents ---
+        if (multiTalentBooking && additionalTalentUserIds?.length > 0) {
           for (const talentUserId of additionalTalentUserIds) {
-            // Get user data to determine proper assignment role
             const user = await storage.getUser(talentUserId);
-            let assignmentRole = "Main Booked Talent"; // Default for managed talent
+            const roles = await storage.getUserRoles(talentUserId);
+            const roleIds = roles.map(r => r.id);
+
+            let assignmentRole = "Main Booked Talent"; // default
             let assignmentNotes = "Multi-talent booking";
 
-            if (user) {
-              // Managed artists and musicians are main booked talent
-              if (user.roleId === 3 || user.roleId === 5) {
-                // Managed Artist or Managed Musician
-                assignmentRole = "Main Booked Talent";
-                assignmentNotes = `Multi-talent booking - ${user.roleId === 3 ? "managed artist" : "managed musician"
-                  }`;
-              } else if (user.roleId === 4 || user.roleId === 6) {
-                // Regular Artist or Musician
-                assignmentRole = "Main Booked Talent";
-                assignmentNotes = `Multi-talent booking - ${user.roleId === 4 ? "artist" : "musician"
-                  }`;
-              } else if (user.roleId === 7 || user.roleId === 8) {
-                // Professional roles
-                assignmentRole = "Supporting Professional";
-                assignmentNotes = `Multi-talent booking - ${user.roleId === 7 ? "managed professional" : "professional"
-                  }`;
-              }
+            if (roleIds.some(id => [3, 5].includes(id))) {
+              assignmentRole = "Main Booked Talent";
+              assignmentNotes = `Multi-talent booking - ${roleIds.includes(3) ? "managed artist" : "managed musician"
+                }`;
+            } else if (roleIds.some(id => [4, 6].includes(id))) {
+              assignmentRole = "Main Booked Talent";
+              assignmentNotes = `Multi-talent booking - ${roleIds.includes(4) ? "artist" : "musician"
+                }`;
+            } else if (roleIds.some(id => [7, 8].includes(id))) {
+              assignmentRole = "Supporting Professional";
+              assignmentNotes = `Multi-talent booking - ${roleIds.includes(7) ? "managed professional" : "professional"
+                }`;
             }
 
             await storage.createBookingAssignment({
@@ -4979,55 +5099,55 @@ export async function registerRoutes(app: Express): Promise<Server> {
   );
 
   // Get user's bookings - role-specific
-  //   app.get("/api/bookings/user", authenticateToken, async (req: Request, res: Response) => {
-  //     try {
-  //       const userId = req.user?.userId;
-  //       if (!userId) {
-  //         return res.status(401).json({ message: "User not authenticated" });
-  //       }
-  //       const user = await storage.getUser(userId);
-  //       const roles = await storage.getUserRoles(user.id); // array of roles
-  //       if (!roles || roles.length === 0) {
-  //         return res.status(404).json({ message: "User role not found" });
-  //       }
-  //  \
-  //       const allBookings = await storage.getAllBookings();
-  //       let userBookings: any[] = [];
-
-  //       switch (user.roleId) {
-  //         case 3: // Star Talent
-  //         case 4: // Rising Artist
-  //           userBookings = allBookings.filter((b: any) => b.primaryArtistUserId === userId);
-  //           break;
-  //         case 5: // Studio Pro
-  //         case 6: // Session Player
-  //           // Get bookings where user is assigned via booking_assignments or booking_assignments_members
-  //           const assignedBookingIds = await db
-  //             .select({ bookingId: schema.bookingAssignments.bookingId })
-  //             .from(schema.bookingAssignments)
-  //             .where(eq(schema.bookingAssignments.assignedUserId, userId))
-  //             .union(
-  //               db
-  //                 .select({ bookingId: schema.bookingAssignmentsMembers.bookingId })
-  //                 .from(schema.bookingAssignmentsMembers)
-  //                 .where(eq(schema.bookingAssignmentsMembers.userId, userId))
-  //             );
-
-  //           const assignedIds = assignedBookingIds.map(a => a.bookingId);
-  //           userBookings = allBookings.filter((b: any) => assignedIds.includes(b.id));
-  //           break;
-  //         case 9: // Music Lover
-  //         default:
-  //           userBookings = allBookings.filter((b: any) => b.bookerUserId === userId);
-  //           break;
-  //       }
-
-  //       res.json(userBookings);
-  //     } catch (error) {
-  //       logError(error, ErrorSeverity.ERROR, { endpoint: '/api/bookings/user', userId: req.user?.userId });
-  //       res.status(500).json({ message: "Internal server error" });
+  // app.get("/api/bookings/user", authenticateToken, async (req: Request, res: Response) => {
+  //   try {
+  //     const userId = req.user?.userId;
+  //     if (!userId) {
+  //       return res.status(401).json({ message: "User not authenticated" });
   //     }
-  //   });
+  //     const user = await storage.getUser(userId);
+  //     const roles = await storage.getUserRoles(user.id); // array of roles
+  //     if (!roles || roles.length === 0) {
+  //       return res.status(404).json({ message: "User role not found" });
+  //     }
+
+  //     const allBookings = await storage.getAllBookings();
+  //     let userBookings: any[] = [];
+
+  //     switch (user.roleId) {
+  //       case 3: // Star Talent
+  //       case 4: // Rising Artist
+  //         userBookings = allBookings.filter((b: any) => b.primaryArtistUserId === userId);
+  //         break;
+  //       case 5: // Studio Pro
+  //       case 6: // Session Player
+  //         // Get bookings where user is assigned via booking_assignments or booking_assignments_members
+  //         const assignedBookingIds = await db
+  //           .select({ bookingId: schema.bookingAssignments.bookingId })
+  //           .from(schema.bookingAssignments)
+  //           .where(eq(schema.bookingAssignments.assignedUserId, userId))
+  //           .union(
+  //             db
+  //               .select({ bookingId: schema.bookingAssignmentsMembers.bookingId })
+  //               .from(schema.bookingAssignmentsMembers)
+  //               .where(eq(schema.bookingAssignmentsMembers.userId, userId))
+  //           );
+
+  //         const assignedIds = assignedBookingIds.map(a => a.bookingId);
+  //         userBookings = allBookings.filter((b: any) => assignedIds.includes(b.id));
+  //         break;
+  //       case 9: // Music Lover
+  //       default:
+  //         userBookings = allBookings.filter((b: any) => b.bookerUserId === userId);
+  //         break;
+  //     }
+
+  //     res.json(userBookings);
+  //   } catch (error) {
+  //     logError(error, ErrorSeverity.ERROR, { endpoint: '/api/bookings/user', userId: req.user?.userId });
+  //     res.status(500).json({ message: "Internal server error" });
+  //   }
+  // });
 
   app.get(
     "/api/bookings/user",
@@ -5039,83 +5159,46 @@ export async function registerRoutes(app: Express): Promise<Server> {
           return res.status(401).json({ message: "User not authenticated" });
         }
 
-        // Fetch all bookings related to this user by role
-        const [artistBookings, musicianBookings, fanBookings] =
-          await Promise.all([
-            // Artist bookings (primary artist)
-            db
-              .select()
-              .from(schema.bookings)
-              .where(eq(schema.bookings.primaryArtistUserId, userId)),
+        const user = await storage.getUser(userId);
+        const roles = await storage.getUserRoles(user.id); // array of roles [{id, name}]
+        if (!roles || roles.length === 0) {
+          return res.status(404).json({ message: "User role not found" });
+        }
 
-            // Musician bookings (assigned in assignments or members)
-            (async () => {
-              const assignedBookingIds = await db
-                .select({ bookingId: schema.bookingAssignments.bookingId })
-                .from(schema.bookingAssignments)
-                .where(eq(schema.bookingAssignments.assignedUserId, userId))
-                .union(
-                  db
-                    .select({
-                      bookingId: schema.bookingAssignmentsMembers.bookingId,
-                    })
-                    .from(schema.bookingAssignmentsMembers)
-                    .where(eq(schema.bookingAssignmentsMembers.userId, userId))
-                );
-              const assignedIds = assignedBookingIds.map((a) => a.bookingId);
-              if (assignedIds.length === 0) return [];
-              return db
-                .select()
-                .from(schema.bookings)
-                .whereIn(schema.bookings.id, assignedIds);
-            })(),
+        const roleIds = roles.map(r => r.id);
+        const allBookings = await storage.getAllBookings();
+        let userBookings: any[] = [];
 
-            // Fan bookings (booked by this user)
-            db
-              .select()
-              .from(schema.bookings)
-              .where(eq(schema.bookings.bookerUserId, userId)),
-          ]);
+        // --- Star Talent (3) or Rising Artist (4) ---
+        if (roleIds.some(id => [3, 4].includes(id))) {
+          userBookings = allBookings.filter(
+            (b: any) => b.primaryArtistUserId === userId
+          );
+        }
 
-        // Merge all bookings, removing duplicates if any
-        const allUserBookingsMap = new Map<number, any>();
-        [...artistBookings, ...musicianBookings, ...fanBookings].forEach(
-          (b) => {
-            allUserBookingsMap.set(b.id, b);
-          }
-        );
+        // --- Studio Pro (5) or Session Player (6) ---
+        else if (roleIds.some(id => [5, 6].includes(id))) {
+          const assignedBookingIds = await db
+            .select({ bookingId: schema.bookingAssignments.bookingId })
+            .from(schema.bookingAssignments)
+            .where(eq(schema.bookingAssignments.assignedUserId, userId))
+            .union(
+              db
+                .select({ bookingId: schema.bookingAssignmentsMembers.bookingId })
+                .from(schema.bookingAssignmentsMembers)
+                .where(eq(schema.bookingAssignmentsMembers.userId, userId))
+            );
 
-        const userBookings = Array.from(allUserBookingsMap.values());
+          const assignedIds = assignedBookingIds.map(a => a.bookingId);
+          userBookings = allBookings.filter((b: any) => assignedIds.includes(b.id));
+        }
 
-        // Optionally enrich bookings with primary artist info
-        const enrichedBookings = await Promise.all(
-          userBookings.map(async (booking) => {
-            if (!booking.primaryArtistUserId) return booking;
+        // --- Music Lover (9) OR Default fallback ---
+        else if (roleIds.includes(9) || true) {
+          userBookings = allBookings.filter((b: any) => b.bookerUserId === userId);
+        }
 
-            const artist = await storage.getArtist(booking.primaryArtistUserId);
-            if (!artist) return booking;
-
-            const primaryStageName =
-              Array.isArray(artist.stageNames) && artist.stageNames.length > 0
-                ? typeof artist.stageNames[0] === "object"
-                  ? artist.stageNames[0].name
-                  : artist.stageNames[0]
-                : "Unknown Artist";
-
-            return {
-              ...booking,
-              primaryArtist: {
-                userId: artist.userId,
-                stageName: primaryStageName,
-                stageNames: artist.stageNames || [],
-                genre: artist.primaryGenre,
-                isManaged: artist.isManaged,
-              },
-            };
-          })
-        );
-
-        res.json(enrichedBookings);
+        res.json(userBookings);
       } catch (error) {
         logError(error, ErrorSeverity.ERROR, {
           endpoint: "/api/bookings/user",
@@ -5125,6 +5208,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       }
     }
   );
+
 
   // Create guest booking (no authentication required)
   app.post("/api/bookings/guest", async (req: Request, res: Response) => {
@@ -15267,7 +15351,7 @@ This is a preview of the performance engagement contract. Final agreement will i
       try {
         const {
           termInMonths,
-          requestedManagementTierId=1,
+          requestedManagementTierId = 1,
           requestedRoleId,
           applicationReason,
           businessPlan,
@@ -16066,7 +16150,7 @@ This is a preview of the performance engagement contract. Final agreement will i
   app.post(
     "/api/management-applications/:id/admin-sign",
     authenticateToken,
-    requireRole([1, 2]),
+    requireRole([1]),
     async (req: Request, res: Response) => {
       try {
         const applicationId = parseInt(req.params.id);

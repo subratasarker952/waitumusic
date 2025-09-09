@@ -23,13 +23,16 @@ import { apiRequest } from '@/lib/queryClient';
 import { useToast } from '@/hooks/use-toast';
 
 export default function Artists() {
-  const { user } = useAuth();
+  const { user, roles } = useAuth();
   const { toast } = useToast();
   const [location, setLocation] = useLocation();
   const [searchTerm, setSearchTerm] = useState('');
   const [genreFilter, setGenreFilter] = useState('all');
   const [managementFilter, setManagetmentFilter] = useState('all');
   const [favorites, setFavorites] = useState(new Set());
+
+  // Roles array
+  const userRoles = roles?.map(r => r.id) || [];
 
   const { data: artists = [], isLoading: artistsLoading } = useQuery({
     queryKey: ['/api/artists'],
@@ -109,7 +112,7 @@ export default function Artists() {
         performer.instrument?.toLowerCase().includes(searchTerm.toLowerCase());
 
       const matchesGenre = !genreFilter || genreFilter === 'all' || performer.genre === genreFilter || performer.primaryGenre === genreFilter;
-      const matchesManagement = !managementFilter  || managementFilter === 'all' ||  (managementFilter === 'managed' && performer.isManaged) ||   (managementFilter === 'independent' && !performer.isManaged);
+      const matchesManagement = !managementFilter || managementFilter === 'all' || (managementFilter === 'managed' && performer.isManaged) || (managementFilter === 'independent' && !performer.isManaged);
 
       return matchesSearch && matchesGenre && matchesManagement;
     })
@@ -135,13 +138,13 @@ export default function Artists() {
       <section className="gradient-primary text-white py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Back Navigation for Admins */}
-          {(user?.role === "admin" || user?.role === "superadmin") && (
+          {(userRoles.some(r=>[1,2].includes(r))) && (
             <div className="mb-4">
               <Button
                 variant="outline"
                 size="sm"
                 onClick={() => setLocation("/dashboard")}
-                className="text-white border-white hover:bg-white hover:text-gray-900"
+                className="border-white hover:bg-white text-gray-900"
               >
                 ← Back to Dashboard
               </Button>

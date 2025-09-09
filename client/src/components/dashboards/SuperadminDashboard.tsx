@@ -774,87 +774,274 @@ export default function SuperadminDashboard({ stats, bookings, user, application
             </TabsContent>
 
             {/* Tab 6: Applications */}
-            <TabsContent value="applications" className="space-y-4 sm:space-y-6">
-              <Card>
-                <CardHeader>
-                  <CardTitle className="text-lg sm:text-xl">Management Applications</CardTitle>
-                  <p className="text-sm text-muted-foreground">Management applications, release contracts, professional assignments</p>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-4">
-                    <p className="text-sm text-muted-foreground">Final approval authority for all three-tier management applications</p>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
-                      <Card>
-                        <CardContent className="pt-6">
-                          <div className="text-center">
-                            <FileText className="h-8 w-8 mx-auto mb-2 text-green-600" />
-                            <h3 className="font-medium">Publisher Tier</h3>
-                            <p className="text-sm text-muted-foreground">Up to 10% discounts</p>
-                          </div>
-                        </CardContent>
-                      </Card>
-                      <Card>
-                        <CardContent className="pt-6">
-                          <div className="text-center">
-                            <Award className="h-8 w-8 mx-auto mb-2 text-blue-600" />
-                            <h3 className="font-medium">Representation</h3>
-                            <p className="text-sm text-muted-foreground">Up to 50% discounts</p>
-                          </div>
-                        </CardContent>
-                      </Card>
-                      <Card>
-                        <CardContent className="pt-6">
-                          <div className="text-center">
-                            <Crown className="h-8 w-8 mx-auto mb-2 text-gold-600" />
-                            <h3 className="font-medium">Full Management</h3>
-                            <p className="text-sm text-muted-foreground">Up to 100% discounts</p>
-                          </div>
-                        </CardContent>
-                      </Card>
-                    </div>
-                  </div>
-                </CardContent>
-                <CardContent>
-                  <div className="space-y-3 sm:space-y-4">
-                    {applications.map((app: any) => (
-                      <Card key={`management-application-${app.id}`}>
-                        <CardContent className="p-3">
-                          <div className="flex items-center justify-between gap-3">
-                            <div className="flex-1 min-w-0">
-                              <div className="space-y-2">
-                                <div className="flex items-center justify-between gap-3">
-                                  <h3 className="text-lg font-semibold">
-                                    Application # {app.id}
-                                  </h3>
-                                  <Button onClick={() => setLocation(`/management-walkthrough/${app.id}`)}>
-                                    View Details
-                                  </Button>
-                                </div>
-                                <p>
-                                  <strong>Reason:</strong> {app.applicationReason || "N/A"}
-                                </p>
-                                <p>
-                                  <strong>Status:</strong> {app.status}
-                                </p>
-                                <p>
-                                  <strong>Submitted:</strong>{" "}
-                                  {new Date(app.submittedAt).toLocaleString()}
-                                </p>
-                              </div>
-                            </div>
-                          </div>
-                        </CardContent>
-                      </Card>
-                    ))}
+            <TabsContent value='applications'>
 
-                    {applications.length === 0 && (
-                      <p className="text-muted-foreground text-center py-6 sm:py-8">
-                        No Applications yet
-                      </p>
-                    )}
-                  </div>
-                </CardContent>
-              </Card>
+              <Tabs defaultValue="all" className='mt-6'>
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="text-lg sm:text-xl">
+                      Applications
+                    </CardTitle>
+                  </CardHeader>
+
+                  <CardContent>
+                    <TabsList className='w-full'>
+                      <TabsTrigger value="all">All </TabsTrigger>
+                      <TabsTrigger value="pending">Pending</TabsTrigger>
+                      <TabsTrigger value="approved">Approved</TabsTrigger>
+                      <TabsTrigger value="contracted">Contracted</TabsTrigger>
+                      <TabsTrigger value="completed">Completed</TabsTrigger>
+                      <TabsTrigger value="rejected">Rejected</TabsTrigger>
+                    </TabsList>
+
+                    <TabsContent value="all" className="space-y-4 sm:space-y-6">
+                      <div className="space-y-3 sm:space-y-4">
+                        {applications.map((app: any) => (
+                          <Card key={app.id}>
+                            <CardContent className="p-3">
+                              <div className="flex items-center justify-between gap-3">
+                                <div className="flex-1 min-w-0">
+                                  <div className="space-y-2">
+                                    <div className="flex items-center justify-between gap-3">
+                                      <h3 className="text-lg font-semibold">
+                                        Application # {app.id}
+                                      </h3>
+                                      <Button onClick={() => setLocation(`/management-walkthrough/${app.id}`)}>
+                                        View Details
+                                      </Button>
+                                    </div>
+                                    <p>
+                                      <strong>Reason:</strong> {app.applicationReason || "N/A"}
+                                    </p>
+                                    <p>
+                                      <strong>Status:</strong> {app.status}
+                                    </p>
+                                    <p>
+                                      <strong>Submitted:</strong>{" "}
+                                      {new Date(app.submittedAt).toLocaleString()}
+                                    </p>
+                                  </div>
+                                </div>
+                              </div>
+                            </CardContent>
+                          </Card>
+                        ))}
+
+                        {applications.length === 0 && (
+                          <p className="text-muted-foreground text-center py-6 sm:py-8">
+                            No Applications yet
+                          </p>
+                        )}
+                      </div>
+                    </TabsContent>
+
+                    <TabsContent value="pending">
+                      <div className="space-y-3 sm:space-y-4">
+                        {applications?.filter((app: any) => app.status == 'pending')?.map((app: any) => (
+                          <Card key={app.id}>
+                            <CardContent className="p-3">
+                              <div className="flex items-center justify-between gap-3">
+                                <div className="flex-1 min-w-0">
+                                  <div className="space-y-2">
+                                    <div className="flex items-center justify-between gap-3">
+                                      <h3 className="text-lg font-semibold">
+                                        Application # {app.id}
+                                      </h3>
+                                      <Button onClick={() => setLocation(`/management-walkthrough/${app.id}`)}>
+                                        View Details
+                                      </Button>
+                                    </div>
+                                    <p>
+                                      <strong>Reason:</strong> {app.applicationReason || "N/A"}
+                                    </p>
+                                    <p>
+                                      <strong>Status:</strong> {app.status}
+                                    </p>
+                                    <p>
+                                      <strong>Submitted:</strong>{" "}
+                                      {new Date(app.submittedAt).toLocaleString()}
+                                    </p>
+                                  </div>
+                                </div>
+                              </div>
+                            </CardContent>
+                          </Card>
+                        ))}
+
+                        {applications.length === 0 && (
+                          <p className="text-muted-foreground text-center py-6 sm:py-8">
+                            No Applications yet
+                          </p>
+                        )}
+                      </div>
+                    </TabsContent>
+
+                    <TabsContent value="approved">
+                      <div className="space-y-3 sm:space-y-4">
+                        {applications?.filter((app: any) => app.status == 'approved')?.map((app: any) => (
+                          <Card key={app.id}>
+                            <CardContent className="p-3">
+                              <div className="flex items-center justify-between gap-3">
+                                <div className="flex-1 min-w-0">
+                                  <div className="space-y-2">
+                                    <div className="flex items-center justify-between gap-3">
+                                      <h3 className="text-lg font-semibold">
+                                        Application # {app.id}
+                                      </h3>
+                                      <Button onClick={() => setLocation(`/management-walkthrough/${app.id}`)}>
+                                        View Details
+                                      </Button>
+                                    </div>
+                                    <p>
+                                      <strong>Reason:</strong> {app.applicationReason || "N/A"}
+                                    </p>
+                                    <p>
+                                      <strong>Status:</strong> {app.status}
+                                    </p>
+                                    <p>
+                                      <strong>Submitted:</strong>{" "}
+                                      {new Date(app.submittedAt).toLocaleString()}
+                                    </p>
+                                  </div>
+                                </div>
+                              </div>
+                            </CardContent>
+                          </Card>
+                        ))}
+
+                        {applications.length === 0 && (
+                          <p className="text-muted-foreground text-center py-6 sm:py-8">
+                            No Applications yet
+                          </p>
+                        )}
+                      </div>
+                    </TabsContent>
+                    
+                    <TabsContent value="contracted">
+                      <div className="space-y-3 sm:space-y-4">
+                        {applications?.filter((app: any) => app.status == 'contract_generated')?.map((app: any) => (
+                          <Card key={app.id}>
+                            <CardContent className="p-3">
+                              <div className="flex items-center justify-between gap-3">
+                                <div className="flex-1 min-w-0">
+                                  <div className="space-y-2">
+                                    <div className="flex items-center justify-between gap-3">
+                                      <h3 className="text-lg font-semibold">
+                                        Application # {app.id}
+                                      </h3>
+                                      <Button onClick={() => setLocation(`/management-walkthrough/${app.id}`)}>
+                                        View Details
+                                      </Button>
+                                    </div>
+                                    <p>
+                                      <strong>Reason:</strong> {app.applicationReason || "N/A"}
+                                    </p>
+                                    <p>
+                                      <strong>Status:</strong> {app.status}
+                                    </p>
+                                    <p>
+                                      <strong>Submitted:</strong>{" "}
+                                      {new Date(app.submittedAt).toLocaleString()}
+                                    </p>
+                                  </div>
+                                </div>
+                              </div>
+                            </CardContent>
+                          </Card>
+                        ))}
+
+                        {applications.length === 0 && (
+                          <p className="text-muted-foreground text-center py-6 sm:py-8">
+                            No Applications yet
+                          </p>
+                        )}
+                      </div>
+                    </TabsContent>
+
+                    <TabsContent value="completed">
+                      <div className="space-y-3 sm:space-y-4">
+                        {applications?.filter((app: any) => app.status == 'completed')?.map((app: any) => (
+                          <Card key={app.id}>
+                            <CardContent className="p-3">
+                              <div className="flex items-center justify-between gap-3">
+                                <div className="flex-1 min-w-0">
+                                  <div className="space-y-2">
+                                    <div className="flex items-center justify-between gap-3">
+                                      <h3 className="text-lg font-semibold">
+                                        Application # {app.id}
+                                      </h3>
+                                      <Button onClick={() => setLocation(`/management-walkthrough/${app.id}`)}>
+                                        View Details
+                                      </Button>
+                                    </div>
+                                    <p>
+                                      <strong>Reason:</strong> {app.applicationReason || "N/A"}
+                                    </p>
+                                    <p>
+                                      <strong>Status:</strong> {app.status}
+                                    </p>
+                                    <p>
+                                      <strong>Submitted:</strong>{" "}
+                                      {new Date(app.submittedAt).toLocaleString()}
+                                    </p>
+                                  </div>
+                                </div>
+                              </div>
+                            </CardContent>
+                          </Card>
+                        ))}
+
+                        {applications.length === 0 && (
+                          <p className="text-muted-foreground text-center py-6 sm:py-8">
+                            No Applications yet
+                          </p>
+                        )}
+                      </div>
+                    </TabsContent>
+
+                    <TabsContent value="rejected">
+                      <div className="space-y-3 sm:space-y-4">
+                        {applications?.filter((app: any) => app.status == 'rejected')?.map((app: any) => (
+                          <Card key={app.id}>
+                            <CardContent className="p-3">
+                              <div className="flex items-center justify-between gap-3">
+                                <div className="flex-1 min-w-0">
+                                  <div className="space-y-2">
+                                    <div className="flex items-center justify-between gap-3">
+                                      <h3 className="text-lg font-semibold">
+                                        Application # {app.id}
+                                      </h3>
+                                      <Button onClick={() => setLocation(`/management-walkthrough/${app.id}`)}>
+                                        View Details
+                                      </Button>
+                                    </div>
+                                    <p>
+                                      <strong>Reason:</strong> {app.applicationReason || "N/A"}
+                                    </p>
+                                    <p>
+                                      <strong>Status:</strong> {app.status}
+                                    </p>
+                                    <p>
+                                      <strong>Submitted:</strong>{" "}
+                                      {new Date(app.submittedAt).toLocaleString()}
+                                    </p>
+                                  </div>
+                                </div>
+                              </div>
+                            </CardContent>
+                          </Card>
+                        ))}
+
+                        {applications.length === 0 && (
+                          <p className="text-muted-foreground text-center py-6 sm:py-8">
+                            No Applications yet
+                          </p>
+                        )}
+                      </div>
+                    </TabsContent>
+                  </CardContent>
+                </Card>
+              </Tabs>
             </TabsContent>
 
             {/* Tab 7: OppHub - Comprehensive Professional Opportunity Discovery */}

@@ -22,8 +22,11 @@ interface ProfileEditModalProps {
 
 export default function ProfileEditModal({ open, onOpenChange, userType = 'artist', userSpecializations = [], user: propUser }: ProfileEditModalProps) {
   const { toast } = useToast();
-  const { user: authUser } = useAuth();
+  const { user: authUser, roles } = useAuth();
   const user = propUser || authUser;
+
+  // Roles array
+  const userRoles = roles?.map(r => r.id) || [];
 
   // Fetch existing user requirements from database using proper query parameters
   const { data: existingHospitalityRequirements = [], isLoading: hospitalityLoading } = useQuery({
@@ -40,15 +43,15 @@ export default function ProfileEditModal({ open, onOpenChange, userType = 'artis
     queryKey: [`/api/users/${user?.id}/performance-specs?includeDemo=true`],
     enabled: !!user?.id && open
   });
-  
+
   // PRO registration eligibility: Artists, Musicians, and Music-related Professionals
   const musicProfessionalTypes = [
-    'background_vocalist', 'producer', 'arranger', 'composer', 'songwriter', 
+    'background_vocalist', 'producer', 'arranger', 'composer', 'songwriter',
     'dj', 'music_director', 'sound_engineer', 'mixing_engineer', 'mastering_engineer',
     'music_producer', 'beat_maker', 'orchestrator', 'lyricist', 'jingle_writer'
   ];
-  const isPROEligible = userType === 'artist' || userType === 'musician' || 
-    (userType === 'professional' && userSpecializations.some(spec => 
+  const isPROEligible = userType === 'artist' || userType === 'musician' ||
+    (userType === 'professional' && userSpecializations.some(spec =>
       musicProfessionalTypes.includes(spec.toLowerCase().replace(/\s+/g, '_'))
     ));
 
@@ -56,42 +59,42 @@ export default function ProfileEditModal({ open, onOpenChange, userType = 'artis
   // Role IDs: 1=Superadmin, 2=Admin, 3=Managed Artist, 4=Artist, 5=Managed Musician, 6=Musician, 7=Managed Professional, 8=Professional, 9=Fan
   const managedUserRoles = [3, 5, 7]; // Managed Artist, Managed Musician, Managed Professional
   const nonManagedUserRoles = [4, 6, 8]; // Artist, Musician, Professional
-  const excludedRoles = [1, 2, 9]; // Superadmin, Admin, Fan
-  
-  const isManaged = managedUserRoles.includes(user?.roleId || 0);
-  const isNonManaged = nonManagedUserRoles.includes(user?.roleId || 0);
+
+  const isManaged = userRoles.some(r => managedUserRoles.includes(r));
+  const isNonManaged = userRoles.some(r => nonManagedUserRoles.includes(r));
+
   const isEligibleForHospitality = isManaged || isNonManaged;
-  
+
   // Check subscription status for non-managed users
   const { data: subscriptionStatus } = useQuery({
     queryKey: ['/api/user/subscription-status'],
     enabled: isNonManaged && open
   });
-  
-  const hasHospitalityAccess = isManaged || (isNonManaged && (subscriptionStatus as any)?.isActive);
-  const hasTechnicalAccess = isManaged || (isNonManaged && (subscriptionStatus as any)?.isActive);
-  const hasPerformanceAccess = isManaged || (isNonManaged && (subscriptionStatus as any)?.isActive);
+
+  const hasAccess = isManaged || (isNonManaged && (subscriptionStatus as any)?.isActive);
+  const hasHospitalityAccess = hasAccess;
+  const hasTechnicalAccess = hasAccess;
+  const hasPerformanceAccess = hasAccess;
+
   const [formData, setFormData] = useState({
     fullName: user?.fullName || '',
     bio: '',
-    stageName: userType === 'artist' ? '' : '',
-    primaryGenre: userType === 'artist' || userType === 'musician' ? '' : '',
+    stageName: userType === 'artist' ? (user?.fullName || user?.email?.split('@')[0] || '') : '',
+    primaryGenre: (userType === 'artist' || userType === 'musician') ? '' : '',
     secondaryGenres: [] as string[],
     topGenres: [] as string[],
     instruments: userType === 'musician' ? '' : '',
     services: userType === 'professional' ? '' : '',
     websiteUrl: '',
     phoneNumber: '',
-    // PRO Registration fields
+    // PRO Registration
     isRegisteredWithPRO: false,
     performingRightsOrganization: '',
     ipiNumber: '',
     socialMediaHandles: [] as { platform: string; handle: string }[],
-    // Technical Requirements for technical rider auto-population
+    // Requirements
     technicalRequirements: [] as { id?: number; category: string; requirement: string; notes: string }[],
-    // Hospitality Requirements for hospitality auto-population  
     hospitalityRequirements: [] as { id?: number; category: string; requirement: string; notes: string }[],
-    // Performance Specifications for performance auto-population
     performanceSpecs: [] as { id?: number; category: string; specification: string; notes: string }[]
   });
 
@@ -105,7 +108,7 @@ export default function ProfileEditModal({ open, onOpenChange, userType = 'artis
         requirement: req.requirement_name || '',
         notes: req.specifications || ''
       }));
-      
+
       console.log('Mapped hospitality data:', hospitalityData);
       setFormData(prev => ({
         ...prev,
@@ -123,7 +126,7 @@ export default function ProfileEditModal({ open, onOpenChange, userType = 'artis
         requirement: req.requirement_name || '',
         notes: req.specifications || ''
       }));
-      
+
       console.log('Mapped technical data:', technicalData);
       setFormData(prev => ({
         ...prev,
@@ -141,7 +144,7 @@ export default function ProfileEditModal({ open, onOpenChange, userType = 'artis
         specification: spec.spec_name || '',
         notes: spec.spec_value || ''
       }));
-      
+
       console.log('Mapped performance data:', performanceData);
       setFormData(prev => ({
         ...prev,
@@ -152,34 +155,34 @@ export default function ProfileEditModal({ open, onOpenChange, userType = 'artis
 
   const [newSocialHandle, setNewSocialHandle] = useState({ platform: '', handle: '' });
   const [availablePlatforms] = useState([
-    'Instagram', 'TikTok', 'YouTube', 'Spotify', 'SoundCloud', 'Twitter', 
+    'Instagram', 'TikTok', 'YouTube', 'Spotify', 'SoundCloud', 'Twitter',
     'Facebook', 'LinkedIn', 'Website', 'Portfolio', 'Apple Music', 'Deezer'
   ]);
 
   const [genreOptions] = useState([
-    'Pop', 'Hip-Hop', 'R&B', 'Gospel', 'Caribbean', 'Afrobeats', 'Neo Soul', 
-    'Jazz', 'Blues', 'Country', 'Rock', 'Electronic', 'Folk', 'Reggae', 
+    'Pop', 'Hip-Hop', 'R&B', 'Gospel', 'Caribbean', 'Afrobeats', 'Neo Soul',
+    'Jazz', 'Blues', 'Country', 'Rock', 'Electronic', 'Folk', 'Reggae',
     'Dancehall', 'Soca', 'Calypso', 'Latin', 'World', 'Classical'
   ]);
 
   // Technical Requirements state
   const [newTechnicalReq, setNewTechnicalReq] = useState({ category: '', requirement: '', notes: '' });
   const [technicalCategories] = useState([
-    'Audio Equipment', 'Instruments', 'Stage Setup', 'Lighting', 'Power Requirements', 
+    'Audio Equipment', 'Instruments', 'Stage Setup', 'Lighting', 'Power Requirements',
     'Recording Equipment', 'Monitors', 'Microphones', 'Cables & Connections', 'Other'
   ]);
 
   // Hospitality Requirements state  
   const [newHospitalityReq, setNewHospitalityReq] = useState({ category: '', requirement: '', notes: '' });
   const [hospitalityCategories] = useState([
-    'Dressing Room', 'Catering', 'Transportation', 'Accommodation', 'Security', 
+    'Dressing Room', 'Catering', 'Transportation', 'Accommodation', 'Security',
     'Guest List', 'Parking', 'Merchandise Space', 'Meet & Greet Area', 'Other'
   ]);
 
   // Performance Specifications state
   const [newPerformanceSpec, setNewPerformanceSpec] = useState({ category: '', specification: '', notes: '' });
   const [performanceCategories] = useState([
-    'Setlist Requirements', 'Timing & Schedule', 'Special Effects', 'Costume Changes', 
+    'Setlist Requirements', 'Timing & Schedule', 'Special Effects', 'Costume Changes',
     'Backup Musicians', 'Rehearsal Needs', 'Sound Check', 'Performance Flow', 'Other'
   ]);
 
@@ -224,7 +227,7 @@ export default function ProfileEditModal({ open, onOpenChange, userType = 'artis
 
   const removeHospitalityRequirement = async (index: number) => {
     const requirement = formData.hospitalityRequirements[index];
-    
+
     // If it has an ID, delete from database
     if (requirement.id) {
       try {
@@ -234,21 +237,21 @@ export default function ProfileEditModal({ open, onOpenChange, userType = 'artis
             'Authorization': `Bearer ${localStorage.getItem('token')}`
           }
         });
-        
+
         if (!response.ok) {
           throw new Error('Failed to delete requirement');
         }
       } catch (error) {
         console.error('Error deleting hospitality requirement:', error);
-        toast({ 
-          title: "Error", 
+        toast({
+          title: "Error",
           description: "Failed to delete requirement from database",
           variant: "destructive"
         });
         return;
       }
     }
-    
+
     setFormData(prev => ({
       ...prev,
       hospitalityRequirements: prev.hospitalityRequirements.filter((_, i) => i !== index)
@@ -319,7 +322,7 @@ export default function ProfileEditModal({ open, onOpenChange, userType = 'artis
     const isTop = formData.topGenres.includes(genre);
     setFormData(prev => ({
       ...prev,
-      topGenres: isTop 
+      topGenres: isTop
         ? prev.topGenres.filter(g => g !== genre)
         : [...prev.topGenres, genre]
     }));
@@ -347,7 +350,7 @@ export default function ProfileEditModal({ open, onOpenChange, userType = 'artis
           ipiNumber: formData.ipiNumber
         },
         technicalRequirements: formData.technicalRequirements,
-        hospitalityRequirements: formData.hospitalityRequirements, 
+        hospitalityRequirements: formData.hospitalityRequirements,
         performanceSpecs: formData.performanceSpecs,
         userType,
         userId: user?.id
@@ -406,7 +409,7 @@ export default function ProfileEditModal({ open, onOpenChange, userType = 'artis
           {/* Basic Information */}
           <div className="space-y-4">
             <h3 className="text-lg font-medium">Basic Information</h3>
-            
+
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="space-y-2">
                 <Label htmlFor="fullName">Full Name</Label>
@@ -523,7 +526,7 @@ export default function ProfileEditModal({ open, onOpenChange, userType = 'artis
           {/* Dynamic Social Media Handles */}
           <div className="space-y-4">
             <h3 className="text-lg font-medium">Social Media Handles</h3>
-            
+
             {/* Add new social handle */}
             <div className="flex gap-2">
               <Select
@@ -534,7 +537,7 @@ export default function ProfileEditModal({ open, onOpenChange, userType = 'artis
                   <SelectValue placeholder="Platform" />
                 </SelectTrigger>
                 <SelectContent>
-                  {availablePlatforms.filter(platform => 
+                  {availablePlatforms.filter(platform =>
                     !formData.socialMediaHandles.some(handle => handle.platform === platform)
                   ).map((platform) => (
                     <SelectItem key={platform} value={platform}>{platform}</SelectItem>
@@ -579,14 +582,14 @@ export default function ProfileEditModal({ open, onOpenChange, userType = 'artis
             <div className="space-y-4">
               <h3 className="text-lg font-medium">Secondary Genres</h3>
               <p className="text-sm text-muted-foreground">Add additional genres you work with</p>
-              
+
               <div className="flex gap-2">
                 <Select onValueChange={addGenreToSecondary}>
                   <SelectTrigger>
                     <SelectValue placeholder="Add secondary genre" />
                   </SelectTrigger>
                   <SelectContent>
-                    {genreOptions.filter(genre => 
+                    {genreOptions.filter(genre =>
                       genre !== formData.primaryGenre && !formData.secondaryGenres.includes(genre)
                     ).map((genre) => (
                       <SelectItem key={genre} value={genre}>{genre}</SelectItem>
@@ -620,7 +623,7 @@ export default function ProfileEditModal({ open, onOpenChange, userType = 'artis
                       </div>
                     ))}
                   </div>
-                  
+
                   {formData.topGenres.length > 0 && (
                     <div className="mt-4">
                       <h4 className="font-medium mb-2">Your Strongest Genres:</h4>
@@ -646,10 +649,10 @@ export default function ProfileEditModal({ open, onOpenChange, userType = 'artis
                 Performance Rights Organization (PRO)
               </h3>
               <p className="text-sm text-muted-foreground">
-                Register with a PRO to collect royalties for your musical works and performances. 
+                Register with a PRO to collect royalties for your musical works and performances.
                 PROs are open to creators worldwide.
               </p>
-              
+
               <div className="space-y-4">
                 <div className="flex items-center space-x-2">
                   <Switch
@@ -727,7 +730,7 @@ export default function ProfileEditModal({ open, onOpenChange, userType = 'artis
                   </div>
                 )}
               </div>
-              
+
               <p className="text-sm text-muted-foreground">
                 Define your technical specifications for auto-populating technical riders
               </p>
@@ -828,7 +831,7 @@ export default function ProfileEditModal({ open, onOpenChange, userType = 'artis
                 {isManaged && " - This feature is included with your managed account."}
                 {isNonManaged && !(subscriptionStatus as any)?.isActive && " - Upgrade to access this professional feature."}
               </p>
-              
+
               {/* Subscription upgrade prompt for non-managed users */}
               {isNonManaged && !(subscriptionStatus as any)?.isActive && (
                 <div className="bg-orange-50 border border-orange-200 rounded-lg p-4">
@@ -846,40 +849,40 @@ export default function ProfileEditModal({ open, onOpenChange, userType = 'artis
                   </div>
                 </div>
               )}
-              
+
               {/* Add new hospitality requirement - Only if user has access */}
               {hasHospitalityAccess && (
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-2">
-                <Select
-                  value={newHospitalityReq.category}
-                  onValueChange={(value) => setNewHospitalityReq(prev => ({ ...prev, category: value }))}
-                >
-                  <SelectTrigger>
-                    <SelectValue placeholder="Category" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {hospitalityCategories.map((category) => (
-                      <SelectItem key={category} value={category}>{category}</SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-                <Input
-                  placeholder="Requirement details"
-                  value={newHospitalityReq.requirement}
-                  onChange={(e) => setNewHospitalityReq(prev => ({ ...prev, requirement: e.target.value }))}
-                />
-                <div className="flex gap-2">
+                  <Select
+                    value={newHospitalityReq.category}
+                    onValueChange={(value) => setNewHospitalityReq(prev => ({ ...prev, category: value }))}
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder="Category" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {hospitalityCategories.map((category) => (
+                        <SelectItem key={category} value={category}>{category}</SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
                   <Input
-                    placeholder="Notes (optional)"
-                    value={newHospitalityReq.notes}
-                    onChange={(e) => setNewHospitalityReq(prev => ({ ...prev, notes: e.target.value }))}
-                    className="flex-1"
+                    placeholder="Requirement details"
+                    value={newHospitalityReq.requirement}
+                    onChange={(e) => setNewHospitalityReq(prev => ({ ...prev, requirement: e.target.value }))}
                   />
-                  <Button onClick={addHospitalityRequirement} size="icon">
-                    <Plus className="h-4 w-4" />
-                  </Button>
+                  <div className="flex gap-2">
+                    <Input
+                      placeholder="Notes (optional)"
+                      value={newHospitalityReq.notes}
+                      onChange={(e) => setNewHospitalityReq(prev => ({ ...prev, notes: e.target.value }))}
+                      className="flex-1"
+                    />
+                    <Button onClick={addHospitalityRequirement} size="icon">
+                      <Plus className="h-4 w-4" />
+                    </Button>
+                  </div>
                 </div>
-              </div>
               )}
 
               {/* Display added hospitality requirements - Only if user has access */}
@@ -933,7 +936,7 @@ export default function ProfileEditModal({ open, onOpenChange, userType = 'artis
                   </div>
                 )}
               </div>
-              
+
               <p className="text-sm text-muted-foreground">
                 Define your performance requirements for auto-populating technical riders
               </p>

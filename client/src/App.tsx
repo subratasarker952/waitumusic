@@ -281,9 +281,9 @@ function Router() {
         </Route>
         
         <Route path="/management-walkthrough/:id">
-          {/* <AuthorizedRoute> */}
+          <AuthorizedRoute>
             <ManagementApplicationWalkthrough />
-          {/* </AuthorizedRoute> */}
+          </AuthorizedRoute>
         </Route>
         
         <Route path="/enhanced-profile-test">

@@ -299,9 +299,11 @@ export default function BookingPage() {
           bookerUserId: user.id,
           isGuestBooking: false,
         };
+        console.log(bookingData)
+
         return await apiRequest('/api/bookings', {
           method: 'POST',
-          body: JSON.stringify(bookingData),
+          body: bookingData,
         });
       } else {
         // Guest booking - map to expected fields
@@ -323,7 +325,7 @@ export default function BookingPage() {
         };
         return await apiRequest('/api/bookings/guest', {
           method: 'POST',
-          body: JSON.stringify(bookingData),
+          body: bookingData,
         });
       }
     },

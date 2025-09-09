@@ -94,6 +94,8 @@ export default function UnifiedDashboard({ stats, bookings, applications }: Unif
   const queryClient = useQueryClient();
   useScrollToTop(); // Scroll to top on page/route changes
 
+  console.log(bookings)
+
   // Modal states
   const [musicUploadOpen, setMusicUploadOpen] = useState(false);
   const [calendarOpen, setCalendarOpen] = useState(false);
@@ -1208,7 +1210,7 @@ export default function UnifiedDashboard({ stats, bookings, applications }: Unif
 
           <TabsContent value='applications'>
 
-            <Tabs defaultValue="pending" className='mt-6'>
+            <Tabs defaultValue="all" className='mt-6'>
               <Card>
                 <CardHeader>
                   <CardTitle className="text-lg sm:text-xl">

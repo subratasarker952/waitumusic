@@ -232,13 +232,13 @@ export default function Services() {
               Core Services ({totalServices})
             </TabsTrigger>
             <TabsTrigger value="professionals">
-              Professionals ({managedProfessionals.length})
+              Professionals ({professionalServiceCount})
             </TabsTrigger>
             <TabsTrigger value="artists">
-              Artists ({managedArtists.length})
+              Artists ({artistServiceCount})
             </TabsTrigger>
             <TabsTrigger value="musicians">
-              Musicians ({managedMusicians.length})
+              Musicians ({musicianServiceCount})
             </TabsTrigger>
           </TabsList>
 
