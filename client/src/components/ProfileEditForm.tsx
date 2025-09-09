@@ -188,8 +188,6 @@ export default function ProfileEditForm({
   const updateProfileMutation = useMutation({
     mutationFn: async (data: any) => {
       // Validate required fields
-      console.log(data)
-
       const roleDataPayload: any = {
         fullName: data.fullName,
         phoneNumber: data.phoneNumber,
@@ -208,7 +206,6 @@ export default function ProfileEditForm({
         epkUrl: data.epkUrl,
         artistBookingFormPictureUrl: data.artistBookingFormPictureUrl,
 
-
         musicianPrimaryTalentId: data.musicianPrimaryTalentId,
         musicianStageName: data.musicianStageName,
         musicianBio: data.musicianBio,
@@ -217,7 +214,6 @@ export default function ProfileEditForm({
         musicianIdealPerformanceRate: data.musicianIdealPerformanceRate ? parseFloat(data.musicianIdealPerformanceRate) : null,
         musicianMinimumAcceptableRate: data.musicianMinimumAcceptableRate ? parseFloat(data.musicianMinimumAcceptableRate) : null,
         musicianBookingFormPictureUrl: data.musicianBookingFormPictureUrl,
-
 
         professionalPrimaryTalentId: data.professionalPrimaryTalentId,
         professionalBasePrice: data.professionalBasePrice ? parseFloat(data.professionalBasePrice) : null,
@@ -240,6 +236,8 @@ export default function ProfileEditForm({
         description: "Your profile has been updated successfully",
       });
       queryClient.invalidateQueries({ queryKey: ["/api/current-user"] });
+      queryClient.invalidateQueries({ queryKey: ["/api/artists"] });
+      queryClient.invalidateQueries({ queryKey: ["/api/musicians"] });
     },
     onError: (error: any) => {
       toast({

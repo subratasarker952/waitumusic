@@ -13,6 +13,7 @@ import { useQuery } from '@tanstack/react-query';
 import IntelligentUserOnboarding from '@/components/onboarding/IntelligentUserOnboarding';
 import { LOGIN_CONTENT, SITE_CONFIG } from '@shared/content-config';
 import { getCreativeRoleName } from '@shared/creative-roles';
+import { queryClient } from '@/lib/queryClient';
 
 const loginSchema = z.object({
   email: z.string().email('Please enter a valid email address'),
@@ -52,7 +53,7 @@ export default function Login() {
           if (user?.id) {
             // Check if user needs onboarding (for new users or users who haven't completed it)
             const shouldShowOnboarding = localStorage.getItem(`onboarding_completed_${user.id}`) !== 'true';
-            
+
             if (shouldShowOnboarding) {
               setNewUserId(user.id);
               setShowOnboarding(true);
@@ -66,6 +67,7 @@ export default function Login() {
       }
     } finally {
       setIsLoading(false);
+      queryClient.invalidateQueries({ queryKey: ["/api/current-user"] });
     }
   };
 
@@ -120,7 +122,7 @@ export default function Login() {
                     </FormItem>
                   )}
                 />
-                
+
                 <FormField
                   control={form.control}
                   name="password"
@@ -135,9 +137,9 @@ export default function Login() {
                   )}
                 />
 
-                <Button 
-                  type="submit" 
-                  className="w-full gradient-primary" 
+                <Button
+                  type="submit"
+                  className="w-full gradient-primary"
                   disabled={isLoading}
                 >
                   {isLoading ? (

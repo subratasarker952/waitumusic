@@ -15,19 +15,41 @@ import { useLocation } from 'wouter';
 
 export default function ProfileEditPage() {
   const { toast } = useToast();
-  const { user: authUser } = useAuth();
+  const { user, roles } = useAuth();
   const [, setLocation] = useLocation();
-  const user = authUser;
 
-  // Determine user type from role
-  const getUserType = (roleId: number) => {
-    if ([3, 4].includes(roleId)) return 'artist';
-    if ([5, 6].includes(roleId)) return 'musician';
-    if ([7, 8].includes(roleId)) return 'professional';
-    return 'fan';
+  // Roles array
+  const userRoles = roles?.map(r => r.id) || [];
+
+  // Utility
+  const hasRole = (ids: number[]) => userRoles.some(r => ids.includes(r));
+
+  // Flags
+  const isAdmin = hasRole([1, 2]);
+  const isSuperadmin = userRoles.includes(1);
+
+  const isManagedArtist = userRoles.includes(3);
+  const isArtist = userRoles.includes(4) || isManagedArtist;
+
+  const isManagedMusician = userRoles.includes(5);
+  const isMusician = userRoles.includes(6) || isManagedMusician;
+
+  const isManagedProfessional = userRoles.includes(7);
+  const isProfessional = userRoles.includes(8) || isManagedProfessional;
+
+  const isFan = userRoles.includes(9);
+
+  // Get user type
+  const getUserType = (roleIds: number[]) => {
+    if (roleIds.some(r => [3, 4].includes(r))) return "artist";
+    if (roleIds.some(r => [5, 6].includes(r))) return "musician";
+    if (roleIds.some(r => [7, 8].includes(r))) return "professional";
+    if (roleIds.includes(9)) return "fan";
+    return "unknown";
   };
 
-  const userType = user ? getUserType(user.roleId) : 'artist';
+  const userType = user ? getUserType(userRoles) : "unknown";
+
   const userSpecializations: string[] = [];
 
   // Fetch existing user requirements from database using proper query parameters
@@ -45,15 +67,17 @@ export default function ProfileEditPage() {
     queryKey: [`/api/users/${user?.id}/performance-specs?includeDemo=true`],
     enabled: !!user?.id
   });
-  
+
   // PRO registration eligibility: Artists, Musicians, and Music-related Professionals
   const musicProfessionalTypes = [
-    'background_vocalist', 'producer', 'arranger', 'composer', 'songwriter', 
+    'background_vocalist', 'producer', 'arranger', 'composer', 'songwriter',
     'dj', 'music_director', 'sound_engineer', 'mixing_engineer', 'mastering_engineer',
     'music_producer', 'beat_maker', 'orchestrator', 'lyricist', 'jingle_writer'
   ];
-  const isPROEligible = userType === 'artist' || userType === 'musician' || 
-    (userType === 'professional' && userSpecializations.some(spec => 
+
+
+  const isPROEligible = userType === 'artist' || userType === 'musician' ||
+    (userType === 'professional' && userSpecializations.some(spec =>
       musicProfessionalTypes.includes(spec.toLowerCase().replace(/\s+/g, '_'))
     ));
 
@@ -62,41 +86,42 @@ export default function ProfileEditPage() {
   const managedUserRoles = [3, 5, 7]; // Managed Artist, Managed Musician, Managed Professional
   const nonManagedUserRoles = [4, 6, 8]; // Artist, Musician, Professional
   const excludedRoles = [1, 2, 9]; // Superadmin, Admin, Fan
-  
-  const isManaged = managedUserRoles.includes(user?.roleId || 0);
-  const isNonManaged = nonManagedUserRoles.includes(user?.roleId || 0);
-  const isEligibleForHospitality = isManaged || isNonManaged;
-  
-  // Check subscription status for non-managed users
+
+  const isManaged = userRoles.some(r => managedUserRoles.includes(r));
+  const isNonManaged = userRoles.some(r => nonManagedUserRoles.includes(r));
+  const isExcluded = userRoles.some(r => excludedRoles.includes(r));
+
+  const isEligibleForHospitality = !isExcluded && (isManaged || isNonManaged);
+  // Subscription status (only for non-managed)
   const { data: subscriptionStatus } = useQuery({
     queryKey: ['/api/user/subscription-status'],
     enabled: isNonManaged
   });
-  
-  const hasHospitalityAccess = isManaged || (isNonManaged && (subscriptionStatus as any)?.isActive);
-  const hasTechnicalAccess = isManaged || (isNonManaged && (subscriptionStatus as any)?.isActive);
-  const hasPerformanceAccess = isManaged || (isNonManaged && (subscriptionStatus as any)?.isActive);
+
+  const hasAccess = isManaged || (isNonManaged && (subscriptionStatus as any)?.isActive);
+  const hasHospitalityAccess = hasAccess;
+  const hasTechnicalAccess = hasAccess;
+  const hasPerformanceAccess = hasAccess;
+
   const [formData, setFormData] = useState({
     fullName: user?.fullName || '',
     bio: '',
-    stageName: userType === 'artist' ? '' : '',
-    primaryGenre: userType === 'artist' || userType === 'musician' ? '' : '',
+    stageName: userType === 'artist' ? (user?.fullName || user?.email?.split('@')[0] || '') : '',
+    primaryGenre: (userType === 'artist' || userType === 'musician') ? '' : '',
     secondaryGenres: [] as string[],
     topGenres: [] as string[],
     instruments: userType === 'musician' ? '' : '',
     services: userType === 'professional' ? '' : '',
     websiteUrl: '',
     phoneNumber: '',
-    // PRO Registration fields
+    // PRO Registration
     isRegisteredWithPRO: false,
     performingRightsOrganization: '',
     ipiNumber: '',
     socialMediaHandles: [] as { platform: string; handle: string }[],
-    // Technical Requirements for technical rider auto-population
+    // Requirements
     technicalRequirements: [] as { id?: number; category: string; requirement: string; notes: string }[],
-    // Hospitality Requirements for hospitality auto-population  
     hospitalityRequirements: [] as { id?: number; category: string; requirement: string; notes: string }[],
-    // Performance Specifications for performance auto-population
     performanceSpecs: [] as { id?: number; category: string; specification: string; notes: string }[]
   });
 
@@ -110,7 +135,7 @@ export default function ProfileEditPage() {
         requirement: req.requirement_name || '',
         notes: req.specifications || ''
       }));
-      
+
       console.log('Mapped hospitality data:', hospitalityData);
       setFormData(prev => ({
         ...prev,
@@ -128,7 +153,7 @@ export default function ProfileEditPage() {
         requirement: req.requirement_name || '',
         notes: req.specifications || ''
       }));
-      
+
       console.log('Mapped technical data:', technicalData);
       setFormData(prev => ({
         ...prev,
@@ -146,7 +171,7 @@ export default function ProfileEditPage() {
         specification: spec.spec_name || '',
         notes: spec.spec_value || ''
       }));
-      
+
       console.log('Mapped performance data:', performanceData);
       setFormData(prev => ({
         ...prev,
@@ -157,34 +182,34 @@ export default function ProfileEditPage() {
 
   const [newSocialHandle, setNewSocialHandle] = useState({ platform: '', handle: '' });
   const [availablePlatforms] = useState([
-    'Instagram', 'TikTok', 'YouTube', 'Spotify', 'SoundCloud', 'Twitter', 
+    'Instagram', 'TikTok', 'YouTube', 'Spotify', 'SoundCloud', 'Twitter',
     'Facebook', 'LinkedIn', 'Website', 'Portfolio', 'Apple Music', 'Deezer'
   ]);
 
   const [genreOptions] = useState([
-    'Pop', 'Hip-Hop', 'R&B', 'Gospel', 'Caribbean', 'Afrobeats', 'Neo Soul', 
-    'Jazz', 'Blues', 'Country', 'Rock', 'Electronic', 'Folk', 'Reggae', 
+    'Pop', 'Hip-Hop', 'R&B', 'Gospel', 'Caribbean', 'Afrobeats', 'Neo Soul',
+    'Jazz', 'Blues', 'Country', 'Rock', 'Electronic', 'Folk', 'Reggae',
     'Dancehall', 'Soca', 'Calypso', 'Latin', 'World', 'Classical'
   ]);
 
   // Technical Requirements state
   const [newTechnicalReq, setNewTechnicalReq] = useState({ category: '', requirement: '', notes: '' });
   const [technicalCategories] = useState([
-    'Audio Equipment', 'Instruments', 'Stage Setup', 'Lighting', 'Power Requirements', 
+    'Audio Equipment', 'Instruments', 'Stage Setup', 'Lighting', 'Power Requirements',
     'Recording Equipment', 'Monitors', 'Microphones', 'Cables & Connections', 'Other'
   ]);
 
   // Hospitality Requirements state  
   const [newHospitalityReq, setNewHospitalityReq] = useState({ category: '', requirement: '', notes: '' });
   const [hospitalityCategories] = useState([
-    'Dressing Room', 'Catering', 'Transportation', 'Accommodation', 'Security', 
+    'Dressing Room', 'Catering', 'Transportation', 'Accommodation', 'Security',
     'Guest List', 'Parking', 'Merchandise Space', 'Meet & Greet Area', 'Other'
   ]);
 
   // Performance Specifications state
   const [newPerformanceSpec, setNewPerformanceSpec] = useState({ category: '', specification: '', notes: '' });
   const [performanceCategories] = useState([
-    'Setlist Requirements', 'Timing & Schedule', 'Special Effects', 'Costume Changes', 
+    'Setlist Requirements', 'Timing & Schedule', 'Special Effects', 'Costume Changes',
     'Backup Musicians', 'Rehearsal Needs', 'Sound Check', 'Performance Flow', 'Other'
   ]);
 
@@ -346,7 +371,7 @@ export default function ProfileEditPage() {
                 placeholder="Enter your full name"
               />
             </div>
-            
+
             <div className="space-y-2">
               <Label htmlFor="phoneNumber">Phone Number</Label>
               <Input
@@ -385,10 +410,11 @@ export default function ProfileEditPage() {
           <div className="space-y-4">
             <h2 className="text-xl font-semibold">Artist Information</h2>
             <StageNameManager
-              currentStageName={formData.stageName}
-              onStageNameChange={(stageName) => handleInputChange('stageName', stageName)}
-              userType={userType}
+              userType={userType as 'artist' | 'musician'}
+              userId={user?.id}
+              initialStageNames={formData.stageName ? [{ name: formData.stageName, isPrimary: true }] : []}
             />
+
           </div>
         )}
 
@@ -453,7 +479,7 @@ export default function ProfileEditPage() {
           <p className="text-sm text-muted-foreground">
             Add your social media profiles for better discoverability
           </p>
-          
+
           <div className="flex gap-2">
             <Select
               value={newSocialHandle.platform}
@@ -463,7 +489,7 @@ export default function ProfileEditPage() {
                 <SelectValue placeholder="Platform" />
               </SelectTrigger>
               <SelectContent>
-                {availablePlatforms.filter(platform => 
+                {availablePlatforms.filter(platform =>
                   !formData.socialMediaHandles.some(handle => handle.platform === platform)
                 ).map((platform) => (
                   <SelectItem key={platform} value={platform}>{platform}</SelectItem>
@@ -525,7 +551,7 @@ export default function ProfileEditPage() {
                 </div>
               )}
             </div>
-            
+
             <p className="text-sm text-muted-foreground">
               Define your technical specifications for auto-populating technical riders
             </p>
@@ -631,7 +657,7 @@ export default function ProfileEditPage() {
                 </div>
               )}
             </div>
-            
+
             <p className="text-sm text-muted-foreground">
               Define your hospitality needs for auto-populating technical riders
             </p>
@@ -737,7 +763,7 @@ export default function ProfileEditPage() {
                 </div>
               )}
             </div>
-            
+
             <p className="text-sm text-muted-foreground">
               Define your performance requirements for auto-populating technical riders
             </p>
@@ -828,10 +854,10 @@ export default function ProfileEditPage() {
               Performance Rights Organization (PRO)
             </h2>
             <p className="text-sm text-muted-foreground">
-              Register with a PRO to collect royalties for your musical works and performances. 
+              Register with a PRO to collect royalties for your musical works and performances.
               PROs are open to creators worldwide.
             </p>
-            
+
             <div className="space-y-4">
               <div className="flex items-center space-x-2">
                 <Switch

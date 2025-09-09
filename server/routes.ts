@@ -15267,7 +15267,7 @@ This is a preview of the performance engagement contract. Final agreement will i
       try {
         const {
           termInMonths,
-          requestedManagementTierId,
+          requestedManagementTierId=1,
           requestedRoleId,
           applicationReason,
           businessPlan,
@@ -16196,7 +16196,7 @@ This is a preview of the performance engagement contract. Final agreement will i
                 bio: "New managed artist",
                 primaryTalentId: 1,
                 isManaged: false,
-                managementTierId: null,
+                managementTierId: application.requestedManagementTierId,
                 bookingFormPictureUrl: null,
               })
               await storage.createArtist({
@@ -16206,7 +16206,7 @@ This is a preview of the performance engagement contract. Final agreement will i
                 bio: "New managed artist",
                 primaryTalentId: 1,
                 isManaged: false,
-                managementTierId: null,
+                managementTierId: application.requestedManagementTierId,
                 bookingFormPictureUrl: null,
               });
             } else if (application.requestedRoleId === 5) {
@@ -16236,7 +16236,7 @@ This is a preview of the performance engagement contract. Final agreement will i
                 bio: "New managed musician",
                 primaryGenre: "To Be Determined",
                 isManaged: false,
-                managementTierId: null,
+                managementTierId: application.requestedManagementTierId,
               })
               await storage.createMusician({
                 userId: application.applicantUserId,
@@ -16245,7 +16245,7 @@ This is a preview of the performance engagement contract. Final agreement will i
                 bio: "New managed musician",
                 primaryGenre: "To Be Determined",
                 isManaged: false,
-                managementTierId: null,
+                managementTierId: application.requestedManagementTierId,
               });
             } else if (application.requestedRoleId === 7) {
               console.log({
@@ -16265,13 +16265,13 @@ This is a preview of the performance engagement contract. Final agreement will i
                 userId: application.applicantUserId,
                 primaryTalentId: 1,
                 isManaged: false,
-                managementTierId: null,
+                managementTierId: application.requestedManagementTierId,
               })
               await storage.createProfessional({
                 userId: application.applicantUserId,
                 primaryTalentId: 1,
                 isManaged: false,
-                managementTierId: null,
+                managementTierId: application.requestedManagementTierId,
               });
             }
           }

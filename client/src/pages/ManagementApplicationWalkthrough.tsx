@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useToast } from "@/hooks/use-toast";
-import { apiRequest } from "@/lib/queryClient";
+import { apiRequest, queryClient } from "@/lib/queryClient";
 import {
   ArrowRight,
   CheckCircle,
@@ -400,6 +400,9 @@ export default function ManagementApplicationWalkthrough() {
 
       setStepStatuses((prev) => ({ ...prev, 5: "completed", 6: "completed" }));
       setCurrentStep(6);
+
+      queryClient.invalidateQueries({ queryKey: ["/api/management-applications"] });
+      queryClient.invalidateQueries({ queryKey: ["/api/management-applications/user"] });
     } catch (error) {
       toast({
         title: "Signing Failed",
@@ -737,7 +740,7 @@ export default function ManagementApplicationWalkthrough() {
                   <Button
                     className="w-full"
                     variant="default"
-                    // onClick={() => reviewApplication("rejected")}
+                  // onClick={() => reviewApplication("rejected")}
                   // disabled={stepStatuses[2] === "completed" || !applicationId}
                   >
                     Previous
@@ -745,7 +748,7 @@ export default function ManagementApplicationWalkthrough() {
                   <Button
                     className="w-full"
                     variant="default"
-                    // onClick={() => reviewApplication("rejected")}
+                  // onClick={() => reviewApplication("rejected")}
                   // disabled={stepStatuses[2] === "completed" || !applicationId}
                   >
                     Next
@@ -755,7 +758,7 @@ export default function ManagementApplicationWalkthrough() {
                   <Button
                     className="w-full"
                     variant="default"
-                    // onClick={() => reviewApplication("rejected")}
+                  // onClick={() => reviewApplication("rejected")}
                   // disabled={stepStatuses[2] === "completed" || !applicationId}
                   >
                     Previous
@@ -763,7 +766,7 @@ export default function ManagementApplicationWalkthrough() {
                   <Button
                     className="w-full"
                     variant="default"
-                    // onClick={() => reviewApplication("rejected")}
+                  // onClick={() => reviewApplication("rejected")}
                   // disabled={stepStatuses[2] === "completed" || !applicationId}
                   >
                     Next
