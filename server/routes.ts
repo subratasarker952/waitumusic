@@ -1153,7 +1153,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     authenticateToken,
     async (req: Request, res: Response) => {
       try {
-        // Validate query params using Zod
+        // ✅ Validate query params with Zod
         const querySchema = z.object({
           page: z.string().optional().default("0"),
           limit: z.string().optional().default("20"),
@@ -1169,7 +1169,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         const isComplete = parsedQuery.isComplete === "true";
         const isDemo = parsedQuery.isDemo === "true";
 
-        // Filters
+        // ✅ Filters
         const filters = [
           eq(schema.artists.isComplete, isComplete),
           eq(schema.artists.isDemo, isDemo),
@@ -1181,7 +1181,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         );
 
         const artistsWithData = await withCache(cacheKey, async () => {
-          // Main query
+          // ✅ Main query: artists + users
           const artistsQuery = await db
             .select({
               artist: schema.artists,
@@ -1196,7 +1196,22 @@ export async function registerRoutes(app: Express): Promise<Server> {
           const userIds = artistsQuery.map((row) => row.artist.userId);
           if (userIds.length === 0) return [];
 
-          // Batch fetch talents
+          // ✅ Batch fetch roles for all users
+          const userRoles = await db
+            .select({
+              userId: schema.userRoles.userId,
+              roleId: schema.userRoles.roleId,
+            })
+            .from(schema.userRoles)
+            .where(inArray(schema.userRoles.userId, userIds));
+
+          const userRolesMap = userRoles.reduce((acc, ur) => {
+            if (!acc[ur.userId]) acc[ur.userId] = [];
+            acc[ur.userId].push(ur.roleId);
+            return acc;
+          }, {} as Record<number, number[]>);
+
+          // ✅ Batch fetch talents
           const [primaryTalents, secondaryTalents] = await Promise.all([
             db
               .select()
@@ -1212,12 +1227,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
             db
               .select()
               .from(schema.userSecondaryPerformanceTalents)
-              .where(
-                inArray(schema.userSecondaryPerformanceTalents.userId, userIds)
-              ),
+              .where(inArray(schema.userSecondaryPerformanceTalents.userId, userIds)),
           ]);
 
-          // Lookup maps
+          // ✅ Lookup maps
           const primaryTalentMap = primaryTalents.reduce((acc, talent) => {
             acc[talent.id] = talent.name;
             return acc;
@@ -1229,10 +1242,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
             return acc;
           }, {} as Record<number, string[]>);
 
-          // Combine results
+          // ✅ Final result
           return artistsQuery.map((row) => ({
             ...row.artist,
             user: row.user,
+            roles: userRolesMap[row.artist.userId] || [], // ✅ multiple roleIds
             primaryTalent: row.artist.primaryTalentId
               ? primaryTalentMap[row.artist.primaryTalentId]
               : null,
@@ -1252,6 +1266,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       }
     }
   );
+
 
   // OLD
   // app.get("/api/artists/:id", authenticateToken,   //   try {
@@ -1454,192 +1469,151 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // });
 
   // Musicians routes
-  app.get(
-    "/api/musicians",
-    authenticateToken,
-    async (req: Request, res: Response) => {
-      try {
-        // ✅ Parse query params with Zod
-        const querySchema = z.object({
-          page: z.string().optional().default("0"),
-          limit: z.string().optional().default("20"),
-          isComplete: z.string().optional().default("true"),
-          isDemo: z.string().optional().default("false"),
-        });
+  app.get("/api/musicians", authenticateToken, async (req: Request, res: Response) => {
+    try {
+      const querySchema = z.object({
+        page: z.string().optional().default("0"),
+        limit: z.string().optional().default("20"),
+        isComplete: z.string().optional().default("true"),
+        isDemo: z.string().optional().default("false"),
+      });
 
-        const parsedQuery = querySchema.parse(req.query);
+      const parsedQuery = querySchema.parse(req.query);
 
-        const page = parseInt(parsedQuery.page);
-        const limit = parseInt(parsedQuery.limit);
-        const offset = page * limit;
-        const isComplete = parsedQuery.isComplete === "true";
-        const isDemo = parsedQuery.isDemo === "true";
+      const page = parseInt(parsedQuery.page);
+      const limit = parseInt(parsedQuery.limit);
+      const offset = page * limit;
+      const isComplete = parsedQuery.isComplete === "true";
+      const isDemo = parsedQuery.isDemo === "true";
 
-        // ✅ Cache key
-        const cacheKey = generateCacheKey(
-          "musicians",
-          JSON.stringify({ page, limit, isComplete, isDemo })
-        );
+      const cacheKey = generateCacheKey(
+        "musicians",
+        JSON.stringify({ page, limit, isComplete, isDemo })
+      );
 
-        const musiciansWithData = await withCache(cacheKey, async () => {
-          // Dynamic filters
-          const conditions = [
+      const musiciansWithData = await withCache(cacheKey, async () => {
+        const musiciansQuery = await db
+          .select({ musician: schema.musicians, user: schema.users })
+          .from(schema.musicians)
+          .innerJoin(schema.users, eq(schema.musicians.userId, schema.users.id))
+          .where(and(
             eq(schema.musicians.isComplete, isComplete),
-            eq(schema.musicians.isDemo, isDemo),
-          ];
+            eq(schema.musicians.isDemo, isDemo)
+          ))
+          .limit(limit)
+          .offset(offset);
 
-          // ✅ Main query with join, filters, pagination
-          const query = db
-            .select({
-              musician: schema.musicians,
-              user: schema.users,
-            })
-            .from(schema.musicians)
-            .innerJoin(
-              schema.users,
-              eq(schema.musicians.userId, schema.users.id)
-            )
-            .where(and(...conditions))
-            .limit(limit)
-            .offset(offset);
+        const userIds = musiciansQuery.map(row => row.musician.userId);
+        if (!userIds.length) return [];
 
-          const musiciansQuery = await query;
+        // Primary talents
+        const primaryTalents = await db
+          .select()
+          .from(schema.allInstruments)
+          .where(inArray(schema.allInstruments.id, musiciansQuery.map(r => r.musician.primaryTalentId).filter(Boolean)));
 
-          const userIds = musiciansQuery.map((row) => row.musician.userId);
-          if (userIds.length === 0) return [];
+        const primaryTalentMap = primaryTalents.reduce((acc, t) => {
+          acc[t.id] = t.playerName || t.name;
+          return acc;
+        }, {} as Record<number, string>);
 
-          // Fetch primary talents
-          const primaryTalents = await db
-            .select()
-            .from(schema.allInstruments)
-            .where(
-              inArray(
-                schema.allInstruments.id,
-                musiciansQuery
-                  .map((r) => r.musician.primaryTalentId)
-                  .filter(Boolean)
-              )
-            );
+        // Secondary talents
+        const [secondaryPerformanceTalents, secondaryProfessionalTalents] = await Promise.all([
+          db.select().from(schema.userSecondaryPerformanceTalents).where(inArray(schema.userSecondaryPerformanceTalents.userId, userIds)),
+          db.select().from(schema.userSecondaryProfessionalTalents).where(inArray(schema.userSecondaryProfessionalTalents.userId, userIds))
+        ]);
 
-          const primaryTalentMap = primaryTalents.reduce((acc, talent) => {
-            acc[talent.id] = talent.playerName || talent.name;
-            return acc;
-          }, {} as Record<number, string>);
-
-          // Fetch secondary talents
-          const [secondaryPerformanceTalents, secondaryProfessionalTalents] =
-            await Promise.all([
-              db
-                .select()
-                .from(schema.userSecondaryPerformanceTalents)
-                .where(
-                  inArray(
-                    schema.userSecondaryPerformanceTalents.userId,
-                    userIds
-                  )
-                ),
-
-              db
-                .select()
-                .from(schema.userSecondaryProfessionalTalents)
-                .where(
-                  inArray(
-                    schema.userSecondaryProfessionalTalents.userId,
-                    userIds
-                  )
-                ),
-            ]);
-
-          const secondaryMap: Record<number, string[]> = {};
-          [
-            ...secondaryPerformanceTalents,
-            ...secondaryProfessionalTalents,
-          ].forEach((talent) => {
-            if (!secondaryMap[talent.userId]) secondaryMap[talent.userId] = [];
-            secondaryMap[talent.userId].push(talent.talentName);
-          });
-
-          // Merge final result
-          return musiciansQuery.map((row) => ({
-            ...row.musician,
-            user: row.user,
-            primaryTalent: row.musician.primaryTalentId
-              ? primaryTalentMap[row.musician.primaryTalentId]
-              : null,
-            secondaryTalents: secondaryMap[row.musician.userId] || [],
-          }));
+        const secondaryMap: Record<number, string[]> = {};
+        [...secondaryPerformanceTalents, ...secondaryProfessionalTalents].forEach(t => {
+          if (!secondaryMap[t.userId]) secondaryMap[t.userId] = [];
+          secondaryMap[t.userId].push(t.talentName);
         });
 
-        res.json(musiciansWithData);
-      } catch (error: any) {
-        logError(error, ErrorSeverity.ERROR, {
-          endpoint: "/api/musicians",
-          query: req.query,
-        });
-        res.status(500).json({ message: "Internal server error" });
-      }
+        // User roles
+        const userRoles = await db
+          .select({ userId: schema.userRoles.userId, roleId: schema.userRoles.roleId })
+          .from(schema.userRoles)
+          .where(inArray(schema.userRoles.userId, userIds));
+
+        const userRolesMap = userRoles.reduce((acc, ur) => {
+          if (!acc[ur.userId]) acc[ur.userId] = [];
+          acc[ur.userId].push(ur.roleId);
+          return acc;
+        }, {} as Record<number, number[]>);
+
+        return musiciansQuery.map(row => ({
+          ...row.musician,
+          user: row.user,
+          roles: userRolesMap[row.musician.userId] || [],
+          primaryTalent: row.musician.primaryTalentId ? primaryTalentMap[row.musician.primaryTalentId] : null,
+          secondaryTalents: secondaryMap[row.musician.userId] || [],
+        }));
+      });
+
+      res.json(musiciansWithData);
+    } catch (error: any) {
+      logError(error, ErrorSeverity.ERROR, { endpoint: "/api/musicians", query: req.query });
+      res.status(500).json({ message: "Internal server error" });
     }
-  );
+  });
+
 
   // Professionals routes
-  app.get(
-    "/api/professionals",
-    authenticateToken,
-    async (req: Request, res: Response) => {
-      try {
-        const cacheKey = generateCacheKey("professionals");
-        const professionalsWithData = await withCache(cacheKey, async () => {
-          const professionals = await storage.getProfessionals();
-          const professionalsWithUsers = await Promise.all(
-            professionals.map(async (professional) => {
-              const user = await storage.getUser(professional.userId);
-              const profile = await storage.getUserProfile(professional.userId);
+  app.get("/api/professionals", authenticateToken, async (req: Request, res: Response) => {
+    try {
+      const cacheKey = generateCacheKey("professionals");
 
-              // Fetch primary talent by ID - use name for professional talent display
-              let primaryTalent = null;
-              if (professional.primaryTalentId) {
-                const talent = await storage.getPrimaryTalentById(
-                  professional.primaryTalentId,
-                  "professional"
-                );
-                primaryTalent = talent ? talent.name : null;
-              }
+      const professionalsWithData = await withCache(cacheKey, async () => {
+        const professionals = await storage.getProfessionals();
+        const userIds = professionals.map(p => p.userId);
 
-              // Fetch secondary talents
-              const secondaryPerformanceTalents =
-                await storage.getUserSecondaryPerformanceTalents(
-                  professional.userId
-                );
-              const secondaryProfessionalTalents =
-                await storage.getUserSecondaryProfessionalTalents(
-                  professional.userId
-                );
-              const secondaryTalents = [
-                ...secondaryPerformanceTalents.map((t) => t.talentName),
-                ...secondaryProfessionalTalents.map((t) => t.talentName),
-              ];
+        // Batch fetch roles for all users
+        const userRoles = await db
+          .select({ userId: schema.userRoles.userId, roleId: schema.userRoles.roleId })
+          .from(schema.userRoles)
+          .where(inArray(schema.userRoles.userId, userIds));
 
-              return {
-                ...professional,
-                user,
-                profile,
-                primaryTalent,
-                secondaryTalents,
-              };
-            })
-          );
-          return professionalsWithUsers;
-        });
+        const userRolesMap = userRoles.reduce((acc, ur) => {
+          if (!acc[ur.userId]) acc[ur.userId] = [];
+          acc[ur.userId].push(ur.roleId);
+          return acc;
+        }, {} as Record<number, number[]>);
 
-        res.json(professionalsWithData);
-      } catch (error) {
-        logError(error, ErrorSeverity.ERROR, {
-          endpoint: "/api/professionals",
-        });
-        res.status(500).json({ message: "Internal server error" });
-      }
+        return Promise.all(professionals.map(async professional => {
+          const user = await storage.getUser(professional.userId);
+          const profile = await storage.getUserProfile(professional.userId);
+
+          let primaryTalent = null;
+          if (professional.primaryTalentId) {
+            const talent = await storage.getPrimaryTalentById(professional.primaryTalentId, "professional");
+            primaryTalent = talent ? talent.name : null;
+          }
+
+          const secondaryPerformanceTalents = await storage.getUserSecondaryPerformanceTalents(professional.userId);
+          const secondaryProfessionalTalents = await storage.getUserSecondaryProfessionalTalents(professional.userId);
+          const secondaryTalents = [
+            ...secondaryPerformanceTalents.map(t => t.talentName),
+            ...secondaryProfessionalTalents.map(t => t.talentName),
+          ];
+
+          return {
+            ...professional,
+            user,
+            roles: userRolesMap[professional.userId] || [],
+            profile,
+            primaryTalent,
+            secondaryTalents,
+          };
+        }));
+      });
+
+      res.json(professionalsWithData);
+    } catch (error) {
+      logError(error, ErrorSeverity.ERROR, { endpoint: "/api/professionals" });
+      res.status(500).json({ message: "Internal server error" });
     }
-  );
+  });
+
 
   // Songs routes
   app.get(
@@ -2497,7 +2471,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       } catch (error) {
         logError(error, ErrorSeverity.ERROR, {
           endpoint: "/api/users/:userId/talent-dropdown",
-          userId: req.params.userId,
+          userId: parseInt(req.params.userId),
         });
         res.status(500).json({ message: "Internal server error" });
       }
@@ -2653,6 +2627,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.post(
     "/api/videos",
     authenticateToken,
+    requireRole([1,2,4,6,8]),
     async (req: Request, res: Response) => {
       try {
         const userId = req.user?.userId;
@@ -2662,7 +2637,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
         // Check if user is managed (roleId 3, 5, or 7)
         const user = await storage.getUser(userId);
-        if (!user || ![3, 5, 7].includes(user.roleId)) {
+        if (!user) {
           return res
             .status(403)
             .json({ message: "Video upload restricted to managed users only" });
@@ -3344,9 +3319,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
           if (roleIds.some(id => [3, 4, 5, 6].includes(id))) {
             const assignmentRole = "Main Booked Talent";
             const assignmentNotes = `Primary talent - ${roleIds.includes(3) ? "managed artist"
-                : roleIds.includes(4) ? "artist"
-                  : roleIds.includes(5) ? "managed musician"
-                    : "musician"
+              : roleIds.includes(4) ? "artist"
+                : roleIds.includes(5) ? "managed musician"
+                  : "musician"
               }`;
 
             await storage.createBookingAssignment({
@@ -3437,7 +3412,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.post(
     "/api/bookings/:id/assign",
     authenticateToken,
-    requireRole(ROLE_GROUPS.ADMIN_ONLY),
+    requireRole([1,2]),
     validateParams(schemas.idParamSchema),
     validate(schemas.createBookingAssignmentSchema),
     async (req: Request, res: Response) => {

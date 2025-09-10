@@ -19,8 +19,8 @@ import Enhanced32PortMixer from '@/components/modals/Enhanced32PortMixer';
 import EnhancedTechnicalRider from '@/components/technical-rider/EnhancedTechnicalRider';
 import EnhancedMixerPatchSystem from '@/components/stage-plot/EnhancedMixerPatchSystem';
 
-import { 
-  Calendar, Clock, Users, FileText, CreditCard, CheckCircle, 
+import {
+  Calendar, Clock, Users, FileText, CreditCard, CheckCircle,
   AlertCircle, Download, Signature, Music, User, ArrowLeft, ArrowRight,
   ChevronRight, ChevronLeft, Edit, Save, Loader2, CheckCircle2,
   Settings, Wrench, Volume2, Mic, Target, DollarSign, UserPlus,
@@ -71,11 +71,11 @@ interface BookingData {
   signatures: any[];
 }
 
-export default function BookingWorkflow({ 
-  bookingId, 
-  onStatusChange, 
+export default function BookingWorkflow({
+  bookingId,
+  onStatusChange,
   userRole = 'admin',
-  canEdit = true 
+  canEdit = true
 }: ComprehensiveBookingWorkflowProps) {
   const { toast } = useToast();
   const queryClient = useQueryClient();
@@ -92,7 +92,7 @@ export default function BookingWorkflow({
 
   // State for talent dropdown - each user gets their own personalized dropdown
 
-  
+
   // Modal states for technical rider components
   const [mixerModalOpen, setMixerModalOpen] = useState(false);
   const [setlistModalOpen, setSetlistModalOpen] = useState(false);
@@ -159,6 +159,7 @@ export default function BookingWorkflow({
     refetchOnReconnect: false
   });
 
+
   // Load all bookings for selection
   const { data: availableBookings = [] } = useQuery({
     queryKey: ['available-bookings'],
@@ -167,6 +168,7 @@ export default function BookingWorkflow({
       return data;
     }
   });
+  console.log(availableBookings)
 
   // Load available users for assignment with controlled caching
   const { data: availableUsers = [] } = useQuery({
@@ -215,7 +217,7 @@ export default function BookingWorkflow({
       const booking = bookingData as BookingData;
       setBooking(booking);
       setIsLoading(false);
-      
+
       // Auto-assign primary artist as main booked talent if not already assigned
       if (booking.primaryArtist && assignedTalentData !== undefined && Array.isArray(assignedTalentData) && assignedTalentData.length === 0) {
         console.log('🎯 AUTO-ASSIGNMENT TRIGGER: Primary artist exists, no assignments found');
@@ -223,7 +225,7 @@ export default function BookingWorkflow({
       }
     }
   }, [bookingData, assignedTalentData]);
-  
+
   // Update assigned talent state when data loads
   useEffect(() => {
     if (assignedTalentData) {
@@ -235,22 +237,22 @@ export default function BookingWorkflow({
       setAssignedTalent(assignedTalentData);
     }
   }, [assignedTalentData]);
-  
+
   // Function to auto-assign primary artist as main booked talent
   const autoAssignPrimaryArtist = async (primaryArtist: any) => {
     try {
       console.log('🎯 AUTO-ASSIGNING primary artist as main booked talent:', primaryArtist);
-      
+
       // Check if primary artist is already assigned as main booked talent
       const existingMainTalent = assignedTalentData?.find(
         (talent: any) => talent.userId === (primaryArtist.userId || primaryArtist.id) && talent.role === 'Main Booked Talent'
       );
-      
+
       if (existingMainTalent) {
         console.log('✅ Primary artist already assigned as main booked talent');
         return;
       }
-      
+
       const assignmentData = {
         userId: primaryArtist.userId || primaryArtist.id,
         roleId: primaryArtist.roleId || 3, // Default to managed_artist role
@@ -264,13 +266,13 @@ export default function BookingWorkflow({
         talentType: primaryArtist.userType || 'managed_artist',
         assignmentType: 'auto'
       };
-      
+
       console.log('📝 Creating main booked talent assignment:', assignmentData);
-      
+
       // Create the assignment
       await createAssignmentMutation.mutateAsync(assignmentData);
       console.log('✅ Primary artist auto-assigned successfully');
-      
+
     } catch (error) {
       console.error('❌ Failed to auto-assign primary artist:', error);
     }
@@ -307,14 +309,14 @@ export default function BookingWorkflow({
         isMainBookedTalent: assignmentData.isMainBookedTalent || false,
         assignmentType: assignmentData.assignmentType || 'workflow'
       };
-      
+
       console.log('💾 SAVING TO DATABASE - Backend payload:', backendPayload);
-      
+
       const response = await apiRequest(`/api/bookings/${bookingId}/assign`, {
         method: 'POST',
-        body: JSON.stringify(backendPayload)
+        body: backendPayload
       });
-      
+
       if (!response.ok) {
         let errorMessage = 'Failed to create assignment';
         try {
@@ -326,26 +328,26 @@ export default function BookingWorkflow({
         }
         throw new Error(errorMessage);
       }
-      
+
       return response.json();
     },
     onSuccess: (data, variables) => {
       // Only invalidate specific booking queries to prevent loops
       queryClient.invalidateQueries({ queryKey: ['booking-workflow', bookingId] });
       queryClient.invalidateQueries({ queryKey: ['booking-assigned-talent', bookingId] });
-      
-      toast({ 
-        title: "Assignment Created", 
-        description: `${variables.name} has been assigned to the booking` 
+
+      toast({
+        title: "Assignment Created",
+        description: `${variables.name} has been assigned to the booking`
       });
     },
     onError: (error: any) => {
       console.error('Assignment mutation error:', error);
       const errorMessage = typeof error?.message === 'string' ? error.message : "Failed to create assignment";
-      toast({ 
-        title: "Assignment Failed", 
-        description: errorMessage, 
-        variant: "destructive" 
+      toast({
+        title: "Assignment Failed",
+        description: errorMessage,
+        variant: "destructive"
       });
     }
   });
@@ -388,16 +390,16 @@ export default function BookingWorkflow({
 
       if (!response.ok) throw new Error('Failed to save workflow');
 
-      toast({ 
-        title: "Workflow Saved", 
-        description: "All workflow data has been saved successfully" 
+      toast({
+        title: "Workflow Saved",
+        description: "All workflow data has been saved successfully"
       });
     } catch (error) {
       console.error('Save workflow error:', error);
-      toast({ 
-        title: "Save Failed", 
-        description: "Failed to save workflow data", 
-        variant: "destructive" 
+      toast({
+        title: "Save Failed",
+        description: "Failed to save workflow data",
+        variant: "destructive"
       });
     } finally {
       setSaving(false);
@@ -410,10 +412,10 @@ export default function BookingWorkflow({
       // Create a link that navigates to the PDF endpoint directly for download
       const token = localStorage.getItem('token');
       const url = `/api/bookings/${bookingId}/workflow/pdf`;
-      
+
       // Create a temporary link with authentication headers
       const response = await fetch(url, {
-        method: 'GET', 
+        method: 'GET',
         headers: {
           'Authorization': `Bearer ${token}`
         }
@@ -424,7 +426,7 @@ export default function BookingWorkflow({
       // Get the PDF as blob
       const blob = await response.blob();
       const downloadUrl = window.URL.createObjectURL(blob);
-      
+
       // Create download link
       const link = document.createElement('a');
       link.href = downloadUrl;
@@ -432,20 +434,20 @@ export default function BookingWorkflow({
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
-      
+
       // Clean up
       window.URL.revokeObjectURL(downloadUrl);
 
-      toast({ 
-        title: "PDF Generated", 
-        description: "Comprehensive booking workflow PDF has been downloaded" 
+      toast({
+        title: "PDF Generated",
+        description: "Comprehensive booking workflow PDF has been downloaded"
       });
     } catch (error) {
       console.error('Generate PDF error:', error);
-      toast({ 
-        title: "PDF Generation Failed", 
-        description: "Failed to generate workflow PDF", 
-        variant: "destructive" 
+      toast({
+        title: "PDF Generation Failed",
+        description: "Failed to generate workflow PDF",
+        variant: "destructive"
       });
     }
   };
@@ -455,19 +457,19 @@ export default function BookingWorkflow({
     console.log('🔍 BATCH SAVE DEBUG: Starting batch assignment save...');
     console.log('🔍 assignedTalent state:', assignedTalent);
     console.log('🔍 assignedTalent length:', assignedTalent?.length);
-    
+
     if (!assignedTalent || assignedTalent.length === 0) {
       console.log('💾 No talent assignments to save to database - empty array');
-      toast({ 
-        title: "No Assignments", 
-        description: "No talent assigned to save to database", 
-        variant: "destructive" 
+      toast({
+        title: "No Assignments",
+        description: "No talent assigned to save to database",
+        variant: "destructive"
       });
       return;
     }
 
     console.log('💾 BATCH SAVE: Saving all assigned talent to database...', assignedTalent);
-    
+
     try {
       // Get role mapping for proper roleId assignment
       const getRoleId = (talent: any) => {
@@ -479,14 +481,14 @@ export default function BookingWorkflow({
         if (talent.type === 'Professional') return 8; // professional
         return 6; // default to musician
       };
-      
+
       const promises = assignedTalent.map(async (talent: any, index: number) => {
         console.log(`🔍 Processing talent ${index + 1}/${assignedTalent.length}:`, talent);
-        
+
         // Check if already saved to database by making a quick query
         const existingCheck = await apiRequest(`/api/bookings/${bookingId}/talent-by-role`);
         let existingTalent = [];
-        
+
         if (existingCheck.ok) {
           try {
             const existingData = await existingCheck.json();
@@ -496,14 +498,14 @@ export default function BookingWorkflow({
             existingTalent = [];
           }
         }
-        
+
         const alreadyExists = existingTalent.some((existing: any) => existing.userId === talent.userId);
-        
+
         if (alreadyExists) {
           console.log(`✅ Talent ${talent.name} already exists in database, skipping`);
           return null;
         }
-        
+
         const assignmentData = {
           userId: talent.userId,
           roleId: getRoleId(talent),
@@ -511,14 +513,14 @@ export default function BookingWorkflow({
           isMainBookedTalent: talent.isMainBookedTalent || false,
           assignmentType: 'workflow'
         };
-        
+
         console.log(`💾 Saving talent ${talent.name} to database with payload:`, assignmentData);
-        
+
         const response = await apiRequest(`/api/bookings/${bookingId}/assign`, {
           method: 'POST',
           body: JSON.stringify(assignmentData)
         });
-        
+
         if (!response.ok) {
           let errorMessage = `Failed to save ${talent.name}`;
           try {
@@ -531,32 +533,32 @@ export default function BookingWorkflow({
           console.error(`❌ Failed to save ${talent.name}:`, errorMessage);
           throw new Error(errorMessage);
         }
-        
+
         const result = await response.json();
         console.log(`✅ Successfully saved ${talent.name}:`, result);
         return result;
       });
-      
+
       const results = await Promise.all(promises);
       const savedCount = results.filter(r => r !== null).length;
-      
+
       console.log('✅ BATCH SAVE COMPLETE: All talent saved to database');
       console.log(`📊 Results: ${savedCount} new assignments, ${assignedTalent.length - savedCount} already existed`);
-      
+
       // Invalidate queries to refresh data
       queryClient.invalidateQueries({ queryKey: ['booking-assigned-talent', bookingId] });
-      
-      toast({ 
-        title: "Database Updated", 
-        description: `${savedCount} talent assignments saved to database` 
+
+      toast({
+        title: "Database Updated",
+        description: `${savedCount} talent assignments saved to database`
       });
-      
+
     } catch (error) {
       console.error('❌ BATCH SAVE FAILED:', error);
-      toast({ 
-        title: "Save Failed", 
-        description: `Failed to save assignments: ${(error as any).message}`, 
-        variant: "destructive" 
+      toast({
+        title: "Save Failed",
+        description: `Failed to save assignments: ${(error as any).message}`,
+        variant: "destructive"
       });
     }
   };
@@ -565,40 +567,40 @@ export default function BookingWorkflow({
     // Check if current step has required confirmation
     const currentStepInfo = workflowSteps[currentStep - 1];
     const requiresConfirmation = currentStep === 2 || currentStep === 3; // Contract Generation and Technical Rider require confirmation
-    
+
     if (currentStep === 2 && !stepConfirmations[currentStep]) {
-      toast({ 
-        title: "Confirmation Required", 
+      toast({
+        title: "Confirmation Required",
         description: "Please review and confirm the contract terms before proceeding",
         variant: "destructive"
       });
       return;
     }
-    
+
     if (currentStep === 3 && !technicalConfirmed) {
-      toast({ 
-        title: "Technical Rider Confirmation Required", 
+      toast({
+        title: "Technical Rider Confirmation Required",
         description: "Please review and confirm all technical requirements before proceeding",
         variant: "destructive"
       });
       return;
     }
-    
+
     // Save all talent assignments to database when leaving Step 1 (Talent Assignment)
     if (currentStep === 1) {
       console.log('💾 STEP 1 COMPLETE: Saving talent assignments to database...');
       console.log('🔍 Current assigned talent before save:', assignedTalent);
       await saveBatchAssignments();
     }
-    
+
     if (currentStep < 6) {
       const newStep = currentStep + 1;
       const stepInfo = workflowSteps[newStep - 1];
-      
+
       setCurrentStep(newStep);
-      toast({ 
-        title: "Progress", 
-        description: `Moved to step ${newStep}: ${stepInfo.title}` 
+      toast({
+        title: "Progress",
+        description: `Moved to step ${newStep}: ${stepInfo.title}`
       });
 
       // Send email notification for step completion
@@ -621,9 +623,9 @@ export default function BookingWorkflow({
     // Superadmins can jump to any step
     if (userRole === 'superadmin') {
       setCurrentStep(stepNumber);
-      toast({ 
-        title: "Navigation", 
-        description: `Jumped to step ${stepNumber}: ${workflowSteps[stepNumber - 1]?.title}` 
+      toast({
+        title: "Navigation",
+        description: `Jumped to step ${stepNumber}: ${workflowSteps[stepNumber - 1]?.title}`
       });
       return;
     }
@@ -631,9 +633,9 @@ export default function BookingWorkflow({
     // Admins and assigned admins can only jump to steps after completing Technical Rider (step 3)
     if ((userRole === 'admin' || userRole === 'assigned_admin') && technicalConfirmed) {
       setCurrentStep(stepNumber);
-      toast({ 
-        title: "Navigation", 
-        description: `Jumped to step ${stepNumber}: ${workflowSteps[stepNumber - 1]?.title}` 
+      toast({
+        title: "Navigation",
+        description: `Jumped to step ${stepNumber}: ${workflowSteps[stepNumber - 1]?.title}`
       });
       return;
     }
@@ -644,7 +646,7 @@ export default function BookingWorkflow({
     } else {
       toast({
         title: "Navigation Restricted",
-        description: userRole === 'admin' || userRole === 'assigned_admin' 
+        description: userRole === 'admin' || userRole === 'assigned_admin'
           ? "Complete the Technical Rider section first to enable step navigation"
           : "You can only navigate to previous or current steps",
         variant: "destructive"
@@ -698,9 +700,8 @@ export default function BookingWorkflow({
           <CardContent>
             <div className="space-y-2 max-h-64 overflow-y-auto">
               {availableBookings.map((bkg: any) => (
-                <div key={bkg.id} className={`p-3 border rounded cursor-pointer transition-colors ${
-                  bkg.id === bookingId ? 'bg-primary/10 border-primary' : 'hover:bg-muted'
-                }`}>
+                <div key={bkg.id} className={`p-3 border rounded cursor-pointer transition-colors ${bkg.id === bookingId ? 'bg-primary/10 border-primary' : 'hover:bg-muted'
+                  }`}>
                   <div className="flex justify-between items-center">
                     <div>
                       <p className="font-medium">{bkg.eventName}</p>
@@ -728,32 +729,36 @@ export default function BookingWorkflow({
       ...(Array.isArray(availableProfessionals) ? availableProfessionals : [])
     ];
 
-    console.log(allTalent)
-    // Group by role_id as requested - use the actual role_id values
+    const getRoles = (talent: any): number[] => {
+      if (Array.isArray(talent.roles)) return talent.roles;
+      if (Array.isArray(talent.user?.roles)) return talent.user.roles;
+      if (talent.roleId) return [talent.roleId];
+      if (talent.user?.roleId) return [talent.user.roleId];
+      return [];
+    };
+
+    console.log(availableArtists)
+    console.log(availableMusicians)
+    console.log(availableProfessionals)
+
     const categorizedTalent = {
-      // Role ID 3: Managed Artists  
-      managedArtists: allTalent.filter(talent => 
-        talent.roleId === 3 || talent.user?.roleId === 3
+      managedArtists: allTalent.filter(talent =>
+        getRoles(talent).includes(3)
       ),
-      // Role ID 4: Artists
-      artists: allTalent.filter(talent => 
-        talent.roleId === 4 || talent.user?.roleId === 4
+      artists: allTalent.filter(talent =>
+        getRoles(talent).includes(4)
       ),
-      // Role ID 5: Managed Musicians
-      managedMusicians: allTalent.filter(talent => 
-        talent.roleId === 5 || talent.user?.roleId === 5
+      managedMusicians: allTalent.filter(talent =>
+        getRoles(talent).includes(5)
       ),
-      // Role ID 6: Musicians
-      musicians: allTalent.filter(talent => 
-        talent.roleId === 6 || talent.user?.roleId === 6
+      musicians: allTalent.filter(talent =>
+        getRoles(talent).includes(6)
       ),
-      // Role ID 7: Managed Professionals
-      managedProfessionals: allTalent.filter(talent => 
-        talent.roleId === 7 || talent.user?.roleId === 7
+      managedProfessionals: allTalent.filter(talent =>
+        getRoles(talent).includes(7)
       ),
-      // Role ID 8: Professionals
-      professionals: allTalent.filter(talent => 
-        talent.roleId === 8 || talent.user?.roleId === 8
+      professionals: allTalent.filter(talent =>
+        getRoles(talent).includes(8)
       )
     };
 
@@ -864,8 +869,8 @@ export default function BookingWorkflow({
           <CardContent>
             <div className="space-y-3">
               {assignedTalent.length > 0 ? (
-                assignedTalent.map((talent: any) => (
-                  <div key={talent.id} className="flex items-center justify-between p-3 border rounded bg-blue-50">
+                assignedTalent.map((talent: any, index:number) => (
+                  <div key={index} className="flex items-center justify-between p-3 border rounded bg-blue-50">
                     <div className="flex items-center space-x-3">
                       <Avatar>
                         <AvatarImage src={talent.avatarUrl} />
@@ -887,7 +892,7 @@ export default function BookingWorkflow({
                               className="w-24 h-6 text-xs"
                               defaultValue={talent.rate || ''}
                               onChange={(e) => {
-                                const updatedTalent = assignedTalent.map(t => 
+                                const updatedTalent = assignedTalent.map(t =>
                                   t.id === talent.id ? { ...t, rate: e.target.value } : t
                                 );
                                 setAssignedTalent(updatedTalent);
@@ -913,9 +918,9 @@ export default function BookingWorkflow({
                         </div>
                       </div>
                     ) : (
-                      <Button 
-                        variant="outline" 
-                        size="sm" 
+                      <Button
+                        variant="outline"
+                        size="sm"
                         className="border-red-300 text-red-600 hover:bg-red-50"
                         onClick={() => {
                           setAssignedTalent(assignedTalent.filter(t => t.id !== talent.id));
@@ -953,8 +958,8 @@ export default function BookingWorkflow({
                     Managed Artists
                   </h4>
                   <div className="space-y-2">
-                    {categorizedTalent.managedArtists.map((artist: any) => (
-                      <div key={artist.userId} className="flex items-center justify-between p-3 border rounded bg-emerald-50">
+                    {categorizedTalent.managedArtists.map((artist: any, index) => (
+                      <div key={index} className="flex items-center justify-between p-3 border rounded bg-emerald-50">
                         <div className="flex items-center space-x-3">
                           <Avatar>
                             <AvatarImage src={artist.profile?.avatarUrl} />
@@ -990,7 +995,7 @@ export default function BookingWorkflow({
                                 isMainBookedTalent: isMainBookedTalent,
                                 assignmentType: 'manual'
                               };
-                              
+
                               console.log('🎯 MANUAL ASSIGNMENT - Calling database mutation:', assignmentData);
                               await createAssignmentMutation.mutateAsync(assignmentData);
                             }}>
@@ -1011,8 +1016,8 @@ export default function BookingWorkflow({
                     Artists
                   </h4>
                   <div className="space-y-2">
-                    {categorizedTalent.artists.map((artist: any) => (
-                      <div key={artist.userId} className="flex items-center justify-between p-3 border rounded">
+                    {categorizedTalent.artists.map((artist: any,index) => (
+                      <div key={index} className="flex items-center justify-between p-3 border rounded">
                         <div className="flex items-center space-x-3">
                           <Avatar>
                             <AvatarImage src={artist.profile?.avatarUrl} />
@@ -1048,11 +1053,11 @@ export default function BookingWorkflow({
                                 isMainBookedTalent: isMainBookedTalent
                               };
                               setAssignedTalent([...assignedTalent, newAssignment]);
-                              toast({ 
-                                title: "Assignment", 
-                                description: `${artist.stageName || artist.user?.fullName} assigned as ${isMainBookedTalent ? 'Main Booked Talent' : 'Supporting Talent'}` 
+                              toast({
+                                title: "Assignment",
+                                description: `${artist.stageName || artist.user?.fullName} assigned as ${isMainBookedTalent ? 'Main Booked Talent' : 'Supporting Talent'}`
                               });
-                              
+
                               // Save immediately to database
                               try {
                                 await createAssignmentMutation.mutateAsync({
@@ -1081,8 +1086,8 @@ export default function BookingWorkflow({
                     Managed Musicians
                   </h4>
                   <div className="space-y-2">
-                    {categorizedTalent.managedMusicians.map((musician: any) => (
-                      <div key={musician.userId} className="flex items-center justify-between p-3 border rounded bg-purple-50">
+                    {categorizedTalent.managedMusicians.map((musician: any, index) => (
+                      <div key={index} className="flex items-center justify-between p-3 border rounded bg-purple-50">
                         <div className="flex items-center space-x-3">
                           <Avatar>
                             <AvatarImage src={musician.profile?.avatarUrl} />
@@ -1140,11 +1145,11 @@ export default function BookingWorkflow({
                                   isMainBookedTalent: isMainBookedTalent
                                 };
                                 setAssignedTalent([...assignedTalent, newAssignment]);
-                                toast({ 
-                                  title: "Assignment", 
-                                  description: `${musician.stageName || musician.user?.fullName} assigned as ${isMainBookedTalent ? 'Main Booked Talent' : primaryRole}` 
+                                toast({
+                                  title: "Assignment",
+                                  description: `${musician.stageName || musician.user?.fullName} assigned as ${isMainBookedTalent ? 'Main Booked Talent' : primaryRole}`
                                 });
-                                
+
                                 // Save immediately to database
                                 try {
                                   await createAssignmentMutation.mutateAsync({
@@ -1174,8 +1179,8 @@ export default function BookingWorkflow({
                     Musicians
                   </h4>
                   <div className="space-y-2">
-                    {categorizedTalent.musicians.map((musician: any) => (
-                      <div key={musician.userId} className="flex items-center justify-between p-3 border rounded">
+                    {categorizedTalent.musicians.map((musician: any,index:number) => (
+                      <div key={index} className="flex items-center justify-between p-3 border rounded">
                         <div className="flex items-center space-x-3">
                           <Avatar>
                             <AvatarImage src={musician.profile?.avatarUrl} />
@@ -1233,11 +1238,11 @@ export default function BookingWorkflow({
                                   isMainBookedTalent: isMainBookedTalent
                                 };
                                 setAssignedTalent([...assignedTalent, newAssignment]);
-                                toast({ 
-                                  title: "Assignment", 
-                                  description: `${musician.stageName || musician.user?.fullName} assigned as ${isMainBookedTalent ? 'Main Booked Talent' : primaryRole}` 
+                                toast({
+                                  title: "Assignment",
+                                  description: `${musician.stageName || musician.user?.fullName} assigned as ${isMainBookedTalent ? 'Main Booked Talent' : primaryRole}`
                                 });
-                                
+
                                 // Save immediately to database
                                 try {
                                   await createAssignmentMutation.mutateAsync({
@@ -1267,8 +1272,8 @@ export default function BookingWorkflow({
                     Managed Professionals
                   </h4>
                   <div className="space-y-2">
-                    {categorizedTalent.managedProfessionals.map((professional: any) => (
-                      <div key={professional.userId} className="flex items-center justify-between p-3 border rounded bg-purple-50">
+                    {categorizedTalent.managedProfessionals.map((professional: any,index:number) => (
+                      <div key={index} className="flex items-center justify-between p-3 border rounded bg-purple-50">
                         <div className="flex items-center space-x-3">
                           <Avatar>
                             <AvatarImage src={professional.profile?.avatarUrl} />
@@ -1296,11 +1301,11 @@ export default function BookingWorkflow({
                                 avatarUrl: professional.profile?.avatarUrl
                               };
                               setAssignedTalent([...assignedTalent, newAssignment]);
-                              toast({ 
-                                title: "Assignment", 
-                                description: `${professional.stageName || professional.user?.fullName} assigned as ${professional.serviceType || 'Professional'}` 
+                              toast({
+                                title: "Assignment",
+                                description: `${professional.stageName || professional.user?.fullName} assigned as ${professional.serviceType || 'Professional'}`
                               });
-                              
+
                               // Save immediately to database
                               try {
                                 await createAssignmentMutation.mutateAsync({
@@ -1330,8 +1335,8 @@ export default function BookingWorkflow({
                     Professionals
                   </h4>
                   <div className="space-y-2">
-                    {categorizedTalent.professionals.map((professional: any) => (
-                      <div key={professional.userId} className="flex items-center justify-between p-3 border rounded">
+                    {categorizedTalent.professionals.map((professional: any,index:number) => (
+                      <div key={index} className="flex items-center justify-between p-3 border rounded">
                         <div className="flex items-center space-x-3">
                           <Avatar>
                             <AvatarImage src={professional.profile?.avatarUrl} />
@@ -1359,9 +1364,9 @@ export default function BookingWorkflow({
                                 avatarUrl: professional.profile?.avatarUrl
                               };
                               setAssignedTalent([...assignedTalent, newAssignment]);
-                              toast({ 
-                                title: "Assignment", 
-                                description: `${professional.stageName || professional.user?.fullName} assigned as ${professional.serviceType || 'Professional'}` 
+                              toast({
+                                title: "Assignment",
+                                description: `${professional.stageName || professional.user?.fullName} assigned as ${professional.serviceType || 'Professional'}`
                               });
                             }}
                           >
@@ -1384,11 +1389,11 @@ export default function BookingWorkflow({
               )}
 
               {/* No talent available */}
-              {(Array.isArray(availableArtists) ? availableArtists.length : 0) === 0 && 
-               (Array.isArray(availableMusicians) ? availableMusicians.length : 0) === 0 && 
-               (Array.isArray(availableProfessionals) ? availableProfessionals.length : 0) === 0 && (
-                <p className="text-muted-foreground text-center py-4">No talent available for assignment</p>
-              )}
+              {(Array.isArray(availableArtists) ? availableArtists.length : 0) === 0 &&
+                (Array.isArray(availableMusicians) ? availableMusicians.length : 0) === 0 &&
+                (Array.isArray(availableProfessionals) ? availableProfessionals.length : 0) === 0 && (
+                  <p className="text-muted-foreground text-center py-4">No talent available for assignment</p>
+                )}
             </div>
           </CardContent>
         </Card>
@@ -1423,7 +1428,7 @@ export default function BookingWorkflow({
     bookingAgreement: null,
     performanceContract: null
   });
-  
+
   const [contractConfig, setContractConfig] = useState({
     counterOfferDeadline: '',
     paymentTerms: '50% deposit, 50% on completion',
@@ -1533,16 +1538,16 @@ export default function BookingWorkflow({
         body: JSON.stringify(previewData),
         credentials: 'include'
       });
-      
+
       if (response.ok) {
         const preview = await response.text();
         setContractPreview(prev => ({
           ...prev,
           [type === 'booking' ? 'bookingAgreement' : 'performanceContract']: preview
         }));
-        toast({ 
-          title: "Contract Preview Generated", 
-          description: `${type === 'booking' ? 'Booking Agreement' : 'Performance Contract'} preview with enhanced pricing` 
+        toast({
+          title: "Contract Preview Generated",
+          description: `${type === 'booking' ? 'Booking Agreement' : 'Performance Contract'} preview with enhanced pricing`
         });
       } else {
         const errorText = await response.text();
@@ -1550,8 +1555,8 @@ export default function BookingWorkflow({
       }
     } catch (error) {
       console.error('Contract preview error:', error);
-      toast({ 
-        title: "Preview Error", 
+      toast({
+        title: "Preview Error",
         description: "Unable to generate contract preview",
         variant: "destructive"
       });
@@ -1599,17 +1604,14 @@ export default function BookingWorkflow({
               </p>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 {Object.entries(categoryPricing).map(([category, price]) => (
-                  <div key={category} className={`p-3 rounded-lg border ${
-                    getAssignedCategories().has(category) 
-                      ? 'bg-gradient-to-br from-green-50 to-emerald-50 border-green-200' 
-                      : 'bg-gradient-to-br from-gray-50 to-slate-50 border-gray-200'
-                  }`}>
-                    <label className={`text-sm font-medium flex items-center gap-2 ${
-                      getAssignedCategories().has(category) ? 'text-green-800' : 'text-gray-600'
+                  <div key={category} className={`p-3 rounded-lg border ${getAssignedCategories().has(category)
+                    ? 'bg-gradient-to-br from-green-50 to-emerald-50 border-green-200'
+                    : 'bg-gradient-to-br from-gray-50 to-slate-50 border-gray-200'
                     }`}>
-                      <div className={`w-2 h-2 rounded-full ${
-                        getAssignedCategories().has(category) ? 'bg-green-500' : 'bg-gray-400'
-                      }`}></div>
+                    <label className={`text-sm font-medium flex items-center gap-2 ${getAssignedCategories().has(category) ? 'text-green-800' : 'text-gray-600'
+                      }`}>
+                      <div className={`w-2 h-2 rounded-full ${getAssignedCategories().has(category) ? 'bg-green-500' : 'bg-gray-400'
+                        }`}></div>
                       {category}
                     </label>
                     <input
@@ -1622,11 +1624,10 @@ export default function BookingWorkflow({
                           [category]: e.target.value
                         }));
                       }}
-                      className={`w-full mt-2 p-2 border rounded ${
-                        !getAssignedCategories().has(category) 
-                          ? 'bg-gray-100 text-gray-500' 
-                          : 'bg-white focus:ring-2 focus:ring-green-500 focus:border-transparent'
-                      }`}
+                      className={`w-full mt-2 p-2 border rounded ${!getAssignedCategories().has(category)
+                        ? 'bg-gray-100 text-gray-500'
+                        : 'bg-white focus:ring-2 focus:ring-green-500 focus:border-transparent'
+                        }`}
                       placeholder={getAssignedCategories().has(category) ? `Enter ${category.toLowerCase()} rate` : 'No talent assigned'}
                       readOnly={!getAssignedCategories().has(category)}
                     />
@@ -1938,8 +1939,8 @@ export default function BookingWorkflow({
             {!counterOffer.received ? (
               <div className="text-center py-4">
                 <p className="text-muted-foreground">No counter-offers received yet</p>
-                <Button 
-                  variant="outline" 
+                <Button
+                  variant="outline"
                   className="mt-2"
                   onClick={() => setCounterOffer(prev => ({ ...prev, received: true }))}
                 >
@@ -1979,8 +1980,8 @@ export default function BookingWorkflow({
                     />
                   </div>
                   <div className="flex items-end gap-2">
-                    <Button 
-                      variant="default" 
+                    <Button
+                      variant="default"
                       className="bg-green-600 hover:bg-green-700"
                       onClick={() => {
                         setContractConfig(prev => ({ ...prev, proposedPrice: counterOffer.amount }));
@@ -1989,7 +1990,7 @@ export default function BookingWorkflow({
                     >
                       Approve
                     </Button>
-                    <Button 
+                    <Button
                       variant="destructive"
                       onClick={() => {
                         setCounterOffer({ received: false, amount: 0, deadline: '', notes: '' });
@@ -2032,8 +2033,8 @@ export default function BookingWorkflow({
           <CardContent className="space-y-4">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Button 
-                  className="w-full flex items-center gap-2" 
+                <Button
+                  className="w-full flex items-center gap-2"
                   onClick={() => generateContractPreview('booking')}
                   disabled={false}
                 >
@@ -2046,9 +2047,9 @@ export default function BookingWorkflow({
                     <div className="text-xs text-gray-700 whitespace-pre-line">
                       {contractPreview.bookingAgreement.substring(0, 500)}...
                     </div>
-                    <Button 
-                      size="sm" 
-                      variant="outline" 
+                    <Button
+                      size="sm"
+                      variant="outline"
                       className="mt-2"
                       onClick={() => {
                         // Download full preview
@@ -2067,10 +2068,10 @@ export default function BookingWorkflow({
                   </div>
                 )}
               </div>
-              
+
               <div className="space-y-2">
-                <Button 
-                  className="w-full flex items-center gap-2" 
+                <Button
+                  className="w-full flex items-center gap-2"
                   onClick={() => generateContractPreview('performance')}
                   disabled={assignedTalent.length === 0}
                 >
@@ -2083,9 +2084,9 @@ export default function BookingWorkflow({
                     <div className="text-xs text-gray-700 whitespace-pre-line">
                       {contractPreview.performanceContract.substring(0, 500)}...
                     </div>
-                    <Button 
-                      size="sm" 
-                      variant="outline" 
+                    <Button
+                      size="sm"
+                      variant="outline"
                       className="mt-2"
                       onClick={() => {
                         // Download full preview
@@ -2278,7 +2279,7 @@ export default function BookingWorkflow({
   const getInstrumentColor = (instrument: string) => {
     const colors = {
       vocals: '#FF6B6B',
-      guitar: '#4ECDC4', 
+      guitar: '#4ECDC4',
       bass: '#45B7D1',
       drums: '#96CEB4',
       keyboard: '#FFEAA7'
@@ -2296,7 +2297,7 @@ export default function BookingWorkflow({
             <p className="text-muted-foreground">Professional technical requirements management with stage plot, mixer configuration, and setlist integration</p>
           </div>
         </div>
-        
+
         {/* Enhanced Mixer Patch System */}
         <Card className="mb-6">
           <CardHeader>
@@ -2328,15 +2329,15 @@ export default function BookingWorkflow({
                     method: 'POST',
                     body: JSON.stringify(patchData)
                   });
-                  toast({ 
-                    title: "Mixer Patch List Saved", 
-                    description: "Stage plot assignments converted to mixer channels successfully" 
+                  toast({
+                    title: "Mixer Patch List Saved",
+                    description: "Stage plot assignments converted to mixer channels successfully"
                   });
                 } catch (error) {
-                  toast({ 
-                    title: "Save Failed", 
-                    description: "Could not save mixer patch list", 
-                    variant: "destructive" 
+                  toast({
+                    title: "Save Failed",
+                    description: "Could not save mixer patch list",
+                    variant: "destructive"
                   });
                 }
               }}
@@ -2349,18 +2350,18 @@ export default function BookingWorkflow({
           assignedMusicians={assignedTalent.map((talent: any) => {
             // Find the user details from available users
             const userDetails = (availableUsers as any[] || []).find((user: any) => user.id === talent.userId);
-            
+
             // Find artist/musician/professional profile for profile data
             const artistProfile = (availableArtists as any[]).find((artist: any) => artist.userId === talent.userId);
             const musicianProfile = (availableMusicians as any[]).find((musician: any) => musician.userId === talent.userId);
             const professionalProfile = (availableProfessionals as any[]).find((professional: any) => professional.userId === talent.userId);
-            
+
             const profile = artistProfile || musicianProfile || professionalProfile;
-            
+
             // If talent doesn't have database talent fields, populate from profile data
             let primaryTalent = talent.primaryTalent;
             let secondaryTalents = talent.secondaryTalents;
-            
+
             if (!primaryTalent && profile) {
               // Extract primary talent from profile based on user type
               if (profile.primaryTalent) {
@@ -2371,12 +2372,12 @@ export default function BookingWorkflow({
                 primaryTalent = profile.primaryRole;
               }
             }
-            
+
             if (!secondaryTalents && profile) {
               // Extract secondary talents from profile
               secondaryTalents = profile.secondaryTalents || profile.secondary_talents || [];
             }
-            
+
             return {
               id: talent.userId || talent.id,
               userId: talent.userId,
@@ -2396,7 +2397,7 @@ export default function BookingWorkflow({
               talentType: talent.talentType || 'Artist', // For sorting - use server-provided talentType
               assignmentRole: talent.type || (talent.isPrimary ? 'Main Booked Talent' : 'Supporting Musician'), // Assignment feature for role column
               // DATABASE FIELDS: Use populated talent fields
-              primaryTalent: primaryTalent, 
+              primaryTalent: primaryTalent,
               secondaryTalents: secondaryTalents || [],
               hasPrimaryTalent: !!primaryTalent,
               hasSecondaryTalents: !!(secondaryTalents && secondaryTalents.length > 0)
@@ -2518,19 +2519,17 @@ export default function BookingWorkflow({
       {/* Progress Steps */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
         {workflowSteps.map((step, index) => (
-          <Card 
+          <Card
             key={step.id}
-            className={`cursor-pointer transition-all ${
-              step.isActive ? 'ring-2 ring-primary shadow-lg' : ''
-            } ${step.status === 'completed' ? 'bg-green-50 border-green-200' : ''}`}
+            className={`cursor-pointer transition-all ${step.isActive ? 'ring-2 ring-primary shadow-lg' : ''
+              } ${step.status === 'completed' ? 'bg-green-50 border-green-200' : ''}`}
             onClick={() => setCurrentStep(index + 1)}
           >
             <CardContent className="p-4">
               <div className="flex items-center space-x-3">
-                <div className={`w-10 h-10 rounded-full flex items-center justify-center ${
-                  step.status === 'completed' ? 'bg-green-500 text-white' :
+                <div className={`w-10 h-10 rounded-full flex items-center justify-center ${step.status === 'completed' ? 'bg-green-500 text-white' :
                   step.isActive ? 'bg-primary text-white' : 'bg-gray-200'
-                }`}>
+                  }`}>
                   {step.status === 'completed' ? (
                     <CheckCircle className="w-5 h-5" />
                   ) : (
@@ -2566,7 +2565,7 @@ export default function BookingWorkflow({
           <ChevronLeft className="w-4 h-4 mr-2" />
           Previous
         </Button>
-        
+
         <div className="flex space-x-2">
           <Button variant="outline" onClick={saveWorkflow} disabled={saving}>
             {saving ? (
