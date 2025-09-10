@@ -2815,14 +2815,18 @@ export class DatabaseStorage implements IStorage {
     try {
       const results = await db
         .select({
-          bookingId: bookings.id,
+          id: bookings.id,
           eventName: bookings.eventName,
           venueName: bookings.venueName,
-          guestName: bookings.isGuestBooking ? bookings.guestName : null,
+          eventDate: bookings.eventDate,
+          status: bookings.status,
           isGuestBooking: bookings.isGuestBooking,
+          guestName: bookings.guestName,
+          guestEmail: bookings.guestEmail,
+          guestPhone: bookings.guestPhone,
+          
+          // Artist/Musician/Professional fields
           primaryArtistUserId: bookings.primaryArtistUserId,
-
-          // Artist fields
           artistStageName: artists.stageName,
           artistBio: artists.bio,
           artistEpkUrl: artists.epkUrl,
@@ -2839,16 +2843,36 @@ export class DatabaseStorage implements IStorage {
           artistPrimaryTalentId: artists.primaryTalentId,
           artistIsDemo: artists.isDemo,
           artistIsComplete: artists.isComplete,
+  
+          // Workflow + contract/payment
+          workflowData: bookings.workflowData,
+          currentWorkflowStep: bookings.currentWorkflowStep,
+          contractsGenerated: bookings.contractsGenerated,
+          allSignaturesCompleted: bookings.allSignaturesCompleted,
+          paymentCompleted: bookings.paymentCompleted,
+          receiptGenerated: bookings.receiptGenerated,
         })
         .from(bookings)
         .leftJoin(artists, eq(bookings.primaryArtistUserId, artists.userId));
-
-      return results;
+  
+      // Fetch booking assignments separately
+      const assignments = await db
+        .select()
+        .from(bookingAssignments);
+  
+      // Attach assignments into bookings
+      const enriched = results.map(b => ({
+        ...b,
+        assignments: assignments.filter(a => a.bookingId === b.id),
+      }));
+  
+      return enriched;
     } catch (error) {
       console.error("Error fetching bookings with artists:", error);
       return [];
     }
   }
+  
 
 
   async getBookingsByArtist(artistUserId: number): Promise<Booking[]> {

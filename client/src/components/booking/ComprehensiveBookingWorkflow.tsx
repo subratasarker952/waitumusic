@@ -728,6 +728,7 @@ export default function BookingWorkflow({
       ...(Array.isArray(availableProfessionals) ? availableProfessionals : [])
     ];
 
+    console.log(allTalent)
     // Group by role_id as requested - use the actual role_id values
     const categorizedTalent = {
       // Role ID 3: Managed Artists  

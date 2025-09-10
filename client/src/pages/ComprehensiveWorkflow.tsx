@@ -7,22 +7,27 @@ import { useQuery } from '@tanstack/react-query';
 import { useAuth } from '@/contexts/AuthContext';
 import AuthorizedRoute from '@/components/AuthorizedRoute';
 import BookingWorkflow from '@/components/booking/ComprehensiveBookingWorkflow';
-import { 
-  Calendar, ArrowLeft, Settings, Users, FileText, 
-  CheckCircle, AlertTriangle, Clock, MapPin, Sliders, 
-  Music, Zap, Move, Hash 
+import {
+  Calendar, ArrowLeft, Settings, Users, FileText,
+  CheckCircle, AlertTriangle, Clock, MapPin, Sliders,
+  Music, Zap, Move, Hash
 } from 'lucide-react';
 import { useLocation } from 'wouter';
 
 export default function ComprehensiveWorkflow() {
   const [, setLocation] = useLocation();
-  const { user, isLoading: authLoading } = useAuth();
+  const { user, isLoading: authLoading, roles } = useAuth();
   const [selectedBookingId, setSelectedBookingId] = useState<number | null>(null);
+
+  const userRoleIds = roles.map(r => r.id)
+
+  const isSuperAdmin = userRoleIds.includes(1)
+  const isAdmin = userRoleIds.includes(2)
 
   // Fetch all bookings for selection
   const { data: availableBookings = [], isLoading: bookingsLoading, error: bookingsError } = useQuery<any[]>({
     queryKey: ['/api/bookings/all'],
-    enabled: !!user && [1, 2].includes(user.roleId) // Only admins and superadmins
+    enabled: !!user && (!!isSuperAdmin || !!isAdmin) // Only admins and superadmins
   });
 
   const getStatusColor = (status: string) => {
@@ -90,23 +95,25 @@ export default function ComprehensiveWorkflow() {
         {/* Header */}
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-4">
-            <Button 
-              variant="outline" 
+            <Button
+              variant="outline"
               size="sm"
               onClick={() => setLocation('/dashboard')}
             >
               <ArrowLeft className="h-4 w-4 mr-2" />
               Back to Dashboard
             </Button>
-            <div>
-              <h1 className="text-3xl font-bold">Comprehensive Booking Workflow</h1>
-              <p className="text-muted-foreground">Advanced 6-step booking management system</p>
-            </div>
+
           </div>
           <Badge variant="outline" className="text-primary border-primary">
             <Settings className="h-3 w-3 mr-1" />
-            {user?.roleId === 1 ? 'Superadmin' : 'Admin'} Access
+            {isSuperAdmin ? 'Superadmin' : "Admin"} Access
           </Badge>
+        </div>
+
+        <div>
+          <h1 className="text-3xl font-bold">Comprehensive Booking Workflow</h1>
+          <p className="text-muted-foreground">Advanced 6-step booking management system</p>
         </div>
 
         {/* Booking Selection Section */}
@@ -129,8 +136,8 @@ export default function ComprehensiveWorkflow() {
               ) : availableBookings.length > 0 ? (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                   {availableBookings.map((booking: any) => (
-                    <Card 
-                      key={booking.id} 
+                    <Card
+                      key={booking.id}
                       className="cursor-pointer hover:shadow-md transition-shadow border-2 hover:border-primary/50"
                       onClick={() => setSelectedBookingId(booking.id)}
                     >
@@ -142,7 +149,7 @@ export default function ComprehensiveWorkflow() {
                                 {booking.eventName || 'Untitled Event'}
                               </h4>
                               <p className="text-sm text-muted-foreground">
-                                {booking.primaryArtist?.stageName || 'No artist assigned'}
+                                {booking.artistStageName || 'No artist assigned'}
                               </p>
                             </div>
                             <Badge className={getStatusColor(booking.status)}>
@@ -150,35 +157,35 @@ export default function ComprehensiveWorkflow() {
                               <span className="ml-1">{booking.status}</span>
                             </Badge>
                           </div>
-                          
+
                           <div className="space-y-2 text-sm">
                             <div className="flex items-center gap-2">
                               <Hash className="h-4 w-4 text-muted-foreground" />
                               <span className="font-medium">Booking #{booking.id}</span>
                             </div>
-                            
+
                             <div className="flex items-center gap-2">
                               <Calendar className="h-4 w-4 text-muted-foreground" />
                               <span>
-                                {booking.eventDate 
+                                {booking.eventDate
                                   ? new Date(booking.eventDate).toLocaleDateString('en-US', {
-                                      weekday: 'short',
-                                      year: 'numeric',
-                                      month: 'short',
-                                      day: 'numeric'
-                                    })
+                                    weekday: 'short',
+                                    year: 'numeric',
+                                    month: 'short',
+                                    day: 'numeric'
+                                  })
                                   : 'Date TBD'
                                 }
                               </span>
                             </div>
-                            
+
                             {booking.venueName && (
                               <div className="flex items-center gap-2">
                                 <MapPin className="h-4 w-4 text-muted-foreground" />
                                 <span className="truncate">{booking.venueName}</span>
                               </div>
                             )}
-                            
+
                             <div className="flex items-center gap-2">
                               <Users className="h-4 w-4 text-muted-foreground" />
                               <span>
@@ -186,7 +193,7 @@ export default function ComprehensiveWorkflow() {
                                 {(booking.assignedMusicians?.length || 0) + 1} talent assigned
                               </span>
                             </div>
-                            
+
                             {booking.totalBudget && (
                               <div className="flex items-center gap-2">
                                 <span className="text-lg font-semibold text-green-600">
@@ -195,8 +202,8 @@ export default function ComprehensiveWorkflow() {
                               </div>
                             )}
                           </div>
-                          
-                          <Button 
+
+                          <Button
                             className="w-full mt-3"
                             onClick={(e) => {
                               e.stopPropagation();
@@ -236,8 +243,8 @@ export default function ComprehensiveWorkflow() {
               <CardHeader>
                 <CardTitle className="flex items-center justify-between">
                   <span>Active Workflow - Booking #{selectedBookingId}</span>
-                  <Button 
-                    variant="outline" 
+                  <Button
+                    variant="outline"
                     size="sm"
                     onClick={() => setSelectedBookingId(null)}
                   >
@@ -257,7 +264,7 @@ export default function ComprehensiveWorkflow() {
                       </div>
                       <div>
                         <p className="text-sm font-medium text-muted-foreground">Artist</p>
-                        <p className="font-semibold">{currentBooking.primaryArtist?.stageName}</p>
+                        <p className="font-semibold">{currentBooking.artistStageName}</p>
                       </div>
                       <div>
                         <p className="text-sm font-medium text-muted-foreground">Date</p>
@@ -282,9 +289,9 @@ export default function ComprehensiveWorkflow() {
 
 
             {/* Comprehensive Workflow Component */}
-            <BookingWorkflow 
+            <BookingWorkflow
               bookingId={selectedBookingId}
-              userRole={user?.roleId === 1 ? 'superadmin' : 'admin'}
+              userRole={isSuperAdmin ? 'superadmin' : 'admin'}
               canEdit={true}
               onStatusChange={(status) => {
                 console.log('Booking status changed to:', status);
