@@ -2627,7 +2627,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.post(
     "/api/videos",
     authenticateToken,
-    requireRole([1,2,4,6,8]),
+    requireRole([1, 2, 4, 6, 8]),
     async (req: Request, res: Response) => {
       try {
         const userId = req.user?.userId;
@@ -2861,6 +2861,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   //     res.status(500).json({ message: "Internal server error" });
   //   }
   // });
+
   app.get(
     "/api/bookings/user",
     authenticateToken,
@@ -2875,31 +2876,28 @@ export async function registerRoutes(app: Express): Promise<Server> {
         if (!user) {
           return res.status(404).json({ message: "User not found" });
         }
+        const TALENT_ROLE_IDS = [3, 4, 5, 6, 7, 8];
 
-        // Get all roles of user
+        // ✅ collect all roleIds (not row PK ids)
         const roles = await storage.getUserRoles(user.id);
         const roleIds = roles.map((r) => r.id);
 
-        // Talent roles = artist, musician, professional
-        const talentRoles = [3, 4, 5, 6, 7, 8];
-
-        if (roleIds.some((r) => talentRoles.includes(r))) {
-          // Get bookings where this user is assigned
+        if (roleIds.some((r) => TALENT_ROLE_IDS.includes(r))) {
+          // ✅ Bookings where this talent is assigned
           const assignedBookings = await db
             .select({
               id: schema.bookings.id,
               bookerUserId: schema.bookings.bookerUserId,
-              primaryArtistUserId: schema.bookings.primaryArtistUserId,
               eventName: schema.bookings.eventName,
               eventType: schema.bookings.eventType,
               eventDate: schema.bookings.eventDate,
               venueName: schema.bookings.venueName,
               venueAddress: schema.bookings.venueAddress,
-              requirements: schema.bookings.requirements,
               status: schema.bookings.status,
               totalBudget: schema.bookings.totalBudget,
               finalPrice: schema.bookings.finalPrice,
               createdAt: schema.bookings.createdAt,
+              // from assignments
               assignmentRole: schema.bookingAssignmentsMembers.roleInBooking,
               assignmentStatus: schema.bookingAssignmentsMembers.status,
               assignedAt: schema.bookingAssignmentsMembers.assignedAt,
@@ -2918,9 +2916,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
             )
             .orderBy(desc(schema.bookings.createdAt));
 
-          res.json(assignedBookings);
+          return res.json(assignedBookings);
         } else {
-          // For fans/others → bookings created by them
+          // ✅ Non-talent users → their own created bookings
           const bookings = await storage.getBookingsByUser(userId);
           res.json(bookings);
         }
@@ -2933,6 +2931,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       }
     }
   );
+
 
   // Get booking details for talent users (includes contracts, technical riders, etc.)
   app.get(
@@ -3412,7 +3411,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.post(
     "/api/bookings/:id/assign",
     authenticateToken,
-    requireRole([1,2]),
+    requireRole([1, 2]),
     validateParams(schemas.idParamSchema),
     validate(schemas.createBookingAssignmentSchema),
     async (req: Request, res: Response) => {
@@ -3420,7 +3419,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
         const bookingId = parseInt(req.params.id);
         const {
           userId,
-          roleId,
           selectedTalent,
           isMainBookedTalent,
           assignedGroup,
@@ -3435,7 +3433,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
           .values({
             bookingId,
             userId,
-            roleInBooking: roleId,
+            roleInBooking: 3,
             assignmentType,
             selectedTalent: selectedTalent || null,
             isMainBookedTalent: isMainBookedTalent || false,
@@ -3443,7 +3441,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
             assignedChannelPair,
             assignedChannel,
             assignedBy: req.user!.userId,
-            status: "active",
+            status: "pending",
           })
           .returning();
 

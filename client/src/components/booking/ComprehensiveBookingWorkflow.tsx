@@ -304,7 +304,6 @@ export default function BookingWorkflow({
       // Map frontend data to backend API structure
       const backendPayload = {
         userId: assignmentData.userId,
-        roleId: assignmentData.roleId || 5, // Default to musician role if not specified
         selectedTalent: assignmentData.primaryTalentId || assignmentData.selectedTalent || null,
         isMainBookedTalent: assignmentData.isMainBookedTalent || false,
         assignmentType: assignmentData.assignmentType || 'workflow'
@@ -729,59 +728,62 @@ export default function BookingWorkflow({
       ...(Array.isArray(availableProfessionals) ? availableProfessionals : [])
     ];
 
+    // Always return array of roleIds
     const getRoles = (talent: any): number[] => {
       if (Array.isArray(talent.roles)) return talent.roles;
-      if (Array.isArray(talent.user?.roles)) return talent.user.roles;
-      if (talent.roleId) return [talent.roleId];
-      if (talent.user?.roleId) return [talent.user.roleId];
       return [];
     };
 
-    console.log(availableArtists)
-    console.log(availableMusicians)
-    console.log(availableProfessionals)
-
-    const categorizedTalent = {
-      managedArtists: allTalent.filter(talent =>
-        getRoles(talent).includes(3)
-      ),
-      artists: allTalent.filter(talent =>
-        getRoles(talent).includes(4)
-      ),
-      managedMusicians: allTalent.filter(talent =>
-        getRoles(talent).includes(5)
-      ),
-      musicians: allTalent.filter(talent =>
-        getRoles(talent).includes(6)
-      ),
-      managedProfessionals: allTalent.filter(talent =>
-        getRoles(talent).includes(7)
-      ),
-      professionals: allTalent.filter(talent =>
-        getRoles(talent).includes(8)
-      )
+    // Role → Category mapping
+    const ROLE_CATEGORY_MAP: Record<number, keyof typeof initCategories> = {
+      3: "managedArtists",
+      4: "artists",
+      5: "managedMusicians",
+      6: "musicians",
+      7: "managedProfessionals",
+      8: "professionals",
     };
 
-    // Log the grouping for debugging  
-    console.log('🎯 TALENT GROUPED BY PRIMARY_TALENT_ID:', {
+    // Initialize empty buckets
+    const initCategories = {
+      managedArtists: [] as any[],
+      artists: [] as any[],
+      managedMusicians: [] as any[],
+      musicians: [] as any[],
+      managedProfessionals: [] as any[],
+      professionals: [] as any[]
+    };
+
+    // Categorize all talent dynamically
+    const categorizedTalent = allTalent.reduce((acc, talent) => {
+      const roles = getRoles(talent);
+
+      roles.forEach(roleId => {
+        const category = ROLE_CATEGORY_MAP[roleId];
+        if (category) {
+          acc[category].push(talent);
+        }
+      });
+
+      return acc;
+    }, { ...initCategories });
+
+    // Debug log
+    console.log("🎯 TALENT GROUPED:", {
       totalTalent: allTalent.length,
       talentTypes: allTalent.map(t => ({
         name: t.stageName || t.name || t.fullName,
         primaryTalentId: t.primaryTalentId,
         primaryTalent: t.primaryTalent,
-        actualRoleId: t.roleId, // Direct role ID from the talent object
-        userRoleId: t.user?.roleId, // Role ID from user object
+        roles: getRoles(t),
         isManaged: t.isManaged
       })),
-      categorizedCounts: {
-        managedArtists: categorizedTalent.managedArtists.length,
-        artists: categorizedTalent.artists.length,
-        managedMusicians: categorizedTalent.managedMusicians.length,
-        musicians: categorizedTalent.musicians.length,
-        managedProfessionals: categorizedTalent.managedProfessionals.length,
-        professionals: categorizedTalent.professionals.length
-      }
+      categorizedCounts: Object.fromEntries(
+        Object.entries(categorizedTalent).map(([k, v]) => [k, v.length])
+      )
     });
+
+    console.log(categorizedTalent)
 
     return (
       <div className="space-y-6">
@@ -869,7 +871,7 @@ export default function BookingWorkflow({
           <CardContent>
             <div className="space-y-3">
               {assignedTalent.length > 0 ? (
-                assignedTalent.map((talent: any, index:number) => (
+                assignedTalent.map((talent: any, index: number) => (
                   <div key={index} className="flex items-center justify-between p-3 border rounded bg-blue-50">
                     <div className="flex items-center space-x-3">
                       <Avatar>
@@ -958,7 +960,7 @@ export default function BookingWorkflow({
                     Managed Artists
                   </h4>
                   <div className="space-y-2">
-                    {categorizedTalent.managedArtists.map((artist: any, index) => (
+                    {categorizedTalent.managedArtists.map((artist: any, index: number) => (
                       <div key={index} className="flex items-center justify-between p-3 border rounded bg-emerald-50">
                         <div className="flex items-center space-x-3">
                           <Avatar>
@@ -983,7 +985,6 @@ export default function BookingWorkflow({
                               const artistRoles = [primaryRole, ...(artist.skillsAndInstruments || [])].filter(Boolean);
                               const assignmentData = {
                                 userId: artist.userId,
-                                roleId: artist.roleId || 3, // Use artist's actual role ID
                                 name: artist.stageName || artist.user?.fullName,
                                 type: isMainBookedTalent ? 'Main Booked Talent' : 'Artist',
                                 role: isMainBookedTalent ? 'Main Booked Talent' : primaryRole,
@@ -993,6 +994,7 @@ export default function BookingWorkflow({
                                 genre: artist.genre,
                                 isPrimary: isMainBookedTalent,
                                 isMainBookedTalent: isMainBookedTalent,
+                                primaryTalentId: artist.primaryTalentId,
                                 assignmentType: 'manual'
                               };
 
@@ -1016,7 +1018,7 @@ export default function BookingWorkflow({
                     Artists
                   </h4>
                   <div className="space-y-2">
-                    {categorizedTalent.artists.map((artist: any,index) => (
+                    {categorizedTalent.artists.map((artist: any, index) => (
                       <div key={index} className="flex items-center justify-between p-3 border rounded">
                         <div className="flex items-center space-x-3">
                           <Avatar>
@@ -1179,7 +1181,7 @@ export default function BookingWorkflow({
                     Musicians
                   </h4>
                   <div className="space-y-2">
-                    {categorizedTalent.musicians.map((musician: any,index:number) => (
+                    {categorizedTalent.musicians.map((musician: any, index: number) => (
                       <div key={index} className="flex items-center justify-between p-3 border rounded">
                         <div className="flex items-center space-x-3">
                           <Avatar>
@@ -1272,7 +1274,7 @@ export default function BookingWorkflow({
                     Managed Professionals
                   </h4>
                   <div className="space-y-2">
-                    {categorizedTalent.managedProfessionals.map((professional: any,index:number) => (
+                    {categorizedTalent.managedProfessionals.map((professional: any, index: number) => (
                       <div key={index} className="flex items-center justify-between p-3 border rounded bg-purple-50">
                         <div className="flex items-center space-x-3">
                           <Avatar>
@@ -1335,7 +1337,7 @@ export default function BookingWorkflow({
                     Professionals
                   </h4>
                   <div className="space-y-2">
-                    {categorizedTalent.professionals.map((professional: any,index:number) => (
+                    {categorizedTalent.professionals.map((professional: any, index: number) => (
                       <div key={index} className="flex items-center justify-between p-3 border rounded">
                         <div className="flex items-center space-x-3">
                           <Avatar>

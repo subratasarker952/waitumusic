@@ -251,21 +251,17 @@ function DashboardContent() {
   const { data: stats, isLoading: statsLoading, error: statsError } = useQuery({
     queryKey: ['/api/dashboard/stats'],
     enabled: !!user,
-    retry: 1,
-    retryOnMount: false,
   });
 
   const { data: allBookings, isLoading: allBookingsLoading, error: allBookingsError } = useQuery({
     queryKey: ['/api/bookings/all'],
     enabled: !!user && !!isAdminRole,
-    retry: 1,
   });
   
 
   const { data: userBookings, isLoading: userBookingsLoading, error: userBookingsError } = useQuery({
     queryKey: ['/api/bookings/user'],
     enabled: !!user && !isAdminRole,
-    retry: 1,
   });
 
 

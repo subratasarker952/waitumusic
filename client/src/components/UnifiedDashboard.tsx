@@ -94,8 +94,6 @@ export default function UnifiedDashboard({ stats, bookings, applications }: Unif
   const queryClient = useQueryClient();
   useScrollToTop(); // Scroll to top on page/route changes
 
-  console.log(bookings)
-
   // Modal states
   const [musicUploadOpen, setMusicUploadOpen] = useState(false);
   const [calendarOpen, setCalendarOpen] = useState(false);
@@ -206,14 +204,6 @@ export default function UnifiedDashboard({ stats, bookings, applications }: Unif
   // Filter data based on user
   const userSongs = songs?.filter((song: any) => song.artistUserId === user?.id) || [];
 
-  const userBookings =
-    bookings?.filter(
-      (b: any) =>
-        b.musician_user_id === user?.id ||
-        b.professional_user_id === user?.id ||
-        b.booker_user_id === user?.id ||
-        b.artist_user_id === user?.id
-    ) || [];
 
   const handleUploadMusic = () => setMusicUploadOpen(true);
 
@@ -623,7 +613,7 @@ export default function UnifiedDashboard({ stats, bookings, applications }: Unif
                       <Calendar className="h-4 w-4 text-muted-foreground" />
                     </CardHeader>
                     <CardContent>
-                      <div className="text-2xl font-bold">{userBookings.length}</div>
+                      <div className="text-2xl font-bold">{bookings.length}</div>
                       <p className="text-xs text-muted-foreground">+12% from last month</p>
                     </CardContent>
                   </Card>
@@ -649,7 +639,7 @@ export default function UnifiedDashboard({ stats, bookings, applications }: Unif
                       <Headphones className="h-4 w-4 text-muted-foreground" />
                     </CardHeader>
                     <CardContent>
-                      <div className="text-2xl font-bold">{userBookings.length}</div>
+                      <div className="text-2xl font-bold">{bookings.length}</div>
                       <p className="text-xs text-muted-foreground">+8% from last month</p>
                     </CardContent>
                   </Card>
@@ -675,7 +665,7 @@ export default function UnifiedDashboard({ stats, bookings, applications }: Unif
                       <Briefcase className="h-4 w-4 text-muted-foreground" />
                     </CardHeader>
                     <CardContent>
-                      <div className="text-2xl font-bold">{userBookings.length}</div>
+                      <div className="text-2xl font-bold">{bookings.length}</div>
                       <p className="text-xs text-muted-foreground">+20% from last month</p>
                     </CardContent>
                   </Card>
@@ -757,7 +747,7 @@ export default function UnifiedDashboard({ stats, bookings, applications }: Unif
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
-                  {userBookings.slice(0, 3).map((booking: any, index: number) => (
+                  {bookings.slice(0, 3).map((booking: any, index: number) => (
                     <div key={booking.id || index} className="flex items-center space-x-4">
                       <div className="w-2 h-2 bg-primary rounded-full"></div>
                       <div className="flex-1">
@@ -773,7 +763,7 @@ export default function UnifiedDashboard({ stats, bookings, applications }: Unif
                       </div>
                     </div>
                   ))}
-                  {userBookings.length === 0 && (
+                  {bookings.length === 0 && (
                     <p className="text-muted-foreground text-center py-4">No recent activity</p>
                   )}
                 </div>
@@ -1177,7 +1167,7 @@ export default function UnifiedDashboard({ stats, bookings, applications }: Unif
               </CardHeader>
               <CardContent>
                 <div className="space-y-3 sm:space-y-4">
-                  {userBookings.map((booking: any) => (
+                  {bookings.map((booking: any) => (
                     <Card key={booking.id}>
                       <CardContent className="p-3 sm:p-4">
                         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
@@ -1198,7 +1188,7 @@ export default function UnifiedDashboard({ stats, bookings, applications }: Unif
                       </CardContent>
                     </Card>
                   ))}
-                  {userBookings.length === 0 && (
+                  {bookings.length === 0 && (
                     <p className="text-muted-foreground text-center py-6 sm:py-8">No bookings yet</p>
                   )}
                 </div>
