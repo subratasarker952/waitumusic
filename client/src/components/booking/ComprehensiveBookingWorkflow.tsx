@@ -169,7 +169,6 @@ export default function BookingWorkflow({
       return data;
     }
   });
-  console.log(availableBookings)
 
   // Load available users for assignment with controlled caching
   const { data: availableUsers = [] } = useQuery({
@@ -270,7 +269,7 @@ export default function BookingWorkflow({
       console.log('📝 Creating main booked talent assignment:', assignmentData);
 
       // Create the assignment
-      await createAssignmentMutation.mutateAsync(assignmentData);
+    await createAssignmentMutation.mutateAsync(assignmentData);
       console.log('✅ Primary artist auto-assigned successfully');
 
     } catch (error) {

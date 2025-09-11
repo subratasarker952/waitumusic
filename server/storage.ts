@@ -1,129 +1,353 @@
 import {
-  users, artists, musicians, professionals, songs, albums, merchandise,
-  bookings, bookingDates, roles, userProfessionalPrimaryTalents, managementTiers, events, documents,
+  users,
+  artists,
+  musicians,
+  professionals,
+  songs,
+  albums,
+  merchandise,
+  bookings,
+  bookingDates,
+  roles,
+  userProfessionalPrimaryTalents,
+  managementTiers,
+  events,
+  documents,
   // Enhanced booking assignment tables
-  allInstruments, bookingAssignmentsMembers,
+  allInstruments,
+  bookingAssignmentsMembers,
   // Normalized user data tables
-  userSecondaryRoles, userSecondaryPerformanceTalents, userSecondaryProfessionalTalents,
-  userProfessionalServices, userProfessionalServiceFeatures, userProfessionalServiceCapabilities,
-  userSpecializations, userSocialLinks, userStageNames, userGenres,
-  userTechnicalRequirements, userSkillsAndInstruments, userHospitalityRequirements,
-  userPerformanceSpecs, userAvailability,
-  userInteractions, userPreferences, musicRecommendations, artistSimilarities,
-  trendingMetrics, crossPromotionCampaigns,
-  serviceCategories, services, serviceAssignments, userServices, serviceReviews,
-  currencies, bundles, bundleItems, discountConditions, storeCurrencies, fanEngagement,
-  adminAssignments, bookingAssignments, artistMusicianAssignments,
-  bookingMediaFiles, bookingMediaAccess, bookingMediaCategories,
-  releaseContracts, releaseContractSignatures, managementTransitions,
-  managementApplications, managementApplicationSignatures, serviceDiscountOverrides,
-  managementApplicationReviews, legalAssignments, applicationLegalAssignments,
+  userSecondaryRoles,
+  userSecondaryPerformanceTalents,
+  userSecondaryProfessionalTalents,
+  userProfessionalServices,
+  userProfessionalServiceFeatures,
+  userProfessionalServiceCapabilities,
+  userSpecializations,
+  userSocialLinks,
+  userStageNames,
+  userGenres,
+  userTechnicalRequirements,
+  userSkillsAndInstruments,
+  userHospitalityRequirements,
+  userPerformanceSpecs,
+  userAvailability,
+  userInteractions,
+  userPreferences,
+  musicRecommendations,
+  artistSimilarities,
+  trendingMetrics,
+  crossPromotionCampaigns,
+  serviceCategories,
+  services,
+  serviceAssignments,
+  userServices,
+  serviceReviews,
+  currencies,
+  bundles,
+  bundleItems,
+  discountConditions,
+  storeCurrencies,
+  fanEngagement,
+  adminAssignments,
+  bookingAssignments,
+  artistMusicianAssignments,
+  bookingMediaFiles,
+  bookingMediaAccess,
+  bookingMediaCategories,
+  releaseContracts,
+  releaseContractSignatures,
+  managementTransitions,
+  managementApplications,
+  managementApplicationSignatures,
+  serviceDiscountOverrides,
+  managementApplicationReviews,
+  legalAssignments,
+  applicationLegalAssignments,
   // Financial automation tables
-  invoices, payoutRequests, documentLinkages, paymentTransactions, financialAuditLog,
-  payments, receipts,
+  invoices,
+  payoutRequests,
+  documentLinkages,
+  paymentTransactions,
+  financialAuditLog,
+  payments,
+  receipts,
   // AI & Website Integration tables
-  videos, userFavorites, websiteIntegrations,
+  videos,
+  userFavorites,
+  websiteIntegrations,
   // Enhanced splitsheet tables
-  enhancedSplitsheets, enhancedSplitsheetNotifications, audioFileMetadata,
+  enhancedSplitsheets,
+  enhancedSplitsheetNotifications,
+  audioFileMetadata,
   // Press release tables
-  pressReleases, pressReleaseAssignments, pressReleaseMedia, pressReleaseDistribution,
+  pressReleases,
+  pressReleaseAssignments,
+  pressReleaseMedia,
+  pressReleaseDistribution,
   // Recipient management tables
-  recipientCategories, musicGenres, industryRecipients, contentDistribution,
+  recipientCategories,
+  musicGenres,
+  industryRecipients,
+  contentDistribution,
   recipientEngagements,
-
-  type User, type InsertUser,
-  type Artist, type InsertArtist, type Musician, type InsertMusician,
-  type Professional, type InsertProfessional, type Song, type InsertSong,
-  type Album, type InsertAlbum, type Merchandise, type InsertMerchandise,
-  type Booking, type InsertBooking, type Role, type ManagementTier,
-  type UserProfessionalPrimaryTalent, type InsertUserProfessionalPrimaryTalent,
-  type Event, type Document, type UserInteraction, type InsertUserInteraction,
-  type UserPreferences, type InsertUserPreferences, type MusicRecommendation,
-  type InsertMusicRecommendation, type ArtistSimilarity, type InsertArtistSimilarity,
-  type TrendingMetric, type InsertTrendingMetric, type CrossPromotionCampaign,
-  type InsertCrossPromotionCampaign, type ServiceCategory, type InsertServiceCategory,
-  type Service, type InsertService, type ServiceAssignment, type InsertServiceAssignment,
-  type UserService, type InsertUserService, type ServiceReview, type InsertServiceReview,
-  type Currency, type InsertCurrency, type Bundle, type InsertBundle,
-  type BundleItem, type InsertBundleItem, type DiscountCondition, type InsertDiscountCondition,
-  type StoreCurrency, type InsertStoreCurrency, type FanEngagement, type InsertFanEngagement,
-  type AllInstrument, type InsertAllInstrument, type BookingAssignmentsMember, type InsertBookingAssignmentsMember,
-  type AdminAssignment, type InsertAdminAssignment, type BookingAssignment, type InsertBookingAssignment,
-  type ArtistMusicianAssignment, type InsertArtistMusicianAssignment,
-  type BookingMediaFile, type InsertBookingMediaFile, type BookingMediaAccess, type InsertBookingMediaAccess,
-  type BookingMediaCategory, type InsertBookingMediaCategory,
-  type ReleaseContract, type InsertReleaseContract, type ReleaseContractSignature, type InsertReleaseContractSignature,
-  type ManagementTransition, type InsertManagementTransition,
-  type ManagementApplication, type InsertManagementApplication, type ManagementApplicationSignature, type InsertManagementApplicationSignature,
-  type ServiceDiscountOverride, type InsertServiceDiscountOverride,
-  type ManagementApplicationReview, type InsertManagementApplicationReview, type LegalAssignment, type InsertLegalAssignment,
-  type ApplicationLegalAssignment, type InsertApplicationLegalAssignment,
+  type User,
+  type InsertUser,
+  type Artist,
+  type InsertArtist,
+  type Musician,
+  type InsertMusician,
+  type Professional,
+  type InsertProfessional,
+  type Song,
+  type InsertSong,
+  type Album,
+  type InsertAlbum,
+  type Merchandise,
+  type InsertMerchandise,
+  type Booking,
+  type InsertBooking,
+  type Role,
+  type ManagementTier,
+  type UserProfessionalPrimaryTalent,
+  type InsertUserProfessionalPrimaryTalent,
+  type Event,
+  type Document,
+  type UserInteraction,
+  type InsertUserInteraction,
+  type UserPreferences,
+  type InsertUserPreferences,
+  type MusicRecommendation,
+  type InsertMusicRecommendation,
+  type ArtistSimilarity,
+  type InsertArtistSimilarity,
+  type TrendingMetric,
+  type InsertTrendingMetric,
+  type CrossPromotionCampaign,
+  type InsertCrossPromotionCampaign,
+  type ServiceCategory,
+  type InsertServiceCategory,
+  type Service,
+  type InsertService,
+  type ServiceAssignment,
+  type InsertServiceAssignment,
+  type UserService,
+  type InsertUserService,
+  type ServiceReview,
+  type InsertServiceReview,
+  type Currency,
+  type InsertCurrency,
+  type Bundle,
+  type InsertBundle,
+  type BundleItem,
+  type InsertBundleItem,
+  type DiscountCondition,
+  type InsertDiscountCondition,
+  type StoreCurrency,
+  type InsertStoreCurrency,
+  type FanEngagement,
+  type InsertFanEngagement,
+  type AllInstrument,
+  type InsertAllInstrument,
+  type BookingAssignmentsMember,
+  type InsertBookingAssignmentsMember,
+  type AdminAssignment,
+  type InsertAdminAssignment,
+  type BookingAssignment,
+  type InsertBookingAssignment,
+  type ArtistMusicianAssignment,
+  type InsertArtistMusicianAssignment,
+  type BookingMediaFile,
+  type InsertBookingMediaFile,
+  type BookingMediaAccess,
+  type InsertBookingMediaAccess,
+  type BookingMediaCategory,
+  type InsertBookingMediaCategory,
+  type ReleaseContract,
+  type InsertReleaseContract,
+  type ReleaseContractSignature,
+  type InsertReleaseContractSignature,
+  type ManagementTransition,
+  type InsertManagementTransition,
+  type ManagementApplication,
+  type InsertManagementApplication,
+  type ManagementApplicationSignature,
+  type InsertManagementApplicationSignature,
+  type ServiceDiscountOverride,
+  type InsertServiceDiscountOverride,
+  type ManagementApplicationReview,
+  type InsertManagementApplicationReview,
+  type LegalAssignment,
+  type InsertLegalAssignment,
+  type ApplicationLegalAssignment,
+  type InsertApplicationLegalAssignment,
   // Financial automation types
-  type Invoice, type InsertInvoice, type PayoutRequest, type InsertPayoutRequest,
-  type DocumentLinkage, type InsertDocumentLinkage, type PaymentTransaction, type InsertPaymentTransaction,
-  type FinancialAuditLog, type InsertFinancialAuditLog, type Payment, type InsertPayment,
-  type Receipt, type InsertReceipt,
+  type Invoice,
+  type InsertInvoice,
+  type PayoutRequest,
+  type InsertPayoutRequest,
+  type DocumentLinkage,
+  type InsertDocumentLinkage,
+  type PaymentTransaction,
+  type InsertPaymentTransaction,
+  type FinancialAuditLog,
+  type InsertFinancialAuditLog,
+  type Payment,
+  type InsertPayment,
+  type Receipt,
+  type InsertReceipt,
   // Video types
-  type Video, type InsertVideo,
-  waituServiceDiscountLimits, individualDiscountPermissions, globalGenres, crossUpsellRelationships,
-  globalProfessions, professionalAvailability, stagePlots, mixerPatchLists, setlistTemplates,
-  playbackTracks, djAccess, playbackTrackDownloads, curators, curatorSubmissions, curatorEmailCampaigns,
-  insertWaituServiceDiscountLimitSchema, insertIndividualDiscountPermissionSchema,
-  type GlobalGenre, type InsertGlobalGenre, type CrossUpsellRelationship, type InsertCrossUpsellRelationship,
+  type Video,
+  type InsertVideo,
+  waituServiceDiscountLimits,
+  individualDiscountPermissions,
+  globalGenres,
+  crossUpsellRelationships,
+  globalProfessions,
+  professionalAvailability,
+  stagePlots,
+  mixerPatchLists,
+  setlistTemplates,
+  playbackTracks,
+  djAccess,
+  playbackTrackDownloads,
+  curators,
+  curatorSubmissions,
+  curatorEmailCampaigns,
+  insertWaituServiceDiscountLimitSchema,
+  insertIndividualDiscountPermissionSchema,
+  type GlobalGenre,
+  type InsertGlobalGenre,
+  type CrossUpsellRelationship,
+  type InsertCrossUpsellRelationship,
   // OppHub types
-  opportunityCategories, opportunities, opportunityApplications, oppHubSubscriptions,
-  marketIntelligence, opportunitySources, opportunityMatches,
-  type OpportunityCategory, type InsertOpportunityCategory, type Opportunity, type InsertOpportunity,
-  type OpportunityApplication, type InsertOpportunityApplication, type OppHubSubscription, type InsertOppHubSubscription,
-  type MarketIntelligence, type InsertMarketIntelligence, type OpportunitySource, type InsertOpportunitySource,
-  type OpportunityMatch, type InsertOpportunityMatch,
+  opportunityCategories,
+  opportunities,
+  opportunityApplications,
+  oppHubSubscriptions,
+  marketIntelligence,
+  opportunitySources,
+  opportunityMatches,
+  type OpportunityCategory,
+  type InsertOpportunityCategory,
+  type Opportunity,
+  type InsertOpportunity,
+  type OpportunityApplication,
+  type InsertOpportunityApplication,
+  type OppHubSubscription,
+  type InsertOppHubSubscription,
+  type MarketIntelligence,
+  type InsertMarketIntelligence,
+  type OpportunitySource,
+  type InsertOpportunitySource,
+  type OpportunityMatch,
+  type InsertOpportunityMatch,
   // PRO Registration types
-  proRegistrations, proWorks, proEligibilityAssessments,
-  type PRORegistration, type InsertPRORegistration, type PROWork, type InsertPROWork,
-  type PROEligibilityAssessment, type InsertPROEligibilityAssessment,
+  proRegistrations,
+  proWorks,
+  proEligibilityAssessments,
+  type PRORegistration,
+  type InsertPRORegistration,
+  type PROWork,
+  type InsertPROWork,
+  type PROEligibilityAssessment,
+  type InsertPROEligibilityAssessment,
   // Press release types
-  type PressRelease, type InsertPressRelease, type PressReleaseAssignment, type InsertPressReleaseAssignment,
-  type PressReleaseMedia, type InsertPressReleaseMedia, type PressReleaseDistribution, type InsertPressReleaseDistribution,
+  type PressRelease,
+  type InsertPressRelease,
+  type PressReleaseAssignment,
+  type InsertPressReleaseAssignment,
+  type PressReleaseMedia,
+  type InsertPressReleaseMedia,
+  type PressReleaseDistribution,
+  type InsertPressReleaseDistribution,
   // Configuration management types
-  adminConfigurations, configurationHistory, configurationDelegations,
-  type AdminConfiguration, type InsertAdminConfiguration, type ConfigurationHistory, type InsertConfigurationHistory,
-  type ConfigurationDelegation, type InsertConfigurationDelegation,
+  adminConfigurations,
+  configurationHistory,
+  configurationDelegations,
+  type AdminConfiguration,
+  type InsertAdminConfiguration,
+  type ConfigurationHistory,
+  type InsertConfigurationHistory,
+  type ConfigurationDelegation,
+  type InsertConfigurationDelegation,
   // Recipient management types
-  type RecipientCategory, type InsertRecipientCategory, type MusicGenre, type InsertMusicGenre,
-  type IndustryRecipient, type InsertIndustryRecipient, type ContentDistribution, type InsertContentDistribution,
-  type RecipientEngagement, type InsertRecipientEngagement,
+  type RecipientCategory,
+  type InsertRecipientCategory,
+  type MusicGenre,
+  type InsertMusicGenre,
+  type IndustryRecipient,
+  type InsertIndustryRecipient,
+  type ContentDistribution,
+  type InsertContentDistribution,
+  type RecipientEngagement,
+  type InsertRecipientEngagement,
   // Website Integration types
-  type WebsiteIntegration, type InsertWebsiteIntegration,
+  type WebsiteIntegration,
+  type InsertWebsiteIntegration,
   // Cart functionality
-  cartItems, type CartItem, type InsertCartItem,
+  cartItems,
+  type CartItem,
+  type InsertCartItem,
   // Professional booking assignments
-  bookingProfessionalAssignments, oppHubProfessionalGuidance,
+  bookingProfessionalAssignments,
+  oppHubProfessionalGuidance,
   // Technical rider and booking attachment types
-  technicalRiderStages, bookingAttachments, bookingMessages,
-  type TechnicalRiderStage, type InsertTechnicalRiderStage,
-  type BookingAttachment, type InsertBookingAttachment,
-  type BookingMessage, type InsertBookingMessage,
+  technicalRiderStages,
+  bookingAttachments,
+  bookingMessages,
+  type TechnicalRiderStage,
+  type InsertTechnicalRiderStage,
+  type BookingAttachment,
+  type InsertBookingAttachment,
+  type BookingMessage,
+  type InsertBookingMessage,
   // Content Management System imports
-  platformTextContent, platformTypography, platformColorSchemes, platformColors,
-  platformComponentStyles, platformLayoutControls, platformThemes,
-  type PlatformTextContent, type InsertPlatformTextContent,
-  type PlatformTypography, type InsertPlatformTypography,
-  type PlatformColorScheme, type InsertPlatformColorScheme,
-  type PlatformColor, type InsertPlatformColor,
-  type PlatformComponentStyle, type InsertPlatformComponentStyle,
-  type PlatformLayoutControl, type InsertPlatformLayoutControl,
-  type PlatformTheme, type InsertPlatformTheme,
+  platformTextContent,
+  platformTypography,
+  platformColorSchemes,
+  platformColors,
+  platformComponentStyles,
+  platformLayoutControls,
+  platformThemes,
+  type PlatformTextContent,
+  type InsertPlatformTextContent,
+  type PlatformTypography,
+  type InsertPlatformTypography,
+  type PlatformColorScheme,
+  type InsertPlatformColorScheme,
+  type PlatformColor,
+  type InsertPlatformColor,
+  type PlatformComponentStyle,
+  type InsertPlatformComponentStyle,
+  type PlatformLayoutControl,
+  type InsertPlatformLayoutControl,
+  type PlatformTheme,
+  type InsertPlatformTheme,
   // MediaHub Document Management imports
-  mediaHubDocuments, documentPermissions,
-  type MediaHubDocument, type InsertMediaHubDocument,
-  type DocumentPermission, type InsertDocumentPermission,
+  mediaHubDocuments,
+  documentPermissions,
+  type MediaHubDocument,
+  type InsertMediaHubDocument,
+  type DocumentPermission,
+  type InsertDocumentPermission,
   rolesManagement,
-  userRoles
+  userRoles,
 } from "@shared/schema";
-import { eq, and, or, desc, lte, gte, isNotNull, sql, inArray } from "drizzle-orm";
+import {
+  eq,
+  and,
+  or,
+  desc,
+  lte,
+  gte,
+  isNotNull,
+  sql,
+  inArray,
+} from "drizzle-orm";
 import { db } from "./db";
-import { configurationStorage } from './configuration-storage';
-import type { AdminConfigType } from '@shared/admin-config';
+import { configurationStorage } from "./configuration-storage";
+import type { AdminConfigType } from "@shared/admin-config";
 
 export interface IStorage {
   // Song search methods
@@ -136,33 +360,42 @@ export interface IStorage {
   updateUser(id: number, updates: Partial<User>): Promise<User | undefined>;
 
   // Enhanced user management with role information
-  getUserWithRoles(id: number): Promise<{
-    id: number;
-    email: string;
-    fullName: string;
-    roleId: number;
-    roleName: string; // User's registration type (superadmin, admin, managed_artist, etc.)
-    professionalRole?: string; // Only for artists/musicians/professionals - their actual role/position
-    secondaryRoles?: Array<{ roleId: number; roleName: string }>;
-  } | undefined>;
+  getUserWithRoles(id: number): Promise<
+    | {
+        id: number;
+        email: string;
+        fullName: string;
+        roleId: number;
+        roleName: string; // User's registration type (superadmin, admin, managed_artist, etc.)
+        professionalRole?: string; // Only for artists/musicians/professionals - their actual role/position
+        secondaryRoles?: Array<{ roleId: number; roleName: string }>;
+      }
+    | undefined
+  >;
 
-  getUsersForAssignment(roleIds?: number[]): Promise<Array<{
-    id: number;
-    email: string;
-    fullName: string;
-    roleId: number;
-    roleName: string; // User's registration type
-    professionalRole?: string; // Their actual role/position (for artists/musicians/professionals)
-    secondaryRoles?: Array<{ roleId: number; roleName: string }>;
-  }>>;
+  getUsersForAssignment(roleIds?: number[]): Promise<
+    Array<{
+      id: number;
+      email: string;
+      fullName: string;
+      roleId: number;
+      roleName: string; // User's registration type
+      professionalRole?: string; // Their actual role/position (for artists/musicians/professionals)
+      secondaryRoles?: Array<{ roleId: number; roleName: string }>;
+    }>
+  >;
 
   // Secondary role management
   addSecondaryRole(userId: number, roleId: number): Promise<void>;
   removeSecondaryRole(userId: number, roleId: number): Promise<void>;
-  getUserSecondaryRoles(userId: number): Promise<Array<{ roleId: number; roleName: string }>>;
+  getUserSecondaryRoles(
+    userId: number
+  ): Promise<Array<{ roleId: number; roleName: string }>>;
 
   // Demo user management
-  getDemoUsers(): Promise<Array<{ id: number, email: string, fullName: string, roleName: string }>>;
+  getDemoUsers(): Promise<
+    Array<{ id: number; email: string; fullName: string; roleName: string }>
+  >;
 
   // User profiles - temporarily removed during schema migration
 
@@ -171,20 +404,35 @@ export interface IStorage {
   getRoleById(roleId: number): Promise<Role | undefined>;
   getRoleName(roleId: number): Promise<string>;
   isUserManaged(roleId: number): boolean;
-  getUserTypeCategory(roleId: number): 'artist' | 'musician' | 'professional' | 'admin' | 'fan';
+  getUserTypeCategory(
+    roleId: number
+  ): "artist" | "musician" | "professional" | "admin" | "fan";
   getManagementTiers(): Promise<ManagementTier[]>;
 
   // Primary talents management methods
   getPrimaryTalents(): Promise<UserProfessionalPrimaryTalent[]>;
-  createPrimaryTalent(data: z.infer<typeof insertUserProfessionalPrimaryTalentSchema>): Promise<UserProfessionalPrimaryTalent>;
-  getPrimaryTalentById(id: number): Promise<UserProfessionalPrimaryTalent | undefined>;
-  updatePrimaryTalent(id: number, data: Partial<UserProfessionalPrimaryTalent>): Promise<UserProfessionalPrimaryTalent>;
+  createPrimaryTalent(
+    data: z.infer<typeof insertUserProfessionalPrimaryTalentSchema>
+  ): Promise<UserProfessionalPrimaryTalent>;
+  getPrimaryTalentById(
+    id: number
+  ): Promise<UserProfessionalPrimaryTalent | undefined>;
+  updatePrimaryTalent(
+    id: number,
+    data: Partial<UserProfessionalPrimaryTalent>
+  ): Promise<UserProfessionalPrimaryTalent>;
   deletePrimaryTalent(id: number): Promise<void>;
-  getPrimaryTalentsByRoleId(roleId: number): Promise<UserProfessionalPrimaryTalent[]>;
+  getPrimaryTalentsByRoleId(
+    roleId: number
+  ): Promise<UserProfessionalPrimaryTalent[]>;
 
   // Secondary talents management methods
-  getUserSecondaryPerformanceTalents(userId: number): Promise<Array<{ talentName: string }>>;
-  getUserSecondaryProfessionalTalents(userId: number): Promise<Array<{ talentName: string }>>;
+  getUserSecondaryPerformanceTalents(
+    userId: number
+  ): Promise<Array<{ talentName: string }>>;
+  getUserSecondaryProfessionalTalents(
+    userId: number
+  ): Promise<Array<{ talentName: string }>>;
 
   // Role management
   createRole(role: Partial<Role>): Promise<Role>;
@@ -196,14 +444,33 @@ export interface IStorage {
   getArtist(userId: number): Promise<Artist | undefined>;
   getArtists(): Promise<Artist[]>;
   createArtist(artist: InsertArtist): Promise<Artist>;
-  updateArtist(userId: number, updates: Partial<Artist>): Promise<Artist | undefined>;
-  updateArtistStageNames(userId: number, stageNames: Array<{ name: string, isPrimary?: boolean, isForBookings?: boolean, usageType?: 'primary' | 'bookings' | 'both' }>): Promise<Artist | undefined>;
+  updateArtist(
+    userId: number,
+    updates: Partial<Artist>
+  ): Promise<Artist | undefined>;
+  updateArtistStageNames(
+    userId: number,
+    stageNames: Array<{
+      name: string;
+      isPrimary?: boolean;
+      isForBookings?: boolean;
+      usageType?: "primary" | "bookings" | "both";
+    }>
+  ): Promise<Artist | undefined>;
 
   // Musicians
   getMusician(userId: number): Promise<Musician | undefined>;
   getMusicians(): Promise<Musician[]>;
   createMusician(musician: InsertMusician): Promise<Musician>;
-  updateMusicianStageNames(userId: number, stageNames: Array<{ name: string, isPrimary?: boolean, isForBookings?: boolean, usageType?: 'primary' | 'bookings' | 'both' }>): Promise<Musician | undefined>;
+  updateMusicianStageNames(
+    userId: number,
+    stageNames: Array<{
+      name: string;
+      isPrimary?: boolean;
+      isForBookings?: boolean;
+      usageType?: "primary" | "bookings" | "both";
+    }>
+  ): Promise<Musician | undefined>;
 
   // Professionals
   getProfessional(userId: number): Promise<Professional | undefined>;
@@ -239,8 +506,13 @@ export interface IStorage {
 
   // Cross-Upsell Relationships
   getCrossUpsellRelationships(): Promise<CrossUpsellRelationship[]>;
-  createCrossUpsellRelationship(relationship: InsertCrossUpsellRelationship): Promise<CrossUpsellRelationship>;
-  getCrossUpsellsBySource(sourceType: string, sourceId: number): Promise<CrossUpsellRelationship[]>;
+  createCrossUpsellRelationship(
+    relationship: InsertCrossUpsellRelationship
+  ): Promise<CrossUpsellRelationship>;
+  getCrossUpsellsBySource(
+    sourceType: string,
+    sourceId: number
+  ): Promise<CrossUpsellRelationship[]>;
   deleteCrossUpsellRelationship(id: number): Promise<boolean>;
 
   // Merchandise
@@ -257,7 +529,7 @@ export interface IStorage {
   getContracts(): Promise<any[]>;
   createContract(contract: any): Promise<any>;
 
-  // Technical Riders - OppHub AI Learning: Performance specification management  
+  // Technical Riders - OppHub AI Learning: Performance specification management
   getTechnicalRiders(): Promise<any[]>;
   createTechnicalRider(technicalRider: any): Promise<any>;
 
@@ -277,7 +549,10 @@ export interface IStorage {
   getBookingsByArtist(artistUserId: number): Promise<Booking[]>;
   createBooking(booking: InsertBooking): Promise<Booking>;
   updateBookingStatus(id: number, status: string): Promise<Booking | undefined>;
-  updateBooking(id: number, updates: Partial<Booking>): Promise<Booking | undefined>;
+  updateBooking(
+    id: number,
+    updates: Partial<Booking>
+  ): Promise<Booking | undefined>;
 
   // Setlists
   getSetlist(bookingId: number): Promise<any>;
@@ -295,22 +570,37 @@ export interface IStorage {
 
   // Recommendation System
   // User Interactions
-  createUserInteraction(interaction: InsertUserInteraction): Promise<UserInteraction>;
+  createUserInteraction(
+    interaction: InsertUserInteraction
+  ): Promise<UserInteraction>;
   getUserInteractions(userId: number): Promise<UserInteraction[]>;
   getAllUserInteractions(): Promise<UserInteraction[]>;
 
   // User Preferences
   getUserPreferences(userId: number): Promise<UserPreferences | undefined>;
-  updateUserPreferences(userId: number, preferences: Partial<InsertUserPreferences>): Promise<UserPreferences>;
+  updateUserPreferences(
+    userId: number,
+    preferences: Partial<InsertUserPreferences>
+  ): Promise<UserPreferences>;
 
   // Music Recommendations
-  createMusicRecommendation(recommendation: InsertMusicRecommendation): Promise<MusicRecommendation>;
-  getUserRecommendations(userId: number, limit?: number): Promise<MusicRecommendation[]>;
+  createMusicRecommendation(
+    recommendation: InsertMusicRecommendation
+  ): Promise<MusicRecommendation>;
+  getUserRecommendations(
+    userId: number,
+    limit?: number
+  ): Promise<MusicRecommendation[]>;
   clearUserRecommendations(userId: number): Promise<void>;
-  updateRecommendationEngagement(recommendationId: number, engagementType: 'viewed' | 'clicked'): Promise<void>;
+  updateRecommendationEngagement(
+    recommendationId: number,
+    engagementType: "viewed" | "clicked"
+  ): Promise<void>;
 
   // Artist Similarities
-  createArtistSimilarity(similarity: InsertArtistSimilarity): Promise<ArtistSimilarity>;
+  createArtistSimilarity(
+    similarity: InsertArtistSimilarity
+  ): Promise<ArtistSimilarity>;
   getArtistSimilarities(artistId: number): Promise<ArtistSimilarity[]>;
   getAllArtists(): Promise<Artist[]>;
   getArtistFans(artistId: number): Promise<number[]>;
@@ -340,7 +630,9 @@ export interface IStorage {
   getPendingApprovalsCount(): Promise<number>;
   getActiveBookingsCount(): Promise<number>;
   getContentItemsCount(): Promise<number>;
-  getTopArtists(): Promise<{ name: string; bookings: number; revenue: number }[]>;
+  getTopArtists(): Promise<
+    { name: string; bookings: number; revenue: number }[]
+  >;
   getPendingItems(): Promise<any[]>;
   getContentForModeration(): Promise<any[]>;
   getBookingApprovals(): Promise<any[]>;
@@ -350,21 +642,33 @@ export interface IStorage {
   // Service Management
   // Service Categories
   getServiceCategories(): Promise<ServiceCategory[]>;
-  createServiceCategory(category: InsertServiceCategory): Promise<ServiceCategory>;
+  createServiceCategory(
+    category: InsertServiceCategory
+  ): Promise<ServiceCategory>;
 
   // Admin Services
   getServices(): Promise<Service[]>;
   getService(id: number): Promise<Service | undefined>;
   createService(service: InsertService): Promise<Service>;
-  updateService(id: number, updates: Partial<Service>): Promise<Service | undefined>;
+  updateService(
+    id: number,
+    updates: Partial<Service>
+  ): Promise<Service | undefined>;
   deleteService(id: number): Promise<boolean>;
 
   // Service Assignments
   getServiceAssignments(): Promise<ServiceAssignment[]>;
   getServiceAssignmentsByUser(userId: number): Promise<ServiceAssignment[]>;
-  getServiceAssignmentsByService(serviceId: number): Promise<ServiceAssignment[]>;
-  createServiceAssignment(assignment: InsertServiceAssignment): Promise<ServiceAssignment>;
-  updateServiceAssignment(id: number, updates: Partial<ServiceAssignment>): Promise<ServiceAssignment | undefined>;
+  getServiceAssignmentsByService(
+    serviceId: number
+  ): Promise<ServiceAssignment[]>;
+  createServiceAssignment(
+    assignment: InsertServiceAssignment
+  ): Promise<ServiceAssignment>;
+  updateServiceAssignment(
+    id: number,
+    updates: Partial<ServiceAssignment>
+  ): Promise<ServiceAssignment | undefined>;
   deleteServiceAssignment(id: number): Promise<boolean>;
 
   // User Services (self-created)
@@ -372,18 +676,27 @@ export interface IStorage {
   getAllUserServices(): Promise<UserService[]>;
   getUserService(id: number): Promise<UserService | undefined>;
   createUserService(userService: InsertUserService): Promise<UserService>;
-  updateUserService(id: number, updates: Partial<UserService>): Promise<UserService | undefined>;
+  updateUserService(
+    id: number,
+    updates: Partial<UserService>
+  ): Promise<UserService | undefined>;
   deleteUserService(id: number): Promise<boolean>;
 
   // Service Reviews
-  getServiceReviews(serviceId?: number, userServiceId?: number): Promise<ServiceReview[]>;
+  getServiceReviews(
+    serviceId?: number,
+    userServiceId?: number
+  ): Promise<ServiceReview[]>;
   createServiceReview(review: InsertServiceReview): Promise<ServiceReview>;
 
   // Currency management
   getCurrencies(): Promise<Currency[]>;
   getCurrency(code: string): Promise<Currency | undefined>;
   createCurrency(currency: InsertCurrency): Promise<Currency>;
-  updateCurrency(code: string, updates: Partial<Currency>): Promise<Currency | undefined>;
+  updateCurrency(
+    code: string,
+    updates: Partial<Currency>
+  ): Promise<Currency | undefined>;
   updateCurrencyRate(code: string, rate: number): Promise<Currency | undefined>;
 
   // Store bundles
@@ -391,7 +704,10 @@ export interface IStorage {
   getBundle(id: number): Promise<Bundle | undefined>;
   getBundlesByArtist(artistUserId: number): Promise<Bundle[]>;
   createBundle(bundle: InsertBundle): Promise<Bundle>;
-  updateBundle(id: number, updates: Partial<Bundle>): Promise<Bundle | undefined>;
+  updateBundle(
+    id: number,
+    updates: Partial<Bundle>
+  ): Promise<Bundle | undefined>;
 
   // Bundle items
   getBundleItems(bundleId: number): Promise<BundleItem[]>;
@@ -400,25 +716,44 @@ export interface IStorage {
 
   // Discount conditions
   getDiscountConditions(bundleId: number): Promise<DiscountCondition[]>;
-  createDiscountCondition(condition: InsertDiscountCondition): Promise<DiscountCondition>;
-  updateDiscountCondition(id: number, updates: Partial<DiscountCondition>): Promise<DiscountCondition | undefined>;
-  validateDiscountCondition(conditionId: number, userValue: string): Promise<boolean>;
+  createDiscountCondition(
+    condition: InsertDiscountCondition
+  ): Promise<DiscountCondition>;
+  updateDiscountCondition(
+    id: number,
+    updates: Partial<DiscountCondition>
+  ): Promise<DiscountCondition | undefined>;
+  validateDiscountCondition(
+    conditionId: number,
+    userValue: string
+  ): Promise<boolean>;
 
   // Store currencies
   getStoreCurrencies(): Promise<StoreCurrency[]>;
   getStoreCurrency(code: string): Promise<StoreCurrency | undefined>;
   createStoreCurrency(currency: InsertStoreCurrency): Promise<StoreCurrency>;
-  updateStoreCurrency(id: number, updates: Partial<StoreCurrency>): Promise<StoreCurrency | undefined>;
+  updateStoreCurrency(
+    id: number,
+    updates: Partial<StoreCurrency>
+  ): Promise<StoreCurrency | undefined>;
 
   // Fan engagement
   createFanEngagement(engagement: InsertFanEngagement): Promise<FanEngagement>;
-  getFanEngagement(userId: number, artistUserId: number): Promise<FanEngagement[]>;
+  getFanEngagement(
+    userId: number,
+    artistUserId: number
+  ): Promise<FanEngagement[]>;
 
   // Assignment management - Admin assignments
-  createAdminAssignment(assignment: InsertAdminAssignment): Promise<AdminAssignment>;
+  createAdminAssignment(
+    assignment: InsertAdminAssignment
+  ): Promise<AdminAssignment>;
   getAdminAssignments(adminUserId?: number): Promise<AdminAssignment[]>;
   getAdminAssignment(id: number): Promise<AdminAssignment | undefined>;
-  updateAdminAssignment(id: number, updates: Partial<AdminAssignment>): Promise<AdminAssignment | undefined>;
+  updateAdminAssignment(
+    id: number,
+    updates: Partial<AdminAssignment>
+  ): Promise<AdminAssignment | undefined>;
   removeAdminAssignment(id: number): Promise<void>;
 
   // Enhanced instrument-based booking assignments
@@ -427,108 +762,238 @@ export interface IStorage {
   createAllInstrument(instrument: InsertAllInstrument): Promise<AllInstrument>;
 
   // Enhanced booking assignments with instruments
-  createBookingAssignmentMember(assignment: InsertBookingAssignmentsMember): Promise<BookingAssignmentsMember>;
-  getBookingAssignmentMembers(bookingId: number): Promise<Array<BookingAssignmentsMember & {
-    user: { id: number; fullName: string; email: string };
-    role: { id: number; name: string };
-    instrument?: { id: number; name: string; playerName: string; mixerGroup: string };
-  }>>;
-  getBookingAssignmentMember(id: number): Promise<BookingAssignmentsMember | undefined>;
-  updateBookingAssignmentMember(id: number, updates: Partial<BookingAssignmentsMember>): Promise<BookingAssignmentsMember | undefined>;
+  createBookingAssignmentMember(
+    assignment: InsertBookingAssignmentsMember
+  ): Promise<BookingAssignmentsMember>;
+  getBookingAssignmentMembers(bookingId: number): Promise<
+    Array<
+      BookingAssignmentsMember & {
+        user: { id: number; fullName: string; email: string };
+        role: { id: number; name: string };
+        instrument?: {
+          id: number;
+          name: string;
+          playerName: string;
+          mixerGroup: string;
+        };
+      }
+    >
+  >;
+  getBookingAssignmentMember(
+    id: number
+  ): Promise<BookingAssignmentsMember | undefined>;
+  updateBookingAssignmentMember(
+    id: number,
+    updates: Partial<BookingAssignmentsMember>
+  ): Promise<BookingAssignmentsMember | undefined>;
   removeBookingAssignmentMember(id: number): Promise<void>;
-  assignUserToBooking(bookingId: number, userId: number, roleId: number, instrumentId: number | null, assignedBy: number, isMainTalent?: boolean): Promise<BookingAssignmentsMember>;
+  assignUserToBooking(
+    bookingId: number,
+    userId: number,
+    roleId: number,
+    instrumentId: number | null,
+    assignedBy: number,
+    isMainTalent?: boolean
+  ): Promise<BookingAssignmentsMember>;
 
   // Legacy booking assignments (kept for compatibility)
-  createBookingAssignment(assignment: InsertBookingAssignment): Promise<BookingAssignment>;
+  createBookingAssignment(
+    assignment: InsertBookingAssignment
+  ): Promise<BookingAssignment>;
   getBookingAssignments(): Promise<BookingAssignment[]>;
-  getBookingAssignmentsByBooking(bookingId: number): Promise<BookingAssignment[]>;
+  getBookingAssignmentsByBooking(
+    bookingId: number
+  ): Promise<BookingAssignment[]>;
   getBookingAssignment(id: number): Promise<BookingAssignment | undefined>;
-  updateBookingAssignment(id: number, updates: Partial<BookingAssignment>): Promise<BookingAssignment | undefined>;
+  updateBookingAssignment(
+    id: number,
+    updates: Partial<BookingAssignment>
+  ): Promise<BookingAssignment | undefined>;
   removeBookingAssignment(id: number): Promise<void>;
 
   // Assignment management - Artist-Musician assignments
-  createArtistMusicianAssignment(assignment: InsertArtistMusicianAssignment): Promise<ArtistMusicianAssignment>;
-  getArtistMusicianAssignments(artistUserId?: number): Promise<ArtistMusicianAssignment[]>;
-  getArtistMusicianAssignmentsByTalent(managedTalentId: number): Promise<ArtistMusicianAssignment[]>;
-  getArtistMusicianAssignmentsByAssignee(assigneeId: number): Promise<ArtistMusicianAssignment[]>;
-  getArtistMusicianAssignmentsByUser(userId: number): Promise<ArtistMusicianAssignment[]>;
-  getArtistMusicianAssignment(id: number): Promise<ArtistMusicianAssignment | undefined>;
-  updateArtistMusicianAssignment(id: number, updates: Partial<ArtistMusicianAssignment>): Promise<ArtistMusicianAssignment | undefined>;
+  createArtistMusicianAssignment(
+    assignment: InsertArtistMusicianAssignment
+  ): Promise<ArtistMusicianAssignment>;
+  getArtistMusicianAssignments(
+    artistUserId?: number
+  ): Promise<ArtistMusicianAssignment[]>;
+  getArtistMusicianAssignmentsByTalent(
+    managedTalentId: number
+  ): Promise<ArtistMusicianAssignment[]>;
+  getArtistMusicianAssignmentsByAssignee(
+    assigneeId: number
+  ): Promise<ArtistMusicianAssignment[]>;
+  getArtistMusicianAssignmentsByUser(
+    userId: number
+  ): Promise<ArtistMusicianAssignment[]>;
+  getArtistMusicianAssignment(
+    id: number
+  ): Promise<ArtistMusicianAssignment | undefined>;
+  updateArtistMusicianAssignment(
+    id: number,
+    updates: Partial<ArtistMusicianAssignment>
+  ): Promise<ArtistMusicianAssignment | undefined>;
   removeArtistMusicianAssignment(id: number): Promise<void>;
 
   // Assignment management - Service assignments
-  createServiceAssignment(assignment: InsertServiceAssignment): Promise<ServiceAssignment>;
+  createServiceAssignment(
+    assignment: InsertServiceAssignment
+  ): Promise<ServiceAssignment>;
   getServiceAssignments(): Promise<ServiceAssignment[]>;
-  getServiceAssignmentsByService(serviceId: number): Promise<ServiceAssignment[]>;
-  getServiceAssignmentsByTalent(assignedTalentId: number): Promise<ServiceAssignment[]>;
+  getServiceAssignmentsByService(
+    serviceId: number
+  ): Promise<ServiceAssignment[]>;
+  getServiceAssignmentsByTalent(
+    assignedTalentId: number
+  ): Promise<ServiceAssignment[]>;
   getServiceAssignment(id: number): Promise<ServiceAssignment | undefined>;
-  updateServiceAssignment(id: number, updates: Partial<ServiceAssignment>): Promise<ServiceAssignment | undefined>;
+  updateServiceAssignment(
+    id: number,
+    updates: Partial<ServiceAssignment>
+  ): Promise<ServiceAssignment | undefined>;
   removeServiceAssignment(id: number): Promise<void>;
 
   // Booking Media Management
-  createBookingMediaFile(file: InsertBookingMediaFile): Promise<BookingMediaFile>;
+  createBookingMediaFile(
+    file: InsertBookingMediaFile
+  ): Promise<BookingMediaFile>;
   getBookingMediaFiles(bookingId: number): Promise<BookingMediaFile[]>;
   getBookingMediaFile(id: number): Promise<BookingMediaFile | undefined>;
-  updateBookingMediaFile(id: number, updates: Partial<BookingMediaFile>): Promise<BookingMediaFile | undefined>;
+  updateBookingMediaFile(
+    id: number,
+    updates: Partial<BookingMediaFile>
+  ): Promise<BookingMediaFile | undefined>;
   deleteBookingMediaFile(id: number): Promise<void>;
 
   // Booking Media Access Control
-  createBookingMediaAccess(access: InsertBookingMediaAccess): Promise<BookingMediaAccess>;
+  createBookingMediaAccess(
+    access: InsertBookingMediaAccess
+  ): Promise<BookingMediaAccess>;
   getBookingMediaAccess(mediaFileId: number): Promise<BookingMediaAccess[]>;
-  getUserBookingMediaAccess(userId: number, mediaFileId: number): Promise<BookingMediaAccess | undefined>;
-  updateBookingMediaAccess(id: number, updates: Partial<BookingMediaAccess>): Promise<BookingMediaAccess | undefined>;
+  getUserBookingMediaAccess(
+    userId: number,
+    mediaFileId: number
+  ): Promise<BookingMediaAccess | undefined>;
+  updateBookingMediaAccess(
+    id: number,
+    updates: Partial<BookingMediaAccess>
+  ): Promise<BookingMediaAccess | undefined>;
   removeBookingMediaAccess(id: number): Promise<void>;
-  checkUserMediaAccess(userId: number, mediaFileId: number, requiredLevel: string): Promise<boolean>;
+  checkUserMediaAccess(
+    userId: number,
+    mediaFileId: number,
+    requiredLevel: string
+  ): Promise<boolean>;
 
   // Booking Media Categories
   getBookingMediaCategories(): Promise<BookingMediaCategory[]>;
-  createBookingMediaCategory(category: InsertBookingMediaCategory): Promise<BookingMediaCategory>;
-  updateBookingMediaCategory(id: number, updates: Partial<BookingMediaCategory>): Promise<BookingMediaCategory | undefined>;
+  createBookingMediaCategory(
+    category: InsertBookingMediaCategory
+  ): Promise<BookingMediaCategory>;
+  updateBookingMediaCategory(
+    id: number,
+    updates: Partial<BookingMediaCategory>
+  ): Promise<BookingMediaCategory | undefined>;
 
   // Release Contract Management
-  createReleaseContract(contract: InsertReleaseContract): Promise<ReleaseContract>;
+  createReleaseContract(
+    contract: InsertReleaseContract
+  ): Promise<ReleaseContract>;
   getReleaseContract(id: number): Promise<ReleaseContract | undefined>;
   getReleaseContractsByUser(userId: number): Promise<ReleaseContract[]>;
   getPendingReleaseContracts(): Promise<ReleaseContract[]>;
-  updateReleaseContract(id: number, updates: Partial<ReleaseContract>): Promise<ReleaseContract | undefined>;
-  createReleaseContractSignature(signature: InsertReleaseContractSignature): Promise<ReleaseContractSignature>;
-  getReleaseContractSignatures(contractId: number): Promise<ReleaseContractSignature[]>;
-  createManagementTransition(transition: InsertManagementTransition): Promise<ManagementTransition>;
+  updateReleaseContract(
+    id: number,
+    updates: Partial<ReleaseContract>
+  ): Promise<ReleaseContract | undefined>;
+  createReleaseContractSignature(
+    signature: InsertReleaseContractSignature
+  ): Promise<ReleaseContractSignature>;
+  getReleaseContractSignatures(
+    contractId: number
+  ): Promise<ReleaseContractSignature[]>;
+  createManagementTransition(
+    transition: InsertManagementTransition
+  ): Promise<ManagementTransition>;
   getManagementTransitions(userId: number): Promise<ManagementTransition[]>;
 
   // Management Application System
-  createManagementApplication(application: InsertManagementApplication): Promise<ManagementApplication>;
-  getManagementApplication(id: number): Promise<ManagementApplication | undefined>;
-  getManagementApplicationsByUser(userId: number): Promise<ManagementApplication[]>;
+  createManagementApplication(
+    application: InsertManagementApplication
+  ): Promise<ManagementApplication>;
+  getManagementApplication(
+    id: number
+  ): Promise<ManagementApplication | undefined>;
+  getManagementApplicationsByUser(
+    userId: number
+  ): Promise<ManagementApplication[]>;
   getPendingManagementApplications(): Promise<ManagementApplication[]>;
-  updateManagementApplication(id: number, updates: Partial<ManagementApplication>): Promise<ManagementApplication | undefined>;
-  createManagementApplicationSignature(signature: InsertManagementApplicationSignature): Promise<ManagementApplicationSignature>;
-  getManagementApplicationSignatures(applicationId: number): Promise<ManagementApplicationSignature[]>;
+  updateManagementApplication(
+    id: number,
+    updates: Partial<ManagementApplication>
+  ): Promise<ManagementApplication | undefined>;
+  createManagementApplicationSignature(
+    signature: InsertManagementApplicationSignature
+  ): Promise<ManagementApplicationSignature>;
+  getManagementApplicationSignatures(
+    applicationId: number
+  ): Promise<ManagementApplicationSignature[]>;
 
   // Service Discount Management
-  createServiceDiscountOverride(override: InsertServiceDiscountOverride): Promise<ServiceDiscountOverride>;
-  getServiceDiscountOverrides(userId: number): Promise<ServiceDiscountOverride[]>;
-  getServiceDiscountOverride(userId: number, serviceId?: number, userServiceId?: number): Promise<ServiceDiscountOverride | undefined>;
-  updateServiceDiscountOverride(id: number, updates: Partial<ServiceDiscountOverride>): Promise<ServiceDiscountOverride | undefined>;
+  createServiceDiscountOverride(
+    override: InsertServiceDiscountOverride
+  ): Promise<ServiceDiscountOverride>;
+  getServiceDiscountOverrides(
+    userId: number
+  ): Promise<ServiceDiscountOverride[]>;
+  getServiceDiscountOverride(
+    userId: number,
+    serviceId?: number,
+    userServiceId?: number
+  ): Promise<ServiceDiscountOverride | undefined>;
+  updateServiceDiscountOverride(
+    id: number,
+    updates: Partial<ServiceDiscountOverride>
+  ): Promise<ServiceDiscountOverride | undefined>;
   getMaxDiscountForUser(userId: number): Promise<number>;
 
   // Management Application Review System
-  createManagementApplicationReview(review: InsertManagementApplicationReview): Promise<ManagementApplicationReview>;
-  getManagementApplicationReviews(applicationId: number): Promise<ManagementApplicationReview[]>;
-  getManagementApplicationsByAssignedAdmin(adminUserId: number): Promise<ManagementApplication[]>;
+  createManagementApplicationReview(
+    review: InsertManagementApplicationReview
+  ): Promise<ManagementApplicationReview>;
+  getManagementApplicationReviews(
+    applicationId: number
+  ): Promise<ManagementApplicationReview[]>;
+  getManagementApplicationsByAssignedAdmin(
+    adminUserId: number
+  ): Promise<ManagementApplication[]>;
 
   // Legal Assignment System
-  createLegalAssignment(assignment: InsertLegalAssignment): Promise<LegalAssignment>;
+  createLegalAssignment(
+    assignment: InsertLegalAssignment
+  ): Promise<LegalAssignment>;
   getLegalAssignments(clientUserId: number): Promise<LegalAssignment[]>;
   getLawyerClients(lawyerUserId: number): Promise<LegalAssignment[]>;
-  getAssignedLawyer(clientUserId: number, assignmentType?: string): Promise<LegalAssignment | undefined>;
+  getAssignedLawyer(
+    clientUserId: number,
+    assignmentType?: string
+  ): Promise<LegalAssignment | undefined>;
 
   // Application Legal Assignment System (Lawyers representing Wai'tuMusic)
-  createApplicationLegalAssignment(assignment: InsertApplicationLegalAssignment): Promise<ApplicationLegalAssignment>;
-  getApplicationLegalAssignments(applicationId: number): Promise<ApplicationLegalAssignment[]>;
-  getApplicationsByAssignedLawyer(lawyerUserId: number): Promise<ApplicationLegalAssignment[]>;
+  createApplicationLegalAssignment(
+    assignment: InsertApplicationLegalAssignment
+  ): Promise<ApplicationLegalAssignment>;
+  getApplicationLegalAssignments(
+    applicationId: number
+  ): Promise<ApplicationLegalAssignment[]>;
+  getApplicationsByAssignedLawyer(
+    lawyerUserId: number
+  ): Promise<ApplicationLegalAssignment[]>;
   removeApplicationLegalAssignment(assignmentId: number): Promise<void>;
-  checkLegalConflictOfInterest(lawyerUserId: number): Promise<{ hasConflict: boolean; conflictDetails?: any[] }>;
+  checkLegalConflictOfInterest(
+    lawyerUserId: number
+  ): Promise<{ hasConflict: boolean; conflictDetails?: any[] }>;
   getAvailableLawyersForWaituMusic(): Promise<any[]>;
 
   // System data
@@ -566,29 +1031,58 @@ export interface IStorage {
   generateInvoiceNumber(): Promise<string>;
 
   // Financial Automation - Payout Request Management
-  createPayoutRequest(payoutRequest: InsertPayoutRequest): Promise<PayoutRequest>;
+  createPayoutRequest(
+    payoutRequest: InsertPayoutRequest
+  ): Promise<PayoutRequest>;
   getPayoutRequest(id: number): Promise<PayoutRequest | undefined>;
   getAllPayoutRequests(): Promise<PayoutRequest[]>;
   getPayoutRequestsByBooking(bookingId: number): Promise<PayoutRequest[]>;
-  getPayoutRequestsByPerformer(performerUserId: number): Promise<PayoutRequest[]>;
-  updatePayoutRequestStatus(id: number, status: string): Promise<PayoutRequest | undefined>;
+  getPayoutRequestsByPerformer(
+    performerUserId: number
+  ): Promise<PayoutRequest[]>;
+  updatePayoutRequestStatus(
+    id: number,
+    status: string
+  ): Promise<PayoutRequest | undefined>;
   generatePayoutRequestNumber(): Promise<string>;
 
   // Financial Automation - Document Linkage System
-  createDocumentLinkage(linkage: InsertDocumentLinkage): Promise<DocumentLinkage>;
-  getDocumentLinkages(sourceType: string, sourceId: number): Promise<DocumentLinkage[]>;
-  getLinkedDocuments(documentType: string, documentId: number): Promise<DocumentLinkage[]>;
+  createDocumentLinkage(
+    linkage: InsertDocumentLinkage
+  ): Promise<DocumentLinkage>;
+  getDocumentLinkages(
+    sourceType: string,
+    sourceId: number
+  ): Promise<DocumentLinkage[]>;
+  getLinkedDocuments(
+    documentType: string,
+    documentId: number
+  ): Promise<DocumentLinkage[]>;
 
   // Financial Automation - Payment Transaction Tracking
-  createPaymentTransaction(transaction: InsertPaymentTransaction): Promise<PaymentTransaction>;
+  createPaymentTransaction(
+    transaction: InsertPaymentTransaction
+  ): Promise<PaymentTransaction>;
   getPaymentTransaction(id: number): Promise<PaymentTransaction | undefined>;
-  getPaymentTransactionsByBooking(bookingId: number): Promise<PaymentTransaction[]>;
-  getPaymentTransactionsByInvoice(invoiceId: number): Promise<PaymentTransaction[]>;
-  updatePaymentTransactionStatus(id: number, status: string): Promise<PaymentTransaction | undefined>;
+  getPaymentTransactionsByBooking(
+    bookingId: number
+  ): Promise<PaymentTransaction[]>;
+  getPaymentTransactionsByInvoice(
+    invoiceId: number
+  ): Promise<PaymentTransaction[]>;
+  updatePaymentTransactionStatus(
+    id: number,
+    status: string
+  ): Promise<PaymentTransaction | undefined>;
 
   // Financial Automation - Audit Trail
-  createFinancialAuditLog(auditLog: InsertFinancialAuditLog): Promise<FinancialAuditLog>;
-  getFinancialAuditLogs(entityType: string, entityId: number): Promise<FinancialAuditLog[]>;
+  createFinancialAuditLog(
+    auditLog: InsertFinancialAuditLog
+  ): Promise<FinancialAuditLog>;
+  getFinancialAuditLogs(
+    entityType: string,
+    entityId: number
+  ): Promise<FinancialAuditLog[]>;
 
   // Financial Automation - Payments & Receipts (Enhanced)
   createPayment(payment: InsertPayment): Promise<Payment>;
@@ -605,111 +1099,251 @@ export interface IStorage {
 
   // OppHub - Opportunity Hub operations
   getOpportunityCategories(): Promise<OpportunityCategory[]>;
-  createOpportunityCategory(category: InsertOpportunityCategory): Promise<OpportunityCategory>;
-  updateOpportunityCategory(id: number, updates: Partial<InsertOpportunityCategory>): Promise<OpportunityCategory | null>;
+  createOpportunityCategory(
+    category: InsertOpportunityCategory
+  ): Promise<OpportunityCategory>;
+  updateOpportunityCategory(
+    id: number,
+    updates: Partial<InsertOpportunityCategory>
+  ): Promise<OpportunityCategory | null>;
 
-  getOpportunities(filters?: { status?: string; isDemo?: boolean; categoryId?: number; isVerified?: boolean }): Promise<any[]>;
+  getOpportunities(filters?: {
+    status?: string;
+    isDemo?: boolean;
+    categoryId?: number;
+    isVerified?: boolean;
+  }): Promise<any[]>;
   createOpportunity(opportunity: InsertOpportunity): Promise<Opportunity>;
   getOpportunityById(id: number): Promise<Opportunity | null>;
-  updateOpportunity(id: number, updates: Partial<InsertOpportunity>): Promise<Opportunity | null>;
+  updateOpportunity(
+    id: number,
+    updates: Partial<InsertOpportunity>
+  ): Promise<Opportunity | null>;
   deleteOpportunity(id: number): Promise<boolean>;
   incrementOpportunityViews(id: number): Promise<void>;
 
-  getOpportunityApplications(filters?: { opportunityId?: number; applicantUserId?: number; isDemo?: boolean }): Promise<OpportunityApplication[]>;
-  createOpportunityApplication(application: InsertOpportunityApplication): Promise<OpportunityApplication>;
-  getOpportunityApplicationById(id: number): Promise<OpportunityApplication | null>;
-  updateOpportunityApplicationStatus(id: number, status: string, reviewNotes?: string, reviewedBy?: number): Promise<OpportunityApplication | null>;
+  getOpportunityApplications(filters?: {
+    opportunityId?: number;
+    applicantUserId?: number;
+    isDemo?: boolean;
+  }): Promise<OpportunityApplication[]>;
+  createOpportunityApplication(
+    application: InsertOpportunityApplication
+  ): Promise<OpportunityApplication>;
+  getOpportunityApplicationById(
+    id: number
+  ): Promise<OpportunityApplication | null>;
+  updateOpportunityApplicationStatus(
+    id: number,
+    status: string,
+    reviewNotes?: string,
+    reviewedBy?: number
+  ): Promise<OpportunityApplication | null>;
 
-  getOppHubSubscriptions(filters?: { userId?: number; status?: string }): Promise<OppHubSubscription[]>;
-  createOppHubSubscription(subscription: InsertOppHubSubscription): Promise<OppHubSubscription>;
-  getOppHubSubscriptionByUserId(userId: number): Promise<OppHubSubscription | null>;
-  updateOppHubSubscription(id: number, updates: Partial<InsertOppHubSubscription>): Promise<OppHubSubscription | null>;
+  getOppHubSubscriptions(filters?: {
+    userId?: number;
+    status?: string;
+  }): Promise<OppHubSubscription[]>;
+  createOppHubSubscription(
+    subscription: InsertOppHubSubscription
+  ): Promise<OppHubSubscription>;
+  getOppHubSubscriptionByUserId(
+    userId: number
+  ): Promise<OppHubSubscription | null>;
+  updateOppHubSubscription(
+    id: number,
+    updates: Partial<InsertOppHubSubscription>
+  ): Promise<OppHubSubscription | null>;
   incrementApplicationsUsed(userId: number): Promise<void>;
 
-  getMarketIntelligence(filters?: { status?: string; sourceType?: string }): Promise<MarketIntelligence[]>;
-  createMarketIntelligence(intelligence: InsertMarketIntelligence): Promise<MarketIntelligence>;
-  updateMarketIntelligenceStatus(id: number, status: string, reviewNotes?: string, reviewedBy?: number): Promise<MarketIntelligence | null>;
+  getMarketIntelligence(filters?: {
+    status?: string;
+    sourceType?: string;
+  }): Promise<MarketIntelligence[]>;
+  createMarketIntelligence(
+    intelligence: InsertMarketIntelligence
+  ): Promise<MarketIntelligence>;
+  updateMarketIntelligenceStatus(
+    id: number,
+    status: string,
+    reviewNotes?: string,
+    reviewedBy?: number
+  ): Promise<MarketIntelligence | null>;
 
   getOpportunitySources(): Promise<OpportunitySource[]>;
-  createOpportunitySource(source: InsertOpportunitySource): Promise<OpportunitySource>;
-  updateOpportunitySourceLastScraped(id: number, opportunitiesFound: number): Promise<void>;
+  createOpportunitySource(
+    source: InsertOpportunitySource
+  ): Promise<OpportunitySource>;
+  updateOpportunitySourceLastScraped(
+    id: number,
+    opportunitiesFound: number
+  ): Promise<void>;
 
-  getOpportunityMatches(filters?: { artistId?: number; opportunityId?: number }): Promise<OpportunityMatch[]>;
-  createOpportunityMatch(match: InsertOpportunityMatch): Promise<OpportunityMatch>;
-  updateOpportunityMatchInteraction(id: number, interactionType: string): Promise<void>;
+  getOpportunityMatches(filters?: {
+    artistId?: number;
+    opportunityId?: number;
+  }): Promise<OpportunityMatch[]>;
+  createOpportunityMatch(
+    match: InsertOpportunityMatch
+  ): Promise<OpportunityMatch>;
+  updateOpportunityMatchInteraction(
+    id: number,
+    interactionType: string
+  ): Promise<void>;
 
   // PRO Registration methods
   getPRORegistrations(userId?: number): Promise<PRORegistration[]>;
-  createPRORegistration(registration: InsertPRORegistration): Promise<PRORegistration>;
+  createPRORegistration(
+    registration: InsertPRORegistration
+  ): Promise<PRORegistration>;
   getPRORegistrationById(id: number): Promise<PRORegistration | null>;
-  updatePRORegistration(id: number, updates: Partial<InsertPRORegistration>): Promise<PRORegistration | null>;
+  updatePRORegistration(
+    id: number,
+    updates: Partial<InsertPRORegistration>
+  ): Promise<PRORegistration | null>;
   getPROWorks(proRegistrationId: number): Promise<PROWork[]>;
   createPROWork(work: InsertPROWork): Promise<PROWork>;
-  updatePROWork(id: number, updates: Partial<InsertPROWork>): Promise<PROWork | null>;
-  createPROEligibilityAssessment(assessment: InsertPROEligibilityAssessment): Promise<PROEligibilityAssessment>;
-  getPROEligibilityAssessment(userId: number): Promise<PROEligibilityAssessment | null>;
+  updatePROWork(
+    id: number,
+    updates: Partial<InsertPROWork>
+  ): Promise<PROWork | null>;
+  createPROEligibilityAssessment(
+    assessment: InsertPROEligibilityAssessment
+  ): Promise<PROEligibilityAssessment>;
+  getPROEligibilityAssessment(
+    userId: number
+  ): Promise<PROEligibilityAssessment | null>;
 
   // Press Release Management
-  getPressReleases(filters?: { artistId?: number; status?: string }): Promise<PressRelease[]>;
+  getPressReleases(filters?: {
+    artistId?: number;
+    status?: string;
+  }): Promise<PressRelease[]>;
   createPressRelease(pressRelease: InsertPressRelease): Promise<PressRelease>;
   getPressReleaseById(id: number): Promise<PressRelease | null>;
-  updatePressRelease(id: number, updates: Partial<InsertPressRelease>): Promise<PressRelease | null>;
+  updatePressRelease(
+    id: number,
+    updates: Partial<InsertPressRelease>
+  ): Promise<PressRelease | null>;
   deletePressRelease(id: number): Promise<boolean>;
-  publishPressRelease(id: number, publishedBy: number): Promise<PressRelease | null>;
+  publishPressRelease(
+    id: number,
+    publishedBy: number
+  ): Promise<PressRelease | null>;
 
   // Press Release Assignments
-  getPressReleaseAssignments(pressReleaseId: number): Promise<PressReleaseAssignment[]>;
-  createPressReleaseAssignment(assignment: InsertPressReleaseAssignment): Promise<PressReleaseAssignment>;
+  getPressReleaseAssignments(
+    pressReleaseId: number
+  ): Promise<PressReleaseAssignment[]>;
+  createPressReleaseAssignment(
+    assignment: InsertPressReleaseAssignment
+  ): Promise<PressReleaseAssignment>;
   deletePressReleaseAssignment(id: number): Promise<boolean>;
 
   // Press Release Media
   getPressReleaseMedia(pressReleaseId: number): Promise<PressReleaseMedia[]>;
-  createPressReleaseMedia(media: InsertPressReleaseMedia): Promise<PressReleaseMedia>;
-  updatePressReleaseMedia(id: number, updates: Partial<InsertPressReleaseMedia>): Promise<PressReleaseMedia | null>;
+  createPressReleaseMedia(
+    media: InsertPressReleaseMedia
+  ): Promise<PressReleaseMedia>;
+  updatePressReleaseMedia(
+    id: number,
+    updates: Partial<InsertPressReleaseMedia>
+  ): Promise<PressReleaseMedia | null>;
   deletePressReleaseMedia(id: number): Promise<boolean>;
 
   // Press Release Distribution
-  getPressReleaseDistribution(pressReleaseId: number): Promise<PressReleaseDistribution[]>;
-  createPressReleaseDistribution(distribution: InsertPressReleaseDistribution): Promise<PressReleaseDistribution>;
-  updatePressReleaseDistributionStatus(id: number, status: string, responseType?: string): Promise<PressReleaseDistribution | null>;
+  getPressReleaseDistribution(
+    pressReleaseId: number
+  ): Promise<PressReleaseDistribution[]>;
+  createPressReleaseDistribution(
+    distribution: InsertPressReleaseDistribution
+  ): Promise<PressReleaseDistribution>;
+  updatePressReleaseDistributionStatus(
+    id: number,
+    status: string,
+    responseType?: string
+  ): Promise<PressReleaseDistribution | null>;
 
   // ==================== RECIPIENT MANAGEMENT METHODS ====================
 
   // Recipient Categories
   getRecipientCategories(): Promise<RecipientCategory[]>;
-  createRecipientCategory(category: InsertRecipientCategory): Promise<RecipientCategory>;
-  updateRecipientCategory(id: number, updates: Partial<InsertRecipientCategory>): Promise<RecipientCategory | null>;
+  createRecipientCategory(
+    category: InsertRecipientCategory
+  ): Promise<RecipientCategory>;
+  updateRecipientCategory(
+    id: number,
+    updates: Partial<InsertRecipientCategory>
+  ): Promise<RecipientCategory | null>;
   deleteRecipientCategory(id: number): Promise<boolean>;
 
   // Music Genres
   getMusicGenres(): Promise<MusicGenre[]>;
   createMusicGenre(genre: InsertMusicGenre): Promise<MusicGenre>;
-  updateMusicGenre(id: number, updates: Partial<InsertMusicGenre>): Promise<MusicGenre | null>;
+  updateMusicGenre(
+    id: number,
+    updates: Partial<InsertMusicGenre>
+  ): Promise<MusicGenre | null>;
   deleteMusicGenre(id: number): Promise<boolean>;
 
   // Industry Recipients
-  getIndustryRecipients(filters?: { categoryId?: number; genreIds?: number[]; status?: string }): Promise<IndustryRecipient[]>;
+  getIndustryRecipients(filters?: {
+    categoryId?: number;
+    genreIds?: number[];
+    status?: string;
+  }): Promise<IndustryRecipient[]>;
   getIndustryRecipientById(id: number): Promise<IndustryRecipient | null>;
-  createIndustryRecipient(recipient: InsertIndustryRecipient): Promise<IndustryRecipient>;
-  updateIndustryRecipient(id: number, updates: Partial<InsertIndustryRecipient>): Promise<IndustryRecipient | null>;
+  createIndustryRecipient(
+    recipient: InsertIndustryRecipient
+  ): Promise<IndustryRecipient>;
+  updateIndustryRecipient(
+    id: number,
+    updates: Partial<InsertIndustryRecipient>
+  ): Promise<IndustryRecipient | null>;
   deleteIndustryRecipient(id: number): Promise<boolean>;
   searchIndustryRecipients(query: string): Promise<IndustryRecipient[]>;
 
   // Content Distribution (Unified for Newsletters and Press Releases)
-  getContentDistribution(contentType: string, contentId: number): Promise<ContentDistribution | null>;
-  createContentDistribution(distribution: InsertContentDistribution): Promise<ContentDistribution>;
-  updateContentDistribution(id: number, updates: Partial<InsertContentDistribution>): Promise<ContentDistribution | null>;
+  getContentDistribution(
+    contentType: string,
+    contentId: number
+  ): Promise<ContentDistribution | null>;
+  createContentDistribution(
+    distribution: InsertContentDistribution
+  ): Promise<ContentDistribution>;
+  updateContentDistribution(
+    id: number,
+    updates: Partial<InsertContentDistribution>
+  ): Promise<ContentDistribution | null>;
   deleteContentDistribution(id: number): Promise<boolean>;
-  getContentDistributionsByType(contentType: string): Promise<ContentDistribution[]>;
-  getContentDistributionAnalytics(contentType: string, contentId: number): Promise<ContentDistribution | null>;
+  getContentDistributionsByType(
+    contentType: string
+  ): Promise<ContentDistribution[]>;
+  getContentDistributionAnalytics(
+    contentType: string,
+    contentId: number
+  ): Promise<ContentDistribution | null>;
 
   // Recipient Engagements
-  getRecipientEngagements(filters?: { recipientId?: number; contentType?: string; contentId?: number }): Promise<RecipientEngagement[]>;
-  createRecipientEngagement(engagement: InsertRecipientEngagement): Promise<RecipientEngagement>;
-  updateRecipientEngagement(id: number, updates: Partial<InsertRecipientEngagement>): Promise<RecipientEngagement | null>;
+  getRecipientEngagements(filters?: {
+    recipientId?: number;
+    contentType?: string;
+    contentId?: number;
+  }): Promise<RecipientEngagement[]>;
+  createRecipientEngagement(
+    engagement: InsertRecipientEngagement
+  ): Promise<RecipientEngagement>;
+  updateRecipientEngagement(
+    id: number,
+    updates: Partial<InsertRecipientEngagement>
+  ): Promise<RecipientEngagement | null>;
 
   // Enhanced Recipient Matching Methods
-  getMatchingRecipients(contentGenres: number[], categoryIds?: number[], minimumInfluence?: number): Promise<IndustryRecipient[]>;
+  getMatchingRecipients(
+    contentGenres: number[],
+    categoryIds?: number[],
+    minimumInfluence?: number
+  ): Promise<IndustryRecipient[]>;
   getRecipientsByCategory(categoryId: number): Promise<IndustryRecipient[]>;
   getRecipientsByGenre(genreId: number): Promise<IndustryRecipient[]>;
 
@@ -722,8 +1356,15 @@ export interface IStorage {
   // Admin talent assignments (real database queries)
   getAdminTalentAssignments(talentUserId?: number): Promise<any[]>;
   getManagementTeamForTalent(talentUserId: number): Promise<any[]>;
-  assignAdminToTalent(adminUserId: number, talentUserId: number, assignmentType: string): Promise<any>;
-  removeAdminTalentAssignment(adminUserId: number, talentUserId: number): Promise<boolean>;
+  assignAdminToTalent(
+    adminUserId: number,
+    talentUserId: number,
+    assignmentType: string
+  ): Promise<any>;
+  removeAdminTalentAssignment(
+    adminUserId: number,
+    talentUserId: number
+  ): Promise<boolean>;
 
   // Admin Dashboard Specific Methods
   getUsersCount(): Promise<number>;
@@ -738,7 +1379,9 @@ export interface IStorage {
   getPendingApprovalsCount(): Promise<number>;
   getActiveBookingsCount(): Promise<number>;
   getContentItemsCount(): Promise<number>;
-  getTopArtists(): Promise<{ name: string; bookings: number; revenue: number }[]>;
+  getTopArtists(): Promise<
+    { name: string; bookings: number; revenue: number }[]
+  >;
   getPendingItems(): Promise<any[]>;
   getContentForModeration(): Promise<any[]>;
   getBookingApprovals(): Promise<any[]>;
@@ -752,7 +1395,9 @@ export interface IStorage {
   getWebsiteBlocklist(): Promise<any[]>;
   createWebsiteBlocklistEntry(entry: any): Promise<any>;
   checkAndApplyPenalties(domain: string): Promise<void>;
-  getUserIdByStripeSubscriptionId(subscriptionId: string): Promise<number | null>;
+  getUserIdByStripeSubscriptionId(
+    subscriptionId: string
+  ): Promise<number | null>;
   createOauthAccount(account: any): Promise<any>;
   createFanSubscription(subscription: any): Promise<any>;
 
@@ -816,7 +1461,11 @@ export interface IStorage {
   hasDocumentPermission(documentId: number, userId: number): Promise<boolean>;
   userHasBookingAccess(userId: number, bookingId: number): Promise<boolean>;
   createBookingDocument(document: any): Promise<any>;
-  updateDocumentVisibility(documentId: number, visibility: string, permissions: any[]): Promise<any>;
+  updateDocumentVisibility(
+    documentId: number,
+    visibility: string,
+    permissions: any[]
+  ): Promise<any>;
   getDocument(documentId: number): Promise<any | undefined>;
   deleteDocument(documentId: number): Promise<boolean>;
 }
@@ -879,31 +1528,34 @@ export class MemStorage {
       { id: 6, name: "musician" },
       { id: 7, name: "managed_professional" },
       { id: 8, name: "professional" },
-      { id: 9, name: "fan" }
+      { id: 9, name: "fan" },
     ];
 
     this.managementTiers = [
       {
         id: 1,
         name: "Publisher",
-        description: "We publish your music worldwide. Full creative control, standard service fees.",
+        description:
+          "We publish your music worldwide. Full creative control, standard service fees.",
         maxDiscountPercentage: 10,
-        appliesTo: ['artist', 'musician']
+        appliesTo: ["artist", "musician"],
       },
       {
         id: 2,
         name: "Representation",
-        description: "We handle your music business professionally without managing your career. Enjoy discounted services and industry representation.",
+        description:
+          "We handle your music business professionally without managing your career. Enjoy discounted services and industry representation.",
         maxDiscountPercentage: 50,
-        appliesTo: ['artist', 'musician', 'professional']
+        appliesTo: ["artist", "musician", "professional"],
       },
       {
         id: 3,
         name: "Full Management",
-        description: "Our team takes full responsibility for your career development, music releases, and strategic growth—with services included at no extra cost.",
+        description:
+          "Our team takes full responsibility for your career development, music releases, and strategic growth—with services included at no extra cost.",
         maxDiscountPercentage: 100,
-        appliesTo: ['artist', 'musician', 'professional']
-      }
+        appliesTo: ["artist", "musician", "professional"],
+      },
     ];
 
     this.initializeDemoData();
@@ -914,7 +1566,8 @@ export class MemStorage {
     const superadmin: User = {
       id: this.currentUserId++,
       email: "superadmin@waitumusic.com",
-      passwordHash: "$2b$10$B7kd9KfBfyE1iyK8WuDzIOo/175.TnJBGVeRpszv4UdrIbC/aBfPO", // secret123
+      passwordHash:
+        "$2b$10$B7kd9KfBfyE1iyK8WuDzIOo/175.TnJBGVeRpszv4UdrIbC/aBfPO", // secret123
       fullName: "Super Administrator",
       roleId: 1,
       phoneNumber: null,
@@ -925,7 +1578,7 @@ export class MemStorage {
       coverImageUrl: null,
       isDemo: true,
       createdAt: new Date(),
-      lastLogin: null
+      lastLogin: null,
     };
     this.users.set(superadmin.id, superadmin);
 
@@ -933,7 +1586,8 @@ export class MemStorage {
     const artist: User = {
       id: this.currentUserId++,
       email: "sarah@waitumusic.com",
-      passwordHash: "$2b$10$B7kd9KfBfyE1iyK8WuDzIOo/175.TnJBGVeRpszv4UdrIbC/aBfPO", // secret123
+      passwordHash:
+        "$2b$10$B7kd9KfBfyE1iyK8WuDzIOo/175.TnJBGVeRpszv4UdrIbC/aBfPO", // secret123
       fullName: "Sarah Chen",
       roleId: 3,
       phoneNumber: null,
@@ -944,7 +1598,7 @@ export class MemStorage {
       coverImageUrl: null,
       isDemo: true,
       createdAt: new Date(),
-      lastLogin: null
+      lastLogin: null,
     };
     this.users.set(artist.id, artist);
 
@@ -964,7 +1618,7 @@ export class MemStorage {
       performingRightsOrganization: null,
       ipiNumber: null,
       primaryTalentId: 1,
-      isDemo: true
+      isDemo: true,
     };
     this.artists.set(artist.id, artistProfile);
 
@@ -972,7 +1626,8 @@ export class MemStorage {
     const musician1: User = {
       id: this.currentUserId++,
       email: "marcus@waitumusic.com",
-      passwordHash: "$2b$10$B7kd9KfBfyE1iyK8WuDzIOo/175.TnJBGVeRpszv4UdrIbC/aBfPO", // secret123
+      passwordHash:
+        "$2b$10$B7kd9KfBfyE1iyK8WuDzIOo/175.TnJBGVeRpszv4UdrIbC/aBfPO", // secret123
       fullName: "Marcus Thompson",
       roleId: 5,
       phoneNumber: null,
@@ -983,7 +1638,7 @@ export class MemStorage {
       coverImageUrl: null,
       isDemo: true,
       createdAt: new Date(),
-      lastLogin: null
+      lastLogin: null,
     };
     this.users.set(musician1.id, musician1);
 
@@ -1000,14 +1655,15 @@ export class MemStorage {
       performingRightsOrganization: null,
       ipiNumber: null,
       primaryTalentId: 2,
-      isDemo: true
+      isDemo: true,
     };
     this.musicians.set(musician1.id, musicianProfile1);
 
     const musician2: User = {
       id: this.currentUserId++,
       email: "alex@waitumusic.com",
-      passwordHash: "$2b$10$B7kd9KfBfyE1iyK8WuDzIOo/175.TnJBGVeRpszv4UdrIbC/aBfPO", // secret123
+      passwordHash:
+        "$2b$10$B7kd9KfBfyE1iyK8WuDzIOo/175.TnJBGVeRpszv4UdrIbC/aBfPO", // secret123
       fullName: "Alex Rivera",
       roleId: 6,
       phoneNumber: null,
@@ -1018,7 +1674,7 @@ export class MemStorage {
       coverImageUrl: null,
       isDemo: true,
       createdAt: new Date(),
-      lastLogin: null
+      lastLogin: null,
     };
     this.users.set(musician2.id, musician2);
 
@@ -1035,7 +1691,7 @@ export class MemStorage {
       performingRightsOrganization: null,
       ipiNumber: null,
       primaryTalentId: 3,
-      isDemo: true
+      isDemo: true,
     };
     this.musicians.set(musician2.id, musicianProfile2);
   }
@@ -1063,11 +1719,11 @@ export class MemStorage {
       assignedMusicians: [],
       contracts: [],
       payments: [],
-      signatures: []
+      signatures: [],
     };
     this.bookings.set(1, booking1);
 
-    // Demo booking 2  
+    // Demo booking 2
     const booking2: Booking = {
       id: 2,
       clientName: "Corporate Events LLC",
@@ -1080,7 +1736,8 @@ export class MemStorage {
       eventType: "Corporate",
       guestCount: 300,
       duration: "3 hours",
-      specificRequirements: "Background music during dinner, energetic dance set after 9pm",
+      specificRequirements:
+        "Background music during dinner, energetic dance set after 9pm",
       totalBudget: "8000.00",
       status: "confirmed",
       createdAt: new Date(),
@@ -1089,7 +1746,7 @@ export class MemStorage {
       assignedMusicians: [4],
       contracts: [],
       payments: [],
-      signatures: []
+      signatures: [],
     };
     this.bookings.set(2, booking2);
 
@@ -1101,39 +1758,46 @@ export class MemStorage {
   }
 
   async getUserByEmail(email: string): Promise<User | undefined> {
-    return Array.from(this.users.values()).find(user => user.email === email);
+    return Array.from(this.users.values()).find((user) => user.email === email);
   }
 
   // Enhanced splitsheet methods for comprehensive user assignment and workflow
   async createEnhancedSplitsheet(data: any): Promise<any> {
     try {
-      const [splitsheet] = await db.insert(enhancedSplitsheets).values(data).returning();
+      const [splitsheet] = await db
+        .insert(enhancedSplitsheets)
+        .values(data)
+        .returning();
       return splitsheet;
     } catch (error) {
-      console.error('Error creating enhanced splitsheet:', error);
+      console.error("Error creating enhanced splitsheet:", error);
       throw error;
     }
   }
 
   async getEnhancedSplitsheet(id: number): Promise<any> {
     try {
-      const [splitsheet] = await db.select().from(enhancedSplitsheets).where(eq(enhancedSplitsheets.id, id));
+      const [splitsheet] = await db
+        .select()
+        .from(enhancedSplitsheets)
+        .where(eq(enhancedSplitsheets.id, id));
       return splitsheet;
     } catch (error) {
-      console.error('Error fetching enhanced splitsheet:', error);
+      console.error("Error fetching enhanced splitsheet:", error);
       return null;
     }
   }
 
   async updateEnhancedSplitsheet(id: number, data: any): Promise<any> {
     try {
-      const [updated] = await db.update(enhancedSplitsheets)
+      const [updated] = await db
+        .update(enhancedSplitsheets)
         .set(data)
         .where(eq(enhancedSplitsheets.id, id))
         .returning();
       return updated;
     } catch (error) {
-      console.error('Error updating enhanced splitsheet:', error);
+      console.error("Error updating enhanced splitsheet:", error);
       throw error;
     }
   }
@@ -1141,7 +1805,8 @@ export class MemStorage {
   async getUserEnhancedSplitsheets(userId: number): Promise<any[]> {
     try {
       // Get splitsheets where user is creator or participant
-      const splitsheets = await db.select()
+      const splitsheets = await db
+        .select()
         .from(enhancedSplitsheets)
         .where(
           or(
@@ -1156,52 +1821,65 @@ export class MemStorage {
 
       return splitsheets;
     } catch (error) {
-      console.error('Error fetching user enhanced splitsheets:', error);
+      console.error("Error fetching user enhanced splitsheets:", error);
       return [];
     }
   }
 
   async createEnhancedSplitsheetNotification(data: any): Promise<any> {
     try {
-      const [notification] = await db.insert(enhancedSplitsheetNotifications).values(data).returning();
+      const [notification] = await db
+        .insert(enhancedSplitsheetNotifications)
+        .values(data)
+        .returning();
       return notification;
     } catch (error) {
-      console.error('Error creating splitsheet notification:', error);
+      console.error("Error creating splitsheet notification:", error);
       throw error;
     }
   }
 
-  async updateEnhancedSplitsheetNotification(id: number, data: any): Promise<any> {
+  async updateEnhancedSplitsheetNotification(
+    id: number,
+    data: any
+  ): Promise<any> {
     try {
-      const [updated] = await db.update(enhancedSplitsheetNotifications)
+      const [updated] = await db
+        .update(enhancedSplitsheetNotifications)
         .set(data)
         .where(eq(enhancedSplitsheetNotifications.id, id))
         .returning();
       return updated;
     } catch (error) {
-      console.error('Error updating splitsheet notification:', error);
+      console.error("Error updating splitsheet notification:", error);
       throw error;
     }
   }
 
   async createAudioFileMetadata(data: any): Promise<any> {
     try {
-      const [metadata] = await db.insert(audioFileMetadata).values(data).returning();
+      const [metadata] = await db
+        .insert(audioFileMetadata)
+        .values(data)
+        .returning();
       return metadata;
     } catch (error) {
-      console.error('Error creating audio file metadata:', error);
+      console.error("Error creating audio file metadata:", error);
       throw error;
     }
   }
 
   async getAudioFileMetadata(enhancedSplitsheetId: number): Promise<any> {
     try {
-      const [metadata] = await db.select()
+      const [metadata] = await db
+        .select()
         .from(audioFileMetadata)
-        .where(eq(audioFileMetadata.enhancedSplitsheetId, enhancedSplitsheetId));
+        .where(
+          eq(audioFileMetadata.enhancedSplitsheetId, enhancedSplitsheetId)
+        );
       return metadata;
     } catch (error) {
-      console.error('Error fetching audio file metadata:', error);
+      console.error("Error fetching audio file metadata:", error);
       return null;
     }
   }
@@ -1213,12 +1891,13 @@ export class MemStorage {
       }
 
       // Search for users with talent roles
-      const talentUsers = await db.select({
-        id: users.id,
-        fullName: users.fullName,
-        email: users.email,
-        roleId: users.roleId
-      })
+      const talentUsers = await db
+        .select({
+          id: users.id,
+          fullName: users.fullName,
+          email: users.email,
+          roleId: users.roleId,
+        })
         .from(users)
         .where(
           and(
@@ -1233,7 +1912,7 @@ export class MemStorage {
 
       return talentUsers;
     } catch (error) {
-      console.error('Error searching assignable talent:', error);
+      console.error("Error searching assignable talent:", error);
       return [];
     }
   }
@@ -1254,13 +1933,16 @@ export class MemStorage {
       coverImageUrl: insertUser.coverImageUrl || null,
       isDemo: insertUser.isDemo || false,
       createdAt: new Date(),
-      lastLogin: null
+      lastLogin: null,
     };
     this.users.set(id, user);
     return user;
   }
 
-  async updateUser(id: number, updates: Partial<User>): Promise<User | undefined> {
+  async updateUser(
+    id: number,
+    updates: Partial<User>
+  ): Promise<User | undefined> {
     const user = this.users.get(id);
     if (!user) return undefined;
 
@@ -1278,13 +1960,20 @@ export class MemStorage {
   async createUserProfile(profile: any): Promise<any> {
     // User profiles are now normalized across multiple tables
     // Not implemented in MemStorage
-    throw new Error("User profiles are normalized across multiple tables - not implemented in MemStorage");
+    throw new Error(
+      "User profiles are normalized across multiple tables - not implemented in MemStorage"
+    );
   }
 
-  async updateUserProfile(userId: number, updates: any): Promise<any | undefined> {
+  async updateUserProfile(
+    userId: number,
+    updates: any
+  ): Promise<any | undefined> {
     // User profiles are now normalized across multiple tables
     // Not implemented in MemStorage
-    throw new Error("User profiles are normalized across multiple tables - not implemented in MemStorage");
+    throw new Error(
+      "User profiles are normalized across multiple tables - not implemented in MemStorage"
+    );
   }
 
   // async getRoles(): Promise<Role[]> {
@@ -1320,8 +2009,10 @@ export class MemStorage {
     return artistRecord;
   }
 
-
-  async updateArtist(userId: number, updates: Partial<Artist>): Promise<Artist | undefined> {
+  async updateArtist(
+    userId: number,
+    updates: Partial<Artist>
+  ): Promise<Artist | undefined> {
     const artist = this.artists.get(userId);
     if (!artist) return undefined;
 
@@ -1336,7 +2027,7 @@ export class MemStorage {
 
   async getMusicians(): Promise<Musician[]> {
     // Return in-memory musicians with proper data structure
-    console.log('Returning in-memory musicians:', this.musicians.size);
+    console.log("Returning in-memory musicians:", this.musicians.size);
     return Array.from(this.musicians.values());
   }
 
@@ -1355,9 +2046,10 @@ export class MemStorage {
       managementTierId: musician.managementTierId || null,
       isManaged: musician.isManaged || false,
       bookingFormPictureUrl: musician.bookingFormPictureUrl || null,
-      performingRightsOrganization: musician.performingRightsOrganization || null,
+      performingRightsOrganization:
+        musician.performingRightsOrganization || null,
       ipiNumber: musician.ipiNumber || null,
-      technicalRiderProfile: musician.technicalRiderProfile || null
+      technicalRiderProfile: musician.technicalRiderProfile || null,
     };
     this.musicians.set(musician.userId, musicianRecord);
     return musicianRecord;
@@ -1365,10 +2057,13 @@ export class MemStorage {
 
   async getProfessional(userId: number): Promise<Professional | undefined> {
     try {
-      const result = await db.select().from(professionals).where(eq(professionals.userId, userId));
+      const result = await db
+        .select()
+        .from(professionals)
+        .where(eq(professionals.userId, userId));
       return result[0];
     } catch (error) {
-      console.error('Error fetching professional:', error);
+      console.error("Error fetching professional:", error);
       return undefined;
     }
   }
@@ -1378,17 +2073,22 @@ export class MemStorage {
       const result = await db.select().from(professionals);
       return result;
     } catch (error) {
-      console.error('Error fetching professionals:', error);
+      console.error("Error fetching professionals:", error);
       return [];
     }
   }
 
-  async createProfessional(professional: InsertProfessional): Promise<Professional> {
+  async createProfessional(
+    professional: InsertProfessional
+  ): Promise<Professional> {
     try {
-      const result = await db.insert(professionals).values(professional).returning();
+      const result = await db
+        .insert(professionals)
+        .values(professional)
+        .returning();
       return result[0];
     } catch (error) {
-      console.error('Error creating professional:', error);
+      console.error("Error creating professional:", error);
       throw error;
     }
   }
@@ -1402,7 +2102,9 @@ export class MemStorage {
   }
 
   async getSongsByArtist(artistUserId: number): Promise<Song[]> {
-    return Array.from(this.songs.values()).filter(song => song.artistUserId === artistUserId);
+    return Array.from(this.songs.values()).filter(
+      (song) => song.artistUserId === artistUserId
+    );
   }
 
   async createSong(song: InsertSong): Promise<Song> {
@@ -1418,13 +2120,16 @@ export class MemStorage {
       isFree: song.isFree || null,
       durationSeconds: song.durationSeconds || null,
       previewStartSeconds: song.previewStartSeconds || null,
-      createdAt: new Date()
+      createdAt: new Date(),
     };
     this.songs.set(id, songRecord);
     return songRecord;
   }
 
-  async updateSong(id: number, updates: Partial<Song>): Promise<Song | undefined> {
+  async updateSong(
+    id: number,
+    updates: Partial<Song>
+  ): Promise<Song | undefined> {
     const song = this.songs.get(id);
     if (!song) return undefined;
 
@@ -1442,7 +2147,9 @@ export class MemStorage {
   }
 
   async getAlbumsByArtist(artistUserId: number): Promise<Album[]> {
-    return Array.from(this.albums.values()).filter(album => album.artistUserId === artistUserId);
+    return Array.from(this.albums.values()).filter(
+      (album) => album.artistUserId === artistUserId
+    );
   }
 
   async createAlbum(album: InsertAlbum): Promise<Album> {
@@ -1454,7 +2161,7 @@ export class MemStorage {
       coverArtUrl: album.coverArtUrl || null,
       price: album.price || null,
       releaseDate: album.releaseDate || null,
-      createdAt: new Date()
+      createdAt: new Date(),
     };
     this.albums.set(id, albumRecord);
     return albumRecord;
@@ -1465,10 +2172,14 @@ export class MemStorage {
   }
 
   async getMerchandiseByArtist(artistUserId: number): Promise<Merchandise[]> {
-    return Array.from(this.merchandise.values()).filter(merch => merch.artistUserId === artistUserId);
+    return Array.from(this.merchandise.values()).filter(
+      (merch) => merch.artistUserId === artistUserId
+    );
   }
 
-  async createMerchandise(merchandise: InsertMerchandise): Promise<Merchandise> {
+  async createMerchandise(
+    merchandise: InsertMerchandise
+  ): Promise<Merchandise> {
     const id = this.currentMerchandiseId++;
     const merchandiseRecord: Merchandise = {
       id,
@@ -1478,7 +2189,7 @@ export class MemStorage {
       artistUserId: merchandise.artistUserId,
       inventory: merchandise.inventory || null,
       imageUrl: merchandise.imageUrl || null,
-      createdAt: new Date()
+      createdAt: new Date(),
     };
     this.merchandise.set(id, merchandiseRecord);
     return merchandiseRecord;
@@ -1490,7 +2201,9 @@ export class MemStorage {
 
   async getBookingsByUser(userId: number): Promise<Booking[]> {
     return Array.from(this.bookings.values()).filter(
-      booking => booking.bookerUserId === userId || booking.primaryArtistUserId === userId
+      (booking) =>
+        booking.bookerUserId === userId ||
+        booking.primaryArtistUserId === userId
     );
   }
 
@@ -1531,13 +2244,16 @@ export class MemStorage {
       currentWorkflowStep: booking.currentWorkflowStep || 1,
       lastModified: new Date(),
       createdAt: new Date(),
-      updatedAt: new Date()
+      updatedAt: new Date(),
     };
     this.bookings.set(id, bookingRecord);
     return bookingRecord;
   }
 
-  async updateBookingStatus(id: number, status: string): Promise<Booking | undefined> {
+  async updateBookingStatus(
+    id: number,
+    status: string
+  ): Promise<Booking | undefined> {
     const booking = this.bookings.get(id);
     if (!booking) return undefined;
 
@@ -1547,24 +2263,29 @@ export class MemStorage {
   }
 
   async getEventsByArtist(artistUserId: number): Promise<Event[]> {
-    return Array.from(this.events.values()).filter(event => event.artistUserId === artistUserId);
+    return Array.from(this.events.values()).filter(
+      (event) => event.artistUserId === artistUserId
+    );
   }
 
   async getEventsByUser(userId: number): Promise<Event[]> {
     // Get events for user based on their role - could be artist events or booked events
-    return Array.from(this.events.values()).filter(event =>
-      event.artistUserId === userId || event.bookerUserId === userId
+    return Array.from(this.events.values()).filter(
+      (event) => event.artistUserId === userId || event.bookerUserId === userId
     );
   }
 
   async getUpcomingEvents(): Promise<Event[]> {
     const now = new Date();
-    return Array.from(this.events.values()).filter(event =>
-      event.eventDatetime && new Date(event.eventDatetime) > now
+    return Array.from(this.events.values()).filter(
+      (event) => event.eventDatetime && new Date(event.eventDatetime) > now
     );
   }
 
-  async updateBooking(id: number, updates: Partial<Booking>): Promise<Booking | undefined> {
+  async updateBooking(
+    id: number,
+    updates: Partial<Booking>
+  ): Promise<Booking | undefined> {
     const booking = this.bookings.get(id);
     if (!booking) return undefined;
 
@@ -1572,7 +2293,7 @@ export class MemStorage {
       ...booking,
       ...updates,
       updatedAt: new Date(),
-      lastModified: new Date()
+      lastModified: new Date(),
     };
     this.bookings.set(id, updatedBooking);
     return updatedBooking;
@@ -1580,7 +2301,7 @@ export class MemStorage {
 
   async getBookingsByArtist(artistUserId: number): Promise<Booking[]> {
     return Array.from(this.bookings.values()).filter(
-      booking => booking.primaryArtistUserId === artistUserId
+      (booking) => booking.primaryArtistUserId === artistUserId
     );
   }
 
@@ -1588,7 +2309,9 @@ export class MemStorage {
     return Array.from(this.users.values());
   }
 
-  async createUserInteraction(interaction: InsertUserInteraction): Promise<UserInteraction> {
+  async createUserInteraction(
+    interaction: InsertUserInteraction
+  ): Promise<UserInteraction> {
     const userInteraction: UserInteraction = {
       id: Date.now(),
       userId: interaction.userId,
@@ -1597,7 +2320,7 @@ export class MemStorage {
       albumId: interaction.albumId || null,
       interactionType: interaction.interactionType,
       duration: interaction.duration || null,
-      createdAt: new Date()
+      createdAt: new Date(),
     };
     return userInteraction;
   }
@@ -1611,11 +2334,16 @@ export class MemStorage {
     return [];
   }
 
-  async getUserPreferences(userId: number): Promise<UserPreferences | undefined> {
+  async getUserPreferences(
+    userId: number
+  ): Promise<UserPreferences | undefined> {
     return undefined;
   }
 
-  async updateUserPreferences(userId: number, preferences: Partial<InsertUserPreferences>): Promise<UserPreferences> {
+  async updateUserPreferences(
+    userId: number,
+    preferences: Partial<InsertUserPreferences>
+  ): Promise<UserPreferences> {
     const userPreferences: UserPreferences = {
       id: Date.now(),
       userId,
@@ -1625,12 +2353,14 @@ export class MemStorage {
       moodPreferences: preferences.moodPreferences || null,
       discoverySettings: preferences.discoverySettings || null,
       updatedAt: new Date(),
-      createdAt: new Date()
+      createdAt: new Date(),
     };
     return userPreferences;
   }
 
-  async createMusicRecommendation(recommendation: InsertMusicRecommendation): Promise<MusicRecommendation> {
+  async createMusicRecommendation(
+    recommendation: InsertMusicRecommendation
+  ): Promise<MusicRecommendation> {
     const musicRecommendation: MusicRecommendation = {
       id: Date.now(),
       userId: recommendation.userId,
@@ -1643,12 +2373,15 @@ export class MemStorage {
       isActive: recommendation.isActive || null,
       viewedAt: null,
       clickedAt: null,
-      createdAt: new Date()
+      createdAt: new Date(),
     };
     return musicRecommendation;
   }
 
-  async getUserRecommendations(userId: number, limit?: number): Promise<MusicRecommendation[]> {
+  async getUserRecommendations(
+    userId: number,
+    limit?: number
+  ): Promise<MusicRecommendation[]> {
     return [];
   }
 
@@ -1656,11 +2389,16 @@ export class MemStorage {
     // Mock implementation
   }
 
-  async updateRecommendationEngagement(recommendationId: number, engagementType: 'viewed' | 'clicked'): Promise<void> {
+  async updateRecommendationEngagement(
+    recommendationId: number,
+    engagementType: "viewed" | "clicked"
+  ): Promise<void> {
     // Mock implementation
   }
 
-  async createArtistSimilarity(similarity: InsertArtistSimilarity): Promise<ArtistSimilarity> {
+  async createArtistSimilarity(
+    similarity: InsertArtistSimilarity
+  ): Promise<ArtistSimilarity> {
     const artistSimilarity: ArtistSimilarity = {
       id: Date.now(),
       artistId1: similarity.artistId1,
@@ -1668,7 +2406,7 @@ export class MemStorage {
       similarityScore: similarity.similarityScore || null,
       commonGenres: similarity.commonGenres || null,
       sharedFans: similarity.sharedFans || null,
-      calculatedAt: new Date()
+      calculatedAt: new Date(),
     };
     return artistSimilarity;
   }
@@ -1685,7 +2423,9 @@ export class MemStorage {
     return [];
   }
 
-  async incrementTrendingMetric(metric: Partial<InsertTrendingMetric>): Promise<void> {
+  async incrementTrendingMetric(
+    metric: Partial<InsertTrendingMetric>
+  ): Promise<void> {
     // Mock implementation
   }
 
@@ -1702,7 +2442,7 @@ export class MemStorage {
   }
 
   async getSongsByGenre(genre: string): Promise<Song[]> {
-    return Array.from(this.songs.values()).filter(song => {
+    return Array.from(this.songs.values()).filter((song) => {
       // Get artist for this song
       const artist = this.artists.get(song.artistUserId);
       return artist && artist.genre === genre;
@@ -1719,8 +2459,15 @@ export class MemStorage {
     return [];
   }
 
-  async createServiceCategory(category: InsertServiceCategory): Promise<ServiceCategory> {
-    return { id: 1, name: category.name, description: category.description || null, createdAt: new Date() };
+  async createServiceCategory(
+    category: InsertServiceCategory
+  ): Promise<ServiceCategory> {
+    return {
+      id: 1,
+      name: category.name,
+      description: category.description || null,
+      createdAt: new Date(),
+    };
   }
 
   async getServices(): Promise<Service[]> {
@@ -1742,11 +2489,14 @@ export class MemStorage {
       categoryId: service.categoryId || null,
       createdByUserId: service.createdByUserId,
       isActive: true,
-      createdAt: new Date()
+      createdAt: new Date(),
     };
   }
 
-  async updateService(id: number, updates: Partial<Service>): Promise<Service | undefined> {
+  async updateService(
+    id: number,
+    updates: Partial<Service>
+  ): Promise<Service | undefined> {
     return undefined;
   }
 
@@ -1758,19 +2508,28 @@ export class MemStorage {
     return [];
   }
 
-  async getServiceAssignmentsByUser(userId: number): Promise<ServiceAssignment[]> {
+  async getServiceAssignmentsByUser(
+    userId: number
+  ): Promise<ServiceAssignment[]> {
     return [];
   }
 
-  async getServiceAssignmentsByService(serviceId: number): Promise<ServiceAssignment[]> {
+  async getServiceAssignmentsByService(
+    serviceId: number
+  ): Promise<ServiceAssignment[]> {
     return [];
   }
 
-  async createServiceAssignment(assignment: InsertServiceAssignment): Promise<ServiceAssignment> {
+  async createServiceAssignment(
+    assignment: InsertServiceAssignment
+  ): Promise<ServiceAssignment> {
     return { ...assignment, id: 1, isActive: true, assignedAt: new Date() };
   }
 
-  async updateServiceAssignment(id: number, updates: Partial<ServiceAssignment>): Promise<ServiceAssignment | undefined> {
+  async updateServiceAssignment(
+    id: number,
+    updates: Partial<ServiceAssignment>
+  ): Promise<ServiceAssignment | undefined> {
     return undefined;
   }
 
@@ -1790,7 +2549,9 @@ export class MemStorage {
     return undefined;
   }
 
-  async createUserService(userService: InsertUserService): Promise<UserService> {
+  async createUserService(
+    userService: InsertUserService
+  ): Promise<UserService> {
     return {
       id: 1,
       userId: userService.userId,
@@ -1803,11 +2564,14 @@ export class MemStorage {
       enableRating: userService.enableRating || null,
       categoryId: userService.categoryId || null,
       isActive: true,
-      createdAt: new Date()
+      createdAt: new Date(),
     };
   }
 
-  async updateUserService(id: number, updates: Partial<UserService>): Promise<UserService | undefined> {
+  async updateUserService(
+    id: number,
+    updates: Partial<UserService>
+  ): Promise<UserService | undefined> {
     return undefined;
   }
 
@@ -1815,11 +2579,16 @@ export class MemStorage {
     return true;
   }
 
-  async getServiceReviews(serviceId?: number, userServiceId?: number): Promise<ServiceReview[]> {
+  async getServiceReviews(
+    serviceId?: number,
+    userServiceId?: number
+  ): Promise<ServiceReview[]> {
     return [];
   }
 
-  async createServiceReview(review: InsertServiceReview): Promise<ServiceReview> {
+  async createServiceReview(
+    review: InsertServiceReview
+  ): Promise<ServiceReview> {
     return {
       id: 1,
       serviceId: review.serviceId || null,
@@ -1827,7 +2596,7 @@ export class MemStorage {
       reviewerUserId: review.reviewerUserId,
       rating: review.rating,
       review: review.review || null,
-      createdAt: new Date()
+      createdAt: new Date(),
     };
   }
 
@@ -1844,11 +2613,17 @@ export class MemStorage {
     throw new Error("Currency management not implemented in MemStorage");
   }
 
-  async updateCurrency(code: string, updates: Partial<Currency>): Promise<Currency | undefined> {
+  async updateCurrency(
+    code: string,
+    updates: Partial<Currency>
+  ): Promise<Currency | undefined> {
     throw new Error("Currency management not implemented in MemStorage");
   }
 
-  async updateCurrencyRate(code: string, rate: number): Promise<Currency | undefined> {
+  async updateCurrencyRate(
+    code: string,
+    rate: number
+  ): Promise<Currency | undefined> {
     throw new Error("Currency management not implemented in MemStorage");
   }
 
@@ -1857,15 +2632,24 @@ export class MemStorage {
     return [];
   }
 
-  async isUserAssignedToBooking(userId: number, bookingId: number): Promise<boolean> {
+  async isUserAssignedToBooking(
+    userId: number,
+    bookingId: number
+  ): Promise<boolean> {
     return false;
   }
 
-  async hasDocumentPermission(documentId: number, userId: number): Promise<boolean> {
+  async hasDocumentPermission(
+    documentId: number,
+    userId: number
+  ): Promise<boolean> {
     return false;
   }
 
-  async userHasBookingAccess(userId: number, bookingId: number): Promise<boolean> {
+  async userHasBookingAccess(
+    userId: number,
+    bookingId: number
+  ): Promise<boolean> {
     return false;
   }
 
@@ -1873,7 +2657,11 @@ export class MemStorage {
     throw new Error("Document management not implemented in MemStorage");
   }
 
-  async updateDocumentVisibility(documentId: number, visibility: string, permissions: any[]): Promise<any> {
+  async updateDocumentVisibility(
+    documentId: number,
+    visibility: string,
+    permissions: any[]
+  ): Promise<any> {
     throw new Error("Document management not implemented in MemStorage");
   }
 
@@ -1887,7 +2675,6 @@ export class MemStorage {
 }
 
 export class DatabaseStorage implements IStorage {
-
   async getUser(id: number): Promise<User | undefined> {
     const [user] = await db.select().from(users).where(eq(users.id, id));
     return user || undefined;
@@ -1899,10 +2686,7 @@ export class DatabaseStorage implements IStorage {
   }
 
   async createUser(insertUser: InsertUser): Promise<User> {
-    const [user] = await db
-      .insert(users)
-      .values(insertUser)
-      .returning();
+    const [user] = await db.insert(users).values(insertUser).returning();
     return user;
   }
 
@@ -1910,11 +2694,11 @@ export class DatabaseStorage implements IStorage {
     return await db.select().from(users).orderBy(desc(users.createdAt));
   }
 
-  async updateUser(id: number, updates: Partial<User>): Promise<User | undefined> {
-    await db
-      .update(users)
-      .set(updates)
-      .where(eq(users.id, id));
+  async updateUser(
+    id: number,
+    updates: Partial<User>
+  ): Promise<User | undefined> {
+    await db.update(users).set(updates).where(eq(users.id, id));
     return this.getUser(id);
   }
 
@@ -1940,10 +2724,7 @@ export class DatabaseStorage implements IStorage {
     const res = await db
       .select()
       .from(userRoles)
-      .where(and(
-        eq(userRoles.userId, userId),
-        eq(userRoles.roleId, roleId)
-      ));
+      .where(and(eq(userRoles.userId, userId), eq(userRoles.roleId, roleId)));
 
     return res.length > 0;
   }
@@ -1954,7 +2735,7 @@ export class DatabaseStorage implements IStorage {
       .select({ roleId: userRoles.roleId })
       .from(userRoles)
       .where(eq(userRoles.userId, userId));
-    return res.map(r => r.roleId);
+    return res.map((r) => r.roleId);
   }
 
   async getUserRolesWithDetails(userId: number) {
@@ -1965,7 +2746,7 @@ export class DatabaseStorage implements IStorage {
         canApply: rolesManagement.canApply,
         opphubMarketplaceDiscount: rolesManagement.opphubMarketplaceDiscount,
         servicesDiscount: rolesManagement.servicesDiscount,
-        adminCommission: rolesManagement.adminCommission
+        adminCommission: rolesManagement.adminCommission,
       })
       .from(userRoles)
       .innerJoin(rolesManagement, eq(userRoles.roleId, rolesManagement.id))
@@ -1982,35 +2763,37 @@ export class DatabaseStorage implements IStorage {
       .innerJoin(roles, eq(userRoles.roleId, roles.id))
       .where(eq(userRoles.userId, userId));
 
-    return res.map(r => ({ id: r.roleId, name: r.name }));
+    return res.map((r) => ({ id: r.roleId, name: r.name }));
   }
-
 
   // Insert into user_roles
   async addUserRole(userId: number, roleId: number) {
-    return db.insert(userRoles).values({ userId, roleId }).onConflictDoNothing();
+    return db
+      .insert(userRoles)
+      .values({ userId, roleId })
+      .onConflictDoNothing();
   }
 
   // Remove a role from a user
   async removeRoleFromUser(userId: number, roleId: number) {
     return await db
       .delete(userRoles)
-      .where(and(
-        eq(userRoles.userId, userId),
-        eq(userRoles.roleId, roleId)
-      ));
+      .where(and(eq(userRoles.userId, userId), eq(userRoles.roleId, roleId)));
   }
   // END NEW CODEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
   // Enhanced user management with role information
-  async getUserWithRoles(id: number): Promise<{
-    id: number;
-    email: string;
-    fullName: string;
-    roleId: number;
-    roleName: string; // User's registration type (superadmin, admin, managed_artist, etc.)
-    professionalRole?: string; // Only for artists/musicians/professionals - their actual role/position
-    secondaryRoles?: Array<{ roleId: number; roleName: string }>;
-  } | undefined> {
+  async getUserWithRoles(id: number): Promise<
+    | {
+        id: number;
+        email: string;
+        fullName: string;
+        roleId: number;
+        roleName: string; // User's registration type (superadmin, admin, managed_artist, etc.)
+        professionalRole?: string; // Only for artists/musicians/professionals - their actual role/position
+        secondaryRoles?: Array<{ roleId: number; roleName: string }>;
+      }
+    | undefined
+  > {
     try {
       // Get user with role name (registration type)
       const [user] = await db
@@ -2019,7 +2802,7 @@ export class DatabaseStorage implements IStorage {
           email: users.email,
           fullName: users.fullName,
           roleId: users.roleId,
-          roleName: roles.name
+          roleName: roles.name,
         })
         .from(users)
         .innerJoin(roles, eq(users.roleId, roles.id))
@@ -2030,13 +2813,13 @@ export class DatabaseStorage implements IStorage {
       // Get professional role based on user type
       let professionalRole: string | undefined;
       try {
-        if (user.roleName.includes('artist')) {
+        if (user.roleName.includes("artist")) {
           const artist = await this.getArtist(user.id);
           professionalRole = artist?.primaryRole;
-        } else if (user.roleName.includes('musician')) {
+        } else if (user.roleName.includes("musician")) {
           const musician = await this.getMusician(user.id);
           professionalRole = musician?.primaryRole;
-        } else if (user.roleName.includes('professional')) {
+        } else if (user.roleName.includes("professional")) {
           const professional = await this.getProfessional(user.id);
           professionalRole = professional?.primaryRole;
         }
@@ -2048,7 +2831,7 @@ export class DatabaseStorage implements IStorage {
       const secondaryRoles = await db
         .select({
           roleId: userSecondaryRoles.roleId,
-          roleName: roles.name
+          roleName: roles.name,
         })
         .from(userSecondaryRoles)
         .innerJoin(roles, eq(userSecondaryRoles.roleId, roles.id))
@@ -2057,23 +2840,25 @@ export class DatabaseStorage implements IStorage {
       return {
         ...user,
         professionalRole,
-        secondaryRoles
+        secondaryRoles,
       };
     } catch (error) {
-      console.error('Error fetching user with roles:', error);
+      console.error("Error fetching user with roles:", error);
       return undefined;
     }
   }
 
-  async getUsersForAssignment(roleIds?: number[]): Promise<Array<{
-    id: number;
-    email: string;
-    fullName: string;
-    roleId: number;
-    roleName: string; // User's registration type
-    professionalRole?: string; // Their actual role/position (for artists/musicians/professionals)
-    secondaryRoles?: Array<{ roleId: number; roleName: string }>;
-  }>> {
+  async getUsersForAssignment(roleIds?: number[]): Promise<
+    Array<{
+      id: number;
+      email: string;
+      fullName: string;
+      roleId: number;
+      roleName: string; // User's registration type
+      professionalRole?: string; // Their actual role/position (for artists/musicians/professionals)
+      secondaryRoles?: Array<{ roleId: number; roleName: string }>;
+    }>
+  > {
     try {
       // Get users with role names (registration types)
       let query = db
@@ -2082,11 +2867,11 @@ export class DatabaseStorage implements IStorage {
           email: users.email,
           fullName: users.fullName,
           roleId: users.roleId,
-          roleName: roles.name
+          roleName: roles.name,
         })
         .from(users)
         .innerJoin(roles, eq(users.roleId, roles.id))
-        .where(eq(users.status, 'active'));
+        .where(eq(users.status, "active"));
 
       // Filter by role IDs if provided
       if (roleIds && roleIds.length > 0) {
@@ -2100,13 +2885,13 @@ export class DatabaseStorage implements IStorage {
         usersResult.map(async (user) => {
           let professionalRole: string | undefined;
           try {
-            if (user.roleName.includes('artist')) {
+            if (user.roleName.includes("artist")) {
               const artist = await this.getArtist(user.id);
               professionalRole = artist?.primaryRole;
-            } else if (user.roleName.includes('musician')) {
+            } else if (user.roleName.includes("musician")) {
               const musician = await this.getMusician(user.id);
               professionalRole = musician?.primaryRole;
-            } else if (user.roleName.includes('professional')) {
+            } else if (user.roleName.includes("professional")) {
               const professional = await this.getProfessional(user.id);
               professionalRole = professional?.primaryRole;
             }
@@ -2118,12 +2903,12 @@ export class DatabaseStorage implements IStorage {
       );
 
       // Get secondary roles for all users
-      const userIds = usersResult.map(u => u.id);
+      const userIds = usersResult.map((u) => u.id);
       const secondaryRolesResult = await db
         .select({
           userId: userSecondaryRoles.userId,
           roleId: userSecondaryRoles.roleId,
-          roleName: roles.name
+          roleName: roles.name,
         })
         .from(userSecondaryRoles)
         .innerJoin(roles, eq(userSecondaryRoles.roleId, roles.id))
@@ -2134,18 +2919,18 @@ export class DatabaseStorage implements IStorage {
         if (!acc[role.userId]) acc[role.userId] = [];
         acc[role.userId].push({
           roleId: role.roleId,
-          roleName: role.roleName
+          roleName: role.roleName,
         });
         return acc;
       }, {} as Record<number, Array<{ roleId: number; roleName: string }>>);
 
       // Combine results
-      return usersWithProfessionalRoles.map(user => ({
+      return usersWithProfessionalRoles.map((user) => ({
         ...user,
-        secondaryRoles: secondaryRolesByUser[user.id] || []
+        secondaryRoles: secondaryRolesByUser[user.id] || [],
       }));
     } catch (error) {
-      console.error('Error fetching users for assignment:', error);
+      console.error("Error fetching users for assignment:", error);
       return [];
     }
   }
@@ -2155,33 +2940,38 @@ export class DatabaseStorage implements IStorage {
     try {
       await db.insert(userSecondaryRoles).values({
         userId,
-        roleId
+        roleId,
       });
     } catch (error) {
-      console.error('Error adding secondary role:', error);
+      console.error("Error adding secondary role:", error);
       throw error;
     }
   }
 
   async removeSecondaryRole(userId: number, roleId: number): Promise<void> {
     try {
-      await db.delete(userSecondaryRoles)
-        .where(and(
-          eq(userSecondaryRoles.userId, userId),
-          eq(userSecondaryRoles.roleId, roleId)
-        ));
+      await db
+        .delete(userSecondaryRoles)
+        .where(
+          and(
+            eq(userSecondaryRoles.userId, userId),
+            eq(userSecondaryRoles.roleId, roleId)
+          )
+        );
     } catch (error) {
-      console.error('Error removing secondary role:', error);
+      console.error("Error removing secondary role:", error);
       throw error;
     }
   }
 
-  async getUserSecondaryRoles(userId: number): Promise<Array<{ roleId: number; roleName: string }>> {
+  async getUserSecondaryRoles(
+    userId: number
+  ): Promise<Array<{ roleId: number; roleName: string }>> {
     try {
       const result = await db
         .select({
           roleId: userSecondaryRoles.roleId,
-          roleName: roles.name
+          roleName: roles.name,
         })
         .from(userSecondaryRoles)
         .innerJoin(roles, eq(userSecondaryRoles.roleId, roles.id))
@@ -2189,18 +2979,20 @@ export class DatabaseStorage implements IStorage {
 
       return result;
     } catch (error) {
-      console.error('Error fetching user secondary roles:', error);
+      console.error("Error fetching user secondary roles:", error);
       return [];
     }
   }
 
-  async getDemoUsers(): Promise<Array<{ id: number, email: string, fullName: string, roleName: string }>> {
+  async getDemoUsers(): Promise<
+    Array<{ id: number; email: string; fullName: string; roleName: string }>
+  > {
     const result = await db
       .select({
         id: users.id,
         email: users.email,
         fullName: users.fullName,
-        roleName: roles.name
+        roleName: roles.name,
       })
       .from(users)
       .innerJoin(roles, eq(users.roleId, roles.id))
@@ -2246,8 +3038,11 @@ export class DatabaseStorage implements IStorage {
     return {};
   }
 
-  async updateUserProfile(userId: number, updates: any): Promise<any | undefined> {
-    // Placeholder - using normalized user data tables  
+  async updateUserProfile(
+    userId: number,
+    updates: any
+  ): Promise<any | undefined> {
+    // Placeholder - using normalized user data tables
     return {};
   }
 
@@ -2268,7 +3063,10 @@ export class DatabaseStorage implements IStorage {
 
   async getRoleById(roleId: number): Promise<Role | null> {
     try {
-      const [role] = await db.select().from(rolesManagement).where(eq(rolesManagement.id, roleId));
+      const [role] = await db
+        .select()
+        .from(rolesManagement)
+        .where(eq(rolesManagement.id, roleId));
       if (!role) return null;
 
       return {
@@ -2282,7 +3080,7 @@ export class DatabaseStorage implements IStorage {
         updatedAt: role.updatedAt,
       };
     } catch (err) {
-      console.error('Error fetching role by ID:', err);
+      console.error("Error fetching role by ID:", err);
       return null;
     }
   }
@@ -2291,10 +3089,10 @@ export class DatabaseStorage implements IStorage {
   async getRoleName(roleId: number): Promise<string> {
     try {
       const role = await this.getRoleById(roleId);
-      return role?.name || 'Unknown Role';
+      return role?.name || "Unknown Role";
     } catch (error) {
-      console.error('Error fetching role name:', error);
-      return 'Unknown Role';
+      console.error("Error fetching role name:", error);
+      return "Unknown Role";
     }
   }
 
@@ -2304,13 +3102,15 @@ export class DatabaseStorage implements IStorage {
   }
 
   // Helper function to get user type category
-  getUserTypeCategory(roleId: number): 'artist' | 'musician' | 'professional' | 'admin' | 'fan' {
-    if ([1, 2].includes(roleId)) return 'admin';
-    if ([3, 4].includes(roleId)) return 'artist';
-    if ([5, 6].includes(roleId)) return 'musician';
-    if ([7, 8].includes(roleId)) return 'professional';
-    if (roleId === 9) return 'fan';
-    return 'fan';
+  getUserTypeCategory(
+    roleId: number
+  ): "artist" | "musician" | "professional" | "admin" | "fan" {
+    if ([1, 2].includes(roleId)) return "admin";
+    if ([3, 4].includes(roleId)) return "artist";
+    if ([5, 6].includes(roleId)) return "musician";
+    if ([7, 8].includes(roleId)) return "professional";
+    if (roleId === 9) return "fan";
+    return "fan";
   }
 
   async getManagementTiers(): Promise<ManagementTier[]> {
@@ -2319,21 +3119,36 @@ export class DatabaseStorage implements IStorage {
 
   // Primary roles management methods
   async getPrimaryRoles(): Promise<UserPrimaryRole[]> {
-    return await db.select().from(userPrimaryRoles).orderBy(userPrimaryRoles.sortOrder, userPrimaryRoles.name);
+    return await db
+      .select()
+      .from(userPrimaryRoles)
+      .orderBy(userPrimaryRoles.sortOrder, userPrimaryRoles.name);
   }
 
-  async createPrimaryRole(data: InsertUserPrimaryRole): Promise<UserPrimaryRole> {
-    const [primaryRole] = await db.insert(userPrimaryRoles).values(data).returning();
+  async createPrimaryRole(
+    data: InsertUserPrimaryRole
+  ): Promise<UserPrimaryRole> {
+    const [primaryRole] = await db
+      .insert(userPrimaryRoles)
+      .values(data)
+      .returning();
     return primaryRole;
   }
 
   async getPrimaryRoleById(id: number): Promise<UserPrimaryRole | undefined> {
-    const [primaryRole] = await db.select().from(userPrimaryRoles).where(eq(userPrimaryRoles.id, id));
+    const [primaryRole] = await db
+      .select()
+      .from(userPrimaryRoles)
+      .where(eq(userPrimaryRoles.id, id));
     return primaryRole;
   }
 
-  async updatePrimaryRole(id: number, data: Partial<UserPrimaryRole>): Promise<UserPrimaryRole> {
-    const [primaryRole] = await db.update(userPrimaryRoles)
+  async updatePrimaryRole(
+    id: number,
+    data: Partial<UserPrimaryRole>
+  ): Promise<UserPrimaryRole> {
+    const [primaryRole] = await db
+      .update(userPrimaryRoles)
       .set({ ...data, updatedAt: new Date() })
       .where(eq(userPrimaryRoles.id, id))
       .returning();
@@ -2345,7 +3160,9 @@ export class DatabaseStorage implements IStorage {
   }
 
   async getPrimaryRolesByRoleId(roleId: number): Promise<UserPrimaryRole[]> {
-    return await db.select().from(userPrimaryRoles)
+    return await db
+      .select()
+      .from(userPrimaryRoles)
       .where(eq(userPrimaryRoles.roleId, roleId))
       .orderBy(userPrimaryRoles.sortOrder, userPrimaryRoles.name);
   }
@@ -2359,7 +3176,10 @@ export class DatabaseStorage implements IStorage {
     return role;
   }
 
-  async updateRole(id: number, updates: Partial<Role>): Promise<Role | undefined> {
+  async updateRole(
+    id: number,
+    updates: Partial<Role>
+  ): Promise<Role | undefined> {
     const [role] = await db
       .update(roles)
       .set(updates)
@@ -2369,9 +3189,7 @@ export class DatabaseStorage implements IStorage {
   }
 
   async deleteRole(id: number): Promise<boolean> {
-    const result = await db
-      .delete(roles)
-      .where(eq(roles.id, id));
+    const result = await db.delete(roles).where(eq(roles.id, id));
     return result.rowCount > 0;
   }
 
@@ -2380,7 +3198,10 @@ export class DatabaseStorage implements IStorage {
   }
 
   async getArtist(userId: number): Promise<Artist | undefined> {
-    const [artist] = await db.select().from(artists).where(eq(artists.userId, userId));
+    const [artist] = await db
+      .select()
+      .from(artists)
+      .where(eq(artists.userId, userId));
     return artist || undefined;
   }
 
@@ -2394,7 +3215,10 @@ export class DatabaseStorage implements IStorage {
   }
 
   async getMusician(userId: number): Promise<Musician | undefined> {
-    const [musician] = await db.select().from(musicians).where(eq(musicians.userId, userId));
+    const [musician] = await db
+      .select()
+      .from(musicians)
+      .where(eq(musicians.userId, userId));
     return musician || undefined;
   }
 
@@ -2408,7 +3232,10 @@ export class DatabaseStorage implements IStorage {
   }
 
   async getProfessional(userId: number): Promise<Professional | undefined> {
-    const [professional] = await db.select().from(professionals).where(eq(professionals.userId, userId));
+    const [professional] = await db
+      .select()
+      .from(professionals)
+      .where(eq(professionals.userId, userId));
     return professional || undefined;
   }
 
@@ -2416,8 +3243,13 @@ export class DatabaseStorage implements IStorage {
     return await db.select().from(professionals);
   }
 
-  async createProfessional(professional: InsertProfessional): Promise<Professional> {
-    const [created] = await db.insert(professionals).values(professional).returning();
+  async createProfessional(
+    professional: InsertProfessional
+  ): Promise<Professional> {
+    const [created] = await db
+      .insert(professionals)
+      .values(professional)
+      .returning();
     return created;
   }
 
@@ -2427,7 +3259,10 @@ export class DatabaseStorage implements IStorage {
 
   // Duplicate methods removed - keeping proper implementation below
 
-  async updateArtist(userId: number, updates: Partial<Artist>): Promise<Artist | undefined> {
+  async updateArtist(
+    userId: number,
+    updates: Partial<Artist>
+  ): Promise<Artist | undefined> {
     await db
       .insert(artists)
       .values({ userId, ...updates })
@@ -2439,7 +3274,10 @@ export class DatabaseStorage implements IStorage {
     return this.getArtist(userId);
   }
 
-  async updateMusician(userId: number, updates: Partial<Musician>): Promise<Musician | undefined> {
+  async updateMusician(
+    userId: number,
+    updates: Partial<Musician>
+  ): Promise<Musician | undefined> {
     await db
       .insert(musicians)
       .values({ userId, ...updates })
@@ -2451,21 +3289,45 @@ export class DatabaseStorage implements IStorage {
     return this.getMusician(userId);
   }
 
-  async updateArtistStageNames(userId: number, stageNames: Array<{ name: string, isPrimary?: boolean, isForBookings?: boolean, usageType?: 'primary' | 'bookings' | 'both' }>): Promise<Artist | undefined> {
-    console.log('Updating artist stage names for user:', userId, 'with data:', stageNames);
+  async updateArtistStageNames(
+    userId: number,
+    stageNames: Array<{
+      name: string;
+      isPrimary?: boolean;
+      isForBookings?: boolean;
+      usageType?: "primary" | "bookings" | "both";
+    }>
+  ): Promise<Artist | undefined> {
+    console.log(
+      "Updating artist stage names for user:",
+      userId,
+      "with data:",
+      stageNames
+    );
 
     // Ensure at least one primary name exists
-    const hasPrimary = stageNames.some(sn => sn.isPrimary || sn.usageType === 'primary' || sn.usageType === 'both');
+    const hasPrimary = stageNames.some(
+      (sn) =>
+        sn.isPrimary || sn.usageType === "primary" || sn.usageType === "both"
+    );
     if (!hasPrimary && stageNames.length > 0) {
-      stageNames[0] = { ...stageNames[0], isPrimary: true, usageType: 'primary' };
+      stageNames[0] = {
+        ...stageNames[0],
+        isPrimary: true,
+        usageType: "primary",
+      };
     }
 
     // Process each stage name to set proper usage type
-    const processedStageNames = stageNames.map(sn => ({
+    const processedStageNames = stageNames.map((sn) => ({
       name: sn.name,
-      isPrimary: sn.isPrimary || sn.usageType === 'primary' || sn.usageType === 'both',
-      isForBookings: sn.isForBookings || sn.usageType === 'bookings' || sn.usageType === 'both',
-      usageType: sn.usageType || (sn.isPrimary ? 'primary' : 'bookings')
+      isPrimary:
+        sn.isPrimary || sn.usageType === "primary" || sn.usageType === "both",
+      isForBookings:
+        sn.isForBookings ||
+        sn.usageType === "bookings" ||
+        sn.usageType === "both",
+      usageType: sn.usageType || (sn.isPrimary ? "primary" : "bookings"),
     }));
 
     await db
@@ -2473,25 +3335,49 @@ export class DatabaseStorage implements IStorage {
       .set({ stageNames: processedStageNames })
       .where(eq(artists.userId, userId));
 
-    console.log('Successfully updated artist stage names');
+    console.log("Successfully updated artist stage names");
     return this.getArtist(userId);
   }
 
-  async updateMusicianStageNames(userId: number, stageNames: Array<{ name: string, isPrimary?: boolean, isForBookings?: boolean, usageType?: 'primary' | 'bookings' | 'both' }>): Promise<Musician | undefined> {
-    console.log('Updating musician stage names for user:', userId, 'with data:', stageNames);
+  async updateMusicianStageNames(
+    userId: number,
+    stageNames: Array<{
+      name: string;
+      isPrimary?: boolean;
+      isForBookings?: boolean;
+      usageType?: "primary" | "bookings" | "both";
+    }>
+  ): Promise<Musician | undefined> {
+    console.log(
+      "Updating musician stage names for user:",
+      userId,
+      "with data:",
+      stageNames
+    );
 
     // Ensure at least one primary name exists
-    const hasPrimary = stageNames.some(sn => sn.isPrimary || sn.usageType === 'primary' || sn.usageType === 'both');
+    const hasPrimary = stageNames.some(
+      (sn) =>
+        sn.isPrimary || sn.usageType === "primary" || sn.usageType === "both"
+    );
     if (!hasPrimary && stageNames.length > 0) {
-      stageNames[0] = { ...stageNames[0], isPrimary: true, usageType: 'primary' };
+      stageNames[0] = {
+        ...stageNames[0],
+        isPrimary: true,
+        usageType: "primary",
+      };
     }
 
     // Process each stage name to set proper usage type
-    const processedStageNames = stageNames.map(sn => ({
+    const processedStageNames = stageNames.map((sn) => ({
       name: sn.name,
-      isPrimary: sn.isPrimary || sn.usageType === 'primary' || sn.usageType === 'both',
-      isForBookings: sn.isForBookings || sn.usageType === 'bookings' || sn.usageType === 'both',
-      usageType: sn.usageType || (sn.isPrimary ? 'primary' : 'bookings')
+      isPrimary:
+        sn.isPrimary || sn.usageType === "primary" || sn.usageType === "both",
+      isForBookings:
+        sn.isForBookings ||
+        sn.usageType === "bookings" ||
+        sn.usageType === "both",
+      usageType: sn.usageType || (sn.isPrimary ? "primary" : "bookings"),
     }));
 
     await db
@@ -2499,14 +3385,17 @@ export class DatabaseStorage implements IStorage {
       .set({ stageNames: processedStageNames })
       .where(eq(musicians.userId, userId));
 
-    console.log('Successfully updated musician stage names');
+    console.log("Successfully updated musician stage names");
     return this.getMusician(userId);
   }
 
   // Duplicate methods removed - keeping proper implementation below
 
   // Update professional profile with specializations and availability
-  async updateProfessional(userId: number, updates: any): Promise<Professional | undefined> {
+  async updateProfessional(
+    userId: number,
+    updates: any
+  ): Promise<Professional | undefined> {
     const [row] = await db
       .insert(professionals)
       .values({
@@ -2526,7 +3415,10 @@ export class DatabaseStorage implements IStorage {
 
   // Global professions management
   async getGlobalProfessions(): Promise<any[]> {
-    const results = await db.select().from(globalProfessions).orderBy(globalProfessions.category, globalProfessions.name);
+    const results = await db
+      .select()
+      .from(globalProfessions)
+      .orderBy(globalProfessions.category, globalProfessions.name);
 
     // Group by category
     const grouped = results.reduce((acc, profession) => {
@@ -2541,22 +3433,34 @@ export class DatabaseStorage implements IStorage {
   }
 
   async createGlobalProfession(profession: any): Promise<any> {
-    const [created] = await db.insert(globalProfessions).values(profession).returning();
+    const [created] = await db
+      .insert(globalProfessions)
+      .values(profession)
+      .returning();
     return created;
   }
 
   // Professional availability management
   async getProfessionalAvailability(userId: number): Promise<any> {
-    const [availability] = await db.select().from(professionalAvailability).where(eq(professionalAvailability.userId, userId));
+    const [availability] = await db
+      .select()
+      .from(professionalAvailability)
+      .where(eq(professionalAvailability.userId, userId));
     return availability || undefined;
   }
 
   async createProfessionalAvailability(availability: any): Promise<any> {
-    const [created] = await db.insert(professionalAvailability).values(availability).returning();
+    const [created] = await db
+      .insert(professionalAvailability)
+      .values(availability)
+      .returning();
     return created;
   }
 
-  async updateProfessionalAvailability(userId: number, updates: any): Promise<any> {
+  async updateProfessionalAvailability(
+    userId: number,
+    updates: any
+  ): Promise<any> {
     const [updated] = await db
       .update(professionalAvailability)
       .set(updates)
@@ -2575,22 +3479,22 @@ export class DatabaseStorage implements IStorage {
   }
 
   async getSongsByArtist(artistUserId: number): Promise<Song[]> {
-    return await db.select().from(songs).where(eq(songs.artistUserId, artistUserId));
+    return await db
+      .select()
+      .from(songs)
+      .where(eq(songs.artistUserId, artistUserId));
   }
 
   async createSong(song: InsertSong): Promise<Song> {
-    const [createdSong] = await db
-      .insert(songs)
-      .values(song)
-      .returning();
+    const [createdSong] = await db.insert(songs).values(song).returning();
     return createdSong;
   }
 
-  async updateSong(id: number, updates: Partial<Song>): Promise<Song | undefined> {
-    await db
-      .update(songs)
-      .set(updates)
-      .where(eq(songs.id, id));
+  async updateSong(
+    id: number,
+    updates: Partial<Song>
+  ): Promise<Song | undefined> {
+    await db.update(songs).set(updates).where(eq(songs.id, id));
     return this.getSong(id);
   }
 
@@ -2609,7 +3513,10 @@ export class DatabaseStorage implements IStorage {
   }
 
   async getAlbumsByArtist(artistUserId: number): Promise<Album[]> {
-    return await db.select().from(albums).where(eq(albums.artistUserId, artistUserId));
+    return await db
+      .select()
+      .from(albums)
+      .where(eq(albums.artistUserId, artistUserId));
   }
 
   async getMerchandiseByArtist(artistUserId: number): Promise<Merchandise[]> {
@@ -2620,14 +3527,14 @@ export class DatabaseStorage implements IStorage {
   }
 
   async createAlbum(album: InsertAlbum): Promise<Album> {
-    const [createdAlbum] = await db
-      .insert(albums)
-      .values(album)
-      .returning();
+    const [createdAlbum] = await db.insert(albums).values(album).returning();
     return createdAlbum;
   }
 
-  async updateAlbum(id: number, updates: Partial<Album>): Promise<Album | undefined> {
+  async updateAlbum(
+    id: number,
+    updates: Partial<Album>
+  ): Promise<Album | undefined> {
     const [updated] = await db
       .update(albums)
       .set(updates)
@@ -2647,10 +3554,15 @@ export class DatabaseStorage implements IStorage {
 
   // Cross-Upsell Relationships implementation
   async getCrossUpsellRelationships(): Promise<CrossUpsellRelationship[]> {
-    return await db.select().from(crossUpsellRelationships).orderBy(desc(crossUpsellRelationships.createdAt));
+    return await db
+      .select()
+      .from(crossUpsellRelationships)
+      .orderBy(desc(crossUpsellRelationships.createdAt));
   }
 
-  async createCrossUpsellRelationship(relationship: InsertCrossUpsellRelationship): Promise<CrossUpsellRelationship> {
+  async createCrossUpsellRelationship(
+    relationship: InsertCrossUpsellRelationship
+  ): Promise<CrossUpsellRelationship> {
     const [created] = await db
       .insert(crossUpsellRelationships)
       .values(relationship)
@@ -2658,24 +3570,35 @@ export class DatabaseStorage implements IStorage {
     return created;
   }
 
-  async getCrossUpsellsBySource(sourceType: string, sourceId: number): Promise<CrossUpsellRelationship[]> {
+  async getCrossUpsellsBySource(
+    sourceType: string,
+    sourceId: number
+  ): Promise<CrossUpsellRelationship[]> {
     return await db
       .select()
       .from(crossUpsellRelationships)
-      .where(and(
-        eq(crossUpsellRelationships.sourceType, sourceType),
-        eq(crossUpsellRelationships.sourceId, sourceId)
-      ));
+      .where(
+        and(
+          eq(crossUpsellRelationships.sourceType, sourceType),
+          eq(crossUpsellRelationships.sourceId, sourceId)
+        )
+      );
   }
 
   async deleteCrossUpsellRelationship(id: number): Promise<boolean> {
-    const result = await db.delete(crossUpsellRelationships).where(eq(crossUpsellRelationships.id, id));
+    const result = await db
+      .delete(crossUpsellRelationships)
+      .where(eq(crossUpsellRelationships.id, id));
     return result.rowCount > 0;
   }
 
   // Videos
   async getVideo(id: number): Promise<Video | undefined> {
-    const result = await db.select().from(videos).where(eq(videos.id, id)).limit(1);
+    const result = await db
+      .select()
+      .from(videos)
+      .where(eq(videos.id, id))
+      .limit(1);
     return result[0];
   }
 
@@ -2684,7 +3607,8 @@ export class DatabaseStorage implements IStorage {
   }
 
   async getVideosByUser(userId: number): Promise<Video[]> {
-    return await db.select()
+    return await db
+      .select()
       .from(videos)
       .where(eq(videos.uploadedByUserId, userId))
       .orderBy(desc(videos.createdAt));
@@ -2695,11 +3619,15 @@ export class DatabaseStorage implements IStorage {
     return result[0];
   }
 
-  async updateVideo(id: number, updates: Partial<Video>): Promise<Video | undefined> {
-    const result = await db.update(videos)
+  async updateVideo(
+    id: number,
+    updates: Partial<Video>
+  ): Promise<Video | undefined> {
+    const result = await db
+      .update(videos)
       .set({
         ...updates,
-        updatedAt: new Date()
+        updatedAt: new Date(),
       })
       .where(eq(videos.id, id))
       .returning();
@@ -2712,17 +3640,17 @@ export class DatabaseStorage implements IStorage {
 
   // Duplicate album methods removed - keeping original implementations
 
-
-
   async getAllMerchandise(): Promise<Merchandise[]> {
     return await db.select().from(merchandise);
   }
 
-  async createMerchandise(merchandiseData: InsertMerchandise): Promise<Merchandise> {
+  async createMerchandise(
+    merchandiseData: InsertMerchandise
+  ): Promise<Merchandise> {
     // Ensure categoryId is set to default if not provided
     const dataWithCategory = {
       ...merchandiseData,
-      categoryId: merchandiseData.categoryId || 1 // Default to "Apparel" category
+      categoryId: merchandiseData.categoryId || 1, // Default to "Apparel" category
     };
 
     const [createdMerchandise] = await db
@@ -2733,12 +3661,18 @@ export class DatabaseStorage implements IStorage {
   }
 
   async getBooking(id: number): Promise<Booking | undefined> {
-    const [booking] = await db.select().from(bookings).where(eq(bookings.id, id));
+    const [booking] = await db
+      .select()
+      .from(bookings)
+      .where(eq(bookings.id, id));
     return booking || undefined;
   }
 
   async getBookingsByUser(userId: number): Promise<Booking[]> {
-    return await db.select().from(bookings).where(eq(bookings.bookerUserId, userId));
+    return await db
+      .select()
+      .from(bookings)
+      .where(eq(bookings.bookerUserId, userId));
   }
 
   async createBooking(booking: InsertBooking): Promise<Booking> {
@@ -2749,19 +3683,19 @@ export class DatabaseStorage implements IStorage {
     return createdBooking;
   }
 
-  async updateBookingStatus(id: number, status: string): Promise<Booking | undefined> {
-    await db
-      .update(bookings)
-      .set({ status })
-      .where(eq(bookings.id, id));
+  async updateBookingStatus(
+    id: number,
+    status: string
+  ): Promise<Booking | undefined> {
+    await db.update(bookings).set({ status }).where(eq(bookings.id, id));
     return this.getBooking(id);
   }
 
-  async updateBooking(id: number, updates: Partial<Booking>): Promise<Booking | undefined> {
-    await db
-      .update(bookings)
-      .set(updates)
-      .where(eq(bookings.id, id));
+  async updateBooking(
+    id: number,
+    updates: Partial<Booking>
+  ): Promise<Booking | undefined> {
+    await db.update(bookings).set(updates).where(eq(bookings.id, id));
     return this.getBooking(id);
   }
 
@@ -2824,7 +3758,7 @@ export class DatabaseStorage implements IStorage {
           guestName: bookings.guestName,
           guestEmail: bookings.guestEmail,
           guestPhone: bookings.guestPhone,
-          
+
           // Artist/Musician/Professional fields
           primaryArtistUserId: bookings.primaryArtistUserId,
           artistStageName: artists.stageName,
@@ -2838,12 +3772,13 @@ export class DatabaseStorage implements IStorage {
           artistManagementTierId: artists.managementTierId,
           artistBookingFormPictureUrl: artists.bookingFormPictureUrl,
           artistIsRegisteredWithPro: artists.isRegisteredWithPro,
-          artistPerformingRightsOrganization: artists.performingRightsOrganization,
+          artistPerformingRightsOrganization:
+            artists.performingRightsOrganization,
           artistIpiNumber: artists.ipiNumber,
           artistPrimaryTalentId: artists.primaryTalentId,
           artistIsDemo: artists.isDemo,
           artistIsComplete: artists.isComplete,
-  
+
           // Workflow + contract/payment
           workflowData: bookings.workflowData,
           currentWorkflowStep: bookings.currentWorkflowStep,
@@ -2854,33 +3789,35 @@ export class DatabaseStorage implements IStorage {
         })
         .from(bookings)
         .leftJoin(artists, eq(bookings.primaryArtistUserId, artists.userId));
-  
+
       // Fetch booking assignments separately
-      const assignments = await db
-        .select()
-        .from(bookingAssignments);
-  
+      const assignments = await db.select().from(bookingAssignments);
+
       // Attach assignments into bookings
-      const enriched = results.map(b => ({
+      const enriched = results.map((b) => ({
         ...b,
-        assignments: assignments.filter(a => a.bookingId === b.id),
+        assignments: assignments.filter((a) => a.bookingId === b.id),
       }));
-  
+
       return enriched;
     } catch (error) {
       console.error("Error fetching bookings with artists:", error);
       return [];
     }
   }
-  
-
 
   async getBookingsByArtist(artistUserId: number): Promise<Booking[]> {
-    return await db.select().from(bookings).where(eq(bookings.primaryArtistUserId, artistUserId));
+    return await db
+      .select()
+      .from(bookings)
+      .where(eq(bookings.primaryArtistUserId, artistUserId));
   }
 
   async getBookingById(bookingId: number): Promise<Booking | undefined> {
-    const [booking] = await db.select().from(bookings).where(eq(bookings.id, bookingId));
+    const [booking] = await db
+      .select()
+      .from(bookings)
+      .where(eq(bookings.id, bookingId));
     return booking;
   }
 
@@ -2894,15 +3831,21 @@ export class DatabaseStorage implements IStorage {
   }
 
   async getEventsByArtist(artistUserId: number): Promise<Event[]> {
-    return await db.select().from(events).where(eq(events.artistUserId, artistUserId));
+    return await db
+      .select()
+      .from(events)
+      .where(eq(events.artistUserId, artistUserId));
   }
 
   async getEventsByUser(userId: number): Promise<Event[]> {
     // Check if events table has bookerUserId column, if not just use artistUserId
     try {
-      return await db.select().from(events).where(eq(events.artistUserId, userId));
+      return await db
+        .select()
+        .from(events)
+        .where(eq(events.artistUserId, userId));
     } catch (error) {
-      console.error('Get events by user error:', error);
+      console.error("Get events by user error:", error);
       return [];
     }
   }
@@ -2912,7 +3855,9 @@ export class DatabaseStorage implements IStorage {
   }
 
   // Recommendation System Implementation
-  async createUserInteraction(interaction: InsertUserInteraction): Promise<UserInteraction> {
+  async createUserInteraction(
+    interaction: InsertUserInteraction
+  ): Promise<UserInteraction> {
     const [created] = await db
       .insert(userInteractions)
       .values(interaction)
@@ -2921,19 +3866,30 @@ export class DatabaseStorage implements IStorage {
   }
 
   async getUserInteractions(userId: number): Promise<UserInteraction[]> {
-    return await db.select().from(userInteractions).where(eq(userInteractions.userId, userId));
+    return await db
+      .select()
+      .from(userInteractions)
+      .where(eq(userInteractions.userId, userId));
   }
 
   async getAllUserInteractions(): Promise<UserInteraction[]> {
     return await db.select().from(userInteractions);
   }
 
-  async getUserPreferences(userId: number): Promise<UserPreferences | undefined> {
-    const [preferences] = await db.select().from(userPreferences).where(eq(userPreferences.userId, userId));
+  async getUserPreferences(
+    userId: number
+  ): Promise<UserPreferences | undefined> {
+    const [preferences] = await db
+      .select()
+      .from(userPreferences)
+      .where(eq(userPreferences.userId, userId));
     return preferences || undefined;
   }
 
-  async updateUserPreferences(userId: number, preferences: Partial<InsertUserPreferences>): Promise<UserPreferences> {
+  async updateUserPreferences(
+    userId: number,
+    preferences: Partial<InsertUserPreferences>
+  ): Promise<UserPreferences> {
     // Check if preferences exist, if not create them
     const existing = await this.getUserPreferences(userId);
 
@@ -2943,15 +3899,15 @@ export class DatabaseStorage implements IStorage {
         .set({ ...preferences, updatedAt: new Date() })
         .where(eq(userPreferences.userId, userId));
     } else {
-      await db
-        .insert(userPreferences)
-        .values({ userId, ...preferences });
+      await db.insert(userPreferences).values({ userId, ...preferences });
     }
 
     return this.getUserPreferences(userId) as Promise<UserPreferences>;
   }
 
-  async createMusicRecommendation(recommendation: InsertMusicRecommendation): Promise<MusicRecommendation> {
+  async createMusicRecommendation(
+    recommendation: InsertMusicRecommendation
+  ): Promise<MusicRecommendation> {
     const [created] = await db
       .insert(musicRecommendations)
       .values(recommendation)
@@ -2959,11 +3915,19 @@ export class DatabaseStorage implements IStorage {
     return created;
   }
 
-  async getUserRecommendations(userId: number, limit: number = 10): Promise<MusicRecommendation[]> {
+  async getUserRecommendations(
+    userId: number,
+    limit: number = 10
+  ): Promise<MusicRecommendation[]> {
     return await db
       .select()
       .from(musicRecommendations)
-      .where(and(eq(musicRecommendations.userId, userId), eq(musicRecommendations.isActive, true)))
+      .where(
+        and(
+          eq(musicRecommendations.userId, userId),
+          eq(musicRecommendations.isActive, true)
+        )
+      )
       .orderBy(desc(musicRecommendations.score))
       .limit(limit);
   }
@@ -2975,10 +3939,14 @@ export class DatabaseStorage implements IStorage {
       .where(eq(musicRecommendations.userId, userId));
   }
 
-  async updateRecommendationEngagement(recommendationId: number, engagementType: 'viewed' | 'clicked'): Promise<void> {
-    const updateData = engagementType === 'viewed'
-      ? { viewedAt: new Date() }
-      : { clickedAt: new Date() };
+  async updateRecommendationEngagement(
+    recommendationId: number,
+    engagementType: "viewed" | "clicked"
+  ): Promise<void> {
+    const updateData =
+      engagementType === "viewed"
+        ? { viewedAt: new Date() }
+        : { clickedAt: new Date() };
 
     await db
       .update(musicRecommendations)
@@ -2986,7 +3954,9 @@ export class DatabaseStorage implements IStorage {
       .where(eq(musicRecommendations.id, recommendationId));
   }
 
-  async createArtistSimilarity(similarity: InsertArtistSimilarity): Promise<ArtistSimilarity> {
+  async createArtistSimilarity(
+    similarity: InsertArtistSimilarity
+  ): Promise<ArtistSimilarity> {
     const [created] = await db
       .insert(artistSimilarities)
       .values(similarity)
@@ -2998,10 +3968,12 @@ export class DatabaseStorage implements IStorage {
     return await db
       .select()
       .from(artistSimilarities)
-      .where(or(
-        eq(artistSimilarities.artistId1, artistId),
-        eq(artistSimilarities.artistId2, artistId)
-      ))
+      .where(
+        or(
+          eq(artistSimilarities.artistId1, artistId),
+          eq(artistSimilarities.artistId2, artistId)
+        )
+      )
       .orderBy(desc(artistSimilarities.similarityScore));
   }
 
@@ -3014,31 +3986,37 @@ export class DatabaseStorage implements IStorage {
     const interactions = await db
       .select({ userId: userInteractions.userId })
       .from(userInteractions)
-      .where(and(
-        eq(userInteractions.artistId, artistId),
-        or(
-          eq(userInteractions.interactionType, 'like'),
-          eq(userInteractions.interactionType, 'play'),
-          eq(userInteractions.interactionType, 'download')
+      .where(
+        and(
+          eq(userInteractions.artistId, artistId),
+          or(
+            eq(userInteractions.interactionType, "like"),
+            eq(userInteractions.interactionType, "play"),
+            eq(userInteractions.interactionType, "download")
+          )
         )
-      ))
+      )
       .groupBy(userInteractions.userId);
 
-    return interactions.map(i => i.userId);
+    return interactions.map((i) => i.userId);
   }
 
-  async incrementTrendingMetric(metric: Partial<InsertTrendingMetric>): Promise<void> {
+  async incrementTrendingMetric(
+    metric: Partial<InsertTrendingMetric>
+  ): Promise<void> {
     // Check if metric exists for today
     const existing = await db
       .select()
       .from(trendingMetrics)
-      .where(and(
-        eq(trendingMetrics.songId, metric.songId || 0),
-        eq(trendingMetrics.artistId, metric.artistId || 0),
-        eq(trendingMetrics.metricType, metric.metricType || ''),
-        eq(trendingMetrics.timeframe, metric.timeframe || ''),
-        eq(trendingMetrics.date, metric.date || new Date())
-      ))
+      .where(
+        and(
+          eq(trendingMetrics.songId, metric.songId || 0),
+          eq(trendingMetrics.artistId, metric.artistId || 0),
+          eq(trendingMetrics.metricType, metric.metricType || ""),
+          eq(trendingMetrics.timeframe, metric.timeframe || ""),
+          eq(trendingMetrics.date, metric.date || new Date())
+        )
+      )
       .limit(1);
 
     if (existing.length > 0) {
@@ -3049,9 +4027,7 @@ export class DatabaseStorage implements IStorage {
         .where(eq(trendingMetrics.id, existing[0].id));
     } else {
       // Create new metric
-      await db
-        .insert(trendingMetrics)
-        .values(metric as InsertTrendingMetric);
+      await db.insert(trendingMetrics).values(metric as InsertTrendingMetric);
     }
   }
 
@@ -3060,24 +4036,26 @@ export class DatabaseStorage implements IStorage {
     const trendingSongIds = await db
       .select({
         songId: trendingMetrics.songId,
-        totalCount: sql<number>`sum(${trendingMetrics.count})`.as('totalCount')
+        totalCount: sql<number>`sum(${trendingMetrics.count})`.as("totalCount"),
       })
       .from(trendingMetrics)
-      .where(and(
-        eq(trendingMetrics.timeframe, timeframe),
-        isNotNull(trendingMetrics.songId)
-      ))
+      .where(
+        and(
+          eq(trendingMetrics.timeframe, timeframe),
+          isNotNull(trendingMetrics.songId)
+        )
+      )
       .groupBy(trendingMetrics.songId)
       .orderBy(desc(sql`sum(${trendingMetrics.count})`))
       .limit(20);
 
     if (trendingSongIds.length === 0) return [];
 
-    const songIds = trendingSongIds.map(t => t.songId!);
+    const songIds = trendingSongIds.map((t) => t.songId!);
     return await db
       .select()
       .from(songs)
-      .where(sql`${songs.id} IN (${songIds.join(',')})`);
+      .where(sql`${songs.id} IN (${songIds.join(",")})`);
   }
 
   async getActiveCrossPromotionCampaigns(): Promise<CrossPromotionCampaign[]> {
@@ -3085,18 +4063,20 @@ export class DatabaseStorage implements IStorage {
     return await db
       .select()
       .from(crossPromotionCampaigns)
-      .where(and(
-        eq(crossPromotionCampaigns.isActive, true),
-        lte(crossPromotionCampaigns.startDate, now),
-        gte(crossPromotionCampaigns.endDate, now)
-      ));
+      .where(
+        and(
+          eq(crossPromotionCampaigns.isActive, true),
+          lte(crossPromotionCampaigns.startDate, now),
+          gte(crossPromotionCampaigns.endDate, now)
+        )
+      );
   }
 
   async incrementCampaignImpressions(campaignId: number): Promise<void> {
     await db
       .update(crossPromotionCampaigns)
       .set({
-        impressions: sql`${crossPromotionCampaigns.impressions} + 1`
+        impressions: sql`${crossPromotionCampaigns.impressions} + 1`,
       })
       .where(eq(crossPromotionCampaigns.id, campaignId));
   }
@@ -3115,7 +4095,7 @@ export class DatabaseStorage implements IStorage {
         isFree: songs.isFree,
         durationSeconds: songs.durationSeconds,
         previewStartSeconds: songs.previewStartSeconds,
-        createdAt: songs.createdAt
+        createdAt: songs.createdAt,
       })
       .from(songs)
       .innerJoin(artists, eq(songs.artistUserId, artists.userId))
@@ -3125,7 +4105,10 @@ export class DatabaseStorage implements IStorage {
   }
 
   async getUserByUsername(username: string): Promise<User | undefined> {
-    const [user] = await db.select().from(users).where(eq(users.email, username));
+    const [user] = await db
+      .select()
+      .from(users)
+      .where(eq(users.email, username));
     return user || undefined;
   }
 
@@ -3134,7 +4117,9 @@ export class DatabaseStorage implements IStorage {
     return await db.select().from(serviceCategories);
   }
 
-  async createServiceCategory(category: InsertServiceCategory): Promise<ServiceCategory> {
+  async createServiceCategory(
+    category: InsertServiceCategory
+  ): Promise<ServiceCategory> {
     const [created] = await db
       .insert(serviceCategories)
       .values(category)
@@ -3147,23 +4132,23 @@ export class DatabaseStorage implements IStorage {
   }
 
   async getService(id: number): Promise<Service | undefined> {
-    const [service] = await db.select().from(services).where(eq(services.id, id));
+    const [service] = await db
+      .select()
+      .from(services)
+      .where(eq(services.id, id));
     return service || undefined;
   }
 
   async createService(service: InsertService): Promise<Service> {
-    const [created] = await db
-      .insert(services)
-      .values(service)
-      .returning();
+    const [created] = await db.insert(services).values(service).returning();
     return created;
   }
 
-  async updateService(id: number, updates: Partial<Service>): Promise<Service | undefined> {
-    await db
-      .update(services)
-      .set(updates)
-      .where(eq(services.id, id));
+  async updateService(
+    id: number,
+    updates: Partial<Service>
+  ): Promise<Service | undefined> {
+    await db.update(services).set(updates).where(eq(services.id, id));
     return this.getService(id);
   }
 
@@ -3187,7 +4172,7 @@ export class DatabaseStorage implements IStorage {
         assignedByUserId: serviceAssignments.assignedByUserId,
         assignedAt: serviceAssignments.assignedAt,
         assignedUserName: users.fullName,
-        serviceName: services.name
+        serviceName: services.name,
       })
       .from(serviceAssignments)
       .leftJoin(users, eq(serviceAssignments.assignedUserId, users.id))
@@ -3197,27 +4182,37 @@ export class DatabaseStorage implements IStorage {
     return assignments as ServiceAssignment[];
   }
 
-  async getServiceAssignmentsByUser(userId: number): Promise<ServiceAssignment[]> {
+  async getServiceAssignmentsByUser(
+    userId: number
+  ): Promise<ServiceAssignment[]> {
     return await db
       .select()
       .from(serviceAssignments)
-      .where(and(
-        eq(serviceAssignments.assignedUserId, userId),
-        eq(serviceAssignments.isActive, true)
-      ));
+      .where(
+        and(
+          eq(serviceAssignments.assignedUserId, userId),
+          eq(serviceAssignments.isActive, true)
+        )
+      );
   }
 
-  async getServiceAssignmentsByService(serviceId: number): Promise<ServiceAssignment[]> {
+  async getServiceAssignmentsByService(
+    serviceId: number
+  ): Promise<ServiceAssignment[]> {
     return await db
       .select()
       .from(serviceAssignments)
-      .where(and(
-        eq(serviceAssignments.serviceId, serviceId),
-        eq(serviceAssignments.isActive, true)
-      ));
+      .where(
+        and(
+          eq(serviceAssignments.serviceId, serviceId),
+          eq(serviceAssignments.isActive, true)
+        )
+      );
   }
 
-  async createServiceAssignment(assignment: InsertServiceAssignment): Promise<ServiceAssignment> {
+  async createServiceAssignment(
+    assignment: InsertServiceAssignment
+  ): Promise<ServiceAssignment> {
     const [created] = await db
       .insert(serviceAssignments)
       .values(assignment)
@@ -3225,7 +4220,10 @@ export class DatabaseStorage implements IStorage {
     return created;
   }
 
-  async updateServiceAssignment(id: number, updates: Partial<ServiceAssignment>): Promise<ServiceAssignment | undefined> {
+  async updateServiceAssignment(
+    id: number,
+    updates: Partial<ServiceAssignment>
+  ): Promise<ServiceAssignment | undefined> {
     await db
       .update(serviceAssignments)
       .set(updates)
@@ -3238,7 +4236,9 @@ export class DatabaseStorage implements IStorage {
     return updated || undefined;
   }
 
-  async getServiceAssignment(id: number): Promise<ServiceAssignment | undefined> {
+  async getServiceAssignment(
+    id: number
+  ): Promise<ServiceAssignment | undefined> {
     const [assignment] = await db
       .select()
       .from(serviceAssignments)
@@ -3246,14 +4246,18 @@ export class DatabaseStorage implements IStorage {
     return assignment || undefined;
   }
 
-  async getServiceAssignmentsByTalent(assignedTalentId: number): Promise<ServiceAssignment[]> {
+  async getServiceAssignmentsByTalent(
+    assignedTalentId: number
+  ): Promise<ServiceAssignment[]> {
     return await db
       .select()
       .from(serviceAssignments)
-      .where(and(
-        eq(serviceAssignments.assignedUserId, assignedTalentId),
-        eq(serviceAssignments.isActive, true)
-      ));
+      .where(
+        and(
+          eq(serviceAssignments.assignedUserId, assignedTalentId),
+          eq(serviceAssignments.isActive, true)
+        )
+      );
   }
 
   async removeServiceAssignment(id: number): Promise<void> {
@@ -3276,10 +4280,12 @@ export class DatabaseStorage implements IStorage {
     return await db
       .select()
       .from(playbackTracks)
-      .where(and(
-        eq(playbackTracks.bookingId, bookingId),
-        eq(playbackTracks.isActive, true)
-      ))
+      .where(
+        and(
+          eq(playbackTracks.bookingId, bookingId),
+          eq(playbackTracks.isActive, true)
+        )
+      )
       .orderBy(playbackTracks.setlistPosition);
   }
 
@@ -3307,10 +4313,7 @@ export class DatabaseStorage implements IStorage {
   }
 
   async createDjAccess(accessData: any): Promise<any> {
-    const [created] = await db
-      .insert(djAccess)
-      .values(accessData)
-      .returning();
+    const [created] = await db.insert(djAccess).values(accessData).returning();
     return created;
   }
 
@@ -3323,10 +4326,7 @@ export class DatabaseStorage implements IStorage {
   }
 
   async updateDjAccess(accessId: number, updates: any): Promise<void> {
-    await db
-      .update(djAccess)
-      .set(updates)
-      .where(eq(djAccess.id, accessId));
+    await db.update(djAccess).set(updates).where(eq(djAccess.id, accessId));
   }
 
   async createPlaybackTrackDownload(downloadData: any): Promise<any> {
@@ -3379,29 +4379,27 @@ export class DatabaseStorage implements IStorage {
   }
 
   async createCurator(curatorData: any): Promise<any> {
-    const [created] = await db
-      .insert(curators)
-      .values(curatorData)
-      .returning();
+    const [created] = await db.insert(curators).values(curatorData).returning();
     return created;
   }
 
   async updateCurator(curatorId: number, updates: any): Promise<void> {
-    await db
-      .update(curators)
-      .set(updates)
-      .where(eq(curators.id, curatorId));
+    await db.update(curators).set(updates).where(eq(curators.id, curatorId));
   }
 
   async getCuratorsByGenres(genres: string[]): Promise<any[]> {
     return await db
       .select()
       .from(curators)
-      .where(and(
-        eq(curators.isActive, true),
-        // Using raw SQL for JSONB array overlap check
-        sql`${curators.genres} ?| array[${genres.map(g => `'${g}'`).join(',')}]`
-      ))
+      .where(
+        and(
+          eq(curators.isActive, true),
+          // Using raw SQL for JSONB array overlap check
+          sql`${curators.genres} ?| array[${genres
+            .map((g) => `'${g}'`)
+            .join(",")}]`
+        )
+      )
       .orderBy(curators.influenceScore);
   }
 
@@ -3413,7 +4411,11 @@ export class DatabaseStorage implements IStorage {
     return created;
   }
 
-  async getCuratorSubmissions(filters?: { songId?: number; albumId?: number; curatorId?: number }): Promise<any[]> {
+  async getCuratorSubmissions(filters?: {
+    songId?: number;
+    albumId?: number;
+    curatorId?: number;
+  }): Promise<any[]> {
     let query = db
       .select({
         id: curatorSubmissions.id,
@@ -3433,7 +4435,7 @@ export class DatabaseStorage implements IStorage {
         // Include curator information
         curatorName: curators.name,
         curatorEmail: curators.email,
-        curatorOrganization: curators.organization
+        curatorOrganization: curators.organization,
       })
       .from(curatorSubmissions)
       .leftJoin(curators, eq(curatorSubmissions.curatorId, curators.id));
@@ -3457,7 +4459,10 @@ export class DatabaseStorage implements IStorage {
     return await query.orderBy(curatorSubmissions.submissionDate);
   }
 
-  async updateCuratorSubmission(submissionId: number, updates: any): Promise<void> {
+  async updateCuratorSubmission(
+    submissionId: number,
+    updates: any
+  ): Promise<void> {
     await db
       .update(curatorSubmissions)
       .set(updates)
@@ -3479,7 +4484,10 @@ export class DatabaseStorage implements IStorage {
       .orderBy(curatorEmailCampaigns.createdAt);
   }
 
-  async updateCuratorEmailCampaign(campaignId: number, updates: any): Promise<void> {
+  async updateCuratorEmailCampaign(
+    campaignId: number,
+    updates: any
+  ): Promise<void> {
     await db
       .update(curatorEmailCampaigns)
       .set(updates)
@@ -3503,19 +4511,19 @@ export class DatabaseStorage implements IStorage {
         objective.objectiveType,
         objective.title,
         objective.description,
-        objective.priority || 'medium',
+        objective.priority || "medium",
         objective.targetDeadline,
         objective.assignedTo,
-        objective.status || 'planning',
+        objective.status || "planning",
         objective.confidential !== false,
         objective.createdBy,
         JSON.stringify(objective.tags || []),
-        JSON.stringify(objective.relatedProfessionals || [])
+        JSON.stringify(objective.relatedProfessionals || []),
       ]);
 
       return result.rows[0];
     } catch (error) {
-      console.error('Error creating internal objective:', error);
+      console.error("Error creating internal objective:", error);
       throw error;
     }
   }
@@ -3531,12 +4539,15 @@ export class DatabaseStorage implements IStorage {
       const result = await pool.query(sql, [bookingId]);
       return result.rows;
     } catch (error) {
-      console.error('Error fetching internal objectives:', error);
+      console.error("Error fetching internal objectives:", error);
       return [];
     }
   }
 
-  async updateInternalObjectiveStatus(objectiveId: number, status: string): Promise<any> {
+  async updateInternalObjectiveStatus(
+    objectiveId: number,
+    status: string
+  ): Promise<any> {
     try {
       const sql = `
         UPDATE internal_booking_objectives 
@@ -3548,7 +4559,7 @@ export class DatabaseStorage implements IStorage {
       const result = await pool.query(sql, [status, objectiveId]);
       return result.rows[0];
     } catch (error) {
-      console.error('Error updating objective status:', error);
+      console.error("Error updating objective status:", error);
       throw error;
     }
   }
@@ -3571,12 +4582,12 @@ export class DatabaseStorage implements IStorage {
         JSON.stringify(assignment.internalObjectives || []),
         JSON.stringify(assignment.equipmentRequired || []),
         assignment.budget || 0,
-        assignment.status || 'pending'
+        assignment.status || "pending",
       ]);
 
       return result.rows[0];
     } catch (error) {
-      console.error('Error creating professional assignment:', error);
+      console.error("Error creating professional assignment:", error);
       throw error;
     }
   }
@@ -3592,7 +4603,7 @@ export class DatabaseStorage implements IStorage {
       const result = await pool.query(sql, [professionalUserId]);
       return result.rows;
     } catch (error) {
-      console.error('Error fetching professional equipment:', error);
+      console.error("Error fetching professional equipment:", error);
       return [];
     }
   }
@@ -3609,18 +4620,34 @@ export class DatabaseStorage implements IStorage {
       const result = await pool.query(sql, [
         project.bookingId,
         project.projectName,
-        JSON.stringify(project.professionals?.photographerId ? [project.professionals.photographerId] : []),
-        JSON.stringify(project.professionals?.videographerId ? [project.professionals.videographerId] : []),
-        JSON.stringify(project.professionals?.marketingSpecialistId ? [project.professionals.marketingSpecialistId] : []),
-        JSON.stringify(project.professionals?.socialMediaSpecialistId ? [project.professionals.socialMediaSpecialistId] : []),
+        JSON.stringify(
+          project.professionals?.photographerId
+            ? [project.professionals.photographerId]
+            : []
+        ),
+        JSON.stringify(
+          project.professionals?.videographerId
+            ? [project.professionals.videographerId]
+            : []
+        ),
+        JSON.stringify(
+          project.professionals?.marketingSpecialistId
+            ? [project.professionals.marketingSpecialistId]
+            : []
+        ),
+        JSON.stringify(
+          project.professionals?.socialMediaSpecialistId
+            ? [project.professionals.socialMediaSpecialistId]
+            : []
+        ),
         JSON.stringify(project.projectTimeline || {}),
         JSON.stringify(project.deliverables || []),
-        JSON.stringify(project.budget || {})
+        JSON.stringify(project.budget || {}),
       ]);
 
       return result.rows[0];
     } catch (error) {
-      console.error('Error creating cross-platform project:', error);
+      console.error("Error creating cross-platform project:", error);
       throw error;
     }
   }
@@ -3640,12 +4667,12 @@ export class DatabaseStorage implements IStorage {
         equipment.brand,
         equipment.model,
         JSON.stringify(equipment.specifications || {}),
-        equipment.condition || 'good'
+        equipment.condition || "good",
       ]);
 
       return result.rows[0];
     } catch (error) {
-      console.error('Error adding professional equipment:', error);
+      console.error("Error adding professional equipment:", error);
       throw error;
     }
   }
@@ -3662,7 +4689,11 @@ export class DatabaseStorage implements IStorage {
       const monthlyProfessionalServices = 50000; // Professional services revenue
       const monthlySplitsheetRevenue = 1000; // Splitsheet services
 
-      const monthlyTotal = monthlyBookingRevenue + monthlySubscriptionRevenue + monthlyProfessionalServices + monthlySplitsheetRevenue;
+      const monthlyTotal =
+        monthlyBookingRevenue +
+        monthlySubscriptionRevenue +
+        monthlyProfessionalServices +
+        monthlySplitsheetRevenue;
       const annualTotal = monthlyTotal * 12;
 
       return {
@@ -3673,11 +4704,11 @@ export class DatabaseStorage implements IStorage {
           bookings: monthlyBookingRevenue * 12,
           subscriptions: monthlySubscriptionRevenue * 12,
           professionalServices: monthlyProfessionalServices * 12,
-          splitsheets: monthlySplitsheetRevenue * 12
-        }
+          splitsheets: monthlySplitsheetRevenue * 12,
+        },
       };
     } catch (error) {
-      console.error('Error calculating revenue projections:', error);
+      console.error("Error calculating revenue projections:", error);
       return { monthly: 0, annual: 0, targetProgress: 0, breakdown: {} };
     }
   }
@@ -3686,22 +4717,29 @@ export class DatabaseStorage implements IStorage {
     return await db
       .select()
       .from(userServices)
-      .where(and(
-        eq(userServices.userId, userId),
-        eq(userServices.isActive, true)
-      ));
+      .where(
+        and(eq(userServices.userId, userId), eq(userServices.isActive, true))
+      );
   }
 
   async getAllUserServices(): Promise<UserService[]> {
-    return await db.select().from(userServices).where(eq(userServices.isActive, true));
+    return await db
+      .select()
+      .from(userServices)
+      .where(eq(userServices.isActive, true));
   }
 
   async getUserService(id: number): Promise<UserService | undefined> {
-    const [service] = await db.select().from(userServices).where(eq(userServices.id, id));
+    const [service] = await db
+      .select()
+      .from(userServices)
+      .where(eq(userServices.id, id));
     return service || undefined;
   }
 
-  async createUserService(userService: InsertUserService): Promise<UserService> {
+  async createUserService(
+    userService: InsertUserService
+  ): Promise<UserService> {
     const [created] = await db
       .insert(userServices)
       .values(userService)
@@ -3709,11 +4747,11 @@ export class DatabaseStorage implements IStorage {
     return created;
   }
 
-  async updateUserService(id: number, updates: Partial<UserService>): Promise<UserService | undefined> {
-    await db
-      .update(userServices)
-      .set(updates)
-      .where(eq(userServices.id, id));
+  async updateUserService(
+    id: number,
+    updates: Partial<UserService>
+  ): Promise<UserService | undefined> {
+    await db.update(userServices).set(updates).where(eq(userServices.id, id));
     return this.getUserService(id);
   }
 
@@ -3727,7 +4765,10 @@ export class DatabaseStorage implements IStorage {
 
   // Cart functionality for media player upselling
   async getCartItems(userId: number): Promise<CartItem[]> {
-    return await db.select().from(cartItems).where(eq(cartItems.userId, userId));
+    return await db
+      .select()
+      .from(cartItems)
+      .where(eq(cartItems.userId, userId));
   }
 
   async addToCart(cartItem: InsertCartItem): Promise<CartItem> {
@@ -3736,9 +4777,9 @@ export class DatabaseStorage implements IStorage {
   }
 
   async removeFromCart(userId: number, itemId: number): Promise<void> {
-    await db.delete(cartItems).where(
-      and(eq(cartItems.userId, userId), eq(cartItems.id, itemId))
-    );
+    await db
+      .delete(cartItems)
+      .where(and(eq(cartItems.userId, userId), eq(cartItems.id, itemId)));
   }
 
   async clearCart(userId: number): Promise<void> {
@@ -3747,50 +4788,89 @@ export class DatabaseStorage implements IStorage {
 
   // Professional booking assignment methods
   async createBookingProfessionalAssignment(assignment: any): Promise<any> {
-    const [result] = await db.insert(bookingProfessionalAssignments).values(assignment).returning();
+    const [result] = await db
+      .insert(bookingProfessionalAssignments)
+      .values(assignment)
+      .returning();
     return result;
   }
 
   async getBookingProfessionalAssignments(bookingId: number): Promise<any[]> {
-    return await db.select().from(bookingProfessionalAssignments).where(eq(bookingProfessionalAssignments.bookingId, bookingId));
+    return await db
+      .select()
+      .from(bookingProfessionalAssignments)
+      .where(eq(bookingProfessionalAssignments.bookingId, bookingId));
   }
 
-  async updateBookingProfessionalAssignment(id: number, updates: any): Promise<any> {
-    const [result] = await db.update(bookingProfessionalAssignments).set(updates).where(eq(bookingProfessionalAssignments.id, id)).returning();
+  async updateBookingProfessionalAssignment(
+    id: number,
+    updates: any
+  ): Promise<any> {
+    const [result] = await db
+      .update(bookingProfessionalAssignments)
+      .set(updates)
+      .where(eq(bookingProfessionalAssignments.id, id))
+      .returning();
     return result;
   }
 
   async deleteBookingProfessionalAssignment(id: number): Promise<void> {
-    await db.delete(bookingProfessionalAssignments).where(eq(bookingProfessionalAssignments.id, id));
+    await db
+      .delete(bookingProfessionalAssignments)
+      .where(eq(bookingProfessionalAssignments.id, id));
   }
 
   // OppHub professional guidance methods
   async createOppHubProfessionalGuidance(guidance: any): Promise<any> {
-    const [result] = await db.insert(oppHubProfessionalGuidance).values(guidance).returning();
+    const [result] = await db
+      .insert(oppHubProfessionalGuidance)
+      .values(guidance)
+      .returning();
     return result;
   }
 
   async getOppHubProfessionalGuidance(assignmentId: number): Promise<any> {
-    const [result] = await db.select().from(oppHubProfessionalGuidance).where(eq(oppHubProfessionalGuidance.assignmentId, assignmentId));
+    const [result] = await db
+      .select()
+      .from(oppHubProfessionalGuidance)
+      .where(eq(oppHubProfessionalGuidance.assignmentId, assignmentId));
     return result;
   }
 
-  async updateOppHubProfessionalGuidance(id: number, updates: any): Promise<any> {
-    const [result] = await db.update(oppHubProfessionalGuidance).set(updates).where(eq(oppHubProfessionalGuidance.id, id)).returning();
+  async updateOppHubProfessionalGuidance(
+    id: number,
+    updates: any
+  ): Promise<any> {
+    const [result] = await db
+      .update(oppHubProfessionalGuidance)
+      .set(updates)
+      .where(eq(oppHubProfessionalGuidance.id, id))
+      .returning();
     return result;
   }
 
-  async getServiceReviews(serviceId?: number, userServiceId?: number): Promise<ServiceReview[]> {
+  async getServiceReviews(
+    serviceId?: number,
+    userServiceId?: number
+  ): Promise<ServiceReview[]> {
     if (serviceId) {
-      return await db.select().from(serviceReviews).where(eq(serviceReviews.serviceId, serviceId));
+      return await db
+        .select()
+        .from(serviceReviews)
+        .where(eq(serviceReviews.serviceId, serviceId));
     } else if (userServiceId) {
-      return await db.select().from(serviceReviews).where(eq(serviceReviews.userServiceId, userServiceId));
+      return await db
+        .select()
+        .from(serviceReviews)
+        .where(eq(serviceReviews.userServiceId, userServiceId));
     }
 
     return await db.select().from(serviceReviews);
   }
 
-  async createServiceReview(review: InsertServiceReview): Promise<ServiceReview> {
+  async createServiceReview(
+    review: InsertServiceReview
+  ): Promise<ServiceReview> {
     const [created] = await db
       .insert(serviceReviews)
       .values(review)
@@ -3800,31 +4880,37 @@ export class DatabaseStorage implements IStorage {
 
   // Currency management methods
   async getCurrencies(): Promise<Currency[]> {
-    return await db.select().from(currencies).where(eq(currencies.isActive, true));
+    return await db
+      .select()
+      .from(currencies)
+      .where(eq(currencies.isActive, true));
   }
 
   async getCurrency(code: string): Promise<Currency | undefined> {
-    const [currency] = await db.select().from(currencies).where(eq(currencies.code, code));
+    const [currency] = await db
+      .select()
+      .from(currencies)
+      .where(eq(currencies.code, code));
     return currency || undefined;
   }
 
   async createCurrency(currency: InsertCurrency): Promise<Currency> {
-    const [created] = await db
-      .insert(currencies)
-      .values(currency)
-      .returning();
+    const [created] = await db.insert(currencies).values(currency).returning();
     return created;
   }
 
-  async updateCurrency(code: string, updates: Partial<Currency>): Promise<Currency | undefined> {
-    await db
-      .update(currencies)
-      .set(updates)
-      .where(eq(currencies.code, code));
+  async updateCurrency(
+    code: string,
+    updates: Partial<Currency>
+  ): Promise<Currency | undefined> {
+    await db.update(currencies).set(updates).where(eq(currencies.code, code));
     return this.getCurrency(code);
   }
 
-  async updateCurrencyRate(code: string, rate: number): Promise<Currency | undefined> {
+  async updateCurrencyRate(
+    code: string,
+    rate: number
+  ): Promise<Currency | undefined> {
     await db
       .update(currencies)
       .set({ rate: rate.toString(), lastUpdated: new Date() })
@@ -3846,25 +4932,21 @@ export class DatabaseStorage implements IStorage {
     return await db
       .select()
       .from(bundles)
-      .where(and(
-        eq(bundles.artistUserId, artistUserId),
-        eq(bundles.isActive, true)
-      ));
+      .where(
+        and(eq(bundles.artistUserId, artistUserId), eq(bundles.isActive, true))
+      );
   }
 
   async createBundle(bundle: InsertBundle): Promise<Bundle> {
-    const [created] = await db
-      .insert(bundles)
-      .values(bundle)
-      .returning();
+    const [created] = await db.insert(bundles).values(bundle).returning();
     return created;
   }
 
-  async updateBundle(id: number, updates: Partial<Bundle>): Promise<Bundle | undefined> {
-    await db
-      .update(bundles)
-      .set(updates)
-      .where(eq(bundles.id, id));
+  async updateBundle(
+    id: number,
+    updates: Partial<Bundle>
+  ): Promise<Bundle | undefined> {
+    await db.update(bundles).set(updates).where(eq(bundles.id, id));
     return this.getBundle(id);
   }
 
@@ -3877,17 +4959,12 @@ export class DatabaseStorage implements IStorage {
   }
 
   async createBundleItem(item: InsertBundleItem): Promise<BundleItem> {
-    const [created] = await db
-      .insert(bundleItems)
-      .values(item)
-      .returning();
+    const [created] = await db.insert(bundleItems).values(item).returning();
     return created;
   }
 
   async deleteBundleItem(id: number): Promise<void> {
-    await db
-      .delete(bundleItems)
-      .where(eq(bundleItems.id, id));
+    await db.delete(bundleItems).where(eq(bundleItems.id, id));
   }
 
   // Discount conditions methods
@@ -3895,13 +4972,17 @@ export class DatabaseStorage implements IStorage {
     return await db
       .select()
       .from(discountConditions)
-      .where(and(
-        eq(discountConditions.bundleId, bundleId),
-        eq(discountConditions.isActive, true)
-      ));
+      .where(
+        and(
+          eq(discountConditions.bundleId, bundleId),
+          eq(discountConditions.isActive, true)
+        )
+      );
   }
 
-  async createDiscountCondition(condition: InsertDiscountCondition): Promise<DiscountCondition> {
+  async createDiscountCondition(
+    condition: InsertDiscountCondition
+  ): Promise<DiscountCondition> {
     const [created] = await db
       .insert(discountConditions)
       .values(condition)
@@ -3909,7 +4990,10 @@ export class DatabaseStorage implements IStorage {
     return created;
   }
 
-  async updateDiscountCondition(id: number, updates: Partial<DiscountCondition>): Promise<DiscountCondition | undefined> {
+  async updateDiscountCondition(
+    id: number,
+    updates: Partial<DiscountCondition>
+  ): Promise<DiscountCondition | undefined> {
     await db
       .update(discountConditions)
       .set(updates)
@@ -3922,7 +5006,10 @@ export class DatabaseStorage implements IStorage {
     return updated || undefined;
   }
 
-  async validateDiscountCondition(conditionId: number, userValue: string): Promise<boolean> {
+  async validateDiscountCondition(
+    conditionId: number,
+    userValue: string
+  ): Promise<boolean> {
     const [condition] = await db
       .select()
       .from(discountConditions)
@@ -3932,34 +5019,41 @@ export class DatabaseStorage implements IStorage {
 
     // Check if within valid date range
     const now = new Date();
-    if (condition.validFrom && new Date(condition.validFrom) > now) return false;
-    if (condition.validUntil && new Date(condition.validUntil) < now) return false;
+    if (condition.validFrom && new Date(condition.validFrom) > now)
+      return false;
+    if (condition.validUntil && new Date(condition.validUntil) < now)
+      return false;
 
     // Check usage limit
-    if (condition.usageLimit && condition.currentUsage >= condition.usageLimit) return false;
+    if (condition.usageLimit && condition.currentUsage >= condition.usageLimit)
+      return false;
 
     // Validate condition based on type
     switch (condition.conditionType) {
-      case 'ticket_id':
+      case "ticket_id":
         // Check if user has valid ticket with this ID
         const engagement = await db
           .select()
           .from(fanEngagement)
-          .where(and(
-            eq(fanEngagement.engagementType, 'show_attendance'),
-            eq(fanEngagement.engagementValue, userValue)
-          ));
+          .where(
+            and(
+              eq(fanEngagement.engagementType, "show_attendance"),
+              eq(fanEngagement.engagementValue, userValue)
+            )
+          );
         return engagement.length > 0;
 
-      case 'ppv_code':
+      case "ppv_code":
         // Check if user has valid PPV code
         const ppvEngagement = await db
           .select()
           .from(fanEngagement)
-          .where(and(
-            eq(fanEngagement.engagementType, 'ppv_view'),
-            eq(fanEngagement.engagementValue, userValue)
-          ));
+          .where(
+            and(
+              eq(fanEngagement.engagementType, "ppv_view"),
+              eq(fanEngagement.engagementValue, userValue)
+            )
+          );
         return ppvEngagement.length > 0;
 
       default:
@@ -3984,7 +5078,9 @@ export class DatabaseStorage implements IStorage {
     return currency || undefined;
   }
 
-  async createStoreCurrency(currency: InsertStoreCurrency): Promise<StoreCurrency> {
+  async createStoreCurrency(
+    currency: InsertStoreCurrency
+  ): Promise<StoreCurrency> {
     const [created] = await db
       .insert(storeCurrencies)
       .values(currency)
@@ -3992,7 +5088,10 @@ export class DatabaseStorage implements IStorage {
     return created;
   }
 
-  async updateStoreCurrency(id: number, updates: Partial<StoreCurrency>): Promise<StoreCurrency | undefined> {
+  async updateStoreCurrency(
+    id: number,
+    updates: Partial<StoreCurrency>
+  ): Promise<StoreCurrency | undefined> {
     await db
       .update(storeCurrencies)
       .set({ ...updates, lastUpdated: new Date() })
@@ -4006,7 +5105,9 @@ export class DatabaseStorage implements IStorage {
   }
 
   // Fan engagement methods
-  async createFanEngagement(engagement: InsertFanEngagement): Promise<FanEngagement> {
+  async createFanEngagement(
+    engagement: InsertFanEngagement
+  ): Promise<FanEngagement> {
     const [created] = await db
       .insert(fanEngagement)
       .values(engagement)
@@ -4014,19 +5115,26 @@ export class DatabaseStorage implements IStorage {
     return created;
   }
 
-  async getFanEngagement(userId: number, artistUserId: number): Promise<FanEngagement[]> {
+  async getFanEngagement(
+    userId: number,
+    artistUserId: number
+  ): Promise<FanEngagement[]> {
     return await db
       .select()
       .from(fanEngagement)
-      .where(and(
-        eq(fanEngagement.userId, userId),
-        eq(fanEngagement.artistUserId, artistUserId)
-      ))
+      .where(
+        and(
+          eq(fanEngagement.userId, userId),
+          eq(fanEngagement.artistUserId, artistUserId)
+        )
+      )
       .orderBy(desc(fanEngagement.engagementDate));
   }
 
   // Assignment management methods
-  async createAdminAssignment(assignment: InsertAdminAssignment): Promise<AdminAssignment> {
+  async createAdminAssignment(
+    assignment: InsertAdminAssignment
+  ): Promise<AdminAssignment> {
     const [created] = await db
       .insert(adminAssignments)
       .values(assignment)
@@ -4035,13 +5143,13 @@ export class DatabaseStorage implements IStorage {
     // Enrich with user names immediately
     const [adminUser, managedUser] = await Promise.all([
       this.getUser(assignment.adminUserId),
-      this.getUser(assignment.managedUserId)
+      this.getUser(assignment.managedUserId),
     ]);
 
     return {
       ...created,
-      adminName: adminUser?.fullName || 'Unknown Admin',
-      managedUserName: managedUser?.fullName || 'Unknown User'
+      adminName: adminUser?.fullName || "Unknown Admin",
+      managedUserName: managedUser?.fullName || "Unknown User",
     };
   }
 
@@ -4052,7 +5160,9 @@ export class DatabaseStorage implements IStorage {
       .where(eq(adminAssignments.isActive, true));
 
     if (adminUserId) {
-      baseQuery = baseQuery.where(eq(adminAssignments.adminUserId, adminUserId));
+      baseQuery = baseQuery.where(
+        eq(adminAssignments.adminUserId, adminUserId)
+      );
     }
 
     const assignments = await baseQuery;
@@ -4062,13 +5172,13 @@ export class DatabaseStorage implements IStorage {
       assignments.map(async (assignment) => {
         const [adminUser, managedUser] = await Promise.all([
           this.getUser(assignment.adminUserId),
-          this.getUser(assignment.managedUserId)
+          this.getUser(assignment.managedUserId),
         ]);
 
         return {
           ...assignment,
-          adminName: adminUser?.fullName || 'Unknown Admin',
-          managedUserName: managedUser?.fullName || 'Unknown User'
+          adminName: adminUser?.fullName || "Unknown Admin",
+          managedUserName: managedUser?.fullName || "Unknown User",
         };
       })
     );
@@ -4086,17 +5196,20 @@ export class DatabaseStorage implements IStorage {
 
     const [adminUser, managedUser] = await Promise.all([
       this.getUser(assignment.adminUserId),
-      this.getUser(assignment.managedUserId)
+      this.getUser(assignment.managedUserId),
     ]);
 
     return {
       ...assignment,
-      adminName: adminUser?.fullName || 'Unknown Admin',
-      managedUserName: managedUser?.fullName || 'Unknown User'
+      adminName: adminUser?.fullName || "Unknown Admin",
+      managedUserName: managedUser?.fullName || "Unknown User",
     };
   }
 
-  async updateAdminAssignment(id: number, updates: Partial<AdminAssignment>): Promise<AdminAssignment | undefined> {
+  async updateAdminAssignment(
+    id: number,
+    updates: Partial<AdminAssignment>
+  ): Promise<AdminAssignment | undefined> {
     await db
       .update(adminAssignments)
       .set(updates)
@@ -4111,7 +5224,9 @@ export class DatabaseStorage implements IStorage {
       .where(eq(adminAssignments.id, id));
   }
 
-  async createBookingAssignment(assignment: InsertBookingAssignment): Promise<BookingAssignment> {
+  async createBookingAssignment(
+    assignment: InsertBookingAssignment
+  ): Promise<BookingAssignment> {
     const [created] = await db
       .insert(bookingAssignments)
       .values(assignment)
@@ -4121,11 +5236,13 @@ export class DatabaseStorage implements IStorage {
     const assignedUser = await this.getUser(assignment.assignedUserId);
     return {
       ...created,
-      assignedUserName: assignedUser?.fullName || 'Unknown User'
+      assignedUserName: assignedUser?.fullName || "Unknown User",
     };
   }
 
-  async getBookingAssignments(bookingId?: number): Promise<BookingAssignment[]> {
+  async getBookingAssignments(
+    bookingId?: number
+  ): Promise<BookingAssignment[]> {
     let baseQuery = db
       .select()
       .from(bookingAssignments)
@@ -4144,7 +5261,7 @@ export class DatabaseStorage implements IStorage {
 
         return {
           ...assignment,
-          assignedUserName: assignedUser?.fullName || 'Unknown User'
+          assignedUserName: assignedUser?.fullName || "Unknown User",
         };
       })
     );
@@ -4152,14 +5269,18 @@ export class DatabaseStorage implements IStorage {
     return enrichedAssignments;
   }
 
-  async getBookingAssignmentsByBooking(bookingId: number): Promise<BookingAssignment[]> {
+  async getBookingAssignmentsByBooking(
+    bookingId: number
+  ): Promise<BookingAssignment[]> {
     const assignments = await db
       .select()
       .from(bookingAssignments)
-      .where(and(
-        eq(bookingAssignments.bookingId, bookingId),
-        eq(bookingAssignments.isActive, true)
-      ));
+      .where(
+        and(
+          eq(bookingAssignments.bookingId, bookingId),
+          eq(bookingAssignments.isActive, true)
+        )
+      );
 
     const enrichedAssignments = await Promise.all(
       assignments.map(async (assignment) => {
@@ -4167,7 +5288,7 @@ export class DatabaseStorage implements IStorage {
 
         return {
           ...assignment,
-          assignedUserName: assignedUser?.fullName || 'Unknown User'
+          assignedUserName: assignedUser?.fullName || "Unknown User",
         };
       })
     );
@@ -4175,7 +5296,9 @@ export class DatabaseStorage implements IStorage {
     return enrichedAssignments;
   }
 
-  async getBookingAssignment(id: number): Promise<BookingAssignment | undefined> {
+  async getBookingAssignment(
+    id: number
+  ): Promise<BookingAssignment | undefined> {
     const [assignment] = await db
       .select()
       .from(bookingAssignments)
@@ -4187,11 +5310,14 @@ export class DatabaseStorage implements IStorage {
 
     return {
       ...assignment,
-      assignedUserName: assignedUser?.fullName || 'Unknown User'
+      assignedUserName: assignedUser?.fullName || "Unknown User",
     };
   }
 
-  async updateBookingAssignment(id: number, updates: Partial<BookingAssignment>): Promise<BookingAssignment | undefined> {
+  async updateBookingAssignment(
+    id: number,
+    updates: Partial<BookingAssignment>
+  ): Promise<BookingAssignment | undefined> {
     await db
       .update(bookingAssignments)
       .set(updates)
@@ -4206,7 +5332,9 @@ export class DatabaseStorage implements IStorage {
       .where(eq(bookingAssignments.id, id));
   }
 
-  async createArtistMusicianAssignment(assignment: InsertArtistMusicianAssignment): Promise<ArtistMusicianAssignment> {
+  async createArtistMusicianAssignment(
+    assignment: InsertArtistMusicianAssignment
+  ): Promise<ArtistMusicianAssignment> {
     const [created] = await db
       .insert(artistMusicianAssignments)
       .values(assignment)
@@ -4215,24 +5343,28 @@ export class DatabaseStorage implements IStorage {
     // Enrich with user names immediately
     const [talentUser, assigneeUser] = await Promise.all([
       this.getUser(assignment.managedTalentId),
-      this.getUser(assignment.assigneeId)
+      this.getUser(assignment.assigneeId),
     ]);
 
     return {
       ...created,
-      talentName: talentUser?.fullName || 'Unknown Talent',
-      assigneeName: assigneeUser?.fullName || 'Unknown Assignee'
+      talentName: talentUser?.fullName || "Unknown Talent",
+      assigneeName: assigneeUser?.fullName || "Unknown Assignee",
     };
   }
 
-  async getArtistMusicianAssignments(artistUserId?: number): Promise<ArtistMusicianAssignment[]> {
+  async getArtistMusicianAssignments(
+    artistUserId?: number
+  ): Promise<ArtistMusicianAssignment[]> {
     let baseQuery = db
       .select()
       .from(artistMusicianAssignments)
       .where(eq(artistMusicianAssignments.isActive, true));
 
     if (artistUserId) {
-      baseQuery = baseQuery.where(eq(artistMusicianAssignments.artistUserId, artistUserId));
+      baseQuery = baseQuery.where(
+        eq(artistMusicianAssignments.artistUserId, artistUserId)
+      );
     }
 
     const assignments = await baseQuery;
@@ -4242,13 +5374,13 @@ export class DatabaseStorage implements IStorage {
       assignments.map(async (assignment) => {
         const [artistUser, musicianUser] = await Promise.all([
           this.getUser(assignment.artistUserId),
-          this.getUser(assignment.musicianUserId)
+          this.getUser(assignment.musicianUserId),
         ]);
 
         return {
           ...assignment,
-          artistName: artistUser?.fullName || 'Unknown Artist',
-          musicianName: musicianUser?.fullName || 'Unknown Musician'
+          artistName: artistUser?.fullName || "Unknown Artist",
+          musicianName: musicianUser?.fullName || "Unknown Musician",
         };
       })
     );
@@ -4256,26 +5388,30 @@ export class DatabaseStorage implements IStorage {
     return enrichedAssignments;
   }
 
-  async getArtistMusicianAssignmentsByTalent(managedTalentId: number): Promise<ArtistMusicianAssignment[]> {
+  async getArtistMusicianAssignmentsByTalent(
+    managedTalentId: number
+  ): Promise<ArtistMusicianAssignment[]> {
     const assignments = await db
       .select()
       .from(artistMusicianAssignments)
-      .where(and(
-        eq(artistMusicianAssignments.managedTalentId, managedTalentId),
-        eq(artistMusicianAssignments.isActive, true)
-      ));
+      .where(
+        and(
+          eq(artistMusicianAssignments.managedTalentId, managedTalentId),
+          eq(artistMusicianAssignments.isActive, true)
+        )
+      );
 
     const enrichedAssignments = await Promise.all(
       assignments.map(async (assignment) => {
         const [talentUser, assigneeUser] = await Promise.all([
           this.getUser(assignment.managedTalentId),
-          this.getUser(assignment.assigneeId)
+          this.getUser(assignment.assigneeId),
         ]);
 
         return {
           ...assignment,
-          talentName: talentUser?.fullName || 'Unknown Talent',
-          assigneeName: assigneeUser?.fullName || 'Unknown Assignee'
+          talentName: talentUser?.fullName || "Unknown Talent",
+          assigneeName: assigneeUser?.fullName || "Unknown Assignee",
         };
       })
     );
@@ -4283,26 +5419,30 @@ export class DatabaseStorage implements IStorage {
     return enrichedAssignments;
   }
 
-  async getArtistMusicianAssignmentsByAssignee(assigneeId: number): Promise<ArtistMusicianAssignment[]> {
+  async getArtistMusicianAssignmentsByAssignee(
+    assigneeId: number
+  ): Promise<ArtistMusicianAssignment[]> {
     const assignments = await db
       .select()
       .from(artistMusicianAssignments)
-      .where(and(
-        eq(artistMusicianAssignments.assigneeId, assigneeId),
-        eq(artistMusicianAssignments.isActive, true)
-      ));
+      .where(
+        and(
+          eq(artistMusicianAssignments.assigneeId, assigneeId),
+          eq(artistMusicianAssignments.isActive, true)
+        )
+      );
 
     const enrichedAssignments = await Promise.all(
       assignments.map(async (assignment) => {
         const [talentUser, assigneeUser] = await Promise.all([
           this.getUser(assignment.managedTalentId),
-          this.getUser(assignment.assigneeId)
+          this.getUser(assignment.assigneeId),
         ]);
 
         return {
           ...assignment,
-          talentName: talentUser?.fullName || 'Unknown Talent',
-          assigneeName: assigneeUser?.fullName || 'Unknown Assignee'
+          talentName: talentUser?.fullName || "Unknown Talent",
+          assigneeName: assigneeUser?.fullName || "Unknown Assignee",
         };
       })
     );
@@ -4310,29 +5450,33 @@ export class DatabaseStorage implements IStorage {
     return enrichedAssignments;
   }
 
-  async getArtistMusicianAssignmentsByUser(userId: number): Promise<ArtistMusicianAssignment[]> {
+  async getArtistMusicianAssignmentsByUser(
+    userId: number
+  ): Promise<ArtistMusicianAssignment[]> {
     const assignments = await db
       .select()
       .from(artistMusicianAssignments)
-      .where(and(
-        or(
-          eq(artistMusicianAssignments.managedTalentId, userId),
-          eq(artistMusicianAssignments.assigneeId, userId)
-        ),
-        eq(artistMusicianAssignments.isActive, true)
-      ));
+      .where(
+        and(
+          or(
+            eq(artistMusicianAssignments.managedTalentId, userId),
+            eq(artistMusicianAssignments.assigneeId, userId)
+          ),
+          eq(artistMusicianAssignments.isActive, true)
+        )
+      );
 
     const enrichedAssignments = await Promise.all(
       assignments.map(async (assignment) => {
         const [talentUser, assigneeUser] = await Promise.all([
           this.getUser(assignment.managedTalentId),
-          this.getUser(assignment.assigneeId)
+          this.getUser(assignment.assigneeId),
         ]);
 
         return {
           ...assignment,
-          talentName: talentUser?.fullName || 'Unknown Talent',
-          assigneeName: assigneeUser?.fullName || 'Unknown Assignee'
+          talentName: talentUser?.fullName || "Unknown Talent",
+          assigneeName: assigneeUser?.fullName || "Unknown Assignee",
         };
       })
     );
@@ -4340,7 +5484,9 @@ export class DatabaseStorage implements IStorage {
     return enrichedAssignments;
   }
 
-  async getArtistMusicianAssignment(id: number): Promise<ArtistMusicianAssignment | undefined> {
+  async getArtistMusicianAssignment(
+    id: number
+  ): Promise<ArtistMusicianAssignment | undefined> {
     const [assignment] = await db
       .select()
       .from(artistMusicianAssignments)
@@ -4350,17 +5496,20 @@ export class DatabaseStorage implements IStorage {
 
     const [talentUser, assigneeUser] = await Promise.all([
       this.getUser(assignment.managedTalentId),
-      this.getUser(assignment.assigneeId)
+      this.getUser(assignment.assigneeId),
     ]);
 
     return {
       ...assignment,
-      talentName: talentUser?.fullName || 'Unknown Talent',
-      assigneeName: assigneeUser?.fullName || 'Unknown Assignee'
+      talentName: talentUser?.fullName || "Unknown Talent",
+      assigneeName: assigneeUser?.fullName || "Unknown Assignee",
     };
   }
 
-  async updateArtistMusicianAssignment(id: number, updates: Partial<ArtistMusicianAssignment>): Promise<ArtistMusicianAssignment | undefined> {
+  async updateArtistMusicianAssignment(
+    id: number,
+    updates: Partial<ArtistMusicianAssignment>
+  ): Promise<ArtistMusicianAssignment | undefined> {
     await db
       .update(artistMusicianAssignments)
       .set(updates)
@@ -4376,7 +5525,9 @@ export class DatabaseStorage implements IStorage {
   }
 
   // Booking Media Management methods
-  async createBookingMediaFile(file: InsertBookingMediaFile): Promise<BookingMediaFile> {
+  async createBookingMediaFile(
+    file: InsertBookingMediaFile
+  ): Promise<BookingMediaFile> {
     const [created] = await db
       .insert(bookingMediaFiles)
       .values(file)
@@ -4388,10 +5539,12 @@ export class DatabaseStorage implements IStorage {
     return await db
       .select()
       .from(bookingMediaFiles)
-      .where(and(
-        eq(bookingMediaFiles.bookingId, bookingId),
-        eq(bookingMediaFiles.isActive, true)
-      ))
+      .where(
+        and(
+          eq(bookingMediaFiles.bookingId, bookingId),
+          eq(bookingMediaFiles.isActive, true)
+        )
+      )
       .orderBy(desc(bookingMediaFiles.uploadedAt));
   }
 
@@ -4399,14 +5552,16 @@ export class DatabaseStorage implements IStorage {
     const [file] = await db
       .select()
       .from(bookingMediaFiles)
-      .where(and(
-        eq(bookingMediaFiles.id, id),
-        eq(bookingMediaFiles.isActive, true)
-      ));
+      .where(
+        and(eq(bookingMediaFiles.id, id), eq(bookingMediaFiles.isActive, true))
+      );
     return file || undefined;
   }
 
-  async updateBookingMediaFile(id: number, updates: Partial<BookingMediaFile>): Promise<BookingMediaFile | undefined> {
+  async updateBookingMediaFile(
+    id: number,
+    updates: Partial<BookingMediaFile>
+  ): Promise<BookingMediaFile | undefined> {
     await db
       .update(bookingMediaFiles)
       .set(updates)
@@ -4427,7 +5582,9 @@ export class DatabaseStorage implements IStorage {
   }
 
   // Booking Media Access Control methods
-  async createBookingMediaAccess(access: InsertBookingMediaAccess): Promise<BookingMediaAccess> {
+  async createBookingMediaAccess(
+    access: InsertBookingMediaAccess
+  ): Promise<BookingMediaAccess> {
     const [created] = await db
       .insert(bookingMediaAccess)
       .values(access)
@@ -4435,30 +5592,42 @@ export class DatabaseStorage implements IStorage {
     return created;
   }
 
-  async getBookingMediaAccess(mediaFileId: number): Promise<BookingMediaAccess[]> {
+  async getBookingMediaAccess(
+    mediaFileId: number
+  ): Promise<BookingMediaAccess[]> {
     return await db
       .select()
       .from(bookingMediaAccess)
-      .where(and(
-        eq(bookingMediaAccess.mediaFileId, mediaFileId),
-        eq(bookingMediaAccess.isActive, true)
-      ))
+      .where(
+        and(
+          eq(bookingMediaAccess.mediaFileId, mediaFileId),
+          eq(bookingMediaAccess.isActive, true)
+        )
+      )
       .orderBy(desc(bookingMediaAccess.grantedAt));
   }
 
-  async getUserBookingMediaAccess(userId: number, mediaFileId: number): Promise<BookingMediaAccess | undefined> {
+  async getUserBookingMediaAccess(
+    userId: number,
+    mediaFileId: number
+  ): Promise<BookingMediaAccess | undefined> {
     const [access] = await db
       .select()
       .from(bookingMediaAccess)
-      .where(and(
-        eq(bookingMediaAccess.userId, userId),
-        eq(bookingMediaAccess.mediaFileId, mediaFileId),
-        eq(bookingMediaAccess.isActive, true)
-      ));
+      .where(
+        and(
+          eq(bookingMediaAccess.userId, userId),
+          eq(bookingMediaAccess.mediaFileId, mediaFileId),
+          eq(bookingMediaAccess.isActive, true)
+        )
+      );
     return access || undefined;
   }
 
-  async updateBookingMediaAccess(id: number, updates: Partial<BookingMediaAccess>): Promise<BookingMediaAccess | undefined> {
+  async updateBookingMediaAccess(
+    id: number,
+    updates: Partial<BookingMediaAccess>
+  ): Promise<BookingMediaAccess | undefined> {
     await db
       .update(bookingMediaAccess)
       .set(updates)
@@ -4478,20 +5647,26 @@ export class DatabaseStorage implements IStorage {
       .where(eq(bookingMediaAccess.id, id));
   }
 
-  async checkUserMediaAccess(userId: number, mediaFileId: number, requiredLevel: string): Promise<boolean> {
+  async checkUserMediaAccess(
+    userId: number,
+    mediaFileId: number,
+    requiredLevel: string
+  ): Promise<boolean> {
     const [access] = await db
       .select()
       .from(bookingMediaAccess)
-      .where(and(
-        eq(bookingMediaAccess.userId, userId),
-        eq(bookingMediaAccess.mediaFileId, mediaFileId),
-        eq(bookingMediaAccess.accessLevel, requiredLevel),
-        eq(bookingMediaAccess.isActive, true),
-        or(
-          isNotNull(bookingMediaAccess.expiresAt),
-          gte(bookingMediaAccess.expiresAt, new Date())
+      .where(
+        and(
+          eq(bookingMediaAccess.userId, userId),
+          eq(bookingMediaAccess.mediaFileId, mediaFileId),
+          eq(bookingMediaAccess.accessLevel, requiredLevel),
+          eq(bookingMediaAccess.isActive, true),
+          or(
+            isNotNull(bookingMediaAccess.expiresAt),
+            gte(bookingMediaAccess.expiresAt, new Date())
+          )
         )
-      ));
+      );
     return !!access;
   }
 
@@ -4504,7 +5679,9 @@ export class DatabaseStorage implements IStorage {
       .orderBy(bookingMediaCategories.name);
   }
 
-  async createBookingMediaCategory(category: InsertBookingMediaCategory): Promise<BookingMediaCategory> {
+  async createBookingMediaCategory(
+    category: InsertBookingMediaCategory
+  ): Promise<BookingMediaCategory> {
     const [created] = await db
       .insert(bookingMediaCategories)
       .values(category)
@@ -4512,7 +5689,10 @@ export class DatabaseStorage implements IStorage {
     return created;
   }
 
-  async updateBookingMediaCategory(id: number, updates: Partial<BookingMediaCategory>): Promise<BookingMediaCategory | undefined> {
+  async updateBookingMediaCategory(
+    id: number,
+    updates: Partial<BookingMediaCategory>
+  ): Promise<BookingMediaCategory | undefined> {
     await db
       .update(bookingMediaCategories)
       .set(updates)
@@ -4526,7 +5706,9 @@ export class DatabaseStorage implements IStorage {
   }
 
   // Release Contract Management methods
-  async createReleaseContract(contract: InsertReleaseContract): Promise<ReleaseContract> {
+  async createReleaseContract(
+    contract: InsertReleaseContract
+  ): Promise<ReleaseContract> {
     const [created] = await db
       .insert(releaseContracts)
       .values(contract)
@@ -4567,7 +5749,7 @@ export class DatabaseStorage implements IStorage {
         createdAt: releaseContracts.createdAt,
         updatedAt: releaseContracts.updatedAt,
         managedArtistName: users.fullName,
-        managedArtistEmail: users.email
+        managedArtistEmail: users.email,
       })
       .from(releaseContracts)
       .leftJoin(users, eq(releaseContracts.managedArtistUserId, users.id))
@@ -4576,7 +5758,10 @@ export class DatabaseStorage implements IStorage {
     return contracts as ReleaseContract[];
   }
 
-  async updateReleaseContract(id: number, updates: Partial<ReleaseContract>): Promise<ReleaseContract | undefined> {
+  async updateReleaseContract(
+    id: number,
+    updates: Partial<ReleaseContract>
+  ): Promise<ReleaseContract | undefined> {
     await db
       .update(releaseContracts)
       .set({ ...updates, updatedAt: new Date() })
@@ -4589,7 +5774,9 @@ export class DatabaseStorage implements IStorage {
     return updated || undefined;
   }
 
-  async createReleaseContractSignature(signature: InsertReleaseContractSignature): Promise<ReleaseContractSignature> {
+  async createReleaseContractSignature(
+    signature: InsertReleaseContractSignature
+  ): Promise<ReleaseContractSignature> {
     const [created] = await db
       .insert(releaseContractSignatures)
       .values(signature)
@@ -4597,7 +5784,9 @@ export class DatabaseStorage implements IStorage {
     return created;
   }
 
-  async getReleaseContractSignatures(contractId: number): Promise<ReleaseContractSignature[]> {
+  async getReleaseContractSignatures(
+    contractId: number
+  ): Promise<ReleaseContractSignature[]> {
     return await db
       .select()
       .from(releaseContractSignatures)
@@ -4605,7 +5794,9 @@ export class DatabaseStorage implements IStorage {
       .orderBy(desc(releaseContractSignatures.signedAt));
   }
 
-  async createManagementTransition(transition: InsertManagementTransition): Promise<ManagementTransition> {
+  async createManagementTransition(
+    transition: InsertManagementTransition
+  ): Promise<ManagementTransition> {
     const [created] = await db
       .insert(managementTransitions)
       .values(transition)
@@ -4613,7 +5804,9 @@ export class DatabaseStorage implements IStorage {
     return created;
   }
 
-  async getManagementTransitions(userId: number): Promise<ManagementTransition[]> {
+  async getManagementTransitions(
+    userId: number
+  ): Promise<ManagementTransition[]> {
     return await db
       .select()
       .from(managementTransitions)
@@ -4622,7 +5815,9 @@ export class DatabaseStorage implements IStorage {
   }
 
   // Management Application System methods
-  async createManagementApplication(application: InsertManagementApplication): Promise<ManagementApplication> {
+  async createManagementApplication(
+    application: InsertManagementApplication
+  ): Promise<ManagementApplication> {
     const [created] = await db
       .insert(managementApplications)
       .values(application)
@@ -4630,7 +5825,9 @@ export class DatabaseStorage implements IStorage {
     return created;
   }
 
-  async getManagementApplication(id: number): Promise<ManagementApplication | undefined> {
+  async getManagementApplication(
+    id: number
+  ): Promise<ManagementApplication | undefined> {
     const [application] = await db
       .select()
       .from(managementApplications)
@@ -4638,7 +5835,9 @@ export class DatabaseStorage implements IStorage {
     return application || undefined;
   }
 
-  async getManagementApplicationsByUser(userId: number): Promise<ManagementApplication[]> {
+  async getManagementApplicationsByUser(
+    userId: number
+  ): Promise<ManagementApplication[]> {
     return await db
       .select()
       .from(managementApplications)
@@ -4650,7 +5849,7 @@ export class DatabaseStorage implements IStorage {
     return await db
       .select()
       .from(managementApplications)
-      .where(eq(managementApplications.status, 'pending'))
+      .where(eq(managementApplications.status, "pending"))
       .orderBy(desc(managementApplications.submittedAt));
   }
   async getManagementApplications(): Promise<ManagementApplication[]> {
@@ -4660,7 +5859,10 @@ export class DatabaseStorage implements IStorage {
       .orderBy(desc(managementApplications.submittedAt));
   }
 
-  async updateManagementApplication(id: number, updates: Partial<ManagementApplication>): Promise<ManagementApplication | undefined> {
+  async updateManagementApplication(
+    id: number,
+    updates: Partial<ManagementApplication>
+  ): Promise<ManagementApplication | undefined> {
     await db
       .update(managementApplications)
       .set({ ...updates, updatedAt: new Date() })
@@ -4673,7 +5875,9 @@ export class DatabaseStorage implements IStorage {
     return updated || undefined;
   }
 
-  async createManagementApplicationSignature(signature: InsertManagementApplicationSignature): Promise<ManagementApplicationSignature> {
+  async createManagementApplicationSignature(
+    signature: InsertManagementApplicationSignature
+  ): Promise<ManagementApplicationSignature> {
     const [created] = await db
       .insert(managementApplicationSignatures)
       .values(signature)
@@ -4681,7 +5885,9 @@ export class DatabaseStorage implements IStorage {
     return created;
   }
 
-  async getManagementApplicationSignatures(applicationId: number): Promise<ManagementApplicationSignature[]> {
+  async getManagementApplicationSignatures(
+    applicationId: number
+  ): Promise<ManagementApplicationSignature[]> {
     return await db
       .select()
       .from(managementApplicationSignatures)
@@ -4690,7 +5896,9 @@ export class DatabaseStorage implements IStorage {
   }
 
   // Service Discount Management methods
-  async createServiceDiscountOverride(override: InsertServiceDiscountOverride): Promise<ServiceDiscountOverride> {
+  async createServiceDiscountOverride(
+    override: InsertServiceDiscountOverride
+  ): Promise<ServiceDiscountOverride> {
     const [created] = await db
       .insert(serviceDiscountOverrides)
       .values(override)
@@ -4698,14 +5906,18 @@ export class DatabaseStorage implements IStorage {
     return created;
   }
 
-  async getServiceDiscountOverrides(userId: number): Promise<ServiceDiscountOverride[]> {
+  async getServiceDiscountOverrides(
+    userId: number
+  ): Promise<ServiceDiscountOverride[]> {
     return await db
       .select()
       .from(serviceDiscountOverrides)
-      .where(and(
-        eq(serviceDiscountOverrides.userId, userId),
-        eq(serviceDiscountOverrides.isActive, true)
-      ))
+      .where(
+        and(
+          eq(serviceDiscountOverrides.userId, userId),
+          eq(serviceDiscountOverrides.isActive, true)
+        )
+      )
       .orderBy(desc(serviceDiscountOverrides.createdAt));
   }
 
@@ -4728,7 +5940,10 @@ export class DatabaseStorage implements IStorage {
     return limit;
   }
 
-  async updateWaituServiceDiscountLimit(serviceId: number, updates: any): Promise<any> {
+  async updateWaituServiceDiscountLimit(
+    serviceId: number,
+    updates: any
+  ): Promise<any> {
     const [updated] = await db
       .update(waituServiceDiscountLimits)
       .set({ ...updates, updatedAt: new Date() })
@@ -4753,15 +5968,20 @@ export class DatabaseStorage implements IStorage {
     return created;
   }
 
-  async getIndividualDiscountPermission(userId: number, serviceId: number): Promise<any> {
+  async getIndividualDiscountPermission(
+    userId: number,
+    serviceId: number
+  ): Promise<any> {
     const [permission] = await db
       .select()
       .from(individualDiscountPermissions)
-      .where(and(
-        eq(individualDiscountPermissions.userId, userId),
-        eq(individualDiscountPermissions.serviceId, serviceId),
-        eq(individualDiscountPermissions.isActive, true)
-      ))
+      .where(
+        and(
+          eq(individualDiscountPermissions.userId, userId),
+          eq(individualDiscountPermissions.serviceId, serviceId),
+          eq(individualDiscountPermissions.isActive, true)
+        )
+      )
       .orderBy(desc(individualDiscountPermissions.createdAt))
       .limit(1);
     return permission;
@@ -4771,10 +5991,12 @@ export class DatabaseStorage implements IStorage {
     return await db
       .select()
       .from(individualDiscountPermissions)
-      .where(and(
-        eq(individualDiscountPermissions.userId, userId),
-        eq(individualDiscountPermissions.isActive, true)
-      ))
+      .where(
+        and(
+          eq(individualDiscountPermissions.userId, userId),
+          eq(individualDiscountPermissions.isActive, true)
+        )
+      )
       .orderBy(desc(individualDiscountPermissions.createdAt));
   }
 
@@ -4800,25 +6022,27 @@ export class DatabaseStorage implements IStorage {
     return await db
       .select()
       .from(globalGenres)
-      .where(and(
-        eq(globalGenres.category, category),
-        eq(globalGenres.isActive, true)
-      ))
+      .where(
+        and(
+          eq(globalGenres.category, category),
+          eq(globalGenres.isActive, true)
+        )
+      )
       .orderBy(globalGenres.name);
   }
 
   async createGlobalGenre(genre: InsertGlobalGenre): Promise<GlobalGenre> {
-    const [created] = await db
-      .insert(globalGenres)
-      .values(genre)
-      .returning();
+    const [created] = await db.insert(globalGenres).values(genre).returning();
     return created;
   }
 
   // Cross-Upsell Relationships Management
   // Duplicate cross-upsell methods removed - keeping original implementations
 
-  async updateCrossUpsellRelationship(id: number, updates: Partial<CrossUpsellRelationship>): Promise<CrossUpsellRelationship | undefined> {
+  async updateCrossUpsellRelationship(
+    id: number,
+    updates: Partial<CrossUpsellRelationship>
+  ): Promise<CrossUpsellRelationship | undefined> {
     const [updated] = await db
       .update(crossUpsellRelationships)
       .set(updates)
@@ -4827,17 +6051,23 @@ export class DatabaseStorage implements IStorage {
     return updated;
   }
 
-  async getServiceDiscountOverride(userId: number, serviceId?: number, userServiceId?: number): Promise<ServiceDiscountOverride | undefined> {
+  async getServiceDiscountOverride(
+    userId: number,
+    serviceId?: number,
+    userServiceId?: number
+  ): Promise<ServiceDiscountOverride | undefined> {
     const conditions = [
       eq(serviceDiscountOverrides.userId, userId),
-      eq(serviceDiscountOverrides.isActive, true)
+      eq(serviceDiscountOverrides.isActive, true),
     ];
 
     if (serviceId) {
       conditions.push(eq(serviceDiscountOverrides.serviceId, serviceId));
     }
     if (userServiceId) {
-      conditions.push(eq(serviceDiscountOverrides.userServiceId, userServiceId));
+      conditions.push(
+        eq(serviceDiscountOverrides.userServiceId, userServiceId)
+      );
     }
 
     const [override] = await db
@@ -4850,7 +6080,10 @@ export class DatabaseStorage implements IStorage {
     return override || undefined;
   }
 
-  async updateServiceDiscountOverride(id: number, updates: Partial<ServiceDiscountOverride>): Promise<ServiceDiscountOverride | undefined> {
+  async updateServiceDiscountOverride(
+    id: number,
+    updates: Partial<ServiceDiscountOverride>
+  ): Promise<ServiceDiscountOverride | undefined> {
     await db
       .update(serviceDiscountOverrides)
       .set(updates)
@@ -4871,7 +6104,9 @@ export class DatabaseStorage implements IStorage {
     // Check for specific discount overrides first
     const overrides = await this.getServiceDiscountOverrides(userId);
     if (overrides.length > 0) {
-      const maxOverride = Math.max(...overrides.map(o => parseFloat(o.overrideDiscountPercentage)));
+      const maxOverride = Math.max(
+        ...overrides.map((o) => parseFloat(o.overrideDiscountPercentage))
+      );
       return maxOverride;
     }
 
@@ -4884,14 +6119,17 @@ export class DatabaseStorage implements IStorage {
       const musician = await this.getMusician(userId);
       const professional = await this.getProfessional(userId);
 
-      const managementTierId = artist?.managementTierId || musician?.managementTierId || professional?.managementTierId;
+      const managementTierId =
+        artist?.managementTierId ||
+        musician?.managementTierId ||
+        professional?.managementTierId;
 
       if (managementTierId) {
-        const tier = managementTiers.find(t => t.id === managementTierId);
+        const tier = managementTiers.find((t) => t.id === managementTierId);
         if (tier) {
           // Full Management tier (typically tier 1) gets up to 100% discount
           // Administration tier (typically tier 2) gets up to 50% discount
-          return tier.name.toLowerCase().includes('full') ? 100 : 50;
+          return tier.name.toLowerCase().includes("full") ? 100 : 50;
         }
       }
     }
@@ -4900,7 +6138,9 @@ export class DatabaseStorage implements IStorage {
   }
 
   // Management Application Review System methods
-  async createManagementApplicationReview(review: InsertManagementApplicationReview): Promise<ManagementApplicationReview> {
+  async createManagementApplicationReview(
+    review: InsertManagementApplicationReview
+  ): Promise<ManagementApplicationReview> {
     const [created] = await db
       .insert(managementApplicationReviews)
       .values(review)
@@ -4908,7 +6148,9 @@ export class DatabaseStorage implements IStorage {
     return created;
   }
 
-  async getManagementApplicationReviews(applicationId: number): Promise<ManagementApplicationReview[]> {
+  async getManagementApplicationReviews(
+    applicationId: number
+  ): Promise<ManagementApplicationReview[]> {
     return await db
       .select()
       .from(managementApplicationReviews)
@@ -4916,7 +6158,9 @@ export class DatabaseStorage implements IStorage {
       .orderBy(desc(managementApplicationReviews.reviewedAt));
   }
 
-  async getManagementApplicationsByAssignedAdmin(adminUserId: number): Promise<ManagementApplication[]> {
+  async getManagementApplicationsByAssignedAdmin(
+    adminUserId: number
+  ): Promise<ManagementApplication[]> {
     // Get applications where this admin is assigned to the applicant
     const adminAssignments = await db
       .select()
@@ -4925,20 +6169,24 @@ export class DatabaseStorage implements IStorage {
 
     if (adminAssignments.length === 0) return [];
 
-    const managedUserIds = adminAssignments.map(a => a.managedUserId);
+    const managedUserIds = adminAssignments.map((a) => a.managedUserId);
 
     return await db
       .select()
       .from(managementApplications)
-      .where(and(
-        eq(managementApplications.status, 'pending'),
-        sql`${managementApplications.applicantUserId} = ANY(${managedUserIds})`
-      ))
+      .where(
+        and(
+          eq(managementApplications.status, "pending"),
+          sql`${managementApplications.applicantUserId} = ANY(${managedUserIds})`
+        )
+      )
       .orderBy(desc(managementApplications.submittedAt));
   }
 
   // Legal Assignment System methods
-  async createLegalAssignment(assignment: InsertLegalAssignment): Promise<LegalAssignment> {
+  async createLegalAssignment(
+    assignment: InsertLegalAssignment
+  ): Promise<LegalAssignment> {
     const [created] = await db
       .insert(legalAssignments)
       .values(assignment)
@@ -4950,10 +6198,12 @@ export class DatabaseStorage implements IStorage {
     return await db
       .select()
       .from(legalAssignments)
-      .where(and(
-        eq(legalAssignments.clientUserId, clientUserId),
-        eq(legalAssignments.isActive, true)
-      ))
+      .where(
+        and(
+          eq(legalAssignments.clientUserId, clientUserId),
+          eq(legalAssignments.isActive, true)
+        )
+      )
       .orderBy(desc(legalAssignments.assignedAt));
   }
 
@@ -4961,17 +6211,22 @@ export class DatabaseStorage implements IStorage {
     return await db
       .select()
       .from(legalAssignments)
-      .where(and(
-        eq(legalAssignments.lawyerUserId, lawyerUserId),
-        eq(legalAssignments.isActive, true)
-      ))
+      .where(
+        and(
+          eq(legalAssignments.lawyerUserId, lawyerUserId),
+          eq(legalAssignments.isActive, true)
+        )
+      )
       .orderBy(desc(legalAssignments.assignedAt));
   }
 
-  async getAssignedLawyer(clientUserId: number, assignmentType?: string): Promise<LegalAssignment | undefined> {
+  async getAssignedLawyer(
+    clientUserId: number,
+    assignmentType?: string
+  ): Promise<LegalAssignment | undefined> {
     const conditions = [
       eq(legalAssignments.clientUserId, clientUserId),
-      eq(legalAssignments.isActive, true)
+      eq(legalAssignments.isActive, true),
     ];
 
     if (assignmentType) {
@@ -4989,7 +6244,9 @@ export class DatabaseStorage implements IStorage {
   }
 
   // Application Legal Assignment System methods (Lawyers representing Wai'tuMusic)
-  async createApplicationLegalAssignment(assignment: InsertApplicationLegalAssignment): Promise<ApplicationLegalAssignment> {
+  async createApplicationLegalAssignment(
+    assignment: InsertApplicationLegalAssignment
+  ): Promise<ApplicationLegalAssignment> {
     const [created] = await db
       .insert(applicationLegalAssignments)
       .values(assignment)
@@ -4997,27 +6254,33 @@ export class DatabaseStorage implements IStorage {
     return created;
   }
 
-  
-
-  async getApplicationLegalAssignments(applicationId: number): Promise<ApplicationLegalAssignment[]> {
+  async getApplicationLegalAssignments(
+    applicationId: number
+  ): Promise<ApplicationLegalAssignment[]> {
     return await db
       .select()
       .from(applicationLegalAssignments)
-      .where(and(
-        eq(applicationLegalAssignments.applicationId, applicationId),
-        eq(applicationLegalAssignments.isActive, true)
-      ))
+      .where(
+        and(
+          eq(applicationLegalAssignments.applicationId, applicationId),
+          eq(applicationLegalAssignments.isActive, true)
+        )
+      )
       .orderBy(desc(applicationLegalAssignments.assignedAt));
   }
 
-  async getApplicationsByAssignedLawyer(lawyerUserId: number): Promise<ApplicationLegalAssignment[]> {
+  async getApplicationsByAssignedLawyer(
+    lawyerUserId: number
+  ): Promise<ApplicationLegalAssignment[]> {
     return await db
       .select()
       .from(applicationLegalAssignments)
-      .where(and(
-        eq(applicationLegalAssignments.lawyerUserId, lawyerUserId),
-        eq(applicationLegalAssignments.isActive, true)
-      ))
+      .where(
+        and(
+          eq(applicationLegalAssignments.lawyerUserId, lawyerUserId),
+          eq(applicationLegalAssignments.isActive, true)
+        )
+      )
       .orderBy(desc(applicationLegalAssignments.assignedAt));
   }
 
@@ -5093,25 +6356,29 @@ export class DatabaseStorage implements IStorage {
   //   return { hasConflict, conflictDetails: conflictDetails.length > 0 ? conflictDetails : undefined };
   // }
 
-  async checkLegalConflictOfInterest(professionalUserId: number): Promise<{ hasConflict: boolean; conflictDetails?: any[] }> {
+  async checkLegalConflictOfInterest(
+    professionalUserId: number
+  ): Promise<{ hasConflict: boolean; conflictDetails?: any[] }> {
     // Get professional + role from userRoles
     const professional = await db
       .select({
         id: users.id,
         fullName: users.fullName,
         email: users.email,
-        roleId: userRoles.roleId
+        roleId: userRoles.roleId,
       })
       .from(users)
       .innerJoin(userRoles, eq(users.id, userRoles.userId))
       .where(eq(users.id, professionalUserId))
       .limit(1)
-      .then(res => res[0]);
+      .then((res) => res[0]);
 
     if (!professional) {
       return {
         hasConflict: true,
-        conflictDetails: [{ type: 'invalid_user', message: 'Professional not found' }]
+        conflictDetails: [
+          { type: "invalid_user", message: "Professional not found" },
+        ],
       };
     }
 
@@ -5125,15 +6392,17 @@ export class DatabaseStorage implements IStorage {
         assignmentType: legalAssignments.assignmentType,
         clientName: users.fullName,
         clientRoleId: userRoles.roleId,
-        clientEmail: users.email
+        clientEmail: users.email,
       })
       .from(legalAssignments)
       .innerJoin(users, eq(legalAssignments.clientUserId, users.id))
       .innerJoin(userRoles, eq(users.id, userRoles.userId))
-      .where(and(
-        eq(legalAssignments.lawyerUserId, professionalUserId),
-        eq(legalAssignments.isActive, true)
-      ));
+      .where(
+        and(
+          eq(legalAssignments.lawyerUserId, professionalUserId),
+          eq(legalAssignments.isActive, true)
+        )
+      );
 
     const conflictDetails: any[] = [];
     let hasConflict = false;
@@ -5144,11 +6413,13 @@ export class DatabaseStorage implements IStorage {
       if (isClientManaged && !isManagedProfessional) {
         hasConflict = true;
         conflictDetails.push({
-          type: 'client_conflict',
-          message: `Professional represents managed ${this.getRoleName(assignment.clientRoleId)} ${assignment.clientName}`,
+          type: "client_conflict",
+          message: `Professional represents managed ${this.getRoleName(
+            assignment.clientRoleId
+          )} ${assignment.clientName}`,
           clientName: assignment.clientName,
           clientRole: assignment.clientRoleId,
-          assignmentType: assignment.assignmentType
+          assignmentType: assignment.assignmentType,
         });
       }
     }
@@ -5156,17 +6427,19 @@ export class DatabaseStorage implements IStorage {
     if (!isManagedProfessional) {
       hasConflict = true;
       conflictDetails.push({
-        type: 'role_restriction',
-        message: 'Only managed professionals can represent Wai\'tuMusic in non-performance matters',
+        type: "role_restriction",
+        message:
+          "Only managed professionals can represent Wai'tuMusic in non-performance matters",
         professionalRole: professional.roleId,
-        professionalName: professional.fullName
+        professionalName: professional.fullName,
       });
     }
 
-    return { hasConflict, conflictDetails: conflictDetails.length ? conflictDetails : undefined };
+    return {
+      hasConflict,
+      conflictDetails: conflictDetails.length ? conflictDetails : undefined,
+    };
   }
-
-
 
   // Get available professionals who can represent Wai'tuMusic without conflict
 
@@ -5240,46 +6513,60 @@ export class DatabaseStorage implements IStorage {
         isManaged: professionals.isManaged,
         managementTierId: professionals.managementTierId,
         hourlyRate: professionals.idealServiceRate,
-        talentName: userProfessionalPrimaryTalents.name
+        talentName: userProfessionalPrimaryTalents.name,
       })
       .from(users)
       .innerJoin(userRoles, eq(users.id, userRoles.userId))
       .innerJoin(professionals, eq(users.id, professionals.userId))
-      .innerJoin(userProfessionalPrimaryTalents, eq(professionals.primaryTalentId, userProfessionalPrimaryTalents.id))
+      .innerJoin(
+        userProfessionalPrimaryTalents,
+        eq(professionals.primaryTalentId, userProfessionalPrimaryTalents.id)
+      )
       .where(inArray(userRoles.roleId, professionalRoleIds));
 
-      const nonPerformanceKeywords = [
-        "default", "professional", "music", "legal", "consulting", "advisory",
-        "business", "financial", "marketing", "strategic", "rights", "contract"
-      ];      
+    const nonPerformanceKeywords = [
+      "default",
+      "professional",
+      "music",
+      "legal",
+      "consulting",
+      "advisory",
+      "business",
+      "financial",
+      "marketing",
+      "strategic",
+      "rights",
+      "contract",
+    ];
 
     // Process all professionals concurrently
-    const availableProfessionals = await Promise.all(allProfessionals.map(async (professional) => {
-      const specialty = professional.talentName ?? "Professional Services";
+    const availableProfessionals = await Promise.all(
+      allProfessionals.map(async (professional) => {
+        const specialty = professional.talentName ?? "Professional Services";
 
-      const isNonPerformance = nonPerformanceKeywords.some(keyword =>
-        specialty.toLowerCase().includes(keyword)
-      );
+        const isNonPerformance = nonPerformanceKeywords.some((keyword) =>
+          specialty.toLowerCase().includes(keyword)
+        );
 
-      if (!isNonPerformance) return null; // skip performance professionals
+        if (!isNonPerformance) return null; // skip performance professionals
 
-      const conflictCheck = await this.checkLegalConflictOfInterest(professional.id);
+        const conflictCheck = await this.checkLegalConflictOfInterest(
+          professional.id
+        );
 
-      return {
-        ...professional,
-        specialty,
-        isAvailable: !conflictCheck.hasConflict,
-        conflictStatus: conflictCheck.hasConflict ? "conflict" : "clear",
-        conflictDetails: conflictCheck.conflictDetails ?? null,
-        serviceType: "non_performance"
-      };
-    }));
+        return {
+          ...professional,
+          specialty,
+          isAvailable: !conflictCheck.hasConflict,
+          conflictStatus: conflictCheck.hasConflict ? "conflict" : "clear",
+          conflictDetails: conflictCheck.conflictDetails ?? null,
+          serviceType: "non_performance",
+        };
+      })
+    );
 
     return availableProfessionals.filter(Boolean); // remove nulls
   }
-
-
-
 
   // System data methods
   async getSystemSettings(): Promise<any[]> {
@@ -5287,7 +6574,7 @@ export class DatabaseStorage implements IStorage {
       // Return empty array for now since systemSettings table doesn't exist
       return [];
     } catch (error) {
-      console.error('System settings error:', error);
+      console.error("System settings error:", error);
       return [];
     }
   }
@@ -5308,7 +6595,10 @@ export class DatabaseStorage implements IStorage {
   }
 
   async getStagePlot(id: number): Promise<any> {
-    const result = await db.select().from(stagePlots).where(eq(stagePlots.id, id));
+    const result = await db
+      .select()
+      .from(stagePlots)
+      .where(eq(stagePlots.id, id));
     return result[0];
   }
 
@@ -5328,7 +6618,8 @@ export class DatabaseStorage implements IStorage {
   }
 
   async updateStagePlot(id: number, updates: any): Promise<any> {
-    const result = await db.update(stagePlots)
+    const result = await db
+      .update(stagePlots)
       .set({ ...updates, modifiedAt: new Date() })
       .where(eq(stagePlots.id, id))
       .returning();
@@ -5346,7 +6637,10 @@ export class DatabaseStorage implements IStorage {
   }
 
   async getMixerPatchList(id: number): Promise<any> {
-    const result = await db.select().from(mixerPatchLists).where(eq(mixerPatchLists.id, id));
+    const result = await db
+      .select()
+      .from(mixerPatchLists)
+      .where(eq(mixerPatchLists.id, id));
     return result[0];
   }
 
@@ -5359,12 +6653,16 @@ export class DatabaseStorage implements IStorage {
       createdBy: patchList.createdBy,
     };
 
-    const result = await db.insert(mixerPatchLists).values(cleanData).returning();
+    const result = await db
+      .insert(mixerPatchLists)
+      .values(cleanData)
+      .returning();
     return result[0];
   }
 
   async updateMixerPatchList(id: number, updates: any): Promise<any> {
-    const result = await db.update(mixerPatchLists)
+    const result = await db
+      .update(mixerPatchLists)
       .set({ ...updates, modifiedAt: new Date() })
       .where(eq(mixerPatchLists.id, id))
       .returning();
@@ -5391,12 +6689,18 @@ export class DatabaseStorage implements IStorage {
 
   // Setlist Templates Management
   async getSetlistTemplates(): Promise<any[]> {
-    const result = await db.select().from(setlistTemplates).orderBy(desc(setlistTemplates.createdAt));
+    const result = await db
+      .select()
+      .from(setlistTemplates)
+      .orderBy(desc(setlistTemplates.createdAt));
     return result;
   }
 
   async getSetlistTemplate(id: number): Promise<any> {
-    const result = await db.select().from(setlistTemplates).where(eq(setlistTemplates.id, id));
+    const result = await db
+      .select()
+      .from(setlistTemplates)
+      .where(eq(setlistTemplates.id, id));
     return result[0];
   }
 
@@ -5410,12 +6714,16 @@ export class DatabaseStorage implements IStorage {
       createdBy: template.createdBy,
     };
 
-    const result = await db.insert(setlistTemplates).values(cleanData).returning();
+    const result = await db
+      .insert(setlistTemplates)
+      .values(cleanData)
+      .returning();
     return result[0];
   }
 
   async updateSetlistTemplate(id: number, updates: any): Promise<any> {
-    const result = await db.update(setlistTemplates)
+    const result = await db
+      .update(setlistTemplates)
       .set({ ...updates, modifiedAt: new Date() })
       .where(eq(setlistTemplates.id, id))
       .returning();
@@ -5427,26 +6735,36 @@ export class DatabaseStorage implements IStorage {
   }
 
   // Performance rate management methods
-  async setMusicianPerformanceRate(bookingId: number, musicianId: number, adminId: number, rate: number, notes?: string, originalCurrency?: string, originalAmount?: number): Promise<any> {
+  async setMusicianPerformanceRate(
+    bookingId: number,
+    musicianId: number,
+    adminId: number,
+    rate: number,
+    notes?: string,
+    originalCurrency?: string,
+    originalAmount?: number
+  ): Promise<any> {
     try {
       // First check if booking musician assignment exists
       const existingAssignment = await db
         .select()
         .from(bookingMusicians)
-        .where(and(
-          eq(bookingMusicians.bookingId, bookingId),
-          eq(bookingMusicians.musicianUserId, musicianId)
-        ))
+        .where(
+          and(
+            eq(bookingMusicians.bookingId, bookingId),
+            eq(bookingMusicians.musicianUserId, musicianId)
+          )
+        )
         .limit(1);
 
       const updateData = {
         adminSetRate: rate.toString(),
-        originalCurrency: originalCurrency || 'USD',
+        originalCurrency: originalCurrency || "USD",
         originalAmount: originalAmount?.toString() || rate.toString(),
-        rateStatus: 'admin_set',
+        rateStatus: "admin_set",
         rateSetByAdminId: adminId,
         rateNotes: notes,
-        rateSetAt: new Date()
+        rateSetAt: new Date(),
       };
 
       if (existingAssignment.length === 0) {
@@ -5454,22 +6772,24 @@ export class DatabaseStorage implements IStorage {
         await db.insert(bookingMusicians).values({
           bookingId,
           musicianUserId: musicianId,
-          ...updateData
+          ...updateData,
         });
       } else {
         // Update existing assignment
         await db
           .update(bookingMusicians)
           .set(updateData)
-          .where(and(
-            eq(bookingMusicians.bookingId, bookingId),
-            eq(bookingMusicians.musicianUserId, musicianId)
-          ));
+          .where(
+            and(
+              eq(bookingMusicians.bookingId, bookingId),
+              eq(bookingMusicians.musicianUserId, musicianId)
+            )
+          );
       }
 
       return { success: true };
     } catch (error) {
-      console.error('Error setting musician performance rate:', error);
+      console.error("Error setting musician performance rate:", error);
       throw error;
     }
   }
@@ -5495,7 +6815,7 @@ export class DatabaseStorage implements IStorage {
           idealPerformanceRate: musicians.idealPerformanceRate,
           assignedAt: bookingMusicians.assignedAt,
           rateSetAt: bookingMusicians.rateSetAt,
-          musicianResponseAt: bookingMusicians.musicianResponseAt
+          musicianResponseAt: bookingMusicians.musicianResponseAt,
         })
         .from(bookingMusicians)
         .innerJoin(users, eq(bookingMusicians.musicianUserId, users.id))
@@ -5504,25 +6824,39 @@ export class DatabaseStorage implements IStorage {
 
       return musiciansWithRates;
     } catch (error) {
-      console.error('Error fetching booking musicians with rates:', error);
+      console.error("Error fetching booking musicians with rates:", error);
       return [];
     }
   }
 
-  async respondToPerformanceRate(bookingId: number, musicianId: number, response: string, message?: string, counterOffer?: any): Promise<any> {
+  async respondToPerformanceRate(
+    bookingId: number,
+    musicianId: number,
+    response: string,
+    message?: string,
+    counterOffer?: any
+  ): Promise<any> {
     try {
       const updateData: any = {
         musicianResponse: response,
         musicianResponseMessage: message,
         musicianResponseAt: new Date(),
-        rateStatus: response === 'accepted' ? 'accepted' : response === 'declined' ? 'declined' : response === 'counter_offer' ? 'counter_offer' : 'pending'
+        rateStatus:
+          response === "accepted"
+            ? "accepted"
+            : response === "declined"
+            ? "declined"
+            : response === "counter_offer"
+            ? "counter_offer"
+            : "pending",
       };
 
       // Add counter offer data if provided
-      if (counterOffer && response === 'counter_offer') {
+      if (counterOffer && response === "counter_offer") {
         updateData.counterOfferAmount = counterOffer.amount.toString();
         updateData.counterOfferCurrency = counterOffer.currency;
-        updateData.counterOfferUsdEquivalent = counterOffer.usdEquivalent.toString();
+        updateData.counterOfferUsdEquivalent =
+          counterOffer.usdEquivalent.toString();
         updateData.counterOfferMessage = counterOffer.message;
         updateData.counterOfferAt = new Date();
       }
@@ -5530,14 +6864,16 @@ export class DatabaseStorage implements IStorage {
       const result = await db
         .update(bookingMusicians)
         .set(updateData)
-        .where(and(
-          eq(bookingMusicians.bookingId, bookingId),
-          eq(bookingMusicians.musicianUserId, musicianId)
-        ));
+        .where(
+          and(
+            eq(bookingMusicians.bookingId, bookingId),
+            eq(bookingMusicians.musicianUserId, musicianId)
+          )
+        );
 
       return { success: true, counterOffer: counterOffer };
     } catch (error) {
-      console.error('Error recording musician rate response:', error);
+      console.error("Error recording musician rate response:", error);
       throw error;
     }
   }
@@ -5569,8 +6905,9 @@ export class DatabaseStorage implements IStorage {
           counterOfferAt: bookingMusicians.counterOfferAt,
           // Admin response to counter offer
           adminCounterResponse: bookingMusicians.adminCounterResponse,
-          adminCounterResponseMessage: bookingMusicians.adminCounterResponseMessage,
-          adminCounterResponseAt: bookingMusicians.adminCounterResponseAt
+          adminCounterResponseMessage:
+            bookingMusicians.adminCounterResponseMessage,
+          adminCounterResponseAt: bookingMusicians.adminCounterResponseAt,
         })
         .from(bookingMusicians)
         .innerJoin(bookings, eq(bookingMusicians.bookingId, bookings.id))
@@ -5578,36 +6915,44 @@ export class DatabaseStorage implements IStorage {
         .where(eq(bookingMusicians.musicianUserId, musicianId))
         .orderBy(bookings.eventDate);
 
-      return bookingRates.map(rate => ({
+      return bookingRates.map((rate) => ({
         id: rate.id,
         artistName: rate.artistName,
         eventDate: rate.eventDate,
         eventLocation: rate.eventLocation,
         status: rate.status,
-        rateInfo: rate.adminSetRate ? {
-          adminSetRate: parseFloat(rate.adminSetRate),
-          originalCurrency: rate.originalCurrency,
-          originalAmount: rate.originalAmount ? parseFloat(rate.originalAmount) : parseFloat(rate.adminSetRate),
-          rateStatus: rate.rateStatus,
-          musicianResponse: rate.musicianResponse,
-          musicianResponseMessage: rate.musicianResponseMessage,
-          rateNotes: rate.rateNotes,
-          rateSetAt: rate.rateSetAt,
-          musicianResponseAt: rate.musicianResponseAt,
-          // Counter offer data
-          counterOfferAmount: rate.counterOfferAmount ? parseFloat(rate.counterOfferAmount) : undefined,
-          counterOfferCurrency: rate.counterOfferCurrency,
-          counterOfferUsdEquivalent: rate.counterOfferUsdEquivalent ? parseFloat(rate.counterOfferUsdEquivalent) : undefined,
-          counterOfferMessage: rate.counterOfferMessage,
-          counterOfferAt: rate.counterOfferAt,
-          // Admin counter response
-          adminCounterResponse: rate.adminCounterResponse,
-          adminCounterResponseMessage: rate.adminCounterResponseMessage,
-          adminCounterResponseAt: rate.adminCounterResponseAt
-        } : null
+        rateInfo: rate.adminSetRate
+          ? {
+              adminSetRate: parseFloat(rate.adminSetRate),
+              originalCurrency: rate.originalCurrency,
+              originalAmount: rate.originalAmount
+                ? parseFloat(rate.originalAmount)
+                : parseFloat(rate.adminSetRate),
+              rateStatus: rate.rateStatus,
+              musicianResponse: rate.musicianResponse,
+              musicianResponseMessage: rate.musicianResponseMessage,
+              rateNotes: rate.rateNotes,
+              rateSetAt: rate.rateSetAt,
+              musicianResponseAt: rate.musicianResponseAt,
+              // Counter offer data
+              counterOfferAmount: rate.counterOfferAmount
+                ? parseFloat(rate.counterOfferAmount)
+                : undefined,
+              counterOfferCurrency: rate.counterOfferCurrency,
+              counterOfferUsdEquivalent: rate.counterOfferUsdEquivalent
+                ? parseFloat(rate.counterOfferUsdEquivalent)
+                : undefined,
+              counterOfferMessage: rate.counterOfferMessage,
+              counterOfferAt: rate.counterOfferAt,
+              // Admin counter response
+              adminCounterResponse: rate.adminCounterResponse,
+              adminCounterResponseMessage: rate.adminCounterResponseMessage,
+              adminCounterResponseAt: rate.adminCounterResponseAt,
+            }
+          : null,
       }));
     } catch (error) {
-      console.error('Error fetching musician booking rates:', error);
+      console.error("Error fetching musician booking rates:", error);
       return [];
     }
   }
@@ -5622,10 +6967,10 @@ export class DatabaseStorage implements IStorage {
     // Use the existing in-memory storage
     return this.saveSetlist({
       bookingId: data.bookingId,
-      name: data.name || 'Performance Setlist',
-      description: data.description || '',
+      name: data.name || "Performance Setlist",
+      description: data.description || "",
       songs: data.songs || [],
-      createdBy: data.createdBy
+      createdBy: data.createdBy,
     });
   }
 
@@ -5633,19 +6978,23 @@ export class DatabaseStorage implements IStorage {
     // Update using the existing in-memory storage
     return this.saveSetlist({
       bookingId,
-      name: data.name || 'Performance Setlist',
-      description: data.description || '',
-      songs: data.songs || []
+      name: data.name || "Performance Setlist",
+      description: data.description || "",
+      songs: data.songs || [],
     });
   }
 
-  async saveBookingSetlist(bookingId: number, setlist: any[], userId: number): Promise<any[]> {
+  async saveBookingSetlist(
+    bookingId: number,
+    setlist: any[],
+    userId: number
+  ): Promise<any[]> {
     // Save setlist using existing in-memory storage and return it
     const savedSetlist = await this.saveSetlist({
       bookingId,
-      name: 'Performance Setlist',
-      description: 'Booking setlist',
-      songs: setlist
+      name: "Performance Setlist",
+      description: "Booking setlist",
+      songs: setlist,
     });
     return savedSetlist.songs || setlist;
   }
@@ -5666,7 +7015,7 @@ export class DatabaseStorage implements IStorage {
       capoPosition: data.capoPosition,
       tuning: data.tuning,
       generatedFrom: data.generatedFrom,
-      createdAt: new Date()
+      createdAt: new Date(),
     };
   }
 
@@ -5684,10 +7033,16 @@ export class DatabaseStorage implements IStorage {
   }
 
   async getInvoicesByBooking(bookingId: number): Promise<Invoice[]> {
-    return await db.select().from(invoices).where(eq(invoices.bookingId, bookingId));
+    return await db
+      .select()
+      .from(invoices)
+      .where(eq(invoices.bookingId, bookingId));
   }
 
-  async updateInvoiceStatus(id: number, status: string): Promise<Invoice | undefined> {
+  async updateInvoiceStatus(
+    id: number,
+    status: string
+  ): Promise<Invoice | undefined> {
     const [updatedInvoice] = await db
       .update(invoices)
       .set({ status })
@@ -5700,10 +7055,10 @@ export class DatabaseStorage implements IStorage {
     const count = await db
       .select({ count: invoices.id })
       .from(invoices)
-      .then(result => result.length);
+      .then((result) => result.length);
 
     const year = new Date().getFullYear();
-    const paddedCount = String(count + 1).padStart(6, '0');
+    const paddedCount = String(count + 1).padStart(6, "0");
     return `INV-${year}-${paddedCount}`;
   }
 
@@ -5717,25 +7072,46 @@ export class DatabaseStorage implements IStorage {
   }
 
   // Payout Request Management
-  async createPayoutRequest(payoutRequest: InsertPayoutRequest): Promise<PayoutRequest> {
-    const [newPayoutRequest] = await db.insert(payoutRequests).values(payoutRequest).returning();
+  async createPayoutRequest(
+    payoutRequest: InsertPayoutRequest
+  ): Promise<PayoutRequest> {
+    const [newPayoutRequest] = await db
+      .insert(payoutRequests)
+      .values(payoutRequest)
+      .returning();
     return newPayoutRequest;
   }
 
   async getPayoutRequest(id: number): Promise<PayoutRequest | undefined> {
-    const result = await db.select().from(payoutRequests).where(eq(payoutRequests.id, id));
+    const result = await db
+      .select()
+      .from(payoutRequests)
+      .where(eq(payoutRequests.id, id));
     return result[0];
   }
 
-  async getPayoutRequestsByBooking(bookingId: number): Promise<PayoutRequest[]> {
-    return await db.select().from(payoutRequests).where(eq(payoutRequests.bookingId, bookingId));
+  async getPayoutRequestsByBooking(
+    bookingId: number
+  ): Promise<PayoutRequest[]> {
+    return await db
+      .select()
+      .from(payoutRequests)
+      .where(eq(payoutRequests.bookingId, bookingId));
   }
 
-  async getPayoutRequestsByPerformer(performerUserId: number): Promise<PayoutRequest[]> {
-    return await db.select().from(payoutRequests).where(eq(payoutRequests.performerUserId, performerUserId));
+  async getPayoutRequestsByPerformer(
+    performerUserId: number
+  ): Promise<PayoutRequest[]> {
+    return await db
+      .select()
+      .from(payoutRequests)
+      .where(eq(payoutRequests.performerUserId, performerUserId));
   }
 
-  async updatePayoutRequestStatus(id: number, status: string): Promise<PayoutRequest | undefined> {
+  async updatePayoutRequestStatus(
+    id: number,
+    status: string
+  ): Promise<PayoutRequest | undefined> {
     const [updatedPayoutRequest] = await db
       .update(payoutRequests)
       .set({ status })
@@ -5748,63 +7124,104 @@ export class DatabaseStorage implements IStorage {
     const count = await db
       .select({ count: payoutRequests.id })
       .from(payoutRequests)
-      .then(result => result.length);
+      .then((result) => result.length);
 
     const year = new Date().getFullYear();
-    const paddedCount = String(count + 1).padStart(6, '0');
+    const paddedCount = String(count + 1).padStart(6, "0");
     return `PAYOUT-${year}-${paddedCount}`;
   }
 
   async getAllPayoutRequests(): Promise<PayoutRequest[]> {
-    return await db.select().from(payoutRequests).orderBy(desc(payoutRequests.createdAt));
+    return await db
+      .select()
+      .from(payoutRequests)
+      .orderBy(desc(payoutRequests.createdAt));
   }
 
   // Document Linkage System
-  async createDocumentLinkage(linkage: InsertDocumentLinkage): Promise<DocumentLinkage> {
-    const [newLinkage] = await db.insert(documentLinkages).values(linkage).returning();
+  async createDocumentLinkage(
+    linkage: InsertDocumentLinkage
+  ): Promise<DocumentLinkage> {
+    const [newLinkage] = await db
+      .insert(documentLinkages)
+      .values(linkage)
+      .returning();
     return newLinkage;
   }
 
-  async getDocumentLinkages(sourceType: string, sourceId: number): Promise<DocumentLinkage[]> {
+  async getDocumentLinkages(
+    sourceType: string,
+    sourceId: number
+  ): Promise<DocumentLinkage[]> {
     return await db
       .select()
       .from(documentLinkages)
-      .where(and(
-        eq(documentLinkages.sourceDocumentType, sourceType),
-        eq(documentLinkages.sourceDocumentId, sourceId)
-      ));
+      .where(
+        and(
+          eq(documentLinkages.sourceDocumentType, sourceType),
+          eq(documentLinkages.sourceDocumentId, sourceId)
+        )
+      );
   }
 
-  async getLinkedDocuments(documentType: string, documentId: number): Promise<DocumentLinkage[]> {
+  async getLinkedDocuments(
+    documentType: string,
+    documentId: number
+  ): Promise<DocumentLinkage[]> {
     return await db
       .select()
       .from(documentLinkages)
-      .where(and(
-        eq(documentLinkages.linkedDocumentType, documentType),
-        eq(documentLinkages.linkedDocumentId, documentId)
-      ));
+      .where(
+        and(
+          eq(documentLinkages.linkedDocumentType, documentType),
+          eq(documentLinkages.linkedDocumentId, documentId)
+        )
+      );
   }
 
   // Payment Transaction Tracking
-  async createPaymentTransaction(transaction: InsertPaymentTransaction): Promise<PaymentTransaction> {
-    const [newTransaction] = await db.insert(paymentTransactions).values(transaction).returning();
+  async createPaymentTransaction(
+    transaction: InsertPaymentTransaction
+  ): Promise<PaymentTransaction> {
+    const [newTransaction] = await db
+      .insert(paymentTransactions)
+      .values(transaction)
+      .returning();
     return newTransaction;
   }
 
-  async getPaymentTransaction(id: number): Promise<PaymentTransaction | undefined> {
-    const result = await db.select().from(paymentTransactions).where(eq(paymentTransactions.id, id));
+  async getPaymentTransaction(
+    id: number
+  ): Promise<PaymentTransaction | undefined> {
+    const result = await db
+      .select()
+      .from(paymentTransactions)
+      .where(eq(paymentTransactions.id, id));
     return result[0];
   }
 
-  async getPaymentTransactionsByBooking(bookingId: number): Promise<PaymentTransaction[]> {
-    return await db.select().from(paymentTransactions).where(eq(paymentTransactions.bookingId, bookingId));
+  async getPaymentTransactionsByBooking(
+    bookingId: number
+  ): Promise<PaymentTransaction[]> {
+    return await db
+      .select()
+      .from(paymentTransactions)
+      .where(eq(paymentTransactions.bookingId, bookingId));
   }
 
-  async getPaymentTransactionsByInvoice(invoiceId: number): Promise<PaymentTransaction[]> {
-    return await db.select().from(paymentTransactions).where(eq(paymentTransactions.invoiceId, invoiceId));
+  async getPaymentTransactionsByInvoice(
+    invoiceId: number
+  ): Promise<PaymentTransaction[]> {
+    return await db
+      .select()
+      .from(paymentTransactions)
+      .where(eq(paymentTransactions.invoiceId, invoiceId));
   }
 
-  async updatePaymentTransactionStatus(id: number, status: string): Promise<PaymentTransaction | undefined> {
+  async updatePaymentTransactionStatus(
+    id: number,
+    status: string
+  ): Promise<PaymentTransaction | undefined> {
     const [updatedTransaction] = await db
       .update(paymentTransactions)
       .set({ status })
@@ -5814,19 +7231,29 @@ export class DatabaseStorage implements IStorage {
   }
 
   // Financial Audit Trail
-  async createFinancialAuditLog(auditLog: InsertFinancialAuditLog): Promise<FinancialAuditLog> {
-    const [newAuditLog] = await db.insert(financialAuditLog).values(auditLog).returning();
+  async createFinancialAuditLog(
+    auditLog: InsertFinancialAuditLog
+  ): Promise<FinancialAuditLog> {
+    const [newAuditLog] = await db
+      .insert(financialAuditLog)
+      .values(auditLog)
+      .returning();
     return newAuditLog;
   }
 
-  async getFinancialAuditLogs(entityType: string, entityId: number): Promise<FinancialAuditLog[]> {
+  async getFinancialAuditLogs(
+    entityType: string,
+    entityId: number
+  ): Promise<FinancialAuditLog[]> {
     return await db
       .select()
       .from(financialAuditLog)
-      .where(and(
-        eq(financialAuditLog.entityType, entityType),
-        eq(financialAuditLog.entityId, entityId)
-      ))
+      .where(
+        and(
+          eq(financialAuditLog.entityType, entityType),
+          eq(financialAuditLog.entityId, entityId)
+        )
+      )
       .orderBy(desc(financialAuditLog.createdAt));
   }
 
@@ -5842,10 +7269,16 @@ export class DatabaseStorage implements IStorage {
   }
 
   async getPaymentsByBooking(bookingId: number): Promise<Payment[]> {
-    return await db.select().from(payments).where(eq(payments.bookingId, bookingId));
+    return await db
+      .select()
+      .from(payments)
+      .where(eq(payments.bookingId, bookingId));
   }
 
-  async updatePaymentStatus(id: number, status: string): Promise<Payment | undefined> {
+  async updatePaymentStatus(
+    id: number,
+    status: string
+  ): Promise<Payment | undefined> {
     const [updatedPayment] = await db
       .update(payments)
       .set({ status })
@@ -5865,40 +7298,61 @@ export class DatabaseStorage implements IStorage {
   }
 
   async getReceiptsByBooking(bookingId: number): Promise<Receipt[]> {
-    return await db.select().from(receipts).where(eq(receipts.bookingId, bookingId));
+    return await db
+      .select()
+      .from(receipts)
+      .where(eq(receipts.bookingId, bookingId));
   }
 
   async generateReceiptNumber(): Promise<string> {
     const count = await db
       .select({ count: receipts.id })
       .from(receipts)
-      .then(result => result.length);
+      .then((result) => result.length);
 
     const year = new Date().getFullYear();
-    const paddedCount = String(count + 1).padStart(6, '0');
+    const paddedCount = String(count + 1).padStart(6, "0");
     return `REC-${year}-${paddedCount}`;
   }
 
   // AI-Powered Social Media Campaign Management
-  async createSocialMediaCampaign(campaign: InsertSocialMediaCampaign): Promise<SocialMediaCampaign> {
-    const [newCampaign] = await db.insert(socialMediaCampaigns).values(campaign).returning();
+  async createSocialMediaCampaign(
+    campaign: InsertSocialMediaCampaign
+  ): Promise<SocialMediaCampaign> {
+    const [newCampaign] = await db
+      .insert(socialMediaCampaigns)
+      .values(campaign)
+      .returning();
     return newCampaign;
   }
 
-  async getSocialMediaCampaign(id: number): Promise<SocialMediaCampaign | undefined> {
-    const result = await db.select().from(socialMediaCampaigns).where(eq(socialMediaCampaigns.id, id));
+  async getSocialMediaCampaign(
+    id: number
+  ): Promise<SocialMediaCampaign | undefined> {
+    const result = await db
+      .select()
+      .from(socialMediaCampaigns)
+      .where(eq(socialMediaCampaigns.id, id));
     return result[0];
   }
 
-  async getSocialMediaCampaignsByUser(userId: number): Promise<SocialMediaCampaign[]> {
-    return await db.select().from(socialMediaCampaigns).where(eq(socialMediaCampaigns.userId, userId));
+  async getSocialMediaCampaignsByUser(
+    userId: number
+  ): Promise<SocialMediaCampaign[]> {
+    return await db
+      .select()
+      .from(socialMediaCampaigns)
+      .where(eq(socialMediaCampaigns.userId, userId));
   }
 
   async getAllSocialMediaCampaigns(): Promise<SocialMediaCampaign[]> {
     return await db.select().from(socialMediaCampaigns);
   }
 
-  async updateSocialMediaCampaign(id: number, updates: Partial<SocialMediaCampaign>): Promise<SocialMediaCampaign | undefined> {
+  async updateSocialMediaCampaign(
+    id: number,
+    updates: Partial<SocialMediaCampaign>
+  ): Promise<SocialMediaCampaign | undefined> {
     const [updatedCampaign] = await db
       .update(socialMediaCampaigns)
       .set(updates)
@@ -5908,29 +7362,54 @@ export class DatabaseStorage implements IStorage {
   }
 
   async deleteSocialMediaCampaign(id: number): Promise<void> {
-    await db.delete(socialMediaCampaigns).where(eq(socialMediaCampaigns.id, id));
+    await db
+      .delete(socialMediaCampaigns)
+      .where(eq(socialMediaCampaigns.id, id));
   }
 
   // Competitive Intelligence System
-  async createCompetitiveIntelligence(intelligence: InsertCompetitiveIntelligence): Promise<CompetitiveIntelligence> {
-    const [newIntelligence] = await db.insert(competitiveIntelligence).values(intelligence).returning();
+  async createCompetitiveIntelligence(
+    intelligence: InsertCompetitiveIntelligence
+  ): Promise<CompetitiveIntelligence> {
+    const [newIntelligence] = await db
+      .insert(competitiveIntelligence)
+      .values(intelligence)
+      .returning();
     return newIntelligence;
   }
 
-  async getCompetitiveIntelligence(id: number): Promise<CompetitiveIntelligence | undefined> {
-    const result = await db.select().from(competitiveIntelligence).where(eq(competitiveIntelligence.id, id));
+  async getCompetitiveIntelligence(
+    id: number
+  ): Promise<CompetitiveIntelligence | undefined> {
+    const result = await db
+      .select()
+      .from(competitiveIntelligence)
+      .where(eq(competitiveIntelligence.id, id));
     return result[0];
   }
 
-  async getCompetitiveIntelligenceByArtist(artistId: number): Promise<CompetitiveIntelligence[]> {
-    return await db.select().from(competitiveIntelligence).where(eq(competitiveIntelligence.artistId, artistId));
+  async getCompetitiveIntelligenceByArtist(
+    artistId: number
+  ): Promise<CompetitiveIntelligence[]> {
+    return await db
+      .select()
+      .from(competitiveIntelligence)
+      .where(eq(competitiveIntelligence.artistId, artistId));
   }
 
-  async getCompetitiveIntelligenceByRegion(region: string): Promise<CompetitiveIntelligence[]> {
-    return await db.select().from(competitiveIntelligence).where(eq(competitiveIntelligence.region, region));
+  async getCompetitiveIntelligenceByRegion(
+    region: string
+  ): Promise<CompetitiveIntelligence[]> {
+    return await db
+      .select()
+      .from(competitiveIntelligence)
+      .where(eq(competitiveIntelligence.region, region));
   }
 
-  async updateCompetitiveIntelligence(id: number, updates: Partial<CompetitiveIntelligence>): Promise<CompetitiveIntelligence | undefined> {
+  async updateCompetitiveIntelligence(
+    id: number,
+    updates: Partial<CompetitiveIntelligence>
+  ): Promise<CompetitiveIntelligence | undefined> {
     const [updatedIntelligence] = await db
       .update(competitiveIntelligence)
       .set(updates)
@@ -5940,34 +7419,59 @@ export class DatabaseStorage implements IStorage {
   }
 
   async deleteCompetitiveIntelligence(id: number): Promise<void> {
-    await db.delete(competitiveIntelligence).where(eq(competitiveIntelligence.id, id));
+    await db
+      .delete(competitiveIntelligence)
+      .where(eq(competitiveIntelligence.id, id));
   }
 
   // Website Integration (All-Links Solution)
-  async createWebsiteIntegration(integration: InsertWebsiteIntegration): Promise<WebsiteIntegration> {
-    const [newIntegration] = await db.insert(websiteIntegrations).values(integration).returning();
+  async createWebsiteIntegration(
+    integration: InsertWebsiteIntegration
+  ): Promise<WebsiteIntegration> {
+    const [newIntegration] = await db
+      .insert(websiteIntegrations)
+      .values(integration)
+      .returning();
     return newIntegration;
   }
 
-  async getWebsiteIntegration(id: number): Promise<WebsiteIntegration | undefined> {
-    const result = await db.select().from(websiteIntegrations).where(eq(websiteIntegrations.id, id));
+  async getWebsiteIntegration(
+    id: number
+  ): Promise<WebsiteIntegration | undefined> {
+    const result = await db
+      .select()
+      .from(websiteIntegrations)
+      .where(eq(websiteIntegrations.id, id));
     return result[0];
   }
 
-  async getWebsiteIntegrationBySlug(slug: string): Promise<WebsiteIntegration | undefined> {
-    const result = await db.select().from(websiteIntegrations).where(eq(websiteIntegrations.slug, slug));
+  async getWebsiteIntegrationBySlug(
+    slug: string
+  ): Promise<WebsiteIntegration | undefined> {
+    const result = await db
+      .select()
+      .from(websiteIntegrations)
+      .where(eq(websiteIntegrations.slug, slug));
     return result[0];
   }
 
-  async getWebsiteIntegrationsByUser(userId: number): Promise<WebsiteIntegration[]> {
-    return await db.select().from(websiteIntegrations).where(eq(websiteIntegrations.userId, userId));
+  async getWebsiteIntegrationsByUser(
+    userId: number
+  ): Promise<WebsiteIntegration[]> {
+    return await db
+      .select()
+      .from(websiteIntegrations)
+      .where(eq(websiteIntegrations.userId, userId));
   }
 
   async getAllWebsiteIntegrations(): Promise<WebsiteIntegration[]> {
     return await db.select().from(websiteIntegrations);
   }
 
-  async updateWebsiteIntegration(id: number, updates: Partial<WebsiteIntegration>): Promise<WebsiteIntegration | undefined> {
+  async updateWebsiteIntegration(
+    id: number,
+    updates: Partial<WebsiteIntegration>
+  ): Promise<WebsiteIntegration | undefined> {
     const [updatedIntegration] = await db
       .update(websiteIntegrations)
       .set(updates)
@@ -5985,7 +7489,7 @@ export class DatabaseStorage implements IStorage {
       .update(websiteIntegrations)
       .set({
         viewCount: sql`${websiteIntegrations.viewCount} + 1`,
-        lastViewed: new Date()
+        lastViewed: new Date(),
       })
       .where(eq(websiteIntegrations.id, id));
   }
@@ -5998,25 +7502,41 @@ export class DatabaseStorage implements IStorage {
   }
 
   // Embeddable Widgets System
-  async createEmbeddableWidget(widget: InsertEmbeddableWidget): Promise<EmbeddableWidget> {
-    const [newWidget] = await db.insert(embeddableWidgets).values(widget).returning();
+  async createEmbeddableWidget(
+    widget: InsertEmbeddableWidget
+  ): Promise<EmbeddableWidget> {
+    const [newWidget] = await db
+      .insert(embeddableWidgets)
+      .values(widget)
+      .returning();
     return newWidget;
   }
 
   async getEmbeddableWidget(id: number): Promise<EmbeddableWidget | undefined> {
-    const result = await db.select().from(embeddableWidgets).where(eq(embeddableWidgets.id, id));
+    const result = await db
+      .select()
+      .from(embeddableWidgets)
+      .where(eq(embeddableWidgets.id, id));
     return result[0];
   }
 
-  async getEmbeddableWidgetsByUser(userId: number): Promise<EmbeddableWidget[]> {
-    return await db.select().from(embeddableWidgets).where(eq(embeddableWidgets.userId, userId));
+  async getEmbeddableWidgetsByUser(
+    userId: number
+  ): Promise<EmbeddableWidget[]> {
+    return await db
+      .select()
+      .from(embeddableWidgets)
+      .where(eq(embeddableWidgets.userId, userId));
   }
 
   async getAllEmbeddableWidgets(): Promise<EmbeddableWidget[]> {
     return await db.select().from(embeddableWidgets);
   }
 
-  async updateEmbeddableWidget(id: number, updates: Partial<EmbeddableWidget>): Promise<EmbeddableWidget | undefined> {
+  async updateEmbeddableWidget(
+    id: number,
+    updates: Partial<EmbeddableWidget>
+  ): Promise<EmbeddableWidget | undefined> {
     const [updatedWidget] = await db
       .update(embeddableWidgets)
       .set(updates)
@@ -6037,25 +7557,48 @@ export class DatabaseStorage implements IStorage {
   }
 
   // Career Forecasting System
-  async createCareerForecasting(forecasting: InsertCareerForecasting): Promise<CareerForecasting> {
-    const [newForecasting] = await db.insert(careerForecasting).values(forecasting).returning();
+  async createCareerForecasting(
+    forecasting: InsertCareerForecasting
+  ): Promise<CareerForecasting> {
+    const [newForecasting] = await db
+      .insert(careerForecasting)
+      .values(forecasting)
+      .returning();
     return newForecasting;
   }
 
-  async getCareerForecasting(id: number): Promise<CareerForecasting | undefined> {
-    const result = await db.select().from(careerForecasting).where(eq(careerForecasting.id, id));
+  async getCareerForecasting(
+    id: number
+  ): Promise<CareerForecasting | undefined> {
+    const result = await db
+      .select()
+      .from(careerForecasting)
+      .where(eq(careerForecasting.id, id));
     return result[0];
   }
 
-  async getCareerForecastingByUser(userId: number): Promise<CareerForecasting[]> {
-    return await db.select().from(careerForecasting).where(eq(careerForecasting.userId, userId));
+  async getCareerForecastingByUser(
+    userId: number
+  ): Promise<CareerForecasting[]> {
+    return await db
+      .select()
+      .from(careerForecasting)
+      .where(eq(careerForecasting.userId, userId));
   }
 
-  async getCareerForecastingByPeriod(period: string): Promise<CareerForecasting[]> {
-    return await db.select().from(careerForecasting).where(eq(careerForecasting.forecastPeriod, period));
+  async getCareerForecastingByPeriod(
+    period: string
+  ): Promise<CareerForecasting[]> {
+    return await db
+      .select()
+      .from(careerForecasting)
+      .where(eq(careerForecasting.forecastPeriod, period));
   }
 
-  async updateCareerForecasting(id: number, updates: Partial<CareerForecasting>): Promise<CareerForecasting | undefined> {
+  async updateCareerForecasting(
+    id: number,
+    updates: Partial<CareerForecasting>
+  ): Promise<CareerForecasting | undefined> {
     const [updatedForecasting] = await db
       .update(careerForecasting)
       .set(updates)
@@ -6069,50 +7612,62 @@ export class DatabaseStorage implements IStorage {
   }
 
   // User Favorites Methods
-  async addUserFavorite(userId: number, favoriteUserId: number, favoriteType: string = 'artist') {
+  async addUserFavorite(
+    userId: number,
+    favoriteUserId: number,
+    favoriteType: string = "artist"
+  ) {
     try {
-      const result = await db.insert(userFavorites).values({
-        userId,
-        favoriteUserId,
-        favoriteType
-      }).returning();
+      const result = await db
+        .insert(userFavorites)
+        .values({
+          userId,
+          favoriteUserId,
+          favoriteType,
+        })
+        .returning();
       return result[0];
     } catch (error: any) {
-      if (error.code === '23505') { // Unique constraint violation
-        throw new Error('Artist is already in favorites');
+      if (error.code === "23505") {
+        // Unique constraint violation
+        throw new Error("Artist is already in favorites");
       }
       throw error;
     }
   }
 
   async removeUserFavorite(userId: number, favoriteUserId: number) {
-    const result = await db.delete(userFavorites)
-      .where(and(
-        eq(userFavorites.userId, userId),
-        eq(userFavorites.favoriteUserId, favoriteUserId)
-      ))
+    const result = await db
+      .delete(userFavorites)
+      .where(
+        and(
+          eq(userFavorites.userId, userId),
+          eq(userFavorites.favoriteUserId, favoriteUserId)
+        )
+      )
       .returning();
     return result[0];
   }
 
   async getUserFavorites(userId: number) {
-    const result = await db.select({
-      id: userFavorites.id,
-      favoriteUserId: userFavorites.favoriteUserId,
-      favoriteType: userFavorites.favoriteType,
-      createdAt: userFavorites.createdAt,
-      favoriteUser: {
-        id: users.id,
-        fullName: users.fullName,
-        email: users.email,
-        roleId: users.roleId
-      },
-      artist: {
-        stageName: artists.stageName,
-        primaryGenre: artists.primaryGenre,
-        basePrice: artists.basePrice
-      }
-    })
+    const result = await db
+      .select({
+        id: userFavorites.id,
+        favoriteUserId: userFavorites.favoriteUserId,
+        favoriteType: userFavorites.favoriteType,
+        createdAt: userFavorites.createdAt,
+        favoriteUser: {
+          id: users.id,
+          fullName: users.fullName,
+          email: users.email,
+          roleId: users.roleId,
+        },
+        artist: {
+          stageName: artists.stageName,
+          primaryGenre: artists.primaryGenre,
+          basePrice: artists.basePrice,
+        },
+      })
       .from(userFavorites)
       .leftJoin(users, eq(userFavorites.favoriteUserId, users.id))
       .leftJoin(artists, eq(userFavorites.favoriteUserId, artists.userId))
@@ -6123,12 +7678,15 @@ export class DatabaseStorage implements IStorage {
   }
 
   async checkIfUserFavorite(userId: number, favoriteUserId: number) {
-    const result = await db.select()
+    const result = await db
+      .select()
       .from(userFavorites)
-      .where(and(
-        eq(userFavorites.userId, userId),
-        eq(userFavorites.favoriteUserId, favoriteUserId)
-      ))
+      .where(
+        and(
+          eq(userFavorites.userId, userId),
+          eq(userFavorites.favoriteUserId, favoriteUserId)
+        )
+      )
       .limit(1);
 
     return result.length > 0;
@@ -6136,28 +7694,44 @@ export class DatabaseStorage implements IStorage {
 
   // OppHub - Opportunity Hub Implementation
   async getOpportunityCategories(): Promise<OpportunityCategory[]> {
-    const result = await db.select().from(opportunityCategories)
+    const result = await db
+      .select()
+      .from(opportunityCategories)
       .where(eq(opportunityCategories.isActive, true))
       .orderBy(opportunityCategories.name);
     return result;
   }
 
-  async createOpportunityCategory(category: InsertOpportunityCategory): Promise<OpportunityCategory> {
-    const result = await db.insert(opportunityCategories).values(category).returning();
+  async createOpportunityCategory(
+    category: InsertOpportunityCategory
+  ): Promise<OpportunityCategory> {
+    const result = await db
+      .insert(opportunityCategories)
+      .values(category)
+      .returning();
     return result[0];
   }
 
-  async updateOpportunityCategory(id: number, updates: Partial<InsertOpportunityCategory>): Promise<OpportunityCategory | null> {
-    const result = await db.update(opportunityCategories)
+  async updateOpportunityCategory(
+    id: number,
+    updates: Partial<InsertOpportunityCategory>
+  ): Promise<OpportunityCategory | null> {
+    const result = await db
+      .update(opportunityCategories)
       .set({ ...updates, updatedAt: new Date() })
       .where(eq(opportunityCategories.id, id))
       .returning();
     return result[0] || null;
   }
 
-  async getOpportunities(filters?: { status?: string; isDemo?: boolean; categoryId?: number; isVerified?: boolean }): Promise<any[]> {
+  async getOpportunities(filters?: {
+    status?: string;
+    isDemo?: boolean;
+    categoryId?: number;
+    isVerified?: boolean;
+  }): Promise<any[]> {
     try {
-      console.log('getOpportunities called with filters:', filters);
+      console.log("getOpportunities called with filters:", filters);
 
       // Use Drizzle ORM select method like other working methods in this file
       let query = db.select().from(opportunities);
@@ -6188,12 +7762,15 @@ export class DatabaseStorage implements IStorage {
         .orderBy(desc(opportunities.createdAt))
         .limit(100);
 
-      console.log('Drizzle query result count:', result.length);
-      console.log('First result sample:', result[0] ? JSON.stringify(result[0], null, 2) : 'No results');
+      console.log("Drizzle query result count:", result.length);
+      console.log(
+        "First result sample:",
+        result[0] ? JSON.stringify(result[0], null, 2) : "No results"
+      );
 
       return result;
     } catch (error) {
-      console.error('Error fetching opportunities:', error);
+      console.error("Error fetching opportunities:", error);
       return [];
     }
   }
@@ -6216,35 +7793,51 @@ export class DatabaseStorage implements IStorage {
           ${opportunity.amount},
           ${opportunity.requirements},
           ${opportunity.organizerName || opportunity.source},
-          ${opportunity.contactEmail || 'contact@' + (opportunity.source || 'unknown').toLowerCase().replace(/\s+/g, '') + '.com'},
-          ${opportunity.contactPhone || 'Contact organizer'},
-          ${opportunity.applicationProcess || 'Visit source website for application details'},
+          ${
+            opportunity.contactEmail ||
+            "contact@" +
+              (opportunity.source || "unknown")
+                .toLowerCase()
+                .replace(/\s+/g, "") +
+              ".com"
+          },
+          ${opportunity.contactPhone || "Contact organizer"},
+          ${
+            opportunity.applicationProcess ||
+            "Visit source website for application details"
+          },
           ${opportunity.credibilityScore || 75},
-          ${opportunity.tags || 'managed_talent,verified'},
+          ${opportunity.tags || "managed_talent,verified"},
           ${opportunity.categoryId || 1},
-          ${opportunity.location || 'Various locations'},
-          ${opportunity.compensationType || 'exposure'},
-          ${opportunity.verificationStatus || 'pending'},
-          ${opportunity.discoveryMethod || 'ai_forum_scan'},
+          ${opportunity.location || "Various locations"},
+          ${opportunity.compensationType || "exposure"},
+          ${opportunity.verificationStatus || "pending"},
+          ${opportunity.discoveryMethod || "ai_forum_scan"},
           ${opportunity.relevanceScore || 0.75}
         ) RETURNING *
       `);
       return result.rows[0];
     } catch (error) {
-      console.error('Error creating opportunity:', error);
+      console.error("Error creating opportunity:", error);
       throw error;
     }
   }
 
   async getOpportunityById(id: number): Promise<Opportunity | null> {
-    const result = await db.select().from(opportunities)
+    const result = await db
+      .select()
+      .from(opportunities)
       .where(eq(opportunities.id, id))
       .limit(1);
     return result[0] || null;
   }
 
-  async updateOpportunity(id: number, updates: Partial<InsertOpportunity>): Promise<Opportunity | null> {
-    const result = await db.update(opportunities)
+  async updateOpportunity(
+    id: number,
+    updates: Partial<InsertOpportunity>
+  ): Promise<Opportunity | null> {
+    const result = await db
+      .update(opportunities)
       .set({ ...updates, updatedAt: new Date() })
       .where(eq(opportunities.id, id))
       .returning();
@@ -6252,7 +7845,8 @@ export class DatabaseStorage implements IStorage {
   }
 
   async deleteOpportunity(id: number): Promise<boolean> {
-    const result = await db.delete(opportunities)
+    const result = await db
+      .delete(opportunities)
       .where(eq(opportunities.id, id))
       .returning();
     return result.length > 0;
@@ -6261,67 +7855,86 @@ export class DatabaseStorage implements IStorage {
   // AI Application Intelligence Methods for Managed Artists (Priority: Lí-Lí Octave, JCro, Janet Azzouz, Princess Trinidad)
   async createApplicationGuidance(guidanceData: any) {
     try {
-      const result = await db.insert(oppHubApplicationGuidance).values(guidanceData).returning();
+      const result = await db
+        .insert(oppHubApplicationGuidance)
+        .values(guidanceData)
+        .returning();
       return result[0];
     } catch (error) {
-      console.error('Error creating application guidance:', error);
+      console.error("Error creating application guidance:", error);
       throw error;
     }
   }
 
   async getApplicationGuidanceForUser(userId: number, opportunityId?: number) {
     try {
-      let query = db.select({
-        id: oppHubApplicationGuidance.id,
-        opportunityId: oppHubApplicationGuidance.opportunityId,
-        generatedStrategy: oppHubApplicationGuidance.generatedStrategy,
-        matchReasons: oppHubApplicationGuidance.matchReasons,
-        recommendedApproach: oppHubApplicationGuidance.recommendedApproach,
-        suggestedPortfolio: oppHubApplicationGuidance.suggestedPortfolio,
-        keyTalkingPoints: oppHubApplicationGuidance.keyTalkingPoints,
-        confidenceScore: oppHubApplicationGuidance.confidenceScore,
-        priorityLevel: oppHubApplicationGuidance.priorityLevel,
-        applicationStatus: oppHubApplicationGuidance.applicationStatus,
-        generatedAt: oppHubApplicationGuidance.generatedAt,
-        // Opportunity details
-        opportunityTitle: opportunities.title,
-        opportunityOrganizer: opportunities.organizer,
-        opportunityDeadline: opportunities.applicationDeadline,
-        opportunityLocation: opportunities.location
-      })
+      let query = db
+        .select({
+          id: oppHubApplicationGuidance.id,
+          opportunityId: oppHubApplicationGuidance.opportunityId,
+          generatedStrategy: oppHubApplicationGuidance.generatedStrategy,
+          matchReasons: oppHubApplicationGuidance.matchReasons,
+          recommendedApproach: oppHubApplicationGuidance.recommendedApproach,
+          suggestedPortfolio: oppHubApplicationGuidance.suggestedPortfolio,
+          keyTalkingPoints: oppHubApplicationGuidance.keyTalkingPoints,
+          confidenceScore: oppHubApplicationGuidance.confidenceScore,
+          priorityLevel: oppHubApplicationGuidance.priorityLevel,
+          applicationStatus: oppHubApplicationGuidance.applicationStatus,
+          generatedAt: oppHubApplicationGuidance.generatedAt,
+          // Opportunity details
+          opportunityTitle: opportunities.title,
+          opportunityOrganizer: opportunities.organizer,
+          opportunityDeadline: opportunities.applicationDeadline,
+          opportunityLocation: opportunities.location,
+        })
         .from(oppHubApplicationGuidance)
-        .leftJoin(opportunities, eq(oppHubApplicationGuidance.opportunityId, opportunities.id))
+        .leftJoin(
+          opportunities,
+          eq(oppHubApplicationGuidance.opportunityId, opportunities.id)
+        )
         .where(eq(oppHubApplicationGuidance.targetUserId, userId))
-        .orderBy(desc(oppHubApplicationGuidance.priorityLevel), desc(oppHubApplicationGuidance.confidenceScore));
+        .orderBy(
+          desc(oppHubApplicationGuidance.priorityLevel),
+          desc(oppHubApplicationGuidance.confidenceScore)
+        );
 
       if (opportunityId) {
-        query = query.where(eq(oppHubApplicationGuidance.opportunityId, opportunityId));
+        query = query.where(
+          eq(oppHubApplicationGuidance.opportunityId, opportunityId)
+        );
       }
 
       return await query.execute();
     } catch (error) {
-      console.error('Error getting application guidance:', error);
+      console.error("Error getting application guidance:", error);
       return [];
     }
   }
 
   async createSuccessStory(storyData: any) {
     try {
-      const result = await db.insert(oppHubSuccessStories).values(storyData).returning();
+      const result = await db
+        .insert(oppHubSuccessStories)
+        .values(storyData)
+        .returning();
       return result[0];
     } catch (error) {
-      console.error('Error creating success story:', error);
+      console.error("Error creating success story:", error);
       throw error;
     }
   }
 
   async getSuccessStoriesByType(opportunityType: string, genre?: string) {
     try {
-      let query = db.select().from(oppHubSuccessStories)
+      let query = db
+        .select()
+        .from(oppHubSuccessStories)
         .where(eq(oppHubSuccessStories.opportunityType, opportunityType));
 
       if (genre) {
-        query = query.where(sql`${oppHubSuccessStories.artistGenre} ILIKE ${`%${genre}%`}`);
+        query = query.where(
+          sql`${oppHubSuccessStories.artistGenre} ILIKE ${`%${genre}%`}`
+        );
       }
 
       return await query
@@ -6329,66 +7942,79 @@ export class DatabaseStorage implements IStorage {
         .limit(5)
         .execute();
     } catch (error) {
-      console.error('Error getting success stories:', error);
+      console.error("Error getting success stories:", error);
       return [];
     }
   }
 
   async createDeadlineTracking(trackingData: any) {
     try {
-      const result = await db.insert(oppHubDeadlineTracking).values(trackingData).returning();
+      const result = await db
+        .insert(oppHubDeadlineTracking)
+        .values(trackingData)
+        .returning();
       return result[0];
     } catch (error) {
-      console.error('Error creating deadline tracking:', error);
+      console.error("Error creating deadline tracking:", error);
       throw error;
     }
   }
 
   async getDeadlineTrackingForUser(userId: number) {
     try {
-      return await db.select({
-        id: oppHubDeadlineTracking.id,
-        opportunityId: oppHubDeadlineTracking.opportunityId,
-        deadlineType: oppHubDeadlineTracking.deadlineType,
-        deadlineDate: oppHubDeadlineTracking.deadlineDate,
-        applicationProgress: oppHubDeadlineTracking.applicationProgress,
-        // Opportunity details
-        opportunityTitle: opportunities.title,
-        opportunityOrganizer: opportunities.organizer
-      })
+      return await db
+        .select({
+          id: oppHubDeadlineTracking.id,
+          opportunityId: oppHubDeadlineTracking.opportunityId,
+          deadlineType: oppHubDeadlineTracking.deadlineType,
+          deadlineDate: oppHubDeadlineTracking.deadlineDate,
+          applicationProgress: oppHubDeadlineTracking.applicationProgress,
+          // Opportunity details
+          opportunityTitle: opportunities.title,
+          opportunityOrganizer: opportunities.organizer,
+        })
         .from(oppHubDeadlineTracking)
-        .leftJoin(opportunities, eq(oppHubDeadlineTracking.opportunityId, opportunities.id))
-        .where(and(
-          eq(oppHubDeadlineTracking.userId, userId),
-          eq(oppHubDeadlineTracking.isActive, true)
-        ))
+        .leftJoin(
+          opportunities,
+          eq(oppHubDeadlineTracking.opportunityId, opportunities.id)
+        )
+        .where(
+          and(
+            eq(oppHubDeadlineTracking.userId, userId),
+            eq(oppHubDeadlineTracking.isActive, true)
+          )
+        )
         .orderBy(asc(oppHubDeadlineTracking.deadlineDate))
         .execute();
     } catch (error) {
-      console.error('Error getting deadline tracking:', error);
+      console.error("Error getting deadline tracking:", error);
       return [];
     }
   }
 
   async createApplicationAnalytics(analyticsData: any) {
     try {
-      const result = await db.insert(oppHubApplicationAnalytics).values(analyticsData).returning();
+      const result = await db
+        .insert(oppHubApplicationAnalytics)
+        .values(analyticsData)
+        .returning();
       return result[0];
     } catch (error) {
-      console.error('Error creating application analytics:', error);
+      console.error("Error creating application analytics:", error);
       throw error;
     }
   }
 
   async getApplicationAnalyticsForUser(userId: number) {
     try {
-      return await db.select()
+      return await db
+        .select()
         .from(oppHubApplicationAnalytics)
         .where(eq(oppHubApplicationAnalytics.userId, userId))
         .orderBy(desc(oppHubApplicationAnalytics.createdAt))
         .execute();
     } catch (error) {
-      console.error('Error getting application analytics:', error);
+      console.error("Error getting application analytics:", error);
       return [];
     }
   }
@@ -6396,28 +8022,35 @@ export class DatabaseStorage implements IStorage {
   // Get AI guidance for all managed artists with priority ranking
   async getAllManagedArtistGuidance(limit: number = 50) {
     try {
-      return await db.select({
-        id: oppHubApplicationGuidance.id,
-        targetUserId: oppHubApplicationGuidance.targetUserId,
-        opportunityId: oppHubApplicationGuidance.opportunityId,
-        confidenceScore: oppHubApplicationGuidance.confidenceScore,
-        priorityLevel: oppHubApplicationGuidance.priorityLevel,
-        applicationStatus: oppHubApplicationGuidance.applicationStatus,
-        generatedAt: oppHubApplicationGuidance.generatedAt,
-        // User details
-        userEmail: users.email,
-        userFullName: users.fullName,
-        // Artist details
-        stageNames: artists.stageNames,
-        // Opportunity details
-        opportunityTitle: opportunities.title,
-        opportunityOrganizer: opportunities.organizer,
-        opportunityDeadline: opportunities.applicationDeadline
-      })
+      return await db
+        .select({
+          id: oppHubApplicationGuidance.id,
+          targetUserId: oppHubApplicationGuidance.targetUserId,
+          opportunityId: oppHubApplicationGuidance.opportunityId,
+          confidenceScore: oppHubApplicationGuidance.confidenceScore,
+          priorityLevel: oppHubApplicationGuidance.priorityLevel,
+          applicationStatus: oppHubApplicationGuidance.applicationStatus,
+          generatedAt: oppHubApplicationGuidance.generatedAt,
+          // User details
+          userEmail: users.email,
+          userFullName: users.fullName,
+          // Artist details
+          stageNames: artists.stageNames,
+          // Opportunity details
+          opportunityTitle: opportunities.title,
+          opportunityOrganizer: opportunities.organizer,
+          opportunityDeadline: opportunities.applicationDeadline,
+        })
         .from(oppHubApplicationGuidance)
         .leftJoin(users, eq(oppHubApplicationGuidance.targetUserId, users.id))
-        .leftJoin(artists, eq(oppHubApplicationGuidance.targetUserId, artists.userId))
-        .leftJoin(opportunities, eq(oppHubApplicationGuidance.opportunityId, opportunities.id))
+        .leftJoin(
+          artists,
+          eq(oppHubApplicationGuidance.targetUserId, artists.userId)
+        )
+        .leftJoin(
+          opportunities,
+          eq(oppHubApplicationGuidance.opportunityId, opportunities.id)
+        )
         .where(gte(oppHubApplicationGuidance.priorityLevel, 3)) // Only managed artists (priority 3+)
         .orderBy(
           desc(oppHubApplicationGuidance.priorityLevel),
@@ -6427,31 +8060,40 @@ export class DatabaseStorage implements IStorage {
         .limit(limit)
         .execute();
     } catch (error) {
-      console.error('Error getting all managed artist guidance:', error);
+      console.error("Error getting all managed artist guidance:", error);
       return [];
     }
   }
 
   async incrementOpportunityViews(id: number): Promise<void> {
     try {
-      await db.update(opportunities)
+      await db
+        .update(opportunities)
         .set({ updatedAt: new Date() })
         .where(eq(opportunities.id, id))
         .execute();
     } catch (error) {
-      console.error('Error incrementing opportunity views:', error);
+      console.error("Error incrementing opportunity views:", error);
     }
   }
 
-  async getOpportunityApplications(filters?: { opportunityId?: number; applicantUserId?: number; isDemo?: boolean }): Promise<OpportunityApplication[]> {
+  async getOpportunityApplications(filters?: {
+    opportunityId?: number;
+    applicantUserId?: number;
+    isDemo?: boolean;
+  }): Promise<OpportunityApplication[]> {
     try {
       let conditions: any[] = [];
 
       if (filters?.opportunityId) {
-        conditions.push(eq(opportunityApplications.opportunityId, filters.opportunityId));
+        conditions.push(
+          eq(opportunityApplications.opportunityId, filters.opportunityId)
+        );
       }
       if (filters?.applicantUserId) {
-        conditions.push(eq(opportunityApplications.applicantUserId, filters.applicantUserId));
+        conditions.push(
+          eq(opportunityApplications.applicantUserId, filters.applicantUserId)
+        );
       }
       if (filters?.isDemo !== undefined) {
         conditions.push(eq(opportunityApplications.isDemo, filters.isDemo));
@@ -6460,53 +8102,76 @@ export class DatabaseStorage implements IStorage {
       let query = db.select().from(opportunityApplications);
 
       if (conditions.length > 0) {
-        query = query.where(conditions.length === 1 ? conditions[0] : and(...conditions));
+        query = query.where(
+          conditions.length === 1 ? conditions[0] : and(...conditions)
+        );
       }
 
-      const result = await query.orderBy(desc(opportunityApplications.appliedAt));
+      const result = await query.orderBy(
+        desc(opportunityApplications.appliedAt)
+      );
       return result;
     } catch (error) {
-      console.error('Error getting opportunity applications:', error);
+      console.error("Error getting opportunity applications:", error);
       return [];
     }
   }
 
-  async createOpportunityApplication(application: InsertOpportunityApplication): Promise<OpportunityApplication> {
-    const result = await db.insert(opportunityApplications).values(application).returning();
+  async createOpportunityApplication(
+    application: InsertOpportunityApplication
+  ): Promise<OpportunityApplication> {
+    const result = await db
+      .insert(opportunityApplications)
+      .values(application)
+      .returning();
 
     // Increment application count for the opportunity
-    await db.update(opportunities)
+    await db
+      .update(opportunities)
       .set({ applicationCount: sql`${opportunities.applicationCount} + 1` })
       .where(eq(opportunities.id, application.opportunityId!));
 
     return result[0];
   }
 
-  async getOpportunityApplicationById(id: number): Promise<OpportunityApplication | null> {
-    const result = await db.select().from(opportunityApplications)
+  async getOpportunityApplicationById(
+    id: number
+  ): Promise<OpportunityApplication | null> {
+    const result = await db
+      .select()
+      .from(opportunityApplications)
       .where(eq(opportunityApplications.id, id))
       .limit(1);
     return result[0] || null;
   }
 
-  async updateOpportunityApplicationStatus(id: number, status: string, reviewNotes?: string, reviewedBy?: number): Promise<OpportunityApplication | null> {
+  async updateOpportunityApplicationStatus(
+    id: number,
+    status: string,
+    reviewNotes?: string,
+    reviewedBy?: number
+  ): Promise<OpportunityApplication | null> {
     const updateData: any = {
       status,
       reviewedAt: new Date(),
-      updatedAt: new Date()
+      updatedAt: new Date(),
     };
 
     if (reviewNotes) updateData.reviewNotes = reviewNotes;
     if (reviewedBy) updateData.reviewedBy = reviewedBy;
 
-    const result = await db.update(opportunityApplications)
+    const result = await db
+      .update(opportunityApplications)
       .set(updateData)
       .where(eq(opportunityApplications.id, id))
       .returning();
     return result[0] || null;
   }
 
-  async getOppHubSubscriptions(filters?: { userId?: number; status?: string }): Promise<OppHubSubscription[]> {
+  async getOppHubSubscriptions(filters?: {
+    userId?: number;
+    status?: string;
+  }): Promise<OppHubSubscription[]> {
     let query = db.select().from(oppHubSubscriptions);
 
     if (filters?.userId) {
@@ -6520,23 +8185,38 @@ export class DatabaseStorage implements IStorage {
     return result;
   }
 
-  async createOppHubSubscription(subscription: InsertOppHubSubscription): Promise<OppHubSubscription> {
-    const result = await db.insert(oppHubSubscriptions).values(subscription).returning();
+  async createOppHubSubscription(
+    subscription: InsertOppHubSubscription
+  ): Promise<OppHubSubscription> {
+    const result = await db
+      .insert(oppHubSubscriptions)
+      .values(subscription)
+      .returning();
     return result[0];
   }
 
-  async getOppHubSubscriptionByUserId(userId: number): Promise<OppHubSubscription | null> {
-    const result = await db.select().from(oppHubSubscriptions)
-      .where(and(
-        eq(oppHubSubscriptions.userId, userId),
-        eq(oppHubSubscriptions.status, 'active')
-      ))
+  async getOppHubSubscriptionByUserId(
+    userId: number
+  ): Promise<OppHubSubscription | null> {
+    const result = await db
+      .select()
+      .from(oppHubSubscriptions)
+      .where(
+        and(
+          eq(oppHubSubscriptions.userId, userId),
+          eq(oppHubSubscriptions.status, "active")
+        )
+      )
       .limit(1);
     return result[0] || null;
   }
 
-  async updateOppHubSubscription(id: number, updates: Partial<InsertOppHubSubscription>): Promise<OppHubSubscription | null> {
-    const result = await db.update(oppHubSubscriptions)
+  async updateOppHubSubscription(
+    id: number,
+    updates: Partial<InsertOppHubSubscription>
+  ): Promise<OppHubSubscription | null> {
+    const result = await db
+      .update(oppHubSubscriptions)
       .set({ ...updates, updatedAt: new Date() })
       .where(eq(oppHubSubscriptions.id, id))
       .returning();
@@ -6544,43 +8224,64 @@ export class DatabaseStorage implements IStorage {
   }
 
   async incrementApplicationsUsed(userId: number): Promise<void> {
-    await db.update(oppHubSubscriptions)
-      .set({ applicationsUsed: sql`${oppHubSubscriptions.applicationsUsed} + 1` })
-      .where(and(
-        eq(oppHubSubscriptions.userId, userId),
-        eq(oppHubSubscriptions.status, 'active')
-      ));
+    await db
+      .update(oppHubSubscriptions)
+      .set({
+        applicationsUsed: sql`${oppHubSubscriptions.applicationsUsed} + 1`,
+      })
+      .where(
+        and(
+          eq(oppHubSubscriptions.userId, userId),
+          eq(oppHubSubscriptions.status, "active")
+        )
+      );
   }
 
-  async getMarketIntelligence(filters?: { status?: string; sourceType?: string }): Promise<MarketIntelligence[]> {
+  async getMarketIntelligence(filters?: {
+    status?: string;
+    sourceType?: string;
+  }): Promise<MarketIntelligence[]> {
     let query = db.select().from(marketIntelligence);
 
     if (filters?.status) {
       query = query.where(eq(marketIntelligence.status, filters.status));
     }
     if (filters?.sourceType) {
-      query = query.where(eq(marketIntelligence.sourceType, filters.sourceType));
+      query = query.where(
+        eq(marketIntelligence.sourceType, filters.sourceType)
+      );
     }
 
     const result = await query.orderBy(desc(marketIntelligence.processedAt));
     return result;
   }
 
-  async createMarketIntelligence(intelligence: InsertMarketIntelligence): Promise<MarketIntelligence> {
-    const result = await db.insert(marketIntelligence).values(intelligence).returning();
+  async createMarketIntelligence(
+    intelligence: InsertMarketIntelligence
+  ): Promise<MarketIntelligence> {
+    const result = await db
+      .insert(marketIntelligence)
+      .values(intelligence)
+      .returning();
     return result[0];
   }
 
-  async updateMarketIntelligenceStatus(id: number, status: string, reviewNotes?: string, reviewedBy?: number): Promise<MarketIntelligence | null> {
+  async updateMarketIntelligenceStatus(
+    id: number,
+    status: string,
+    reviewNotes?: string,
+    reviewedBy?: number
+  ): Promise<MarketIntelligence | null> {
     const updateData: any = {
       status,
-      updatedAt: new Date()
+      updatedAt: new Date(),
     };
 
     if (reviewNotes) updateData.reviewNotes = reviewNotes;
     if (reviewedBy) updateData.reviewedBy = reviewedBy;
 
-    const result = await db.update(marketIntelligence)
+    const result = await db
+      .update(marketIntelligence)
       .set(updateData)
       .where(eq(marketIntelligence.id, id))
       .returning();
@@ -6588,57 +8289,82 @@ export class DatabaseStorage implements IStorage {
   }
 
   async getOpportunitySources(): Promise<OpportunitySource[]> {
-    const result = await db.select().from(opportunitySources)
+    const result = await db
+      .select()
+      .from(opportunitySources)
       .where(eq(opportunitySources.isActive, true))
       .orderBy(opportunitySources.name);
     return result;
   }
 
-  async createOpportunitySource(source: InsertOpportunitySource): Promise<OpportunitySource> {
-    const result = await db.insert(opportunitySources).values(source).returning();
+  async createOpportunitySource(
+    source: InsertOpportunitySource
+  ): Promise<OpportunitySource> {
+    const result = await db
+      .insert(opportunitySources)
+      .values(source)
+      .returning();
     return result[0];
   }
 
-  async updateOpportunitySourceLastScraped(id: number, opportunitiesFound: number): Promise<void> {
-    await db.update(opportunitySources)
+  async updateOpportunitySourceLastScraped(
+    id: number,
+    opportunitiesFound: number
+  ): Promise<void> {
+    await db
+      .update(opportunitySources)
       .set({
         lastScraped: new Date(),
         opportunitiesFound,
-        updatedAt: new Date()
+        updatedAt: new Date(),
       })
       .where(eq(opportunitySources.id, id));
   }
 
-  async getOpportunityMatches(filters?: { artistId?: number; opportunityId?: number }): Promise<OpportunityMatch[]> {
+  async getOpportunityMatches(filters?: {
+    artistId?: number;
+    opportunityId?: number;
+  }): Promise<OpportunityMatch[]> {
     let query = db.select().from(opportunityMatches);
 
     if (filters?.artistId) {
       query = query.where(eq(opportunityMatches.artistId, filters.artistId));
     }
     if (filters?.opportunityId) {
-      query = query.where(eq(opportunityMatches.opportunityId, filters.opportunityId));
+      query = query.where(
+        eq(opportunityMatches.opportunityId, filters.opportunityId)
+      );
     }
 
     const result = await query.orderBy(desc(opportunityMatches.matchScore));
     return result;
   }
 
-  async createOpportunityMatch(match: InsertOpportunityMatch): Promise<OpportunityMatch> {
-    const result = await db.insert(opportunityMatches).values(match).returning();
+  async createOpportunityMatch(
+    match: InsertOpportunityMatch
+  ): Promise<OpportunityMatch> {
+    const result = await db
+      .insert(opportunityMatches)
+      .values(match)
+      .returning();
     return result[0];
   }
 
-  async updateOpportunityMatchInteraction(id: number, interactionType: string): Promise<void> {
+  async updateOpportunityMatchInteraction(
+    id: number,
+    interactionType: string
+  ): Promise<void> {
     const updateData: any = {
       interactionType,
-      updatedAt: new Date()
+      updatedAt: new Date(),
     };
 
-    if (interactionType === 'viewed') {
+    if (interactionType === "viewed") {
       updateData.viewedAt = new Date();
     }
 
-    await db.update(opportunityMatches)
+    await db
+      .update(opportunityMatches)
       .set(updateData)
       .where(eq(opportunityMatches.id, id));
   }
@@ -6655,25 +8381,36 @@ export class DatabaseStorage implements IStorage {
     return result;
   }
 
-  async createPRORegistration(registration: InsertPRORegistration): Promise<PRORegistration> {
-    const result = await db.insert(proRegistrations).values(registration).returning();
+  async createPRORegistration(
+    registration: InsertPRORegistration
+  ): Promise<PRORegistration> {
+    const result = await db
+      .insert(proRegistrations)
+      .values(registration)
+      .returning();
     return result[0];
   }
 
   async getPRORegistrationById(id: number): Promise<PRORegistration | null> {
-    const result = await db.select().from(proRegistrations)
+    const result = await db
+      .select()
+      .from(proRegistrations)
       .where(eq(proRegistrations.id, id))
       .limit(1);
     return result[0] || null;
   }
 
-  async updatePRORegistration(id: number, updates: Partial<InsertPRORegistration>): Promise<PRORegistration | null> {
+  async updatePRORegistration(
+    id: number,
+    updates: Partial<InsertPRORegistration>
+  ): Promise<PRORegistration | null> {
     const updateData = {
       ...updates,
-      updatedAt: new Date()
+      updatedAt: new Date(),
     };
 
-    const result = await db.update(proRegistrations)
+    const result = await db
+      .update(proRegistrations)
       .set(updateData)
       .where(eq(proRegistrations.id, id))
       .returning();
@@ -6681,7 +8418,9 @@ export class DatabaseStorage implements IStorage {
   }
 
   async getPROWorks(proRegistrationId: number): Promise<PROWork[]> {
-    const result = await db.select().from(proWorks)
+    const result = await db
+      .select()
+      .from(proWorks)
       .where(eq(proWorks.proRegistrationId, proRegistrationId))
       .orderBy(desc(proWorks.createdAt));
     return result;
@@ -6692,26 +8431,39 @@ export class DatabaseStorage implements IStorage {
     return result[0];
   }
 
-  async updatePROWork(id: number, updates: Partial<InsertPROWork>): Promise<PROWork | null> {
+  async updatePROWork(
+    id: number,
+    updates: Partial<InsertPROWork>
+  ): Promise<PROWork | null> {
     const updateData = {
       ...updates,
-      updatedAt: new Date()
+      updatedAt: new Date(),
     };
 
-    const result = await db.update(proWorks)
+    const result = await db
+      .update(proWorks)
       .set(updateData)
       .where(eq(proWorks.id, id))
       .returning();
     return result[0] || null;
   }
 
-  async createPROEligibilityAssessment(assessment: InsertPROEligibilityAssessment): Promise<PROEligibilityAssessment> {
-    const result = await db.insert(proEligibilityAssessments).values(assessment).returning();
+  async createPROEligibilityAssessment(
+    assessment: InsertPROEligibilityAssessment
+  ): Promise<PROEligibilityAssessment> {
+    const result = await db
+      .insert(proEligibilityAssessments)
+      .values(assessment)
+      .returning();
     return result[0];
   }
 
-  async getPROEligibilityAssessment(userId: number): Promise<PROEligibilityAssessment | null> {
-    const result = await db.select().from(proEligibilityAssessments)
+  async getPROEligibilityAssessment(
+    userId: number
+  ): Promise<PROEligibilityAssessment | null> {
+    const result = await db
+      .select()
+      .from(proEligibilityAssessments)
       .where(eq(proEligibilityAssessments.userId, userId))
       .orderBy(desc(proEligibilityAssessments.createdAt))
       .limit(1);
@@ -6723,21 +8475,27 @@ export class DatabaseStorage implements IStorage {
     try {
       return await db.select().from(isrcCodes);
     } catch (error) {
-      console.error('Error fetching ISRC codes:', error);
+      console.error("Error fetching ISRC codes:", error);
       return [];
     }
   }
 
-  async getIsrcCodesByArtistAndYear(artistId: number, year: string): Promise<IsrcCode[]> {
+  async getIsrcCodesByArtistAndYear(
+    artistId: number,
+    year: string
+  ): Promise<IsrcCode[]> {
     try {
-      return await db.select()
+      return await db
+        .select()
         .from(isrcCodes)
-        .where(and(
-          eq(isrcCodes.artistId, artistId),
-          sql`substring(${isrcCodes.isrcCode}, 7, 2) = ${year}`
-        ));
+        .where(
+          and(
+            eq(isrcCodes.artistId, artistId),
+            sql`substring(${isrcCodes.isrcCode}, 7, 2) = ${year}`
+          )
+        );
     } catch (error) {
-      console.error('Error fetching ISRC codes by artist and year:', error);
+      console.error("Error fetching ISRC codes by artist and year:", error);
       return [];
     }
   }
@@ -6747,9 +8505,9 @@ export class DatabaseStorage implements IStorage {
       const codes = await db.select().from(isrcCodes);
       let maxId = 0;
 
-      codes.forEach(code => {
+      codes.forEach((code) => {
         // Parse ISRC format: DM-A0D-YY-NN-XXX
-        const parts = code.isrcCode.split('-');
+        const parts = code.isrcCode.split("-");
         if (parts.length >= 4) {
           const nnValue = parseInt(parts[3]);
           if (!isNaN(nnValue) && nnValue > maxId) {
@@ -6760,16 +8518,13 @@ export class DatabaseStorage implements IStorage {
 
       return maxId;
     } catch (error) {
-      console.error('Error getting highest artist ID from ISRC:', error);
+      console.error("Error getting highest artist ID from ISRC:", error);
       return 0;
     }
   }
 
   async createIsrcCode(isrcData: InsertIsrcCode): Promise<IsrcCode> {
-    const [created] = await db
-      .insert(isrcCodes)
-      .values(isrcData)
-      .returning();
+    const [created] = await db.insert(isrcCodes).values(isrcData).returning();
     return created;
   }
 
@@ -6781,7 +8536,10 @@ export class DatabaseStorage implements IStorage {
     return code || undefined;
   }
 
-  async updateIsrcCode(id: number, updates: Partial<IsrcCode>): Promise<IsrcCode | undefined> {
+  async updateIsrcCode(
+    id: number,
+    updates: Partial<IsrcCode>
+  ): Promise<IsrcCode | undefined> {
     const [updated] = await db
       .update(isrcCodes)
       .set(updates)
@@ -6794,13 +8552,15 @@ export class DatabaseStorage implements IStorage {
   async ensureManagedArtistHasIsrcId(): Promise<void> {
     try {
       // Get all managed artists (roleId 3) and musicians (roleId 5)
-      const managedUsers = await db.select()
+      const managedUsers = await db
+        .select()
         .from(users)
         .where(or(eq(users.roleId, 3), eq(users.roleId, 5)));
 
       for (const user of managedUsers) {
         // Check if they already have an ISRC artist ID
-        const existingCodes = await db.select()
+        const existingCodes = await db
+          .select()
           .from(isrcCodes)
           .where(eq(isrcCodes.userId, user.id))
           .limit(1);
@@ -6810,44 +8570,50 @@ export class DatabaseStorage implements IStorage {
           const artist = await this.getArtist(user.id);
           const musician = await this.getMusician(user.id);
 
-          const displayName = artist?.stageNames?.[0]?.name || musician?.stageNames?.[0]?.name || user.fullName;
+          const displayName =
+            artist?.stageNames?.[0]?.name ||
+            musician?.stageNames?.[0]?.name ||
+            user.fullName;
 
           // Generate their first ISRC to establish their NN identifier
           const currentYear = new Date().getFullYear().toString().slice(-2);
           const artistId = await this.getOrAssignArtistId(displayName);
 
-          const placeholderIsrc = `DM-A0D-${currentYear}-${artistId.padStart(2, '0')}-001`;
+          const placeholderIsrc = `DM-A0D-${currentYear}-${artistId.padStart(
+            2,
+            "0"
+          )}-001`;
 
           await this.createIsrcCode({
             userId: user.id,
             artistId: parseInt(artistId),
             songTitle: `${displayName} - ID Placeholder`,
             isrcCode: placeholderIsrc,
-            status: 'pending',
+            status: "pending",
             basePrice: 0,
             finalPrice: 0,
-            paymentStatus: 'completed'
+            paymentStatus: "completed",
           });
         }
       }
     } catch (error) {
-      console.error('Error ensuring managed artists have ISRC IDs:', error);
+      console.error("Error ensuring managed artists have ISRC IDs:", error);
     }
   }
 
   async getOrAssignArtistId(artistName: string): Promise<string> {
     // Check predefined IDs first
     const predefinedIds: Record<string, string> = {
-      'Lí-Lí Octave': '00',
-      'LI-LI OCTAVE': '00',
-      'LIANNE MARILDA MARISA LETANG': '00',
-      'JCro': '01',
-      'JCRO': '01',
-      'Karlvin Deravariere': '01',
-      'Janet Azzouz': '02',
-      'JANET AZZOUZ': '02',
-      'Princess Trinidad': '04',
-      'PRINCESS TRINIDAD': '04'
+      "Lí-Lí Octave": "00",
+      "LI-LI OCTAVE": "00",
+      "LIANNE MARILDA MARISA LETANG": "00",
+      JCro: "01",
+      JCRO: "01",
+      "Karlvin Deravariere": "01",
+      "Janet Azzouz": "02",
+      "JANET AZZOUZ": "02",
+      "Princess Trinidad": "04",
+      "PRINCESS TRINIDAD": "04",
     };
 
     if (predefinedIds[artistName]) {
@@ -6876,13 +8642,20 @@ export class DatabaseStorage implements IStorage {
     throw new Error("Favorites not implemented yet");
   }
 
-  async removeFavorite(userId: number, itemId: number, itemType: string): Promise<void> {
+  async removeFavorite(
+    userId: number,
+    itemId: number,
+    itemType: string
+  ): Promise<void> {
     throw new Error("Favorites not implemented yet");
   }
 
   // Remove duplicate - these methods already exist above
   // Press Release Management
-  async getPressReleases(filters?: { artistId?: number; status?: string }): Promise<PressRelease[]> {
+  async getPressReleases(filters?: {
+    artistId?: number;
+    status?: string;
+  }): Promise<PressRelease[]> {
     let query = db.select().from(pressReleases);
 
     if (filters?.artistId) {
@@ -6891,16 +8664,26 @@ export class DatabaseStorage implements IStorage {
 
     if (filters?.status) {
       const statusCondition = eq(pressReleases.status, filters.status);
-      query = filters?.artistId ?
-        query.where(and(eq(pressReleases.primaryArtistId, filters.artistId), statusCondition)) :
-        query.where(statusCondition);
+      query = filters?.artistId
+        ? query.where(
+            and(
+              eq(pressReleases.primaryArtistId, filters.artistId),
+              statusCondition
+            )
+          )
+        : query.where(statusCondition);
     }
 
     return await query.orderBy(desc(pressReleases.createdAt));
   }
 
-  async createPressRelease(pressRelease: InsertPressRelease): Promise<PressRelease> {
-    const [created] = await db.insert(pressReleases).values([pressRelease]).returning();
+  async createPressRelease(
+    pressRelease: InsertPressRelease
+  ): Promise<PressRelease> {
+    const [created] = await db
+      .insert(pressReleases)
+      .values([pressRelease])
+      .returning();
     return created;
   }
 
@@ -6913,7 +8696,10 @@ export class DatabaseStorage implements IStorage {
     return pressRelease || null;
   }
 
-  async updatePressRelease(id: number, updates: Partial<InsertPressRelease>): Promise<PressRelease | null> {
+  async updatePressRelease(
+    id: number,
+    updates: Partial<InsertPressRelease>
+  ): Promise<PressRelease | null> {
     const [updated] = await db
       .update(pressReleases)
       .set({ ...updates, updatedAt: new Date() } as any)
@@ -6924,18 +8710,23 @@ export class DatabaseStorage implements IStorage {
   }
 
   async deletePressRelease(id: number): Promise<boolean> {
-    const result = await db.delete(pressReleases).where(eq(pressReleases.id, id));
+    const result = await db
+      .delete(pressReleases)
+      .where(eq(pressReleases.id, id));
     return result.rowCount !== undefined && result.rowCount > 0;
   }
 
-  async publishPressRelease(id: number, publishedBy: number): Promise<PressRelease | null> {
+  async publishPressRelease(
+    id: number,
+    publishedBy: number
+  ): Promise<PressRelease | null> {
     const [updated] = await db
       .update(pressReleases)
       .set({
-        status: 'published',
+        status: "published",
         publishedAt: new Date(),
         lastModifiedBy: publishedBy,
-        updatedAt: new Date()
+        updatedAt: new Date(),
       } as any)
       .where(eq(pressReleases.id, id))
       .returning();
@@ -6944,25 +8735,36 @@ export class DatabaseStorage implements IStorage {
   }
 
   // Press Release Assignments
-  async getPressReleaseAssignments(pressReleaseId: number): Promise<PressReleaseAssignment[]> {
+  async getPressReleaseAssignments(
+    pressReleaseId: number
+  ): Promise<PressReleaseAssignment[]> {
     return await db
       .select()
       .from(pressReleaseAssignments)
       .where(eq(pressReleaseAssignments.pressReleaseId, pressReleaseId));
   }
 
-  async createPressReleaseAssignment(assignment: InsertPressReleaseAssignment): Promise<PressReleaseAssignment> {
-    const [created] = await db.insert(pressReleaseAssignments).values([assignment]).returning();
+  async createPressReleaseAssignment(
+    assignment: InsertPressReleaseAssignment
+  ): Promise<PressReleaseAssignment> {
+    const [created] = await db
+      .insert(pressReleaseAssignments)
+      .values([assignment])
+      .returning();
     return created;
   }
 
   async deletePressReleaseAssignment(id: number): Promise<boolean> {
-    const result = await db.delete(pressReleaseAssignments).where(eq(pressReleaseAssignments.id, id));
+    const result = await db
+      .delete(pressReleaseAssignments)
+      .where(eq(pressReleaseAssignments.id, id));
     return result.rowCount !== undefined && result.rowCount > 0;
   }
 
   // Press Release Media
-  async getPressReleaseMedia(pressReleaseId: number): Promise<PressReleaseMedia[]> {
+  async getPressReleaseMedia(
+    pressReleaseId: number
+  ): Promise<PressReleaseMedia[]> {
     return await db
       .select()
       .from(pressReleaseMedia)
@@ -6970,12 +8772,20 @@ export class DatabaseStorage implements IStorage {
       .orderBy(pressReleaseMedia.displayOrder);
   }
 
-  async createPressReleaseMedia(media: InsertPressReleaseMedia): Promise<PressReleaseMedia> {
-    const [created] = await db.insert(pressReleaseMedia).values([media]).returning();
+  async createPressReleaseMedia(
+    media: InsertPressReleaseMedia
+  ): Promise<PressReleaseMedia> {
+    const [created] = await db
+      .insert(pressReleaseMedia)
+      .values([media])
+      .returning();
     return created;
   }
 
-  async updatePressReleaseMedia(id: number, updates: Partial<InsertPressReleaseMedia>): Promise<PressReleaseMedia | null> {
+  async updatePressReleaseMedia(
+    id: number,
+    updates: Partial<InsertPressReleaseMedia>
+  ): Promise<PressReleaseMedia | null> {
     const [updated] = await db
       .update(pressReleaseMedia)
       .set({ ...updates, updatedAt: new Date() } as any)
@@ -6986,12 +8796,16 @@ export class DatabaseStorage implements IStorage {
   }
 
   async deletePressReleaseMedia(id: number): Promise<boolean> {
-    const result = await db.delete(pressReleaseMedia).where(eq(pressReleaseMedia.id, id));
+    const result = await db
+      .delete(pressReleaseMedia)
+      .where(eq(pressReleaseMedia.id, id));
     return result.rowCount !== undefined && result.rowCount > 0;
   }
 
   // Press Release Distribution
-  async getPressReleaseDistribution(pressReleaseId: number): Promise<PressReleaseDistribution[]> {
+  async getPressReleaseDistribution(
+    pressReleaseId: number
+  ): Promise<PressReleaseDistribution[]> {
     return await db
       .select()
       .from(pressReleaseDistribution)
@@ -6999,15 +8813,24 @@ export class DatabaseStorage implements IStorage {
       .orderBy(desc(pressReleaseDistribution.distributedAt));
   }
 
-  async createPressReleaseDistribution(distribution: InsertPressReleaseDistribution): Promise<PressReleaseDistribution> {
-    const [created] = await db.insert(pressReleaseDistribution).values([distribution]).returning();
+  async createPressReleaseDistribution(
+    distribution: InsertPressReleaseDistribution
+  ): Promise<PressReleaseDistribution> {
+    const [created] = await db
+      .insert(pressReleaseDistribution)
+      .values([distribution])
+      .returning();
     return created;
   }
 
-  async updatePressReleaseDistributionStatus(id: number, status: string, responseType?: string): Promise<PressReleaseDistribution | null> {
+  async updatePressReleaseDistributionStatus(
+    id: number,
+    status: string,
+    responseType?: string
+  ): Promise<PressReleaseDistribution | null> {
     const updates: any = {
       status,
-      updatedAt: new Date()
+      updatedAt: new Date(),
     };
 
     if (responseType) {
@@ -7029,25 +8852,32 @@ export class DatabaseStorage implements IStorage {
 
   // Duplicate opportunity application methods removed - keeping originals at lines 5539 and 5546
 
-
-
-
-
   // Duplicate opportunity sources and matches methods removed - keeping originals at lines 5644-5686
 
   // ==================== RECIPIENT MANAGEMENT METHODS IMPLEMENTATION ====================
 
   // Recipient Categories
   async getRecipientCategories(): Promise<RecipientCategory[]> {
-    return await db.select().from(recipientCategories).orderBy(recipientCategories.priority, recipientCategories.displayName);
+    return await db
+      .select()
+      .from(recipientCategories)
+      .orderBy(recipientCategories.priority, recipientCategories.displayName);
   }
 
-  async createRecipientCategory(category: InsertRecipientCategory): Promise<RecipientCategory> {
-    const [created] = await db.insert(recipientCategories).values([category]).returning();
+  async createRecipientCategory(
+    category: InsertRecipientCategory
+  ): Promise<RecipientCategory> {
+    const [created] = await db
+      .insert(recipientCategories)
+      .values([category])
+      .returning();
     return created;
   }
 
-  async updateRecipientCategory(id: number, updates: Partial<InsertRecipientCategory>): Promise<RecipientCategory | null> {
+  async updateRecipientCategory(
+    id: number,
+    updates: Partial<InsertRecipientCategory>
+  ): Promise<RecipientCategory | null> {
     const [updated] = await db
       .update(recipientCategories)
       .set(updates)
@@ -7058,7 +8888,9 @@ export class DatabaseStorage implements IStorage {
   }
 
   async deleteRecipientCategory(id: number): Promise<boolean> {
-    const result = await db.delete(recipientCategories).where(eq(recipientCategories.id, id));
+    const result = await db
+      .delete(recipientCategories)
+      .where(eq(recipientCategories.id, id));
     return result.rowCount !== undefined && result.rowCount > 0;
   }
 
@@ -7072,7 +8904,10 @@ export class DatabaseStorage implements IStorage {
     return created;
   }
 
-  async updateMusicGenre(id: number, updates: Partial<InsertMusicGenre>): Promise<MusicGenre | null> {
+  async updateMusicGenre(
+    id: number,
+    updates: Partial<InsertMusicGenre>
+  ): Promise<MusicGenre | null> {
     const [updated] = await db
       .update(musicGenres)
       .set(updates)
@@ -7088,7 +8923,11 @@ export class DatabaseStorage implements IStorage {
   }
 
   // Industry Recipients
-  async getIndustryRecipients(filters?: { categoryId?: number; genreIds?: number[]; status?: string }): Promise<IndustryRecipient[]> {
+  async getIndustryRecipients(filters?: {
+    categoryId?: number;
+    genreIds?: number[];
+    status?: string;
+  }): Promise<IndustryRecipient[]> {
     let query = db.select().from(industryRecipients);
 
     const conditions = [];
@@ -7102,17 +8941,26 @@ export class DatabaseStorage implements IStorage {
     }
 
     if (filters?.genreIds && filters.genreIds.length > 0) {
-      conditions.push(sql`${industryRecipients.preferredGenres} && ${JSON.stringify(filters.genreIds)}`);
+      conditions.push(
+        sql`${industryRecipients.preferredGenres} && ${JSON.stringify(
+          filters.genreIds
+        )}`
+      );
     }
 
     if (conditions.length > 0) {
       query = query.where(and(...conditions));
     }
 
-    return await query.orderBy(desc(industryRecipients.influence), industryRecipients.name);
+    return await query.orderBy(
+      desc(industryRecipients.influence),
+      industryRecipients.name
+    );
   }
 
-  async getIndustryRecipientById(id: number): Promise<IndustryRecipient | null> {
+  async getIndustryRecipientById(
+    id: number
+  ): Promise<IndustryRecipient | null> {
     const [recipient] = await db
       .select()
       .from(industryRecipients)
@@ -7121,12 +8969,20 @@ export class DatabaseStorage implements IStorage {
     return recipient || null;
   }
 
-  async createIndustryRecipient(recipient: InsertIndustryRecipient): Promise<IndustryRecipient> {
-    const [created] = await db.insert(industryRecipients).values([recipient]).returning();
+  async createIndustryRecipient(
+    recipient: InsertIndustryRecipient
+  ): Promise<IndustryRecipient> {
+    const [created] = await db
+      .insert(industryRecipients)
+      .values([recipient])
+      .returning();
     return created;
   }
 
-  async updateIndustryRecipient(id: number, updates: Partial<InsertIndustryRecipient>): Promise<IndustryRecipient | null> {
+  async updateIndustryRecipient(
+    id: number,
+    updates: Partial<InsertIndustryRecipient>
+  ): Promise<IndustryRecipient | null> {
     const [updated] = await db
       .update(industryRecipients)
       .set({ ...updates, updatedAt: new Date() })
@@ -7137,7 +8993,9 @@ export class DatabaseStorage implements IStorage {
   }
 
   async deleteIndustryRecipient(id: number): Promise<boolean> {
-    const result = await db.delete(industryRecipients).where(eq(industryRecipients.id, id));
+    const result = await db
+      .delete(industryRecipients)
+      .where(eq(industryRecipients.id, id));
     return result.rowCount !== undefined && result.rowCount > 0;
   }
 
@@ -7156,24 +9014,37 @@ export class DatabaseStorage implements IStorage {
   }
 
   // Content Distribution (Unified for Newsletters and Press Releases)
-  async getContentDistribution(contentType: string, contentId: number): Promise<ContentDistribution | null> {
+  async getContentDistribution(
+    contentType: string,
+    contentId: number
+  ): Promise<ContentDistribution | null> {
     const [distribution] = await db
       .select()
       .from(contentDistribution)
-      .where(and(
-        eq(contentDistribution.contentType, contentType),
-        eq(contentDistribution.contentId, contentId)
-      ));
+      .where(
+        and(
+          eq(contentDistribution.contentType, contentType),
+          eq(contentDistribution.contentId, contentId)
+        )
+      );
 
     return distribution || null;
   }
 
-  async createContentDistribution(distribution: InsertContentDistribution): Promise<ContentDistribution> {
-    const [created] = await db.insert(contentDistribution).values([distribution]).returning();
+  async createContentDistribution(
+    distribution: InsertContentDistribution
+  ): Promise<ContentDistribution> {
+    const [created] = await db
+      .insert(contentDistribution)
+      .values([distribution])
+      .returning();
     return created;
   }
 
-  async updateContentDistribution(id: number, updates: Partial<InsertContentDistribution>): Promise<ContentDistribution | null> {
+  async updateContentDistribution(
+    id: number,
+    updates: Partial<InsertContentDistribution>
+  ): Promise<ContentDistribution | null> {
     const [updated] = await db
       .update(contentDistribution)
       .set(updates)
@@ -7184,11 +9055,15 @@ export class DatabaseStorage implements IStorage {
   }
 
   async deleteContentDistribution(id: number): Promise<boolean> {
-    const result = await db.delete(contentDistribution).where(eq(contentDistribution.id, id));
+    const result = await db
+      .delete(contentDistribution)
+      .where(eq(contentDistribution.id, id));
     return result.rowCount !== undefined && result.rowCount > 0;
   }
 
-  async getContentDistributionsByType(contentType: string): Promise<ContentDistribution[]> {
+  async getContentDistributionsByType(
+    contentType: string
+  ): Promise<ContentDistribution[]> {
     return await db
       .select()
       .from(contentDistribution)
@@ -7196,30 +9071,43 @@ export class DatabaseStorage implements IStorage {
       .orderBy(desc(contentDistribution.createdAt));
   }
 
-  async getContentDistributionAnalytics(contentType: string, contentId: number): Promise<ContentDistribution | null> {
+  async getContentDistributionAnalytics(
+    contentType: string,
+    contentId: number
+  ): Promise<ContentDistribution | null> {
     const [analytics] = await db
       .select()
       .from(contentDistribution)
-      .where(and(
-        eq(contentDistribution.contentType, contentType),
-        eq(contentDistribution.contentId, contentId)
-      ));
+      .where(
+        and(
+          eq(contentDistribution.contentType, contentType),
+          eq(contentDistribution.contentId, contentId)
+        )
+      );
 
     return analytics || null;
   }
 
   // Recipient Engagements
-  async getRecipientEngagements(filters?: { recipientId?: number; contentType?: string; contentId?: number }): Promise<RecipientEngagement[]> {
+  async getRecipientEngagements(filters?: {
+    recipientId?: number;
+    contentType?: string;
+    contentId?: number;
+  }): Promise<RecipientEngagement[]> {
     let query = db.select().from(recipientEngagements);
 
     const conditions = [];
 
     if (filters?.recipientId) {
-      conditions.push(eq(recipientEngagements.recipientId, filters.recipientId));
+      conditions.push(
+        eq(recipientEngagements.recipientId, filters.recipientId)
+      );
     }
 
     if (filters?.contentType) {
-      conditions.push(eq(recipientEngagements.contentType, filters.contentType));
+      conditions.push(
+        eq(recipientEngagements.contentType, filters.contentType)
+      );
     }
 
     if (filters?.contentId) {
@@ -7233,12 +9121,20 @@ export class DatabaseStorage implements IStorage {
     return await query.orderBy(desc(recipientEngagements.engagementDate));
   }
 
-  async createRecipientEngagement(engagement: InsertRecipientEngagement): Promise<RecipientEngagement> {
-    const [created] = await db.insert(recipientEngagements).values([engagement]).returning();
+  async createRecipientEngagement(
+    engagement: InsertRecipientEngagement
+  ): Promise<RecipientEngagement> {
+    const [created] = await db
+      .insert(recipientEngagements)
+      .values([engagement])
+      .returning();
     return created;
   }
 
-  async updateRecipientEngagement(id: number, updates: Partial<InsertRecipientEngagement>): Promise<RecipientEngagement | null> {
+  async updateRecipientEngagement(
+    id: number,
+    updates: Partial<InsertRecipientEngagement>
+  ): Promise<RecipientEngagement | null> {
     const [updated] = await db
       .update(recipientEngagements)
       .set(updates)
@@ -7249,14 +9145,22 @@ export class DatabaseStorage implements IStorage {
   }
 
   // Enhanced Recipient Matching Methods
-  async getMatchingRecipients(contentGenres: number[], categoryIds?: number[], minimumInfluence?: number): Promise<IndustryRecipient[]> {
+  async getMatchingRecipients(
+    contentGenres: number[],
+    categoryIds?: number[],
+    minimumInfluence?: number
+  ): Promise<IndustryRecipient[]> {
     let query = db.select().from(industryRecipients);
 
-    const conditions = [eq(industryRecipients.status, 'active')];
+    const conditions = [eq(industryRecipients.status, "active")];
 
     // Genre matching - recipients who cover at least one of the content genres
     if (contentGenres.length > 0) {
-      conditions.push(sql`${industryRecipients.preferredGenres} && ${JSON.stringify(contentGenres)}`);
+      conditions.push(
+        sql`${industryRecipients.preferredGenres} && ${JSON.stringify(
+          contentGenres
+        )}`
+      );
     }
 
     // Category filtering
@@ -7271,17 +9175,25 @@ export class DatabaseStorage implements IStorage {
 
     return await query
       .where(and(...conditions))
-      .orderBy(desc(industryRecipients.influence), desc(industryRecipients.responseRate), industryRecipients.name);
+      .orderBy(
+        desc(industryRecipients.influence),
+        desc(industryRecipients.responseRate),
+        industryRecipients.name
+      );
   }
 
-  async getRecipientsByCategory(categoryId: number): Promise<IndustryRecipient[]> {
+  async getRecipientsByCategory(
+    categoryId: number
+  ): Promise<IndustryRecipient[]> {
     return await db
       .select()
       .from(industryRecipients)
-      .where(and(
-        eq(industryRecipients.categoryId, categoryId),
-        eq(industryRecipients.status, 'active')
-      ))
+      .where(
+        and(
+          eq(industryRecipients.categoryId, categoryId),
+          eq(industryRecipients.status, "active")
+        )
+      )
       .orderBy(desc(industryRecipients.influence), industryRecipients.name);
   }
 
@@ -7289,10 +9201,14 @@ export class DatabaseStorage implements IStorage {
     return await db
       .select()
       .from(industryRecipients)
-      .where(and(
-        sql`${industryRecipients.preferredGenres} @> ${JSON.stringify([genreId])}`,
-        eq(industryRecipients.status, 'active')
-      ))
+      .where(
+        and(
+          sql`${industryRecipients.preferredGenres} @> ${JSON.stringify([
+            genreId,
+          ])}`,
+          eq(industryRecipients.status, "active")
+        )
+      )
       .orderBy(desc(industryRecipients.influence), industryRecipients.name);
   }
 
@@ -7339,43 +9255,60 @@ export class DatabaseStorage implements IStorage {
       const result = await db.execute(sql.raw(query));
       return result.rows;
     } catch (error) {
-      console.error('Error fetching album merchandise assignments:', error);
+      console.error("Error fetching album merchandise assignments:", error);
       return [];
     }
   }
 
   async createAlbumMerchandiseAssignment(assignment: any): Promise<any> {
     try {
-      const result = await db.execute(sql.raw(`
+      const result = await db.execute(
+        sql.raw(
+          `
         INSERT INTO album_merchandise_assignments (album_id, merchandise_id, assigned_by, assignment_notes, created_at)
         VALUES ($1, $2, $3, $4, NOW())
         RETURNING *
-      `, [assignment.albumId, assignment.merchandiseId, assignment.assignedBy, assignment.assignmentNotes]));
+      `,
+          [
+            assignment.albumId,
+            assignment.merchandiseId,
+            assignment.assignedBy,
+            assignment.assignmentNotes,
+          ]
+        )
+      );
 
       return result.rows[0];
     } catch (error) {
-      console.error('Error creating album merchandise assignment:', error);
-      throw new Error('Failed to create album merchandise assignment');
+      console.error("Error creating album merchandise assignment:", error);
+      throw new Error("Failed to create album merchandise assignment");
     }
   }
 
   async removeAlbumMerchandiseAssignment(id: number): Promise<void> {
     try {
-      await db.execute(sql.raw(`DELETE FROM album_merchandise_assignments WHERE id = $1`, [id]));
+      await db.execute(
+        sql.raw(`DELETE FROM album_merchandise_assignments WHERE id = $1`, [id])
+      );
     } catch (error) {
-      console.error('Error removing album merchandise assignment:', error);
-      throw new Error('Failed to remove album merchandise assignment');
+      console.error("Error removing album merchandise assignment:", error);
+      throw new Error("Failed to remove album merchandise assignment");
     }
   }
 
   async getAssignmentsByMerchandise(merchandiseId: number): Promise<any[]> {
     try {
-      const result = await db.execute(sql.raw(`
+      const result = await db.execute(
+        sql.raw(
+          `
         SELECT * FROM album_merchandise_assignments WHERE merchandise_id = $1
-      `, [merchandiseId]));
+      `,
+          [merchandiseId]
+        )
+      );
       return result.rows;
     } catch (error) {
-      console.error('Error fetching assignments by merchandise:', error);
+      console.error("Error fetching assignments by merchandise:", error);
       return [];
     }
   }
@@ -7383,22 +9316,41 @@ export class DatabaseStorage implements IStorage {
 
   // Fix 1: Merchandise API - OppHub AI Learning: Database schema alignment
 
-
   // Configuration management methods - Real database implementation
   async getPlatformConfiguration(): Promise<AdminConfigType> {
     return await configurationStorage.getPlatformConfiguration();
   }
 
-  async updatePlatformConfiguration(newConfig: Partial<AdminConfigType>, userId: number, changeDescription?: string): Promise<boolean> {
-    return await configurationStorage.updatePlatformConfiguration(newConfig, userId, changeDescription);
+  async updatePlatformConfiguration(
+    newConfig: Partial<AdminConfigType>,
+    userId: number,
+    changeDescription?: string
+  ): Promise<boolean> {
+    return await configurationStorage.updatePlatformConfiguration(
+      newConfig,
+      userId,
+      changeDescription
+    );
   }
 
   async getConfigurationHistory(limit: number = 50): Promise<any[]> {
     return await configurationStorage.getConfigurationHistory(limit);
   }
 
-  async createConfigurationDelegation(delegatedBy: number, delegatedTo: number, configurationAspects: string[], permissions: any, expiresAt?: Date): Promise<boolean> {
-    return await configurationStorage.createConfigurationDelegation(delegatedBy, delegatedTo, configurationAspects, permissions, expiresAt);
+  async createConfigurationDelegation(
+    delegatedBy: number,
+    delegatedTo: number,
+    configurationAspects: string[],
+    permissions: any,
+    expiresAt?: Date
+  ): Promise<boolean> {
+    return await configurationStorage.createConfigurationDelegation(
+      delegatedBy,
+      delegatedTo,
+      configurationAspects,
+      permissions,
+      expiresAt
+    );
   }
 
   async getUserDelegatedAspects(userId: number): Promise<string[]> {
@@ -7409,10 +9361,12 @@ export class DatabaseStorage implements IStorage {
   async getSplitsheets(): Promise<any[]> {
     try {
       // Get splitsheets from database
-      const result = await db.execute(sql`SELECT * FROM splitsheets ORDER BY id DESC`);
+      const result = await db.execute(
+        sql`SELECT * FROM splitsheets ORDER BY id DESC`
+      );
       return result.rows;
     } catch (error) {
-      console.error('Get splitsheets error:', error);
+      console.error("Get splitsheets error:", error);
       return [];
     }
   }
@@ -7422,19 +9376,23 @@ export class DatabaseStorage implements IStorage {
       // Create splitsheet with database integration
       const result = await db.execute(sql`
         INSERT INTO splitsheets (song_title, participants, split_percentages, audio_file_path)
-        VALUES (${splitsheet.songTitle || 'Untitled Song'}, ${JSON.stringify(splitsheet.writers || [])}, ${JSON.stringify(splitsheet.percentages || [])}, ${splitsheet.audioFilePath || null})
+        VALUES (${splitsheet.songTitle || "Untitled Song"}, ${JSON.stringify(
+        splitsheet.writers || []
+      )}, ${JSON.stringify(splitsheet.percentages || [])}, ${
+        splitsheet.audioFilePath || null
+      })
         RETURNING *
       `);
 
       return result.rows[0];
     } catch (error) {
-      console.error('Create splitsheet error:', error);
+      console.error("Create splitsheet error:", error);
       // Database integration with fallback
       return {
         id: Date.now(),
         ...splitsheet,
         createdAt: new Date(),
-        status: 'pending'
+        status: "pending",
       };
     }
   }
@@ -7443,13 +9401,19 @@ export class DatabaseStorage implements IStorage {
   async getContracts(): Promise<any[]> {
     try {
       // Get contracts from database - DEBUG VERSION
-      console.log('🔍 Fetching contracts from database...');
-      const result = await db.execute(sql`SELECT * FROM contracts ORDER BY id DESC`);
-      console.log('📊 Contract query result:', result.rows.length, 'records found');
-      console.log('📝 First contract:', result.rows[0]);
+      console.log("🔍 Fetching contracts from database...");
+      const result = await db.execute(
+        sql`SELECT * FROM contracts ORDER BY id DESC`
+      );
+      console.log(
+        "📊 Contract query result:",
+        result.rows.length,
+        "records found"
+      );
+      console.log("📝 First contract:", result.rows[0]);
       return result.rows;
     } catch (error) {
-      console.error('❌ Get contracts error:', error);
+      console.error("❌ Get contracts error:", error);
       return [];
     }
   }
@@ -7457,23 +9421,25 @@ export class DatabaseStorage implements IStorage {
   async createContract(contract: any): Promise<any> {
     try {
       // Create contract with database integration - DEBUG VERSION
-      console.log('🔍 Creating contract with data:', contract);
+      console.log("🔍 Creating contract with data:", contract);
       const result = await db.execute(sql`
         INSERT INTO contracts (contract_type, content, status)
-        VALUES (${contract.type || 'general'}, ${contract.terms || ''}, ${'draft'})
+        VALUES (${contract.type || "general"}, ${
+        contract.terms || ""
+      }, ${"draft"})
         RETURNING *
       `);
 
-      console.log('✅ Contract database result:', result.rows[0]);
+      console.log("✅ Contract database result:", result.rows[0]);
       return result.rows[0];
     } catch (error) {
-      console.error('❌ Create contract error:', error);
-      console.log('🔄 Falling back to in-memory data');
+      console.error("❌ Create contract error:", error);
+      console.log("🔄 Falling back to in-memory data");
       return {
         id: Date.now(),
         ...contract,
         createdAt: new Date(),
-        status: 'draft'
+        status: "draft",
       };
     }
   }
@@ -7482,10 +9448,12 @@ export class DatabaseStorage implements IStorage {
   async getTechnicalRiders(): Promise<any[]> {
     try {
       // Get technical riders from database
-      const result = await db.execute(sql`SELECT * FROM technical_riders ORDER BY id DESC`);
+      const result = await db.execute(
+        sql`SELECT * FROM technical_riders ORDER BY id DESC`
+      );
       return result.rows;
     } catch (error) {
-      console.error('Get technical riders error:', error);
+      console.error("Get technical riders error:", error);
       return [];
     }
   }
@@ -7495,18 +9463,22 @@ export class DatabaseStorage implements IStorage {
       // Create technical rider with database integration
       const result = await db.execute(sql`
         INSERT INTO technical_riders (equipment_requirements, stage_requirements, additional_notes)
-        VALUES (${JSON.stringify(technicalRider.requirements || [])}, ${JSON.stringify(technicalRider.specifications || {})}, ${technicalRider.eventName || 'Event requirements'})
+        VALUES (${JSON.stringify(
+          technicalRider.requirements || []
+        )}, ${JSON.stringify(technicalRider.specifications || {})}, ${
+        technicalRider.eventName || "Event requirements"
+      })
         RETURNING *
       `);
 
       return result.rows[0];
     } catch (error) {
-      console.error('Create technical rider error:', error);
+      console.error("Create technical rider error:", error);
       return {
         id: Date.now(),
         ...technicalRider,
         createdAt: new Date(),
-        status: 'active'
+        status: "active",
       };
     }
   }
@@ -7515,24 +9487,26 @@ export class DatabaseStorage implements IStorage {
   async getIsrcCodes(): Promise<any[]> {
     try {
       // Get ISRC codes from database
-      const result = await db.execute(sql`SELECT * FROM isrc_codes ORDER BY id DESC`);
+      const result = await db.execute(
+        sql`SELECT * FROM isrc_codes ORDER BY id DESC`
+      );
       return result.rows;
     } catch (error) {
-      console.error('Get ISRC codes error:', error);
+      console.error("Get ISRC codes error:", error);
       return [];
     }
   }
-
-
 
   // Fix 6: Newsletters API - OppHub AI Learning: Marketing communication system
   async getNewsletters(): Promise<any[]> {
     try {
       // Get newsletters from database
-      const result = await db.execute(sql`SELECT * FROM newsletters ORDER BY id DESC`);
+      const result = await db.execute(
+        sql`SELECT * FROM newsletters ORDER BY id DESC`
+      );
       return result.rows;
     } catch (error) {
-      console.error('Get newsletters error:', error);
+      console.error("Get newsletters error:", error);
       return [];
     }
   }
@@ -7544,18 +9518,20 @@ export class DatabaseStorage implements IStorage {
 
       const result = await db.execute(sql`
         INSERT INTO newsletters (title, content, status, created_by)
-        VALUES (${newsletter.title || 'Untitled Newsletter'}, ${newsletter.content || ''}, ${'draft'}, ${createdBy})
+        VALUES (${newsletter.title || "Untitled Newsletter"}, ${
+        newsletter.content || ""
+      }, ${"draft"}, ${createdBy})
         RETURNING *
       `);
 
       return result.rows[0];
     } catch (error) {
-      console.error('Create newsletter error:', error);
+      console.error("Create newsletter error:", error);
       return {
         id: Date.now(),
         ...newsletter,
         createdAt: new Date(),
-        status: 'draft'
+        status: "draft",
       };
     }
   }
@@ -7564,22 +9540,30 @@ export class DatabaseStorage implements IStorage {
     try {
       const result = await db.execute(sql`
         INSERT INTO media_files (file_name, original_name, file_type, file_size, mime_type, url, category, tags, description, uploaded_by, is_public) 
-        VALUES (${mediaFile.fileName}, ${mediaFile.originalName}, ${mediaFile.fileType}, ${mediaFile.fileSize}, ${mediaFile.mimeType}, ${mediaFile.url}, ${mediaFile.category}, ${JSON.stringify(mediaFile.tags)}, ${mediaFile.description}, ${mediaFile.uploadedBy}, ${mediaFile.isPublic}) 
+        VALUES (${mediaFile.fileName}, ${mediaFile.originalName}, ${
+        mediaFile.fileType
+      }, ${mediaFile.fileSize}, ${mediaFile.mimeType}, ${mediaFile.url}, ${
+        mediaFile.category
+      }, ${JSON.stringify(mediaFile.tags)}, ${mediaFile.description}, ${
+        mediaFile.uploadedBy
+      }, ${mediaFile.isPublic}) 
         RETURNING *
       `);
       return result.rows[0];
     } catch (error) {
-      console.error('Error creating media file:', error);
+      console.error("Error creating media file:", error);
       throw error;
     }
   }
 
   async getMediaFiles(): Promise<any[]> {
     try {
-      const result = await db.execute(sql`SELECT * FROM media_files ORDER BY created_at DESC`);
+      const result = await db.execute(
+        sql`SELECT * FROM media_files ORDER BY created_at DESC`
+      );
       return result.rows || [];
     } catch (error) {
-      console.error('Error fetching media files:', error);
+      console.error("Error fetching media files:", error);
       return [];
     }
   }
@@ -7588,7 +9572,7 @@ export class DatabaseStorage implements IStorage {
     try {
       await db.execute(sql`DELETE FROM media_files WHERE id = ${id}`);
     } catch (error) {
-      console.error('Error deleting media file:', error);
+      console.error("Error deleting media file:", error);
       throw error;
     }
   }
@@ -7599,19 +9583,20 @@ export class DatabaseStorage implements IStorage {
       const result = await db.select({ count: sql`COUNT(*)` }).from(users);
       return Number(result[0].count) || 0;
     } catch (error) {
-      console.error('Error getting users count:', error);
+      console.error("Error getting users count:", error);
       return 0;
     }
   }
 
   async getActiveUsersCount(): Promise<number> {
     try {
-      const result = await db.select({ count: sql`COUNT(*)` })
+      const result = await db
+        .select({ count: sql`COUNT(*)` })
         .from(users)
-        .where(eq(users.status, 'active'));
+        .where(eq(users.status, "active"));
       return Number(result[0].count) || 0;
     } catch (error) {
-      console.error('Error getting active users count:', error);
+      console.error("Error getting active users count:", error);
       return 0;
     }
   }
@@ -7622,12 +9607,13 @@ export class DatabaseStorage implements IStorage {
       startOfMonth.setDate(1);
       startOfMonth.setHours(0, 0, 0, 0);
 
-      const result = await db.select({ count: sql`COUNT(*)` })
+      const result = await db
+        .select({ count: sql`COUNT(*)` })
         .from(users)
         .where(gte(users.createdAt, startOfMonth));
       return Number(result[0].count) || 0;
     } catch (error) {
-      console.error('Error getting new users this month:', error);
+      console.error("Error getting new users this month:", error);
       return 0;
     }
   }
@@ -7637,31 +9623,35 @@ export class DatabaseStorage implements IStorage {
       const result = await db.select({ count: sql`COUNT(*)` }).from(bookings);
       return Number(result[0].count) || 0;
     } catch (error) {
-      console.error('Error getting bookings count:', error);
+      console.error("Error getting bookings count:", error);
       return 0;
     }
   }
 
   async getCompletedBookingsCount(): Promise<number> {
     try {
-      const result = await db.select({ count: sql`COUNT(*)` })
+      const result = await db
+        .select({ count: sql`COUNT(*)` })
         .from(bookings)
-        .where(eq(bookings.status, 'completed'));
+        .where(eq(bookings.status, "completed"));
       return Number(result[0].count) || 0;
     } catch (error) {
-      console.error('Error getting completed bookings count:', error);
+      console.error("Error getting completed bookings count:", error);
       return 0;
     }
   }
 
   async getTotalRevenue(): Promise<number> {
     try {
-      const result = await db.select({
-        total: sql`COALESCE(SUM(CAST(final_price AS DECIMAL)), 0)`
-      }).from(bookings).where(eq(bookings.status, 'completed'));
+      const result = await db
+        .select({
+          total: sql`COALESCE(SUM(CAST(final_price AS DECIMAL)), 0)`,
+        })
+        .from(bookings)
+        .where(eq(bookings.status, "completed"));
       return Number(result[0].total) || 0;
     } catch (error) {
-      console.error('Error getting total revenue:', error);
+      console.error("Error getting total revenue:", error);
       return 0;
     }
   }
@@ -7672,16 +9662,20 @@ export class DatabaseStorage implements IStorage {
       startOfMonth.setDate(1);
       startOfMonth.setHours(0, 0, 0, 0);
 
-      const result = await db.select({
-        total: sql`COALESCE(SUM(CAST(final_price AS DECIMAL)), 0)`
-      }).from(bookings)
-        .where(and(
-          eq(bookings.status, 'completed'),
-          gte(bookings.createdAt, startOfMonth)
-        ));
+      const result = await db
+        .select({
+          total: sql`COALESCE(SUM(CAST(final_price AS DECIMAL)), 0)`,
+        })
+        .from(bookings)
+        .where(
+          and(
+            eq(bookings.status, "completed"),
+            gte(bookings.createdAt, startOfMonth)
+          )
+        );
       return Number(result[0].total) || 0;
     } catch (error) {
-      console.error('Error getting monthly revenue:', error);
+      console.error("Error getting monthly revenue:", error);
       return 0;
     }
   }
@@ -7692,59 +9686,71 @@ export class DatabaseStorage implements IStorage {
       startOfWeek.setDate(startOfWeek.getDate() - startOfWeek.getDay());
       startOfWeek.setHours(0, 0, 0, 0);
 
-      const result = await db.select({
-        total: sql`COALESCE(SUM(CAST(final_price AS DECIMAL)), 0)`
-      }).from(bookings)
-        .where(and(
-          eq(bookings.status, 'completed'),
-          gte(bookings.createdAt, startOfWeek)
-        ));
+      const result = await db
+        .select({
+          total: sql`COALESCE(SUM(CAST(final_price AS DECIMAL)), 0)`,
+        })
+        .from(bookings)
+        .where(
+          and(
+            eq(bookings.status, "completed"),
+            gte(bookings.createdAt, startOfWeek)
+          )
+        );
       return Number(result[0].total) || 0;
     } catch (error) {
-      console.error('Error getting weekly revenue:', error);
+      console.error("Error getting weekly revenue:", error);
       return 0;
     }
   }
 
   async getPendingPayouts(): Promise<number> {
     try {
-      const result = await db.select({
-        total: sql`COALESCE(SUM(CAST(final_price AS DECIMAL)) * 0.88, 0)`
-      }).from(bookings)
-        .where(and(
-          eq(bookings.status, 'completed'),
-          sql`payout_status IS NULL OR payout_status = 'pending'`
-        ));
+      const result = await db
+        .select({
+          total: sql`COALESCE(SUM(CAST(final_price AS DECIMAL)) * 0.88, 0)`,
+        })
+        .from(bookings)
+        .where(
+          and(
+            eq(bookings.status, "completed"),
+            sql`payout_status IS NULL OR payout_status = 'pending'`
+          )
+        );
       return Number(result[0].total) || 0;
     } catch (error) {
-      console.error('Error getting pending payouts:', error);
+      console.error("Error getting pending payouts:", error);
       return 0;
     }
   }
 
   async getPendingApprovalsCount(): Promise<number> {
     try {
-      const result = await db.select({ count: sql`COUNT(*)` })
+      const result = await db
+        .select({ count: sql`COUNT(*)` })
         .from(bookings)
-        .where(eq(bookings.status, 'pending_approval'));
+        .where(eq(bookings.status, "pending_approval"));
       return Number(result[0].count) || 0;
     } catch (error) {
-      console.error('Error getting pending approvals count:', error);
+      console.error("Error getting pending approvals count:", error);
       return 0;
     }
   }
 
   async getActiveBookingsCount(): Promise<number> {
     try {
-      const result = await db.select({ count: sql`COUNT(*)` })
+      const result = await db
+        .select({ count: sql`COUNT(*)` })
         .from(bookings)
-        .where(or(
-          eq(bookings.status, 'confirmed'),
-          eq(bookings.status, 'in_progress')
-        ));
+        .where(
+          or(
+            eq(bookings.status, "confirmed"),
+            eq(bookings.status, "in_progress")
+          )
+        );
       return Number(result[0].count) || 0;
     } catch (error) {
-      console.error('Error getting active bookings count:', error);
+      console.error("Error getting active bookings count:", error);
       return 0;
     }
   }
@@ -7754,38 +9760,45 @@ export class DatabaseStorage implements IStorage {
       const [songsResult, albumsResult, merchandiseResult] = await Promise.all([
         db.select({ count: sql`COUNT(*)` }).from(songs),
         db.select({ count: sql`COUNT(*)` }).from(albums),
-        db.select({ count: sql`COUNT(*)` }).from(merchandise)
+        db.select({ count: sql`COUNT(*)` }).from(merchandise),
       ]);
 
-      return Number(songsResult[0].count) + Number(albumsResult[0].count) + Number(merchandiseResult[0].count);
+      return (
+        Number(songsResult[0].count) +
+        Number(albumsResult[0].count) +
+        Number(merchandiseResult[0].count)
+      );
     } catch (error) {
-      console.error('Error getting content items count:', error);
+      console.error("Error getting content items count:", error);
       return 0;
     }
   }
 
-  async getTopArtists(): Promise<{ name: string; bookings: number; revenue: number }[]> {
+  async getTopArtists(): Promise<
+    { name: string; bookings: number; revenue: number }[]
+  > {
     try {
-      const result = await db.select({
-        name: sql`COALESCE(artists.stage_names[1], CONCAT(users.first_name, ' ', users.last_name))`,
-        bookings: sql`COUNT(bookings.id)`,
-        revenue: sql`COALESCE(SUM(CAST(bookings.final_price AS DECIMAL)), 0)`
-      })
+      const result = await db
+        .select({
+          name: sql`COALESCE(artists.stage_names[1], CONCAT(users.first_name, ' ', users.last_name))`,
+          bookings: sql`COUNT(bookings.id)`,
+          revenue: sql`COALESCE(SUM(CAST(bookings.final_price AS DECIMAL)), 0)`,
+        })
         .from(bookings)
         .innerJoin(users, eq(bookings.primaryArtistUserId, users.id))
         .leftJoin(artists, eq(users.id, artists.user_id))
-        .where(eq(bookings.status, 'completed'))
+        .where(eq(bookings.status, "completed"))
         .groupBy(users.id, artists.id)
         .orderBy(sql`COUNT(bookings.id) DESC`)
         .limit(5);
 
-      return result.map(row => ({
+      return result.map((row) => ({
         name: String(row.name),
         bookings: Number(row.bookings),
-        revenue: Number(row.revenue)
+        revenue: Number(row.revenue),
       }));
     } catch (error) {
-      console.error('Error getting top artists:', error);
+      console.error("Error getting top artists:", error);
       return [];
     }
   }
@@ -7793,28 +9806,36 @@ export class DatabaseStorage implements IStorage {
   async getPendingItems(): Promise<any[]> {
     try {
       const [pendingBookings, pendingContent] = await Promise.all([
-        db.select().from(bookings).where(eq(bookings.status, 'pending_approval')).limit(10),
-        db.select().from(songs).where(sql`status = 'pending_review'`).limit(10)
+        db
+          .select()
+          .from(bookings)
+          .where(eq(bookings.status, "pending_approval"))
+          .limit(10),
+        db
+          .select()
+          .from(songs)
+          .where(sql`status = 'pending_review'`)
+          .limit(10),
       ]);
 
       return [
-        ...pendingBookings.map(booking => ({
+        ...pendingBookings.map((booking) => ({
           id: booking.id,
-          type: 'booking',
+          type: "booking",
           title: booking.eventName,
           submittedAt: booking.createdAt,
-          status: booking.status
+          status: booking.status,
         })),
-        ...pendingContent.map(song => ({
+        ...pendingContent.map((song) => ({
           id: song.id,
-          type: 'content',
+          type: "content",
           title: song.title,
           submittedAt: song.createdAt,
-          status: 'pending_review'
-        }))
+          status: "pending_review",
+        })),
       ];
     } catch (error) {
-      console.error('Error getting pending items:', error);
+      console.error("Error getting pending items:", error);
       return [];
     }
   }
@@ -7822,81 +9843,93 @@ export class DatabaseStorage implements IStorage {
   async getContentForModeration(): Promise<any[]> {
     try {
       const [pendingSongs, pendingAlbums] = await Promise.all([
-        db.select().from(songs).where(sql`status = 'pending_review'`).limit(20),
-        db.select().from(albums).where(sql`status = 'pending_review'`).limit(20)
+        db
+          .select()
+          .from(songs)
+          .where(sql`status = 'pending_review'`)
+          .limit(20),
+        db
+          .select()
+          .from(albums)
+          .where(sql`status = 'pending_review'`)
+          .limit(20),
       ]);
 
       return [
-        ...pendingSongs.map(song => ({
+        ...pendingSongs.map((song) => ({
           id: song.id,
-          type: 'song',
+          type: "song",
           title: song.title,
           artistUserId: song.artistUserId,
           createdAt: song.createdAt,
-          status: 'pending_review'
+          status: "pending_review",
         })),
-        ...pendingAlbums.map(album => ({
+        ...pendingAlbums.map((album) => ({
           id: album.id,
-          type: 'album',
+          type: "album",
           title: album.title,
           artistUserId: album.artistUserId,
           createdAt: album.createdAt,
-          status: 'pending_review'
-        }))
+          status: "pending_review",
+        })),
       ];
     } catch (error) {
-      console.error('Error getting content for moderation:', error);
+      console.error("Error getting content for moderation:", error);
       return [];
     }
   }
 
   async getBookingApprovals(): Promise<any[]> {
     try {
-      const result = await db.select({
-        id: bookings.id,
-        eventName: bookings.eventName,
-        artistName: sql`COALESCE(artists.stage_names[1], CONCAT(users.first_name, ' ', users.last_name))`,
-        bookerName: sql`CONCAT(booker.first_name, ' ', booker.last_name)`,
-        eventDate: bookings.eventDate,
-        eventTime: bookings.eventTime,
-        venue: bookings.venueName,
-        location: bookings.location,
-        amount: bookings.totalAmount,
-        commissionRate: sql`12`,
-        status: bookings.status,
-        submittedAt: bookings.createdAt,
-        specialRequests: bookings.specialRequests,
-        technicalRiderRequired: sql`CASE WHEN bookings.technical_rider_required THEN true ELSE false END`
-      })
+      const result = await db
+        .select({
+          id: bookings.id,
+          eventName: bookings.eventName,
+          artistName: sql`COALESCE(artists.stage_names[1], CONCAT(users.first_name, ' ', users.last_name))`,
+          bookerName: sql`CONCAT(booker.first_name, ' ', booker.last_name)`,
+          eventDate: bookings.eventDate,
+          eventTime: bookings.eventTime,
+          venue: bookings.venueName,
+          location: bookings.location,
+          amount: bookings.totalAmount,
+          commissionRate: sql`12`,
+          status: bookings.status,
+          submittedAt: bookings.createdAt,
+          specialRequests: bookings.specialRequests,
+          technicalRiderRequired: sql`CASE WHEN bookings.technical_rider_required THEN true ELSE false END`,
+        })
         .from(bookings)
         .innerJoin(users, eq(bookings.primaryArtistUserId, users.id))
         .innerJoin(sql`users booker`, eq(bookings.bookerUserId, sql`booker.id`))
         .leftJoin(artists, eq(users.id, artists.user_id))
-        .where(or(
-          eq(bookings.status, 'pending'),
-          eq(bookings.status, 'pending_approval'),
-          eq(bookings.status, 'approved'),
-          eq(bookings.status, 'declined')
-        ))
+        .where(
+          or(
+            eq(bookings.status, "pending"),
+            eq(bookings.status, "pending_approval"),
+            eq(bookings.status, "approved"),
+            eq(bookings.status, "declined")
+          )
+        )
         .orderBy(desc(bookings.createdAt));
 
       return result;
     } catch (error) {
-      console.error('Error getting booking approvals:', error);
+      console.error("Error getting booking approvals:", error);
       return [];
     }
   }
 
   async getRecentTransactions(): Promise<any[]> {
     try {
-      const result = await db.select({
-        id: bookings.id,
-        type: sql`'booking'`,
-        amount: bookings.totalAmount,
-        user: sql`CONCAT(users.first_name, ' ', users.last_name)`,
-        date: bookings.createdAt,
-        status: sql`CASE WHEN bookings.status = 'completed' THEN 'completed' ELSE 'pending' END`
-      })
+      const result = await db
+        .select({
+          id: bookings.id,
+          type: sql`'booking'`,
+          amount: bookings.totalAmount,
+          user: sql`CONCAT(users.first_name, ' ', users.last_name)`,
+          date: bookings.createdAt,
+          status: sql`CASE WHEN bookings.status = 'completed' THEN 'completed' ELSE 'pending' END`,
+        })
         .from(bookings)
         .innerJoin(users, eq(bookings.bookerUserId, users.id))
         .orderBy(desc(bookings.createdAt))
@@ -7904,12 +9937,10 @@ export class DatabaseStorage implements IStorage {
 
       return result;
     } catch (error) {
-      console.error('Error getting recent transactions:', error);
+      console.error("Error getting recent transactions:", error);
       return [];
     }
   }
-
-
 
   // All-Links subscription methods
   async getAllLinksSubscriptionByUserId(userId: number): Promise<any> {
@@ -7922,7 +9953,7 @@ export class DatabaseStorage implements IStorage {
         .limit(1);
       return subscription || null;
     } catch (error) {
-      console.error('Error getting subscription:', error);
+      console.error("Error getting subscription:", error);
       return null;
     }
   }
@@ -7935,12 +9966,12 @@ export class DatabaseStorage implements IStorage {
         .values({
           ...subscription,
           createdAt: new Date(),
-          updatedAt: new Date()
+          updatedAt: new Date(),
         })
         .returning();
       return created;
     } catch (error) {
-      console.error('Error creating subscription:', error);
+      console.error("Error creating subscription:", error);
       throw error;
     }
   }
@@ -7955,7 +9986,7 @@ export class DatabaseStorage implements IStorage {
         .returning();
       return updated;
     } catch (error) {
-      console.error('Error updating subscription:', error);
+      console.error("Error updating subscription:", error);
       throw error;
     }
   }
@@ -7965,7 +9996,7 @@ export class DatabaseStorage implements IStorage {
       const { websiteBlocklist } = await import("@shared/schema");
       return await db.select().from(websiteBlocklist);
     } catch (error) {
-      console.error('Error getting blocklist:', error);
+      console.error("Error getting blocklist:", error);
       return [];
     }
   }
@@ -7977,12 +10008,12 @@ export class DatabaseStorage implements IStorage {
         .insert(websiteBlocklist)
         .values({
           ...entry,
-          createdAt: new Date()
+          createdAt: new Date(),
         })
         .returning();
       return created;
     } catch (error) {
-      console.error('Error creating blocklist entry:', error);
+      console.error("Error creating blocklist entry:", error);
       throw error;
     }
   }
@@ -7992,11 +10023,13 @@ export class DatabaseStorage implements IStorage {
       // Implementation for checking penalties - simplified for now
       console.log(`Checking penalties for domain: ${domain}`);
     } catch (error) {
-      console.error('Error checking penalties:', error);
+      console.error("Error checking penalties:", error);
     }
   }
 
-  async getUserIdByStripeSubscriptionId(subscriptionId: string): Promise<number | null> {
+  async getUserIdByStripeSubscriptionId(
+    subscriptionId: string
+  ): Promise<number | null> {
     try {
       const { allLinksSubscriptions } = await import("@shared/schema");
       const [subscription] = await db
@@ -8006,7 +10039,7 @@ export class DatabaseStorage implements IStorage {
         .limit(1);
       return subscription?.userId || null;
     } catch (error) {
-      console.error('Error getting user by subscription ID:', error);
+      console.error("Error getting user by subscription ID:", error);
       return null;
     }
   }
@@ -8018,12 +10051,12 @@ export class DatabaseStorage implements IStorage {
         .insert(oauthAccounts)
         .values({
           ...account,
-          createdAt: new Date()
+          createdAt: new Date(),
         })
         .returning();
       return created;
     } catch (error) {
-      console.error('Error creating oauth account:', error);
+      console.error("Error creating oauth account:", error);
       throw error;
     }
   }
@@ -8035,12 +10068,12 @@ export class DatabaseStorage implements IStorage {
         .insert(fanSubscriptions)
         .values({
           ...subscription,
-          createdAt: new Date()
+          createdAt: new Date(),
         })
         .returning();
       return created;
     } catch (error) {
-      console.error('Error creating fan subscription:', error);
+      console.error("Error creating fan subscription:", error);
       throw error;
     }
   }
@@ -8095,7 +10128,7 @@ export class DatabaseStorage implements IStorage {
       const result = await db.execute(query);
       return result.rows;
     } catch (error) {
-      console.error('Error fetching admin talent assignments:', error);
+      console.error("Error fetching admin talent assignments:", error);
       return [];
     }
   }
@@ -8122,13 +10155,17 @@ export class DatabaseStorage implements IStorage {
       `);
       return result.rows;
     } catch (error) {
-      console.error('Error fetching management team:', error);
+      console.error("Error fetching management team:", error);
       return [];
     }
   }
 
   // Assign admin to talent (real database operation)
-  async assignAdminToTalent(adminUserId: number, talentUserId: number, assignmentType: string): Promise<any> {
+  async assignAdminToTalent(
+    adminUserId: number,
+    talentUserId: number,
+    assignmentType: string
+  ): Promise<any> {
     try {
       const result = await db.execute(sql`
         INSERT INTO admin_talent_assignments (admin_user_id, talent_user_id, assignment_type, assigned_at, is_active)
@@ -8139,13 +10176,16 @@ export class DatabaseStorage implements IStorage {
       `);
       return result.rows[0];
     } catch (error) {
-      console.error('Error assigning admin to talent:', error);
+      console.error("Error assigning admin to talent:", error);
       throw error;
     }
   }
 
   // Remove admin talent assignment (real database operation)
-  async removeAdminTalentAssignment(adminUserId: number, talentUserId: number): Promise<boolean> {
+  async removeAdminTalentAssignment(
+    adminUserId: number,
+    talentUserId: number
+  ): Promise<boolean> {
     try {
       const result = await db.execute(sql`
         UPDATE admin_talent_assignments 
@@ -8154,19 +10194,32 @@ export class DatabaseStorage implements IStorage {
       `);
       return result.rowCount > 0;
     } catch (error) {
-      console.error('Error removing admin talent assignment:', error);
+      console.error("Error removing admin talent assignment:", error);
       return false;
     }
   }
 
   // Primary talents management methods
-  async getProfessionalPrimaryTalents(): Promise<UserProfessionalPrimaryTalent[]> {
-    return await db.select().from(userProfessionalPrimaryTalents).orderBy(userProfessionalPrimaryTalents.sortOrder, userProfessionalPrimaryTalents.name);
+  async getProfessionalPrimaryTalents(): Promise<
+    UserProfessionalPrimaryTalent[]
+  > {
+    return await db
+      .select()
+      .from(userProfessionalPrimaryTalents)
+      .orderBy(
+        userProfessionalPrimaryTalents.sortOrder,
+        userProfessionalPrimaryTalents.name
+      );
   }
 
-  // 
-  async createProfessionalPrimaryTalent(data: InsertUserProfessionalPrimaryTalent): Promise<UserProfessionalPrimaryTalent> {
-    const [primaryTalent] = await db.insert(userProfessionalPrimaryTalents).values(data).returning();
+  //
+  async createProfessionalPrimaryTalent(
+    data: InsertUserProfessionalPrimaryTalent
+  ): Promise<UserProfessionalPrimaryTalent> {
+    const [primaryTalent] = await db
+      .insert(userProfessionalPrimaryTalents)
+      .values(data)
+      .returning();
     return primaryTalent;
   }
 
@@ -8200,10 +10253,13 @@ export class DatabaseStorage implements IStorage {
         fullName: users.fullName,
         email: users.email,
         talentId: userProfessionalPrimaryTalents.id,
-        talentName: userProfessionalPrimaryTalents.name
+        talentName: userProfessionalPrimaryTalents.name,
       })
       .from(userProfessionalPrimaryTalents)
-      .innerJoin(professionals, eq(professionals.primaryTalentId, userProfessionalPrimaryTalents.id))
+      .innerJoin(
+        professionals,
+        eq(professionals.primaryTalentId, userProfessionalPrimaryTalents.id)
+      )
       .innerJoin(users, eq(professionals.userId, users.id))
       .where(eq(userProfessionalPrimaryTalents.isDefault, true))
       .limit(1);
@@ -8211,28 +10267,27 @@ export class DatabaseStorage implements IStorage {
     return professional || null;
   }
 
-  async getPrimaryTalentById(id: number, userType: 'artist' | 'musician' | 'professional'): Promise<{ id: number, name: string, player_name: string } | undefined> {
-    if (userType === 'professional') {
-      // Use professional talents table
-      const [primaryTalent] = await db.select({
-        id: userProfessionalPrimaryTalents.id,
-        name: userProfessionalPrimaryTalents.name,
-        player_name: userProfessionalPrimaryTalents.name // For professionals, name is the display name
-      }).from(userProfessionalPrimaryTalents).where(eq(userProfessionalPrimaryTalents.id, id));
-      return primaryTalent;
-    } else {
-      // Use all_instruments table for artists and musicians
-      const [primaryTalent] = await db.select({
+  async getPrimaryTalentById(
+    id: number
+  ): Promise<{ id: number; name: string; player_name: string } | undefined> {
+    // Use all_instruments table for artists and musicians
+    const [primaryTalent] = await db
+      .select({
         id: allInstruments.id,
         name: allInstruments.name,
-        player_name: allInstruments.playerName
-      }).from(allInstruments).where(eq(allInstruments.id, id));
-      return primaryTalent;
-    }
+        player_name: allInstruments.playerName,
+      })
+      .from(allInstruments)
+      .where(eq(allInstruments.id, id));
+    return primaryTalent;
   }
 
-  async updatePrimaryTalent(id: number, data: Partial<UserPrimaryTalent>): Promise<UserPrimaryTalent> {
-    const [primaryTalent] = await db.update(userPrimaryTalents)
+  async updatePrimaryTalent(
+    id: number,
+    data: Partial<UserPrimaryTalent>
+  ): Promise<UserPrimaryTalent> {
+    const [primaryTalent] = await db
+      .update(userPrimaryTalents)
       .set({ ...data, updatedAt: new Date() })
       .where(eq(userPrimaryTalents.id, id))
       .returning();
@@ -8243,24 +10298,36 @@ export class DatabaseStorage implements IStorage {
     await db.delete(userPrimaryTalents).where(eq(userPrimaryTalents.id, id));
   }
 
-  async getPrimaryTalentsByRoleId(roleId: number): Promise<UserPrimaryTalent[]> {
-    return await db.select().from(userPrimaryTalents)
+  async getPrimaryTalentsByRoleId(
+    roleId: number
+  ): Promise<UserPrimaryTalent[]> {
+    return await db
+      .select()
+      .from(userPrimaryTalents)
       .where(eq(userPrimaryTalents.userTypeId, roleId))
       .orderBy(userPrimaryTalents.sortOrder, userPrimaryTalents.name);
   }
 
   // Secondary talents management methods
-  async getUserSecondaryPerformanceTalents(userId: number): Promise<Array<{ talentName: string }>> {
-    return await db.select({
-      talentName: userSecondaryPerformanceTalents.talentName
-    }).from(userSecondaryPerformanceTalents)
+  async getUserSecondaryPerformanceTalents(
+    userId: number
+  ): Promise<Array<{ talentName: string }>> {
+    return await db
+      .select({
+        talentName: userSecondaryPerformanceTalents.talentName,
+      })
+      .from(userSecondaryPerformanceTalents)
       .where(eq(userSecondaryPerformanceTalents.userId, userId));
   }
 
-  async getUserSecondaryProfessionalTalents(userId: number): Promise<Array<{ talentName: string }>> {
-    return await db.select({
-      talentName: userSecondaryProfessionalTalents.talentName
-    }).from(userSecondaryProfessionalTalents)
+  async getUserSecondaryProfessionalTalents(
+    userId: number
+  ): Promise<Array<{ talentName: string }>> {
+    return await db
+      .select({
+        talentName: userSecondaryProfessionalTalents.talentName,
+      })
+      .from(userSecondaryProfessionalTalents)
       .where(eq(userSecondaryProfessionalTalents.userId, userId));
   }
 
@@ -8270,28 +10337,32 @@ export class DatabaseStorage implements IStorage {
 
   async searchSongs(query: string): Promise<Song[]> {
     try {
-      return await db.select()
+      return await db
+        .select()
         .from(songs)
-        .where(or(
-          sql`LOWER(${songs.title}) LIKE LOWER(${'%' + query + '%'})`,
-          sql`LOWER(${songs.artistName}) LIKE LOWER(${'%' + query + '%'})`
-        ))
+        .where(
+          or(
+            sql`LOWER(${songs.title}) LIKE LOWER(${"%" + query + "%"})`,
+            sql`LOWER(${songs.artistName}) LIKE LOWER(${"%" + query + "%"})`
+          )
+        )
         .limit(50);
     } catch (error) {
-      console.error('Error searching songs:', error);
+      console.error("Error searching songs:", error);
       return [];
     }
   }
 
   async getSongByYoutubeId(youtubeId: string): Promise<Song | undefined> {
     try {
-      const [song] = await db.select()
+      const [song] = await db
+        .select()
         .from(songs)
         .where(eq(songs.youtubeId, youtubeId))
         .limit(1);
       return song;
     } catch (error) {
-      console.error('Error getting song by YouTube ID:', error);
+      console.error("Error getting song by YouTube ID:", error);
       return undefined;
     }
   }
@@ -8305,34 +10376,61 @@ export class DatabaseStorage implements IStorage {
       query = query.where(eq(allInstruments.isActive, true));
     }
 
-    return await query.orderBy(allInstruments.displayPriority, allInstruments.name);
+    return await query.orderBy(
+      allInstruments.displayPriority,
+      allInstruments.name
+    );
   }
 
-  async getInstrumentsByMixerGroup(mixerGroup: string): Promise<AllInstrument[]> {
-    return await db.select()
+  async getInstrumentsByMixerGroup(
+    mixerGroup: string
+  ): Promise<AllInstrument[]> {
+    return await db
+      .select()
       .from(allInstruments)
-      .where(and(
-        eq(allInstruments.mixerGroup, mixerGroup),
-        eq(allInstruments.isActive, true)
-      ))
+      .where(
+        and(
+          eq(allInstruments.mixerGroup, mixerGroup),
+          eq(allInstruments.isActive, true)
+        )
+      )
       .orderBy(allInstruments.displayPriority, allInstruments.name);
   }
 
-  async createAllInstrument(instrument: InsertAllInstrument): Promise<AllInstrument> {
-    const [created] = await db.insert(allInstruments).values(instrument).returning();
+  async createAllInstrument(
+    instrument: InsertAllInstrument
+  ): Promise<AllInstrument> {
+    const [created] = await db
+      .insert(allInstruments)
+      .values(instrument)
+      .returning();
     return created;
   }
 
-  async createBookingAssignmentMember(assignment: InsertBookingAssignmentsMember): Promise<BookingAssignmentsMember> {
-    const [created] = await db.insert(bookingAssignmentsMembers).values(assignment).returning();
+  async createBookingAssignmentMember(
+    assignment: InsertBookingAssignmentsMember
+  ): Promise<BookingAssignmentsMember> {
+    const [created] = await db
+      .insert(bookingAssignmentsMembers)
+      .values(assignment)
+      .returning();
     return created;
   }
 
-  async getBookingAssignmentMembers(bookingId: number): Promise<Array<BookingAssignmentsMember & {
-    user: { id: number; fullName: string; email: string };
-    role: { id: number; name: string };
-    instrument?: { id: number; name: string; playerName: string; mixerGroup: string };
-  }>> {
+  async getBookingAssignmentMembers(bookingId: number): Promise<
+    Array<
+      BookingAssignmentsMember & {
+        user: { id: number; fullName: string; email: string };
+        role: { id: number; name: string };
+        instrument?: {
+          id: number;
+          name: string;
+          playerName: string;
+          mixerGroup: string;
+        };
+      }
+    >
+  > {
     const result = await db
       .select({
         id: bookingAssignmentsMembers.id,
@@ -8351,37 +10449,51 @@ export class DatabaseStorage implements IStorage {
         user: {
           id: users.id,
           fullName: users.fullName,
-          email: users.email
+          email: users.email,
         },
         // Role data
         role: {
           id: roles.id,
-          name: roles.name
+          name: roles.name,
         },
         // Instrument data (optional)
         instrument: {
           id: allInstruments.id,
           name: allInstruments.name,
           playerName: allInstruments.playerName,
-          mixerGroup: allInstruments.mixerGroup
-        }
+          mixerGroup: allInstruments.mixerGroup,
+        },
       })
       .from(bookingAssignmentsMembers)
       .innerJoin(users, eq(bookingAssignmentsMembers.userId, users.id))
       .innerJoin(roles, eq(bookingAssignmentsMembers.roleInBookingId, roles.id))
-      .leftJoin(allInstruments, eq(bookingAssignmentsMembers.instrumentId, allInstruments.id))
+      .leftJoin(
+        allInstruments,
+        eq(bookingAssignmentsMembers.instrumentId, allInstruments.id)
+      )
       .where(eq(bookingAssignmentsMembers.bookingId, bookingId))
-      .orderBy(bookingAssignmentsMembers.isMainTalent, bookingAssignmentsMembers.assignedAt);
+      .orderBy(
+        bookingAssignmentsMembers.isMainTalent,
+        bookingAssignmentsMembers.assignedAt
+      );
 
     return result;
   }
 
-  async getBookingAssignmentMember(id: number): Promise<BookingAssignmentsMember | undefined> {
-    const [member] = await db.select().from(bookingAssignmentsMembers).where(eq(bookingAssignmentsMembers.id, id));
+  async getBookingAssignmentMember(
+    id: number
+  ): Promise<BookingAssignmentsMember | undefined> {
+    const [member] = await db
+      .select()
+      .from(bookingAssignmentsMembers)
+      .where(eq(bookingAssignmentsMembers.id, id));
     return member;
   }
 
-  async updateBookingAssignmentMember(id: number, updates: Partial<BookingAssignmentsMember>): Promise<BookingAssignmentsMember | undefined> {
+  async updateBookingAssignmentMember(
+    id: number,
+    updates: Partial<BookingAssignmentsMember>
+  ): Promise<BookingAssignmentsMember | undefined> {
     const [updated] = await db
       .update(bookingAssignmentsMembers)
       .set(updates)
@@ -8391,7 +10503,9 @@ export class DatabaseStorage implements IStorage {
   }
 
   async removeBookingAssignmentMember(id: number): Promise<void> {
-    await db.delete(bookingAssignmentsMembers).where(eq(bookingAssignmentsMembers.id, id));
+    await db
+      .delete(bookingAssignmentsMembers)
+      .where(eq(bookingAssignmentsMembers.id, id));
   }
 
   async assignUserToBooking(
@@ -8411,19 +10525,26 @@ export class DatabaseStorage implements IStorage {
       isMainTalent,
       assignedBy,
       assignedAt: new Date(),
-      createdAt: new Date()
+      createdAt: new Date(),
     };
 
     // If instrument is specified, get mixer channel assignment
     if (instrumentId) {
-      const instrument = await db.select().from(allInstruments).where(eq(allInstruments.id, instrumentId)).limit(1);
+      const instrument = await db
+        .select()
+        .from(allInstruments)
+        .where(eq(allInstruments.id, instrumentId))
+        .limit(1);
       if (instrument.length > 0) {
         assignmentData.assignedGroup = instrument[0].mixerGroup;
         // Auto-assign channel based on group logic - this could be enhanced with actual channel allocation
       }
     }
 
-    const [created] = await db.insert(bookingAssignmentsMembers).values(assignmentData).returning();
+    const [created] = await db
+      .insert(bookingAssignmentsMembers)
+      .values(assignmentData)
+      .returning();
     return created;
   }
 
@@ -8444,8 +10565,8 @@ export class DatabaseStorage implements IStorage {
         uploader: {
           id: users.id,
           fullName: users.fullName,
-          email: users.email
-        }
+          email: users.email,
+        },
       })
       .from(mediaHubDocuments)
       .innerJoin(users, eq(mediaHubDocuments.uploadedBy, users.id))
@@ -8455,7 +10576,10 @@ export class DatabaseStorage implements IStorage {
     return docs;
   }
 
-  async isUserAssignedToBooking(userId: number, bookingId: number): Promise<boolean> {
+  async isUserAssignedToBooking(
+    userId: number,
+    bookingId: number
+  ): Promise<boolean> {
     const assignments = await db
       .select()
       .from(bookingAssignmentsMembers)
@@ -8469,7 +10593,10 @@ export class DatabaseStorage implements IStorage {
     return assignments.length > 0;
   }
 
-  async hasDocumentPermission(documentId: number, userId: number): Promise<boolean> {
+  async hasDocumentPermission(
+    documentId: number,
+    userId: number
+  ): Promise<boolean> {
     const [permission] = await db
       .select()
       .from(documentPermissions)
@@ -8484,7 +10611,10 @@ export class DatabaseStorage implements IStorage {
     return !!permission;
   }
 
-  async userHasBookingAccess(userId: number, bookingId: number): Promise<boolean> {
+  async userHasBookingAccess(
+    userId: number,
+    bookingId: number
+  ): Promise<boolean> {
     // Check if user is assigned to booking
     const isAssigned = await this.isUserAssignedToBooking(userId, bookingId);
     if (isAssigned) return true;
@@ -8493,20 +10623,12 @@ export class DatabaseStorage implements IStorage {
     const [booking] = await db
       .select()
       .from(bookings)
-      .where(
-        and(
-          eq(bookings.id, bookingId),
-          eq(bookings.bookerId, userId)
-        )
-      );
+      .where(and(eq(bookings.id, bookingId), eq(bookings.bookerId, userId)));
 
     if (booking) return true;
 
     // Check if user is admin (roleId 1 or 2)
-    const [user] = await db
-      .select()
-      .from(users)
-      .where(eq(users.id, userId));
+    const [user] = await db.select().from(users).where(eq(users.id, userId));
 
     return user && (user.roleId === 1 || user.roleId === 2);
   }
@@ -8521,16 +10643,20 @@ export class DatabaseStorage implements IStorage {
         fileSize: document.fileSize,
         filePath: document.filePath,
         uploadedBy: document.uploadedBy,
-        visibility: document.visibility || 'admin_controlled',
+        visibility: document.visibility || "admin_controlled",
         description: document.description,
-        uploadedAt: new Date()
+        uploadedAt: new Date(),
       })
       .returning();
 
     return created;
   }
 
-  async updateDocumentVisibility(documentId: number, visibility: string, permissions: any[]): Promise<any> {
+  async updateDocumentVisibility(
+    documentId: number,
+    visibility: string,
+    permissions: any[]
+  ): Promise<any> {
     // Update document visibility
     const [updated] = await db
       .update(mediaHubDocuments)
@@ -8545,13 +10671,13 @@ export class DatabaseStorage implements IStorage {
 
     // Add new permissions
     if (permissions && permissions.length > 0) {
-      const permissionRecords = permissions.map(perm => ({
+      const permissionRecords = permissions.map((perm) => ({
         documentId,
         userId: perm.userId,
         canView: perm.canView,
         canDownload: perm.canDownload,
         grantedBy: perm.grantedBy,
-        grantedAt: new Date()
+        grantedAt: new Date(),
       }));
 
       await db.insert(documentPermissions).values(permissionRecords);
@@ -8583,7 +10709,5 @@ export class DatabaseStorage implements IStorage {
     return true;
   }
 }
-
-
 
 export const storage = new DatabaseStorage();
