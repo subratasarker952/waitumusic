@@ -19676,11 +19676,11 @@ This is a preview of the performance engagement contract. Final agreement will i
               role: assignment.assignmentRole,
               isMainBookedTalent: isMainBooked,
               isPrimary: isMainBooked,
-              talentType: getUserTalentType(user.roleId),
+              // talentType: getUserTalentType(user.roleId),
               primaryTalent,
               secondaryTalents,
               assignmentId: assignment.id,
-              assignedAt: assignment.createdAt,
+              // assignedAt: assignment.createdAt,
               // Button flags
               isOriginallyBooked: isMainBooked,
               showAcceptDecline: isMainBooked,
@@ -19700,60 +19700,78 @@ This is a preview of the performance engagement contract. Final agreement will i
 
   // Get talent information for a specific user
   app.get(
-    "/api/users/:userId/talent-info",
-    authenticateToken,
-    async (req: Request, res: Response) => {
-      try {
-        const userId = parseInt(req.params.userId);
-        const user = await storage.getUser(userId);
-        if (!user) {
-          return res.status(404).json({ message: "User not found" });
-        }
+  "/api/users/:userId/talent-info",
+  authenticateToken,
+  async (req: Request, res: Response) => {
+    try {
+      const userId = parseInt(req.params.userId);
 
-        let talentInfo = null;
-        let primaryTalent = null;
-        let secondaryTalents = [];
-
-        // Get talent information based on user role
-        if (user.roleId === 3 || user.roleId === 4) {
-          // Artist roles
-          talentInfo = await storage.getArtist(user.id);
-        } else if (user.roleId === 5 || user.roleId === 6) {
-          // Musician roles
-          talentInfo = await storage.getMusician(user.id);
-        } else if (user.roleId === 7 || user.roleId === 8) {
-          // Professional roles
-          talentInfo = await storage.getProfessional(user.id);
-        }
-
-        // Get talent names from database
-        if (talentInfo?.primaryTalentId) {
-          const talent = await storage.getPrimaryTalentById(
-            talentInfo.primaryTalentId
-          );
-          primaryTalent = talent?.name || null;
-        }
-
-        const secondaryPerformanceTalents =
-          await storage.getUserSecondaryPerformanceTalents(user.id);
-        const secondaryProfessionalTalents =
-          await storage.getUserSecondaryProfessionalTalents(user.id);
-        secondaryTalents = [
-          ...secondaryPerformanceTalents.map((t) => t.talentName),
-          ...secondaryProfessionalTalents.map((t) => t.talentName),
-        ];
-
-        res.json({
-          primaryTalent,
-          secondaryTalents,
-          stageName: talentInfo?.stageName,
-        });
-      } catch (error) {
-        console.error("❌ Fetch user talent info error:", error);
-        res.status(500).json({ message: "Failed to fetch user talent info" });
+      // Base user
+      const user = await storage.getUser(userId);
+      if (!user) {
+        return res.status(404).json({ message: "User not found" });
       }
+
+      // 🔹 Get user roles (multi-role support)
+      const userRoles = await storage.getUserRoles(user.id);
+      const roleIds = userRoles.map((r) => r.id);
+
+      let talentInfo: any = null;
+      let primaryTalent: string | null = null;
+      let secondaryTalents: string[] = [];
+      let stageName: string | null = null;
+
+      // Artist role check (3,4)
+      if (roleIds.includes(3) || roleIds.includes(4)) {
+        talentInfo = await storage.getArtist(user.id);
+      }
+
+      // Musician role check (5,6)
+      else if (roleIds.includes(5) || roleIds.includes(6)) {
+        talentInfo = await storage.getMusician(user.id);
+      }
+
+      // Professional role check (7,8)
+      else if (roleIds.includes(7) || roleIds.includes(8)) {
+        talentInfo = await storage.getProfessional(user.id);
+      }
+
+      // Primary talent
+      if (talentInfo?.primaryTalentId) {
+        const talent = await storage.getPrimaryTalentById(
+          talentInfo.primaryTalentId
+        );
+        primaryTalent = talent?.name || null;
+      }
+
+      // Stage name
+      if (talentInfo?.stageName) {
+        stageName = talentInfo.stageName;
+      }
+
+      // Secondary talents
+      const secondaryPerformanceTalents =
+        await storage.getUserSecondaryPerformanceTalents(user.id);
+      const secondaryProfessionalTalents =
+        await storage.getUserSecondaryProfessionalTalents(user.id);
+
+      secondaryTalents = [
+        ...secondaryPerformanceTalents.map((t) => t.talentName),
+        ...secondaryProfessionalTalents.map((t) => t.talentName),
+      ];
+
+      res.json({
+        primaryTalent,
+        secondaryTalents,
+        stageName,
+      });
+    } catch (error) {
+      console.error("❌ Fetch user talent info error:", error);
+      res.status(500).json({ message: "Failed to fetch user talent info" });
     }
-  );
+  }
+);
+
 
   // Helper function to determine talent type from role ID
   function getUserTalentType(roleId: number): string {
@@ -19776,212 +19794,241 @@ This is a preview of the performance engagement contract. Final agreement will i
   }
 
   // Artist-Musician Assignments - Managed talent assign others to themselves and bookings
-  app.get(
-    "/api/artist-musician-assignments",
-    authenticateToken,
-    async (req: Request, res: Response) => {
-      try {
-        const { managedTalentId, assigneeId } = req.query;
-        const currentUserId = req.user?.userId;
+app.get(
+  "/api/artist-musician-assignments",
+  authenticateToken,
+  async (req: Request, res: Response) => {
+    try {
+      const { managedTalentId, assigneeId } = req.query;
+      const currentUserId = req.user?.userId;
 
-        // Role-based access control
-        const user = await storage.getUser(currentUserId || 0);
-        const isAdminOrSuperadmin = user && [1, 2].includes(user.roleId);
+      // Get user with multi-roles
+      const user = await storage.getUser(currentUserId || 0);
+      const userRoles = await storage.getUserRoles(user.id);
+      const roleIds = userRoles.map((r) => r.id);
 
-        let assignments;
-        if (managedTalentId) {
-          // Check if user can access this managed talent's assignments
-          const requestedTalentId = parseInt(managedTalentId as string);
-          if (!isAdminOrSuperadmin && currentUserId !== requestedTalentId) {
-            return res
-              .status(403)
-              .json({ message: "Insufficient permissions" });
-          }
-          assignments = await storage.getArtistMusicianAssignmentsByTalent(
-            requestedTalentId
-          );
-        } else if (assigneeId) {
-          assignments = await storage.getArtistMusicianAssignmentsByAssignee(
-            parseInt(assigneeId as string)
-          );
-        } else if (isAdminOrSuperadmin) {
-          assignments = await storage.getArtistMusicianAssignments();
-        } else {
-          // Regular users can only see their own assignments (as managed talent or assignee)
-          assignments = await storage.getArtistMusicianAssignmentsByUser(
-            currentUserId
-          );
-        }
+      // Admin / Superadmin check
+      const isAdminOrSuperadmin = roleIds.includes(1) || roleIds.includes(2);
 
-        res.json(assignments);
-      } catch (error) {
-        console.error("Get artist-musician assignments error:", error);
-        res
-          .status(500)
-          .json({ message: "Failed to fetch artist-musician assignments" });
-      }
-    }
-  );
+      let assignments;
 
-  app.post(
-    "/api/artist-musician-assignments",
-    authenticateToken,
-    async (req: Request, res: Response) => {
-      try {
-        const assignmentData = req.body;
-        const currentUserId = req.user?.userId;
-
-        // Check if user can create assignments for the specified managed talent
-        const user = await storage.getUser(currentUserId || 0);
-        const isAdminOrSuperadmin = user && [1, 2].includes(user.roleId);
-
-        if (
-          !isAdminOrSuperadmin &&
-          currentUserId !== assignmentData.managedTalentId
-        ) {
+      if (managedTalentId) {
+        // Check if user can access this managed talent's assignments
+        const requestedTalentId = parseInt(managedTalentId as string);
+        if (!isAdminOrSuperadmin && currentUserId !== requestedTalentId) {
           return res
             .status(403)
-            .json({ message: "Can only create assignments for yourself" });
+            .json({ message: "Insufficient permissions" });
         }
 
-        const assignment = await storage.createArtistMusicianAssignment(
-          assignmentData
+        assignments = await storage.getArtistMusicianAssignmentsByTalent(
+          requestedTalentId
         );
-        res.status(201).json(assignment);
-      } catch (error) {
-        console.error("Create artist-musician assignment error:", error);
-        res
-          .status(500)
-          .json({ message: "Failed to create artist-musician assignment" });
+      } else if (assigneeId) {
+        assignments = await storage.getArtistMusicianAssignmentsByAssignee(
+          parseInt(assigneeId as string)
+        );
+      } else if (isAdminOrSuperadmin) {
+        // Admin / Superadmin see all
+        assignments = await storage.getArtistMusicianAssignments();
+      } else {
+        // Regular users can only see their own (as managed talent or assignee)
+        assignments = await storage.getArtistMusicianAssignmentsByUser(
+          currentUserId
+        );
       }
+
+      res.json(assignments);
+    } catch (error) {
+      console.error("❌ Get artist-musician assignments error:", error);
+      res
+        .status(500)
+        .json({ message: "Failed to fetch artist-musician assignments" });
     }
-  );
+  }
+);
 
-  app.get(
-    "/api/artist-musician-assignments/:id",
-    authenticateToken,
-    async (req: Request, res: Response) => {
-      try {
-        const assignmentId = parseInt(req.params.id);
-        const currentUserId = req.user?.userId;
 
-        const assignment = await storage.getArtistMusicianAssignment(
-          assignmentId
-        );
-        if (!assignment) {
-          return res.status(404).json({ message: "Assignment not found" });
-        }
+ app.post(
+  "/api/artist-musician-assignments",
+  authenticateToken,
+  async (req: Request, res: Response) => {
+    try {
+      const assignmentData = req.body;
+      const currentUserId = req.user?.userId;
 
-        // Check permissions - users can only view their own assignments unless admin
-        const user = await storage.getUser(currentUserId || 0);
-        const isAdminOrSuperadmin = user && [1, 2].includes(user.roleId);
+      // Get user + roles
+      const user = await storage.getUser(currentUserId || 0);
+      const userRoles = await storage.getUserRoles(user.id);
+      const roleIds = userRoles.map((r) => r.id);
 
-        if (
-          !isAdminOrSuperadmin &&
-          currentUserId !== assignment.managedTalentId &&
-          currentUserId !== assignment.assigneeId
-        ) {
-          return res
-            .status(403)
-            .json({ message: "Can only view your own assignments" });
-        }
+      // Admin / Superadmin check
+      const isAdminOrSuperadmin = roleIds.includes(1) || roleIds.includes(2);
 
-        res.json(assignment);
-      } catch (error) {
-        console.error("Get artist-musician assignment error:", error);
-        res
-          .status(500)
-          .json({ message: "Failed to fetch artist-musician assignment" });
+      // Permission check
+      if (
+        !isAdminOrSuperadmin &&
+        currentUserId !== assignmentData.managedTalentId
+      ) {
+        return res
+          .status(403)
+          .json({ message: "Can only create assignments for yourself" });
       }
+
+      const assignment = await storage.createArtistMusicianAssignment(
+        assignmentData
+      );
+
+      res.status(201).json(assignment);
+    } catch (error) {
+      console.error("❌ Create artist-musician assignment error:", error);
+      res
+        .status(500)
+        .json({ message: "Failed to create artist-musician assignment" });
     }
-  );
+  }
+);
 
-  app.patch(
-    "/api/artist-musician-assignments/:id",
-    authenticateToken,
-    async (req: Request, res: Response) => {
-      try {
-        const assignmentId = parseInt(req.params.id);
-        const updates = req.body;
-        const currentUserId = req.user?.userId;
 
-        // Get existing assignment to check permissions
-        const existingAssignment = await storage.getArtistMusicianAssignment(
-          assignmentId
-        );
-        if (!existingAssignment) {
-          return res.status(404).json({ message: "Assignment not found" });
-        }
+app.get(
+  "/api/artist-musician-assignments/:id",
+  authenticateToken,
+  async (req: Request, res: Response) => {
+    try {
+      const assignmentId = parseInt(req.params.id);
+      const currentUserId = req.user?.userId;
 
-        // Check permissions
-        const user = await storage.getUser(currentUserId || 0);
-        const isAdminOrSuperadmin = user && [1, 2].includes(user.roleId);
-
-        if (
-          !isAdminOrSuperadmin &&
-          currentUserId !== existingAssignment.managedTalentId
-        ) {
-          return res
-            .status(403)
-            .json({ message: "Can only update your own assignments" });
-        }
-
-        const assignment = await storage.updateArtistMusicianAssignment(
-          assignmentId,
-          updates
-        );
-        res.json(assignment);
-      } catch (error) {
-        console.error("Update artist-musician assignment error:", error);
-        res
-          .status(500)
-          .json({ message: "Failed to update artist-musician assignment" });
+      const assignment = await storage.getArtistMusicianAssignment(
+        assignmentId
+      );
+      if (!assignment) {
+        return res.status(404).json({ message: "Assignment not found" });
       }
-    }
-  );
 
-  app.delete(
-    "/api/artist-musician-assignments/:id",
-    authenticateToken,
-    async (req: Request, res: Response) => {
-      try {
-        const assignmentId = parseInt(req.params.id);
-        const currentUserId = req.user?.userId;
+      // Get user + all roles
+      const user = await storage.getUser(currentUserId || 0);
+      const userRoles = await storage.getUserRoles(user.id);
+      const roleIds = userRoles.map((r) => r.id);
 
-        // Get existing assignment to check permissions
-        const existingAssignment = await storage.getArtistMusicianAssignment(
-          assignmentId
-        );
-        if (!existingAssignment) {
-          return res.status(404).json({ message: "Assignment not found" });
-        }
+      // Check admin / superadmin
+      const isAdminOrSuperadmin = roleIds.includes(1) || roleIds.includes(2);
 
-        // Check permissions
-        const user = await storage.getUser(currentUserId || 0);
-        const isAdminOrSuperadmin = user && [1, 2].includes(user.roleId);
-
-        if (
-          !isAdminOrSuperadmin &&
-          currentUserId !== existingAssignment.managedTalentId
-        ) {
-          return res
-            .status(403)
-            .json({ message: "Can only remove your own assignments" });
-        }
-
-        await storage.removeArtistMusicianAssignment(assignmentId);
-        res.json({
-          success: true,
-          message: "Artist-musician assignment removed",
-        });
-      } catch (error) {
-        console.error("Remove artist-musician assignment error:", error);
-        res
-          .status(500)
-          .json({ message: "Failed to remove artist-musician assignment" });
+      // Permission check
+      if (
+        !isAdminOrSuperadmin &&
+        currentUserId !== assignment.managedTalentId &&
+        currentUserId !== assignment.assigneeId
+      ) {
+        return res
+          .status(403)
+          .json({ message: "Can only view your own assignments" });
       }
+
+      res.json(assignment);
+    } catch (error) {
+      console.error("❌ Get artist-musician assignment error:", error);
+      res
+        .status(500)
+        .json({ message: "Failed to fetch artist-musician assignment" });
     }
-  );
+  }
+);
+
+
+app.patch(
+  "/api/artist-musician-assignments/:id",
+  authenticateToken,
+  async (req: Request, res: Response) => {
+    try {
+      const assignmentId = parseInt(req.params.id);
+      const updates = req.body;
+      const currentUserId = req.user?.userId;
+
+      // Get existing assignment
+      const existingAssignment = await storage.getArtistMusicianAssignment(
+        assignmentId
+      );
+      if (!existingAssignment) {
+        return res.status(404).json({ message: "Assignment not found" });
+      }
+
+      // Get user roles
+      const user = await storage.getUser(currentUserId || 0);
+      const userRoles = await storage.getUserRoles(user.id);
+      const roleIds = userRoles.map((r) => r.id);
+
+      // Admin / Superadmin check
+      const isAdminOrSuperadmin = roleIds.includes(1) || roleIds.includes(2);
+
+      // Permission check
+      if (!isAdminOrSuperadmin && currentUserId !== existingAssignment.managedTalentId) {
+        return res
+          .status(403)
+          .json({ message: "Can only update your own assignments" });
+      }
+
+      // Update
+      const assignment = await storage.updateArtistMusicianAssignment(
+        assignmentId,
+        updates
+      );
+      res.json(assignment);
+    } catch (error) {
+      console.error("❌ Update artist-musician assignment error:", error);
+      res
+        .status(500)
+        .json({ message: "Failed to update artist-musician assignment" });
+    }
+  }
+);
+
+
+app.delete(
+  "/api/artist-musician-assignments/:id",
+  authenticateToken,
+  async (req: Request, res: Response) => {
+    try {
+      const assignmentId = parseInt(req.params.id);
+      const currentUserId = req.user?.userId;
+
+      // Get existing assignment
+      const existingAssignment = await storage.getArtistMusicianAssignment(
+        assignmentId
+      );
+      if (!existingAssignment) {
+        return res.status(404).json({ message: "Assignment not found" });
+      }
+
+      // Get user roles
+      const user = await storage.getUser(currentUserId || 0);
+      const userRoles = await storage.getUserRoles(user.id);
+      const roleIds = userRoles.map((r) => r.id);
+
+      // Admin / Superadmin check
+      const isAdminOrSuperadmin = roleIds.includes(1) || roleIds.includes(2);
+
+      // Permission check
+      if (!isAdminOrSuperadmin && currentUserId !== existingAssignment.managedTalentId) {
+        return res
+          .status(403)
+          .json({ message: "Can only remove your own assignments" });
+      }
+
+      // Delete assignment
+      await storage.removeArtistMusicianAssignment(assignmentId);
+      res.json({
+        success: true,
+        message: "Artist-musician assignment removed",
+      });
+    } catch (error) {
+      console.error("❌ Remove artist-musician assignment error:", error);
+      res
+        .status(500)
+        .json({ message: "Failed to remove artist-musician assignment" });
+    }
+  }
+);
+
 
   // Service Assignments - Assign managed talent to services with pricing management
   app.get(
