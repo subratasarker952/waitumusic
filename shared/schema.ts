@@ -288,7 +288,7 @@ export const professionals = pgTable("professionals", {
   isManaged: boolean("is_managed").default(false),
   managementTierId: integer("management_tier_id").references(() => managementTiers.id),
   bookingFormPictureUrl: text("booking_form_picture_url"),
-  primaryTalentId: integer("primary_talent_id").references(() => userProfessionalPrimaryTalents.id).notNull().default(1),
+  primaryTalentId: integer("primary_talent_id").references(() => allInstruments.id).notNull().default(1),
   websiteUrl: text("website_url"),
   isDemo: boolean("is_demo").default(false),
   isComplete: boolean("is_complete").default(false),
@@ -442,7 +442,7 @@ export const bookingAssignmentsMembers = pgTable("booking_assignments_members", 
   id: serial("id").primaryKey(),
   bookingId: integer("booking_id").references(() => bookings.id).notNull(),
   userId: integer("user_id").references(() => users.id).notNull(),
-  roleInBooking: integer("role_in_booking").references(() => roles.id).notNull(), // Foreign key to roles table
+  roleInBooking: integer("role_in_booking").references(() => rolesManagement.id).notNull(), // Foreign key to roles table
   assignmentType: text("assignment_type").notNull().default("manual"), // 'auto', 'manual', 'requested'
   assignedAt: timestamp("assigned_at").defaultNow(),
   assignedBy: integer("assigned_by").references(() => users.id),

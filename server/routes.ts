@@ -3419,6 +3419,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         const bookingId = parseInt(req.params.id);
         const {
           userId,
+          roleId,
           selectedTalent,
           isMainBookedTalent,
           assignedGroup,
@@ -3427,13 +3428,17 @@ export async function registerRoutes(app: Express): Promise<Server> {
           assignmentType = "manual",
         } = req.body;
 
-        // Create enhanced booking assignment
+        if (!roleId) {
+          return res.status(400).json({ message: "roleInBooking is required" });
+        }
+
+        // Create booking assignment
         const [assignment] = await db
           .insert(schema.bookingAssignmentsMembers)
           .values({
             bookingId,
             userId,
-            roleInBooking: 3,
+            roleInBooking: roleId,
             assignmentType,
             selectedTalent: selectedTalent || null,
             isMainBookedTalent: isMainBookedTalent || false,
@@ -3441,7 +3446,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
             assignedChannelPair,
             assignedChannel,
             assignedBy: req.user!.userId,
-            status: "pending",
+            status: "active",
           })
           .returning();
 
@@ -3453,7 +3458,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
             userId: schema.bookingAssignmentsMembers.userId,
             userFullName: schema.users.fullName,
             roleInBooking: schema.bookingAssignmentsMembers.roleInBooking,
-            roleName: schema.roles.name,
+            roleName: schema.rolesManagement.name,
             assignmentType: schema.bookingAssignmentsMembers.assignmentType,
             selectedTalent: schema.bookingAssignmentsMembers.selectedTalent,
             instrumentName: schema.allInstruments.name,
@@ -3474,8 +3479,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
             eq(schema.bookingAssignmentsMembers.userId, schema.users.id)
           )
           .innerJoin(
-            schema.roles,
-            eq(schema.bookingAssignmentsMembers.roleInBooking, schema.roles.id)
+            schema.rolesManagement,
+            eq(schema.bookingAssignmentsMembers.roleInBooking, schema.rolesManagement.id)
           )
           .leftJoin(
             schema.allInstruments,
@@ -3499,11 +3504,12 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   );
 
+
   // Update enhanced booking assignment member
   app.patch(
     "/api/booking-assignments/:id",
     authenticateToken,
-    requireRole(ROLE_GROUPS.ADMIN_ONLY),
+    requireRole([1, 2]),
     validateParams(schemas.idParamSchema),
     validate(schemas.updateBookingAssignmentSchema),
     async (req: Request, res: Response) => {
@@ -11998,6 +12004,7 @@ This is a preview of the performance engagement contract. Final agreement will i
   app.post(
     "/api/bookings/:id/workflow/save",
     authenticateToken,
+    requireRole([1]),
     async (req: Request, res: Response) => {
       try {
         const bookingId = parseInt(req.params.id);

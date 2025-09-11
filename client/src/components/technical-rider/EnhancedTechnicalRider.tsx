@@ -3482,7 +3482,7 @@ function EnhancedTechnicalRider({
 
       {/* Main Tabs - Musical Mobile Optimized */}
       <Tabs value={activeTab} onValueChange={(value: string) => setActiveTab(value as any)}>
-        <TabsList className="musical-tabs-list">
+        <TabsList className="musical-tabs-list ">
           <TabsTrigger value="requirements" className="musical-tab-trigger musical-tab">
             <div className="mobile-tab-icon">🎛️</div>
             <div className="mobile-tab-text">Requirements</div>

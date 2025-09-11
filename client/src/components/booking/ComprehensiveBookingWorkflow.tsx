@@ -30,6 +30,7 @@ import { useToast } from '@/hooks/use-toast';
 import { TOAST_CONFIGS, BUTTON_CONFIGS, COLOR_CONFIGS, SPACING_CONFIGS } from '@shared/ui-config';
 import { apiRequest } from '@/lib/queryClient';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { workerData } from 'worker_threads';
 
 interface ComprehensiveBookingWorkflowProps {
   bookingId: number;
@@ -197,7 +198,6 @@ export default function BookingWorkflow({
     refetchOnMount: 'always',
     refetchOnReconnect: false
   });
-
   // Load specific user types for assignment
   const { data: availableArtists = [] } = useQuery({
     queryKey: ['/api/artists'],
@@ -301,9 +301,9 @@ export default function BookingWorkflow({
   // Assignment creation mutation with comprehensive cache invalidation
   const createAssignmentMutation = useMutation({
     mutationFn: async (assignmentData: any) => {
-      // Map frontend data to backend API structure
       const backendPayload = {
         userId: assignmentData.userId,
+        roleId: assignmentData.roleId,
         selectedTalent: assignmentData.primaryTalentId || assignmentData.selectedTalent || null,
         isMainBookedTalent: assignmentData.isMainBookedTalent || false,
         assignmentType: assignmentData.assignmentType || 'workflow'
@@ -311,25 +311,20 @@ export default function BookingWorkflow({
 
       console.log('💾 SAVING TO DATABASE - Backend payload:', backendPayload);
 
-      const response = await apiRequest(`/api/bookings/${bookingId}/assign`, {
+      // apiRequest থেকে already JSON পাওয়া যাবে
+      const data = await apiRequest(`/api/bookings/${bookingId}/assign`, {
         method: 'POST',
         body: backendPayload
       });
 
-      if (!response.ok) {
-        let errorMessage = 'Failed to create assignment';
-        try {
-          const error = await response.json();
-          errorMessage = error.message || errorMessage;
-        } catch (jsonError) {
-          // Response is not JSON, use status text
-          errorMessage = `${errorMessage}: ${response.status} ${response.statusText}`;
-        }
-        throw new Error(errorMessage);
+      // যদি backend error দিয়ে থাকে
+      if (!data || data.error) {
+        throw new Error(data?.message || 'Failed to create assignment');
       }
 
-      return response.json();
+      return data; // ✅ Already parsed object
     },
+
     onSuccess: (data, variables) => {
       // Only invalidate specific booking queries to prevent loops
       queryClient.invalidateQueries({ queryKey: ['booking-workflow', bookingId] });
@@ -382,28 +377,33 @@ export default function BookingWorkflow({
         talentReviewConfirmed
       };
 
+      console.log(workflowData)
+
+      // API call
       const response = await apiRequest(`/api/bookings/${bookingId}/workflow/save`, {
         method: 'POST',
         body: { workflowData }
       });
 
-      if (!response.ok) throw new Error('Failed to save workflow');
+      // ✅ No need to check .ok, just check if response has message
+      if (!response || !response.message) throw new Error('Failed to save workflow');
 
       toast({
         title: "Workflow Saved",
-        description: "All workflow data has been saved successfully"
+        description: response.message
       });
-    } catch (error) {
+    } catch (error: any) {
       console.error('Save workflow error:', error);
       toast({
         title: "Save Failed",
-        description: "Failed to save workflow data",
+        description: error.message || "Failed to save workflow data",
         variant: "destructive"
       });
     } finally {
       setSaving(false);
     }
   };
+
 
   // Generate PDF function
   const generatePDF = async () => {
@@ -728,62 +728,28 @@ export default function BookingWorkflow({
       ...(Array.isArray(availableProfessionals) ? availableProfessionals : [])
     ];
 
-    // Always return array of roleIds
+    const managedRoles = [3, 5, 7];
+    const regularRoles = [4, 6, 8];
+
     const getRoles = (talent: any): number[] => {
       if (Array.isArray(talent.roles)) return talent.roles;
+      if (Array.isArray(talent.user?.roles)) return talent.user.roles;
+      if (talent.roleId) return [talent.roleId];
+      if (talent.user?.roleId) return [talent.user.roleId];
       return [];
     };
 
-    // Role → Category mapping
-    const ROLE_CATEGORY_MAP: Record<number, keyof typeof initCategories> = {
-      3: "managedArtists",
-      4: "artists",
-      5: "managedMusicians",
-      6: "musicians",
-      7: "managedProfessionals",
-      8: "professionals",
+    const categorizedTalent = {
+      // শুধু managed roles দেখাবে
+      managedArtists: allTalent.filter(talent => getRoles(talent).some(r => managedRoles.includes(r) && r === 3)),
+      managedMusicians: allTalent.filter(talent => getRoles(talent).some(r => managedRoles.includes(r) && r === 5)),
+      managedProfessionals: allTalent.filter(talent => getRoles(talent).some(r => managedRoles.includes(r) && r === 7)),
+
+      // শুধু regular roles দেখাবে
+      artists: allTalent.filter(talent => getRoles(talent).some(r => regularRoles.includes(r) && r === 4)),
+      musicians: allTalent.filter(talent => getRoles(talent).some(r => regularRoles.includes(r) && r === 6)),
+      professionals: allTalent.filter(talent => getRoles(talent).some(r => regularRoles.includes(r) && r === 8)),
     };
-
-    // Initialize empty buckets
-    const initCategories = {
-      managedArtists: [] as any[],
-      artists: [] as any[],
-      managedMusicians: [] as any[],
-      musicians: [] as any[],
-      managedProfessionals: [] as any[],
-      professionals: [] as any[]
-    };
-
-    // Categorize all talent dynamically
-    const categorizedTalent = allTalent.reduce((acc, talent) => {
-      const roles = getRoles(talent);
-
-      roles.forEach(roleId => {
-        const category = ROLE_CATEGORY_MAP[roleId];
-        if (category) {
-          acc[category].push(talent);
-        }
-      });
-
-      return acc;
-    }, { ...initCategories });
-
-    // Debug log
-    console.log("🎯 TALENT GROUPED:", {
-      totalTalent: allTalent.length,
-      talentTypes: allTalent.map(t => ({
-        name: t.stageName || t.name || t.fullName,
-        primaryTalentId: t.primaryTalentId,
-        primaryTalent: t.primaryTalent,
-        roles: getRoles(t),
-        isManaged: t.isManaged
-      })),
-      categorizedCounts: Object.fromEntries(
-        Object.entries(categorizedTalent).map(([k, v]) => [k, v.length])
-      )
-    });
-
-    console.log(categorizedTalent)
 
     return (
       <div className="space-y-6">
@@ -985,6 +951,7 @@ export default function BookingWorkflow({
                               const artistRoles = [primaryRole, ...(artist.skillsAndInstruments || [])].filter(Boolean);
                               const assignmentData = {
                                 userId: artist.userId,
+                                roleId: 3,
                                 name: artist.stageName || artist.user?.fullName,
                                 type: isMainBookedTalent ? 'Main Booked Talent' : 'Artist',
                                 role: isMainBookedTalent ? 'Main Booked Talent' : primaryRole,
@@ -1051,6 +1018,7 @@ export default function BookingWorkflow({
                                 availableRoles: artistRoles,
                                 avatarUrl: artist.profile?.avatarUrl,
                                 genre: artist.genre,
+                                primaryTalentId: artist.primaryTalentId,
                                 isPrimary: isMainBookedTalent,
                                 isMainBookedTalent: isMainBookedTalent
                               };
@@ -1144,6 +1112,7 @@ export default function BookingWorkflow({
                                   availableRoles: musicianRoles,
                                   avatarUrl: musician.profile?.avatarUrl,
                                   isPrimary: isMainBookedTalent,
+                                  primaryTalentId: musician.primaryTalentId,
                                   isMainBookedTalent: isMainBookedTalent
                                 };
                                 setAssignedTalent([...assignedTalent, newAssignment]);
@@ -1237,6 +1206,7 @@ export default function BookingWorkflow({
                                   availableRoles: musicianRoles,
                                   avatarUrl: musician.profile?.avatarUrl,
                                   isPrimary: isMainBookedTalent,
+                                  primaryTalentId: musician.primaryTalentId,
                                   isMainBookedTalent: isMainBookedTalent
                                 };
                                 setAssignedTalent([...assignedTalent, newAssignment]);
@@ -1300,6 +1270,7 @@ export default function BookingWorkflow({
                                 name: professional.stageName || professional.user?.fullName,
                                 type: 'Professional',
                                 role: professional.serviceType || 'Professional',
+                                primaryTalentId: professional.primaryTalentId,
                                 avatarUrl: professional.profile?.avatarUrl
                               };
                               setAssignedTalent([...assignedTalent, newAssignment]);
