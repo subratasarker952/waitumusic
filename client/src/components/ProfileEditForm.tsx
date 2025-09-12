@@ -99,15 +99,22 @@ export default function ProfileEditForm({
   // Fetch available instruments/skills for all talent users (artists, musicians, professionals)
   const { data: availableInstruments = [] } = useQuery({
     queryKey: ["/api/instruments"],
-    enabled: isArtist || isMusicianProfile,
+    enabled: isArtist || isMusicianProfile || isProfessional,
   });
 
+  // শুধু Artists/Musicians
+  const artistOrMusicianTalents = (availableInstruments as any[]).filter(
+    (instrument) =>
+      instrument.type !== "Professional" // Professional বাদ
+  );
 
-  // Fetch available professional primary talent (professionals)
-  const { data: professionalTalents = [] } = useQuery({
-    queryKey: ["/api/professional-primary-talent"],
-    enabled: isProfessional,
-  });
+  // শুধু Professionals
+  const professionalTalents = (availableInstruments as any[]).filter(
+    (instrument) =>
+      instrument.type === "Professional" && instrument.mixerGroup === "PROFESSIONAL"
+  );
+
+  console.log(availableInstruments)
 
   useEffect(() => {
     if (!user) return;
@@ -177,9 +184,6 @@ export default function ProfileEditForm({
 
     // 🟢 Single update
     setFormData(nextFormData);
-
-
-    console.log(formData)
 
   }, [user]);
 
@@ -565,19 +569,11 @@ export default function ProfileEditForm({
                   </SelectTrigger>
                   <SelectContent>
                     {/* Sort instruments to show vocals first for artists */}
-                    {(availableInstruments as any[])
-                      .sort((a, b) => {
-                        // For artists, prioritize vocals mixer_group
-                        if (isArtist && a.mixer_group === "vocals") return -1;
-                        if (isArtist && b.mixer_group === "vocals") return 1;
-                        return a.name.localeCompare(b.name);
-                      })
-                      .map((instrument: any) => (
-                        <SelectItem
-                          key={instrument.id}
-                          value={String(instrument.id)}
-                        >
-                          {instrument.name} - {instrument.category}
+                    {artistOrMusicianTalents
+                      .sort((a, b) => a.name.localeCompare(b.name))
+                      .map((instrument) => (
+                        <SelectItem key={instrument.id} value={String(instrument.id)}>
+                          {instrument.name} - {instrument.type}
                         </SelectItem>
                       ))}
                   </SelectContent>
@@ -844,19 +840,11 @@ export default function ProfileEditForm({
                   </SelectTrigger>
                   <SelectContent>
                     {/* Sort instruments to show vocals first for artists */}
-                    {(availableInstruments as any[])
-                      .sort((a, b) => {
-                        // For artists, prioritize vocals mixer_group
-                        if (isArtist && a.mixer_group === "vocals") return -1;
-                        if (isArtist && b.mixer_group === "vocals") return 1;
-                        return a.name.localeCompare(b.name);
-                      })
-                      .map((instrument: any) => (
-                        <SelectItem
-                          key={instrument.id}
-                          value={String(instrument.id)}
-                        >
-                          {instrument.name} - {instrument.category}
+                    {artistOrMusicianTalents
+                      .sort((a, b) => a.name.localeCompare(b.name))
+                      .map((instrument) => (
+                        <SelectItem key={instrument.id} value={String(instrument.id)}>
+                          {instrument.name} - {instrument.type}
                         </SelectItem>
                       ))}
                   </SelectContent>
@@ -1035,13 +1023,11 @@ export default function ProfileEditForm({
                 </SelectTrigger>
                 <SelectContent>
                   {/* Sort instruments to show vocals first for artists */}
-                  {(professionalTalents as any[])
-                    .map((talent: any) => (
-                      <SelectItem
-                        key={talent.id}
-                        value={String(talent.id)}
-                      >
-                        {talent.name}
+                  {professionalTalents
+                    .sort((a, b) => a.name.localeCompare(b.name))
+                    .map((instrument) => (
+                      <SelectItem key={instrument.id} value={String(instrument.id)}>
+                        {instrument.name} - {instrument.type}
                       </SelectItem>
                     ))}
                 </SelectContent>
