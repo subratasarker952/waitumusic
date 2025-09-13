@@ -1027,7 +1027,7 @@ export default function ProfileEditForm({
                     .sort((a, b) => a.name.localeCompare(b.name))
                     .map((instrument) => (
                       <SelectItem key={instrument.id} value={String(instrument.id)}>
-                        {instrument.name} - {instrument.type}
+                        {instrument.name}
                       </SelectItem>
                     ))}
                 </SelectContent>
