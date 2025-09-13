@@ -183,7 +183,6 @@ export default function BookingPage() {
   const [multiTalentMode, setMultiTalentMode] = useState(false);
   const [selectedTalents, setSelectedTalents] = useState<(Artist | Musician)[]>([]);
   
-
   const [selectedAddOns, setSelectedAddOns] = useState<string[]>([]);
   const [selectedDates, setSelectedDates] = useState<Date[]>([]);
   const [multiDateMode, setMultiDateMode] = useState(false);
