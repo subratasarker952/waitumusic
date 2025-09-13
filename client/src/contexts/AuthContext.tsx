@@ -132,7 +132,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   const getToken = () => localStorage.getItem('token');
-  
+  console.log(user)
   return (
     <AuthContext.Provider value={{ user, roles, roleData, isLoading, login, register, logout, getToken }}>
       {children}

@@ -58,6 +58,17 @@ export default function ManagementApplicationWalkthrough() {
   } = useQuery({
     queryKey: [`/api/available-lawyers-waitumusic`],
   });
+  console.log(availableLawyers)
+
+  const {
+    data: defaultLawyer,
+    isLoading: availableDefaultLawyersLoading,
+    error: availableDefaultLawersError,
+  } = useQuery({
+    queryKey: [`/api/default-lawyer`],
+  });
+
+  console.log(defaultLawyer)
 
 
   const steps = [
@@ -186,7 +197,7 @@ export default function ManagementApplicationWalkthrough() {
 
         if (!assignedProfessional) {
           // If none are clear, pick the first professional as fallback
-          assignedProfessional = availableLawyers[0];
+          assignedProfessional = defaultLawyer;
           toast({
             title: "Fallback Assignment",
             description: `No clear professionals available, defaulting to ${assignedProfessional.fullName}`,
@@ -672,7 +683,7 @@ export default function ManagementApplicationWalkthrough() {
                   <div>
                     <select className="w-full p-2 rounded-md" value={termInMonths?.toString()} onChange={(e) => setTermInMonths(parseInt(e.target.value))} >
                       <option value={"12"}>12 months / 1 year</option>
-                      <option value={"24"}>24 nonths / 2 years </option>
+                      <option value={"24"}>24 months / 2 years </option>
                       <option value={"36"}>36 months / 3 years</option>
                       <option value={"48"}>48 months / 4 years</option>
                       <option value={"60"}>60 months / 5 years</option>

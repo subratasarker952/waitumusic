@@ -362,14 +362,14 @@ export interface IStorage {
   // Enhanced user management with role information
   getUserWithRoles(id: number): Promise<
     | {
-        id: number;
-        email: string;
-        fullName: string;
-        roleId: number;
-        roleName: string; // User's registration type (superadmin, admin, managed_artist, etc.)
-        professionalRole?: string; // Only for artists/musicians/professionals - their actual role/position
-        secondaryRoles?: Array<{ roleId: number; roleName: string }>;
-      }
+      id: number;
+      email: string;
+      fullName: string;
+      roleId: number;
+      roleName: string; // User's registration type (superadmin, admin, managed_artist, etc.)
+      professionalRole?: string; // Only for artists/musicians/professionals - their actual role/position
+      secondaryRoles?: Array<{ roleId: number; roleName: string }>;
+    }
     | undefined
   >;
 
@@ -2709,16 +2709,6 @@ export class DatabaseStorage implements IStorage {
     return await db.select().from(rolesManagement).orderBy(rolesManagement.id);
   }
 
-  /** Assign a role to a user */
-  async assignRoleToUser(userId: number, roleId: number) {
-    const [role] = await db
-      .insert(userRoles)
-      .values({ userId, roleId })
-      .onConflictDoNothing() // avoid duplicate userId+roleId
-      .returning();
-    return role;
-  }
-
   // Check if user has a specific role
   async userHasRole(userId: number, roleId: number): Promise<boolean> {
     const res = await db
@@ -2768,10 +2758,20 @@ export class DatabaseStorage implements IStorage {
 
   // Insert into user_roles
   async addUserRole(userId: number, roleId: number) {
-    return db
+    return await db
       .insert(userRoles)
       .values({ userId, roleId })
       .onConflictDoNothing();
+  }
+
+  // assignRoleToUser
+  async assignRoleToUser(userId: number, roleId: number) {
+    const [role] = await db
+      .insert(userRoles)
+      .values({ userId, roleId })
+      .onConflictDoNothing() // avoid duplicate userId+roleId
+      .returning();
+    return role;
   }
 
   // Remove a role from a user
@@ -2784,14 +2784,14 @@ export class DatabaseStorage implements IStorage {
   // Enhanced user management with role information
   async getUserWithRoles(id: number): Promise<
     | {
-        id: number;
-        email: string;
-        fullName: string;
-        roleId: number;
-        roleName: string; // User's registration type (superadmin, admin, managed_artist, etc.)
-        professionalRole?: string; // Only for artists/musicians/professionals - their actual role/position
-        secondaryRoles?: Array<{ roleId: number; roleName: string }>;
-      }
+      id: number;
+      email: string;
+      fullName: string;
+      roleId: number;
+      roleName: string; // User's registration type (superadmin, admin, managed_artist, etc.)
+      professionalRole?: string; // Only for artists/musicians/professionals - their actual role/position
+      secondaryRoles?: Array<{ roleId: number; roleName: string }>;
+    }
     | undefined
   > {
     try {
@@ -6513,19 +6513,19 @@ export class DatabaseStorage implements IStorage {
         isManaged: professionals.isManaged,
         managementTierId: professionals.managementTierId,
         hourlyRate: professionals.idealServiceRate,
-        talentName: userProfessionalPrimaryTalents.name,
+        talentName: allInstruments.name,
       })
       .from(users)
       .innerJoin(userRoles, eq(users.id, userRoles.userId))
       .innerJoin(professionals, eq(users.id, professionals.userId))
       .innerJoin(
-        userProfessionalPrimaryTalents,
-        eq(professionals.primaryTalentId, userProfessionalPrimaryTalents.id)
+        allInstruments,
+        eq(professionals.primaryTalentId, allInstruments.id)
       )
       .where(inArray(userRoles.roleId, professionalRoleIds));
 
     const nonPerformanceKeywords = [
-      "default",
+      "lawyer",
       "professional",
       "music",
       "legal",
@@ -6845,10 +6845,10 @@ export class DatabaseStorage implements IStorage {
           response === "accepted"
             ? "accepted"
             : response === "declined"
-            ? "declined"
-            : response === "counter_offer"
-            ? "counter_offer"
-            : "pending",
+              ? "declined"
+              : response === "counter_offer"
+                ? "counter_offer"
+                : "pending",
       };
 
       // Add counter offer data if provided
@@ -6923,32 +6923,32 @@ export class DatabaseStorage implements IStorage {
         status: rate.status,
         rateInfo: rate.adminSetRate
           ? {
-              adminSetRate: parseFloat(rate.adminSetRate),
-              originalCurrency: rate.originalCurrency,
-              originalAmount: rate.originalAmount
-                ? parseFloat(rate.originalAmount)
-                : parseFloat(rate.adminSetRate),
-              rateStatus: rate.rateStatus,
-              musicianResponse: rate.musicianResponse,
-              musicianResponseMessage: rate.musicianResponseMessage,
-              rateNotes: rate.rateNotes,
-              rateSetAt: rate.rateSetAt,
-              musicianResponseAt: rate.musicianResponseAt,
-              // Counter offer data
-              counterOfferAmount: rate.counterOfferAmount
-                ? parseFloat(rate.counterOfferAmount)
-                : undefined,
-              counterOfferCurrency: rate.counterOfferCurrency,
-              counterOfferUsdEquivalent: rate.counterOfferUsdEquivalent
-                ? parseFloat(rate.counterOfferUsdEquivalent)
-                : undefined,
-              counterOfferMessage: rate.counterOfferMessage,
-              counterOfferAt: rate.counterOfferAt,
-              // Admin counter response
-              adminCounterResponse: rate.adminCounterResponse,
-              adminCounterResponseMessage: rate.adminCounterResponseMessage,
-              adminCounterResponseAt: rate.adminCounterResponseAt,
-            }
+            adminSetRate: parseFloat(rate.adminSetRate),
+            originalCurrency: rate.originalCurrency,
+            originalAmount: rate.originalAmount
+              ? parseFloat(rate.originalAmount)
+              : parseFloat(rate.adminSetRate),
+            rateStatus: rate.rateStatus,
+            musicianResponse: rate.musicianResponse,
+            musicianResponseMessage: rate.musicianResponseMessage,
+            rateNotes: rate.rateNotes,
+            rateSetAt: rate.rateSetAt,
+            musicianResponseAt: rate.musicianResponseAt,
+            // Counter offer data
+            counterOfferAmount: rate.counterOfferAmount
+              ? parseFloat(rate.counterOfferAmount)
+              : undefined,
+            counterOfferCurrency: rate.counterOfferCurrency,
+            counterOfferUsdEquivalent: rate.counterOfferUsdEquivalent
+              ? parseFloat(rate.counterOfferUsdEquivalent)
+              : undefined,
+            counterOfferMessage: rate.counterOfferMessage,
+            counterOfferAt: rate.counterOfferAt,
+            // Admin counter response
+            adminCounterResponse: rate.adminCounterResponse,
+            adminCounterResponseMessage: rate.adminCounterResponseMessage,
+            adminCounterResponseAt: rate.adminCounterResponseAt,
+          }
           : null,
       }));
     } catch (error) {
@@ -7793,19 +7793,17 @@ export class DatabaseStorage implements IStorage {
           ${opportunity.amount},
           ${opportunity.requirements},
           ${opportunity.organizerName || opportunity.source},
-          ${
-            opportunity.contactEmail ||
-            "contact@" +
-              (opportunity.source || "unknown")
-                .toLowerCase()
-                .replace(/\s+/g, "") +
-              ".com"
-          },
+          ${opportunity.contactEmail ||
+        "contact@" +
+        (opportunity.source || "unknown")
+          .toLowerCase()
+          .replace(/\s+/g, "") +
+        ".com"
+        },
           ${opportunity.contactPhone || "Contact organizer"},
-          ${
-            opportunity.applicationProcess ||
-            "Visit source website for application details"
-          },
+          ${opportunity.applicationProcess ||
+        "Visit source website for application details"
+        },
           ${opportunity.credibilityScore || 75},
           ${opportunity.tags || "managed_talent,verified"},
           ${opportunity.categoryId || 1},
@@ -8666,11 +8664,11 @@ export class DatabaseStorage implements IStorage {
       const statusCondition = eq(pressReleases.status, filters.status);
       query = filters?.artistId
         ? query.where(
-            and(
-              eq(pressReleases.primaryArtistId, filters.artistId),
-              statusCondition
-            )
+          and(
+            eq(pressReleases.primaryArtistId, filters.artistId),
+            statusCondition
           )
+        )
         : query.where(statusCondition);
     }
 
@@ -9378,9 +9376,8 @@ export class DatabaseStorage implements IStorage {
         INSERT INTO splitsheets (song_title, participants, split_percentages, audio_file_path)
         VALUES (${splitsheet.songTitle || "Untitled Song"}, ${JSON.stringify(
         splitsheet.writers || []
-      )}, ${JSON.stringify(splitsheet.percentages || [])}, ${
-        splitsheet.audioFilePath || null
-      })
+      )}, ${JSON.stringify(splitsheet.percentages || [])}, ${splitsheet.audioFilePath || null
+        })
         RETURNING *
       `);
 
@@ -9424,9 +9421,8 @@ export class DatabaseStorage implements IStorage {
       console.log("🔍 Creating contract with data:", contract);
       const result = await db.execute(sql`
         INSERT INTO contracts (contract_type, content, status)
-        VALUES (${contract.type || "general"}, ${
-        contract.terms || ""
-      }, ${"draft"})
+        VALUES (${contract.type || "general"}, ${contract.terms || ""
+        }, ${"draft"})
         RETURNING *
       `);
 
@@ -9464,10 +9460,9 @@ export class DatabaseStorage implements IStorage {
       const result = await db.execute(sql`
         INSERT INTO technical_riders (equipment_requirements, stage_requirements, additional_notes)
         VALUES (${JSON.stringify(
-          technicalRider.requirements || []
-        )}, ${JSON.stringify(technicalRider.specifications || {})}, ${
-        technicalRider.eventName || "Event requirements"
-      })
+        technicalRider.requirements || []
+      )}, ${JSON.stringify(technicalRider.specifications || {})}, ${technicalRider.eventName || "Event requirements"
+        })
         RETURNING *
       `);
 
@@ -9518,9 +9513,8 @@ export class DatabaseStorage implements IStorage {
 
       const result = await db.execute(sql`
         INSERT INTO newsletters (title, content, status, created_by)
-        VALUES (${newsletter.title || "Untitled Newsletter"}, ${
-        newsletter.content || ""
-      }, ${"draft"}, ${createdBy})
+        VALUES (${newsletter.title || "Untitled Newsletter"}, ${newsletter.content || ""
+        }, ${"draft"}, ${createdBy})
         RETURNING *
       `);
 
@@ -9540,13 +9534,10 @@ export class DatabaseStorage implements IStorage {
     try {
       const result = await db.execute(sql`
         INSERT INTO media_files (file_name, original_name, file_type, file_size, mime_type, url, category, tags, description, uploaded_by, is_public) 
-        VALUES (${mediaFile.fileName}, ${mediaFile.originalName}, ${
-        mediaFile.fileType
-      }, ${mediaFile.fileSize}, ${mediaFile.mimeType}, ${mediaFile.url}, ${
-        mediaFile.category
-      }, ${JSON.stringify(mediaFile.tags)}, ${mediaFile.description}, ${
-        mediaFile.uploadedBy
-      }, ${mediaFile.isPublic}) 
+        VALUES (${mediaFile.fileName}, ${mediaFile.originalName}, ${mediaFile.fileType
+        }, ${mediaFile.fileSize}, ${mediaFile.mimeType}, ${mediaFile.url}, ${mediaFile.category
+        }, ${JSON.stringify(mediaFile.tags)}, ${mediaFile.description}, ${mediaFile.uploadedBy
+        }, ${mediaFile.isPublic}) 
         RETURNING *
       `);
       return result.rows[0];

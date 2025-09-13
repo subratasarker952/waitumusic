@@ -103,9 +103,15 @@ export default function ProfileEditForm({
   });
 
   // শুধু Artists/Musicians
-  const artistOrMusicianTalents = (availableInstruments as any[]).filter(
+  const artistTalents = (availableInstruments as any[]).filter(
     (instrument) =>
-      instrument.type !== "Professional" // Professional বাদ
+      instrument.type === "Vocal" // Professional বাদ
+  );
+
+  // শুধু Artists/Musicians
+  const musicianTalents = (availableInstruments as any[]).filter(
+    (instrument) =>
+      instrument.type !== "Professional" && instrument.type !== "Vocal"
   );
 
   // শুধু Professionals
@@ -569,7 +575,7 @@ export default function ProfileEditForm({
                   </SelectTrigger>
                   <SelectContent>
                     {/* Sort instruments to show vocals first for artists */}
-                    {artistOrMusicianTalents
+                    {artistTalents
                       .sort((a, b) => a.name.localeCompare(b.name))
                       .map((instrument) => (
                         <SelectItem key={instrument.id} value={String(instrument.id)}>
@@ -840,7 +846,7 @@ export default function ProfileEditForm({
                   </SelectTrigger>
                   <SelectContent>
                     {/* Sort instruments to show vocals first for artists */}
-                    {artistOrMusicianTalents
+                    {musicianTalents
                       .sort((a, b) => a.name.localeCompare(b.name))
                       .map((instrument) => (
                         <SelectItem key={instrument.id} value={String(instrument.id)}>

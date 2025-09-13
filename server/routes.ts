@@ -549,7 +549,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
               isManaged: false,
               managementTierId: null,
               bookingFormPictureUrl: "",
-              primaryTalentId: 1,
+              primaryTalentId: 17,
               isDemo: false,
               isComplete: false,
             });
@@ -1067,8 +1067,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
           subscriptionType: isManaged
             ? "managed"
             : user.isDemo
-            ? "demo"
-            : "premium",
+              ? "demo"
+              : "premium",
           hasHospitalityAccess: isManaged || user.isDemo, // Grant access to managed and demo users
         });
       } catch (error) {
@@ -2049,10 +2049,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
         });
 
         console.log(
-          `Total search results: ${results.length} (${
-            results.filter((r) => r.source === "platform").length
-          } platform, ${
-            results.filter((r) => r.source === "youtube").length
+          `Total search results: ${results.length} (${results.filter((r) => r.source === "platform").length
+          } platform, ${results.filter((r) => r.source === "youtube").length
           } YouTube)`
         );
 
@@ -3388,15 +3386,14 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
           if (roleIds.some((id) => [3, 4, 5, 6].includes(id))) {
             const assignmentRole = "Main Booked Talent";
-            const assignmentNotes = `Primary talent - ${
-              roleIds.includes(3)
-                ? "managed artist"
-                : roleIds.includes(4)
+            const assignmentNotes = `Primary talent - ${roleIds.includes(3)
+              ? "managed artist"
+              : roleIds.includes(4)
                 ? "artist"
                 : roleIds.includes(5)
-                ? "managed musician"
-                : "musician"
-            }`;
+                  ? "managed musician"
+                  : "musician"
+              }`;
 
             await storage.createBookingAssignment({
               bookingId: booking.id,
@@ -3420,19 +3417,16 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
             if (roleIds.some((id) => [3, 5].includes(id))) {
               assignmentRole = "Main Booked Talent";
-              assignmentNotes = `Multi-talent booking - ${
-                roleIds.includes(3) ? "managed artist" : "managed musician"
-              }`;
+              assignmentNotes = `Multi-talent booking - ${roleIds.includes(3) ? "managed artist" : "managed musician"
+                }`;
             } else if (roleIds.some((id) => [4, 6].includes(id))) {
               assignmentRole = "Main Booked Talent";
-              assignmentNotes = `Multi-talent booking - ${
-                roleIds.includes(4) ? "artist" : "musician"
-              }`;
+              assignmentNotes = `Multi-talent booking - ${roleIds.includes(4) ? "artist" : "musician"
+                }`;
             } else if (roleIds.some((id) => [7, 8].includes(id))) {
               assignmentRole = "Supporting Professional";
-              assignmentNotes = `Multi-talent booking - ${
-                roleIds.includes(7) ? "managed professional" : "professional"
-              }`;
+              assignmentNotes = `Multi-talent booking - ${roleIds.includes(7) ? "managed professional" : "professional"
+                }`;
             }
 
             await storage.createBookingAssignment({
@@ -5472,9 +5466,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
           .returning();
 
         // Generate the full URL
-        const shareUrl = `${
-          process.env.BASE_URL || "http://localhost:5000"
-        }/share/${linkToken}`;
+        const shareUrl = `${process.env.BASE_URL || "http://localhost:5000"
+          }/share/${linkToken}`;
 
         res.json({
           link,
@@ -8244,9 +8237,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
             },
           ],
           lyrics: `[Verse 1]\nSample lyrics for ${title}\nBy ${artist}\n\n[Chorus]\nSample chorus section\nWith chord progression\n\n[Verse 2]\nSecond verse content\nContinues the story`,
-          chordChart: `${title} - ${artist}\nKey: ${
-            key || "C"
-          }\n\nVerse: C - Am - F - G\nChorus: F - C - G - Am\nBridge: Dm - G - C - Am`,
+          chordChart: `${title} - ${artist}\nKey: ${key || "C"
+            }\n\nVerse: C - Am - F - G\nChorus: F - C - G - Am\nBridge: Dm - G - C - Am`,
         };
 
         res.json(chordChart);
@@ -8280,15 +8272,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
         // Mock AI optimization using OppHub internal intelligence
         const optimizedRecommendation = {
           recommendedFlow: currentSetlist || [],
-          reasoningExplanation: `Based on the ${
-            eventInfo.eventType
-          } event for ${
-            eventInfo.expectedAttendance
-          } attendees, I recommend a ${
-            eventInfo.energyFlow
-          } energy progression. This setlist maximizes audience engagement while showcasing the talents of ${
-            assignedTalent?.length || 0
-          } assigned performers.`,
+          reasoningExplanation: `Based on the ${eventInfo.eventType
+            } event for ${eventInfo.expectedAttendance
+            } attendees, I recommend a ${eventInfo.energyFlow
+            } energy progression. This setlist maximizes audience engagement while showcasing the talents of ${assignedTalent?.length || 0
+            } assigned performers.`,
           energyAnalysis: {
             openingStrategy: `Start with medium-energy crowd-pleasers to establish connection`,
             peakMoments: [3, 7, 12], // Song positions for peak energy
@@ -8429,9 +8417,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
             averageBPM:
               setlist?.length > 0
                 ? Math.round(
-                    setlist.reduce((acc, song) => acc + (song.bpm || 120), 0) /
-                      setlist.length
-                  )
+                  setlist.reduce((acc, song) => acc + (song.bpm || 120), 0) /
+                  setlist.length
+                )
                 : 0,
           },
           generatedAt: booking.setlistGeneratedAt || new Date().toISOString(),
@@ -8463,9 +8451,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
             includeDemo
               ? eq(schema.userTechnicalRequirements.userId, userId)
               : and(
-                  eq(schema.userTechnicalRequirements.userId, userId),
-                  eq(schema.userTechnicalRequirements.isDemo, true)
-                )
+                eq(schema.userTechnicalRequirements.userId, userId),
+                eq(schema.userTechnicalRequirements.isDemo, true)
+              )
           );
 
         res.json(technicalRequirements || []);
@@ -8494,9 +8482,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
             includeDemo
               ? eq(schema.userHospitalityRequirements.userId, userId)
               : and(
-                  eq(schema.userHospitalityRequirements.userId, userId),
-                  eq(schema.userHospitalityRequirements.isDemo, true)
-                )
+                eq(schema.userHospitalityRequirements.userId, userId),
+                eq(schema.userHospitalityRequirements.isDemo, true)
+              )
           );
 
         res.json(hospitalityRequirements || []);
@@ -8525,9 +8513,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
             includeDemo
               ? eq(schema.userPerformanceSpecs.userId, userId)
               : and(
-                  eq(schema.userPerformanceSpecs.userId, userId),
-                  eq(schema.userPerformanceSpecs.isDemo, true)
-                )
+                eq(schema.userPerformanceSpecs.userId, userId),
+                eq(schema.userPerformanceSpecs.isDemo, true)
+              )
           );
 
         res.json(performanceSpecs || []);
@@ -8556,9 +8544,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
             includeDemo
               ? eq(schema.userSkillsAndInstruments.userId, userId)
               : and(
-                  eq(schema.userSkillsAndInstruments.userId, userId),
-                  eq(schema.userSkillsAndInstruments.isDemo, true)
-                )
+                eq(schema.userSkillsAndInstruments.userId, userId),
+                eq(schema.userSkillsAndInstruments.isDemo, true)
+              )
           );
 
         res.json(secondaryTalents || []);
@@ -8927,9 +8915,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
         const whereCondition = includeDemo
           ? eq(schema.userTechnicalRequirements.userId, userId)
           : and(
-              eq(schema.userTechnicalRequirements.userId, userId),
-              eq(schema.userTechnicalRequirements.isDemo, true)
-            );
+            eq(schema.userTechnicalRequirements.userId, userId),
+            eq(schema.userTechnicalRequirements.isDemo, true)
+          );
 
         const [
           technicalRequirements,
@@ -8948,9 +8936,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
               includeDemo
                 ? eq(schema.userHospitalityRequirements.userId, userId)
                 : and(
-                    eq(schema.userHospitalityRequirements.userId, userId),
-                    eq(schema.userHospitalityRequirements.isDemo, true)
-                  )
+                  eq(schema.userHospitalityRequirements.userId, userId),
+                  eq(schema.userHospitalityRequirements.isDemo, true)
+                )
             ),
           db
             .select()
@@ -8959,9 +8947,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
               includeDemo
                 ? eq(schema.userPerformanceSpecs.userId, userId)
                 : and(
-                    eq(schema.userPerformanceSpecs.userId, userId),
-                    eq(schema.userPerformanceSpecs.isDemo, true)
-                  )
+                  eq(schema.userPerformanceSpecs.userId, userId),
+                  eq(schema.userPerformanceSpecs.isDemo, true)
+                )
             ),
           db
             .select()
@@ -8970,9 +8958,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
               includeDemo
                 ? eq(schema.userSkillsAndInstruments.userId, userId)
                 : and(
-                    eq(schema.userSkillsAndInstruments.userId, userId),
-                    eq(schema.userSkillsAndInstruments.isDemo, true)
-                  )
+                  eq(schema.userSkillsAndInstruments.userId, userId),
+                  eq(schema.userSkillsAndInstruments.isDemo, true)
+                )
             ),
         ]);
 
@@ -9281,9 +9269,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
         res.json({
           success: true,
           data: updatedContent,
-          message: `${contentType} ${
-            approved ? "approved" : "declined"
-          } successfully`,
+          message: `${contentType} ${approved ? "approved" : "declined"
+            } successfully`,
         });
       } catch (error: any) {
         console.error("Error updating content approval:", error);
@@ -10010,12 +9997,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
                                                    WAI'TUMUSIC
                               ${booking.eventName || "Performance Engagement"}
   Service Provider                                                                                          Client
-  Wai'tuMusic                                                                               ${
-    booking.clientName || "Client Name"
-  }
-  31 Bath Estate                                                                                         ${
-    booking.clientAddress || "31 Bath Estate"
-  }
+  Wai'tuMusic                                                                               ${booking.clientName || "Client Name"
+          }
+  31 Bath Estate                                                                                         ${booking.clientAddress || "31 Bath Estate"
+          }
   Roseau                                                                                                 Roseau
   St George                                                                                              St George
   00152                                                                                                  00152
@@ -10029,37 +10014,33 @@ export async function registerRoutes(app: Express): Promise<Server> {
 Performance Engagement Contract
 This Performance Engagement Contract (the "Agreement") is made and entered into as of ${contractDate} by and between Wai'tuMusic,
 registered and existing under the laws of the Commonwealth of Dominica, with its principal place of business located at 31 Bath Estate,
-Roseau, Dominica (hereinafter referred to as "Service Provider"), and ${
-          booking.clientName || "Client"
-        }, (hereinafter
+Roseau, Dominica (hereinafter referred to as "Service Provider"), and ${booking.clientName || "Client"
+          }, (hereinafter
 referred to as the "Client").
 1. Engagement
 1.1 Engagement: Service Provider hereby engages the Artist(s) to perform for a live performance event
-called "${
-          booking.eventName || "Live Performance"
-        }" (the "Event") scheduled to take place
-on ${eventDate} at ${booking.eventTime || "8:00 PM"} at ${
-          booking.venueName || "Venue TBD"
-        }.
+called "${booking.eventName || "Live Performance"
+          }" (the "Event") scheduled to take place
+on ${eventDate} at ${booking.eventTime || "8:00 PM"} at ${booking.venueName || "Venue TBD"
+          }.
 1.2 Services: The Artist(s) agree to perform during the Event with the following talent assignment:
 
 ${assignedTalent
-  .map(
-    (talent: any) => `     • ${talent.name} - ${talent.role} (${talent.type})`
-  )
-  .join("\n")}
+            .map(
+              (talent: any) => `     • ${talent.name} - ${talent.role} (${talent.type})`
+            )
+            .join("\n")}
 2. Compensation
 2.1 Compensation: Service Provider agrees to pay the total sum of $${totalContractValue} as compensation for the services rendered under this
 Agreement.
-2.2 Payment: Payment shall be made according to the following terms: ${
-          contractConfig.paymentTerms || "50% deposit, 50% on completion"
-        }.
+2.2 Payment: Payment shall be made according to the following terms: ${contractConfig.paymentTerms || "50% deposit, 50% on completion"
+          }.
 2.3 Individual Talent Compensation:
 ${assignedTalent
-  .map(
-    (talent: any) => `     • ${talent.name}: $${talent.individualPrice || 0}`
-  )
-  .join("\n")}
+            .map(
+              (talent: any) => `     • ${talent.name}: $${talent.individualPrice || 0}`
+            )
+            .join("\n")}
 3. Rehearsal
 3.1 Rehearsal: The Artist(s) agree to participate in rehearsals for the Event as scheduled by Service Provider. Rehearsal dates and times will
 be communicated to the Artist(s) in advance.
@@ -10075,10 +10056,9 @@ be the sole property of Service Provider. Notwithstanding, intellectual property
 be respected.
 7. Termination
 7.1 Termination: Either party may terminate this Agreement for cause upon 30 days' written notice to the other party.
-7.2 Cancellation: ${
-          contractConfig.cancellationPolicy ||
+7.2 Cancellation: ${contractConfig.cancellationPolicy ||
           "72 hours notice required for cancellation"
-        }.
+          }.
 8. Indemnification
 8.1 Indemnification: The Artist(s) agree to indemnify and hold harmless Service Provider, its officers, directors, employees, and agents
 from and against any and all claims, damages, losses, liabilities, and expenses arising out of or in connection with the Artist(s)
@@ -10103,36 +10083,33 @@ Additional Considerations:
      Confidentiality: All information contained herein is considered strictly confidential, private and not for public consumption under
      penalty of law.
 
-${
-  contractConfig.additionalTerms
-    ? `
+${contractConfig.additionalTerms
+            ? `
 
 Additional Terms:
 ${contractConfig.additionalTerms}
 `
-    : ""
-}
+            : ""
+          }
 
 Service Provider                                                                                         Client
-                                                                                                    ${
-                                                                                                      booking.clientName ||
-                                                                                                      "Client Name"
-                                                                                                    }
+                                                                                                    ${booking.clientName ||
+          "Client Name"
+          }
 Wai'tuMusic
                                                                                                    Date : ${eventDate}
 Date : ${contractDate}
 
 CATEGORY-BASED PRICING STRUCTURE:
-${
-  contractConfig.categoryPricing
-    ? Object.entries(contractConfig.categoryPricing)
-        .map(
-          ([category, price]: [string, any]) =>
-            `- ${category}: $${price} (default rate)`
-        )
-        .join("\n")
-    : "Standard rates apply"
-}
+${contractConfig.categoryPricing
+            ? Object.entries(contractConfig.categoryPricing)
+              .map(
+                ([category, price]: [string, any]) =>
+                  `- ${category}: $${price} (default rate)`
+              )
+              .join("\n")
+            : "Standard rates apply"
+          }
 
 ADDITIONAL TERMS:
 ${contractConfig.additionalTerms || "None specified"}
@@ -10196,24 +10173,22 @@ PERFORMER DETAILS:
 - Performance Role: ${talent.role}
 - Talent Category: ${talent.type}
 - Event Assignment: ${booking.eventName}
-- Performance Date: ${
-              booking.eventDate
+- Performance Date: ${booking.eventDate
                 ? new Date(booking.eventDate).toLocaleDateString()
                 : "TBD"
-            }
+              }
 - Venue: ${booking.venueDetails || booking.venueName || "TBD"}
 
 FINANCIAL COMPENSATION:
 - Individual Performance Fee: $${compensation}
 - Payment Terms: ${paymentTerms}
 - Cancellation Policy: ${cancellationPolicy}
-${
-  talent.counterOfferDeadline
-    ? `- Counter-Offer Response Deadline: ${new Date(
-        talent.counterOfferDeadline
-      ).toLocaleDateString()}`
-    : ""
-}
+${talent.counterOfferDeadline
+                ? `- Counter-Offer Response Deadline: ${new Date(
+                  talent.counterOfferDeadline
+                ).toLocaleDateString()}`
+                : ""
+              }
 
 PERFORMANCE REQUIREMENTS:
 - Professional conduct and punctuality required
@@ -10229,31 +10204,27 @@ TECHNICAL SPECIFICATIONS:
 - Collaboration with other assigned talent as directed
 
 TRAVEL & ACCOMMODATION:
-${
-  talent.type.includes("Managed")
-    ? "- Transportation and accommodation provided by Wai'tuMusic as per management agreement"
-    : "- Individual arrangements required unless otherwise specified"
-}
-${
-  talent.type.includes("Managed")
-    ? "- Per diem allowances included in management package"
-    : "- Meals and incidentals responsibility of performer"
-}
+${talent.type.includes("Managed")
+                ? "- Transportation and accommodation provided by Wai'tuMusic as per management agreement"
+                : "- Individual arrangements required unless otherwise specified"
+              }
+${talent.type.includes("Managed")
+                ? "- Per diem allowances included in management package"
+                : "- Meals and incidentals responsibility of performer"
+              }
 
 SPECIAL TERMS & CONDITIONS:
 ${talent.additionalTerms || "Standard performance terms apply"}
 
 MANAGEMENT STATUS:
-${
-  talent.type.includes("Managed")
-    ? "- This performer is under Wai'tuMusic management"
-    : "- Independent contractor agreement"
-}
-${
-  talent.type.includes("Managed")
-    ? "- Management oversight and support provided"
-    : "- Direct coordination with booking team required"
-}
+${talent.type.includes("Managed")
+                ? "- This performer is under Wai'tuMusic management"
+                : "- Independent contractor agreement"
+              }
+${talent.type.includes("Managed")
+                ? "- Management oversight and support provided"
+                : "- Direct coordination with booking team required"
+              }
 
 LEGAL FRAMEWORK:
 - Contract governed by laws of performance jurisdiction
@@ -11661,8 +11632,8 @@ This is a preview of the performance engagement contract. Final agreement will i
             performer.roleId <= 4
               ? "Artist"
               : performer.roleId <= 6
-              ? "Musician"
-              : "Professional",
+                ? "Musician"
+                : "Professional",
           isManaged: isManaged,
 
           // Compensation
@@ -11693,8 +11664,8 @@ This is a preview of the performance engagement contract. Final agreement will i
           technicalRequirements: performerProfile?.technicalRiderProfile
             ?.setupRequirements
             ? JSON.stringify(
-                performerProfile.technicalRiderProfile.setupRequirements
-              )
+              performerProfile.technicalRiderProfile.setupRequirements
+            )
             : undefined,
           equipmentDetails:
             performerProfile?.instruments?.join(", ") || undefined,
@@ -11779,11 +11750,10 @@ This is a preview of the performance engagement contract. Final agreement will i
         doc
           .fontSize(10)
           .text(
-            `Client: ${
-              clientName ||
-              booker?.fullName ||
-              booking.guestName ||
-              "Guest Client"
+            `Client: ${clientName ||
+            booker?.fullName ||
+            booking.guestName ||
+            "Guest Client"
             }`,
             50,
             220
@@ -11795,8 +11765,7 @@ This is a preview of the performance engagement contract. Final agreement will i
           )
           .text(`Date: ${eventDate || booking.eventDate || "TBD"}`, 50, 260)
           .text(
-            `Artist: ${
-              artistProfile?.stageName || primaryArtist?.fullName || "TBD"
+            `Artist: ${artistProfile?.stageName || primaryArtist?.fullName || "TBD"
             }`,
             50,
             280
@@ -11811,18 +11780,16 @@ This is a preview of the performance engagement contract. Final agreement will i
             doc
               .fontSize(10)
               .text(
-                `Payment ${index + 1}: $${payment.amount} (${
-                  payment.method || "Platform Payment"
+                `Payment ${index + 1}: $${payment.amount} (${payment.method || "Platform Payment"
                 })`,
                 50,
                 yPos
               )
               .text(`Status: ${payment.status || "Completed"}`, 50, yPos + 15)
               .text(
-                `Date: ${
-                  payment.processedAt
-                    ? new Date(payment.processedAt).toLocaleDateString()
-                    : new Date().toLocaleDateString()
+                `Date: ${payment.processedAt
+                  ? new Date(payment.processedAt).toLocaleDateString()
+                  : new Date().toLocaleDateString()
                 }`,
                 50,
                 yPos + 30
@@ -11888,22 +11855,22 @@ This is a preview of the performance engagement contract. Final agreement will i
           ...booking,
           primaryArtist: artistDetails
             ? {
-                stageName:
-                  (artistDetails?.stageNames as string[])?.[0] ||
-                  primaryArtist.fullName,
-                userId: primaryArtist.id,
-                fullName: primaryArtist.fullName,
-              }
+              stageName:
+                (artistDetails?.stageNames as string[])?.[0] ||
+                primaryArtist.fullName,
+              userId: primaryArtist.id,
+              fullName: primaryArtist.fullName,
+            }
             : null,
           booker: booker
             ? {
-                fullName: booker.fullName,
-                email: booker.email,
-              }
+              fullName: booker.fullName,
+              email: booker.email,
+            }
             : {
-                guestName: booking.guestName,
-                guestEmail: booking.guestEmail,
-              },
+              guestName: booking.guestName,
+              guestEmail: booking.guestEmail,
+            },
           assignedMusicians: [], // TODO: Implement assigned musicians retrieval
         };
 
@@ -12068,26 +12035,26 @@ This is a preview of the performance engagement contract. Final agreement will i
           ...booking,
           primaryArtist: artistDetails
             ? {
-                userId: primaryArtist.id,
-                fullName: primaryArtist.fullName,
-                stageName:
-                  (artistDetails.stageNames as any)?.[0] ||
-                  primaryArtist.fullName,
-                stageNames: artistDetails.stageNames,
-                isManaged: artistDetails.isManaged,
-                userType: talentType,
-                profile: await storage.getUserProfile(primaryArtist.id),
-              }
+              userId: primaryArtist.id,
+              fullName: primaryArtist.fullName,
+              stageName:
+                (artistDetails.stageNames as any)?.[0] ||
+                primaryArtist.fullName,
+              stageNames: artistDetails.stageNames,
+              isManaged: artistDetails.isManaged,
+              userType: talentType,
+              profile: await storage.getUserProfile(primaryArtist.id),
+            }
             : null,
           booker: booker
             ? {
-                fullName: booker.fullName,
-                email: booker.email,
-              }
+              fullName: booker.fullName,
+              email: booker.email,
+            }
             : {
-                guestName: booking.guestName,
-                guestEmail: booking.guestEmail,
-              },
+              guestName: booking.guestName,
+              guestEmail: booking.guestEmail,
+            },
           workflowData: parsedWorkflowData,
           assignedMusicians: [], // TODO: Implement assigned musicians retrieval
           contracts: [], // TODO: Implement contracts retrieval
@@ -12822,12 +12789,10 @@ This is a preview of the performance engagement contract. Final agreement will i
           performanceStartTime: "7:00 PM",
           performanceEndTime: "8:00 PM",
           performanceDuration: "60 minutes",
-          pricingTableTotal: `$${
-            booking.finalPrice || booking.totalBudget || 0
-          }`,
-          pricingTable: `Total Budget: $${
-            booking.finalPrice || booking.totalBudget || 0
-          }`,
+          pricingTableTotal: `$${booking.finalPrice || booking.totalBudget || 0
+            }`,
+          pricingTable: `Total Budget: $${booking.finalPrice || booking.totalBudget || 0
+            }`,
           performanceFormat: "in_person",
           soundSystemProvided: false,
           lightingProvided: false,
@@ -13219,10 +13184,9 @@ This is a preview of the performance engagement contract. Final agreement will i
           .text(`Event Name: ${booking.eventName}`, 50, 190)
           .text(`Event Type: ${booking.eventType}`, 50, 210)
           .text(
-            `Event Date: ${
-              booking.eventDate
-                ? new Date(booking.eventDate).toLocaleDateString()
-                : "TBD"
+            `Event Date: ${booking.eventDate
+              ? new Date(booking.eventDate).toLocaleDateString()
+              : "TBD"
             }`,
             50,
             230
@@ -13236,17 +13200,15 @@ This is a preview of the performance engagement contract. Final agreement will i
         doc
           .fontSize(10)
           .text(
-            `Primary Artist: ${artistDetails?.stageName || "TBD"} (${
-              primaryArtist?.fullName || "TBD"
+            `Primary Artist: ${artistDetails?.stageName || "TBD"} (${primaryArtist?.fullName || "TBD"
             })`,
             50,
             350
           )
           .text(
-            `Booker: ${
-              booker
-                ? `${booker.fullName} (${booker.email})`
-                : `${booking.guestName} (${booking.guestEmail})`
+            `Booker: ${booker
+              ? `${booker.fullName} (${booker.email})`
+              : `${booking.guestName} (${booking.guestEmail})`
             }`,
             50,
             370
@@ -14106,8 +14068,8 @@ This is a preview of the performance engagement contract. Final agreement will i
             managedStatus: storage.isUserManaged(user.roleId)
               ? "Fully Managed"
               : [4, 6, 8].includes(user.roleId)
-              ? "Unmanaged"
-              : "N/A",
+                ? "Unmanaged"
+                : "N/A",
             userType: await storage.getRoleName(user.roleId),
             subType: user.subType || null,
           }))
@@ -15814,12 +15776,12 @@ This is a preview of the performance engagement contract. Final agreement will i
             professionalType = serviceCategory.toLowerCase().includes("legal")
               ? "legal"
               : serviceCategory.toLowerCase().includes("marketing")
-              ? "marketing"
-              : serviceCategory.toLowerCase().includes("financial")
-              ? "financial"
-              : serviceCategory.toLowerCase().includes("brand")
-              ? "brand"
-              : "business";
+                ? "marketing"
+                : serviceCategory.toLowerCase().includes("financial")
+                  ? "financial"
+                  : serviceCategory.toLowerCase().includes("brand")
+                    ? "brand"
+                    : "business";
           }
         } else {
           // fallback → tier থেকে contract type
@@ -15932,12 +15894,12 @@ This is a preview of the performance engagement contract. Final agreement will i
             professionalType = serviceCategory.toLowerCase().includes("legal")
               ? "legal"
               : serviceCategory.toLowerCase().includes("marketing")
-              ? "marketing"
-              : serviceCategory.toLowerCase().includes("financial")
-              ? "financial"
-              : serviceCategory.toLowerCase().includes("brand")
-              ? "brand"
-              : "business";
+                ? "marketing"
+                : serviceCategory.toLowerCase().includes("financial")
+                  ? "financial"
+                  : serviceCategory.toLowerCase().includes("brand")
+                    ? "brand"
+                    : "business";
           }
         } else {
           // fallback → tier থেকে contract type
@@ -16202,7 +16164,7 @@ This is a preview of the performance engagement contract. Final agreement will i
               } else if (application.requestedRoleId === 8) {
                 await storage.createProfessional({
                   userId: application.applicantUserId,
-                  primaryTalentId: 1,
+                  primaryTalentId: 17,
                   isManaged: true,
                   managementTierId: application.requestedManagementTierId,
                 });
@@ -16230,6 +16192,189 @@ This is a preview of the performance engagement contract. Final agreement will i
     }
   );
 
+  // app.post(
+  //   "/api/management-applications/:id/admin-sign",
+  //   authenticateToken,
+  //   requireRole([1]),
+  //   async (req: Request, res: Response) => {
+  //     try {
+  //       const applicationId = parseInt(req.params.id);
+  //       const currentUserId = req.user?.userId;
+
+  //       const application = await storage.getManagementApplication(
+  //         applicationId
+  //       );
+
+  //       if (!application) return res.status(404).json({ message: "Not found" });
+
+  //       // 1️⃣ Check admin permissions
+  //       const roles = await storage.getUserRoles(currentUserId);
+
+  //       // 2️⃣ Auto-fill all signatures
+  //       const signatures = [
+  //         "applicant",
+  //         "assigned_admin",
+  //         "lawyer",
+  //         "superadmin",
+  //       ];
+  //       for (const signerRole of signatures) {
+  //         await storage.createManagementApplicationSignature({
+  //           applicationId,
+  //           userId:
+  //             signerRole === "applicant"
+  //               ? application.applicantUserId
+  //               : currentUserId,
+  //           signerRole,
+  //           signatureType: "digital",
+  //           signatureData: `auto-${signerRole}-${Date.now()}`,
+  //           ipAddress: req.ip,
+  //           userAgent: req.get("User-Agent"),
+  //         });
+  //       }
+
+  //       // 4️⃣ Execute role transition
+  //       const applicant = await storage.getUser(application.applicantUserId);
+
+  //       const applicantRoles = await storage.getUserRoles(application.applicantUserId);
+  //       const applicantRolesIds = applicantRoles.map((r) => r.id);
+
+  //       if (applicant) {
+  //         await storage.createManagementTransition({
+  //           userId: application.applicantUserId,
+  //           fromRoleId: applicantRolesIds[0],
+  //           toRoleId: application.requestedRoleId,
+  //           fromManagementTierId: null,
+  //           toManagementTierId: application.requestedManagementTierId,
+  //           transitionType: "management_application",
+  //           processedByUserId: currentUserId || 0,
+  //           reason: `Management contract signed and completed - transition to Managed Artist status with tier ${application.requestedManagementTierId}`,
+  //           effectiveDate: new Date(),
+  //         });
+
+  //         const alreadyHasCoreRole = [4, 6, 8].some((r) =>
+  //           applicantRolesIds.includes(r)
+  //         );
+
+  //         if (alreadyHasCoreRole) {
+  //           // role অনুযায়ী update হবে
+  //           if (applicantRolesIds.includes(4)) {
+  //             const existingArtist = await storage.getArtist(
+  //               application.applicantUserId
+  //             );
+  //             if (existingArtist) {
+  //               await storage.updateArtist(application.applicantUserId, {
+  //                 isManaged: true,
+  //                 managementTierId: application.requestedManagementTierId,
+  //               });
+  //             }
+  //           } else if (applicantRolesIds.includes(6)) {
+  //             const existingMusician = await storage.getMusician(
+  //               application.applicantUserId
+  //             );
+  //             if (existingMusician) {
+  //               await storage.updateMusician(application.applicantUserId, {
+  //                 isManaged: true,
+  //                 managementTierId: application.requestedManagementTierId,
+  //               });
+  //             }
+  //           } else if (applicantRolesIds.includes(8)) {
+  //             const existingProfessional = await storage.getProfessional(
+  //               application.applicantUserId
+  //             );
+  //             if (existingProfessional) {
+  //               await storage.updateProfessional(application.applicantUserId, {
+  //                 isManaged: true,
+  //                 managementTierId: application.requestedManagementTierId,
+  //               });
+  //             }
+  //           }
+  //         } else {
+  //           // no core role → requestedRoleId অনুযায়ী create
+  //           if (application.requestedRoleId === 3) {
+  //             await storage.createArtist({
+  //               userId: application.applicantUserId,
+  //               stageName: applicant.fullName || applicant.email.split("@")[0],
+  //               primaryGenre: "To Be Determined",
+  //               bio: "New managed artist",
+  //               primaryTalentId: 1,
+  //               isManaged: true,
+  //               managementTierId: application.requestedManagementTierId,
+  //               bookingFormPictureUrl: null,
+  //             });
+  //           } else if (application.requestedRoleId === 4) {
+  //             await storage.createArtist({
+  //               userId: application.applicantUserId,
+  //               stageName: applicant.fullName || applicant.email.split("@")[0],
+  //               primaryGenre: "To Be Determined",
+  //               bio: "New managed artist",
+  //               primaryTalentId: 1,
+  //               isManaged: false,
+  //               managementTierId: application.requestedManagementTierId,
+  //               bookingFormPictureUrl: null,
+  //             });
+  //           } else if (application.requestedRoleId === 5) {
+  //             await storage.createMusician({
+  //               userId: application.applicantUserId,
+  //               stageName: applicant.fullName || applicant.email.split("@")[0],
+  //               primaryTalentId: 1,
+  //               bio: "New managed musician",
+  //               primaryGenre: "To Be Determined",
+  //               isManaged: true,
+  //               managementTierId: application.requestedManagementTierId,
+  //             });
+  //           } else if (application.requestedRoleId === 6) {
+  //             await storage.createMusician({
+  //               userId: application.applicantUserId,
+  //               stageName: applicant.fullName || applicant.email.split("@")[0],
+  //               primaryTalentId: 1,
+  //               bio: "New managed musician",
+  //               primaryGenre: "To Be Determined",
+  //               isManaged: false,
+  //               managementTierId: application.requestedManagementTierId,
+  //             });
+  //           } else if (application.requestedRoleId === 7) {
+  //             await storage.createProfessional({
+  //               userId: application.applicantUserId,
+  //               primaryTalentId: 1,
+  //               isManaged: true,
+  //               managementTierId: application.requestedManagementTierId,
+  //             });
+  //           } else if (application.requestedRoleId === 8) {
+  //             await storage.createProfessional({
+  //               userId: application.applicantUserId,
+  //               primaryTalentId: 1,
+  //               isManaged: false,
+  //               managementTierId: application.requestedManagementTierId,
+  //             });
+  //           }
+  //         }
+  //       }
+
+  //       await storage.assignRoleToUser(
+  //         application.applicantUserId,
+  //         application.requestedRoleId
+  //       );
+
+  //       // 3️⃣ Update status to completed
+  //       await storage.updateManagementApplication(applicationId, {
+  //         status: "completed",
+  //         signedAt: new Date(),
+  //         completedAt: new Date(),
+  //       });
+
+  //       res.json({
+  //         success: true,
+  //         message: "Admin signed and all signatures auto-filled",
+  //       });
+  //     } catch (error) {
+  //       console.error("Admin auto-sign error:", error);
+  //       res.status(500).json({ message: "Failed to sign application" });
+  //     }
+  //   }
+  // );
+
+  // get management application by id
+
   app.post(
     "/api/management-applications/:id/admin-sign",
     authenticateToken,
@@ -16239,34 +16384,16 @@ This is a preview of the performance engagement contract. Final agreement will i
         const applicationId = parseInt(req.params.id);
         const currentUserId = req.user?.userId;
 
-        const application = await storage.getManagementApplication(
-          applicationId
-        );
+        const application = await storage.getManagementApplication(applicationId);
+        if (!application)
+          return res.status(404).json({ message: "Management application not found" });
 
-        if (!application) return res.status(404).json({ message: "Not found" });
-
-        // 1️⃣ Check admin permissions
-        const roles = await storage.getUserRoles(currentUserId);
-
-        // const allowedRoles = [1, 2]; // superadmin, admin
-        // if (!roles.some((r) => allowedRoles.includes(r.id))) {
-        //   return res.status(403).json({ message: "Not admin or superadmin" });
-        // }
-
-        // 2️⃣ Auto-fill all signatures
-        const signatures = [
-          "applicant",
-          "assigned_admin",
-          "lawyer",
-          "superadmin",
-        ];
+        // 1️⃣ Auto-fill all signatures
+        const signatures = ["applicant", "assigned_admin", "lawyer", "superadmin"];
         for (const signerRole of signatures) {
           await storage.createManagementApplicationSignature({
             applicationId,
-            userId:
-              signerRole === "applicant"
-                ? application.applicantUserId
-                : currentUserId,
+            userId: signerRole === "applicant" ? application.applicantUserId : currentUserId,
             signerRole,
             signatureType: "digital",
             signatureData: `auto-${signerRole}-${Date.now()}`,
@@ -16275,190 +16402,103 @@ This is a preview of the performance engagement contract. Final agreement will i
           });
         }
 
-        // 4️⃣ Execute role transition
+        // 2️⃣ Role transition
         const applicant = await storage.getUser(application.applicantUserId);
-
         const applicantRoles = await storage.getUserRoles(application.applicantUserId);
-        const applicantRolesIds = applicantRoles.map((r) => r.id);
+        const applicantRoleIds = applicantRoles.map((r) => r.id);
 
-        if (applicant) {
-          await storage.createManagementTransition({
-            userId: application.applicantUserId,
-            fromRoleId: applicantRolesIds[0],
-            toRoleId: application.requestedRoleId,
-            fromManagementTierId: null,
-            toManagementTierId: application.requestedManagementTierId,
-            transitionType: "management_application",
-            processedByUserId: currentUserId || 0,
-            reason: `Management contract signed and completed - transition to Managed Artist status with tier ${application.requestedManagementTierId}`,
-            effectiveDate: new Date(),
-          });
+        // Mapping managed roles → base roles
+        const baseRolesMap: Record<number, number> = {
+          3: 4, // Managed Artist → Artist
+          5: 6, // Managed Musician → Musician
+          7: 8, // Contracted Professional → Professional
+        };
+        const baseRoleId = baseRolesMap[application.requestedRoleId];
 
-          const alreadyHasCoreRole = [4, 6, 8].some((r) =>
-            applicantRolesIds.includes(r)
-          );
+        // Remove base role if exists
+        if (baseRoleId && applicantRoleIds.includes(baseRoleId)) {
+          await storage.removeRoleFromUser(application.applicantUserId, baseRoleId);
+        }
 
-          if (alreadyHasCoreRole) {
-            // role অনুযায়ী update হবে
-            if (applicantRolesIds.includes(4)) {
-              const existingArtist = await storage.getArtist(
-                application.applicantUserId
-              );
-              if (existingArtist) {
-                await storage.updateArtist(application.applicantUserId, {
-                  isManaged: true,
-                  managementTierId: application.requestedManagementTierId,
-                });
-              }
-            } else if (applicantRolesIds.includes(6)) {
-              const existingMusician = await storage.getMusician(
-                application.applicantUserId
-              );
-              if (existingMusician) {
-                await storage.updateMusician(application.applicantUserId, {
-                  isManaged: true,
-                  managementTierId: application.requestedManagementTierId,
-                });
-              }
-            } else if (applicantRolesIds.includes(8)) {
-              const existingProfessional = await storage.getProfessional(
-                application.applicantUserId
-              );
-              if (existingProfessional) {
-                await storage.updateProfessional(application.applicantUserId, {
-                  isManaged: true,
-                  managementTierId: application.requestedManagementTierId,
-                });
-              }
-            }
+        // Assign requested managed role
+        await storage.assignRoleToUser(application.applicantUserId, application.requestedRoleId);
+
+        // Update entity table
+        if ([3, 4].includes(application.requestedRoleId)) {
+          const existingArtist = await storage.getArtist(application.applicantUserId);
+          if (existingArtist) {
+            await storage.updateArtist(application.applicantUserId, {
+              isManaged: application.requestedRoleId === 3,
+              managementTierId: application.requestedManagementTierId,
+            });
           } else {
-            // no core role → requestedRoleId অনুযায়ী create
-            if (application.requestedRoleId === 3) {
-              console.log({
-                userId: application.applicantUserId,
-                stageName: applicant.fullName || applicant.email.split("@")[0],
-                primaryGenre: "To Be Determined",
-                bio: "New managed artist",
-                primaryTalentId: 1,
-                isManaged: true,
-                managementTierId: application.requestedManagementTierId,
-                bookingFormPictureUrl: null,
-              });
-              await storage.createArtist({
-                userId: application.applicantUserId,
-                stageName: applicant.fullName || applicant.email.split("@")[0],
-                primaryGenre: "To Be Determined",
-                bio: "New managed artist",
-                primaryTalentId: 1,
-                isManaged: true,
-                managementTierId: application.requestedManagementTierId,
-                bookingFormPictureUrl: null,
-              });
-            } else if (application.requestedRoleId === 4) {
-              console.log({
-                userId: application.applicantUserId,
-                stageName: applicant.fullName || applicant.email.split("@")[0],
-                primaryGenre: "To Be Determined",
-                bio: "New managed artist",
-                primaryTalentId: 1,
-                isManaged: false,
-                managementTierId: application.requestedManagementTierId,
-                bookingFormPictureUrl: null,
-              });
-              await storage.createArtist({
-                userId: application.applicantUserId,
-                stageName: applicant.fullName || applicant.email.split("@")[0],
-                primaryGenre: "To Be Determined",
-                bio: "New managed artist",
-                primaryTalentId: 1,
-                isManaged: false,
-                managementTierId: application.requestedManagementTierId,
-                bookingFormPictureUrl: null,
-              });
-            } else if (application.requestedRoleId === 5) {
-              console.log({
-                userId: application.applicantUserId,
-                stageName: applicant.fullName || applicant.email.split("@")[0],
-                primaryTalentId: 1,
-                bio: "New managed musician",
-                primaryGenre: "To Be Determined",
-                isManaged: true,
-                managementTierId: application.requestedManagementTierId,
-              });
-              await storage.createMusician({
-                userId: application.applicantUserId,
-                stageName: applicant.fullName || applicant.email.split("@")[0],
-                primaryTalentId: 1,
-                bio: "New managed musician",
-                primaryGenre: "To Be Determined",
-                isManaged: true,
-                managementTierId: application.requestedManagementTierId,
-              });
-            } else if (application.requestedRoleId === 6) {
-              console.log({
-                userId: application.applicantUserId,
-                stageName: applicant.fullName || applicant.email.split("@")[0],
-                primaryTalentId: 1,
-                bio: "New managed musician",
-                primaryGenre: "To Be Determined",
-                isManaged: false,
-                managementTierId: application.requestedManagementTierId,
-              });
-              await storage.createMusician({
-                userId: application.applicantUserId,
-                stageName: applicant.fullName || applicant.email.split("@")[0],
-                primaryTalentId: 1,
-                bio: "New managed musician",
-                primaryGenre: "To Be Determined",
-                isManaged: false,
-                managementTierId: application.requestedManagementTierId,
-              });
-            } else if (application.requestedRoleId === 7) {
-              console.log({
-                userId: application.applicantUserId,
-                primaryTalentId: 1,
-                isManaged: true,
-                managementTierId: application.requestedManagementTierId,
-              });
-              await storage.createProfessional({
-                userId: application.applicantUserId,
-                primaryTalentId: 1,
-                isManaged: true,
-                managementTierId: application.requestedManagementTierId,
-              });
-            } else if (application.requestedRoleId === 8) {
-              console.log({
-                userId: application.applicantUserId,
-                primaryTalentId: 1,
-                isManaged: false,
-                managementTierId: application.requestedManagementTierId,
-              });
-              await storage.createProfessional({
-                userId: application.applicantUserId,
-                primaryTalentId: 1,
-                isManaged: false,
-                managementTierId: application.requestedManagementTierId,
-              });
-            }
+            await storage.createArtist({
+              userId: application.applicantUserId,
+              stageName: applicant.fullName || applicant.email.split("@")[0],
+              primaryGenre: "To Be Determined",
+              bio: "New managed artist",
+              primaryTalentId: 1,
+              isManaged: application.requestedRoleId === 3,
+              managementTierId: application.requestedManagementTierId,
+              bookingFormPictureUrl: null,
+            });
+          }
+        } else if ([5, 6].includes(application.requestedRoleId)) {
+          const existingMusician = await storage.getMusician(application.applicantUserId);
+          if (existingMusician) {
+            await storage.updateMusician(application.applicantUserId, {
+              isManaged: application.requestedRoleId === 5,
+              managementTierId: application.requestedManagementTierId,
+            });
+          } else {
+            await storage.createMusician({
+              userId: application.applicantUserId,
+              stageName: applicant.fullName || applicant.email.split("@")[0],
+              primaryTalentId: 1,
+              bio: "New managed musician",
+              primaryGenre: "To Be Determined",
+              isManaged: application.requestedRoleId === 5,
+              managementTierId: application.requestedManagementTierId,
+            });
+          }
+        } else if ([7, 8].includes(application.requestedRoleId)) {
+          const existingProfessional = await storage.getProfessional(application.applicantUserId);
+          if (existingProfessional) {
+            await storage.updateProfessional(application.applicantUserId, {
+              isManaged: application.requestedRoleId === 7,
+              managementTierId: application.requestedManagementTierId,
+            });
+          } else {
+            await storage.createProfessional({
+              userId: application.applicantUserId,
+              primaryTalentId: 17,
+              isManaged: application.requestedRoleId === 7,
+              managementTierId: application.requestedManagementTierId,
+            });
           }
         }
 
-        await storage.assignRoleToUser(
-          application.applicantUserId,
-          application.requestedRoleId
-        );
+        // Log management transition
+        await storage.createManagementTransition({
+          userId: application.applicantUserId,
+          fromRoleId: baseRoleId,
+          toRoleId: application.requestedRoleId,
+          fromManagementTierId: null,
+          toManagementTierId: application.requestedManagementTierId,
+          transitionType: "management_application",
+          processedByUserId: currentUserId || 0,
+          reason: `Management contract signed and completed`,
+          effectiveDate: new Date(),
+        });
 
-        // 3️⃣ Update status to completed
+        // 3️⃣ Update application status
         await storage.updateManagementApplication(applicationId, {
           status: "completed",
           signedAt: new Date(),
           completedAt: new Date(),
         });
 
-        res.json({
-          success: true,
-          message: "Admin signed and all signatures auto-filled",
-        });
+        res.json({ success: true, message: "Application signed and roles updated" });
       } catch (error) {
         console.error("Admin auto-sign error:", error);
         res.status(500).json({ message: "Failed to sign application" });
@@ -16466,7 +16506,6 @@ This is a preview of the performance engagement contract. Final agreement will i
     }
   );
 
-  // get management application by id
   app.get(
     "/api/management-applications/:id",
     authenticateToken,
@@ -16657,7 +16696,7 @@ This is a preview of the performance engagement contract. Final agreement will i
           : null;
 
         if (!professional) {
-          professional = await storage.getProfessional(8);
+          professional = await storage.getProfessional(11);
         }
 
         if (!professional) {
@@ -16712,6 +16751,29 @@ This is a preview of the performance engagement contract. Final agreement will i
         res
           .status(500)
           .json({ message: "Failed to assign professional to application" });
+      }
+    }
+  );
+
+  app.get(
+    "/api/default-lawyer",
+    authenticateToken,
+    requireRole([1, 2]),
+    async (req: Request, res: Response) => {
+      try {
+        const professional = await storage.getProfessional(12);
+        if (!professional) {
+          return res
+            .status(400)
+            .json({ message: "No lawyer / professional available" });
+        }
+
+        res.status(201).json(professional);
+      } catch (error) {
+        console.error("❌ Assign professional to application error:", error);
+        res
+          .status(500)
+          .json({ message: "Failed to ger default lawyer" });
       }
     }
   );
@@ -17705,9 +17767,8 @@ This is a preview of the performance engagement contract. Final agreement will i
 
                 // Song info column
                 doc.fillColor("black");
-                const songInfo = `${song.orderPosition || index + 1}. ${
-                  song.songTitle
-                }\nby ${song.artistPerformer}`;
+                const songInfo = `${song.orderPosition || index + 1}. ${song.songTitle
+                  }\nby ${song.artistPerformer}`;
                 doc.text(songInfo, additionalTableLeft + 5, additionalY + 5, {
                   width: additionalColWidths.songInfo - 10,
                   height: additionalRowHeight - 10,
@@ -18621,7 +18682,7 @@ This is a preview of the performance engagement contract. Final agreement will i
         // Allow superadmin/admin/assigned_admin to create for other users, otherwise use their own userId
         const targetUserId =
           (user.roleId === 1 || user.roleId === 2 || user.roleId === 3) &&
-          req.body.userId
+            req.body.userId
             ? req.body.userId
             : user.userId;
 
@@ -19312,8 +19373,8 @@ This is a preview of the performance engagement contract. Final agreement will i
         const { bookingId } = req.query;
         const assignments = bookingId
           ? await storage.getBookingAssignmentsByBooking(
-              parseInt(bookingId as string)
-            )
+            parseInt(bookingId as string)
+          )
           : await storage.getBookingAssignments();
         res.json(assignments);
       } catch (error) {
@@ -19442,9 +19503,8 @@ This is a preview of the performance engagement contract. Final agreement will i
           assignedBy: assignedBy,
           isActive: true,
           assignedAt: new Date(),
-          notes: `Assigned via booking assignment manager - ${
-            assignmentType || "talent"
-          }`,
+          notes: `Assigned via booking assignment manager - ${assignmentType || "talent"
+            }`,
         };
 
         const assignment = await storage.createBookingAssignment(
@@ -19700,77 +19760,77 @@ This is a preview of the performance engagement contract. Final agreement will i
 
   // Get talent information for a specific user
   app.get(
-  "/api/users/:userId/talent-info",
-  authenticateToken,
-  async (req: Request, res: Response) => {
-    try {
-      const userId = parseInt(req.params.userId);
+    "/api/users/:userId/talent-info",
+    authenticateToken,
+    async (req: Request, res: Response) => {
+      try {
+        const userId = parseInt(req.params.userId);
 
-      // Base user
-      const user = await storage.getUser(userId);
-      if (!user) {
-        return res.status(404).json({ message: "User not found" });
+        // Base user
+        const user = await storage.getUser(userId);
+        if (!user) {
+          return res.status(404).json({ message: "User not found" });
+        }
+
+        // 🔹 Get user roles (multi-role support)
+        const userRoles = await storage.getUserRoles(user.id);
+        const roleIds = userRoles.map((r) => r.id);
+
+        let talentInfo: any = null;
+        let primaryTalent: string | null = null;
+        let secondaryTalents: string[] = [];
+        let stageName: string | null = null;
+
+        // Artist role check (3,4)
+        if (roleIds.includes(3) || roleIds.includes(4)) {
+          talentInfo = await storage.getArtist(user.id);
+        }
+
+        // Musician role check (5,6)
+        else if (roleIds.includes(5) || roleIds.includes(6)) {
+          talentInfo = await storage.getMusician(user.id);
+        }
+
+        // Professional role check (7,8)
+        else if (roleIds.includes(7) || roleIds.includes(8)) {
+          talentInfo = await storage.getProfessional(user.id);
+        }
+
+        // Primary talent
+        if (talentInfo?.primaryTalentId) {
+          const talent = await storage.getPrimaryTalentById(
+            talentInfo.primaryTalentId
+          );
+          primaryTalent = talent?.name || null;
+        }
+
+        // Stage name
+        if (talentInfo?.stageName) {
+          stageName = talentInfo.stageName;
+        }
+
+        // Secondary talents
+        const secondaryPerformanceTalents =
+          await storage.getUserSecondaryPerformanceTalents(user.id);
+        const secondaryProfessionalTalents =
+          await storage.getUserSecondaryProfessionalTalents(user.id);
+
+        secondaryTalents = [
+          ...secondaryPerformanceTalents.map((t) => t.talentName),
+          ...secondaryProfessionalTalents.map((t) => t.talentName),
+        ];
+
+        res.json({
+          primaryTalent,
+          secondaryTalents,
+          stageName,
+        });
+      } catch (error) {
+        console.error("❌ Fetch user talent info error:", error);
+        res.status(500).json({ message: "Failed to fetch user talent info" });
       }
-
-      // 🔹 Get user roles (multi-role support)
-      const userRoles = await storage.getUserRoles(user.id);
-      const roleIds = userRoles.map((r) => r.id);
-
-      let talentInfo: any = null;
-      let primaryTalent: string | null = null;
-      let secondaryTalents: string[] = [];
-      let stageName: string | null = null;
-
-      // Artist role check (3,4)
-      if (roleIds.includes(3) || roleIds.includes(4)) {
-        talentInfo = await storage.getArtist(user.id);
-      }
-
-      // Musician role check (5,6)
-      else if (roleIds.includes(5) || roleIds.includes(6)) {
-        talentInfo = await storage.getMusician(user.id);
-      }
-
-      // Professional role check (7,8)
-      else if (roleIds.includes(7) || roleIds.includes(8)) {
-        talentInfo = await storage.getProfessional(user.id);
-      }
-
-      // Primary talent
-      if (talentInfo?.primaryTalentId) {
-        const talent = await storage.getPrimaryTalentById(
-          talentInfo.primaryTalentId
-        );
-        primaryTalent = talent?.name || null;
-      }
-
-      // Stage name
-      if (talentInfo?.stageName) {
-        stageName = talentInfo.stageName;
-      }
-
-      // Secondary talents
-      const secondaryPerformanceTalents =
-        await storage.getUserSecondaryPerformanceTalents(user.id);
-      const secondaryProfessionalTalents =
-        await storage.getUserSecondaryProfessionalTalents(user.id);
-
-      secondaryTalents = [
-        ...secondaryPerformanceTalents.map((t) => t.talentName),
-        ...secondaryProfessionalTalents.map((t) => t.talentName),
-      ];
-
-      res.json({
-        primaryTalent,
-        secondaryTalents,
-        stageName,
-      });
-    } catch (error) {
-      console.error("❌ Fetch user talent info error:", error);
-      res.status(500).json({ message: "Failed to fetch user talent info" });
     }
-  }
-);
+  );
 
 
   // Helper function to determine talent type from role ID
@@ -19794,240 +19854,240 @@ This is a preview of the performance engagement contract. Final agreement will i
   }
 
   // Artist-Musician Assignments - Managed talent assign others to themselves and bookings
-app.get(
-  "/api/artist-musician-assignments",
-  authenticateToken,
-  async (req: Request, res: Response) => {
-    try {
-      const { managedTalentId, assigneeId } = req.query;
-      const currentUserId = req.user?.userId;
+  app.get(
+    "/api/artist-musician-assignments",
+    authenticateToken,
+    async (req: Request, res: Response) => {
+      try {
+        const { managedTalentId, assigneeId } = req.query;
+        const currentUserId = req.user?.userId;
 
-      // Get user with multi-roles
-      const user = await storage.getUser(currentUserId || 0);
-      const userRoles = await storage.getUserRoles(user.id);
-      const roleIds = userRoles.map((r) => r.id);
+        // Get user with multi-roles
+        const user = await storage.getUser(currentUserId || 0);
+        const userRoles = await storage.getUserRoles(user.id);
+        const roleIds = userRoles.map((r) => r.id);
 
-      // Admin / Superadmin check
-      const isAdminOrSuperadmin = roleIds.includes(1) || roleIds.includes(2);
+        // Admin / Superadmin check
+        const isAdminOrSuperadmin = roleIds.includes(1) || roleIds.includes(2);
 
-      let assignments;
+        let assignments;
 
-      if (managedTalentId) {
-        // Check if user can access this managed talent's assignments
-        const requestedTalentId = parseInt(managedTalentId as string);
-        if (!isAdminOrSuperadmin && currentUserId !== requestedTalentId) {
-          return res
-            .status(403)
-            .json({ message: "Insufficient permissions" });
+        if (managedTalentId) {
+          // Check if user can access this managed talent's assignments
+          const requestedTalentId = parseInt(managedTalentId as string);
+          if (!isAdminOrSuperadmin && currentUserId !== requestedTalentId) {
+            return res
+              .status(403)
+              .json({ message: "Insufficient permissions" });
+          }
+
+          assignments = await storage.getArtistMusicianAssignmentsByTalent(
+            requestedTalentId
+          );
+        } else if (assigneeId) {
+          assignments = await storage.getArtistMusicianAssignmentsByAssignee(
+            parseInt(assigneeId as string)
+          );
+        } else if (isAdminOrSuperadmin) {
+          // Admin / Superadmin see all
+          assignments = await storage.getArtistMusicianAssignments();
+        } else {
+          // Regular users can only see their own (as managed talent or assignee)
+          assignments = await storage.getArtistMusicianAssignmentsByUser(
+            currentUserId
+          );
         }
 
-        assignments = await storage.getArtistMusicianAssignmentsByTalent(
-          requestedTalentId
+        res.json(assignments);
+      } catch (error) {
+        console.error("❌ Get artist-musician assignments error:", error);
+        res
+          .status(500)
+          .json({ message: "Failed to fetch artist-musician assignments" });
+      }
+    }
+  );
+
+
+  app.post(
+    "/api/artist-musician-assignments",
+    authenticateToken,
+    async (req: Request, res: Response) => {
+      try {
+        const assignmentData = req.body;
+        const currentUserId = req.user?.userId;
+
+        // Get user + roles
+        const user = await storage.getUser(currentUserId || 0);
+        const userRoles = await storage.getUserRoles(user.id);
+        const roleIds = userRoles.map((r) => r.id);
+
+        // Admin / Superadmin check
+        const isAdminOrSuperadmin = roleIds.includes(1) || roleIds.includes(2);
+
+        // Permission check
+        if (
+          !isAdminOrSuperadmin &&
+          currentUserId !== assignmentData.managedTalentId
+        ) {
+          return res
+            .status(403)
+            .json({ message: "Can only create assignments for yourself" });
+        }
+
+        const assignment = await storage.createArtistMusicianAssignment(
+          assignmentData
         );
-      } else if (assigneeId) {
-        assignments = await storage.getArtistMusicianAssignmentsByAssignee(
-          parseInt(assigneeId as string)
+
+        res.status(201).json(assignment);
+      } catch (error) {
+        console.error("❌ Create artist-musician assignment error:", error);
+        res
+          .status(500)
+          .json({ message: "Failed to create artist-musician assignment" });
+      }
+    }
+  );
+
+
+  app.get(
+    "/api/artist-musician-assignments/:id",
+    authenticateToken,
+    async (req: Request, res: Response) => {
+      try {
+        const assignmentId = parseInt(req.params.id);
+        const currentUserId = req.user?.userId;
+
+        const assignment = await storage.getArtistMusicianAssignment(
+          assignmentId
         );
-      } else if (isAdminOrSuperadmin) {
-        // Admin / Superadmin see all
-        assignments = await storage.getArtistMusicianAssignments();
-      } else {
-        // Regular users can only see their own (as managed talent or assignee)
-        assignments = await storage.getArtistMusicianAssignmentsByUser(
-          currentUserId
+        if (!assignment) {
+          return res.status(404).json({ message: "Assignment not found" });
+        }
+
+        // Get user + all roles
+        const user = await storage.getUser(currentUserId || 0);
+        const userRoles = await storage.getUserRoles(user.id);
+        const roleIds = userRoles.map((r) => r.id);
+
+        // Check admin / superadmin
+        const isAdminOrSuperadmin = roleIds.includes(1) || roleIds.includes(2);
+
+        // Permission check
+        if (
+          !isAdminOrSuperadmin &&
+          currentUserId !== assignment.managedTalentId &&
+          currentUserId !== assignment.assigneeId
+        ) {
+          return res
+            .status(403)
+            .json({ message: "Can only view your own assignments" });
+        }
+
+        res.json(assignment);
+      } catch (error) {
+        console.error("❌ Get artist-musician assignment error:", error);
+        res
+          .status(500)
+          .json({ message: "Failed to fetch artist-musician assignment" });
+      }
+    }
+  );
+
+
+  app.patch(
+    "/api/artist-musician-assignments/:id",
+    authenticateToken,
+    async (req: Request, res: Response) => {
+      try {
+        const assignmentId = parseInt(req.params.id);
+        const updates = req.body;
+        const currentUserId = req.user?.userId;
+
+        // Get existing assignment
+        const existingAssignment = await storage.getArtistMusicianAssignment(
+          assignmentId
         );
-      }
+        if (!existingAssignment) {
+          return res.status(404).json({ message: "Assignment not found" });
+        }
 
-      res.json(assignments);
-    } catch (error) {
-      console.error("❌ Get artist-musician assignments error:", error);
-      res
-        .status(500)
-        .json({ message: "Failed to fetch artist-musician assignments" });
+        // Get user roles
+        const user = await storage.getUser(currentUserId || 0);
+        const userRoles = await storage.getUserRoles(user.id);
+        const roleIds = userRoles.map((r) => r.id);
+
+        // Admin / Superadmin check
+        const isAdminOrSuperadmin = roleIds.includes(1) || roleIds.includes(2);
+
+        // Permission check
+        if (!isAdminOrSuperadmin && currentUserId !== existingAssignment.managedTalentId) {
+          return res
+            .status(403)
+            .json({ message: "Can only update your own assignments" });
+        }
+
+        // Update
+        const assignment = await storage.updateArtistMusicianAssignment(
+          assignmentId,
+          updates
+        );
+        res.json(assignment);
+      } catch (error) {
+        console.error("❌ Update artist-musician assignment error:", error);
+        res
+          .status(500)
+          .json({ message: "Failed to update artist-musician assignment" });
+      }
     }
-  }
-);
+  );
 
 
- app.post(
-  "/api/artist-musician-assignments",
-  authenticateToken,
-  async (req: Request, res: Response) => {
-    try {
-      const assignmentData = req.body;
-      const currentUserId = req.user?.userId;
+  app.delete(
+    "/api/artist-musician-assignments/:id",
+    authenticateToken,
+    async (req: Request, res: Response) => {
+      try {
+        const assignmentId = parseInt(req.params.id);
+        const currentUserId = req.user?.userId;
 
-      // Get user + roles
-      const user = await storage.getUser(currentUserId || 0);
-      const userRoles = await storage.getUserRoles(user.id);
-      const roleIds = userRoles.map((r) => r.id);
+        // Get existing assignment
+        const existingAssignment = await storage.getArtistMusicianAssignment(
+          assignmentId
+        );
+        if (!existingAssignment) {
+          return res.status(404).json({ message: "Assignment not found" });
+        }
 
-      // Admin / Superadmin check
-      const isAdminOrSuperadmin = roleIds.includes(1) || roleIds.includes(2);
+        // Get user roles
+        const user = await storage.getUser(currentUserId || 0);
+        const userRoles = await storage.getUserRoles(user.id);
+        const roleIds = userRoles.map((r) => r.id);
 
-      // Permission check
-      if (
-        !isAdminOrSuperadmin &&
-        currentUserId !== assignmentData.managedTalentId
-      ) {
-        return res
-          .status(403)
-          .json({ message: "Can only create assignments for yourself" });
+        // Admin / Superadmin check
+        const isAdminOrSuperadmin = roleIds.includes(1) || roleIds.includes(2);
+
+        // Permission check
+        if (!isAdminOrSuperadmin && currentUserId !== existingAssignment.managedTalentId) {
+          return res
+            .status(403)
+            .json({ message: "Can only remove your own assignments" });
+        }
+
+        // Delete assignment
+        await storage.removeArtistMusicianAssignment(assignmentId);
+        res.json({
+          success: true,
+          message: "Artist-musician assignment removed",
+        });
+      } catch (error) {
+        console.error("❌ Remove artist-musician assignment error:", error);
+        res
+          .status(500)
+          .json({ message: "Failed to remove artist-musician assignment" });
       }
-
-      const assignment = await storage.createArtistMusicianAssignment(
-        assignmentData
-      );
-
-      res.status(201).json(assignment);
-    } catch (error) {
-      console.error("❌ Create artist-musician assignment error:", error);
-      res
-        .status(500)
-        .json({ message: "Failed to create artist-musician assignment" });
     }
-  }
-);
-
-
-app.get(
-  "/api/artist-musician-assignments/:id",
-  authenticateToken,
-  async (req: Request, res: Response) => {
-    try {
-      const assignmentId = parseInt(req.params.id);
-      const currentUserId = req.user?.userId;
-
-      const assignment = await storage.getArtistMusicianAssignment(
-        assignmentId
-      );
-      if (!assignment) {
-        return res.status(404).json({ message: "Assignment not found" });
-      }
-
-      // Get user + all roles
-      const user = await storage.getUser(currentUserId || 0);
-      const userRoles = await storage.getUserRoles(user.id);
-      const roleIds = userRoles.map((r) => r.id);
-
-      // Check admin / superadmin
-      const isAdminOrSuperadmin = roleIds.includes(1) || roleIds.includes(2);
-
-      // Permission check
-      if (
-        !isAdminOrSuperadmin &&
-        currentUserId !== assignment.managedTalentId &&
-        currentUserId !== assignment.assigneeId
-      ) {
-        return res
-          .status(403)
-          .json({ message: "Can only view your own assignments" });
-      }
-
-      res.json(assignment);
-    } catch (error) {
-      console.error("❌ Get artist-musician assignment error:", error);
-      res
-        .status(500)
-        .json({ message: "Failed to fetch artist-musician assignment" });
-    }
-  }
-);
-
-
-app.patch(
-  "/api/artist-musician-assignments/:id",
-  authenticateToken,
-  async (req: Request, res: Response) => {
-    try {
-      const assignmentId = parseInt(req.params.id);
-      const updates = req.body;
-      const currentUserId = req.user?.userId;
-
-      // Get existing assignment
-      const existingAssignment = await storage.getArtistMusicianAssignment(
-        assignmentId
-      );
-      if (!existingAssignment) {
-        return res.status(404).json({ message: "Assignment not found" });
-      }
-
-      // Get user roles
-      const user = await storage.getUser(currentUserId || 0);
-      const userRoles = await storage.getUserRoles(user.id);
-      const roleIds = userRoles.map((r) => r.id);
-
-      // Admin / Superadmin check
-      const isAdminOrSuperadmin = roleIds.includes(1) || roleIds.includes(2);
-
-      // Permission check
-      if (!isAdminOrSuperadmin && currentUserId !== existingAssignment.managedTalentId) {
-        return res
-          .status(403)
-          .json({ message: "Can only update your own assignments" });
-      }
-
-      // Update
-      const assignment = await storage.updateArtistMusicianAssignment(
-        assignmentId,
-        updates
-      );
-      res.json(assignment);
-    } catch (error) {
-      console.error("❌ Update artist-musician assignment error:", error);
-      res
-        .status(500)
-        .json({ message: "Failed to update artist-musician assignment" });
-    }
-  }
-);
-
-
-app.delete(
-  "/api/artist-musician-assignments/:id",
-  authenticateToken,
-  async (req: Request, res: Response) => {
-    try {
-      const assignmentId = parseInt(req.params.id);
-      const currentUserId = req.user?.userId;
-
-      // Get existing assignment
-      const existingAssignment = await storage.getArtistMusicianAssignment(
-        assignmentId
-      );
-      if (!existingAssignment) {
-        return res.status(404).json({ message: "Assignment not found" });
-      }
-
-      // Get user roles
-      const user = await storage.getUser(currentUserId || 0);
-      const userRoles = await storage.getUserRoles(user.id);
-      const roleIds = userRoles.map((r) => r.id);
-
-      // Admin / Superadmin check
-      const isAdminOrSuperadmin = roleIds.includes(1) || roleIds.includes(2);
-
-      // Permission check
-      if (!isAdminOrSuperadmin && currentUserId !== existingAssignment.managedTalentId) {
-        return res
-          .status(403)
-          .json({ message: "Can only remove your own assignments" });
-      }
-
-      // Delete assignment
-      await storage.removeArtistMusicianAssignment(assignmentId);
-      res.json({
-        success: true,
-        message: "Artist-musician assignment removed",
-      });
-    } catch (error) {
-      console.error("❌ Remove artist-musician assignment error:", error);
-      res
-        .status(500)
-        .json({ message: "Failed to remove artist-musician assignment" });
-    }
-  }
-);
+  );
 
 
   // Service Assignments - Assign managed talent to services with pricing management
@@ -21629,8 +21689,8 @@ app.delete(
             status: systemHealth.every((h) => h.status === "healthy")
               ? "healthy"
               : systemHealth.some((h) => h.status === "error")
-              ? "error"
-              : "warning",
+                ? "error"
+                : "warning",
             uptime: "99.9%",
             activeServices: 12,
             systemChecks: systemHealth,
@@ -22394,7 +22454,7 @@ app.delete(
 
       const fee = proOpportunity
         ? parseFloat(proOpportunity.amount) ||
-          defaultFees[proName as keyof typeof defaultFees]
+        defaultFees[proName as keyof typeof defaultFees]
         : defaultFees[proName as keyof typeof defaultFees];
 
       res.json({
@@ -23120,11 +23180,9 @@ app.delete(
           isrcGenerated: result.isrcGenerated,
           newUsersCreated: processedParticipants.filter((p) => p.newUserCreated)
             .length,
-          message: `Enhanced splitsheet created successfully. ${
-            result.notificationsSent
-          } notifications sent. ${
-            result.isrcGenerated ? "ISRC code generated." : ""
-          }`,
+          message: `Enhanced splitsheet created successfully. ${result.notificationsSent
+            } notifications sent. ${result.isrcGenerated ? "ISRC code generated." : ""
+            }`,
         });
       } catch (error) {
         console.error("Enhanced splitsheet creation error:", error);
@@ -23212,9 +23270,8 @@ app.delete(
     tempPassword: string
   ): Promise<void> {
     try {
-      const loginUrl = `${
-        process.env.BASE_URL || "http://localhost:5000"
-      }/login`;
+      const loginUrl = `${process.env.BASE_URL || "http://localhost:5000"
+        }/login`;
 
       const emailHtml = `
         <div style="max-width: 600px; margin: 0 auto; padding: 20px; font-family: Arial, sans-serif;">
@@ -24362,8 +24419,7 @@ app.delete(
         res.setHeader("Content-Type", "application/sql");
         res.setHeader(
           "Content-Disposition",
-          `attachment; filename="database-backup-${
-            new Date().toISOString().split("T")[0]
+          `attachment; filename="database-backup-${new Date().toISOString().split("T")[0]
           }.sql"`
         );
         res.send(backupContent);
@@ -24534,8 +24590,7 @@ app.delete(
         res.setHeader("Content-Type", "application/json");
         res.setHeader(
           "Content-Disposition",
-          `attachment; filename="waitumusic-data-export-${
-            new Date().toISOString().split("T")[0]
+          `attachment; filename="waitumusic-data-export-${new Date().toISOString().split("T")[0]
           }.json"`
         );
         res.json(exportData);
@@ -25710,12 +25765,10 @@ app.delete(
               <p><strong>Name:</strong> ${validatedData.name}</p>
               <p><strong>Email:</strong> ${validatedData.email}</p>
               <p><strong>Phone:</strong> ${validatedData.phone || "N/A"}</p>
-              <p><strong>Artist ID:</strong> ${
-                validatedData.artistId || "N/A"
-              }</p>
-              <p><strong>Source:</strong> ${
-                validatedData.source || "all-links-page"
-              }</p>
+              <p><strong>Artist ID:</strong> ${validatedData.artistId || "N/A"
+                }</p>
+              <p><strong>Source:</strong> ${validatedData.source || "all-links-page"
+                }</p>
               <p><strong>Message:</strong></p>
               <p>${validatedData.message}</p>
             `,
@@ -26067,8 +26120,7 @@ app.delete(
         res.setHeader("Content-Type", "application/pdf");
         res.setHeader(
           "Content-Disposition",
-          `attachment; filename="Technical_Rider_${
-            eventDetails?.eventName || "Event"
+          `attachment; filename="Technical_Rider_${eventDetails?.eventName || "Event"
           }_${new Date().toISOString().split("T")[0]}.pdf"`
         );
 
@@ -26080,15 +26132,13 @@ app.delete(
         doc.text("PROFESSIONAL TECHNICAL RIDER", 50, 50);
         doc.fontSize(14).font("Helvetica");
         doc.text(
-          `${eventDetails?.eventName || "Event"} - ${
-            eventDetails?.venueName || "Venue"
+          `${eventDetails?.eventName || "Event"} - ${eventDetails?.venueName || "Venue"
           }`,
           50,
           80
         );
         doc.text(
-          `Date: ${eventDetails?.eventDate || "TBD"} | Duration: ${
-            eventDetails?.duration || "TBD"
+          `Date: ${eventDetails?.eventDate || "TBD"} | Duration: ${eventDetails?.duration || "TBD"
           } minutes`,
           50,
           100
@@ -26184,8 +26234,7 @@ app.delete(
               (element: any, index: number) => {
                 doc.fontSize(10).font("Helvetica");
                 doc.text(
-                  `• ${element.name}${
-                    element.assignedTo ? ` (${element.assignedTo})` : ""
+                  `• ${element.name}${element.assignedTo ? ` (${element.assignedTo})` : ""
                   }`,
                   70,
                   yPosition
@@ -26755,9 +26804,8 @@ ${messageData.messageText}
         const documentsDir = path.join(process.cwd(), "booking-documents");
         await fs.mkdir(documentsDir, { recursive: true });
 
-        const filename = `booking-${
-          messageData.bookingId
-        }-message-${Date.now()}.md`;
+        const filename = `booking-${messageData.bookingId
+          }-message-${Date.now()}.md`;
         const filepath = path.join(documentsDir, filename);
         await fs.writeFile(filepath, markdownContent);
 
@@ -28575,8 +28623,7 @@ async function scanFileWithClamAV(
       res.setHeader("Content-Type", "application/pdf");
       res.setHeader(
         "Content-Disposition",
-        `attachment; filename="Booking_Contract_${bookingId}_${
-          new Date().toISOString().split("T")[0]
+        `attachment; filename="Booking_Contract_${bookingId}_${new Date().toISOString().split("T")[0]
         }.pdf"`
       );
 
@@ -28636,10 +28683,9 @@ async function scanFileWithClamAV(
         .fontSize(10)
         .font("Helvetica")
         .text(
-          `Start Date: ${
-            booking.createdAt
-              ? new Date(booking.createdAt).toLocaleDateString()
-              : "TBD"
+          `Start Date: ${booking.createdAt
+            ? new Date(booking.createdAt).toLocaleDateString()
+            : "TBD"
           }`,
           50,
           yPosition
@@ -28655,9 +28701,8 @@ async function scanFileWithClamAV(
         .text("Performance Engagement Contract", 50, yPosition);
       yPosition += 25;
 
-      const contractText = `This Performance Engagement Contract (the "Agreement") is made and entered into as of ${new Date().toLocaleDateString()} by and between Wai'tuMusic, registered and existing under the laws of the Commonwealth of Dominica, with its principal place of business located at 31 Bath Estate, Roseau, Dominica (hereinafter referred to as "Service Provider"), and ${
-        booking.bookerName || "Client"
-      } (hereinafter referred to as the "Client").`;
+      const contractText = `This Performance Engagement Contract (the "Agreement") is made and entered into as of ${new Date().toLocaleDateString()} by and between Wai'tuMusic, registered and existing under the laws of the Commonwealth of Dominica, with its principal place of business located at 31 Bath Estate, Roseau, Dominica (hereinafter referred to as "Service Provider"), and ${booking.bookerName || "Client"
+        } (hereinafter referred to as the "Client").`;
 
       doc
         .fontSize(10)
@@ -28669,17 +28714,14 @@ async function scanFileWithClamAV(
       const sections = [
         {
           title: "1. Engagement",
-          content: `1.1 Engagement: Service Provider hereby engages the Artist to perform for a live performance event called "${
-            booking.eventName || "Performance Event"
-          }" scheduled to take place on ${booking.eventDate || "TBD"} at ${
-            booking.venueName || "Venue TBD"
-          }.\n1.2 Services: The Artist agrees to perform during the Event as specified in the booking requirements.`,
+          content: `1.1 Engagement: Service Provider hereby engages the Artist to perform for a live performance event called "${booking.eventName || "Performance Event"
+            }" scheduled to take place on ${booking.eventDate || "TBD"} at ${booking.venueName || "Venue TBD"
+            }.\n1.2 Services: The Artist agrees to perform during the Event as specified in the booking requirements.`,
         },
         {
           title: "2. Compensation",
-          content: `2.1 Compensation: Service Provider agrees to pay the Artist the sum of $${
-            booking.totalBudget || "0.00"
-          } as compensation for the services rendered under this Agreement.\n2.2 Payment: Payment shall be made to the Artist by [Payment Method] on [Date].`,
+          content: `2.1 Compensation: Service Provider agrees to pay the Artist the sum of $${booking.totalBudget || "0.00"
+            } as compensation for the services rendered under this Agreement.\n2.2 Payment: Payment shall be made to the Artist by [Payment Method] on [Date].`,
         },
         {
           title: "3. Rehearsal",
@@ -28759,8 +28801,7 @@ async function scanFileWithClamAV(
         res.setHeader("Content-Type", "application/pdf");
         res.setHeader(
           "Content-Disposition",
-          `attachment; filename="Performance_Contract_${bookingId}_${
-            new Date().toISOString().split("T")[0]
+          `attachment; filename="Performance_Contract_${bookingId}_${new Date().toISOString().split("T")[0]
           }.pdf"`
         );
 
@@ -28784,8 +28825,7 @@ async function scanFileWithClamAV(
               .fontSize(16)
               .font("Helvetica-Bold")
               .text(
-                `INDIVIDUAL PERFORMANCE CONTRACT - ${
-                  talent.stageName || talent.fullName
+                `INDIVIDUAL PERFORMANCE CONTRACT - ${talent.stageName || talent.fullName
                 }`,
                 50,
                 yPosition
@@ -28811,11 +28851,9 @@ async function scanFileWithClamAV(
 
             yPosition += 60;
 
-            const performanceContract = `This Individual Performance Contract is made between Wai'tuMusic (Service Provider) and ${
-              talent.stageName || talent.fullName
-            } (Performer) for the event "${
-              booking.eventName || "Performance Event"
-            }" scheduled for ${booking.eventDate || "TBD"}.
+            const performanceContract = `This Individual Performance Contract is made between Wai'tuMusic (Service Provider) and ${talent.stageName || talent.fullName
+              } (Performer) for the event "${booking.eventName || "Performance Event"
+              }" scheduled for ${booking.eventDate || "TBD"}.
 
 PERFORMER DETAILS:
 • Name: ${talent.fullName}
@@ -29301,8 +29339,7 @@ This contract is subject to the main booking agreement and all terms therein.`;
 
               assignedMembers.add(member.name);
               console.log(
-                `✅ ${channelType.toUpperCase()}: ${member.name} → "${
-                  channel.input
+                `✅ ${channelType.toUpperCase()}: ${member.name} → "${channel.input
                 }" (1 channel only)`
               );
             }
