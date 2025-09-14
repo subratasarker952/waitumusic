@@ -10,7 +10,23 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { apiRequest } from '@/lib/queryClient';
 import { User, Edit, Save, X, UserCheck, Shield, Music, Users } from 'lucide-react';
 import { stringify } from 'querystring';
+import { allInstruments } from '@shared/schema';
 
+type Role = {
+  id: number;
+  name: string;
+};
+
+type Instrument = {
+  id: number;
+  name: string;
+  type: string;
+  roleId: number; // <-- adjust if your field is named differently
+};
+
+type FormData = {
+  roles: string[]; // since you’re storing role ids as strings in state
+};
 
 
 interface UserManagementModalProps {
@@ -49,6 +65,7 @@ export default function UserManagementModal({
     fullName: '',
     email: '',
     roles: [] as string[],
+    primaryTalentId: null,
     status: '',
     password: '',
     confirmPassword: ''
@@ -69,6 +86,33 @@ export default function UserManagementModal({
     queryKey: ['/api/roles']
   });
 
+  const { data: availableInstruments = [] } = useQuery<Instrument[]>({
+    queryKey: ["/api/instruments"]
+  });
+
+  const filteredInstruments = availableInstruments.filter((instrument: Instrument) => {
+    const roles = formData.roles.map(Number);
+
+    // If any role is 7 or 8 → Professional
+    if (roles.some(r => [7, 8].includes(r))) {
+      return instrument.type === "Professional";
+    }
+
+    // If any role is 3 or 4 → Vocal
+    if (roles.some(r => [3, 4].includes(r))) {
+      return instrument.type === "Vocal";
+    }
+
+    // If any role is 5 or 6 → everything except Professional & Vocal
+    if (roles.some(r => [5, 6].includes(r))) {
+      return !["Professional", "Vocal"].includes(instrument.type);
+    }
+
+    // Any other roles (1,2,9, etc.) → nothing
+    return false;
+  });
+
+
   // Update form data when user data is loaded
   useEffect(() => {
     if (userData && mode !== 'create') {
@@ -76,6 +120,7 @@ export default function UserManagementModal({
         fullName: userData.fullName || '',
         email: userData.email || '',
         roles: userData.roles?.map((r: any) => r.id.toString()) || [],
+        primaryTalentId: userData.primaryTalentId || 1,
         status: userData.status || 'active',
         password: '',
         confirmPassword: ''
@@ -87,6 +132,7 @@ export default function UserManagementModal({
         fullName: '',
         email: '',
         roles: [],
+        primaryTalentId: null,
         status: 'active',
         password: '',
         confirmPassword: ''
@@ -171,14 +217,16 @@ export default function UserManagementModal({
           fullName: formData.fullName,
           email: formData.email,
           password: formData.password,
-          roles: formData.roles.map(r => parseInt(r))
+          roles: formData.roles.map(r => parseInt(r)),
+          primaryTalentId: parseInt(formData.primaryTalentId || "1")
         });
       } else {
         await updateUserMutation.mutateAsync({
           fullName: formData.fullName,
           email: formData.email,
           roles: formData.roles.map(r => parseInt(r)),
-          status: formData.status
+          status: formData.status,
+          primaryTalentId: parseInt(formData.primaryTalentId || "1")
         });
       }
 
@@ -324,30 +372,6 @@ export default function UserManagementModal({
                 />
               </div>
 
-              {/* <div className="space-y-2">
-                <Label htmlFor="role">Role *</Label>
-                <Select
-                  value={formData.role}
-                  onValueChange={(value) => handleInputChange('role', value)}
-                  disabled={mode === 'view'}
-                >
-                  <SelectTrigger>
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="2">Admin</SelectItem>
-                    <SelectItem value="1">Superadmin</SelectItem>
-                    <SelectItem value="4">Artist</SelectItem>
-                    <SelectItem value="3">Managed Artist</SelectItem>
-                    <SelectItem value="6">Musician</SelectItem>
-                    <SelectItem value="5">Managed Musician</SelectItem>
-                    <SelectItem value="8">Professional</SelectItem>
-                    <SelectItem value="7">Managed Professional</SelectItem>
-                    <SelectItem value="9">Fan</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div> */}
-
               <div className="space-y-2">
                 <Label htmlFor="roles">Roles *</Label>
                 <div className="grid grid-cols-2 gap-2">
@@ -379,6 +403,27 @@ export default function UserManagementModal({
                 </div>
               </div>
 
+              <div className="space-y-2">
+                <Label htmlFor="role">Primary Talent Id</Label>
+                <Select
+                  value={String(formData.primaryTalentId || "")}
+                  onValueChange={(value) => handleInputChange('primaryTalentId', value)}
+                  disabled={mode === 'view'}
+                >
+                  <SelectTrigger>
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {filteredInstruments
+                      .sort((a: Instrument, b: Instrument) => a.name.localeCompare(b.name))
+                      .map((instrument: Instrument) => (
+                        <SelectItem key={instrument.id} value={String(instrument.id)}>
+                          {instrument.name} - {instrument.type}
+                        </SelectItem>
+                      ))}
+                  </SelectContent>
+                </Select>
+              </div>
 
               <div className="space-y-2">
                 <Label htmlFor="status">Account Status</Label>

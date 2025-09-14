@@ -499,22 +499,22 @@ export async function registerRoutes(app: Express): Promise<Server> {
           // 5️⃣ Create role-specific blank entry
           switch (roleId) {
             case 3: // Managed Artist
-              await storage.createArtist({ userId: user.id, isManaged: true, primaryTalentId: 1, });
+              await storage.createArtist({ userId: user.id, isManaged: true, primaryTalentId: userData.primaryTalentId, });
               break;
             case 4: // Artist
-              await storage.createArtist({ userId: user.id, isManaged: false, primaryTalentId: 1, });
+              await storage.createArtist({ userId: user.id, isManaged: false, primaryTalentId: userData.primaryTalentId, });
               break;
             case 5: // Managed Musician
-              await storage.createMusician({ userId: user.id, isManaged: true, primaryTalentId: 3, });
+              await storage.createMusician({ userId: user.id, isManaged: true, primaryTalentId: userData.primaryTalentId, });
               break;
             case 6: // Musician
-              await storage.createMusician({ userId: user.id, isManaged: false, primaryTalentId: 3, });
+              await storage.createMusician({ userId: user.id, isManaged: false, primaryTalentId: userData.primaryTalentId, });
               break;
             case 7: // Managed Professional
-              await storage.createProfessional({ userId: user.id, isManaged: true, primaryTalentId: 17, });
+              await storage.createProfessional({ userId: user.id, isManaged: true, primaryTalentId: userData.primaryTalentId, });
               break;
             case 8: // Professional
-              await storage.createProfessional({ userId: user.id, isManaged: false, primaryTalentId: 17, });
+              await storage.createProfessional({ userId: user.id, isManaged: false, primaryTalentId: userData.primaryTalentId, });
               break;
           }
         }
@@ -860,7 +860,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
           avatarUrl,
           coverImageUrl,
           roles,
-          email
+          email,
+          primaryTalentId
         } = req.body;
 
         // 1️⃣ Update user basic info
@@ -902,14 +903,14 @@ export async function registerRoutes(app: Express): Promise<Server> {
                 const artist = await storage.getArtist(userId);
                 if (artist) {
                   await storage.updateArtist(userId, {
-                    isManaged: roleId === 3, managementTierId: roleId === 3 ? 1 : null, primaryTalentId: 1,
+                    isManaged: roleId === 3, managementTierId: roleId === 3 ? 1 : null, primaryTalentId,
                   });
                 } else {
                   await storage.createArtist({
                     userId,
                     isManaged: roleId === 3,
                     managementTierId: roleId === 3 ? 1 : null,
-                    primaryTalentId: 1,
+                    primaryTalentId,
                   });
                 }
                 break;
@@ -936,14 +937,14 @@ export async function registerRoutes(app: Express): Promise<Server> {
                 const professional = await storage.getProfessional(userId);
                 if (professional) {
                   await storage.updateProfessional(userId, {
-                    isManaged: roleId === 7, managementTierId: roleId === 7 ? 1 : null, primaryTalentId: 17,
+                    isManaged: roleId === 7, managementTierId: roleId === 7 ? 1 : null, primaryTalentId,
                   });
                 } else {
                   await storage.createProfessional({
                     userId,
                     isManaged: roleId === 7,
                     managementTierId: roleId === 7 ? 1 : null,
-                    primaryTalentId: 17,
+                    primaryTalentId,
                   });
                 }
                 break;

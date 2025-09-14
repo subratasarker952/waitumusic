@@ -26,6 +26,7 @@ export const registerSchema = z.object({
   password: z.string().min(8),
   fullName: z.string().min(2).max(100).transform(sanitizeSqlString),
   roles: z.array(z.number().int().positive()),
+  primaryTalentId: z.number().int().positive(),
   phoneNumber: z.string().optional(),
   gender: z
     .enum(["male", "female", "non-binary", "prefer_not_to_say"])

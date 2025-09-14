@@ -159,6 +159,8 @@ export default function BookingWorkflow({
     refetchOnMount: 'always',
     refetchOnReconnect: false
   });
+  console.log(bookingData)
+
 
 
   // Load all bookings for selection
@@ -169,6 +171,7 @@ export default function BookingWorkflow({
       return data;
     }
   });
+  console.log(availableBookings)
 
   // Load available users for assignment with controlled caching
   const { data: availableUsers = [] } = useQuery({
@@ -179,6 +182,7 @@ export default function BookingWorkflow({
     refetchOnMount: false,
     refetchOnReconnect: false
   });
+  console.log(availableUsers)
 
   // Load assigned talent data with controlled caching
   const { data: assignedTalentData, isLoading: assignedTalentLoading, refetch: refetchAssignedTalent } = useQuery({
@@ -197,18 +201,25 @@ export default function BookingWorkflow({
     refetchOnMount: 'always',
     refetchOnReconnect: false
   });
+
+  console.log(assignedTalentData)
   // Load specific user types for assignment
   const { data: availableArtists = [] } = useQuery({
     queryKey: ['/api/artists'],
   });
+  console.log(availableArtists)
 
   const { data: availableMusicians = [] } = useQuery({
     queryKey: ['/api/musicians'],
   });
 
+  console.log(availableMusicians)
+
   const { data: availableProfessionals = [] } = useQuery({
     queryKey: ['/api/professionals'],
   });
+
+  console.log(availableProfessionals)
 
   // Set booking data and auto-assign primary artist
   useEffect(() => {
@@ -269,7 +280,7 @@ export default function BookingWorkflow({
       console.log('📝 Creating main booked talent assignment:', assignmentData);
 
       // Create the assignment
-    await createAssignmentMutation.mutateAsync(assignmentData);
+      await createAssignmentMutation.mutateAsync(assignmentData);
       console.log('✅ Primary artist auto-assigned successfully');
 
     } catch (error) {
