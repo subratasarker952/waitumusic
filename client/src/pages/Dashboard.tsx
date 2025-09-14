@@ -377,7 +377,7 @@ function DashboardContent() {
 
   return (
     <div className="container mx-auto px-4 py-8">
-      {isSuperAdmin && (
+      {/* {isSuperAdmin && (
         <div className="mb-6 p-4 bg-gradient-to-r from-purple-50 to-blue-50 dark:from-purple-900/20 dark:to-blue-900/20 rounded-lg border border-purple-200 dark:border-purple-800">
           <div className="flex items-center justify-between md:flex-row flex-col gap-4">
             <div className="flex items-center gap-3">
@@ -434,7 +434,7 @@ function DashboardContent() {
             </div>
           </div>
         </div>
-      )}
+      )} */}
 
       {isAdminRole ? (
         isSuperAdmin && dashboardMode === "configuration" ? (

@@ -36,7 +36,7 @@ export default function UserListModal({ open, onOpenChange }: UserListModalProps
   const { toast } = useToast();
   const queryClient = useQueryClient();
   const [searchQuery, setSearchQuery] = useState('');
-  
+
   const [deleteUserId, setDeleteUserId] = useState<string | null>(null);
   const [userManagementOpen, setUserManagementOpen] = useState(false);
   const [userData, setUserData] = useState<any | undefined>();
@@ -47,7 +47,7 @@ export default function UserListModal({ open, onOpenChange }: UserListModalProps
     queryKey: ['/api/users'],
     enabled: open
   });
-  
+
   // Delete user mutation
   const deleteUserMutation = useMutation({
     mutationFn: (deleteUserId: string) => apiRequest(`/api/users/${deleteUserId}`, { method: 'DELETE' }),
@@ -75,7 +75,7 @@ export default function UserListModal({ open, onOpenChange }: UserListModalProps
     return (
       user.fullName?.toLowerCase().includes(query) ||
       user.email?.toLowerCase().includes(query) ||
-      user.role?.toLowerCase().includes(query)
+      user.roles?.some((r: any) => getRoleDisplayName(r.id).toLowerCase().includes(query))
     );
   });
 
@@ -87,27 +87,27 @@ export default function UserListModal({ open, onOpenChange }: UserListModalProps
       case 'managed musician':
       case 'managed professional': return 'secondary';
       case 'artist':
-      case 'musician': 
+      case 'musician':
       case 'professional': return 'outline';
       default: return 'default';
     }
   };
-  
-// Helper function to get role display names
-const getRoleDisplayName = (roleId: number): string => {
-  const roleNames = {
-    1: 'Superadmin',
-    2: 'Admin', 
-    3: 'Managed Artist',
-    4: 'Artist',
-    5: 'Managed Musician',
-    6: 'Musician',
-    7: 'Managed Professional',
-    8: 'Professional',
-    9: 'Fan'
+
+  // Helper function to get role display names
+  const getRoleDisplayName = (roleId: number): string => {
+    const roleNames = {
+      1: 'Superadmin',
+      2: 'Admin',
+      3: 'Managed Artist',
+      4: 'Artist',
+      5: 'Managed Musician',
+      6: 'Musician',
+      7: 'Managed Professional',
+      8: 'Professional',
+      9: 'Fan'
+    };
+    return roleNames[roleId as keyof typeof roleNames] || `Role ${roleId}`;
   };
-  return roleNames[roleId as keyof typeof roleNames] || `Role ${roleId}`;
-};
 
   return (
     <>
@@ -116,7 +116,7 @@ const getRoleDisplayName = (roleId: number): string => {
           <DialogHeader>
             <DialogTitle>Manage All Platform Users</DialogTitle>
           </DialogHeader>
-          
+
           <div className="flex items-center justify-between gap-4 mb-4">
             <div className="relative flex-1">
               <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
@@ -128,7 +128,7 @@ const getRoleDisplayName = (roleId: number): string => {
                 data-testid="input-search-users"
               />
             </div>
-            <Button 
+            <Button
               onClick={() => {
                 setUserData(undefined);
                 setUserEditMode('create');
@@ -166,10 +166,15 @@ const getRoleDisplayName = (roleId: number): string => {
                     <TableRow key={user.id} data-testid={`row-user-${user.id}`}>
                       <TableCell className="font-medium">{user.fullName}</TableCell>
                       <TableCell>{user.email}</TableCell>
-                      <TableCell>
-                        <Badge variant={getRoleBadgeVariant(getRoleDisplayName(user.roleId))}>
-                          {getRoleDisplayName(user.roleId)}
-                        </Badge>
+                      <TableCell className="flex flex-wrap gap-1">
+                        {user.roles?.map((role: any) => (
+                          <Badge
+                            key={role.id}
+                            variant={getRoleBadgeVariant(getRoleDisplayName(role.id))}
+                          >
+                            {getRoleDisplayName(role.id)}
+                          </Badge>
+                        ))}
                       </TableCell>
                       <TableCell>
                         <Badge variant={user.status === 'active' ? 'outline' : 'secondary'}>
@@ -211,7 +216,7 @@ const getRoleDisplayName = (roleId: number): string => {
                           <Button
                             variant="ghost"
                             size="sm"
-                            disabled={getRoleDisplayName(user.roleId) == 'Superadmin'}
+                            disabled={user.roles?.some((r: any) => getRoleDisplayName(r.id) === 'Superadmin')}
                             onClick={() => setDeleteUserId(user.id)}
                             data-testid={`button-delete-user-${user.id.toString()}`}
                           >

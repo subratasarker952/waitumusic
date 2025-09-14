@@ -3253,9 +3253,67 @@ export class DatabaseStorage implements IStorage {
     return created;
   }
 
-  async getAllUsers(): Promise<User[]> {
-    return await db.select().from(users).orderBy(desc(users.createdAt));
+  // async getAllUsers(): Promise<User[]> {
+  //   return await db.select().from(users).orderBy(desc(users.createdAt));
+  // }
+
+  // Return type
+
+async getAllUsers(): Promise<User[]> {
+  const rows = await db
+    .select({
+      id: users.id,
+      email: users.email,
+      fullName: users.fullName,
+      phoneNumber: users.phoneNumber,
+      gender: users.gender,
+      status: users.status,
+      privacySetting: users.privacySetting,
+      avatarUrl: users.avatarUrl,
+      coverImageUrl: users.coverImageUrl,
+      isDemo: users.isDemo,
+      createdAt: users.createdAt,
+      lastLogin: users.lastLogin,
+      roleId: roles.id,
+      roleName: roles.name,
+    })
+    .from(users)
+    .leftJoin(userRoles, eq(users.id, userRoles.userId))
+    .leftJoin(roles, eq(userRoles.roleId, roles.id))
+    .orderBy(desc(users.createdAt));
+
+  const userMap: Record<number, User> = {};
+
+  for (const row of rows) {
+    if (!userMap[row.id]) {
+      userMap[row.id] = {
+        id: row.id,
+        email: row.email,
+        fullName: row.fullName,
+        phoneNumber: row.phoneNumber,
+        gender: row.gender,
+        status: row.status,
+        privacySetting: row.privacySetting,
+        avatarUrl: row.avatarUrl,
+        coverImageUrl: row.coverImageUrl,
+        isDemo: row.isDemo,
+        createdAt: row.createdAt,
+        lastLogin: row.lastLogin,
+        roles: [],
+      };
+    }
+
+    if (row.roleId) {
+      userMap[row.id].roles.push({
+        id: row.roleId,
+        name: row.roleName!,
+      });
+    }
   }
+
+  return Object.values(userMap);
+}
+
 
   // Duplicate methods removed - keeping proper implementation below
 

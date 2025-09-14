@@ -48,7 +48,7 @@ export default function UserManagementModal({
   const [formData, setFormData] = useState({
     fullName: '',
     email: '',
-    role: '',
+    roles: [] as string[],
     status: '',
     password: '',
     confirmPassword: ''
@@ -75,7 +75,7 @@ export default function UserManagementModal({
       setFormData({
         fullName: userData.fullName || '',
         email: userData.email || '',
-        role: userData.roleId.toString() || '',
+        roles: userData.roles?.map((r: any) => r.id.toString()) || [],
         status: userData.status || 'active',
         password: '',
         confirmPassword: ''
@@ -86,7 +86,7 @@ export default function UserManagementModal({
       setFormData({
         fullName: '',
         email: '',
-        role: '2',
+        roles: [],
         status: 'active',
         password: '',
         confirmPassword: ''
@@ -143,7 +143,7 @@ export default function UserManagementModal({
 
   const handleSubmit = async () => {
     // Validation
-    if (!formData.fullName || !formData.email || !formData.role) {
+    if (!formData.fullName || !formData.email || !formData.roles) {
       toast({
         title: "Missing Required Fields",
         description: "Please fill in all required fields.",
@@ -169,16 +169,17 @@ export default function UserManagementModal({
           fullName: formData.fullName,
           email: formData.email,
           password: formData.password,
-          roleId: parseInt(formData.role) // Convert role name to roleId
+          roleIds: formData.roles.map(r => parseInt(r))
         });
       } else {
         await updateUserMutation.mutateAsync({
           fullName: formData.fullName,
           email: formData.email,
-          roleId: parseInt(formData.role),
+          roleIds: formData.roles.map(r => parseInt(r)),
           status: formData.status
         });
       }
+
     } catch (error) {
       // Error handled by mutation onError
     } finally {
@@ -321,7 +322,7 @@ export default function UserManagementModal({
                 />
               </div>
 
-              <div className="space-y-2">
+              {/* <div className="space-y-2">
                 <Label htmlFor="role">Role *</Label>
                 <Select
                   value={formData.role}
@@ -343,7 +344,38 @@ export default function UserManagementModal({
                     <SelectItem value="9">Fan</SelectItem>
                   </SelectContent>
                 </Select>
+              </div> */}
+
+              <div className="space-y-2">
+                <Label htmlFor="roles">Roles *</Label>
+                <div className="grid grid-cols-2 gap-2">
+                  {roles.map((role: any) => (
+                    <label key={role.id} className="flex items-center gap-2">
+                      <input
+                        type="checkbox"
+                        value={role.id}
+                        checked={formData.roles.includes(role.id.toString())}
+                        onChange={(e) => {
+                          if (e.target.checked) {
+                            setFormData(prev => ({
+                              ...prev,
+                              roles: [...prev.roles, role.id.toString()]
+                            }));
+                          } else {
+                            setFormData(prev => ({
+                              ...prev,
+                              roles: prev.roles.filter(r => r !== role.id.toString())
+                            }));
+                          }
+                        }}
+                        disabled={mode === 'view'}
+                      />
+                      {role.name}
+                    </label>
+                  ))}
+                </div>
               </div>
+
 
               <div className="space-y-2">
                 <Label htmlFor="status">Account Status</Label>
