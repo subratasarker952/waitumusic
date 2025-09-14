@@ -494,7 +494,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         // 4️⃣ Assign roles (default to Fan if empty)
         const rolesToAssign = userData.roles?.length ? userData.roles : [9];
         for (const roleId of rolesToAssign) {
-          await storage.addUserRole(user.id, roleId);
+          await storage.assignRoleToUser(user.id, roleId);
 
           // 5️⃣ Create role-specific blank entry
           switch (roleId) {
@@ -845,109 +845,112 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   // Update user profile (basic fields like profile picture, banner)
   app.patch(
-    "/api/users/:id",
+    "/api/admin/users/:id",
     authenticateToken,
     validateParams(schemas.idParamSchema),
-    requireOwnershipOrAdmin("id"),
+    requireRole([1, 2]),
     async (req: Request, res: Response) => {
       try {
         const userId = parseInt(req.params.id);
-  
+
         const {
           fullName,
           phoneNumber,
           privacySetting,
           avatarUrl,
           coverImageUrl,
-          roles, // array of role IDs
-          roleDetails, // optional: { roleId: { isManaged, managementTierId, ... } }
+          roles,
+          email
         } = req.body;
-  
+
         // 1️⃣ Update user basic info
         const updatedUser = await storage.updateUser(userId, {
           fullName,
           phoneNumber,
           privacySetting,
           avatarUrl,
+          email,
           coverImageUrl,
         });
-  
+
         if (!updatedUser) {
           return res.status(404).json({ message: "User not found" });
         }
-  
+
         // 2️⃣ Update roles if provided
         if (roles?.length) {
           const existingRoles = await storage.getUserRoles(userId);
           const existingRoleIds = existingRoles.map(r => r.id);
-  
+
           // Remove roles that are not in the new roles array
           for (const role of existingRoleIds) {
             if (!roles.includes(role)) {
               await storage.removeRoleFromUser(userId, role);
             }
           }
-  
+
           // Add new roles
           for (const roleId of roles) {
             if (!existingRoleIds.includes(roleId)) {
-              await storage.addUserRole(userId, roleId);
-  
-              // Create blank role-specific entry if not exist
-              switch (roleId) {
-                case 3: // Managed Artist
-                case 4: // Artist
+              // নতুন role assign
+              await storage.assignRoleToUser(userId, roleId);
+            }
+
+            switch (roleId) {
+              case 3: // Managed Artist
+              case 4: // Artist
+                const artist = await storage.getArtist(userId);
+                if (artist) {
+                  await storage.updateArtist(userId, {
+                    isManaged: roleId === 3, managementTierId: roleId === 3 ? 1 : null, primaryTalentId: 1,
+                  });
+                } else {
                   await storage.createArtist({
                     userId,
-                    isManaged: roleDetails?.[roleId]?.isManaged ?? (roleId === 3),
-                    managementTierId: roleDetails?.[roleId]?.managementTierId ?? (roleId === 3 ? 1 : null),
+                    isManaged: roleId === 3,
+                    managementTierId: roleId === 3 ? 1 : null,
                     primaryTalentId: 1,
-                    stageName: "",
-                    bio: "",
-                    epkUrl: "",
-                    basePrice: null,
-                    idealPerformanceRate: null,
-                    minimumAcceptableRate: null,
-                    isDemo: false,
-                    isComplete: false,
                   });
-                  break;
-                case 5: // Managed Musician
-                case 6: // Musician
+                }
+                break;
+
+              case 5: // Managed Musician
+              case 6: // Musician
+                const musician = await storage.getMusician(userId);
+                if (musician) {
+                  await storage.updateMusician(userId, {
+                    isManaged: roleId === 5, managementTierId: roleId === 5 ? 1 : null, primaryTalentId: 3,
+                  });
+                } else {
                   await storage.createMusician({
                     userId,
-                    isManaged: roleDetails?.[roleId]?.isManaged ?? (roleId === 5),
-                    managementTierId: roleDetails?.[roleId]?.managementTierId ?? (roleId === 5 ? 1 : null),
+                    isManaged: roleId === 5,
+                    managementTierId: roleId === 5 ? 1 : null,
                     primaryTalentId: 3,
-                    stageName: "",
-                    primaryGenre: "",
-                    basePrice: null,
-                    idealPerformanceRate: null,
-                    minimumAcceptableRate: null,
-                    isDemo: false,
-                    isComplete: false,
                   });
-                  break;
-                case 7: // Managed Professional
-                case 8: // Professional
+                }
+                break;
+
+              case 7: // Managed Professional
+              case 8: // Professional
+                const professional = await storage.getProfessional(userId);
+                if (professional) {
+                  await storage.updateProfessional(userId, {
+                    isManaged: roleId === 7, managementTierId: roleId === 7 ? 1 : null, primaryTalentId: 17,
+                  });
+                } else {
                   await storage.createProfessional({
                     userId,
-                    isManaged: roleDetails?.[roleId]?.isManaged ?? (roleId === 7),
-                    managementTierId: roleDetails?.[roleId]?.managementTierId ?? (roleId === 7 ? 1 : null),
+                    isManaged: roleId === 7,
+                    managementTierId: roleId === 7 ? 1 : null,
                     primaryTalentId: 17,
-                    basePrice: null,
-                    idealServiceRate: null,
-                    minimumAcceptableRate: null,
-                    bookingFormPictureUrl: "",
-                    isDemo: false,
-                    isComplete: false,
                   });
-                  break;
-              }
+                }
+                break;
             }
           }
         }
-  
+
         // 3️⃣ Fetch updated roles and role-specific data
         const updatedRoles = await storage.getUserRoles(userId);
         const roleData = [];
@@ -958,9 +961,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
           if ([7, 8].includes(role.id)) data = await storage.getProfessional(userId);
           roleData.push({ role, data });
         }
-  
+
         cacheHelpers.invalidateUserCache(userId);
-  
+
         res.json({
           success: true,
           user: { ...updatedUser, roles: updatedRoles, roleData },
@@ -974,7 +977,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       }
     }
   );
-  
+
 
   // PATCH /api/user/profile
   app.patch(
@@ -3429,12 +3432,12 @@ export async function registerRoutes(app: Express): Promise<Server> {
           if (roleIds.some((id) => [3, 4, 5, 6].includes(id))) {
             const assignmentRole = "Main Booked Talent";
             const assignmentNotes = `Primary talent - ${roleIds.includes(3)
-                ? "managed artist"
-                : roleIds.includes(4)
-                  ? "artist"
-                  : roleIds.includes(5)
-                    ? "managed musician"
-                    : "musician"
+              ? "managed artist"
+              : roleIds.includes(4)
+                ? "artist"
+                : roleIds.includes(5)
+                  ? "managed musician"
+                  : "musician"
               }`;
 
             await storage.createBookingAssignment({

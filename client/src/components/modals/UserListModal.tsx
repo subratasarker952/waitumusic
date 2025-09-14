@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
@@ -115,6 +115,7 @@ export default function UserListModal({ open, onOpenChange }: UserListModalProps
         <DialogContent className="max-w-6xl max-h-[90vh] overflow-hidden flex flex-col">
           <DialogHeader>
             <DialogTitle>Manage All Platform Users</DialogTitle>
+            <DialogDescription> View Edit Delete from one place </DialogDescription>
           </DialogHeader>
 
           <div className="flex items-center justify-between gap-4 mb-4">

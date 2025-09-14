@@ -103,6 +103,7 @@ export default function UserManagementModal({
         description: "New user account has been created successfully.",
       });
       queryClient.invalidateQueries({ queryKey: ['/api/users'] });
+      queryClient.invalidateQueries({ queryKey: ['/api/artists'] });
       onOpenChange(false);
     },
     onError: (error) => {
@@ -116,13 +117,14 @@ export default function UserManagementModal({
 
   // Update user mutation
   const updateUserMutation = useMutation({
-    mutationFn: (data: any) => apiRequest(`/api/users/${userData.id}`, { method: 'PATCH', body: JSON.stringify(data) }),
+    mutationFn: (data: any) => apiRequest(`/api/admin/users/${userData.id}`, { method: 'PATCH', body: JSON.stringify(data) }),
     onSuccess: () => {
       toast({
         title: "User Updated",
         description: "User information has been updated successfully.",
       });
       queryClient.invalidateQueries({ queryKey: ['/api/users'] });
+      queryClient.invalidateQueries({ queryKey: ['/api/artists'] });
       onOpenChange(false);
     },
     onError: (error) => {
@@ -169,13 +171,13 @@ export default function UserManagementModal({
           fullName: formData.fullName,
           email: formData.email,
           password: formData.password,
-          roleIds: formData.roles.map(r => parseInt(r))
+          roles: formData.roles.map(r => parseInt(r))
         });
       } else {
         await updateUserMutation.mutateAsync({
           fullName: formData.fullName,
           email: formData.email,
-          roleIds: formData.roles.map(r => parseInt(r)),
+          roles: formData.roles.map(r => parseInt(r)),
           status: formData.status
         });
       }
@@ -349,30 +351,31 @@ export default function UserManagementModal({
               <div className="space-y-2">
                 <Label htmlFor="roles">Roles *</Label>
                 <div className="grid grid-cols-2 gap-2">
-                  {roles.map((role: any) => (
-                    <label key={role.id} className="flex items-center gap-2">
-                      <input
-                        type="checkbox"
-                        value={role.id}
-                        checked={formData.roles.includes(role.id.toString())}
-                        onChange={(e) => {
-                          if (e.target.checked) {
-                            setFormData(prev => ({
-                              ...prev,
-                              roles: [...prev.roles, role.id.toString()]
-                            }));
-                          } else {
-                            setFormData(prev => ({
-                              ...prev,
-                              roles: prev.roles.filter(r => r !== role.id.toString())
-                            }));
-                          }
-                        }}
-                        disabled={mode === 'view'}
-                      />
-                      {role.name}
-                    </label>
-                  ))}
+                  {Array.isArray(roles) &&
+                    roles.map((role: any) => (
+                      <label key={role.id} className="flex items-center gap-2">
+                        <input
+                          type="checkbox"
+                          value={role.id}
+                          checked={formData.roles.includes(role.id.toString())}
+                          onChange={(e) => {
+                            if (e.target.checked) {
+                              setFormData(prev => ({
+                                ...prev,
+                                roles: [...prev.roles, role.id.toString()]
+                              }));
+                            } else {
+                              setFormData(prev => ({
+                                ...prev,
+                                roles: prev.roles.filter(r => r !== role.id.toString())
+                              }));
+                            }
+                          }}
+                          disabled={mode === 'view'}
+                        />
+                        {role.name}
+                      </label>
+                    ))}
                 </div>
               </div>
 
