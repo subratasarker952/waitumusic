@@ -91,7 +91,7 @@ export default function BookingWorkflow({
   const [selectedRolesByUser, setSelectedRolesByUser] = useState<Record<number, string[]>>({});
   const [isTransitioning, setIsTransitioning] = useState(false);
 
-  // State for talent dropdown - each user gets their own personalized dropdown
+  console.log(booking)
 
 
   // Modal states for technical rider components
@@ -153,13 +153,19 @@ export default function BookingWorkflow({
   const { data: bookingData, isLoading: bookingLoading, refetch: refetchBooking } = useQuery({
     queryKey: ['booking-workflow', bookingId],
     enabled: !!bookingId,
+    queryFn: async () => {
+      if (!bookingId) return {};
+      const res = await apiRequest(`/api/bookings/${bookingId}`);
+      return res; // or res.json() depending on your apiRequest
+    },
     staleTime: 5 * 60 * 1000, // 5 minutes
-    gcTime: 10 * 60 * 1000, // 10 minutes (replacing cacheTime)
+    gcTime: 10 * 60 * 1000,   // 10 minutes
     refetchOnWindowFocus: false,
     refetchOnMount: 'always',
-    refetchOnReconnect: false
+    refetchOnReconnect: false,
   });
 
+  console.log(bookingData)
 
   // Load all bookings for selection
   const { data: availableBookings = [] } = useQuery({
@@ -469,91 +475,91 @@ export default function BookingWorkflow({
 
     console.log('💾 BATCH SAVE: Saving all assigned talent to database...', assignedTalent);
 
-    try {
-      // Get role mapping for proper roleId assignment
-      const getRoleId = (talent: any) => {
-        if (talent.roleId) return talent.roleId;
-        if (talent.isMainBookedTalent) return 3; // managed_artist for main booked talent
-        if (talent.type === 'Artist') return 4; // artist
-        if (talent.type === 'Managed Musician') return 5; // managed_musician  
-        if (talent.type === 'Musician') return 6; // musician
-        if (talent.type === 'Professional') return 8; // professional
-        return 6; // default to musician
-      };
+    // try {
+    //   // Get role mapping for proper roleId assignment
+    //   const getRoleId = (talent: any) => {
+    //     if (talent.roleId) return talent.roleId;
+    //     if (talent.isMainBookedTalent) return 3; // managed_artist for main booked talent
+    //     if (talent.type === 'Artist') return 4; // artist
+    //     if (talent.type === 'Managed Musician') return 5; // managed_musician  
+    //     if (talent.type === 'Musician') return 6; // musician
+    //     if (talent.type === 'Professional') return 8; // professional
+    //     return 6; // default to musician
+    //   };
 
-      // Fetch existing talent once before looping
-      const existingCheck = await apiRequest(`/api/bookings/${bookingId}/talent-by-role`);
+    //   // Fetch existing talent once before looping
+    //   const existingCheck = await apiRequest(`/api/bookings/${bookingId}/talent-by-role`);
 
-      let existingTalent: any[] = [];
-      if (existingCheck.ok) {
-        try {
-          existingTalent = await existingCheck.json();
-        } catch {
-          existingTalent = [];
-        }
-      }
+    //   let existingTalent: any[] = [];
+    //   if (existingCheck.ok) {
+    //     try {
+    //       existingTalent = await existingCheck.json();
+    //     } catch {
+    //       existingTalent = [];
+    //     }
+    //   }
 
-      const promises = assignedTalent.map(async (talent) => {
-        // ✅ Skip if already exists
-        if (existingTalent.some((et) => et.userId === talent.userId)) {
-          console.log(`✅ Talent ${talent.name} already exists in database, skipping`);
-          return null;
-        }
+    //   const promises = assignedTalent.map(async (talent) => {
+    //     // ✅ Skip if already exists
+    //     if (existingTalent.some((et) => et.userId === talent.userId)) {
+    //       console.log(`✅ Talent ${talent.name} already exists in database, skipping`);
+    //       return null;
+    //     }
 
-        const assignmentData = {
-          userId: talent.userId,
-          roleId: getRoleId(talent),
-          selectedTalent: talent.selectedTalent || null,
-          isMainBookedTalent: talent.isMainBookedTalent || false,
-          assignmentType: "workflow",
-        };
+    //     const assignmentData = {
+    //       userId: talent.userId,
+    //       roleId: getRoleId(talent),
+    //       selectedTalent: talent.selectedTalent || null,
+    //       isMainBookedTalent: talent.isMainBookedTalent || false,
+    //       assignmentType: "workflow",
+    //     };
 
-        console.log(`💾 Saving talent ${talent.name} with payload:`, assignmentData);
+    //     console.log(`💾 Saving talent ${talent.name} with payload:`, assignmentData);
 
-        const response = await apiRequest(`/api/bookings/${bookingId}/assign`, {
-          method: "POST",
-          body: JSON.stringify(assignmentData),
-        });
+    //     const response = await apiRequest(`/api/bookings/${bookingId}/assign`, {
+    //       method: "POST",
+    //       body: JSON.stringify(assignmentData),
+    //     });
 
-        if (!response.ok) {
-          let errorMessage = `Failed to save ${talent.name}`;
-          try {
-            const error = await response.json();
-            errorMessage = error.message || errorMessage;
-          } catch {
-            errorMessage = `${errorMessage}: ${response.status} ${response.statusText}`;
-          }
-          console.error(`❌ ${errorMessage}`);
-          throw new Error(errorMessage);
-        }
+    //     if (!response.ok) {
+    //       let errorMessage = `Failed to save ${talent.name}`;
+    //       try {
+    //         const error = await response.json();
+    //         errorMessage = error.message || errorMessage;
+    //       } catch {
+    //         errorMessage = `${errorMessage}: ${response.status} ${response.statusText}`;
+    //       }
+    //       console.error(`❌ ${errorMessage}`);
+    //       throw new Error(errorMessage);
+    //     }
 
-        const result = await response.json();
-        console.log(`✅ Successfully saved ${talent.name}:`, result);
-        return result;
-      });
+    //     const result = await response.json();
+    //     console.log(`✅ Successfully saved ${talent.name}:`, result);
+    //     return result;
+    //   });
 
-      const results = await Promise.all(promises);
-      const savedCount = results.filter(r => r !== null).length;
+    //   const results = await Promise.all(promises);
+    //   const savedCount = results.filter(r => r !== null).length;
 
-      console.log('✅ BATCH SAVE COMPLETE: All talent saved to database');
-      console.log(`📊 Results: ${savedCount} new assignments, ${assignedTalent.length - savedCount} already existed`);
+    //   console.log('✅ BATCH SAVE COMPLETE: All talent saved to database');
+    //   console.log(`📊 Results: ${savedCount} new assignments, ${assignedTalent.length - savedCount} already existed`);
 
-      // Invalidate queries to refresh data
-      queryClient.invalidateQueries({ queryKey: ['booking-assigned-talent', bookingId] });
+    //   // Invalidate queries to refresh data
+    //   queryClient.invalidateQueries({ queryKey: ['booking-assigned-talent', bookingId] });
 
-      toast({
-        title: "Database Updated",
-        description: `${savedCount} talent assignments saved to database`
-      });
+    //   toast({
+    //     title: "Database Updated",
+    //     description: `${savedCount} talent assignments saved to database`
+    //   });
 
-    } catch (error) {
-      console.error('❌ BATCH SAVE FAILED:', error);
-      toast({
-        title: "Save Failed",
-        description: `Failed to save assignments: ${(error as any).message}`,
-        variant: "destructive"
-      });
-    }
+    // } catch (error) {
+    //   console.error('❌ BATCH SAVE FAILED:', error);
+    //   toast({
+    //     title: "Save Failed",
+    //     description: `Failed to save assignments: ${(error as any).message}`,
+    //     variant: "destructive"
+    //   });
+    // }
   };
 
   const progressToNextStep = async () => {
@@ -944,8 +950,8 @@ export default function BookingWorkflow({
                               const primaryRole = artist.primaryRole || 'Lead Vocalist';
                               const artistRoles = [primaryRole, ...(artist.skillsAndInstruments || [])].filter(Boolean);
                               const assignmentData = {
+                                id: Date.now(),
                                 userId: artist.userId,
-                                roleId: 3,
                                 name: artist.stageName || artist.user?.fullName,
                                 type: isMainBookedTalent ? 'Main Booked Talent' : 'Artist',
                                 role: isMainBookedTalent ? 'Main Booked Talent' : primaryRole,
@@ -959,8 +965,6 @@ export default function BookingWorkflow({
                                 assignmentType: 'manual'
                               };
                               setAssignedTalent([...assignedTalent, assignmentData]);
-                              console.log('🎯 MANUAL ASSIGNMENT - Calling database mutation:', assignmentData);
-                              await createAssignmentMutation.mutateAsync(assignmentData);
                             }}>
                             Assign
                           </Button>
@@ -1017,10 +1021,10 @@ export default function BookingWorkflow({
                                 isMainBookedTalent: isMainBookedTalent
                               };
                               setAssignedTalent([...assignedTalent, newAssignment]);
-                              toast({
-                                title: "Assignment",
-                                description: `${artist.stageName || artist.user?.fullName} assigned as ${isMainBookedTalent ? 'Main Booked Talent' : 'Supporting Talent'}`
-                              });
+                              // toast({
+                              //   title: "Assignment",
+                              //   description: `${artist.stageName || artist.user?.fullName} assigned as ${isMainBookedTalent ? 'Main Booked Talent' : 'Supporting Talent'}`
+                              // });
 
                               // // Save immediately to database
                               // try {
@@ -1094,13 +1098,13 @@ export default function BookingWorkflow({
                             <Button variant="outline" size="sm" className="border-purple-300 hover:bg-purple-100"
                               onClick={async () => {
                                 const isMainBookedTalent = assignedTalent.length === 0;
-                                const primaryRole = musician.primaryTalent || 'Musician';
+                                const primaryRole = musician.primaryTalent || 'Managed Musician';
                                 const musicianRoles = [primaryRole, ...(musician.secondaryTalents || [])].filter(Boolean);
                                 const newAssignment = {
                                   id: Date.now(),
                                   userId: musician.userId,
                                   name: musician.stageName || musician.user?.fullName,
-                                  type: isMainBookedTalent ? 'Main Booked Talent' : 'Musician',
+                                  type: isMainBookedTalent ? 'Main Booked Talent' : 'Managed Musician',
                                   role: isMainBookedTalent ? 'Main Booked Talent' : primaryRole,
                                   selectedRoles: isMainBookedTalent ? ['Main Booked Talent', ...musicianRoles] : musicianRoles,
                                   availableRoles: musicianRoles,
@@ -1110,11 +1114,10 @@ export default function BookingWorkflow({
                                   isMainBookedTalent: isMainBookedTalent
                                 };
                                 setAssignedTalent([...assignedTalent, newAssignment]);
-                                toast({
-                                  title: "Assignment",
-                                  description: `${musician.stageName || musician.user?.fullName} assigned as ${isMainBookedTalent ? 'Main Booked Talent' : primaryRole}`
-                                });
-
+                                // toast({
+                                //   title: "Assignment",
+                                //   description: `${musician.stageName || musician.user?.fullName} assigned as ${isMainBookedTalent ? 'Main Booked Talent' : primaryRole}`
+                                // });
                                 // // Save immediately to database
                                 // try {
                                 //   await createAssignmentMutation.mutateAsync({
@@ -1204,11 +1207,10 @@ export default function BookingWorkflow({
                                   isMainBookedTalent: isMainBookedTalent
                                 };
                                 setAssignedTalent([...assignedTalent, newAssignment]);
-                                toast({
-                                  title: "Assignment",
-                                  description: `${musician.stageName || musician.user?.fullName} assigned as ${isMainBookedTalent ? 'Main Booked Talent' : primaryRole}`
-                                });
-
+                                // toast({
+                                //   title: "Assignment",
+                                //   description: `${musician.stageName || musician.user?.fullName} assigned as ${isMainBookedTalent ? 'Main Booked Talent' : primaryRole}`
+                                // });
                                 // // Save immediately to database
                                 // try {
                                 //   await createAssignmentMutation.mutateAsync({
@@ -1262,16 +1264,16 @@ export default function BookingWorkflow({
                                 id: Date.now(),
                                 userId: professional.userId,
                                 name: professional.stageName || professional.user?.fullName,
-                                type: 'Professional',
-                                role: professional.serviceType || 'Professional',
+                                type: 'Managed Professional',
+                                role: professional.serviceType || 'Managed Professional',
                                 primaryTalentId: professional.primaryTalentId,
                                 avatarUrl: professional.profile?.avatarUrl
                               };
                               setAssignedTalent([...assignedTalent, newAssignment]);
-                              toast({
-                                title: "Assignment",
-                                description: `${professional.stageName || professional.user?.fullName} assigned as ${professional.serviceType || 'Professional'}`
-                              });
+                              // toast({
+                              //   title: "Assignment",
+                              //   description: `${professional.stageName || professional.user?.fullName} assigned as ${professional.serviceType || 'Professional'}`
+                              // });
 
                               // // Save immediately to database
                               // try {
@@ -1331,10 +1333,10 @@ export default function BookingWorkflow({
                                 avatarUrl: professional.profile?.avatarUrl
                               };
                               setAssignedTalent([...assignedTalent, newAssignment]);
-                              toast({
-                                title: "Assignment",
-                                description: `${professional.stageName || professional.user?.fullName} assigned as ${professional.serviceType || 'Professional'}`
-                              });
+                              // toast({
+                              //   title: "Assignment",
+                              //   description: `${professional.stageName || professional.user?.fullName} assigned as ${professional.serviceType || 'Professional'}`
+                              // });
                             }}
                           >
                             Assign
@@ -1388,145 +1390,146 @@ export default function BookingWorkflow({
   };
 
   // Step 2: Enhanced Contract Generation with Category-Based Pricing
-  const renderContractGeneration = () => {
-    const [contractPreview, setContractPreview] = useState<{ bookingAgreement: string | null; performanceContract: string | null; }>({
-      bookingAgreement: null,
-      performanceContract: null
-    });
+  const [contractPreview, setContractPreview] = useState<{ bookingAgreement: string | null; performanceContract: string | null; }>({
+    bookingAgreement: null,
+    performanceContract: null
+  });
 
-    const [contractConfig, setContractConfig] = useState({
-      counterOfferDeadline: '',
-      paymentTerms: '50% deposit, 50% on completion',
-      cancellationPolicy: '72 hours notice required',
-      additionalTerms: '',
-      waituMusicPlatformName: 'Wai\'tuMusic',
-      labelAddress: '123 Music Lane\nNashville, TN 37203\nUnited States',
-      totalBookingPrice: 0
-    });
+  const [contractConfig, setContractConfig] = useState({
+    counterOfferDeadline: '',
+    paymentTerms: '50% deposit, 50% on completion',
+    cancellationPolicy: '72 hours notice required',
+    additionalTerms: '',
+    waituMusicPlatformName: 'Wai\'tuMusic',
+    labelAddress: '123 Music Lane\nNashville, TN 37203\nUnited States',
+    totalBookingPrice: 0
+  });
 
-    // Calculate dynamic total booking price based on category and individual pricing
-    const calculateTotalBookingPrice = () => {
-      return assignedTalent.reduce((total, talent) => {
-        // Main Booked Talent has special priority - only individual overrides apply
-        if (talent.isMainBookedTalent) {
-          return total + (individualPricing[talent.id]?.price || parseFloat(categoryPricing['Main Booked Talent'] as string) || 0);
-        }
-        // For other talent, individual pricing overrides category pricing
-        return total + (individualPricing[talent.id]?.price || parseFloat(categoryPricing[talent.type as keyof typeof categoryPricing] as string) || 0);
-      }, 0);
-    };
-
-    // Get assigned talent categories for readonly logic
-    const getAssignedCategories = () => {
-      const categories = new Set<string>();
-      assignedTalent.forEach(talent => {
-        if (talent.isMainBookedTalent) {
-          categories.add('Main Booked Talent');
-        } else {
-          categories.add(talent.type);
-        }
-      });
-      return categories;
-    };
-
-    // Category-based pricing for talent types with Main Booked Talent priority
-    const [categoryPricing, setCategoryPricing] = useState({
-      'Main Booked Talent': '',
-      'Artist': '',
-      'Managed Musician': '',
-      'Managed Professional': '',
-      'Musician': '',
-      'Performance Professional': '',
-      'Professional': ''
-    });
-
-    // Individual talent pricing overrides
-    const [individualPricing, setIndividualPricing] = useState<Record<string, {
-      price: number;
-      counterOfferDeadline: string;
-      paymentTerms: string;
-      cancellationPolicy: string;
-      additionalTerms: string;
-    }>>({});
-
-    const [counterOffer, setCounterOffer] = useState({
-      received: false,
-      amount: 0,
-      deadline: '',
-      notes: ''
-    });
-
-    const generateContractPreview = async (type: 'booking' | 'performance') => {
-      try {
-        // Enhanced preview data with category-based and individual pricing
-        const previewData = {
-          assignedTalent: assignedTalent.map(talent => ({
-            ...talent,
-            individualPrice: individualPricing[talent.id]?.price || parseFloat(categoryPricing[talent.type as keyof typeof categoryPricing] as string) || 0,
-            paymentTerms: individualPricing[talent.id]?.paymentTerms || contractConfig.paymentTerms,
-            cancellationPolicy: individualPricing[talent.id]?.cancellationPolicy || contractConfig.cancellationPolicy,
-            additionalTerms: individualPricing[talent.id]?.additionalTerms || '',
-            counterOfferDeadline: individualPricing[talent.id]?.counterOfferDeadline || contractConfig.counterOfferDeadline
-          })),
-          contractConfig: {
-            ...contractConfig,
-            categoryPricing,
-            totalTalentCost: assignedTalent.reduce((total, talent) => {
-              const talentPrice = individualPricing[talent.id]?.price || categoryPricing[talent.type as keyof typeof categoryPricing] || 0;
-              return total + talentPrice;
-            }, 0),
-            // Ensure platform name is included in contract generation
-            platformName: contractConfig.waituMusicPlatformName,
-            labelAddress: contractConfig.labelAddress
-          },
-          counterOffer,
-          booking: {
-            ...booking,
-            clientName: booking?.bookerName || booking?.clientName || '',
-            eventName: booking?.eventName || '',
-            eventDate: booking?.eventDate || '',
-            venueName: booking?.venueName || booking?.venueDetails || 'TBD'
-          },
-          totalBookingPrice: contractConfig.totalBookingPrice || calculateTotalBookingPrice(),
-          finalOfferPrice: contractConfig.totalBookingPrice || calculateTotalBookingPrice(),
-          talentAskingPrice: calculateTotalBookingPrice()
-        };
-
-        // Make raw fetch request since server returns text/plain, not JSON
-        const token = localStorage.getItem('token');
-        const response = await fetch(`/api/bookings/${bookingId}/${type}-agreement-preview`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            ...(token && { 'Authorization': `Bearer ${token}` }),
-          },
-          body: JSON.stringify(previewData),
-          credentials: 'include'
-        });
-
-        if (response.ok) {
-          const preview = await response.text();
-          setContractPreview(prev => ({
-            ...prev,
-            [type === 'booking' ? 'bookingAgreement' : 'performanceContract']: preview
-          }));
-          toast({
-            title: "Contract Preview Generated",
-            description: `${type === 'booking' ? 'Booking Agreement' : 'Performance Contract'} preview with enhanced pricing`
-          });
-        } else {
-          const errorText = await response.text();
-          throw new Error(`${response.status}: ${errorText}`);
-        }
-      } catch (error) {
-        console.error('Contract preview error:', error);
-        toast({
-          title: "Preview Error",
-          description: "Unable to generate contract preview",
-          variant: "destructive"
-        });
+  // Calculate dynamic total booking price based on category and individual pricing
+  const calculateTotalBookingPrice = () => {
+    return assignedTalent.reduce((total, talent) => {
+      // Main Booked Talent has special priority - only individual overrides apply
+      if (talent.isMainBookedTalent) {
+        return total + (individualPricing[talent.id]?.price || parseFloat(categoryPricing['Main Booked Talent'] as string) || 0);
       }
-    };
+      // For other talent, individual pricing overrides category pricing
+      return total + (individualPricing[talent.id]?.price || parseFloat(categoryPricing[talent.type as keyof typeof categoryPricing] as string) || 0);
+    }, 0);
+  };
+
+  // Get assigned talent categories for readonly logic
+  const getAssignedCategories = () => {
+    const categories = new Set<string>();
+    assignedTalent.forEach(talent => {
+      if (talent.isMainBookedTalent) {
+        categories.add('Main Booked Talent');
+      } else {
+        categories.add(talent.type);
+      }
+    });
+    return categories;
+  };
+
+  // Category-based pricing for talent types with Main Booked Talent priority
+  const [categoryPricing, setCategoryPricing] = useState({
+    'Main Booked Talent': '',
+    'Artist': '',
+    'Musician': '',
+    'Managed Musician': '',
+    'Professional': '',
+    'Managed Professional': '',
+    // 'Performance Professional': '',
+  });
+
+  // Individual talent pricing overrides
+  const [individualPricing, setIndividualPricing] = useState<Record<string, {
+    price: number;
+    counterOfferDeadline: string;
+    paymentTerms: string;
+    cancellationPolicy: string;
+    additionalTerms: string;
+  }>>({});
+
+  const [counterOffer, setCounterOffer] = useState({
+    received: false,
+    amount: 0,
+    deadline: '',
+    notes: ''
+  });
+
+  const generateContractPreview = async (type: 'booking' | 'performance') => {
+    try {
+      // Enhanced preview data with category-based and individual pricing
+      const previewData = {
+        assignedTalent: assignedTalent.map(talent => ({
+          ...talent,
+          individualPrice: individualPricing[talent.id]?.price || parseFloat(categoryPricing[talent.type as keyof typeof categoryPricing] as string) || 0,
+          paymentTerms: individualPricing[talent.id]?.paymentTerms || contractConfig.paymentTerms,
+          cancellationPolicy: individualPricing[talent.id]?.cancellationPolicy || contractConfig.cancellationPolicy,
+          additionalTerms: individualPricing[talent.id]?.additionalTerms || '',
+          counterOfferDeadline: individualPricing[talent.id]?.counterOfferDeadline || contractConfig.counterOfferDeadline
+        })),
+        contractConfig: {
+          ...contractConfig,
+          categoryPricing,
+          totalTalentCost: assignedTalent.reduce((total, talent) => {
+            const talentPrice = individualPricing[talent.id]?.price || categoryPricing[talent.type as keyof typeof categoryPricing] || 0;
+            return total + talentPrice;
+          }, 0),
+          // Ensure platform name is included in contract generation
+          platformName: contractConfig.waituMusicPlatformName,
+          labelAddress: contractConfig.labelAddress
+        },
+        counterOffer,
+        booking: {
+          ...booking,
+          clientName: booking?.bookerName || booking?.clientName || '',
+          eventName: booking?.eventName || '',
+          eventDate: booking?.eventDate || '',
+          venueName: booking?.venueName || booking?.venueDetails || 'TBD'
+        },
+        totalBookingPrice: contractConfig.totalBookingPrice || calculateTotalBookingPrice(),
+        finalOfferPrice: contractConfig.totalBookingPrice || calculateTotalBookingPrice(),
+        talentAskingPrice: calculateTotalBookingPrice()
+      };
+
+      // Make raw fetch request since server returns text/plain, not JSON
+      const token = localStorage.getItem('token');
+      const response = await fetch(`/api/bookings/${bookingId}/${type}-agreement-preview`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          ...(token && { 'Authorization': `Bearer ${token}` }),
+        },
+        body: JSON.stringify(previewData),
+        credentials: 'include'
+      });
+
+      if (response.ok) {
+        const preview = await response.text();
+        setContractPreview(prev => ({
+          ...prev,
+          [type === 'booking' ? 'bookingAgreement' : 'performanceContract']: preview
+        }));
+        toast({
+          title: "Contract Preview Generated",
+          description: `${type === 'booking' ? 'Booking Agreement' : 'Performance Contract'} preview with enhanced pricing`
+        });
+      } else {
+        const errorText = await response.text();
+        throw new Error(`${response.status}: ${errorText}`);
+      }
+    } catch (error) {
+      console.error('Contract preview error:', error);
+      toast({
+        title: "Preview Error",
+        description: "Unable to generate contract preview",
+        variant: "destructive"
+      });
+    }
+  };
+
+  const renderContractGeneration = () => {
     return (
       <div className="space-y-6">
         {/* Contract Configuration */}
@@ -2102,12 +2105,57 @@ export default function BookingWorkflow({
 
   // NEW ENHANCED TECHNICAL RIDER SYSTEM - ALL OLD INTERFACE DESTROYED  
   // Step 3: Technical Rider Creation - Original Technical Rider Code with Templates
-  const renderTechnicalRider = () => {
-    const [technicalStep, setTechnicalStep] = useState(1);
-    const [selectedTemplate, setSelectedTemplate] = useState('');
-    const [stagePlot, setStagePlot] = useState({
-      stageWidth: 32,
-      stageDepth: 24,
+  const [technicalStep, setTechnicalStep] = useState(1);
+  const [selectedTemplate, setSelectedTemplate] = useState('');
+  const [stagePlot, setStagePlot] = useState({
+    stageWidth: 32,
+    stageDepth: 24,
+    performers: [
+      { id: 1, name: 'Lead Vocals', position: { x: 16, y: 4 }, instrument: 'vocals', musician: '' },
+      { id: 2, name: 'Guitar', position: { x: 8, y: 8 }, instrument: 'guitar', musician: '' },
+      { id: 3, name: 'Bass', position: { x: 24, y: 8 }, instrument: 'bass', musician: '' },
+      { id: 4, name: 'Drums', position: { x: 16, y: 16 }, instrument: 'drums', musician: '' },
+      { id: 5, name: 'Keyboards', position: { x: 4, y: 12 }, instrument: 'keyboard', musician: '' }
+    ],
+    monitors: [
+      { id: 1, position: { x: 14, y: 2 }, mix: 'Vocal Mix' },
+      { id: 2, position: { x: 18, y: 2 }, mix: 'Vocal Mix' },
+      { id: 3, position: { x: 6, y: 6 }, mix: 'Guitar Mix' },
+      { id: 4, position: { x: 26, y: 6 }, mix: 'Bass Mix' },
+      { id: 5, position: { x: 2, y: 10 }, mix: 'Keys Mix' }
+    ],
+    lighting: true,
+    videoRecording: false,
+    photographyArea: true,
+    template: ''
+  });
+
+  const stageTemplates = {
+    'solo-acoustic': {
+      name: 'Solo Acoustic',
+      performers: [
+        { id: 1, name: 'Lead Vocals', position: { x: 16, y: 4 }, instrument: 'vocals', musician: '' },
+        { id: 2, name: 'Acoustic Guitar', position: { x: 16, y: 8 }, instrument: 'guitar', musician: '' }
+      ],
+      monitors: [
+        { id: 1, position: { x: 14, y: 2 }, mix: 'Vocal/Guitar Mix' },
+        { id: 2, position: { x: 18, y: 2 }, mix: 'Vocal/Guitar Mix' }
+      ]
+    },
+    'duo': {
+      name: 'Duo Setup',
+      performers: [
+        { id: 1, name: 'Lead Vocals', position: { x: 12, y: 4 }, instrument: 'vocals', musician: '' },
+        { id: 2, name: 'Guitar', position: { x: 8, y: 8 }, instrument: 'guitar', musician: '' },
+        { id: 3, name: 'Keyboard/Vocals', position: { x: 20, y: 8 }, instrument: 'keyboard', musician: '' }
+      ],
+      monitors: [
+        { id: 1, position: { x: 10, y: 2 }, mix: 'Vocal Mix' },
+        { id: 2, position: { x: 18, y: 6 }, mix: 'Keys Mix' }
+      ]
+    },
+    'full-band': {
+      name: 'Full Band',
       performers: [
         { id: 1, name: 'Lead Vocals', position: { x: 16, y: 4 }, instrument: 'vocals', musician: '' },
         { id: 2, name: 'Guitar', position: { x: 8, y: 8 }, instrument: 'guitar', musician: '' },
@@ -2121,136 +2169,92 @@ export default function BookingWorkflow({
         { id: 3, position: { x: 6, y: 6 }, mix: 'Guitar Mix' },
         { id: 4, position: { x: 26, y: 6 }, mix: 'Bass Mix' },
         { id: 5, position: { x: 2, y: 10 }, mix: 'Keys Mix' }
-      ],
-      lighting: true,
-      videoRecording: false,
-      photographyArea: true,
-      template: ''
-    });
-
-    const stageTemplates = {
-      'solo-acoustic': {
-        name: 'Solo Acoustic',
-        performers: [
-          { id: 1, name: 'Lead Vocals', position: { x: 16, y: 4 }, instrument: 'vocals', musician: '' },
-          { id: 2, name: 'Acoustic Guitar', position: { x: 16, y: 8 }, instrument: 'guitar', musician: '' }
-        ],
-        monitors: [
-          { id: 1, position: { x: 14, y: 2 }, mix: 'Vocal/Guitar Mix' },
-          { id: 2, position: { x: 18, y: 2 }, mix: 'Vocal/Guitar Mix' }
-        ]
-      },
-      'duo': {
-        name: 'Duo Setup',
-        performers: [
-          { id: 1, name: 'Lead Vocals', position: { x: 12, y: 4 }, instrument: 'vocals', musician: '' },
-          { id: 2, name: 'Guitar', position: { x: 8, y: 8 }, instrument: 'guitar', musician: '' },
-          { id: 3, name: 'Keyboard/Vocals', position: { x: 20, y: 8 }, instrument: 'keyboard', musician: '' }
-        ],
-        monitors: [
-          { id: 1, position: { x: 10, y: 2 }, mix: 'Vocal Mix' },
-          { id: 2, position: { x: 18, y: 6 }, mix: 'Keys Mix' }
-        ]
-      },
-      'full-band': {
-        name: 'Full Band',
-        performers: [
-          { id: 1, name: 'Lead Vocals', position: { x: 16, y: 4 }, instrument: 'vocals', musician: '' },
-          { id: 2, name: 'Guitar', position: { x: 8, y: 8 }, instrument: 'guitar', musician: '' },
-          { id: 3, name: 'Bass', position: { x: 24, y: 8 }, instrument: 'bass', musician: '' },
-          { id: 4, name: 'Drums', position: { x: 16, y: 16 }, instrument: 'drums', musician: '' },
-          { id: 5, name: 'Keyboards', position: { x: 4, y: 12 }, instrument: 'keyboard', musician: '' }
-        ],
-        monitors: [
-          { id: 1, position: { x: 14, y: 2 }, mix: 'Vocal Mix' },
-          { id: 2, position: { x: 18, y: 2 }, mix: 'Vocal Mix' },
-          { id: 3, position: { x: 6, y: 6 }, mix: 'Guitar Mix' },
-          { id: 4, position: { x: 26, y: 6 }, mix: 'Bass Mix' },
-          { id: 5, position: { x: 2, y: 10 }, mix: 'Keys Mix' }
-        ]
-      }
-    };
-
-    const [mixerConfig, setMixerConfig] = useState({
-      inputs: [
-        { channel: 1, source: 'Lead Vocal', mic: 'SM58', location: 'Center Stage', notes: 'Main vocal microphone', musician: '' },
-        { channel: 2, source: 'Backup Vocal 1', mic: 'SM57', location: 'Stage Left', notes: 'Harmony vocals', musician: '' },
-        { channel: 3, source: 'Backup Vocal 2', mic: 'SM57', location: 'Stage Right', notes: 'Harmony vocals', musician: '' },
-        { channel: 4, source: 'Acoustic Guitar', mic: 'DI + SM81', location: 'Stage Left', notes: 'Direct input + condenser mic', musician: '' },
-        { channel: 5, source: 'Electric Guitar', mic: 'SM57', location: 'Guitar Amp', notes: 'Close mic on amp', musician: '' },
-        { channel: 6, source: 'Bass Guitar', mic: 'DI', location: 'Bass Amp', notes: 'Direct input from bass', musician: '' },
-        { channel: 7, source: 'Kick Drum', mic: 'Beta 52', location: 'Drum Kit', notes: 'Inside kick drum', musician: '' },
-        { channel: 8, source: 'Snare Drum', mic: 'SM57', location: 'Drum Kit', notes: 'Top of snare', musician: '' },
-        { channel: 9, source: 'Hi-Hat', mic: 'SM81', location: 'Drum Kit', notes: 'Condenser mic above hi-hat', musician: '' },
-        { channel: 10, source: 'Overhead L', mic: 'SM81', location: 'Drum Kit', notes: 'Left overhead cymbal mic', musician: '' },
-        { channel: 11, source: 'Overhead R', mic: 'SM81', location: 'Drum Kit', notes: 'Right overhead cymbal mic', musician: '' },
-        { channel: 12, source: 'Keyboard', mic: 'DI (Stereo)', location: 'Stage Left', notes: 'Stereo direct input', musician: '' }
-      ],
-      monitors: [
-        { mix: 1, name: 'Lead Vocal Mix', sends: 'Vocal, Drums, Bass, Keys' },
-        { mix: 2, name: 'Guitar Mix', sends: 'Guitar, Drums, Bass, Vocal' },
-        { mix: 3, name: 'Bass Mix', sends: 'Bass, Drums, Vocal, Guitar' },
-        { mix: 4, name: 'Drums Mix', sends: 'Drums, Bass, Guitar, Vocal' },
-        { mix: 5, name: 'Keys Mix', sends: 'Keys, Vocal, Drums, Bass' }
-      ],
-      effects: [
-        { name: 'Vocal Reverb', type: 'Hall Reverb', settings: 'Medium decay, warm tone' },
-        { name: 'Vocal Delay', type: 'Digital Delay', settings: '1/8 note, 15% feedback' },
-        { name: 'Drum Compression', type: 'Compressor', settings: 'Fast attack, medium release' },
-        { name: 'Master EQ', type: 'Graphic EQ', settings: 'House curve adjustment' }
       ]
-    });
+    }
+  };
 
-    const [setlist, setSetlist] = useState({
-      songs: [
-        { id: 1, title: 'Opening Song', key: 'G', duration: '3:45', transition: 'Direct', notes: 'High energy opener, crowd interaction', chords: 'G-D-Em-C' },
-        { id: 2, title: 'Fan Favorite #1', key: 'C', duration: '4:12', transition: 'Guitar intro', notes: 'Audience participation, clap along', chords: 'C-Am-F-G' },
-        { id: 3, title: 'Ballad', key: 'Em', duration: '5:30', transition: 'Acoustic', notes: 'Stripped down, intimate moment', chords: 'Em-C-G-D' },
-        { id: 4, title: 'Dance Track', key: 'A', duration: '3:55', transition: 'Build up', notes: 'Get the crowd moving, lights flash', chords: 'A-D-E-A' },
-        { id: 5, title: 'Cover Song', key: 'D', duration: '4:20', transition: 'Medley', notes: 'Popular cover, sing-along moment', chords: 'D-A-Bm-G' },
-        { id: 6, title: 'New Single', key: 'F', duration: '3:38', transition: 'Direct', notes: 'Promote new release, energy boost', chords: 'F-C-Dm-Bb' },
-        { id: 7, title: 'Instrumental Break', key: 'Bb', duration: '2:45', transition: 'Solo intro', notes: 'Showcase musicians, guitar/drum solos', chords: 'Bb-F-Gm-Eb' },
-        { id: 8, title: 'Emotional Peak', key: 'Am', duration: '4:55', transition: 'Slow build', notes: 'Powerful vocals, emotional connection', chords: 'Am-F-C-G' },
-        { id: 9, title: 'Party Anthem', key: 'E', duration: '3:25', transition: 'Immediate', notes: 'High energy, crowd jumping', chords: 'E-A-B-E' },
-        { id: 10, title: 'Regional Hit', key: 'G', duration: '4:05', transition: 'Call back', notes: 'Local crowd favorite, cultural moment', chords: 'G-Em-C-D' },
-        { id: 11, title: 'Closing Song', key: 'C', duration: '5:15', transition: 'Epic build', notes: 'Big finish, confetti, thank you speech', chords: 'C-G-Am-F' }
-      ],
-      timing: {
-        mainSet: '38:33',
-        encore: '7:40',
-        totalShow: '~54:00'
-      },
-      notes: 'Energy flow: High → Mixed → Emotional peak → Party finish. Include 2-3 crowd interaction moments.',
-      specialRequirements: 'Confetti cannons for final song, backup wireless mics available, towels for performers'
-    });
+  const [mixerConfig, setMixerConfig] = useState({
+    inputs: [
+      { channel: 1, source: 'Lead Vocal', mic: 'SM58', location: 'Center Stage', notes: 'Main vocal microphone', musician: '' },
+      { channel: 2, source: 'Backup Vocal 1', mic: 'SM57', location: 'Stage Left', notes: 'Harmony vocals', musician: '' },
+      { channel: 3, source: 'Backup Vocal 2', mic: 'SM57', location: 'Stage Right', notes: 'Harmony vocals', musician: '' },
+      { channel: 4, source: 'Acoustic Guitar', mic: 'DI + SM81', location: 'Stage Left', notes: 'Direct input + condenser mic', musician: '' },
+      { channel: 5, source: 'Electric Guitar', mic: 'SM57', location: 'Guitar Amp', notes: 'Close mic on amp', musician: '' },
+      { channel: 6, source: 'Bass Guitar', mic: 'DI', location: 'Bass Amp', notes: 'Direct input from bass', musician: '' },
+      { channel: 7, source: 'Kick Drum', mic: 'Beta 52', location: 'Drum Kit', notes: 'Inside kick drum', musician: '' },
+      { channel: 8, source: 'Snare Drum', mic: 'SM57', location: 'Drum Kit', notes: 'Top of snare', musician: '' },
+      { channel: 9, source: 'Hi-Hat', mic: 'SM81', location: 'Drum Kit', notes: 'Condenser mic above hi-hat', musician: '' },
+      { channel: 10, source: 'Overhead L', mic: 'SM81', location: 'Drum Kit', notes: 'Left overhead cymbal mic', musician: '' },
+      { channel: 11, source: 'Overhead R', mic: 'SM81', location: 'Drum Kit', notes: 'Right overhead cymbal mic', musician: '' },
+      { channel: 12, source: 'Keyboard', mic: 'DI (Stereo)', location: 'Stage Left', notes: 'Stereo direct input', musician: '' }
+    ],
+    monitors: [
+      { mix: 1, name: 'Lead Vocal Mix', sends: 'Vocal, Drums, Bass, Keys' },
+      { mix: 2, name: 'Guitar Mix', sends: 'Guitar, Drums, Bass, Vocal' },
+      { mix: 3, name: 'Bass Mix', sends: 'Bass, Drums, Vocal, Guitar' },
+      { mix: 4, name: 'Drums Mix', sends: 'Drums, Bass, Guitar, Vocal' },
+      { mix: 5, name: 'Keys Mix', sends: 'Keys, Vocal, Drums, Bass' }
+    ],
+    effects: [
+      { name: 'Vocal Reverb', type: 'Hall Reverb', settings: 'Medium decay, warm tone' },
+      { name: 'Vocal Delay', type: 'Digital Delay', settings: '1/8 note, 15% feedback' },
+      { name: 'Drum Compression', type: 'Compressor', settings: 'Fast attack, medium release' },
+      { name: 'Master EQ', type: 'Graphic EQ', settings: 'House curve adjustment' }
+    ]
+  });
 
-    // Chord progression generator
-    const generateChords = (key: string) => {
-      const chordProgressions = {
-        'C': ['C-Am-F-G', 'C-F-G-C', 'Am-F-C-G'],
-        'G': ['G-D-Em-C', 'G-C-D-G', 'Em-C-G-D'],
-        'D': ['D-A-Bm-G', 'D-G-A-D', 'Bm-G-D-A'],
-        'A': ['A-D-E-A', 'A-F#m-D-E', 'F#m-D-A-E'],
-        'E': ['E-A-B-E', 'E-C#m-A-B', 'C#m-A-E-B'],
-        'Em': ['Em-C-G-D', 'Em-Am-B-Em', 'C-G-Em-D'],
-        'Am': ['Am-F-C-G', 'Am-Dm-G-Am', 'F-C-Am-G'],
-        'F': ['F-C-Dm-Bb', 'F-Bb-C-F', 'Dm-Bb-F-C'],
-        'Bb': ['Bb-F-Gm-Eb', 'Bb-Eb-F-Bb', 'Gm-Eb-Bb-F']
-      };
-      const progressions = chordProgressions[key as keyof typeof chordProgressions] || ['C-Am-F-G'];
-      return progressions[Math.floor(Math.random() * progressions.length)];
+  const [setlist, setSetlist] = useState({
+    songs: [
+      { id: 1, title: 'Opening Song', key: 'G', duration: '3:45', transition: 'Direct', notes: 'High energy opener, crowd interaction', chords: 'G-D-Em-C' },
+      { id: 2, title: 'Fan Favorite #1', key: 'C', duration: '4:12', transition: 'Guitar intro', notes: 'Audience participation, clap along', chords: 'C-Am-F-G' },
+      { id: 3, title: 'Ballad', key: 'Em', duration: '5:30', transition: 'Acoustic', notes: 'Stripped down, intimate moment', chords: 'Em-C-G-D' },
+      { id: 4, title: 'Dance Track', key: 'A', duration: '3:55', transition: 'Build up', notes: 'Get the crowd moving, lights flash', chords: 'A-D-E-A' },
+      { id: 5, title: 'Cover Song', key: 'D', duration: '4:20', transition: 'Medley', notes: 'Popular cover, sing-along moment', chords: 'D-A-Bm-G' },
+      { id: 6, title: 'New Single', key: 'F', duration: '3:38', transition: 'Direct', notes: 'Promote new release, energy boost', chords: 'F-C-Dm-Bb' },
+      { id: 7, title: 'Instrumental Break', key: 'Bb', duration: '2:45', transition: 'Solo intro', notes: 'Showcase musicians, guitar/drum solos', chords: 'Bb-F-Gm-Eb' },
+      { id: 8, title: 'Emotional Peak', key: 'Am', duration: '4:55', transition: 'Slow build', notes: 'Powerful vocals, emotional connection', chords: 'Am-F-C-G' },
+      { id: 9, title: 'Party Anthem', key: 'E', duration: '3:25', transition: 'Immediate', notes: 'High energy, crowd jumping', chords: 'E-A-B-E' },
+      { id: 10, title: 'Regional Hit', key: 'G', duration: '4:05', transition: 'Call back', notes: 'Local crowd favorite, cultural moment', chords: 'G-Em-C-D' },
+      { id: 11, title: 'Closing Song', key: 'C', duration: '5:15', transition: 'Epic build', notes: 'Big finish, confetti, thank you speech', chords: 'C-G-Am-F' }
+    ],
+    timing: {
+      mainSet: '38:33',
+      encore: '7:40',
+      totalShow: '~54:00'
+    },
+    notes: 'Energy flow: High → Mixed → Emotional peak → Party finish. Include 2-3 crowd interaction moments.',
+    specialRequirements: 'Confetti cannons for final song, backup wireless mics available, towels for performers'
+  });
+
+  // Chord progression generator
+  const generateChords = (key: string) => {
+    const chordProgressions = {
+      'C': ['C-Am-F-G', 'C-F-G-C', 'Am-F-C-G'],
+      'G': ['G-D-Em-C', 'G-C-D-G', 'Em-C-G-D'],
+      'D': ['D-A-Bm-G', 'D-G-A-D', 'Bm-G-D-A'],
+      'A': ['A-D-E-A', 'A-F#m-D-E', 'F#m-D-A-E'],
+      'E': ['E-A-B-E', 'E-C#m-A-B', 'C#m-A-E-B'],
+      'Em': ['Em-C-G-D', 'Em-Am-B-Em', 'C-G-Em-D'],
+      'Am': ['Am-F-C-G', 'Am-Dm-G-Am', 'F-C-Am-G'],
+      'F': ['F-C-Dm-Bb', 'F-Bb-C-F', 'Dm-Bb-F-C'],
+      'Bb': ['Bb-F-Gm-Eb', 'Bb-Eb-F-Bb', 'Gm-Eb-Bb-F']
     };
+    const progressions = chordProgressions[key as keyof typeof chordProgressions] || ['C-Am-F-G'];
+    return progressions[Math.floor(Math.random() * progressions.length)];
+  };
 
-    const getInstrumentColor = (instrument: string) => {
-      const colors = {
-        vocals: '#FF6B6B',
-        guitar: '#4ECDC4',
-        bass: '#45B7D1',
-        drums: '#96CEB4',
-        keyboard: '#FFEAA7'
-      };
-      return colors[instrument as keyof typeof colors] || '#DDD';
+  const getInstrumentColor = (instrument: string) => {
+    const colors = {
+      vocals: '#FF6B6B',
+      guitar: '#4ECDC4',
+      bass: '#45B7D1',
+      drums: '#96CEB4',
+      keyboard: '#FFEAA7'
     };
+    return colors[instrument as keyof typeof colors] || '#DDD';
+  };
+
+  const renderTechnicalRider = () => {
     return (
       <div className="space-y-6">
         <div className="flex items-center justify-between mb-6">

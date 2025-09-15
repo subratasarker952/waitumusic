@@ -920,14 +920,14 @@ export async function registerRoutes(app: Express): Promise<Server> {
                 const musician = await storage.getMusician(userId);
                 if (musician) {
                   await storage.updateMusician(userId, {
-                    isManaged: roleId === 5, managementTierId: roleId === 5 ? 1 : null, primaryTalentId: 3,
+                    isManaged: roleId === 5, managementTierId: roleId === 5 ? 1 : null, primaryTalentId,
                   });
                 } else {
                   await storage.createMusician({
                     userId,
                     isManaged: roleId === 5,
                     managementTierId: roleId === 5 ? 1 : null,
-                    primaryTalentId: 3,
+                    primaryTalentId,
                   });
                 }
                 break;
@@ -3749,7 +3749,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.get(
     "/api/bookings/:id/talent-by-role",
     authenticateToken,
-    requireRole(ROLE_GROUPS.ADMIN_ONLY),
+    requireRole([1,2]),
     validateParams(schemas.idParamSchema),
     async (req: Request, res: Response) => {
       try {

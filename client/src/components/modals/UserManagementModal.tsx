@@ -150,6 +150,8 @@ export default function UserManagementModal({
       });
       queryClient.invalidateQueries({ queryKey: ['/api/users'] });
       queryClient.invalidateQueries({ queryKey: ['/api/artists'] });
+      queryClient.invalidateQueries({ queryKey: ['/api/musicians'] });
+      queryClient.invalidateQueries({ queryKey: ['/api/professionals'] });
       onOpenChange(false);
     },
     onError: (error) => {
