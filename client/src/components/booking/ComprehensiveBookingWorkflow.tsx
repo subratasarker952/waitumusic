@@ -31,6 +31,8 @@ import { TOAST_CONFIGS, BUTTON_CONFIGS, COLOR_CONFIGS, SPACING_CONFIGS } from '@
 import { apiRequest } from '@/lib/queryClient';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { workerData } from 'worker_threads';
+import { LoadingSpinner } from '../ui/loading-spinner';
+import { Alert } from '../ui/alert';
 
 interface ComprehensiveBookingWorkflowProps {
   bookingId: number;
@@ -131,11 +133,11 @@ export default function BookingWorkflow({
     {
       id: 'signature_collection',
       title: 'Signature Collection',
-      description: 'Collect signatures from all parties on contracts',
-      status: (booking?.signatures?.length || 0) >= 2 ? 'completed' : currentStep === 4 ? 'in_progress' : 'pending',
+      description: 'Collect signature from superadmin on contract',
+      status: (booking?.signatures?.length || 0) >= 1 ? 'completed' : currentStep === 4 ? 'in_progress' : 'pending',
       icon: <PenTool className="h-5 w-5" />,
       isActive: currentStep === 4,
-      canProgress: (booking?.signatures?.length || 0) >= 2
+      canProgress: (booking?.signatures?.length || 0) >= 1
     },
     {
       id: 'payment_processing',
@@ -145,7 +147,7 @@ export default function BookingWorkflow({
       icon: <CreditCard className="h-5 w-5" />,
       isActive: currentStep === 5,
       canProgress: (booking?.payments?.length || 0) > 0
-    },
+    }
 
   ];
 
@@ -475,91 +477,91 @@ export default function BookingWorkflow({
 
     console.log('💾 BATCH SAVE: Saving all assigned talent to database...', assignedTalent);
 
-    // try {
-    //   // Get role mapping for proper roleId assignment
-    //   const getRoleId = (talent: any) => {
-    //     if (talent.roleId) return talent.roleId;
-    //     if (talent.isMainBookedTalent) return 3; // managed_artist for main booked talent
-    //     if (talent.type === 'Artist') return 4; // artist
-    //     if (talent.type === 'Managed Musician') return 5; // managed_musician  
-    //     if (talent.type === 'Musician') return 6; // musician
-    //     if (talent.type === 'Professional') return 8; // professional
-    //     return 6; // default to musician
-    //   };
+    try {
+      // Get role mapping for proper roleId assignment
+      const getRoleId = (talent: any) => {
+        if (talent.roleId) return talent.roleId;
+        if (talent.isMainBookedTalent) return 3; // managed_artist for main booked talent
+        if (talent.type === 'Artist') return 4; // artist
+        if (talent.type === 'Managed Musician') return 5; // managed_musician  
+        if (talent.type === 'Musician') return 6; // musician
+        if (talent.type === 'Professional') return 8; // professional
+        return 6; // default to musician
+      };
 
-    //   // Fetch existing talent once before looping
-    //   const existingCheck = await apiRequest(`/api/bookings/${bookingId}/talent-by-role`);
+      // Fetch existing talent once before looping
+      const existingCheck = await apiRequest(`/api/bookings/${bookingId}/talent-by-role`);
 
-    //   let existingTalent: any[] = [];
-    //   if (existingCheck.ok) {
-    //     try {
-    //       existingTalent = await existingCheck.json();
-    //     } catch {
-    //       existingTalent = [];
-    //     }
-    //   }
+      let existingTalent: any[] = [];
+      if (existingCheck.ok) {
+        try {
+          existingTalent = await existingCheck.json();
+        } catch {
+          existingTalent = [];
+        }
+      }
 
-    //   const promises = assignedTalent.map(async (talent) => {
-    //     // ✅ Skip if already exists
-    //     if (existingTalent.some((et) => et.userId === talent.userId)) {
-    //       console.log(`✅ Talent ${talent.name} already exists in database, skipping`);
-    //       return null;
-    //     }
+      const promises = assignedTalent.map(async (talent) => {
+        // ✅ Skip if already exists
+        if (existingTalent.some((et) => et.userId === talent.userId)) {
+          console.log(`✅ Talent ${talent.name} already exists in database, skipping`);
+          return null;
+        }
 
-    //     const assignmentData = {
-    //       userId: talent.userId,
-    //       roleId: getRoleId(talent),
-    //       selectedTalent: talent.selectedTalent || null,
-    //       isMainBookedTalent: talent.isMainBookedTalent || false,
-    //       assignmentType: "workflow",
-    //     };
+        const assignmentData = {
+          userId: talent.userId,
+          roleId: getRoleId(talent),
+          selectedTalent: talent.selectedTalent || null,
+          isMainBookedTalent: talent.isMainBookedTalent || false,
+          assignmentType: "workflow",
+        };
 
-    //     console.log(`💾 Saving talent ${talent.name} with payload:`, assignmentData);
+        console.log(`💾 Saving talent ${talent.name} with payload:`, assignmentData);
 
-    //     const response = await apiRequest(`/api/bookings/${bookingId}/assign`, {
-    //       method: "POST",
-    //       body: JSON.stringify(assignmentData),
-    //     });
+        const response = await apiRequest(`/api/bookings/${bookingId}/assign`, {
+          method: "POST",
+          body: JSON.stringify(assignmentData),
+        });
 
-    //     if (!response.ok) {
-    //       let errorMessage = `Failed to save ${talent.name}`;
-    //       try {
-    //         const error = await response.json();
-    //         errorMessage = error.message || errorMessage;
-    //       } catch {
-    //         errorMessage = `${errorMessage}: ${response.status} ${response.statusText}`;
-    //       }
-    //       console.error(`❌ ${errorMessage}`);
-    //       throw new Error(errorMessage);
-    //     }
+        if (!response.ok) {
+          let errorMessage = `Failed to save ${talent.name}`;
+          try {
+            const error = await response.json();
+            errorMessage = error.message || errorMessage;
+          } catch {
+            errorMessage = `${errorMessage}: ${response.status} ${response.statusText}`;
+          }
+          console.error(`❌ ${errorMessage}`);
+          throw new Error(errorMessage);
+        }
 
-    //     const result = await response.json();
-    //     console.log(`✅ Successfully saved ${talent.name}:`, result);
-    //     return result;
-    //   });
+        const result = await response.json();
+        console.log(`✅ Successfully saved ${talent.name}:`, result);
+        return result;
+      });
 
-    //   const results = await Promise.all(promises);
-    //   const savedCount = results.filter(r => r !== null).length;
+      const results = await Promise.all(promises);
+      const savedCount = results.filter(r => r !== null).length;
 
-    //   console.log('✅ BATCH SAVE COMPLETE: All talent saved to database');
-    //   console.log(`📊 Results: ${savedCount} new assignments, ${assignedTalent.length - savedCount} already existed`);
+      console.log('✅ BATCH SAVE COMPLETE: All talent saved to database');
+      console.log(`📊 Results: ${savedCount} new assignments, ${assignedTalent.length - savedCount} already existed`);
 
-    //   // Invalidate queries to refresh data
-    //   queryClient.invalidateQueries({ queryKey: ['booking-assigned-talent', bookingId] });
+      // Invalidate queries to refresh data
+      queryClient.invalidateQueries({ queryKey: ['booking-assigned-talent', bookingId] });
 
-    //   toast({
-    //     title: "Database Updated",
-    //     description: `${savedCount} talent assignments saved to database`
-    //   });
+      toast({
+        title: "Database Updated",
+        description: `${savedCount} talent assignments saved to database`
+      });
 
-    // } catch (error) {
-    //   console.error('❌ BATCH SAVE FAILED:', error);
-    //   toast({
-    //     title: "Save Failed",
-    //     description: `Failed to save assignments: ${(error as any).message}`,
-    //     variant: "destructive"
-    //   });
-    // }
+    } catch (error) {
+      console.error('❌ BATCH SAVE FAILED:', error);
+      toast({
+        title: "Save Failed",
+        description: `Failed to save assignments: ${(error as any).message}`,
+        variant: "destructive"
+      });
+    }
   };
 
   const progressToNextStep = async () => {
@@ -2254,6 +2256,18 @@ export default function BookingWorkflow({
     return colors[instrument as keyof typeof colors] || '#DDD';
   };
 
+  const { data: technicalRider, refetch: refetchRider } = useQuery({
+    queryKey: ['technical-rider', bookingId],
+    queryFn: async () => apiRequest(`/api/bookings/${bookingId}/enhanced-technical-rider`),
+    refetchOnWindowFocus: false
+  });
+
+  if (!technicalRider && isLoading) {
+    return <LoadingSpinner />;
+  }
+
+
+
   const renderTechnicalRider = () => {
     return (
       <div className="space-y-6">
@@ -2348,9 +2362,9 @@ export default function BookingWorkflow({
               id: talent.userId || talent.id,
               userId: talent.userId,
               roleId: talent.roleId, // CRITICAL: Include roleId for membership determination
-              name: talent.stageName || talent.name || talent.fullName, // Use stageName for technical rider
               fullName: talent.fullName,
               stageName: profile?.stageNames?.[0] || talent.stageName || '',
+              name: talent.stageName || talent.name || talent.fullName,
               role: talent.role,
               primaryRole: profile?.primary_role || profile?.primaryRole || 'Lead Vocalist',
               skillsAndInstruments: profile?.skills_and_instruments || profile?.skillsAndInstruments || profile?.instruments || [],
@@ -2378,29 +2392,12 @@ export default function BookingWorkflow({
           }}
           canEdit={canEdit}
           userRole={userRole}
-          onSave={async (data: any) => {
-            try {
-              await apiRequest(`/api/bookings/${bookingId}/enhanced-technical-rider`, {
-                method: 'POST',
-                body: JSON.stringify(data)
-              });
-              toast(TOAST_CONFIGS.SUCCESS.SAVE);
-            } catch (error) {
-              toast({
-                title: "Error",
-                description: "Failed to save technical rider",
-                variant: "destructive"
-              });
-            }
+          onSave={async (data) => {
+            await apiRequest(`/api/bookings/${bookingId}/enhanced-technical-rider`, { method: 'POST', body: JSON.stringify(data) });
+            toast(TOAST_CONFIGS.SUCCESS.SAVE);
+            refetchRider();
           }}
-          onLoad={async () => {
-            try {
-              const data = await apiRequest(`/api/bookings/${bookingId}/enhanced-technical-rider`);
-              return data;
-            } catch (error) {
-              return null;
-            }
-          }}
+          onLoad={async () => technicalRider ?? null}
         />
       </div>
     );

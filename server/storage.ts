@@ -333,6 +333,7 @@ import {
   type InsertDocumentPermission,
   rolesManagement,
   userRoles,
+  contractSignatures,
 } from "@shared/schema";
 import {
   eq,
@@ -3757,6 +3758,19 @@ async getAllUsers(): Promise<User[]> {
     return this.getBooking(id);
   }
 
+  // Booking-এর সব contract signatures
+  async getContractSignatures(bookingId: number) {
+    const rows = await db.select().from(contractSignatures)
+      .where(eq(contractSignatures.documentId, bookingId));
+    return rows;
+  }
+
+  // Booking-এর সব payment records
+  async getPayments(bookingId: number) {
+    const rows = await db.select().from(payments)
+      .where(eq(payments.bookingId, bookingId));
+    return rows;
+  }
   // async getAllBookings(): Promise<Booking[]> {
   //   try {
   //     const bookingsList = await db.select().from(bookings);

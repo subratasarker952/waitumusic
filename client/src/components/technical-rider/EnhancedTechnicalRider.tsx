@@ -14,7 +14,7 @@ import { useEnhancedToast } from '@/components/ui/perfect-toast';
 import { TECHNICAL_RIDER_CONFIGS, TOAST_CONFIGS } from '@shared/ui-config';
 import EnhancedMixerPatchSystem from '@/components/stage-plot/EnhancedMixerPatchSystem';
 import { useQuery } from '@tanstack/react-query';
-import { 
+import {
   Save, Download, Share2, RefreshCw, Zap, AlertTriangle, CheckCircle, Clock,
   Layout, Volume2, Mic, Speaker, Music, Settings, Users, Calendar,
   Target, MapPin, FileText, Database, Wand2, Brain, Eye, Plus, Lightbulb, X, RotateCcw, Monitor, Move, ChevronUp, ChevronDown, Edit3
@@ -125,7 +125,7 @@ function EnhancedTechnicalRider({
     });
 
     console.log(`🍽️ HOSPITALITY: Member ${member.fullName} (ID: ${member.userId}) - Found ${(memberHospitalityData as any[]).length} requirements`);
-    
+
     return (
       <Card className="border-l-4 border-l-blue-500">
         <CardHeader className="pb-2">
@@ -197,7 +197,7 @@ function EnhancedTechnicalRider({
               });
               if (response.ok) {
                 const data = await response.json();
-                const dressingRoomReqs = data.filter((req: any) => 
+                const dressingRoomReqs = data.filter((req: any) =>
                   req.category === 'Dressing Room' || req.category === 'Green Room'
                 );
                 requirements.push(...dressingRoomReqs.map((req: any) => ({ ...req, memberName: member.fullName })));
@@ -241,7 +241,7 @@ function EnhancedTechnicalRider({
     });
 
     console.log(`🔧 TECHNICAL: Member ${member.fullName} (ID: ${member.userId}) - Found ${(memberTechnicalData as any[]).length} requirements`);
-    
+
     return (
       <Card className="border-l-4 border-l-orange-500">
         <CardHeader className="pb-2">
@@ -302,7 +302,7 @@ function EnhancedTechnicalRider({
     });
 
     console.log(`🎵 PERFORMANCE: Member ${member.fullName} (ID: ${member.userId}) - Found ${(memberPerformanceData as any[]).length} specifications`);
-    
+
     return (
       <Card className="border-l-4 border-l-green-500">
         <CardHeader className="pb-2">
@@ -368,7 +368,7 @@ function EnhancedTechnicalRider({
               const response = await fetch(`/api/users/${member.userId}/hospitality-requirements`);
               if (response.ok) {
                 const data = await response.json();
-                const refreshmentReqs = data.filter((req: any) => 
+                const refreshmentReqs = data.filter((req: any) =>
                   req.category === 'Catering' || req.category === 'Beverages' || req.category === 'Refreshments'
                 );
                 requirements.push(...refreshmentReqs.map((req: any) => ({ ...req, memberName: member.fullName })));
@@ -436,11 +436,11 @@ function EnhancedTechnicalRider({
               const response = await fetch(`/api/users/${member.userId}/hospitality-requirements`);
               if (response.ok) {
                 const data = await response.json();
-                const dressingReqs = data.filter((req: any) => 
+                const dressingReqs = data.filter((req: any) =>
                   req.requirementType === 'dressing_room' || req.requirementType === 'green_room'
                 );
-                requirements.push(...dressingReqs.map((req: any) => ({ 
-                  ...req, 
+                requirements.push(...dressingReqs.map((req: any) => ({
+                  ...req,
                   memberName: member.fullName,
                   checked: true,
                   editable: true
@@ -475,7 +475,7 @@ function EnhancedTechnicalRider({
     };
 
     const toggleItem = (id: number) => {
-      setStandardItems(prev => prev.map(item => 
+      setStandardItems(prev => prev.map(item =>
         item.id === id ? { ...item, checked: !item.checked } : item
       ));
     };
@@ -491,10 +491,10 @@ function EnhancedTechnicalRider({
               SERVICE PROVIDER requests dressing room accommodation based on band composition and individual needs.
             </Label>
           </div>
-          
+
           <div className="space-y-2">
             <h4 className="font-medium text-sm">Dressing Room Amenities:</h4>
-            
+
             {/* Custom requirements from band members */}
             {customRequirements.map((req, index) => (
               <div key={req.id || index} className="flex items-center gap-2 p-2 bg-blue-50 rounded">
@@ -506,12 +506,12 @@ function EnhancedTechnicalRider({
                 </Label>
               </div>
             ))}
-            
+
             {/* Standard and custom items */}
             {standardItems.map((item) => (
               <div key={item.id} className="flex items-center gap-2">
-                <Checkbox 
-                  id={`amenity-${item.id}`} 
+                <Checkbox
+                  id={`amenity-${item.id}`}
                   checked={item.checked}
                   onCheckedChange={() => toggleItem(item.id)}
                 />
@@ -523,7 +523,7 @@ function EnhancedTechnicalRider({
                 )}
               </div>
             ))}
-            
+
             {/* Add new item */}
             <div className="flex gap-2 mt-4">
               <Input
@@ -565,11 +565,11 @@ function EnhancedTechnicalRider({
               const response = await fetch(`/api/users/${member.userId}/hospitality-requirements`);
               if (response.ok) {
                 const data = await response.json();
-                const refreshmentReqs = data.filter((req: any) => 
+                const refreshmentReqs = data.filter((req: any) =>
                   req.requirementType === 'catering' || req.requirementType === 'beverages' || req.requirementType === 'refreshments'
                 );
-                requirements.push(...refreshmentReqs.map((req: any) => ({ 
-                  ...req, 
+                requirements.push(...refreshmentReqs.map((req: any) => ({
+                  ...req,
                   memberName: member.fullName,
                   checked: true,
                   editable: true
@@ -604,7 +604,7 @@ function EnhancedTechnicalRider({
     };
 
     const toggleItem = (id: number) => {
-      setStandardItems(prev => prev.map(item => 
+      setStandardItems(prev => prev.map(item =>
         item.id === id ? { ...item, checked: !item.checked } : item
       ));
     };
@@ -633,15 +633,15 @@ function EnhancedTechnicalRider({
               ))}
             </div>
           )}
-          
+
           <div className="space-y-2">
             <h4 className="font-medium text-sm">Standard Refreshments:</h4>
-            
+
             {/* Standard and custom items */}
             {standardItems.map((item) => (
               <div key={item.id} className="flex items-center gap-2">
-                <Checkbox 
-                  id={`refreshment-${item.id}`} 
+                <Checkbox
+                  id={`refreshment-${item.id}`}
                   checked={item.checked}
                   onCheckedChange={() => toggleItem(item.id)}
                 />
@@ -653,7 +653,7 @@ function EnhancedTechnicalRider({
                 )}
               </div>
             ))}
-            
+
             {/* Add new item */}
             <div className="flex gap-2 mt-4">
               <Input
@@ -672,7 +672,7 @@ function EnhancedTechnicalRider({
       </Card>
     );
   };
-  
+
   // Equipment Request Interface
   interface EquipmentRequest {
     id: string;
@@ -764,7 +764,7 @@ function EnhancedTechnicalRider({
     artistProfile?: any;
     musicianProfile?: any;
     professionalProfile?: any;
-    dropdownOptions?: Array<{value: string, label: string, color: string, icon: string, tier: number, type?: string}>;
+    dropdownOptions?: Array<{ value: string, label: string, color: string, icon: string, tier: number, type?: string }>;
     // MONITOR MIXING PROPERTIES
     monitorType?: 'wedge' | 'iem-wired' | 'iem-wireless';
     monitorMix?: Record<string, { selected: boolean; volume: number; sectionName?: string; channelName?: string }>;
@@ -794,13 +794,13 @@ function EnhancedTechnicalRider({
 
   // Selected element for control buttons
   const [selectedElement, setSelectedElement] = useState<string | null>(null);
-  
+
   // Separate state for legend editing (manual only)
   const [editingLegendItem, setEditingLegendItem] = useState<string | null>(null);
-  
+
   // Equipment counters for auto-increment naming
-  const [equipmentCounters, setEquipmentCounters] = useState<{[key: string]: number}>({});
-  
+  const [equipmentCounters, setEquipmentCounters] = useState<{ [key: string]: number }>({});
+
   // Stage plot legend data
   const [stageLegend, setStageLegend] = useState<Array<{
     id: string;
@@ -813,19 +813,19 @@ function EnhancedTechnicalRider({
 
   // DYNAMIC INSTRUMENT-DRIVEN MIXER SYSTEM - No predefined channels, builds from database
   const getEmptyMixerChannels = () => ({});
-  
+
   // Function to fetch all available instruments from database and create channel structure
   const buildChannelsFromInstruments = async (assignedInstruments: string[] = []) => {
     try {
       console.log('🎼 BUILDING CHANNELS FROM INSTRUMENT DATABASE');
-      
+
       // Fetch all instruments from database
       const response = await fetch('/api/instruments');
       if (!response.ok) throw new Error('Failed to fetch instruments');
-      
+
       const allInstruments = await response.json();
       console.log(`📊 Found ${allInstruments.length} instruments in database`);
-      
+
       // Group instruments by mixer_group
       const instrumentsByGroup = allInstruments.reduce((groups: any, instrument: any) => {
         const group = instrument.mixer_group.toLowerCase();
@@ -833,43 +833,43 @@ function EnhancedTechnicalRider({
         groups[group].push(instrument);
         return groups;
       }, {});
-      
+
       // Create channel structure based on assigned instruments + extras from each group
       const dynamicChannels: any = {};
-      
+
       // Process each mixer group
       Object.keys(instrumentsByGroup).forEach(groupName => {
         // Skip talkback from technical group - use ID-based filtering
         if (groupName === 'technical') {
           // Filter by ID: exclude Talkback Mic (ID 187)
-          const instruments = instrumentsByGroup[groupName].filter((inst: any) => 
+          const instruments = instrumentsByGroup[groupName].filter((inst: any) =>
             inst.id !== 187
           );
           if (instruments.length === 0) return;
         } else {
           var instruments = instrumentsByGroup[groupName];
         }
-        
+
         const groupChannels: any[] = [];
-        
+
         // Special handling for drums - use drum kit configurations
         if (groupName === 'drums') {
           // Check if we have drum kit configurations for assigned drummers - MAIN BOOKED TALENT ONLY
-          const drummers = bandMembers.filter(member => 
-            member.selectedTalent && 
-            (member.selectedTalent.toLowerCase().includes('drum') || 
-             member.assignedRole?.toLowerCase().includes('drum')) &&
+          const drummers = bandMembers.filter(member =>
+            member.selectedTalent &&
+            (member.selectedTalent.toLowerCase().includes('drum') ||
+              member.assignedRole?.toLowerCase().includes('drum')) &&
             (!member.assignmentRole || member.assignmentRole === 'Main Booked Talent')
           );
-          
+
           console.log(`🥁 Found ${drummers.length} drummers with configurations`);
-          
+
           if (drummers.length > 0) {
             drummers.forEach((drummer, drummerIndex) => {
               const drummerConfig = drumKitConfigs[drummer.id];
               if (drummerConfig && drummerConfig.components) {
                 console.log(`🎛️ Adding ${drummerConfig.components.length} channels for ${drummer.fullName || drummer.stageName}`);
-                
+
                 drummerConfig.components
                   .filter((comp: any) => comp.isSelected && comp.requiresChannel)
                   .forEach((component: any, compIndex: number) => {
@@ -913,7 +913,7 @@ function EnhancedTechnicalRider({
           const topInstruments = instruments
             .sort((a: any, b: any) => (b.display_priority || 0) - (a.display_priority || 0))
             .slice(0, 3);
-          
+
           topInstruments.forEach((instrument: any, index: number) => {
             groupChannels.push({
               id: `${groupName}-extra-${index}`,
@@ -926,19 +926,19 @@ function EnhancedTechnicalRider({
             });
           });
         }
-        
+
         // Only add group if it has channels
         if (groupChannels.length > 0) {
           dynamicChannels[groupName] = groupChannels;
         }
       });
-      
+
       console.log(`🎛️ Built ${Object.keys(dynamicChannels).length} channel groups:`, Object.keys(dynamicChannels));
       return dynamicChannels;
-      
+
     } catch (error) {
       console.error('❌ Error building channels from instruments:', error);
-      
+
       // Fallback to minimal essential channels if database fails
       return {
         vocals: [
@@ -975,12 +975,12 @@ function EnhancedTechnicalRider({
     technical: [],
     vocals: []
   });
-  
+
   // Channel group ordering state - controls the order of sections in the mixer (industry standard order)
   const [channelGroupOrder, setChannelGroupOrder] = useState<string[]>([
     'drums', 'percussion', 'bass', 'guitars', 'keyboards', 'vocals', 'brass', 'strings', 'woodwind', 'world', 'electronic', 'technical'
   ]);
-  
+
   // Drag state for channel groups
   const [groupDragState, setGroupDragState] = useState<{
     isDragging: boolean;
@@ -1007,7 +1007,7 @@ function EnhancedTechnicalRider({
       ...prev,
       [config.performerId || config.id]: config
     }));
-    
+
     // Rebuild mixer to include the new drum kit channels
     setTimeout(() => {
       rebuildMixerFromInstruments();
@@ -1015,16 +1015,16 @@ function EnhancedTechnicalRider({
   };
 
   const isDrummer = (member: any) => {
-    return member.selectedTalent && 
-           (member.selectedTalent.toLowerCase().includes('drum') ||
-            member.assignedRole?.toLowerCase().includes('drum'));
+    return member.selectedTalent &&
+      (member.selectedTalent.toLowerCase().includes('drum') ||
+        member.assignedRole?.toLowerCase().includes('drum'));
   };
 
   // REBUILD MIXER BY CYCLING THROUGH BAND MEMBERS FIRST - DATABASE DRIVEN
   const rebuildMixerFromInstruments = async () => {
     console.log('🎛️ REBUILDING MIXER - QUERYING DATABASE DIRECTLY');
     console.log('🎛️ Current band members count:', bandMembers.length);
-    
+
     try {
       // Initialize mixer sections based on database mixer groups
       const newMixerChannels: any = {
@@ -1041,9 +1041,9 @@ function EnhancedTechnicalRider({
         technical: [],
         vocals: []
       };
-      
+
       let channelCounter = 1;
-      
+
       // INSTRUMENT NAME TO ID MAPPING - Convert talent names to instrument IDs
       const getInstrumentIdFromTalentName = (talentName: string): number | null => {
         const instrumentMapping: Record<string, number> = {
@@ -1062,42 +1062,42 @@ function EnhancedTechnicalRider({
           'Background Vocalist': 145, // Background Vocalist 1
           'Backing Vocalist': 2,  // Backing Vocals
         };
-        
+
         return instrumentMapping[talentName] || null;
       };
 
       // STEP 1: Process each band member with their selectedTalent - CONVERT NAMES TO IDS
       for (const member of bandMembers) {
         const memberName = member.stageName || member.fullName || 'Unknown';
-        
+
         // Convert talent name to instrument ID
         const selectedTalent = member.selectedTalent || '';
         const instrumentId = selectedTalent ? getInstrumentIdFromTalentName(selectedTalent) : null;
-        
+
         // Process all assigned talent (restriction removed)
         if (!instrumentId || member.membership === 'MANAGEMENT') {
           console.log(`⚠️ Skipping ${memberName}: no valid instrument ID found for talent "${selectedTalent}"`);
           continue;
         }
-        
+
         console.log(`🎛️ Processing: ${memberName} with talent "${selectedTalent}" → instrument ID: ${instrumentId}`);
-        
+
         // STEP 2: Get instrument details by ID from all_instruments table
         const response = await fetch(`/api/instruments/${instrumentId}`);
         if (!response.ok) {
           console.log(`❌ Could not find instrument with ID ${instrumentId} for ${memberName}`);
           continue;
         }
-        
+
         const instrument = await response.json();
         const instrumentName = instrument.name;
         const mixerGroup = instrument.mixer_group || instrument.mixerGroup;
-        
+
         console.log(`🎵 Found instrument: ${instrumentName} (${mixerGroup}) for ${memberName}`);
-        
+
         // STEP 3: Determine mixer section from database mixer_group
         let mixerSection = 'vocals'; // Default fallback
-        
+
         switch (mixerGroup) {
           case 'DRUMS':
             mixerSection = 'drums';
@@ -1146,15 +1146,15 @@ function EnhancedTechnicalRider({
             mixerSection = 'vocals';
             break;
         }
-        
+
         // STEP 4: Handle drum kit configuration for drummers
         if (mixerSection === 'drums') {
           const drummerConfig = drumKitConfigs[member.id];
-          
+
           if (drummerConfig && drummerConfig.components) {
             // Use actual drum kit configuration from stage plot modal
             const enabledComponents = drummerConfig.components.filter((comp: any) => comp.isSelected && comp.requiresChannel);
-            
+
             enabledComponents.forEach((component: any) => {
               newMixerChannels.drums.push({
                 id: `drums-${channelCounter++}`,
@@ -1165,12 +1165,12 @@ function EnhancedTechnicalRider({
                 drumKitComponent: true
               });
             });
-            
+
             console.log(`🥁 Created ${enabledComponents.length} drum channels for ${memberName} from stage plot`);
           } else {
             // Default drum channels if no stage plot configuration
             const defaultDrumChannels = ['Kick', 'Snare', 'Hi-Hat', 'Tom 1', 'Tom 2', 'Floor Tom', 'OH L', 'OH R'];
-            
+
             defaultDrumChannels.forEach(channelName => {
               newMixerChannels.drums.push({
                 id: `drums-${channelCounter++}`,
@@ -1181,7 +1181,7 @@ function EnhancedTechnicalRider({
                 drumKitComponent: true
               });
             });
-            
+
             console.log(`🥁 Created ${defaultDrumChannels.length} default drum channels for ${memberName}`);
           }
         } else {
@@ -1193,22 +1193,22 @@ function EnhancedTechnicalRider({
             notes: '',
             assignedTo: memberName
           });
-          
+
           console.log(`🎵 Created ${instrumentName} channel for ${memberName} in ${mixerSection} section`);
         }
       }
-      
+
       // STEP 5: Add extra channels to reach 37 total
       const currentTotal = Object.values(newMixerChannels).reduce((sum: number, section: any) => sum + section.length, 0);
       const targetTotal = 37;
       const extraNeeded = targetTotal - currentTotal;
-      
+
       console.log(`🎛️ Current channels: ${currentTotal}, Need ${extraNeeded} more to reach ${targetTotal}`);
-      
+
       if (extraNeeded > 0) {
         const sectionsToExpand = ['percussion', 'bass', 'guitars', 'keyboards', 'brass', 'strings', 'woodwind', 'world', 'electronic', 'vocals'];
         const channelsPerSection = Math.floor(extraNeeded / sectionsToExpand.length);
-        
+
         sectionsToExpand.forEach(section => {
           for (let i = 0; i < channelsPerSection; i++) {
             newMixerChannels[section].push({
@@ -1220,7 +1220,7 @@ function EnhancedTechnicalRider({
             });
           }
         });
-        
+
         // Add remaining channels to vocals
         const remaining = extraNeeded - (channelsPerSection * sectionsToExpand.length);
         for (let i = 0; i < remaining; i++) {
@@ -1238,12 +1238,12 @@ function EnhancedTechnicalRider({
       console.log(`🎛️ MIXER REBUILT: ${finalTotal} total channels created (database-driven, stage plot aware)`);
 
       setMixerChannels(newMixerChannels);
-      
+
       // Set the correct ordering: DRUMS FIRST, then percussion, bass, guitars, keyboards, brass, strings, woodwind, world, electronic, vocals LAST
       const correctGroupOrder = ['drums', 'percussion', 'bass', 'guitars', 'keyboards', 'brass', 'strings', 'woodwind', 'world', 'electronic', 'technical', 'vocals'];
       setChannelGroupOrder(correctGroupOrder);
       console.log(`🎛️ Set correct group order: ${correctGroupOrder.join(' → ')}`);
-      
+
     } catch (error) {
       console.error('🚨 Error querying database for instruments:', error);
       // Fallback: don't crash, just create empty mixer
@@ -1281,23 +1281,23 @@ function EnhancedTechnicalRider({
       notes: "",
       assignedTo: "auto-assign"  // Default to auto-assign
     };
-    
+
     setMixerChannels((prev: typeof mixerChannels) => ({
       ...prev,
       [section]: [...prev[section], newChannel]
     }));
-    
+
     console.log(`🎚️ Added new channel to ${sectionStr} section with auto-assign default`);
   };
 
   const updateChannelAssignment = (section: keyof typeof mixerChannels, channelId: string, assignedTo: string) => {
     setMixerChannels((prev: typeof mixerChannels) => ({
       ...prev,
-      [section]: prev[section].map((channel: any) => 
+      [section]: prev[section].map((channel: any) =>
         channel.id === channelId ? { ...channel, assignedTo } : channel
       )
     }));
-    
+
     const sectionStr = String(section);
     console.log(`🎚️ Assigned channel ${channelId} to ${assignedTo}`);
   };
@@ -1307,7 +1307,7 @@ function EnhancedTechnicalRider({
       ...prev,
       [section]: prev[section].filter((channel: any) => channel.id !== channelId)
     }));
-    
+
     console.log(`🎚️ Removed channel ${channelId} from ${section} section`);
   };
 
@@ -1316,7 +1316,7 @@ function EnhancedTechnicalRider({
   const updateChannelInput = (section: keyof typeof mixerChannels, channelId: string, newInput: string) => {
     setMixerChannels((prev: typeof mixerChannels) => ({
       ...prev,
-      [section]: prev[section].map((channel: any) => 
+      [section]: prev[section].map((channel: any) =>
         channel.id === channelId ? { ...channel, input: newInput } : channel
       )
     }));
@@ -1325,7 +1325,7 @@ function EnhancedTechnicalRider({
   const updateChannelApplicable = (section: keyof typeof mixerChannels, channelId: string, applicable: boolean) => {
     setMixerChannels((prev: typeof mixerChannels) => ({
       ...prev,
-      [section]: prev[section].map((channel: any) => 
+      [section]: prev[section].map((channel: any) =>
         channel.id === channelId ? { ...channel, applicable } : channel
       )
     }));
@@ -1334,7 +1334,7 @@ function EnhancedTechnicalRider({
   const updateChannelNotes = (section: keyof typeof mixerChannels, channelId: string, notes: string) => {
     setMixerChannels((prev: typeof mixerChannels) => ({
       ...prev,
-      [section]: prev[section].map((channel: any) => 
+      [section]: prev[section].map((channel: any) =>
         channel.id === channelId ? { ...channel, notes } : channel
       )
     }));
@@ -1343,7 +1343,7 @@ function EnhancedTechnicalRider({
   // Calculate channel numbers dynamically - sequential numbering based on current group order
   const getChannelNumber = (section: keyof typeof mixerChannels, index: number): number => {
     let channelNumber = 1;
-    
+
     // Use current group order for numbering
     for (const sectionName of channelGroupOrder) {
       if (sectionName === section) {
@@ -1354,7 +1354,7 @@ function EnhancedTechnicalRider({
         channelNumber += mixerChannels[sectionName as keyof typeof mixerChannels].length;
       }
     }
-    
+
     return channelNumber;
   };
 
@@ -1392,22 +1392,22 @@ function EnhancedTechnicalRider({
   const handleGroupDrop = (e: React.DragEvent, targetGroup: string) => {
     e.preventDefault();
     const draggedGroup = e.dataTransfer.getData('text/plain');
-    
+
     if (draggedGroup && draggedGroup !== targetGroup) {
       // Reorder the channel groups
       const newOrder = [...channelGroupOrder];
       const draggedIndex = newOrder.indexOf(draggedGroup);
       const targetIndex = newOrder.indexOf(targetGroup);
-      
+
       // Remove dragged group and insert at new position
       newOrder.splice(draggedIndex, 1);
       newOrder.splice(targetIndex, 0, draggedGroup);
-      
+
       setChannelGroupOrder(newOrder);
       console.log(`🎚️ REORDER: Moved "${draggedGroup}" to position of "${targetGroup}"`);
       console.log(`🎚️ NEW ORDER:`, newOrder);
     }
-    
+
     setGroupDragState({
       isDragging: false,
       draggedGroup: null,
@@ -1459,15 +1459,15 @@ function EnhancedTechnicalRider({
   // Scroll to top function
   const scrollToTop = () => {
     if (containerRef.current) {
-      containerRef.current.scrollIntoView({ 
-        behavior: 'smooth', 
-        block: 'start' 
+      containerRef.current.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start'
       });
     } else {
-      window.scrollTo({ 
-        top: 0, 
-        left: 0, 
-        behavior: 'smooth' 
+      window.scrollTo({
+        top: 0,
+        left: 0,
+        behavior: 'smooth'
       });
     }
   };
@@ -1491,7 +1491,7 @@ function EnhancedTechnicalRider({
         tier: tier
       });
     }
-    
+
     // Add skills converted to player names
     if (profile.skillsAndInstruments && Array.isArray(profile.skillsAndInstruments)) {
       profile.skillsAndInstruments.forEach((skill: string) => {
@@ -1507,7 +1507,7 @@ function EnhancedTechnicalRider({
         }
       });
     }
-    
+
     // Add performance roles
     if (profile.performanceRoles && Array.isArray(profile.performanceRoles)) {
       profile.performanceRoles.forEach((role: string) => {
@@ -1523,7 +1523,7 @@ function EnhancedTechnicalRider({
       });
     }
   };
-  
+
   const addProfessionalRoles = (options: any[], profile: any, color: string, icon: string, tier: number, excludeRole?: string) => {
     // Add primary profession
     if (profile.primaryRole && profile.primaryRole !== excludeRole) {
@@ -1535,7 +1535,7 @@ function EnhancedTechnicalRider({
         tier: tier
       });
     }
-    
+
     // Add service capabilities
     if (profile.serviceCapabilities && Array.isArray(profile.serviceCapabilities)) {
       profile.serviceCapabilities.forEach((service: string) => {
@@ -1550,7 +1550,7 @@ function EnhancedTechnicalRider({
         }
       });
     }
-    
+
     // Add professional roles
     if (profile.professionalRoles && Array.isArray(profile.professionalRoles)) {
       profile.professionalRoles.forEach((role: string) => {
@@ -1594,8 +1594,8 @@ function EnhancedTechnicalRider({
   ];
 
   // Database-driven talent dropdown options with generic additions
-  const buildTalentDropdownOptions = (memberData: any): Array<{value: string, label: string, color: string, icon: string, tier: number, type?: string}> => {
-    const options: Array<{value: string, label: string, color: string, icon: string, tier: number, type?: string}> = [];
+  const buildTalentDropdownOptions = (memberData: any): Array<{ value: string, label: string, color: string, icon: string, tier: number, type?: string }> => {
+    const options: Array<{ value: string, label: string, color: string, icon: string, tier: number, type?: string }> = [];
     const existingTalents = new Set<string>();
 
     // Add primary talent with star badge
@@ -1611,7 +1611,7 @@ function EnhancedTechnicalRider({
       });
       existingTalents.add(talent);
     }
-    
+
     // Add secondary talents with outline badges
     if (memberData.secondaryTalents && Array.isArray(memberData.secondaryTalents) && memberData.secondaryTalents.length > 0) {
       memberData.secondaryTalents.forEach((talent: string) => {
@@ -1628,7 +1628,7 @@ function EnhancedTechnicalRider({
         }
       });
     }
-    
+
     // Add divider if there are existing talents
     if (options.length > 0) {
       options.push({
@@ -1640,14 +1640,14 @@ function EnhancedTechnicalRider({
         type: 'Divider'
       });
     }
-    
+
     // Add generic talents based on member type
-    const isProfessional = memberData.type === 'Professional' || 
-                          memberData.talentType?.includes('Professional') ||
-                          memberData.roleId === 7 || memberData.roleId === 8;
-    
+    const isProfessional = memberData.type === 'Professional' ||
+      memberData.talentType?.includes('Professional') ||
+      memberData.roleId === 7 || memberData.roleId === 8;
+
     const genericTalents = isProfessional ? GENERIC_PROFESSIONAL_ROLES : GENERIC_ARTIST_MUSICIAN_TALENTS;
-    
+
     genericTalents.forEach((talent: string) => {
       if (!existingTalents.has(talent)) {
         options.push({
@@ -1660,7 +1660,7 @@ function EnhancedTechnicalRider({
         });
       }
     });
-    
+
     // If no options at all, add default
     if (options.length === 0 || (options.length === 1 && options[0].type === 'Divider')) {
       options.push({
@@ -1683,46 +1683,46 @@ function EnhancedTechnicalRider({
         const memberName = member.fullName;
         const memberStage = member.stageName;
         const assignedTo = legendItem.assignedTo;
-        
-        return assignedTo === memberName || 
-               assignedTo === memberStage ||
-               (memberName && assignedTo?.includes(memberName)) ||
-               (memberStage && assignedTo?.includes(memberStage)) ||
-               (memberName && memberName.includes(assignedTo || '')) ||
-               (memberStage && memberStage.includes(assignedTo || ''));
+
+        return assignedTo === memberName ||
+          assignedTo === memberStage ||
+          (memberName && assignedTo?.includes(memberName)) ||
+          (memberStage && assignedTo?.includes(memberStage)) ||
+          (memberName && memberName.includes(assignedTo || '')) ||
+          (memberStage && memberStage.includes(assignedTo || ''));
       });
-      
+
       if (matchingMember) {
         // PRIORITY: Use selectedTalent (what user actually selected), convert to player name if needed
         let updatedRole = matchingMember.selectedTalent;
-        
+
         // Convert instrument names to player names for consistency
         updatedRole = convertInstrumentToPlayer(updatedRole || '');
-        
 
-        
+
+
         if (legendItem.role !== updatedRole) {
           console.log(`🎯 STAGE LEGEND SYNC: Updating ${legendItem.assignedTo} role from "${legendItem.role}" to "${updatedRole}"`);
         }
-        
+
         return {
           ...legendItem,
           role: updatedRole
         };
       }
-      
+
       return legendItem;
     }));
     console.log('DEBUG: Syncing stage legend talent/skills with band members');
   }, [bandMembers, JSON.stringify(bandMembers.map(member => member.selectedTalent))]);
 
 
-  
+
   // Convert instrument names to player names - ENHANCED for comprehensive instrument coverage
   const convertInstrumentToPlayer = (instrument: string): string => {
     const conversions: { [key: string]: string } = {
       'Guitar': 'Guitarist',
-      'Bass': 'Bass Player', 
+      'Bass': 'Bass Player',
       'Piano': 'Pianist',
       'Keyboard': 'Keyboardist',
       'Drums': 'Drummer',
@@ -1752,7 +1752,7 @@ function EnhancedTechnicalRider({
       'Electric Piano': 'Pianist',
       'Bass Guitar': 'Bass Player'
     };
-    
+
     return conversions[instrument] || instrument;
   };
 
@@ -1763,35 +1763,35 @@ function EnhancedTechnicalRider({
       console.log('🔄 Assigned musicians (props) count:', Array.isArray(assignedMusicians) ? assignedMusicians.length : 0);
       console.log('🔄 Final assigned musicians (API) count:', Array.isArray(finalAssignedMusicians) ? finalAssignedMusicians.length : 0);
       console.log('🔄 Will use:', assignedMusicians && assignedMusicians.length > 0 ? 'assignedMusicians (props)' : 'finalAssignedMusicians (API)');
-      
+
       const members = [];
-      
+
       // Add assigned musicians - Use assignedMusicians props (same as Artist Lineup) for consistency
       const musicianDataSource = assignedMusicians && assignedMusicians.length > 0 ? assignedMusicians : finalAssignedMusicians;
       console.log('🔄 Using musician data source:', Array.isArray(musicianDataSource) && musicianDataSource.length > 0 ? 'assignedMusicians (props)' : 'finalAssignedMusicians (API)');
-      
+
       if (musicianDataSource && Array.isArray(musicianDataSource)) {
         musicianDataSource.forEach((musician, index) => {
           // Determine role badge from musician data - use server-provided talentType
           const roleBadge = musician.talentType;
-          
+
           // Determine membership from role type (artists/musicians = BAND, professionals = TEAM)
           // Check if user is a professional based on multiple indicators
-          const isProfessional = musician.roleId === 7 || musician.roleId === 8 || 
-                                 musician.talentType?.includes('Professional') ||
-                                 musician.type === 'Professional' ||
-                                 musician.assignedRole === 'Audio Engineer' ||
-                                 musician.assignedRole === 'Legal Counsel' ||
-                                 musician.assignedRole?.includes('Engineer') ||
-                                 musician.assignedRole?.includes('Counsel') ||
-                                 musician.assignedRole?.includes('Manager') ||
-                                 (musician.professionalProfile && Object.keys(musician.professionalProfile).length > 0) ||
-                                 musician.role === 'professional';
-          
+          const isProfessional = musician.roleId === 7 || musician.roleId === 8 ||
+            musician.talentType?.includes('Professional') ||
+            musician.type === 'Professional' ||
+            musician.assignedRole === 'Audio Engineer' ||
+            musician.assignedRole === 'Legal Counsel' ||
+            musician.assignedRole?.includes('Engineer') ||
+            musician.assignedRole?.includes('Counsel') ||
+            musician.assignedRole?.includes('Manager') ||
+            (musician.professionalProfile && Object.keys(musician.professionalProfile).length > 0) ||
+            musician.role === 'professional';
+
           const membership = isProfessional ? TECHNICAL_RIDER_CONFIGS.MEMBERSHIP_TYPES.TEAM : TECHNICAL_RIDER_CONFIGS.MEMBERSHIP_TYPES.BAND;
           // Get actual role name from database talents - with debugging for Phoenix
           const primaryRole = musician.primaryTalent || null;
-          
+
 
 
           const memberData = {
@@ -1804,7 +1804,7 @@ function EnhancedTechnicalRider({
             roleId: musician.roleId, // Store roleId for database role name lookup
             isManual: false,
             primaryRole: primaryRole, // Store primary role
-            assignedRole: musician.assignedRole, 
+            assignedRole: musician.assignedRole,
             selectedRoles: musician.selectedRoles || [],
             isMainBookedTalent: musician.isMainBookedTalent || musician.isPrimary || false,
             assignmentRole: musician.type || (musician.isMainBookedTalent ? 'Main Booked Talent' : (musician.assignmentRole || 'Supporting Musician')),
@@ -1823,16 +1823,16 @@ function EnhancedTechnicalRider({
             hasPrimaryTalent: !!musician.primaryTalent,
             hasSecondaryTalents: !!(musician.secondaryTalents && musician.secondaryTalents.length > 0)
           };
-          
+
 
           members.push(memberData);
         });
       } else {
         console.log('🔄 No assigned musicians found or data is not an array');
       }
-      
+
       console.log(`🔄 Total members added from API: ${members.length}`);
-      
+
       // Add default management team members if no admins provided
       if (!finalAssignedMusicians || !Array.isArray(finalAssignedMusicians) || !finalAssignedMusicians.some((m: any) => m.role === 'admin')) {
         members.push(
@@ -1866,10 +1866,10 @@ function EnhancedTechnicalRider({
           }
         );
       }
-      
+
       // Sort members by normal order (no Main Booked Talent restriction)
       const sortedMembers = members.sort((a, b) => {
-        
+
         // Then by role badge priority (from assignment source) - ONLY AUTHENTIC ROLES
         const typeOrder: { [key: string]: number } = {
           'Managed Artist': 1,
@@ -1880,27 +1880,27 @@ function EnhancedTechnicalRider({
           'MANAGEMENT': 999, // Always last
           'Unknown': 1000 // Fallback for items without proper role data
         };
-        
+
         // Use role badge (from assignment source) for sorting, with membership as fallback - NO HARDCODED ROLES
-        const aType = (a as any).roleBadge || (a as any).talentType || 
-                     (a.membership === 'MANAGEMENT' ? 'MANAGEMENT' : 
-                      a.membership === 'TEAM' ? 'TEAM' : 'Unknown');
-        const bType = (b as any).roleBadge || (b as any).talentType || 
-                     (b.membership === 'MANAGEMENT' ? 'MANAGEMENT' : 
-                      b.membership === 'TEAM' ? 'TEAM' : 'Unknown');
-        
+        const aType = (a as any).roleBadge || (a as any).talentType ||
+          (a.membership === 'MANAGEMENT' ? 'MANAGEMENT' :
+            a.membership === 'TEAM' ? 'TEAM' : 'Unknown');
+        const bType = (b as any).roleBadge || (b as any).talentType ||
+          (b.membership === 'MANAGEMENT' ? 'MANAGEMENT' :
+            b.membership === 'TEAM' ? 'TEAM' : 'Unknown');
+
         const aOrder = typeOrder[aType] || 7;
         const bOrder = typeOrder[bType] || 7;
-        
+
         console.log('Sorting:', a.fullName, 'badge:', (a as any).roleBadge, 'order:', aOrder, 'vs', b.fullName, 'badge:', (b as any).roleBadge, 'order:', bOrder);
-        
+
         return aOrder - bOrder;
       });
-      
+
       console.log(`🔄 FINAL: Setting ${sortedMembers.length} band members`);
-      
+
       setBandMembers(sortedMembers);
-      
+
       // Rebuild mixer channels from band members after they are set
       if (sortedMembers.length > 0) {
         console.log('🎛️ REBUILDING MIXER for', sortedMembers.length, 'band members on page load');
@@ -1973,14 +1973,14 @@ function EnhancedTechnicalRider({
         return [...prev, newMember];
       }
     });
-    
+
     // Scroll to top after adding member
     scrollToTop();
   };
 
   const updateBandMember = (id: string, updates: Partial<typeof bandMembers[0]>) => {
-    setBandMembers(prev => 
-      prev.map(member => 
+    setBandMembers(prev =>
+      prev.map(member =>
         member.id === id ? { ...member, ...updates } : member
       )
     );
@@ -1993,9 +1993,9 @@ function EnhancedTechnicalRider({
       toast(TOAST_CONFIGS.ERROR.CANNOT_REMOVE);
       return;
     }
-    
+
     setBandMembers(prev => prev.filter(member => member.id !== id));
-    
+
     // Scroll to top after removing member
     scrollToTop();
   };
@@ -2028,7 +2028,7 @@ function EnhancedTechnicalRider({
       membership: member.membership,
       dropdownOptions: member.dropdownOptions
     });
-    
+
     // Use pre-built dropdown options if available (from assignment source tracking)
     if (member.dropdownOptions && Array.isArray(member.dropdownOptions)) {
       console.log('🎯 Using pre-built dropdown options');
@@ -2041,14 +2041,14 @@ function EnhancedTechnicalRider({
         icon: option.icon
       }));
     }
-    
+
     const roleList: Array<{ role: string; type: string; isRequested: boolean; color: string; tier?: number; icon?: string }> = [];
     const usedRoles = new Set<string>();
-    
+
     // 1. Primary talent first (database)
     if (member.primaryRole && member.primaryRole.trim()) {
-      roleList.push({ 
-        role: member.primaryRole, 
+      roleList.push({
+        role: member.primaryRole,
         type: 'primary',
         isRequested: true,
         color: 'text-blue-600',
@@ -2057,7 +2057,7 @@ function EnhancedTechnicalRider({
       });
       usedRoles.add(member.primaryRole);
     }
-    
+
     // 2. Additional user talents/skills second (database)
     if (member.profileRoles && Array.isArray(member.profileRoles)) {
       member.profileRoles.forEach(role => {
@@ -2074,10 +2074,10 @@ function EnhancedTechnicalRider({
         }
       });
     }
-    
+
     // 3. Generic filtered lists third (contextual by user type)
     let genericOptions = [];
-    
+
     if (member.membership === "BAND") {
       // For artists/musicians: performance talents
       genericOptions = [
@@ -2097,7 +2097,7 @@ function EnhancedTechnicalRider({
         "Artist Manager", "Booking Agent", "Publicist"
       ];
     }
-    
+
     // Add generic options that aren't already used
     genericOptions.forEach(role => {
       if (!usedRoles.has(role)) {
@@ -2115,10 +2115,10 @@ function EnhancedTechnicalRider({
     console.log('🎯 Final dropdown options for', member.fullName, ':', roleList.map(r => r.role));
     return roleList;
   };
-  
+
   // Helper functions for tier mapping
   const getTierType = (tier: number) => {
-    switch(tier) {
+    switch (tier) {
       case 1: return 'assignment-source';
       case 2: return 'managed-artist';
       case 3: return 'artist';
@@ -2129,9 +2129,9 @@ function EnhancedTechnicalRider({
       default: return 'generic';
     }
   };
-  
+
   const getTierColor = (color: string) => {
-    switch(color) {
+    switch (color) {
       case 'blue': return 'text-blue-600';
       case 'green': return 'text-green-600';
       case 'purple': return 'text-purple-600';
@@ -2151,15 +2151,15 @@ function EnhancedTechnicalRider({
     const reqs: TechnicalRequirement[] = [];
     const musicianName = musician.fullName || musician.name || `Musician ${index + 1}`;
     const instruments = musician.skillsAndInstruments || musician.instruments || musician.profileRoles || [];
-    
+
     // Track what we've already added to avoid duplicates
     let hasVocalMic = false;
     let hasDrumKit = false;
     let hasGuitar = false;
-    
+
     instruments.forEach((instrument: string) => {
       const instrumentLower = instrument.toLowerCase();
-      
+
       // DRUMS - only add once per musician
       if (instrumentLower.includes('drum') && !hasDrumKit) {
         reqs.push({
@@ -2215,7 +2215,7 @@ function EnhancedTechnicalRider({
         });
         hasVocalMic = true;
       }
-      
+
       // GUITAR - only add once per musician  
       if (instrumentLower.includes('guitar') && !hasGuitar) {
         reqs.push({
@@ -2233,7 +2233,7 @@ function EnhancedTechnicalRider({
         hasGuitar = true;
       }
     });
-    
+
     return reqs;
   };
 
@@ -2368,7 +2368,7 @@ function EnhancedTechnicalRider({
       providedBy: 'venue',
       status: 'pending'
     };
-    
+
     setRiderData(prev => ({
       ...prev,
       technicalRequirements: [...prev.technicalRequirements, newReq]
@@ -2379,10 +2379,10 @@ function EnhancedTechnicalRider({
   const addStageElement = (type: string, name: string, assignedUser?: any) => {
     // Check if user is already placed on stage plot
     if (assignedUser?.userId) {
-      const userAlreadyOnStage = riderData.stageLayout.elements.some(element => 
+      const userAlreadyOnStage = riderData.stageLayout.elements.some(element =>
         element.assignedTo === assignedUser.fullName || element.assignedTo === assignedUser.name
       );
-      
+
       if (userAlreadyOnStage) {
         toast({
           title: "User Already on Stage",
@@ -2392,15 +2392,15 @@ function EnhancedTechnicalRider({
         return; // Don't add duplicate user
       }
     }
-    
+
     // Auto-increment counter for naming
     const currentCount = equipmentCounters[name] || 0;
     const newCount = currentCount + 1;
     setEquipmentCounters(prev => ({ ...prev, [name]: newCount }));
-    
+
     // Generate name with auto-increment
     const elementName = `${name} ${newCount}`;
-    
+
     const newElement = {
       id: `element-${Date.now()}`,
       type: 'equipment' as const,
@@ -2430,7 +2430,7 @@ function EnhancedTechnicalRider({
     if (assignedRole) {
       assignedRole = convertInstrumentToPlayer(assignedRole);
     }
-    
+
     setStageLegend(prev => [...prev, {
       id: newElement.id,
       name: elementName,
@@ -2445,9 +2445,9 @@ function EnhancedTechnicalRider({
 
   // Get color for equipment type
   const getElementColor = (type: string) => {
-    const colors: {[key: string]: string} = {
+    const colors: { [key: string]: string } = {
       'Piano': '#8B5CF6',
-      'Guitar': '#EF4444', 
+      'Guitar': '#EF4444',
       'Drums': '#F59E0B',
       'Mic Stand': '#10B981',
       'Monitor': '#3B82F6',
@@ -2458,9 +2458,9 @@ function EnhancedTechnicalRider({
 
   const removeStageElement = (elementId: string) => {
     const elementToRemove = riderData.stageLayout.elements.find(el => el.id === elementId);
-    const isAssignedToBandMember = elementToRemove?.assignedTo && 
+    const isAssignedToBandMember = elementToRemove?.assignedTo &&
       bandMembers.some(member => member.fullName === elementToRemove.assignedTo);
-    
+
     if (isAssignedToBandMember) {
       // Confirm removal for band member elements
       const confirmed = window.confirm(
@@ -2470,7 +2470,7 @@ function EnhancedTechnicalRider({
         return; // Don't remove if not confirmed
       }
     }
-    
+
     setRiderData(prev => ({
       ...prev,
       stageLayout: {
@@ -2478,17 +2478,17 @@ function EnhancedTechnicalRider({
         elements: prev.stageLayout.elements.filter(el => el.id !== elementId)
       }
     }));
-    
+
     // Remove from legend
     setStageLegend(prev => prev.filter(item => item.id !== elementId));
-    
+
     // Clear selection if removing selected element
     if (selectedElement === elementId) {
       setSelectedElement(null);
     }
-    
+
     console.log(`🎭 STAGE REMOVAL: Removed ${elementToRemove?.name} for ${elementToRemove?.assignedTo}`);
-    
+
     // Scroll to top after removing element
     scrollToTop();
   };
@@ -2499,14 +2499,14 @@ function EnhancedTechnicalRider({
       ...prev,
       stageLayout: {
         ...prev.stageLayout,
-        elements: prev.stageLayout.elements.map(el => 
+        elements: prev.stageLayout.elements.map(el =>
           el.id === elementId ? { ...el, name: newName, displayName: newName } : el
         )
       }
     }));
 
     // Update legend
-    setStageLegend(prev => prev.map(item => 
+    setStageLegend(prev => prev.map(item =>
       item.id === elementId ? { ...item, name: newName } : item
     ));
   };
@@ -2518,37 +2518,37 @@ function EnhancedTechnicalRider({
     const instruments = user.skillsAndInstruments || user.instruments || user.profileRoles || [];
     const instrumentSet = new Set<string>();
     const result: any[] = [];
-    
+
     // Add selectedTalent/primaryRole first (highest priority)
     if (primaryTalent) {
       const instrumentType = getInstrumentTypeFromTalent(primaryTalent);
       result.push(instrumentType);
       instrumentSet.add(instrumentType.name);
     }
-    
+
     // Track if we've already added a vocal mic for this user
     let hasVocalMic = primaryTalent && (primaryTalent.toLowerCase().includes('vocal') || primaryTalent.toLowerCase().includes('singer'));
-    
+
     instruments.forEach((instrument: string) => {
       const instrumentType = getInstrumentTypeFromTalent(instrument);
-      
+
       // Skip vocals if we already have a vocal mic
       if ((instrument.toLowerCase().includes('vocal') || instrument.toLowerCase().includes('singer')) && hasVocalMic) {
         return;
       }
-      
+
       // Use instrument name as key to avoid duplicates of same instrument type
       const key = instrumentType.name;
       if (!instrumentSet.has(key)) {
         instrumentSet.add(key);
         result.push(instrumentType);
-        
+
         if (instrument.toLowerCase().includes('vocal') || instrument.toLowerCase().includes('singer')) {
           hasVocalMic = true;
         }
       }
     });
-    
+
     return result;
   };
 
@@ -2556,7 +2556,7 @@ function EnhancedTechnicalRider({
   const getRoleNameFromId = (roleId: number): string => {
     const roleMap: { [key: number]: string } = {
       1: 'SuperAdmin',
-      2: 'Admin', 
+      2: 'Admin',
       3: 'Managed Artist',
       4: 'Artist',
       5: 'Managed Musician',
@@ -2571,7 +2571,7 @@ function EnhancedTechnicalRider({
   // ENHANCED: Get proper instrument type and icon based on talent/skill
   const getInstrumentTypeFromTalent = (talent: string) => {
     const talentLower = talent.toLowerCase();
-    
+
     if (talentLower.includes('piano') || talentLower.includes('pianist')) {
       return { type: '🎹', name: 'Piano' };
     } else if (talentLower.includes('keyboard') || talentLower.includes('keyboardist')) {
@@ -2603,69 +2603,69 @@ function EnhancedTechnicalRider({
 
     canvas.width = 800;
     canvas.height = 600;
-    
+
     // White background
     ctx.fillStyle = '#ffffff';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
-    
+
     // Stage area
     ctx.strokeStyle = '#cccccc';
     ctx.strokeRect(50, 50, 500, 300);
-    
+
     // Labels
     ctx.fillStyle = '#666666';
     ctx.font = '12px Arial';
     ctx.textAlign = 'center';
     ctx.fillText('AUDIENCE', 300, 30);
     ctx.fillText('BACKSTAGE', 300, 370);
-    
+
     // Draw elements
     riderData.stageLayout.elements.forEach((element) => {
       const x = 50 + (element.x / 100) * 500;
       const y = 50 + (element.y / 100) * 300;
-      
+
       // Element box
       ctx.fillStyle = (element as any).color || '#3B82F6';
       ctx.fillRect(x - 20, y - 10, 40, 20);
-      
+
       // Element text
       ctx.fillStyle = '#ffffff';
       ctx.font = '10px Arial';
       ctx.textAlign = 'center';
       ctx.fillText(element.name, x, y + 3);
     });
-    
+
     // Legend
     ctx.fillStyle = '#000000';
     ctx.font = '14px Arial';
     ctx.textAlign = 'left';
     ctx.fillText('LEGEND', 580, 70);
-    
+
     stageLegend.forEach((item, index) => {
       const legendY = 90 + (index * 25);
-      
+
       // Legend color box
       ctx.fillStyle = item.color;
       ctx.fillRect(580, legendY - 8, 12, 12);
-      
+
       // Legend text
       ctx.fillStyle = '#000000';
       ctx.font = '10px Arial';
       ctx.fillText(item.name, 600, legendY);
-      
+
       if (item.assignedTo) {
         ctx.font = '8px Arial';
         ctx.fillStyle = '#666666';
         ctx.fillText(`${item.assignedTo} (${item.role})`, 600, legendY + 12);
       }
     });
-    
+
     // Download
     const link = document.createElement('a');
     link.download = `stage-plot-${bookingId || 'design'}.png`;
     link.href = canvas.toDataURL();
     link.click();
-    
+
     // Scroll to top after export
     scrollToTop();
   };
@@ -2674,7 +2674,7 @@ function EnhancedTechnicalRider({
 
   const moveElementWithControls = (direction: 'up' | 'down' | 'left' | 'right') => {
     if (!selectedElement) return;
-    
+
     const moveDistance = 5; // 5% movement
     setRiderData(prev => ({
       ...prev,
@@ -2682,17 +2682,17 @@ function EnhancedTechnicalRider({
         ...prev.stageLayout,
         elements: prev.stageLayout.elements.map(el => {
           if (el.id !== selectedElement) return el;
-          
+
           let newX = el.x;
           let newY = el.y;
-          
+
           switch (direction) {
             case 'up': newY = Math.max(0, el.y - moveDistance); break;
             case 'down': newY = Math.min(100, el.y + moveDistance); break;
             case 'left': newX = Math.max(0, el.x - moveDistance); break;
             case 'right': newX = Math.min(100, el.x + moveDistance); break;
           }
-          
+
           return { ...el, x: newX, y: newY };
         })
       }
@@ -2706,7 +2706,7 @@ function EnhancedTechnicalRider({
       stageLayout: {
         ...prev.stageLayout,
         elements: prev.stageLayout.elements.map(el =>
-          el.id === elementId 
+          el.id === elementId
             ? { ...el, rotation: (el.rotation + rotation) % 360 }
             : el
         )
@@ -2718,10 +2718,10 @@ function EnhancedTechnicalRider({
   const startDrag = (elementId: string, e: React.MouseEvent | React.TouchEvent) => {
     e.preventDefault();
     setSelectedElement(elementId);
-    
+
     const clientX = 'touches' in e ? e.touches[0].clientX : e.clientX;
     const clientY = 'touches' in e ? e.touches[0].clientY : e.clientY;
-    
+
     setDragState({
       isDragging: true,
       elementId,
@@ -2732,19 +2732,19 @@ function EnhancedTechnicalRider({
 
   const handleDrag = (e: MouseEvent | TouchEvent) => {
     if (!dragState.isDragging || !dragState.elementId) return;
-    
+
     const clientX = 'touches' in e ? e.touches[0].clientX : e.clientX;
     const clientY = 'touches' in e ? e.touches[0].clientY : e.clientY;
-    
+
     const deltaX = clientX - dragState.startX;
     const deltaY = clientY - dragState.startY;
-    
+
     // Convert pixel delta to percentage (assuming 400px container height/width)
     const deltaXPercent = (deltaX / 400) * 100;
     const deltaYPercent = (deltaY / 400) * 100;
-    
+
     updateElementPosition(dragState.elementId, deltaXPercent, deltaYPercent);
-    
+
     setDragState(prev => ({
       ...prev,
       startX: clientX,
@@ -2840,7 +2840,7 @@ function EnhancedTechnicalRider({
       ...prev,
       audioConfig: {
         ...prev.audioConfig,
-        monitors: prev.audioConfig.monitors.map((monitor, i) => 
+        monitors: prev.audioConfig.monitors.map((monitor, i) =>
           i === index ? { ...monitor, ...updates } : monitor
         )
       }
@@ -2881,7 +2881,7 @@ function EnhancedTechnicalRider({
       ...prev,
       audioConfig: {
         ...prev.audioConfig,
-        inputList: prev.audioConfig.inputList.map((input, i) => 
+        inputList: prev.audioConfig.inputList.map((input, i) =>
           i === index ? { ...input, ...updates } : input
         )
       }
@@ -2891,20 +2891,20 @@ function EnhancedTechnicalRider({
   // Handle talent change and sync across stage plot and mixer assignments
   const handleTalentChange = (memberId: string, newTalent: string) => {
     console.log('🔄 TALENT SYNC: Handling talent change for member:', memberId, 'to:', newTalent);
-    
+
     // Update band member's selected talent
     setBandMembers(prev => prev.map(member => {
       if (member.id === memberId) {
         const updatedMember = { ...member, selectedTalent: newTalent };
-        
+
         // Check if this member is in the stage plot
-        const isInStagePlot = riderData.stageLayout.elements.some(el => 
+        const isInStagePlot = riderData.stageLayout.elements.some(el =>
           el.assignedTo === member.fullName || el.assignedTo === member.fullName
         );
-        
+
         if (isInStagePlot) {
           console.log('🎯 SYNC: Member is in stage plot, updating stage elements and mixer assignments');
-          
+
           // Update stage plot elements
           setRiderData(prevRider => {
             const updatedElements = prevRider.stageLayout.elements.map(el => {
@@ -2917,7 +2917,7 @@ function EnhancedTechnicalRider({
               }
               return el;
             });
-            
+
             return {
               ...prevRider,
               stageLayout: {
@@ -2926,7 +2926,7 @@ function EnhancedTechnicalRider({
               }
             };
           });
-          
+
           // Update stage legend
           setStageLegend(prev => prev.map(legendItem => {
             if (legendItem.assignedTo === member.fullName) {
@@ -2937,23 +2937,23 @@ function EnhancedTechnicalRider({
             }
             return legendItem;
           }));
-          
+
           // Update mixer channel assignments
           const updatedInputList = riderData.audioConfig.inputList.map(input => {
             if (input.assignedTo === member.fullName) {
               // Check if new talent matches this channel's instrument type
               const channelInstrument = input.instrument.toLowerCase();
               const newTalentLower = newTalent.toLowerCase();
-              
+
               // If talent doesn't match channel type anymore, unassign
-              if (!channelInstrument.includes(newTalentLower) && 
-                  !newTalentLower.includes(channelInstrument.split(' ')[0])) {
+              if (!channelInstrument.includes(newTalentLower) &&
+                !newTalentLower.includes(channelInstrument.split(' ')[0])) {
                 return { ...input, assignedTo: '' };
               }
             }
             return input;
           });
-          
+
           setRiderData(prevRider => ({
             ...prevRider,
             audioConfig: {
@@ -2961,12 +2961,12 @@ function EnhancedTechnicalRider({
               inputList: updatedInputList
             }
           }));
-          
+
           // Trigger auto-assignment to reassign channels with new talent
           // Use immediate assignment for better reliability
           autoAssignMixerChannels();
         }
-        
+
         return updatedMember;
       }
       return member;
@@ -2991,323 +2991,323 @@ function EnhancedTechnicalRider({
   const autoAssignMixerChannels = useCallback(() => {
     try {
       console.log('🎛️ AUTO-ASSIGNMENT: Using bandMembers like stage plot');
-      
+
       if (!bandMembers || bandMembers.length === 0) {
         console.log('🎛️ No band members available for auto-assignment');
         return;
       }
-    
-    console.log(`🎛️ Processing ${bandMembers.length} band members for auto-assignment`);
-    
-    // Track assigned members to prevent duplicates
-    const assignedMemberIds = new Set();
-    
-    // Update mixer channels directly
-    setMixerChannels(prevChannels => {
-      const updatedChannels = { ...prevChannels };
-      
-      // Clear all existing assignments first (for re-assignment when user returns)
-      Object.keys(updatedChannels).forEach(sectionName => {
-        (updatedChannels as any)[sectionName].forEach((channel: any) => {
-          channel.assignedTo = '';
+
+      console.log(`🎛️ Processing ${bandMembers.length} band members for auto-assignment`);
+
+      // Track assigned members to prevent duplicates
+      const assignedMemberIds = new Set();
+
+      // Update mixer channels directly
+      setMixerChannels(prevChannels => {
+        const updatedChannels = { ...prevChannels };
+
+        // Clear all existing assignments first (for re-assignment when user returns)
+        Object.keys(updatedChannels).forEach(sectionName => {
+          (updatedChannels as any)[sectionName].forEach((channel: any) => {
+            channel.assignedTo = '';
+          });
         });
-      });
-      console.log('🧹 CLEARED all existing channel assignments before re-assigning');
-      
-      // Process each band member
-      bandMembers.forEach((member: any, index: number) => {
-        if (assignedMemberIds.has(member.userId)) return;
-        // CRITICAL FIX: Use selectedTalent (what user chose in dropdown) for flexibility
-        const memberTalent = member.selectedTalent;
-        if (!memberTalent) {
-          console.log(`   ❌ SKIPPING: No talent data found. Available fields:`, Object.keys(member));
-          return; // Skip members without talent/skill selection
-        }
-        
-        console.log(`\n🎵 PROCESSING BAND MEMBER ${index + 1}/${bandMembers.length}:`);
-        console.log(`   Name: ${member.fullName}`);
-        console.log(`   Stage Name: ${member.stageName}`);  
-        console.log(`   Current Talent: "${memberTalent}"`);
-        
-        // Show exactly what we're checking for Phoenix specifically
-        if (member.fullName === 'Phoenix' || member.stageName === 'Phoenix') {
-          console.log(`   🔍 PHOENIX DEBUG: Talent="${memberTalent}", Lowercase="${memberTalent?.toLowerCase()}"`);
-          console.log(`   🔍 PHOENIX DEBUG: Contains 'drum'?`, memberTalent?.toLowerCase().includes('drum'));
-          console.log(`   🔍 PHOENIX DEBUG: Contains 'percussion'?`, memberTalent?.toLowerCase().includes('percussion'));
-        }
-        
-        // Determine instrument type from current Talent selection
-        const instrumentLower = memberTalent.toLowerCase();
-        let instrumentType = 'OTHER';
-        let assignmentRule = 'SINGLE'; // SINGLE, STEREO_PAIR, or FULL_GROUP
-        
-        if (instrumentLower.includes('vocal') || instrumentLower.includes('singer') || instrumentLower.includes('voice')) {
-          instrumentType = 'VOCALS';
-          assignmentRule = 'SINGLE';
-          console.log(`   🎤 VOCAL DETECTION: "${instrumentLower}" mapped to VOCALS`);
-          
-          // Enhanced lead vocalist detection for new instrument database
-          const isLeadVocalist = instrumentLower.includes('lead vocalist') || 
-                                instrumentLower.includes('lead singer') ||
-                                instrumentLower.includes('main vocalist') ||
-                                instrumentLower.includes('lead vocal') ||
-                                instrumentLower.includes('lead') ||
-                                instrumentLower.includes('main');
-          
-          const isBackgroundVocalist = instrumentLower.includes('background vocalist') ||
-                                      instrumentLower.includes('backing vocalist') ||
-                                      instrumentLower.includes('background vocal') ||
-                                      instrumentLower.includes('backing vocal') ||
-                                      instrumentLower.includes('background singer') ||
-                                      instrumentLower.includes('backing singer');
-          
-          if (isLeadVocalist) {
-            console.log(`   🎤 LEAD VOCALIST DETECTED: "${memberTalent}"`);
-          } else if (isBackgroundVocalist) {
-            console.log(`   🎤 BACKGROUND VOCALIST DETECTED: "${memberTalent}"`);
-          } else {
-            console.log(`   🎤 GENERAL VOCALIST DETECTED: "${memberTalent}"`);
+        console.log('🧹 CLEARED all existing channel assignments before re-assigning');
+
+        // Process each band member
+        bandMembers.forEach((member: any, index: number) => {
+          if (assignedMemberIds.has(member.userId)) return;
+          // CRITICAL FIX: Use selectedTalent (what user chose in dropdown) for flexibility
+          const memberTalent = member.selectedTalent;
+          if (!memberTalent) {
+            console.log(`   ❌ SKIPPING: No talent data found. Available fields:`, Object.keys(member));
+            return; // Skip members without talent/skill selection
           }
-        } else if (instrumentLower.includes('guitar') && !instrumentLower.includes('bass')) {
-          instrumentType = 'GUITAR';
-          assignmentRule = 'SINGLE';
-        } else if (instrumentLower.includes('bass')) {
-          instrumentType = 'BASS';
-          assignmentRule = 'SINGLE';
-        } else if (instrumentLower.includes('keyboard') || instrumentLower.includes('piano')) {
-          instrumentType = 'KEYBOARD';
-          assignmentRule = 'STEREO_PAIR'; // Keyboards need L/R pair
-        } else if (instrumentLower.includes('drum') || instrumentLower.includes('percussion') || instrumentLower.includes('beat') || 
-                  instrumentLower.includes('drummer') || instrumentLower.includes('percussionist')) {
-          instrumentType = 'DRUMS';
-          assignmentRule = 'FULL_GROUP'; // Drums get all available drum channels
-          console.log(`   🥁 DRUM DETECTION: "${instrumentLower}" mapped to DRUMS`);
-          
-          // Enhanced drum type detection for new instrument database
-          if (instrumentLower.includes('jazz drum') || instrumentLower.includes('jazz kit')) {
-            console.log(`   🥁 JAZZ DRUM KIT DETECTED: "${memberTalent}"`);
-          } else if (instrumentLower.includes('rock drum') || instrumentLower.includes('rock kit')) {
-            console.log(`   🥁 ROCK DRUM KIT DETECTED: "${memberTalent}"`);
-          } else if (instrumentLower.includes('electronic drum') || instrumentLower.includes('e-drum')) {
-            console.log(`   🥁 ELECTRONIC DRUM KIT DETECTED: "${memberTalent}"`);
-          } else {
-            console.log(`   🥁 GENERAL DRUM KIT DETECTED: "${memberTalent}"`);
+
+          console.log(`\n🎵 PROCESSING BAND MEMBER ${index + 1}/${bandMembers.length}:`);
+          console.log(`   Name: ${member.fullName}`);
+          console.log(`   Stage Name: ${member.stageName}`);
+          console.log(`   Current Talent: "${memberTalent}"`);
+
+          // Show exactly what we're checking for Phoenix specifically
+          if (member.fullName === 'Phoenix' || member.stageName === 'Phoenix') {
+            console.log(`   🔍 PHOENIX DEBUG: Talent="${memberTalent}", Lowercase="${memberTalent?.toLowerCase()}"`);
+            console.log(`   🔍 PHOENIX DEBUG: Contains 'drum'?`, memberTalent?.toLowerCase().includes('drum'));
+            console.log(`   🔍 PHOENIX DEBUG: Contains 'percussion'?`, memberTalent?.toLowerCase().includes('percussion'));
           }
-        } else if (instrumentLower.includes('brass') || instrumentLower.includes('trumpet') || instrumentLower.includes('sax')) {
-          instrumentType = 'BRASS';
-          assignmentRule = 'SINGLE';
-        } else if (instrumentLower.includes('string') || instrumentLower.includes('violin')) {
-          instrumentType = 'STRINGS';
-          assignmentRule = 'SINGLE';
-        } else if (instrumentLower.includes('percussion')) {
-          instrumentType = 'PERCUSSION';
-          assignmentRule = 'SINGLE';
-        }
-        
-        console.log(`   Mapped to: ${instrumentType} (${assignmentRule})`);
-        
-        // Find matching channel groups for this instrument type
-        let channelAssigned = false;
-        
-        // Sort sections to prioritize better matches (lead vocals before background vocals, etc.)
-        const sortedSectionNames = Object.keys(updatedChannels).sort((a, b) => {
-          const aLower = a.toLowerCase();
-          const bLower = b.toLowerCase();
-          
-          // For vocals, prioritize lead/main over background/backing using enhanced detection
-          if (instrumentType === 'VOCALS') {
-            // Use same enhanced detection logic as above
-            const memberIsLead = instrumentLower.includes('lead vocalist') || 
-                                instrumentLower.includes('lead singer') ||
-                                instrumentLower.includes('main vocalist') ||
-                                instrumentLower.includes('lead vocal') ||
-                                instrumentLower.includes('lead') ||
-                                instrumentLower.includes('main');
-            
-            const memberIsBackground = instrumentLower.includes('background vocalist') ||
-                                      instrumentLower.includes('backing vocalist') ||
-                                      instrumentLower.includes('background vocal') ||
-                                      instrumentLower.includes('backing vocal') ||
-                                      instrumentLower.includes('background singer') ||
-                                      instrumentLower.includes('backing singer');
-            
-            const aIsLead = aLower.includes('lead') || aLower.includes('main') || 
-                           (aLower.includes('vocal') && !aLower.includes('background') && !aLower.includes('backing'));
-            const bIsLead = bLower.includes('lead') || bLower.includes('main') || 
-                           (bLower.includes('vocal') && !bLower.includes('background') && !bLower.includes('backing'));
-            
-            // If musician is specifically a lead vocalist, prioritize lead vocal sections
-            if (memberIsLead) {
-              console.log(`   🎤 LEAD VOCALIST - Prioritizing lead vocal sections`);
-              if (aIsLead && !bIsLead) return -1; // a comes first
-              if (!aIsLead && bIsLead) return 1;  // b comes first
-            } else if (memberIsBackground) {
-              // For background vocalists, prioritize background vocals
-              console.log(`   🎤 BACKGROUND VOCALIST - Prioritizing background vocal sections`);
-              const aIsBackground = aLower.includes('background') || aLower.includes('backing');
-              const bIsBackground = bLower.includes('background') || bLower.includes('backing');
-              if (aIsBackground && !bIsBackground) return -1;
-              if (!aIsBackground && bIsBackground) return 1;
+
+          // Determine instrument type from current Talent selection
+          const instrumentLower = memberTalent.toLowerCase();
+          let instrumentType = 'OTHER';
+          let assignmentRule = 'SINGLE'; // SINGLE, STEREO_PAIR, or FULL_GROUP
+
+          if (instrumentLower.includes('vocal') || instrumentLower.includes('singer') || instrumentLower.includes('voice')) {
+            instrumentType = 'VOCALS';
+            assignmentRule = 'SINGLE';
+            console.log(`   🎤 VOCAL DETECTION: "${instrumentLower}" mapped to VOCALS`);
+
+            // Enhanced lead vocalist detection for new instrument database
+            const isLeadVocalist = instrumentLower.includes('lead vocalist') ||
+              instrumentLower.includes('lead singer') ||
+              instrumentLower.includes('main vocalist') ||
+              instrumentLower.includes('lead vocal') ||
+              instrumentLower.includes('lead') ||
+              instrumentLower.includes('main');
+
+            const isBackgroundVocalist = instrumentLower.includes('background vocalist') ||
+              instrumentLower.includes('backing vocalist') ||
+              instrumentLower.includes('background vocal') ||
+              instrumentLower.includes('backing vocal') ||
+              instrumentLower.includes('background singer') ||
+              instrumentLower.includes('backing singer');
+
+            if (isLeadVocalist) {
+              console.log(`   🎤 LEAD VOCALIST DETECTED: "${memberTalent}"`);
+            } else if (isBackgroundVocalist) {
+              console.log(`   🎤 BACKGROUND VOCALIST DETECTED: "${memberTalent}"`);
+            } else {
+              console.log(`   🎤 GENERAL VOCALIST DETECTED: "${memberTalent}"`);
             }
+          } else if (instrumentLower.includes('guitar') && !instrumentLower.includes('bass')) {
+            instrumentType = 'GUITAR';
+            assignmentRule = 'SINGLE';
+          } else if (instrumentLower.includes('bass')) {
+            instrumentType = 'BASS';
+            assignmentRule = 'SINGLE';
+          } else if (instrumentLower.includes('keyboard') || instrumentLower.includes('piano')) {
+            instrumentType = 'KEYBOARD';
+            assignmentRule = 'STEREO_PAIR'; // Keyboards need L/R pair
+          } else if (instrumentLower.includes('drum') || instrumentLower.includes('percussion') || instrumentLower.includes('beat') ||
+            instrumentLower.includes('drummer') || instrumentLower.includes('percussionist')) {
+            instrumentType = 'DRUMS';
+            assignmentRule = 'FULL_GROUP'; // Drums get all available drum channels
+            console.log(`   🥁 DRUM DETECTION: "${instrumentLower}" mapped to DRUMS`);
+
+            // Enhanced drum type detection for new instrument database
+            if (instrumentLower.includes('jazz drum') || instrumentLower.includes('jazz kit')) {
+              console.log(`   🥁 JAZZ DRUM KIT DETECTED: "${memberTalent}"`);
+            } else if (instrumentLower.includes('rock drum') || instrumentLower.includes('rock kit')) {
+              console.log(`   🥁 ROCK DRUM KIT DETECTED: "${memberTalent}"`);
+            } else if (instrumentLower.includes('electronic drum') || instrumentLower.includes('e-drum')) {
+              console.log(`   🥁 ELECTRONIC DRUM KIT DETECTED: "${memberTalent}"`);
+            } else {
+              console.log(`   🥁 GENERAL DRUM KIT DETECTED: "${memberTalent}"`);
+            }
+          } else if (instrumentLower.includes('brass') || instrumentLower.includes('trumpet') || instrumentLower.includes('sax')) {
+            instrumentType = 'BRASS';
+            assignmentRule = 'SINGLE';
+          } else if (instrumentLower.includes('string') || instrumentLower.includes('violin')) {
+            instrumentType = 'STRINGS';
+            assignmentRule = 'SINGLE';
+          } else if (instrumentLower.includes('percussion')) {
+            instrumentType = 'PERCUSSION';
+            assignmentRule = 'SINGLE';
           }
-          
-          return 0; // Keep original order for non-vocals or equal priority
-        });
-        
-        sortedSectionNames.forEach(sectionName => {
-          if (channelAssigned) return; // Only assign once per musician
-          
-          const sectionLower = sectionName.toLowerCase();
-          let sectionMatchesInstrument = false;
-          
-          // Check if section matches the musician's instrument type
-          switch (instrumentType) {
-            case 'VOCALS':
-              // Prioritize lead vocals over background vocals
-              const isLeadVocals = sectionLower.includes('lead') || sectionLower.includes('main') || 
-                                 (sectionLower.includes('vocal') && !sectionLower.includes('background') && !sectionLower.includes('backing'));
-              const isAnyVocals = sectionLower.includes('vocal') || sectionLower.includes('vox');
-              sectionMatchesInstrument = isAnyVocals;
-              console.log(`   🎤 VOCAL SECTION CHECK: "${sectionName}" - Lead: ${isLeadVocals}, Any: ${isAnyVocals}`);
-              
-              // Check if member is lead vocalist and this is lead vocal section using enhanced detection
-              const memberIsLead = instrumentLower.includes('lead vocalist') || 
-                                  instrumentLower.includes('lead singer') ||
-                                  instrumentLower.includes('main vocalist') ||
-                                  instrumentLower.includes('lead vocal') ||
-                                  instrumentLower.includes('lead') ||
-                                  instrumentLower.includes('main');
-                                  
+
+          console.log(`   Mapped to: ${instrumentType} (${assignmentRule})`);
+
+          // Find matching channel groups for this instrument type
+          let channelAssigned = false;
+
+          // Sort sections to prioritize better matches (lead vocals before background vocals, etc.)
+          const sortedSectionNames = Object.keys(updatedChannels).sort((a, b) => {
+            const aLower = a.toLowerCase();
+            const bLower = b.toLowerCase();
+
+            // For vocals, prioritize lead/main over background/backing using enhanced detection
+            if (instrumentType === 'VOCALS') {
+              // Use same enhanced detection logic as above
+              const memberIsLead = instrumentLower.includes('lead vocalist') ||
+                instrumentLower.includes('lead singer') ||
+                instrumentLower.includes('main vocalist') ||
+                instrumentLower.includes('lead vocal') ||
+                instrumentLower.includes('lead') ||
+                instrumentLower.includes('main');
+
               const memberIsBackground = instrumentLower.includes('background vocalist') ||
-                                        instrumentLower.includes('backing vocalist') ||
-                                        instrumentLower.includes('background vocal') ||
-                                        instrumentLower.includes('backing vocal') ||
-                                        instrumentLower.includes('background singer') ||
-                                        instrumentLower.includes('backing singer');
-              
-              if (memberIsLead && isLeadVocals) {
-                console.log(`   🎤 LEAD VOCALIST → LEAD VOCALS SECTION: ${sectionName}`);
-              } else if (memberIsLead && !isLeadVocals) {
-                console.log(`   🎤 LEAD VOCALIST but non-lead section: ${sectionName} - will try lead sections first`);
-              } else if (memberIsBackground && sectionLower.includes('background')) {
-                console.log(`   🎤 BACKGROUND VOCALIST → BACKGROUND VOCALS SECTION: ${sectionName}`);
-              } else if (memberIsBackground && !sectionLower.includes('background')) {
-                console.log(`   🎤 BACKGROUND VOCALIST but non-background section: ${sectionName} - will try background sections first`);
-              }
-              break;
-            case 'GUITAR':
-              sectionMatchesInstrument = (sectionLower.includes('guitar') || sectionLower.includes('gtr')) && !sectionLower.includes('bass');
-              break;
-            case 'BASS':
-              sectionMatchesInstrument = sectionLower.includes('bass') && !sectionLower.includes('drum');
-              break;
-            case 'KEYBOARD':
-              sectionMatchesInstrument = sectionLower.includes('key') || sectionLower.includes('piano') || sectionLower.includes('synth');
-              break;
-            case 'DRUMS':
-              sectionMatchesInstrument = sectionLower.includes('drum') || sectionLower.includes('percussion') || sectionName === 'DRUMS';
-              console.log(`   🥁 DRUM SECTION CHECK: "${sectionName}" - Match: ${sectionMatchesInstrument}`);
-              break;
-            case 'BRASS':
-              sectionMatchesInstrument = sectionLower.includes('sax') || sectionLower.includes('trumpet') || sectionLower.includes('brass');
-              break;
-            case 'STRINGS':
-              sectionMatchesInstrument = sectionLower.includes('string') || sectionLower.includes('violin') || sectionLower.includes('orchestral');
-              break;
-            case 'PERCUSSION':
-              sectionMatchesInstrument = sectionLower.includes('percussion');
-              break;
-          }
-          
-          if (sectionMatchesInstrument) {
-            const channels = (updatedChannels as any)[sectionName];
-            const availableChannels = channels.filter((ch: any) => !ch.assignedTo || ch.assignedTo.trim() === '');
-            
-            console.log(`   Found matching section: ${sectionName} (${availableChannels.length} available channels)`);
-            
-            if (availableChannels.length > 0) {
-              const displayName = member.stageName || member.fullName;
-              
-              // Apply assignment rule
-              switch (assignmentRule) {
-                case 'SINGLE':
-                  // Assign to one channel only
-                  availableChannels[0].assignedTo = displayName;
-                  console.log(`   ✅ SINGLE ASSIGNMENT: ${displayName} → Channel ${availableChannels[0].number || availableChannels[0].channel || 'N/A'}`);
-                  channelAssigned = true;
-                  break;
-                  
-                case 'STEREO_PAIR':
-                  // Assign to L/R pair (keyboards) - MUST get both channels
-                  if (availableChannels.length >= 2) {
-                    availableChannels[0].assignedTo = `${displayName} (L)`;
-                    availableChannels[1].assignedTo = `${displayName} (R)`;
-                    console.log(`   ✅ STEREO PAIR: ${displayName} → Channels ${availableChannels[0].number || availableChannels[0].channel || 'N/A'}-${availableChannels[1].number || availableChannels[1].channel || 'N/A'} (L/R)`);
-                    channelAssigned = true;
-                  } else if (availableChannels.length === 1) {
-                    // Fallback to single channel if only one available
-                    availableChannels[0].assignedTo = displayName;
-                    console.log(`   ✅ FALLBACK SINGLE: ${displayName} → Channel ${availableChannels[0].number || availableChannels[0].channel || 'N/A'} (only 1 available for stereo)`);
-                    channelAssigned = true;
-                  } else {
-                    console.log(`   ❌ NO CHANNELS AVAILABLE for stereo pair: ${displayName}`);
-                  }
-                  break;
-                  
-                case 'FULL_GROUP':
-                  // Assign to ALL available channels in the group (drums)
-                  if (availableChannels.length > 0) {
-                    availableChannels.forEach((channel: any) => {
-                      channel.assignedTo = displayName;
-                    });
-                    console.log(`   ✅ FULL GROUP: ${displayName} → ALL ${availableChannels.length} channels in ${sectionName}`);
-                    channelAssigned = true;
-                  } else {
-                    console.log(`   ❌ NO CHANNELS AVAILABLE for full group: ${displayName}`);
-                  }
-                  break;
+                instrumentLower.includes('backing vocalist') ||
+                instrumentLower.includes('background vocal') ||
+                instrumentLower.includes('backing vocal') ||
+                instrumentLower.includes('background singer') ||
+                instrumentLower.includes('backing singer');
+
+              const aIsLead = aLower.includes('lead') || aLower.includes('main') ||
+                (aLower.includes('vocal') && !aLower.includes('background') && !aLower.includes('backing'));
+              const bIsLead = bLower.includes('lead') || bLower.includes('main') ||
+                (bLower.includes('vocal') && !bLower.includes('background') && !bLower.includes('backing'));
+
+              // If musician is specifically a lead vocalist, prioritize lead vocal sections
+              if (memberIsLead) {
+                console.log(`   🎤 LEAD VOCALIST - Prioritizing lead vocal sections`);
+                if (aIsLead && !bIsLead) return -1; // a comes first
+                if (!aIsLead && bIsLead) return 1;  // b comes first
+              } else if (memberIsBackground) {
+                // For background vocalists, prioritize background vocals
+                console.log(`   🎤 BACKGROUND VOCALIST - Prioritizing background vocal sections`);
+                const aIsBackground = aLower.includes('background') || aLower.includes('backing');
+                const bIsBackground = bLower.includes('background') || bLower.includes('backing');
+                if (aIsBackground && !bIsBackground) return -1;
+                if (!aIsBackground && bIsBackground) return 1;
               }
             }
+
+            return 0; // Keep original order for non-vocals or equal priority
+          });
+
+          sortedSectionNames.forEach(sectionName => {
+            if (channelAssigned) return; // Only assign once per musician
+
+            const sectionLower = sectionName.toLowerCase();
+            let sectionMatchesInstrument = false;
+
+            // Check if section matches the musician's instrument type
+            switch (instrumentType) {
+              case 'VOCALS':
+                // Prioritize lead vocals over background vocals
+                const isLeadVocals = sectionLower.includes('lead') || sectionLower.includes('main') ||
+                  (sectionLower.includes('vocal') && !sectionLower.includes('background') && !sectionLower.includes('backing'));
+                const isAnyVocals = sectionLower.includes('vocal') || sectionLower.includes('vox');
+                sectionMatchesInstrument = isAnyVocals;
+                console.log(`   🎤 VOCAL SECTION CHECK: "${sectionName}" - Lead: ${isLeadVocals}, Any: ${isAnyVocals}`);
+
+                // Check if member is lead vocalist and this is lead vocal section using enhanced detection
+                const memberIsLead = instrumentLower.includes('lead vocalist') ||
+                  instrumentLower.includes('lead singer') ||
+                  instrumentLower.includes('main vocalist') ||
+                  instrumentLower.includes('lead vocal') ||
+                  instrumentLower.includes('lead') ||
+                  instrumentLower.includes('main');
+
+                const memberIsBackground = instrumentLower.includes('background vocalist') ||
+                  instrumentLower.includes('backing vocalist') ||
+                  instrumentLower.includes('background vocal') ||
+                  instrumentLower.includes('backing vocal') ||
+                  instrumentLower.includes('background singer') ||
+                  instrumentLower.includes('backing singer');
+
+                if (memberIsLead && isLeadVocals) {
+                  console.log(`   🎤 LEAD VOCALIST → LEAD VOCALS SECTION: ${sectionName}`);
+                } else if (memberIsLead && !isLeadVocals) {
+                  console.log(`   🎤 LEAD VOCALIST but non-lead section: ${sectionName} - will try lead sections first`);
+                } else if (memberIsBackground && sectionLower.includes('background')) {
+                  console.log(`   🎤 BACKGROUND VOCALIST → BACKGROUND VOCALS SECTION: ${sectionName}`);
+                } else if (memberIsBackground && !sectionLower.includes('background')) {
+                  console.log(`   🎤 BACKGROUND VOCALIST but non-background section: ${sectionName} - will try background sections first`);
+                }
+                break;
+              case 'GUITAR':
+                sectionMatchesInstrument = (sectionLower.includes('guitar') || sectionLower.includes('gtr')) && !sectionLower.includes('bass');
+                break;
+              case 'BASS':
+                sectionMatchesInstrument = sectionLower.includes('bass') && !sectionLower.includes('drum');
+                break;
+              case 'KEYBOARD':
+                sectionMatchesInstrument = sectionLower.includes('key') || sectionLower.includes('piano') || sectionLower.includes('synth');
+                break;
+              case 'DRUMS':
+                sectionMatchesInstrument = sectionLower.includes('drum') || sectionLower.includes('percussion') || sectionName === 'DRUMS';
+                console.log(`   🥁 DRUM SECTION CHECK: "${sectionName}" - Match: ${sectionMatchesInstrument}`);
+                break;
+              case 'BRASS':
+                sectionMatchesInstrument = sectionLower.includes('sax') || sectionLower.includes('trumpet') || sectionLower.includes('brass');
+                break;
+              case 'STRINGS':
+                sectionMatchesInstrument = sectionLower.includes('string') || sectionLower.includes('violin') || sectionLower.includes('orchestral');
+                break;
+              case 'PERCUSSION':
+                sectionMatchesInstrument = sectionLower.includes('percussion');
+                break;
+            }
+
+            if (sectionMatchesInstrument) {
+              const channels = (updatedChannels as any)[sectionName];
+              const availableChannels = channels.filter((ch: any) => !ch.assignedTo || ch.assignedTo.trim() === '');
+
+              console.log(`   Found matching section: ${sectionName} (${availableChannels.length} available channels)`);
+
+              if (availableChannels.length > 0) {
+                const displayName = member.stageName || member.fullName;
+
+                // Apply assignment rule
+                switch (assignmentRule) {
+                  case 'SINGLE':
+                    // Assign to one channel only
+                    availableChannels[0].assignedTo = displayName;
+                    console.log(`   ✅ SINGLE ASSIGNMENT: ${displayName} → Channel ${availableChannels[0].number || availableChannels[0].channel || 'N/A'}`);
+                    channelAssigned = true;
+                    break;
+
+                  case 'STEREO_PAIR':
+                    // Assign to L/R pair (keyboards) - MUST get both channels
+                    if (availableChannels.length >= 2) {
+                      availableChannels[0].assignedTo = `${displayName} (L)`;
+                      availableChannels[1].assignedTo = `${displayName} (R)`;
+                      console.log(`   ✅ STEREO PAIR: ${displayName} → Channels ${availableChannels[0].number || availableChannels[0].channel || 'N/A'}-${availableChannels[1].number || availableChannels[1].channel || 'N/A'} (L/R)`);
+                      channelAssigned = true;
+                    } else if (availableChannels.length === 1) {
+                      // Fallback to single channel if only one available
+                      availableChannels[0].assignedTo = displayName;
+                      console.log(`   ✅ FALLBACK SINGLE: ${displayName} → Channel ${availableChannels[0].number || availableChannels[0].channel || 'N/A'} (only 1 available for stereo)`);
+                      channelAssigned = true;
+                    } else {
+                      console.log(`   ❌ NO CHANNELS AVAILABLE for stereo pair: ${displayName}`);
+                    }
+                    break;
+
+                  case 'FULL_GROUP':
+                    // Assign to ALL available channels in the group (drums)
+                    if (availableChannels.length > 0) {
+                      availableChannels.forEach((channel: any) => {
+                        channel.assignedTo = displayName;
+                      });
+                      console.log(`   ✅ FULL GROUP: ${displayName} → ALL ${availableChannels.length} channels in ${sectionName}`);
+                      channelAssigned = true;
+                    } else {
+                      console.log(`   ❌ NO CHANNELS AVAILABLE for full group: ${displayName}`);
+                    }
+                    break;
+                }
+              }
+            }
+          });
+
+          if (!channelAssigned) {
+            console.log(`   ❌ NO SUITABLE CHANNELS FOUND FOR ${member.fullName} (${instrumentType})`);
+
+            // For strings/violin, create a new section if it doesn't exist
+            if (instrumentType === 'STRINGS') {
+              console.log(`   🎻 CREATING STRINGS SECTION for ${member.fullName}`);
+              const displayName = member.stageName || member.fullName;
+
+              // Add a strings section with 2 channels
+              (updatedChannels as any)['strings'] = [
+                { number: 1, name: 'Strings L', assignedTo: `${displayName} (L)` },
+                { number: 2, name: 'Strings R', assignedTo: `${displayName} (R)` }
+              ];
+              console.log(`   ✅ STRINGS SECTION CREATED: ${displayName} → Channels 1-2 (L/R)`);
+              channelAssigned = true;
+            }
+          }
+
+          if (channelAssigned) {
+            console.log(`   🎯 MUSICIAN ASSIGNED AND MARKED AS PROCESSED`);
+            assignedMemberIds.add(member.userId);
           }
         });
-        
-        if (!channelAssigned) {
-          console.log(`   ❌ NO SUITABLE CHANNELS FOUND FOR ${member.fullName} (${instrumentType})`);
-          
-          // For strings/violin, create a new section if it doesn't exist
-          if (instrumentType === 'STRINGS') {
-            console.log(`   🎻 CREATING STRINGS SECTION for ${member.fullName}`);
-            const displayName = member.stageName || member.fullName;
-            
-            // Add a strings section with 2 channels
-            (updatedChannels as any)['strings'] = [
-              { number: 1, name: 'Strings L', assignedTo: `${displayName} (L)` },
-              { number: 2, name: 'Strings R', assignedTo: `${displayName} (R)` }
-            ];
-            console.log(`   ✅ STRINGS SECTION CREATED: ${displayName} → Channels 1-2 (L/R)`);
-            channelAssigned = true;
-          }
-        } 
-        
-        if (channelAssigned) {
-          console.log(`   🎯 MUSICIAN ASSIGNED AND MARKED AS PROCESSED`);
-          assignedMemberIds.add(member.userId);
-        }
+
+        console.log('\n🎯 AUTO-ASSIGNMENT COMPLETE');
+        console.log(`📊 Total band members processed: ${bandMembers.length}`);
+        console.log(`📊 Total musicians assigned: ${assignedMemberIds.size}`);
+        console.log(`📊 Unassigned musicians: ${bandMembers.length - assignedMemberIds.size}`);
+
+        return updatedChannels;
       });
-    
-    console.log('\n🎯 AUTO-ASSIGNMENT COMPLETE');
-    console.log(`📊 Total band members processed: ${bandMembers.length}`);
-    console.log(`📊 Total musicians assigned: ${assignedMemberIds.size}`);
-    console.log(`📊 Unassigned musicians: ${bandMembers.length - assignedMemberIds.size}`);
-    
-    return updatedChannels;
-  });
-  
-  console.log('🎛️ AUTO-ASSIGNMENT: Channels updated successfully');
-  } catch (error) {
-    console.error('🚨 AUTO-ASSIGNMENT ERROR:', error);
-    // Don't show error toast on page load - just log it
-  }
+
+      console.log('🎛️ AUTO-ASSIGNMENT: Channels updated successfully');
+    } catch (error) {
+      console.error('🚨 AUTO-ASSIGNMENT ERROR:', error);
+      // Don't show error toast on page load - just log it
+    }
   }, [bandMembers, mixerChannels]); // Dependencies for useCallback
 
   const calculateProgress = () => {
@@ -3319,7 +3319,7 @@ function EnhancedTechnicalRider({
   const exportRider = async () => {
     try {
       setIsGenerating(true);
-      
+
       const exportData = {
         booking_id: bookingId,
         band_members: bandMembers,
@@ -3348,7 +3348,7 @@ function EnhancedTechnicalRider({
         a.download = `technical-rider-booking-${bookingId}.pdf`;
         a.click();
         URL.revokeObjectURL(url);
-        
+
         toast(TOAST_CONFIGS.SUCCESS.EXPORT);
         scrollToTop();
       } else {
@@ -3366,34 +3366,33 @@ function EnhancedTechnicalRider({
   const handleSave = async () => {
     try {
       setIsGenerating(true);
-      
+
       const saveData = {
         booking_id: bookingId,
         band_members: bandMembers,
         equipment_requests: riderData.equipmentRequests || [],
-        stage_layout: riderData.stageLayout,
-        audio_config: riderData.audioConfig,
-        completion_status: completionStatus,
-        saved_at: new Date().toISOString()
+        stage_layout: riderData.stageLayout || {},
+        audio_config: riderData.audioConfig || {},
+        completion_status: completionStatus || {},
+        saved_at: new Date().toISOString(),
       };
 
       const response = await fetch(`/api/bookings/${bookingId}/enhanced-technical-rider`, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(saveData)
+        body: JSON.stringify(saveData),
       });
 
-      if (response.ok) {
-        onSave?.(riderData);
-        toast(TOAST_CONFIGS.SUCCESS.SAVE);
-        scrollToTop();
-      } else {
-        toast(TOAST_CONFIGS.ERROR.SAVE_FAILED);
+      if (!response.ok) {
+        throw new Error("Failed to save technical rider");
       }
+
+      const result = await response.json(); // Optional: backend থেকে return আসলে ব্যবহার করতে পারো
+      onSave?.(result.data ?? riderData);
+
+      toast(TOAST_CONFIGS.SUCCESS.SAVE);
+      scrollToTop();
     } catch (error) {
-      console.error('Save error:', error);
+      console.error("Save error:", error);
       toast(TOAST_CONFIGS.ERROR.SAVE_FAILED);
     } finally {
       setIsGenerating(false);
@@ -3436,10 +3435,10 @@ function EnhancedTechnicalRider({
               </p>
             </div>
             <div className="flex flex-col sm:flex-row gap-2">
-              <Button 
-                onClick={generateRequirements} 
-                disabled={isGenerating} 
-                variant="outline" 
+              <Button
+                onClick={generateRequirements}
+                disabled={isGenerating}
+                variant="outline"
                 size="sm"
                 className="mobile-button w-full sm:w-auto"
               >
@@ -3447,9 +3446,9 @@ function EnhancedTechnicalRider({
                 <span className="hidden sm:inline">{isGenerating ? 'Generating...' : 'Auto Generate'}</span>
                 <span className="sm:hidden">🎪 {isGenerating ? 'Creating...' : 'Auto Magic'}</span>
               </Button>
-              <Button 
-                onClick={exportRider} 
-                variant="outline" 
+              <Button
+                onClick={exportRider}
+                variant="outline"
                 size="sm"
                 className="mobile-button w-full sm:w-auto"
               >
@@ -3457,9 +3456,9 @@ function EnhancedTechnicalRider({
                 <span className="hidden sm:inline">Export PDF</span>
                 <span className="sm:hidden">📄 Export</span>
               </Button>
-              <Button 
-                onClick={handleSave} 
-                size="sm" 
+              <Button
+                onClick={handleSave}
+                size="sm"
                 disabled={isGenerating}
                 className="mobile-button w-full sm:w-auto"
               >
@@ -3469,7 +3468,7 @@ function EnhancedTechnicalRider({
               </Button>
             </div>
           </div>
-          
+
           <div className="mt-4">
             <div className="flex items-center justify-between text-sm mb-2">
               <span>Completion Progress</span>
@@ -3523,8 +3522,8 @@ function EnhancedTechnicalRider({
               <CardContent className="space-y-4">
                 <div>
                   <Label>Event Name</Label>
-                  <Input 
-                    value={(riderData.eventInfo as any)?.eventName || ''} 
+                  <Input
+                    value={(riderData.eventInfo as any)?.eventName || ''}
                     onChange={(e) => setRiderData(prev => ({
                       ...prev,
                       eventInfo: { ...prev.eventInfo, eventName: e.target.value }
@@ -3536,8 +3535,8 @@ function EnhancedTechnicalRider({
                 </div>
                 <div>
                   <Label>Venue</Label>
-                  <Input 
-                    value={(riderData.eventInfo as any)?.venueName || ''} 
+                  <Input
+                    value={(riderData.eventInfo as any)?.venueName || ''}
                     onChange={(e) => setRiderData(prev => ({
                       ...prev,
                       eventInfo: { ...prev.eventInfo, venueName: e.target.value }
@@ -3550,9 +3549,9 @@ function EnhancedTechnicalRider({
                 <div className="grid grid-cols-2 gap-4">
                   <div>
                     <Label>Event Date</Label>
-                    <Input 
+                    <Input
                       type="date"
-                      value={(riderData.eventInfo as any)?.eventDate || ''} 
+                      value={(riderData.eventInfo as any)?.eventDate || ''}
                       onChange={(e) => setRiderData(prev => ({
                         ...prev,
                         eventInfo: { ...prev.eventInfo, eventDate: e.target.value }
@@ -3562,9 +3561,9 @@ function EnhancedTechnicalRider({
                   </div>
                   <div>
                     <Label>Duration (minutes)</Label>
-                    <Input 
+                    <Input
                       type="number"
-                      value={(riderData.eventInfo as any)?.duration || ''} 
+                      value={(riderData.eventInfo as any)?.duration || ''}
                       onChange={(e) => setRiderData(prev => ({
                         ...prev,
                         eventInfo: { ...prev.eventInfo, duration: parseInt(e.target.value) }
@@ -3671,34 +3670,33 @@ function EnhancedTechnicalRider({
                     <div className="col-span-2">Full Name (Stage Name)</div>
                     <div className="col-span-1">Role</div>
                   </div>
-                  
+
                   {bandMembers.map((member, index) => (
                     <div key={member.id} className="grid grid-cols-5 gap-4 p-3 border rounded items-center">
                       {/* Column 1: Membership (smaller) */}
-                      <Badge 
-                        variant={member.membership === "BAND" ? "default" : member.membership === "TEAM" ? "outline" : "secondary"} 
-                        className={`text-xs ${
-                          member.membership === "TEAM" ? "border-orange-500 text-orange-700" : ""
-                        }`}
+                      <Badge
+                        variant={member.membership === "BAND" ? "default" : member.membership === "TEAM" ? "outline" : "secondary"}
+                        className={`text-xs ${member.membership === "TEAM" ? "border-orange-500 text-orange-700" : ""
+                          }`}
                       >
                         {member.membership}
                       </Badge>
-                      
+
                       {/* Column 2: Talent/Skill Dropdown */}
-                      <Select 
-                        value={member.selectedTalent || ""} 
+                      <Select
+                        value={member.selectedTalent || ""}
                         onValueChange={(value) => {
                           // Skip divider option
                           if (value === '__divider__') return;
-                          
+
                           console.log(`🎯 TALENT/SKILL CHANGE: ${member.fullName} selected "${value}"`);
-                          
+
                           // Use the new unified talent change handler
                           handleTalentChange(member.id, value);
-                          
+
                           // Also update band member directly for immediate UI update
                           updateBandMember(member.id, { selectedTalent: value });
-                          
+
 
                         }}
                       >
@@ -3716,20 +3714,22 @@ function EnhancedTechnicalRider({
                                 </div>
                               );
                             }
-                            
+
                             return (
-                              <SelectItem 
-                                key={idx} 
+                              <SelectItem
+                                key={idx}
                                 value={option.value}
-                                className={option.type === 'Primary' ? 'bg-blue-50 font-medium' : 
-                                          option.type === 'Secondary' ? 'bg-gray-50' :
-                                          option.type === 'Generic' ? 'bg-green-50' : ''}
+                                className={option.type === 'Primary' ? 'bg-blue-50 font-medium' :
+                                  option.type === 'Secondary' ? 'bg-gray-50' :
+                                    option.type === 'Generic' ? 'bg-green-50' : ''}
                               >
                                 <div className="flex items-center justify-between w-full">
-                                  <span style={{ color: option.color === 'blue' ? '#3b82f6' : 
-                                                 option.color === 'green' ? '#16a34a' : 
-                                                 option.color === 'orange' ? '#ea580c' : 
-                                                 option.color === 'purple' ? '#9333ea' : '#6b7280' }}>
+                                  <span style={{
+                                    color: option.color === 'blue' ? '#3b82f6' :
+                                      option.color === 'green' ? '#16a34a' :
+                                        option.color === 'orange' ? '#ea580c' :
+                                          option.color === 'purple' ? '#9333ea' : '#6b7280'
+                                  }}>
                                     {option.label}
                                   </span>
                                   <span className="text-xs text-muted-foreground ml-2">
@@ -3739,15 +3739,15 @@ function EnhancedTechnicalRider({
                               </SelectItem>
                             );
                           })}
-                          
+
                           {/* NO FALLBACK OPTIONS - USER POLICY: Zero tolerance for hardcoded values */}
                         </SelectContent>
                       </Select>
-                      
+
                       {/* Column 3-4: Full Name (Stage Name) - spans 2 columns */}
                       <div className="col-span-2 flex items-center gap-2">
                         <div className="flex-1 flex items-center gap-2">
-                          <Input 
+                          <Input
                             value={member.stageName ? `${member.fullName} (${member.stageName})` : member.fullName}
                             onChange={(e) => {
                               const value = e.target.value;
@@ -3764,8 +3764,8 @@ function EnhancedTechnicalRider({
                           />
 
                         </div>
-                        <Button 
-                          variant="ghost" 
+                        <Button
+                          variant="ghost"
                           size="sm"
                           onClick={() => removeBandMember(member.id)}
                           className="h-8 w-8 p-0 text-red-500 hover:text-red-700"
@@ -3773,7 +3773,7 @@ function EnhancedTechnicalRider({
                           ×
                         </Button>
                       </div>
-                      
+
                       {/* Column 5: Role - Show primaryRole, assignedRole, assignmentRole and availableRoles for non-management */}
                       <div className="flex flex-col gap-1">
                         {/* For non-management users: Show unique roles only */}
@@ -3783,7 +3783,7 @@ function EnhancedTechnicalRider({
                             {(() => {
                               const roles = new Set();
                               const roleElements = [];
-                              
+
                               // For professionals: prioritize assignedRole
                               if (member.type === 'Professional' && member.assignedRole && !roles.has(member.assignedRole)) {
                                 roles.add(member.assignedRole);
@@ -3793,7 +3793,7 @@ function EnhancedTechnicalRider({
                                   </Badge>
                                 );
                               }
-                              
+
                               // Show only database role from role_id - no fallbacks
                               if ((member as any).roleId) {
                                 const dbRoleName = getRoleNameFromId((member as any).roleId);
@@ -3806,19 +3806,19 @@ function EnhancedTechnicalRider({
                                   );
                                 }
                               }
-                              
+
                               return roleElements;
                             })()}
                           </div>
                         )}
-                        
+
                         {/* For non-management users: Show assignment status (Main Booked Talent, Supporting Musician, etc.) */}
                         {member.membership !== 'MANAGEMENT' && (
                           <div className="flex flex-wrap gap-1">
                             {/* Show assignment status - avoid duplication */}
                             {(() => {
                               const statusElements = [];
-                              
+
                               // Primary booking status - check database assignment directly
                               if (member.assignmentRole === 'Main Booked Talent') {
                                 statusElements.push(
@@ -3827,7 +3827,7 @@ function EnhancedTechnicalRider({
                                   </Badge>
                                 );
                               }
-                              
+
                               // Other assignment roles (avoid duplication with Main Booked Talent)
                               if (member.assignmentRole && member.assignmentRole !== 'Main Booked Talent') {
                                 statusElements.push(
@@ -3836,12 +3836,12 @@ function EnhancedTechnicalRider({
                                   </Badge>
                                 );
                               }
-                              
+
                               return statusElements;
                             })()}
                           </div>
                         )}
-                        
+
                         {/* For non-management users: Show availableRoles */}
                         {member.membership !== 'MANAGEMENT' && member.availableRoles && member.availableRoles.length > 0 && (
                           <div className="flex flex-wrap gap-1">
@@ -3856,7 +3856,7 @@ function EnhancedTechnicalRider({
                             )}
                           </div>
                         )}
-                        
+
                         {/* Management roles editable for MANAGEMENT members */}
                         {member.membership === 'MANAGEMENT' && (
                           <div className="flex gap-1 mt-1">
@@ -3871,7 +3871,7 @@ function EnhancedTechnicalRider({
                       </div>
                     </div>
                   ))}
-                  
+
                   <div className="flex gap-2">
                     <Button variant="outline" className="flex-1" onClick={() => addBandMember('BAND')}>
                       <Plus className="h-4 w-4 mr-2" />
@@ -3905,9 +3905,9 @@ function EnhancedTechnicalRider({
                           }
                           return counts;
                         }, {} as Record<string, number>);
-                        
+
                         const totalBandMembers = Object.values(roleCounts).reduce((sum, count) => sum + count, 0);
-                        
+
                         return (
                           <>
                             {Object.entries(roleCounts).map(([role, count]) => (
@@ -3943,7 +3943,7 @@ function EnhancedTechnicalRider({
                           <li>• BAND MAKEUP as aforementioned</li>
                         </ul>
                       </div>
-                      
+
                       <div>
                         <h4 className="font-medium text-blue-700 mb-2">CLIENT Provides:</h4>
                         <ul className="text-sm space-y-1 text-blue-600">
@@ -3981,24 +3981,24 @@ function EnhancedTechnicalRider({
               <div className="space-y-4">
                 {riderData.equipmentRequests?.map((equipment: EquipmentRequest, index: number) => (
                   <div key={index} className="flex items-center gap-3 p-3 border rounded">
-                    <Checkbox 
-                      id={`equipment-${index}`} 
+                    <Checkbox
+                      id={`equipment-${index}`}
                       checked={equipment.required}
                       onCheckedChange={(checked) => {
                         setRiderData(prev => ({
                           ...prev,
-                          equipmentRequests: prev.equipmentRequests?.map((eq: EquipmentRequest, i: number) => 
+                          equipmentRequests: prev.equipmentRequests?.map((eq: EquipmentRequest, i: number) =>
                             i === index ? { ...eq, required: !!checked } : eq
                           ) || []
                         }));
                       }}
                     />
-                    <Input 
+                    <Input
                       value={equipment.item}
                       onChange={(e) => {
                         setRiderData(prev => ({
                           ...prev,
-                          equipmentRequests: prev.equipmentRequests?.map((eq: EquipmentRequest, i: number) => 
+                          equipmentRequests: prev.equipmentRequests?.map((eq: EquipmentRequest, i: number) =>
                             i === index ? { ...eq, item: e.target.value } : eq
                           ) || []
                         }));
@@ -4022,8 +4022,8 @@ function EnhancedTechnicalRider({
                         {equipment.required ? "Required" : "Optional"}
                       </Badge>
                     </Button>
-                    <Button 
-                      variant="ghost" 
+                    <Button
+                      variant="ghost"
                       size="sm"
                       onClick={() => {
                         setRiderData(prev => ({
@@ -4039,22 +4039,22 @@ function EnhancedTechnicalRider({
                 )) || [
                   // BACKLINE EQUIPMENT
                   "Aguilar Tone Hammer 500 Bass Head with 8 X 10 cabinet (preferred) or equivalent",
-                  "Fender twin reverb guitar amp or equivalent", 
+                  "Fender twin reverb guitar amp or equivalent",
                   "DW fusion drum kit (14'' snare; 10\", 12\", 16\" toms)",
                   "DW 5000 kick pedal",
                   "Meinl byzance cymbals (14\" hi hat, 16'' crash, 17/18\" crash, 8\" splash, splash stack, ride)",
                   "Five (5) cymbal stands",
-                  
+
                   // MICROPHONES & SOUND (MERGED FROM MIC SECTION)
                   "One (1) wireless mic for ARTIST (Shure SM58 or equivalent)",
                   "Shure SM58 microphones (vocals) - additional as needed",
                   "DI boxes for instruments",
-                  
+
                   // MONITORS (MERGED FROM MONITOR SECTION)
                   "Wedge monitors (sufficient for stage size) or in-ear monitors for BAND",
                   "In-ear Monitor XLR/TRS connection for ARTIST",
                   "Floor monitors for background vocals",
-                  
+
                   // STAGE ITEMS & OTHER (MERGED FROM OTHER SECTION)
                   "Small table upon which to rest ARTIST's Tambourine and shaker",
                   "Music stands (as needed)",
@@ -4062,7 +4062,7 @@ function EnhancedTechnicalRider({
                 ].map((equipment, index) => (
                   <div key={index} className="flex items-center gap-3 p-3 border rounded">
                     <Checkbox id={`equipment-${index}`} defaultChecked />
-                    <Input 
+                    <Input
                       defaultValue={equipment}
                       className="flex-1 text-sm"
                       onChange={(e) => {
@@ -4099,8 +4099,8 @@ function EnhancedTechnicalRider({
                         {riderData.equipmentRequests?.[index]?.required !== false ? "Required" : "Optional"}
                       </Badge>
                     </Button>
-                    <Button 
-                      variant="ghost" 
+                    <Button
+                      variant="ghost"
                       size="sm"
                       onClick={() => {
                         setRiderData(prev => ({
@@ -4114,9 +4114,9 @@ function EnhancedTechnicalRider({
                     </Button>
                   </div>
                 ))}
-                
-                <Button 
-                  variant="outline" 
+
+                <Button
+                  variant="outline"
                   className="w-full"
                   onClick={() => {
                     setRiderData(prev => ({
@@ -4157,10 +4157,10 @@ function EnhancedTechnicalRider({
             <CardContent>
               <div className="space-y-4">
                 {[
-                  "One-two (1-2) follow spots/spotlights for the ARTIST (as applicable)",  
+                  "One-two (1-2) follow spots/spotlights for the ARTIST (as applicable)",
                   "Gels for Pops lighting (variety of colors and patterns) (as applicable)",
                   "General stage wash lighting",
-                  "Front lighting for performance area", 
+                  "Front lighting for performance area",
                   "Color changing capability",
                   "Backlighting for band/musicians",
                   "Side lighting for depth and dimension",
@@ -4169,19 +4169,19 @@ function EnhancedTechnicalRider({
                   "Lighting control board/operator"
                 ].map((lighting, index) => (
                   <div key={index} className="flex items-center gap-3 p-3 border rounded bg-gradient-to-r from-blue-50 to-purple-50">
-                    <Checkbox 
-                      id={`lighting-${index}`} 
+                    <Checkbox
+                      id={`lighting-${index}`}
                       defaultChecked={index < 5} // First 5 are required by default
                     />
-                    <Input 
+                    <Input
                       defaultValue={lighting}
                       className="flex-1 text-sm"
                     />
                     <Badge variant={index < 5 ? "default" : "outline"}>
                       {index < 5 ? "Required" : "Optional"}
                     </Badge>
-                    <Button 
-                      variant="ghost" 
+                    <Button
+                      variant="ghost"
                       size="sm"
                       className="h-8 w-8 p-0 text-red-500 hover:text-red-700"
                     >
@@ -4189,9 +4189,9 @@ function EnhancedTechnicalRider({
                     </Button>
                   </div>
                 ))}
-                
-                <Button 
-                  variant="outline" 
+
+                <Button
+                  variant="outline"
                   className="w-full"
                   onClick={() => {
                     // Add new lighting requirement
@@ -4269,7 +4269,7 @@ function EnhancedTechnicalRider({
                       </SelectContent>
                     </Select>
                   </div>
-                  
+
                   {/* Equipment Palette with User Instruments */}
                   <div className="space-y-4">
                     <div>
@@ -4309,9 +4309,9 @@ function EnhancedTechnicalRider({
                               // Count only BAND members (not TEAM or MANAGEMENT)
                               const totalBandMembers = bandMembers.filter(member => member.membership === 'BAND').length;
                               // Count placed BAND members based on stage legend assignments
-                              const placedMembers = stageLegend.filter(legend => 
-                                bandMembers.some(member => 
-                                  member.membership === 'BAND' && 
+                              const placedMembers = stageLegend.filter(legend =>
+                                bandMembers.some(member =>
+                                  member.membership === 'BAND' &&
                                   (legend.assignedTo === member.fullName || legend.assignedTo === member.stageName)
                                 )
                               ).length;
@@ -4326,11 +4326,11 @@ function EnhancedTechnicalRider({
                               const unplacedMembers = bandMembers.filter(member => {
                                 if (member.membership !== 'BAND') return false;
                                 // Process all assigned talent (restriction removed)
-                                return !stageLegend.some(legend => 
+                                return !stageLegend.some(legend =>
                                   legend.assignedTo === member.fullName || legend.assignedTo === member.stageName
                                 );
                               });
-                              
+
                               unplacedMembers.forEach((member, index) => {
                                 const userInstruments = getUserInstruments(member);
                                 if (userInstruments.length > 0) {
@@ -4349,41 +4349,40 @@ function EnhancedTechnicalRider({
                           </Button>
                         </div>
                       </div>
-                      
+
                       <div className="space-y-2 mt-2 max-h-40 overflow-y-auto">
                         {(() => {
                           const totalBandMembers = bandMembers.filter(member => member.membership === 'BAND');
                           const placedMembers: any[] = [];
                           const unplacedMembers: any[] = [];
-                          
+
                           totalBandMembers.forEach(member => {
-                            const isPlaced = stageLegend.some(legend => 
+                            const isPlaced = stageLegend.some(legend =>
                               legend.assignedTo === member.fullName || legend.assignedTo === member.stageName
                             );
-                            
+
                             if (isPlaced) {
                               placedMembers.push(member);
                             } else {
                               unplacedMembers.push(member);
                             }
                           });
-                          
+
                           // Show unplaced members first, then placed members at bottom
                           return [...unplacedMembers, ...placedMembers];
                         })().map((user, index) => {
                           const userInstruments = getUserInstruments(user);
-                          const isPlaced = stageLegend.some(legend => 
+                          const isPlaced = stageLegend.some(legend =>
                             legend.assignedTo === user.fullName || legend.assignedTo === user.stageName
                           );
-                          
+
                           return (
-                            <div 
-                              key={user.id} 
-                              className={`border rounded p-2 transition-all duration-200 ${
-                                isPlaced 
-                                  ? 'bg-green-50 border-green-200 opacity-75' 
+                            <div
+                              key={user.id}
+                              className={`border rounded p-2 transition-all duration-200 ${isPlaced
+                                  ? 'bg-green-50 border-green-200 opacity-75'
                                   : 'bg-white border-gray-200 hover:border-blue-300'
-                              }`}
+                                }`}
                             >
                               <div className="flex items-center justify-between mb-1">
                                 <div className="text-xs font-medium text-muted-foreground">
@@ -4403,11 +4402,10 @@ function EnhancedTechnicalRider({
                                     size="sm"
                                     onClick={() => addStageElement(instrument.type, instrument.name, user)}
                                     disabled={!canEdit || isPlaced}
-                                    className={`text-xs h-7 ${
-                                      isPlaced 
-                                        ? 'bg-green-100 text-green-700 cursor-not-allowed' 
+                                    className={`text-xs h-7 ${isPlaced
+                                        ? 'bg-green-100 text-green-700 cursor-not-allowed'
                                         : 'hover:bg-blue-50'
-                                    }`}
+                                      }`}
                                   >
                                     {instrument.type} {instrument.name}
                                     {isPlaced && ' ✓'}
@@ -4418,11 +4416,10 @@ function EnhancedTechnicalRider({
                                     size="sm"
                                     onClick={() => addStageElement('🎤', 'Mic', user)}
                                     disabled={!canEdit || isPlaced}
-                                    className={`text-xs h-7 col-span-2 ${
-                                      isPlaced 
-                                        ? 'bg-green-100 text-green-700 cursor-not-allowed' 
+                                    className={`text-xs h-7 col-span-2 ${isPlaced
+                                        ? 'bg-green-100 text-green-700 cursor-not-allowed'
                                         : 'hover:bg-blue-50'
-                                    }`}
+                                      }`}
                                   >
                                     🎤 Add {user.fullName}
                                     {isPlaced && ' ✓'}
@@ -4433,18 +4430,18 @@ function EnhancedTechnicalRider({
                           );
                         })}
                       </div>
-                      
+
                       {/* Missing Members Alert */}
                       {(() => {
                         const totalBandMembers = bandMembers.filter(member => member.membership === 'BAND').length;
-                        const placedMembers = stageLegend.filter(legend => 
-                          bandMembers.some(member => 
-                            member.membership === 'BAND' && 
+                        const placedMembers = stageLegend.filter(legend =>
+                          bandMembers.some(member =>
+                            member.membership === 'BAND' &&
                             (legend.assignedTo === member.fullName || legend.assignedTo === member.stageName)
                           )
                         ).length;
                         const missingCount = totalBandMembers - placedMembers;
-                        
+
                         if (missingCount > 0) {
                           return (
                             <div className="mt-2 p-2 bg-yellow-50 border border-yellow-200 rounded text-center">
@@ -4465,9 +4462,9 @@ function EnhancedTechnicalRider({
 
                 {/* Stage Visualization - WORKING WITH DRAG & DROP */}
                 <div className="lg:col-span-3 space-y-4">
-                  <div 
-                    className="relative border-2 border-gray-300 rounded-lg bg-gradient-to-b from-gray-50 to-gray-100 overflow-hidden" 
-                    style={{ 
+                  <div
+                    className="relative border-2 border-gray-300 rounded-lg bg-gradient-to-b from-gray-50 to-gray-100 overflow-hidden"
+                    style={{
                       height: '400px',
                       width: '100%'
                     }}
@@ -4486,13 +4483,11 @@ function EnhancedTechnicalRider({
                     {riderData.stageLayout.elements.map((element) => (
                       <div
                         key={element.id}
-                        className={`absolute cursor-move bg-white border-2 rounded-lg shadow-md select-none hover:shadow-lg stage-plot-element ${
-                          dragState.isDragging && dragState.elementId === element.id ? 'dragging' : ''
-                        } ${
-                          selectedElement === element.id 
-                            ? 'border-green-500 ring-2 ring-green-200' 
+                        className={`absolute cursor-move bg-white border-2 rounded-lg shadow-md select-none hover:shadow-lg stage-plot-element ${dragState.isDragging && dragState.elementId === element.id ? 'dragging' : ''
+                          } ${selectedElement === element.id
+                            ? 'border-green-500 ring-2 ring-green-200'
                             : 'border-blue-400'
-                        }`}
+                          }`}
                         style={{
                           left: `${element.x}%`,
                           top: `${element.y}%`,
@@ -4508,24 +4503,24 @@ function EnhancedTechnicalRider({
                         <div className="stage-plot-icon">
                           {(element as any).icon || '⚡'}
                         </div>
-                        
+
                         {/* Fixed size text display */}
                         <div className="stage-plot-text">
                           {element.name}
                         </div>
-                        
+
                         {(element as any).assignedRole && (
                           <div className="stage-plot-text text-muted-foreground">
                             {(element as any).assignedRole}
                           </div>
                         )}
-                        
+
                         {element.assignedTo && (
                           <div className="stage-plot-text text-gray-600">
                             {element.assignedTo}
                           </div>
                         )}
-                        
+
                         <Button
                           variant="ghost"
                           size="sm"
@@ -4557,7 +4552,7 @@ function EnhancedTechnicalRider({
                       <div className="text-sm font-medium mb-3 text-center">
                         Control Selected: {riderData.stageLayout.elements.find(e => e.id === selectedElement)?.name}
                       </div>
-                      
+
                       {/* Movement Controls */}
                       <div className="grid grid-cols-3 gap-2 max-w-48 mx-auto mb-4">
                         <div></div>
@@ -4571,7 +4566,7 @@ function EnhancedTechnicalRider({
                           ↑
                         </Button>
                         <div></div>
-                        
+
                         <Button
                           variant="outline"
                           size="sm"
@@ -4598,7 +4593,7 @@ function EnhancedTechnicalRider({
                         >
                           →
                         </Button>
-                        
+
                         <div></div>
                         <Button
                           variant="outline"
@@ -4642,8 +4637,8 @@ function EnhancedTechnicalRider({
                     <div className="space-y-2">
                       {stageLegend.map((item) => (
                         <div key={item.id} className="flex items-center gap-3 p-2 border rounded bg-gray-50">
-                          <div 
-                            className="w-4 h-4 rounded border flex-shrink-0" 
+                          <div
+                            className="w-4 h-4 rounded border flex-shrink-0"
                             style={{ backgroundColor: item.color }}
                           />
                           <div className="flex-1 min-w-0">
@@ -4661,7 +4656,7 @@ function EnhancedTechnicalRider({
                                 autoFocus
                               />
                             ) : (
-                              <div 
+                              <div
                                 className="text-sm font-medium cursor-pointer hover:bg-gray-100 px-2 py-1 rounded"
                                 title={item.name}
                                 onClick={() => canEdit && setEditingLegendItem(item.id)}
@@ -4683,7 +4678,7 @@ function EnhancedTechnicalRider({
                                     variant="ghost"
                                     size="sm"
                                     onClick={() => {
-                                      const drummer = bandMembers.find(member => 
+                                      const drummer = bandMembers.find(member =>
                                         member.fullName === item.assignedTo || member.stageName === item.assignedTo
                                       );
                                       if (drummer) {
@@ -4710,8 +4705,8 @@ function EnhancedTechnicalRider({
                   </div>
 
                   {/* Export Stage Plot */}
-                  <Button 
-                    variant="outline" 
+                  <Button
+                    variant="outline"
                     size="sm"
                     onClick={() => exportStagePlot()}
                     className="w-full mt-2"
@@ -4772,15 +4767,13 @@ function EnhancedTechnicalRider({
                     const channels = mixerChannels[sectionName as keyof typeof mixerChannels];
                     const isDragging = groupDragState.draggedGroup === sectionName;
                     const isDragOver = groupDragState.dragOverGroup === sectionName;
-                    
+
                     return (
-                      <div 
-                        key={sectionName} 
-                        className={`space-y-2 transition-all duration-200 ${
-                          isDragging ? 'opacity-50 scale-95' : ''
-                        } ${
-                          isDragOver ? 'ring-2 ring-blue-400 bg-blue-50' : ''
-                        }`}
+                      <div
+                        key={sectionName}
+                        className={`space-y-2 transition-all duration-200 ${isDragging ? 'opacity-50 scale-95' : ''
+                          } ${isDragOver ? 'ring-2 ring-blue-400 bg-blue-50' : ''
+                          }`}
                         draggable={canEdit}
                         onDragStart={(e) => handleGroupDragStart(e, sectionName)}
                         onDragOver={(e) => handleGroupDragOver(e, sectionName)}
@@ -4788,11 +4781,9 @@ function EnhancedTechnicalRider({
                         onDrop={(e) => handleGroupDrop(e, sectionName)}
                         onDragEnd={handleGroupDragEnd}
                       >
-                        <div className={`flex items-center justify-between cursor-move ${
-                          canEdit ? 'hover:bg-gray-50' : ''
-                        } p-2 rounded border ${
-                          isDragOver ? 'border-blue-400' : 'border-gray-200'
-                        }`}>
+                        <div className={`flex items-center justify-between cursor-move ${canEdit ? 'hover:bg-gray-50' : ''
+                          } p-2 rounded border ${isDragOver ? 'border-blue-400' : 'border-gray-200'
+                          }`}>
                           <div className="flex items-center gap-2">
                             {canEdit && (
                               <div className="flex flex-col gap-1 text-gray-400">
@@ -4804,16 +4795,15 @@ function EnhancedTechnicalRider({
                                 <div className="w-1 h-1 bg-current rounded-full"></div>
                               </div>
                             )}
-                            <h4 className={`font-semibold text-sm p-2 rounded capitalize ${
-                              sectionName === 'drums' ? 'bg-yellow-100' :
-                              sectionName === 'bass' ? 'bg-blue-100' :
-                              sectionName === 'guitar' ? 'bg-green-100' :
-                              sectionName === 'keyboards' ? 'bg-purple-100' :
-                              sectionName === 'percussion' ? 'bg-orange-100' :
-                              sectionName === 'brass' ? 'bg-red-100' :
-                              sectionName === 'vocals' ? 'bg-pink-100' :
-                              'bg-gray-100'
-                            }`}>
+                            <h4 className={`font-semibold text-sm p-2 rounded capitalize ${sectionName === 'drums' ? 'bg-yellow-100' :
+                                sectionName === 'bass' ? 'bg-blue-100' :
+                                  sectionName === 'guitar' ? 'bg-green-100' :
+                                    sectionName === 'keyboards' ? 'bg-purple-100' :
+                                      sectionName === 'percussion' ? 'bg-orange-100' :
+                                        sectionName === 'brass' ? 'bg-red-100' :
+                                          sectionName === 'vocals' ? 'bg-pink-100' :
+                                            'bg-gray-100'
+                              }`}>
                               {sectionName.toUpperCase()}
                               <span className="ml-2 text-xs text-muted-foreground">
                                 ({channels?.length || 0} channels)
@@ -4863,89 +4853,89 @@ function EnhancedTechnicalRider({
                             </Button>
                           </div>
                         </div>
-                    
-                    {/* Column Headers */}
-                    <div className="grid grid-cols-6 gap-3 items-center p-2 bg-gray-50 rounded text-xs font-medium text-muted-foreground">
-                      <div>Channel</div>
-                      <div>Input</div>
-                      <div>Assigned To</div>
-                      <div>Applicable</div>
-                      <div>Notes</div>
-                      <div>Actions</div>
-                    </div>
-                    
-                    {channels.map((channel: any, index: number) => {
-                      const channelNumber = getChannelNumber(sectionName as keyof typeof mixerChannels, index);
-                      return (
-                        <div key={channel.id} className="grid grid-cols-6 gap-3 items-center p-2 border rounded">
-                          <div className="font-mono text-sm font-semibold">Ch {channelNumber}</div>
-                          
-                          {/* Editable Input Name */}
-                          <Input
-                            value={channel.input}
-                            onChange={(e) => updateChannelInput(sectionName as keyof typeof mixerChannels, channel.id, e.target.value)}
-                            className="h-8 text-sm"
-                            placeholder="Input name"
-                          />
-                          
-                          {/* Manual Assignment Dropdown */}
-                          <Select
-                            value={channel.assignedTo || 'unassigned'}
-                            onValueChange={(value) => {
-                              if (value === 'unassigned') {
-                                updateChannelAssignment(sectionName as keyof typeof mixerChannels, channel.id, '');
-                              } else {
-                                updateChannelAssignment(sectionName as keyof typeof mixerChannels, channel.id, value);
-                              }
-                            }}
-                          >
-                            <SelectTrigger className="h-8 text-xs">
-                              <SelectValue placeholder="Assign to..." />
-                            </SelectTrigger>
-                            <SelectContent>
-                              <SelectItem value="unassigned">- Unassigned -</SelectItem>
-                              {bandMembers.map(member => (
-                                <SelectItem key={member.id} value={member.fullName}>
-                                  {member.fullName}
-                                  {member.selectedTalent && (
-                                    <span className="text-xs text-muted-foreground ml-1">
-                                      ({member.selectedTalent})
-                                    </span>
-                                  )}
-                                </SelectItem>
-                              ))}
-                            </SelectContent>
-                          </Select>
-                          
-                          <div>
-                            <Checkbox
-                              id={`${channel.id}-applicable`}
-                              checked={channel.applicable}
-                              onCheckedChange={(checked) => updateChannelApplicable(sectionName as keyof typeof mixerChannels, channel.id, checked as boolean)}
-                            />
-                            <Label htmlFor={`${channel.id}-applicable`} className="ml-2 text-xs">Applicable</Label>
-                          </div>
-                          
-                          <Input 
-                            placeholder="Notes" 
-                            className="h-8 text-sm"
-                            value={channel.notes}
-                            onChange={(e) => updateChannelNotes(sectionName as keyof typeof mixerChannels, channel.id, e.target.value)}
-                          />
-                          
-                          {/* Remove Channel Button */}
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            onClick={() => removeChannelFromSection(sectionName as keyof typeof mixerChannels, channel.id)}
-                            className="h-8 w-8 p-0"
-                            disabled={channels.length <= 1}
-                          >
-                            <X className="w-4 h-4" />
-                          </Button>
+
+                        {/* Column Headers */}
+                        <div className="grid grid-cols-6 gap-3 items-center p-2 bg-gray-50 rounded text-xs font-medium text-muted-foreground">
+                          <div>Channel</div>
+                          <div>Input</div>
+                          <div>Assigned To</div>
+                          <div>Applicable</div>
+                          <div>Notes</div>
+                          <div>Actions</div>
                         </div>
-                      );
-                    })}
+
+                        {channels.map((channel: any, index: number) => {
+                          const channelNumber = getChannelNumber(sectionName as keyof typeof mixerChannels, index);
+                          return (
+                            <div key={channel.id} className="grid grid-cols-6 gap-3 items-center p-2 border rounded">
+                              <div className="font-mono text-sm font-semibold">Ch {channelNumber}</div>
+
+                              {/* Editable Input Name */}
+                              <Input
+                                value={channel.input}
+                                onChange={(e) => updateChannelInput(sectionName as keyof typeof mixerChannels, channel.id, e.target.value)}
+                                className="h-8 text-sm"
+                                placeholder="Input name"
+                              />
+
+                              {/* Manual Assignment Dropdown */}
+                              <Select
+                                value={channel.assignedTo || 'unassigned'}
+                                onValueChange={(value) => {
+                                  if (value === 'unassigned') {
+                                    updateChannelAssignment(sectionName as keyof typeof mixerChannels, channel.id, '');
+                                  } else {
+                                    updateChannelAssignment(sectionName as keyof typeof mixerChannels, channel.id, value);
+                                  }
+                                }}
+                              >
+                                <SelectTrigger className="h-8 text-xs">
+                                  <SelectValue placeholder="Assign to..." />
+                                </SelectTrigger>
+                                <SelectContent>
+                                  <SelectItem value="unassigned">- Unassigned -</SelectItem>
+                                  {bandMembers.map(member => (
+                                    <SelectItem key={member.id} value={member.fullName}>
+                                      {member.fullName}
+                                      {member.selectedTalent && (
+                                        <span className="text-xs text-muted-foreground ml-1">
+                                          ({member.selectedTalent})
+                                        </span>
+                                      )}
+                                    </SelectItem>
+                                  ))}
+                                </SelectContent>
+                              </Select>
+
+                              <div>
+                                <Checkbox
+                                  id={`${channel.id}-applicable`}
+                                  checked={channel.applicable}
+                                  onCheckedChange={(checked) => updateChannelApplicable(sectionName as keyof typeof mixerChannels, channel.id, checked as boolean)}
+                                />
+                                <Label htmlFor={`${channel.id}-applicable`} className="ml-2 text-xs">Applicable</Label>
+                              </div>
+
+                              <Input
+                                placeholder="Notes"
+                                className="h-8 text-sm"
+                                value={channel.notes}
+                                onChange={(e) => updateChannelNotes(sectionName as keyof typeof mixerChannels, channel.id, e.target.value)}
+                              />
+
+                              {/* Remove Channel Button */}
+                              <Button
+                                variant="outline"
+                                size="sm"
+                                onClick={() => removeChannelFromSection(sectionName as keyof typeof mixerChannels, channel.id)}
+                                className="h-8 w-8 p-0"
+                                disabled={channels.length <= 1}
+                              >
+                                <X className="w-4 h-4" />
+                              </Button>
+                            </div>
+                          );
+                        })}
                       </div>
                     );
                   })}
@@ -4990,8 +4980,8 @@ function EnhancedTechnicalRider({
             <CardContent>
               <div className="space-y-6">
                 {bandMembers
-                  .filter(member => 
-                    member.talentType !== 'Professional' && 
+                  .filter(member =>
+                    member.talentType !== 'Professional' &&
                     member.talentType !== 'Management' &&
                     member.talentType !== 'Admin' &&
                     member.talentType !== 'Superadmin' &&
@@ -5044,7 +5034,7 @@ function EnhancedTechnicalRider({
                                   // Find the channel and section
                                   let foundChannel: any = null;
                                   let foundSection = '';
-                                  
+
                                   Object.entries(mixerChannels).forEach(([sectionName, channels]) => {
                                     const channel = (channels as any[]).find((ch: any) => ch.id === channelId);
                                     if (channel) {
@@ -5052,7 +5042,7 @@ function EnhancedTechnicalRider({
                                       foundSection = sectionName;
                                     }
                                   });
-                                  
+
                                   if (foundChannel) {
                                     const currentMix = bandMember.monitorMix || {};
                                     const updatedMix = {
@@ -5065,7 +5055,7 @@ function EnhancedTechnicalRider({
                                       }
                                     };
                                     updateBandMember(bandMember.id, { monitorMix: updatedMix });
-                                    
+
                                     // Note: Auto-assignment to main mixer removed per user request
                                   }
                                 }
@@ -5095,7 +5085,7 @@ function EnhancedTechnicalRider({
                               </SelectContent>
                             </Select>
                           </div>
-                          
+
                           {/* Selected Channels in Mix */}
                           <div className="space-y-2">
                             {Object.entries(bandMember.monitorMix || {})
@@ -5104,7 +5094,7 @@ function EnhancedTechnicalRider({
                                 // Find channel number
                                 let channelNumber = 0;
                                 let sectionName = mixData.sectionName || '';
-                                
+
                                 if (sectionName) {
                                   const sectionChannels = mixerChannels[sectionName as keyof typeof mixerChannels];
                                   const channelIndex = sectionChannels.findIndex((ch: any) => ch.id === channelId);
@@ -5112,16 +5102,15 @@ function EnhancedTechnicalRider({
                                     channelNumber = getChannelNumber(sectionName as keyof typeof mixerChannels, channelIndex);
                                   }
                                 }
-                                
+
                                 return (
-                                  <div key={channelId} className={`flex items-center gap-3 p-3 rounded border ${
-                                    sectionName === 'drums' ? 'bg-yellow-50 border-yellow-200' :
-                                    sectionName === 'bass' ? 'bg-blue-50 border-blue-200' :
-                                    sectionName === 'guitar' ? 'bg-green-50 border-green-200' :
-                                    sectionName === 'keyboards' ? 'bg-purple-50 border-purple-200' :
-                                    sectionName === 'vocals' ? 'bg-pink-50 border-pink-200' :
-                                    'bg-orange-50 border-orange-200'
-                                  }`}>
+                                  <div key={channelId} className={`flex items-center gap-3 p-3 rounded border ${sectionName === 'drums' ? 'bg-yellow-50 border-yellow-200' :
+                                      sectionName === 'bass' ? 'bg-blue-50 border-blue-200' :
+                                        sectionName === 'guitar' ? 'bg-green-50 border-green-200' :
+                                          sectionName === 'keyboards' ? 'bg-purple-50 border-purple-200' :
+                                            sectionName === 'vocals' ? 'bg-pink-50 border-pink-200' :
+                                              'bg-orange-50 border-orange-200'
+                                    }`}>
                                     <div className="flex-1">
                                       <div className="flex items-center gap-2 mb-1">
                                         <span className="font-mono text-sm font-semibold">Ch {channelNumber}</span>
@@ -5131,7 +5120,7 @@ function EnhancedTechnicalRider({
                                         </Badge>
                                       </div>
                                     </div>
-                                    
+
                                     {/* Volume Control */}
                                     <div className="flex items-center gap-2">
                                       <span className="text-xs text-muted-foreground w-8">Vol:</span>
@@ -5155,7 +5144,7 @@ function EnhancedTechnicalRider({
                                       />
                                       <span className="text-sm font-medium w-8 text-center">{mixData.volume || 70}</span>
                                     </div>
-                                    
+
                                     {/* Remove Channel */}
                                     <Button
                                       variant="ghost"
@@ -5173,7 +5162,7 @@ function EnhancedTechnicalRider({
                                   </div>
                                 );
                               })}
-                            
+
                             {Object.keys(bandMember.monitorMix || {}).filter(channelId => bandMember.monitorMix?.[channelId]?.selected).length === 0 && (
                               <div className="text-center py-6 text-muted-foreground">
                                 <Monitor className="h-8 w-8 mx-auto mb-2 opacity-50" />
@@ -5182,7 +5171,7 @@ function EnhancedTechnicalRider({
                               </div>
                             )}
                           </div>
-                          
+
                           {/* Overall Monitor Level */}
                           <div className="pt-3 border-t">
                             <div className="flex items-center justify-between">
@@ -5208,21 +5197,21 @@ function EnhancedTechnicalRider({
                       </CardContent>
                     </Card>
                   ))}
-                
+
                 {/* No Band Members Message */}
-                {bandMembers.filter(member => 
-                  member.talentType !== 'Professional' && 
+                {bandMembers.filter(member =>
+                  member.talentType !== 'Professional' &&
                   member.talentType !== 'Management' &&
                   member.talentType !== 'Admin' &&
                   member.talentType !== 'Superadmin' &&
                   member.talentType !== 'Fan'
                 ).length === 0 && (
-                  <div className="text-center py-8 text-muted-foreground">
-                    <Monitor className="h-12 w-12 mx-auto mb-3 opacity-50" />
-                    <p className="font-medium">No Band Members for Monitor Mixing</p>
-                    <p className="text-sm">Assign band members to the booking to configure their monitor mixes</p>
-                  </div>
-                )}
+                    <div className="text-center py-8 text-muted-foreground">
+                      <Monitor className="h-12 w-12 mx-auto mb-3 opacity-50" />
+                      <p className="font-medium">No Band Members for Monitor Mixing</p>
+                      <p className="text-sm">Assign band members to the booking to configure their monitor mixes</p>
+                    </div>
+                  )}
               </div>
             </CardContent>
           </Card>
@@ -5234,7 +5223,7 @@ function EnhancedTechnicalRider({
 
         {/* Enhanced Professional Setlist - UPGRADED VERSION */}
         <TabsContent value="schedule" className="space-y-4 lg:space-y-6 animate-fade-in-up mobile-container">
-          <EnhancedSetlistSection 
+          <EnhancedSetlistSection
             bookingId={bookingId}
             assignedTalent={finalAssignedMusicians.map((member: any) => ({
               id: member.userId,
@@ -5279,7 +5268,7 @@ function EnhancedTechnicalRider({
                     {bandMembers.filter(m => m.membership === 'BAND').length} Band Members
                   </Badge>
                 </div>
-                
+
                 {bandMembers.filter(member => member.membership === 'BAND').map((member, index) => {
                   return <BandMemberHospitalitySection key={member.id} member={member} />;
                 })}
@@ -5296,7 +5285,7 @@ function EnhancedTechnicalRider({
                     Individual Requirements
                   </Badge>
                 </div>
-                
+
                 {bandMembers.filter(member => member.membership === 'BAND').map((member, index) => {
                   return <BandMemberTechnicalSection key={`tech-${member.id}`} member={member} />;
                 })}
@@ -5313,7 +5302,7 @@ function EnhancedTechnicalRider({
                     Individual Specifications
                   </Badge>
                 </div>
-                
+
                 {bandMembers.filter(member => member.membership === 'BAND').map((member, index) => {
                   return <BandMemberPerformanceSection key={`perf-${member.id}`} member={member} />;
                 })}

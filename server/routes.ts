@@ -3749,7 +3749,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.get(
     "/api/bookings/:id/talent-by-role",
     authenticateToken,
-    requireRole([1,2]),
+    requireRole([1, 2]),
     validateParams(schemas.idParamSchema),
     async (req: Request, res: Response) => {
       try {
@@ -11498,9 +11498,8 @@ This is a preview of the performance engagement contract. Final agreement will i
 
         // Get artist profile for stage name and technical rider data
         const artistProfile = await storage.getArtist(primaryArtist.id);
-        const stageNames = (artistProfile?.stageNames as string[]) || [];
-        const stageName =
-          stageNames.length > 0 ? stageNames[0] : primaryArtist.fullName;
+        
+        const stageName =artistProfile?.stageName ||  primaryArtist.fullName;
 
         // Get technical rider profile data for auto-population
         const technicalRiderProfile = artistProfile?.technicalRiderProfile;
@@ -11596,6 +11595,11 @@ This is a preview of the performance engagement contract. Final agreement will i
           return res.status(404).json({ message: "Performer not found" });
         }
 
+        // Import performance engagement contract generator
+        const { generatePerformanceEngagementContract, getPerformerRole } =
+          await import("./performanceEngagementTemplate");
+
+
         // Get booking client info
         const [primaryArtist, booker] = await Promise.all([
           storage.getUser(booking.primaryArtistUserId),
@@ -11629,10 +11633,6 @@ This is a preview of the performance engagement contract. Final agreement will i
           );
           isManaged = storage.isUserManaged(performer.roleId);
         }
-
-        // Import performance engagement contract generator
-        const { generatePerformanceEngagementContract, getPerformerRole } =
-          await import("./performanceEngagementTemplate");
 
         // Calculate compensation based on performer type and booking value
         const baseCompensation = parseFloat(
@@ -11874,6 +11874,58 @@ This is a preview of the performance engagement contract. Final agreement will i
   );
 
   // Get single booking data
+  // app.get(
+  //   "/api/bookings/:id",
+  //   authenticateToken,
+  //   async (req: Request, res: Response) => {
+  //     try {
+  //       const bookingId = parseInt(req.params.id);
+  //       const booking = await storage.getBooking(bookingId);
+
+  //       if (!booking) {
+  //         return res.status(404).json({ message: "Booking not found" });
+  //       }
+
+  //       // Get related data for complete booking details
+  //       const [primaryArtist, booker] = await Promise.all([
+  //         storage.getUser(booking.primaryArtistUserId),
+  //         booking.bookerUserId ? storage.getUser(booking.bookerUserId) : null,
+  //       ]);
+
+  //       // Transform artist to match expected format
+  //       const artistDetails = primaryArtist
+  //         ? await storage.getArtist(primaryArtist.id)
+  //         : null;
+
+  //       const bookingDetails = {
+  //         ...booking,
+  //         primaryArtist: artistDetails
+  //           ? {
+  //             stageName: artistDetails?.stageName || primaryArtist.fullName,
+  //             userId: primaryArtist.id,
+  //             fullName: primaryArtist.fullName,
+  //           }
+  //           : null,
+  //         booker: booker
+  //           ? {
+  //             fullName: booker.fullName,
+  //             email: booker.email,
+  //           }
+  //           : {
+  //             guestName: booking.guestName,
+  //             guestEmail: booking.guestEmail,
+  //           },
+  //         assignedMusicians: [], // TODO: Implement assigned musicians retrieval
+  //       };
+
+  //       res.json(bookingDetails);
+  //     } catch (error) {
+  //       console.error("Get booking error:", error);
+  //       res.status(500).json({ message: "Internal server error" });
+  //     }
+  //   }
+  // );
+
   app.get(
     "/api/bookings/:id",
     authenticateToken,
@@ -11886,24 +11938,29 @@ This is a preview of the performance engagement contract. Final agreement will i
           return res.status(404).json({ message: "Booking not found" });
         }
 
-        // Get related data for complete booking details
+        const signatures = await storage.getContractSignatures(bookingId);
+        const payments = await storage.getPayments(bookingId);
+
+        // Related data
         const [primaryArtist, booker] = await Promise.all([
           storage.getUser(booking.primaryArtistUserId),
           booking.bookerUserId ? storage.getUser(booking.bookerUserId) : null,
         ]);
 
-        // Transform artist to match expected format
         const artistDetails = primaryArtist
           ? await storage.getArtist(primaryArtist.id)
           : null;
+
+        // Extract workflowData (safe defaults)
+        const workflowData = booking.workflowData || {};
+        const technicalRider = workflowData.technicalRider || null;
+        const stagePlot = workflowData.stagePlot || null;
 
         const bookingDetails = {
           ...booking,
           primaryArtist: artistDetails
             ? {
-              stageName:
-                (artistDetails?.stageNames as string[])?.[0] ||
-                primaryArtist.fullName,
+              stageName: artistDetails?.stageName || primaryArtist.fullName,
               userId: primaryArtist.id,
               fullName: primaryArtist.fullName,
             }
@@ -11917,7 +11974,11 @@ This is a preview of the performance engagement contract. Final agreement will i
               guestName: booking.guestName,
               guestEmail: booking.guestEmail,
             },
-          assignedMusicians: [], // TODO: Implement assigned musicians retrieval
+          assignedMusicians: [], // TODO: implement retrieval
+          technicalRider,
+          stagePlot,
+          signatures,
+          payments
         };
 
         res.json(bookingDetails);
@@ -11927,6 +11988,8 @@ This is a preview of the performance engagement contract. Final agreement will i
       }
     }
   );
+
+
 
   // Get booking workflow data
   app.get(
@@ -12870,6 +12933,7 @@ This is a preview of the performance engagement contract. Final agreement will i
   app.patch(
     "/api/bookings/:id",
     authenticateToken,
+    requireRole([1,2]),
     async (req: Request, res: Response) => {
       try {
         const bookingId = parseInt(req.params.id);
@@ -12880,17 +12944,6 @@ This is a preview of the performance engagement contract. Final agreement will i
         const currentBooking = await storage.getBooking(bookingId);
         if (!currentBooking) {
           return res.status(404).json({ message: "Booking not found" });
-        }
-
-        // Check permissions - admin, superadmin, or the primary artist
-        const hasAccess =
-          [1, 2].includes(user.roleId) ||
-          currentBooking.primaryArtistUserId === user.userId;
-
-        if (!hasAccess) {
-          return res
-            .status(403)
-            .json({ message: "Insufficient permissions to update booking" });
         }
 
         // Create update object with only allowed fields
@@ -28642,11 +28695,47 @@ async function scanFileWithClamAV(
   });
 
   // Enhanced Technical Rider Save Endpoint
+  // app.post("/api/bookings/:id/enhanced-technical-rider", async (req, res) => {
+  //   try {
+  //     const bookingId = parseInt(req.params.id);
+  //     const {
+  //       booking_id,
+  //       band_members,
+  //       equipment_requests,
+  //       stage_layout,
+  //       audio_config,
+  //       completion_status,
+  //     } = req.body;
+
+  //     // Save enhanced technical rider data
+  //     const savedData = {
+  //       id: `tr-${bookingId}-${Date.now()}`,
+  //       booking_id: bookingId,
+  //       band_members: band_members || [],
+  //       equipment_requests: equipment_requests || [],
+  //       stage_layout: stage_layout || {},
+  //       audio_config: audio_config || {},
+  //       completion_status: completion_status || {},
+  //       saved_at: new Date().toISOString(),
+  //     };
+
+  //     res.json({
+  //       success: true,
+  //       data: savedData,
+  //       message: "Enhanced technical rider saved successfully",
+  //     });
+  //   } catch (error) {
+  //     console.error("Save enhanced technical rider error:", error);
+  //     res
+  //       .status(500)
+  //       .json({ error: "Failed to save enhanced technical rider" });
+  //   }
+  // });
+
   app.post("/api/bookings/:id/enhanced-technical-rider", async (req, res) => {
     try {
       const bookingId = parseInt(req.params.id);
       const {
-        booking_id,
         band_members,
         equipment_requests,
         stage_layout,
@@ -28654,8 +28743,8 @@ async function scanFileWithClamAV(
         completion_status,
       } = req.body;
 
-      // Save enhanced technical rider data
-      const savedData = {
+      // নতুন ডেটা
+      const riderData = {
         id: `tr-${bookingId}-${Date.now()}`,
         booking_id: bookingId,
         band_members: band_members || [],
@@ -28666,16 +28755,29 @@ async function scanFileWithClamAV(
         saved_at: new Date().toISOString(),
       };
 
+      // workflowData.technicalRider এ সেভ করো
+      const [updated] = await db
+        .update(bookings)
+        .set({
+          workflowData: sql`jsonb_set(
+            coalesce(workflow_data, '{}'),
+            '{technicalRider}',
+            ${JSON.stringify(riderData)}::jsonb,
+            true
+          )`,
+          updatedAt: new Date(),
+        })
+        .where(eq(bookings.id, bookingId))
+        .returning();
+
       res.json({
         success: true,
-        data: savedData,
+        data: updated.workflowData.technicalRider,
         message: "Enhanced technical rider saved successfully",
       });
     } catch (error) {
       console.error("Save enhanced technical rider error:", error);
-      res
-        .status(500)
-        .json({ error: "Failed to save enhanced technical rider" });
+      res.status(500).json({ error: "Failed to save enhanced technical rider" });
     }
   });
 
