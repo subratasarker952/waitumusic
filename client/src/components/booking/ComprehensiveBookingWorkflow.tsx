@@ -485,6 +485,7 @@ export default function BookingWorkflow({
         if (talent.type === 'Artist') return 4; // artist
         if (talent.type === 'Managed Musician') return 5; // managed_musician  
         if (talent.type === 'Musician') return 6; // musician
+        if (talent.type === 'Managed Professional') return 7; // professional
         if (talent.type === 'Professional') return 8; // professional
         return 6; // default to musician
       };
@@ -543,7 +544,7 @@ export default function BookingWorkflow({
       const results = await Promise.all(promises);
       const savedCount = results.filter(r => r !== null).length;
 
-      console.log('✅ BATCH SAVE COMPLETE: All talent saved to database');
+      console.log('✅ BATCH SAVE COMPLETE: All talent saved to database', results);
       console.log(`📊 Results: ${savedCount} new assignments, ${assignedTalent.length - savedCount} already existed`);
 
       // Invalidate queries to refresh data
