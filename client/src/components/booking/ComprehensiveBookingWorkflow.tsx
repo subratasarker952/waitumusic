@@ -614,21 +614,12 @@ export default function BookingWorkflow({
   };
 
 
-  const saveContracts = async () => {
-    if (!bookingId) {
-      toast({
-        title: "Booking ID Missing",
-        description: "Cannot save contracts without a booking",
-        variant: "destructive",
-      });
-      return;
-    }
-
+  const saveContracts = async (): Promise<void> => {
     try {
-      // 1️⃣ Generate previews for both booking and performance contracts
+      // Generate previews and save
       await generateContractPreview("booking");
       await generateContractPreview("performance");
-
+  
       if (!contractPreview.bookingAgreement || !contractPreview.performanceContract) {
         toast({
           title: "Preview Missing",
@@ -637,8 +628,7 @@ export default function BookingWorkflow({
         });
         return;
       }
-
-      // 2️⃣ Prepare payloads
+  
       const payloads = [
         {
           bookingId,
@@ -653,30 +643,21 @@ export default function BookingWorkflow({
           content: contractPreview.performanceContract,
         },
       ];
-
-      // 3️⃣ Save both contracts via API
-      const savePromises = payloads.map(async (data) => {
-        const res = await apiRequest(`/api/bookings/${bookingId}/contracts`, {
-          method: "POST",
-          body: JSON.stringify(data),
-        });
-        if (!res.ok) {
-          const err = await res.text();
-          throw new Error(err || "Failed to save contract");
-        }
-        return await res.json();
-      });
-
-      const results = await Promise.all(savePromises);
-
+  
+      // Save contracts
+      await Promise.all(
+        payloads.map((data) =>
+          apiRequest(`/api/bookings/${bookingId}/contracts`, {
+            method: "POST",
+            body: JSON.stringify(data),
+          })
+        )
+      );
+  
       toast({
         title: "Contracts Saved",
         description: "Booking & Performance contracts saved successfully",
       });
-
-      console.log("✅ Saved contracts:", results);
-
-      return results;
     } catch (error: any) {
       console.error("❌ Save contracts error:", error);
       toast({
@@ -686,6 +667,7 @@ export default function BookingWorkflow({
       });
     }
   };
+  
 
 
 
