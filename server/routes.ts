@@ -9999,6 +9999,41 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   );
 
+  app.post(
+    "/api/bookings/:id/contracts",
+    authenticateToken,
+    requireRole([1, 2]),
+    async (req: Request, res: Response) => {
+      try {
+        const createdByUserId = req.user?.userId;
+        const id = parseInt(req.params.id);
+        const {
+          contractType,
+          bookingId,
+          title,
+          content,
+        } = req.body;
+
+        if (!(id === bookingId)) {
+          res.status(500).json({ message: "Booking Id mismatch" || "Failed to save contract" });
+          return;
+        }
+        const contractData = {
+          contractType,
+          title,
+          content,
+          bookingId,
+          createdByUserId
+        };
+        const newContract = await storage.createContract(contractData);
+        res.json(newContract);
+      } catch (error: any) {
+        console.error(error);
+        res.status(500).json({ message: error.message || "Failed to save contract" });
+      }
+    }
+  );
+
   // ==================== CONTRACT PREVIEW ENDPOINTS ====================
 
   // Generate booking agreement preview
@@ -11375,6 +11410,10 @@ This is a preview of the performance engagement contract. Final agreement will i
     }
   );
 
+
+
+
+
   // Generate Technical Rider PDF (existing GET endpoint)
   app.get(
     "/api/bookings/:id/technical-rider",
@@ -11498,8 +11537,8 @@ This is a preview of the performance engagement contract. Final agreement will i
 
         // Get artist profile for stage name and technical rider data
         const artistProfile = await storage.getArtist(primaryArtist.id);
-        
-        const stageName =artistProfile?.stageName ||  primaryArtist.fullName;
+
+        const stageName = artistProfile?.stageName || primaryArtist.fullName;
 
         // Get technical rider profile data for auto-population
         const technicalRiderProfile = artistProfile?.technicalRiderProfile;
@@ -11925,7 +11964,6 @@ This is a preview of the performance engagement contract. Final agreement will i
   //     }
   //   }
   // );
-
   app.get(
     "/api/bookings/:id",
     authenticateToken,
@@ -11951,10 +11989,15 @@ This is a preview of the performance engagement contract. Final agreement will i
           ? await storage.getArtist(primaryArtist.id)
           : null;
 
-        // Extract workflowData (safe defaults)
+        // Workflow fallback
         const workflowData = booking.workflowData || {};
-        const technicalRider = workflowData.technicalRider || null;
-        const stagePlot = workflowData.stagePlot || null;
+
+        // --- NEW: Try DB first ---
+        const dbTechnicalRider = await storage.getTechnicalRiderByBooking(bookingId);
+        const dbStagePlot = await storage.getStagePlotByBooking(bookingId);
+
+        const technicalRider = dbTechnicalRider || workflowData.technicalRider || null;
+        const stagePlot = dbStagePlot || workflowData.stagePlot || null;
 
         const bookingDetails = {
           ...booking,
@@ -11978,7 +12021,7 @@ This is a preview of the performance engagement contract. Final agreement will i
           technicalRider,
           stagePlot,
           signatures,
-          payments
+          payments,
         };
 
         res.json(bookingDetails);
@@ -11988,6 +12031,7 @@ This is a preview of the performance engagement contract. Final agreement will i
       }
     }
   );
+
 
 
 
@@ -12933,7 +12977,7 @@ This is a preview of the performance engagement contract. Final agreement will i
   app.patch(
     "/api/bookings/:id",
     authenticateToken,
-    requireRole([1,2]),
+    requireRole([1, 2]),
     async (req: Request, res: Response) => {
       try {
         const bookingId = parseInt(req.params.id);

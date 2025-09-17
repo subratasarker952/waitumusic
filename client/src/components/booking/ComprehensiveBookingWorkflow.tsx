@@ -45,11 +45,11 @@ interface WorkflowStep {
   id: string;
   title: string;
   description: string;
-  status: 'pending' | 'in_progress' | 'completed' | 'failed';
-  icon: React.ReactNode;
-  isActive: boolean;
+  requiredDataCheck?: () => boolean; // returns true if step ready to save
+  saveFunction?: () => Promise<void>; // step complete হলে save করবে
   canProgress: boolean;
 }
+
 
 interface BookingData {
   id: number;
@@ -100,56 +100,6 @@ export default function BookingWorkflow({
   const [mixerModalOpen, setMixerModalOpen] = useState(false);
   const [setlistModalOpen, setSetlistModalOpen] = useState(false);
   const [technicalRiderModalOpen, setTechnicalRiderModalOpen] = useState(false);
-
-  // Define the new 6-step workflow as requested
-  const workflowSteps: WorkflowStep[] = [
-    {
-      id: 'talent_assignment',
-      title: 'Talent Assignment',
-      description: 'Assign Artists, Musicians and Professionals to the booking',
-      status: (booking?.assignedMusicians?.length || 0) > 0 ? 'completed' : currentStep === 1 ? 'in_progress' : 'pending',
-      icon: <Users className="h-5 w-5" />,
-      isActive: currentStep === 1,
-      canProgress: talentReviewConfirmed
-    },
-    {
-      id: 'contract_generation',
-      title: 'Contract Generation',
-      description: 'Generate booking agreements and performance contracts',
-      status: (booking?.contracts?.length || 0) >= 2 ? 'completed' : currentStep === 2 ? 'in_progress' : 'pending',
-      icon: <FileText className="h-5 w-5" />,
-      isActive: currentStep === 2,
-      canProgress: stepConfirmations[2] || false
-    },
-    {
-      id: 'technical_rider',
-      title: 'Technical Rider Creation',
-      description: 'Create comprehensive technical requirements, stage plot, and setlist',
-      status: booking?.technicalRider && booking?.stagePlot ? 'completed' : currentStep === 3 ? 'in_progress' : 'pending',
-      icon: <Settings className="h-5 w-5" />,
-      isActive: currentStep === 3,
-      canProgress: booking?.technicalRider && booking?.stagePlot
-    },
-    {
-      id: 'signature_collection',
-      title: 'Signature Collection',
-      description: 'Collect signature from superadmin on contract',
-      status: (booking?.signatures?.length || 0) >= 1 ? 'completed' : currentStep === 4 ? 'in_progress' : 'pending',
-      icon: <PenTool className="h-5 w-5" />,
-      isActive: currentStep === 4,
-      canProgress: (booking?.signatures?.length || 0) >= 1
-    },
-    {
-      id: 'payment_processing',
-      title: 'Payment Processing',
-      description: 'Process payments and generate receipts',
-      status: (booking?.payments?.length || 0) > 0 ? 'completed' : currentStep === 5 ? 'in_progress' : 'pending',
-      icon: <CreditCard className="h-5 w-5" />,
-      isActive: currentStep === 5,
-      canProgress: (booking?.payments?.length || 0) > 0
-    }
-
-  ];
 
   // Load booking data with controlled caching
   const { data: bookingData, isLoading: bookingLoading, refetch: refetchBooking } = useQuery({
@@ -412,7 +362,6 @@ export default function BookingWorkflow({
     }
   };
 
-
   // Generate PDF function
   const generatePDF = async () => {
     try {
@@ -459,160 +408,474 @@ export default function BookingWorkflow({
     }
   };
 
+  // Step 2: Enhanced Contract Generation with Category-Based Pricing
+  const [contractPreview, setContractPreview] = useState<{ bookingAgreement: string | null; performanceContract: string | null; }>({
+    bookingAgreement: null,
+    performanceContract: null
+  });
+
+  const [contractConfig, setContractConfig] = useState({
+    counterOfferDeadline: '',
+    paymentTerms: '50% deposit, 50% on completion',
+    cancellationPolicy: '72 hours notice required',
+    additionalTerms: '',
+    waituMusicPlatformName: 'Wai\'tuMusic',
+    labelAddress: '123 Music Lane\nNashville, TN 37203\nUnited States',
+    totalBookingPrice: 0
+  });
+
+  // Calculate dynamic total booking price based on category and individual pricing
+  const calculateTotalBookingPrice = () => {
+    return assignedTalent.reduce((total, talent) => {
+      // Main Booked Talent has special priority - only individual overrides apply
+      if (talent.isMainBookedTalent) {
+        return total + (individualPricing[talent.id]?.price || parseFloat(categoryPricing['Main Booked Talent'] as string) || 0);
+      }
+      // For other talent, individual pricing overrides category pricing
+      return total + (individualPricing[talent.id]?.price || parseFloat(categoryPricing[talent.type as keyof typeof categoryPricing] as string) || 0);
+    }, 0);
+  };
+
+  // Get assigned talent categories for readonly logic
+  const getAssignedCategories = () => {
+    const categories = new Set<string>();
+    assignedTalent.forEach(talent => {
+      if (talent.isMainBookedTalent) {
+        categories.add('Main Booked Talent');
+      } else {
+        categories.add(talent.type);
+      }
+    });
+    return categories;
+  };
+
+  // Category-based pricing for talent types with Main Booked Talent priority
+  const [categoryPricing, setCategoryPricing] = useState({
+    'Main Booked Talent': '',
+    'Artist': '',
+    'Musician': '',
+    'Managed Musician': '',
+    'Professional': '',
+    'Managed Professional': '',
+    // 'Performance Professional': '',
+  });
+
+  // Individual talent pricing overrides
+  const [individualPricing, setIndividualPricing] = useState<Record<string, {
+    price: number;
+    counterOfferDeadline: string;
+    paymentTerms: string;
+    cancellationPolicy: string;
+    additionalTerms: string;
+  }>>({});
+
+  const [counterOffer, setCounterOffer] = useState({
+    received: false,
+    amount: 0,
+    deadline: '',
+    notes: ''
+  });
+
+  const generateContractPreview = async (type: 'booking' | 'performance') => {
+    try {
+      // Enhanced preview data with category-based and individual pricing
+      const previewData = {
+        assignedTalent: assignedTalent.map(talent => ({
+          ...talent,
+          individualPrice: individualPricing[talent.id]?.price || parseFloat(categoryPricing[talent.type as keyof typeof categoryPricing] as string) || 0,
+          paymentTerms: individualPricing[talent.id]?.paymentTerms || contractConfig.paymentTerms,
+          cancellationPolicy: individualPricing[talent.id]?.cancellationPolicy || contractConfig.cancellationPolicy,
+          additionalTerms: individualPricing[talent.id]?.additionalTerms || '',
+          counterOfferDeadline: individualPricing[talent.id]?.counterOfferDeadline || contractConfig.counterOfferDeadline
+        })),
+        contractConfig: {
+          ...contractConfig,
+          categoryPricing,
+          totalTalentCost: assignedTalent.reduce((total, talent) => {
+            const talentPrice = individualPricing[talent.id]?.price || categoryPricing[talent.type as keyof typeof categoryPricing] || 0;
+            return total + talentPrice;
+          }, 0),
+          // Ensure platform name is included in contract generation
+          platformName: contractConfig.waituMusicPlatformName,
+          labelAddress: contractConfig.labelAddress
+        },
+        counterOffer,
+        booking: {
+          ...booking,
+          clientName: booking?.bookerName || booking?.clientName || '',
+          eventName: booking?.eventName || '',
+          eventDate: booking?.eventDate || '',
+          venueName: booking?.venueName || booking?.venueDetails || 'TBD'
+        },
+        totalBookingPrice: contractConfig.totalBookingPrice || calculateTotalBookingPrice(),
+        finalOfferPrice: contractConfig.totalBookingPrice || calculateTotalBookingPrice(),
+        talentAskingPrice: calculateTotalBookingPrice()
+      };
+
+      // Make raw fetch request since server returns text/plain, not JSON
+      const token = localStorage.getItem('token');
+      const response = await fetch(`/api/bookings/${bookingId}/${type}-agreement-preview`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          ...(token && { 'Authorization': `Bearer ${token}` }),
+        },
+        body: JSON.stringify(previewData),
+        credentials: 'include'
+      });
+
+      if (response.ok) {
+        const preview = await response.text();
+        setContractPreview(prev => ({
+          ...prev,
+          [type === 'booking' ? 'bookingAgreement' : 'performanceContract']: preview
+        }));
+        toast({
+          title: "Contract Preview Generated",
+          description: `${type === 'booking' ? 'Booking Agreement' : 'Performance Contract'} preview with enhanced pricing`
+        });
+      } else {
+        const errorText = await response.text();
+        throw new Error(`${response.status}: ${errorText}`);
+      }
+    } catch (error) {
+      console.error('Contract preview error:', error);
+      toast({
+        title: "Preview Error",
+        description: "Unable to generate contract preview",
+        variant: "destructive"
+      });
+    }
+  };
+
+
+
+
+
   // Function to save all assigned talent to database
   const saveBatchAssignments = async () => {
-    console.log('🔍 BATCH SAVE DEBUG: Starting batch assignment save...');
-    console.log('🔍 assignedTalent state:', assignedTalent);
-    console.log('🔍 assignedTalent length:', assignedTalent?.length);
-
     if (!assignedTalent || assignedTalent.length === 0) {
-      console.log('💾 No talent assignments to save to database - empty array');
       toast({
         title: "No Assignments",
         description: "No talent assigned to save to database",
-        variant: "destructive"
+        variant: "destructive",
       });
       return;
     }
 
-    console.log('💾 BATCH SAVE: Saving all assigned talent to database...', assignedTalent);
-
     try {
-      // Get role mapping for proper roleId assignment
-      const getRoleId = (talent: any) => {
-        if (talent.roleId) return talent.roleId;
-        if (talent.isMainBookedTalent) return 3; // managed_artist for main booked talent
-        if (talent.type === 'Artist') return 4; // artist
-        if (talent.type === 'Managed Musician') return 5; // managed_musician  
-        if (talent.type === 'Musician') return 6; // musician
-        if (talent.type === 'Managed Professional') return 7; // professional
-        if (talent.type === 'Professional') return 8; // professional
-        return 6; // default to musician
-      };
-
-      // Fetch existing talent once before looping
       const existingCheck = await apiRequest(`/api/bookings/${bookingId}/talent-by-role`);
-
       let existingTalent: any[] = [];
-      if (existingCheck.ok) {
-        try {
-          existingTalent = await existingCheck.json();
-        } catch {
-          existingTalent = [];
-        }
-      }
+      if (existingCheck.ok) existingTalent = await existingCheck.json();
 
       const promises = assignedTalent.map(async (talent) => {
-        // ✅ Skip if already exists
-        if (existingTalent.some((et) => et.userId === talent.userId)) {
-          console.log(`✅ Talent ${talent.name} already exists in database, skipping`);
-          return null;
-        }
+        if (existingTalent.some((et) => et.userId === talent.userId)) return null;
 
-        const assignmentData = {
-          userId: talent.userId,
-          roleId: getRoleId(talent),
-          selectedTalent: talent.selectedTalent || null,
-          isMainBookedTalent: talent.isMainBookedTalent || false,
-          assignmentType: "workflow",
-        };
-
-        console.log(`💾 Saving talent ${talent.name} with payload:`, assignmentData);
+        const roleId =
+          talent.roleId ??
+          (talent.isMainBookedTalent ? 3 : talent.type === "Artist" ? 4 : talent.type === "Managed Musician" ? 5 : talent.type === "Musician" ? 6 : talent.type === "Managed Professional" ? 7 : talent.type === "Professional" ? 8 : 6);
 
         const response = await apiRequest(`/api/bookings/${bookingId}/assign`, {
           method: "POST",
-          body: JSON.stringify(assignmentData),
+          body: JSON.stringify({
+            userId: talent.userId,
+            roleId,
+            selectedTalent: talent.selectedTalent || null,
+            isMainBookedTalent: talent.isMainBookedTalent || false,
+            assignmentType: "workflow",
+          }),
         });
 
         if (!response.ok) {
-          let errorMessage = `Failed to save ${talent.name}`;
-          try {
-            const error = await response.json();
-            errorMessage = error.message || errorMessage;
-          } catch {
-            errorMessage = `${errorMessage}: ${response.status} ${response.statusText}`;
-          }
-          console.error(`❌ ${errorMessage}`);
-          throw new Error(errorMessage);
+          const err = await response.json().catch(() => ({}));
+          throw new Error(err.message || `Failed to save ${talent.name}`);
         }
 
-        const result = await response.json();
-        console.log(`✅ Successfully saved ${talent.name}:`, result);
-        return result;
+        return await response.json();
       });
 
-      const results = await Promise.all(promises);
-      const savedCount = results.filter(r => r !== null).length;
+      const results = await Promise.allSettled(promises);
+      const savedCount = results.filter((r) => r.status === "fulfilled" && r.value !== null).length;
 
-      console.log('✅ BATCH SAVE COMPLETE: All talent saved to database', results);
-      console.log(`📊 Results: ${savedCount} new assignments, ${assignedTalent.length - savedCount} already existed`);
-
-      // Invalidate queries to refresh data
-      queryClient.invalidateQueries({ queryKey: ['booking-assigned-talent', bookingId] });
+      queryClient.invalidateQueries({ queryKey: ["booking-assigned-talent", bookingId] });
 
       toast({
         title: "Database Updated",
-        description: `${savedCount} talent assignments saved to database`
+        description: `${savedCount} talent assignments saved to database`,
       });
-
-    } catch (error) {
-      console.error('❌ BATCH SAVE FAILED:', error);
+    } catch (error: any) {
+      console.error("❌ BATCH SAVE FAILED:", error);
       toast({
         title: "Save Failed",
-        description: `Failed to save assignments: ${(error as any).message}`,
-        variant: "destructive"
+        description: error.message || "Failed to save assignments",
+        variant: "destructive",
       });
     }
   };
+
+
+  const saveContracts = async () => {
+    if (!bookingId) {
+      toast({
+        title: "Booking ID Missing",
+        description: "Cannot save contracts without a booking",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    try {
+      // 1️⃣ Generate previews for both booking and performance contracts
+      await generateContractPreview("booking");
+      await generateContractPreview("performance");
+
+      if (!contractPreview.bookingAgreement || !contractPreview.performanceContract) {
+        toast({
+          title: "Preview Missing",
+          description: "Please generate contract previews first",
+          variant: "destructive",
+        });
+        return;
+      }
+
+      // 2️⃣ Prepare payloads
+      const payloads = [
+        {
+          bookingId,
+          contractType: "booking_agreement",
+          title: "Booking Agreement",
+          content: contractPreview.bookingAgreement,
+        },
+        {
+          bookingId,
+          contractType: "performance_contract",
+          title: "Performance Contract",
+          content: contractPreview.performanceContract,
+        },
+      ];
+
+      // 3️⃣ Save both contracts via API
+      const savePromises = payloads.map(async (data) => {
+        const res = await apiRequest(`/api/bookings/${bookingId}/contracts`, {
+          method: "POST",
+          body: JSON.stringify(data),
+        });
+        if (!res.ok) {
+          const err = await res.text();
+          throw new Error(err || "Failed to save contract");
+        }
+        return await res.json();
+      });
+
+      const results = await Promise.all(savePromises);
+
+      toast({
+        title: "Contracts Saved",
+        description: "Booking & Performance contracts saved successfully",
+      });
+
+      console.log("✅ Saved contracts:", results);
+
+      return results;
+    } catch (error: any) {
+      console.error("❌ Save contracts error:", error);
+      toast({
+        title: "Save Failed",
+        description: error.message || "Unable to save contracts",
+        variant: "destructive",
+      });
+    }
+  };
+
+
+
+  export const saveTechnicalRider = async (bookingId: number, rider: any) => {
+    if (!rider) {
+      toast({ title: "No Technical Rider", description: "Please fill technical rider data", variant: "destructive" });
+      return;
+    }
+
+    try {
+      const response = await apiRequest(`/api/bookings/${bookingId}/technical-rider`, {
+        method: "POST",
+        body: JSON.stringify(rider),
+      });
+      if (!response.ok) throw new Error("Failed to save technical rider");
+
+      const result = await response.json();
+      queryClient.invalidateQueries({ queryKey: ["booking-technical-rider", bookingId] });
+      toast({ title: "Technical Rider Saved" });
+      return result;
+    } catch (error: any) {
+      console.error("❌ Save Technical Rider Error:", error);
+      toast({ title: "Save Failed", description: error.message, variant: "destructive" });
+    }
+  };
+
+  export const saveStagePlot = async (bookingId: number, stagePlot: any) => {
+    if (!stagePlot) {
+      toast({ title: "No Stage Plot", description: "Please fill stage plot data", variant: "destructive" });
+      return;
+    }
+
+    try {
+      const response = await apiRequest(`/api/bookings/${bookingId}/stage-plot`, {
+        method: "POST",
+        body: JSON.stringify(stagePlot),
+      });
+      if (!response.ok) throw new Error("Failed to save stage plot");
+
+      const result = await response.json();
+      queryClient.invalidateQueries({ queryKey: ["booking-stage-plot", bookingId] });
+      toast({ title: "Stage Plot Saved" });
+      return result;
+    } catch (error: any) {
+      console.error("❌ Save Stage Plot Error:", error);
+      toast({ title: "Save Failed", description: error.message, variant: "destructive" });
+    }
+  };
+
+  export const saveSignatures = async (bookingId: number, signatures: any[]) => {
+    if (!signatures || signatures.length === 0) {
+      toast({ title: "No Signatures", description: "Please collect signatures", variant: "destructive" });
+      return;
+    }
+
+    try {
+      const promises = signatures.map(async (sig) => {
+        const response = await apiRequest(`/api/bookings/${bookingId}/signatures`, {
+          method: "POST",
+          body: JSON.stringify(sig),
+        });
+        if (!response.ok) throw new Error(`Failed to save signature: ${sig.name}`);
+        return await response.json();
+      });
+
+      const results = await Promise.allSettled(promises);
+      const savedCount = results.filter((r) => r.status === "fulfilled").length;
+
+      queryClient.invalidateQueries({ queryKey: ["booking-signatures", bookingId] });
+
+      toast({ title: "Signatures Saved", description: `${savedCount} signatures saved` });
+    } catch (error: any) {
+      console.error("❌ Save Signatures Error:", error);
+      toast({ title: "Save Failed", description: error.message, variant: "destructive" });
+    }
+  };
+
+  export const savePayments = async (bookingId: number, payments: any[]) => {
+    if (!payments || payments.length === 0) {
+      toast({ title: "No Payments", description: "Please record payments", variant: "destructive" });
+      return;
+    }
+
+    try {
+      const promises = payments.map(async (pay) => {
+        const response = await apiRequest(`/api/bookings/${bookingId}/payments`, {
+          method: "POST",
+          body: JSON.stringify(pay),
+        });
+        if (!response.ok) throw new Error(`Failed to save payment: ${pay.amount}`);
+        return await response.json();
+      });
+
+      const results = await Promise.allSettled(promises);
+      const savedCount = results.filter((r) => r.status === "fulfilled").length;
+
+      queryClient.invalidateQueries({ queryKey: ["booking-payments", bookingId] });
+
+      toast({ title: "Payments Saved", description: `${savedCount} payments saved` });
+    } catch (error: any) {
+      console.error("❌ Save Payments Error:", error);
+      toast({ title: "Save Failed", description: error.message, variant: "destructive" });
+    }
+  };
+
+  // Define the new 6-step workflow as requested
+  const workflowSteps: WorkflowStep[] = [
+    {
+      id: "talent_assignment",
+      title: "Talent Assignment",
+      description: "Assign Artists, Musicians and Professionals",
+      requiredDataCheck: () => assignedTalent.length > 0,
+      saveFunction: saveBatchAssignments,
+      canProgress: assignedTalent.length > 0,
+    },
+    {
+      id: "contract_generation",
+      title: "Contract Generation",
+      description: "Generate booking contracts",
+      requiredDataCheck: () => stepConfirmations[2] === true,
+      saveFunction: saveContracts,
+      canProgress: stepConfirmations[2] === true,
+    },
+    {
+      id: "technical_rider",
+      title: "Technical Rider",
+      description: "Stage plot & technical requirements",
+      requiredDataCheck: () => technicalConfirmed,
+      saveFunction: async () => {
+        await saveTechnicalRider();
+        await saveStagePlot();
+      },
+      canProgress: technicalConfirmed,
+    },
+    {
+      id: "signature_collection",
+      title: "Signature Collection",
+      description: "Collect contract signatures",
+      requiredDataCheck: () => (booking?.signatures?.length || 0) >= 1,
+      saveFunction: saveSignatures,
+      canProgress: (booking?.signatures?.length || 0) >= 1,
+    },
+    {
+      id: "payment_processing",
+      title: "Payment Processing",
+      description: "Process payments & receipts",
+      requiredDataCheck: () => (booking?.payments?.length || 0) > 0,
+      saveFunction: savePayments,
+      canProgress: (booking?.payments?.length || 0) > 0,
+    },
+  ];
 
   const progressToNextStep = async () => {
-    // Check if current step has required confirmation
     const currentStepInfo = workflowSteps[currentStep - 1];
-    const requiresConfirmation = currentStep === 2 || currentStep === 3; // Contract Generation and Technical Rider require confirmation
 
-    if (currentStep === 2 && !stepConfirmations[currentStep]) {
+    // Step validation
+    if (currentStepInfo.requiredDataCheck && !currentStepInfo.requiredDataCheck()) {
       toast({
-        title: "Confirmation Required",
-        description: "Please review and confirm the contract terms before proceeding",
-        variant: "destructive"
+        title: "Step Incomplete",
+        description: `Please complete ${currentStepInfo.title} before proceeding`,
+        variant: "destructive",
       });
       return;
     }
 
-    if (currentStep === 3 && !technicalConfirmed) {
-      toast({
-        title: "Technical Rider Confirmation Required",
-        description: "Please review and confirm all technical requirements before proceeding",
-        variant: "destructive"
-      });
-      return;
+    // Save current step data
+    if (currentStepInfo.saveFunction) {
+      try {
+        await currentStepInfo.saveFunction();
+        toast({
+          title: "Step Saved",
+          description: `${currentStepInfo.title} data saved successfully`,
+        });
+      } catch (error) {
+        toast({
+          title: "Save Failed",
+          description: `Failed to save ${currentStepInfo.title} data`,
+          variant: "destructive",
+        });
+        return; // stop progression if save failed
+      }
     }
 
-    // Save all talent assignments to database when leaving Step 1 (Talent Assignment)
-    if (currentStep === 1) {
-      console.log('💾 STEP 1 COMPLETE: Saving talent assignments to database...');
-      console.log('🔍 Current assigned talent before save:', assignedTalent);
-      await saveBatchAssignments();
-    }
-
-    if (currentStep < 6) {
-      const newStep = currentStep + 1;
-      const stepInfo = workflowSteps[newStep - 1];
-
-      setCurrentStep(newStep);
-      toast({
-        title: "Progress",
-        description: `Moved to step ${newStep}: ${stepInfo.title}`
-      });
-
-      // Send email notification for step completion
-      await sendWorkflowNotification('step_completed', {
-        step: currentStep,
-        stepName: currentStepInfo.title,
-        progress: Math.round((currentStep / 6) * 100)
-      });
+    // Move to next step
+    if (currentStep < workflowSteps.length) {
+      setCurrentStep(currentStep + 1);
     }
   };
+
+
 
   const goToPreviousStep = () => {
     if (currentStep > 1) {
@@ -660,6 +923,9 @@ export default function BookingWorkflow({
     const completedSteps = workflowSteps.filter(step => step.status === 'completed').length;
     return (completedSteps / workflowSteps.length) * 100;
   };
+
+
+
 
   // Step 1: Booking Selection
   const renderBookingSelection = () => (
@@ -1390,146 +1656,6 @@ export default function BookingWorkflow({
         </Card>
       </div>
     );
-  };
-
-  // Step 2: Enhanced Contract Generation with Category-Based Pricing
-  const [contractPreview, setContractPreview] = useState<{ bookingAgreement: string | null; performanceContract: string | null; }>({
-    bookingAgreement: null,
-    performanceContract: null
-  });
-
-  const [contractConfig, setContractConfig] = useState({
-    counterOfferDeadline: '',
-    paymentTerms: '50% deposit, 50% on completion',
-    cancellationPolicy: '72 hours notice required',
-    additionalTerms: '',
-    waituMusicPlatformName: 'Wai\'tuMusic',
-    labelAddress: '123 Music Lane\nNashville, TN 37203\nUnited States',
-    totalBookingPrice: 0
-  });
-
-  // Calculate dynamic total booking price based on category and individual pricing
-  const calculateTotalBookingPrice = () => {
-    return assignedTalent.reduce((total, talent) => {
-      // Main Booked Talent has special priority - only individual overrides apply
-      if (talent.isMainBookedTalent) {
-        return total + (individualPricing[talent.id]?.price || parseFloat(categoryPricing['Main Booked Talent'] as string) || 0);
-      }
-      // For other talent, individual pricing overrides category pricing
-      return total + (individualPricing[talent.id]?.price || parseFloat(categoryPricing[talent.type as keyof typeof categoryPricing] as string) || 0);
-    }, 0);
-  };
-
-  // Get assigned talent categories for readonly logic
-  const getAssignedCategories = () => {
-    const categories = new Set<string>();
-    assignedTalent.forEach(talent => {
-      if (talent.isMainBookedTalent) {
-        categories.add('Main Booked Talent');
-      } else {
-        categories.add(talent.type);
-      }
-    });
-    return categories;
-  };
-
-  // Category-based pricing for talent types with Main Booked Talent priority
-  const [categoryPricing, setCategoryPricing] = useState({
-    'Main Booked Talent': '',
-    'Artist': '',
-    'Musician': '',
-    'Managed Musician': '',
-    'Professional': '',
-    'Managed Professional': '',
-    // 'Performance Professional': '',
-  });
-
-  // Individual talent pricing overrides
-  const [individualPricing, setIndividualPricing] = useState<Record<string, {
-    price: number;
-    counterOfferDeadline: string;
-    paymentTerms: string;
-    cancellationPolicy: string;
-    additionalTerms: string;
-  }>>({});
-
-  const [counterOffer, setCounterOffer] = useState({
-    received: false,
-    amount: 0,
-    deadline: '',
-    notes: ''
-  });
-
-  const generateContractPreview = async (type: 'booking' | 'performance') => {
-    try {
-      // Enhanced preview data with category-based and individual pricing
-      const previewData = {
-        assignedTalent: assignedTalent.map(talent => ({
-          ...talent,
-          individualPrice: individualPricing[talent.id]?.price || parseFloat(categoryPricing[talent.type as keyof typeof categoryPricing] as string) || 0,
-          paymentTerms: individualPricing[talent.id]?.paymentTerms || contractConfig.paymentTerms,
-          cancellationPolicy: individualPricing[talent.id]?.cancellationPolicy || contractConfig.cancellationPolicy,
-          additionalTerms: individualPricing[talent.id]?.additionalTerms || '',
-          counterOfferDeadline: individualPricing[talent.id]?.counterOfferDeadline || contractConfig.counterOfferDeadline
-        })),
-        contractConfig: {
-          ...contractConfig,
-          categoryPricing,
-          totalTalentCost: assignedTalent.reduce((total, talent) => {
-            const talentPrice = individualPricing[talent.id]?.price || categoryPricing[talent.type as keyof typeof categoryPricing] || 0;
-            return total + talentPrice;
-          }, 0),
-          // Ensure platform name is included in contract generation
-          platformName: contractConfig.waituMusicPlatformName,
-          labelAddress: contractConfig.labelAddress
-        },
-        counterOffer,
-        booking: {
-          ...booking,
-          clientName: booking?.bookerName || booking?.clientName || '',
-          eventName: booking?.eventName || '',
-          eventDate: booking?.eventDate || '',
-          venueName: booking?.venueName || booking?.venueDetails || 'TBD'
-        },
-        totalBookingPrice: contractConfig.totalBookingPrice || calculateTotalBookingPrice(),
-        finalOfferPrice: contractConfig.totalBookingPrice || calculateTotalBookingPrice(),
-        talentAskingPrice: calculateTotalBookingPrice()
-      };
-
-      // Make raw fetch request since server returns text/plain, not JSON
-      const token = localStorage.getItem('token');
-      const response = await fetch(`/api/bookings/${bookingId}/${type}-agreement-preview`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          ...(token && { 'Authorization': `Bearer ${token}` }),
-        },
-        body: JSON.stringify(previewData),
-        credentials: 'include'
-      });
-
-      if (response.ok) {
-        const preview = await response.text();
-        setContractPreview(prev => ({
-          ...prev,
-          [type === 'booking' ? 'bookingAgreement' : 'performanceContract']: preview
-        }));
-        toast({
-          title: "Contract Preview Generated",
-          description: `${type === 'booking' ? 'Booking Agreement' : 'Performance Contract'} preview with enhanced pricing`
-        });
-      } else {
-        const errorText = await response.text();
-        throw new Error(`${response.status}: ${errorText}`);
-      }
-    } catch (error) {
-      console.error('Contract preview error:', error);
-      toast({
-        title: "Preview Error",
-        description: "Unable to generate contract preview",
-        variant: "destructive"
-      });
-    }
   };
 
   const renderContractGeneration = () => {
@@ -2523,7 +2649,7 @@ export default function BookingWorkflow({
       <div className="flex justify-between items-center pt-6 border-t">
         <Button
           variant="outline"
-          onClick={() => setCurrentStep(Math.max(1, currentStep - 1))}
+          onClick={goToPreviousStep}
           disabled={currentStep === 1}
         >
           <ChevronLeft className="w-4 h-4 mr-2" />
@@ -2542,9 +2668,8 @@ export default function BookingWorkflow({
         </div>
 
         <Button
-          onClick={() => setCurrentStep(Math.min(workflowSteps.length, currentStep + 1))}
-          disabled={currentStep === workflowSteps.length || !workflowSteps[currentStep - 1]?.canProgress}
-        >
+          onClick={progressToNextStep}
+          disabled={!workflowSteps[currentStep - 1].canProgress}        >
           Next
           <ChevronRight className="w-4 h-4 ml-2" />
         </Button>

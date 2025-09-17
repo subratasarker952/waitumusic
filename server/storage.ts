@@ -334,6 +334,10 @@ import {
   rolesManagement,
   userRoles,
   contractSignatures,
+  technicalRiders,
+  isrcCodes,
+  newsletters,
+  contracts,
 } from "@shared/schema";
 import {
   eq,
@@ -3260,60 +3264,60 @@ export class DatabaseStorage implements IStorage {
 
   // Return type
 
-async getAllUsers(): Promise<User[]> {
-  const rows = await db
-    .select({
-      id: users.id,
-      email: users.email,
-      fullName: users.fullName,
-      phoneNumber: users.phoneNumber,
-      gender: users.gender,
-      status: users.status,
-      privacySetting: users.privacySetting,
-      avatarUrl: users.avatarUrl,
-      coverImageUrl: users.coverImageUrl,
-      isDemo: users.isDemo,
-      createdAt: users.createdAt,
-      lastLogin: users.lastLogin,
-      roleId: roles.id,
-      roleName: roles.name,
-    })
-    .from(users)
-    .leftJoin(userRoles, eq(users.id, userRoles.userId))
-    .leftJoin(roles, eq(userRoles.roleId, roles.id))
-    .orderBy(desc(users.createdAt));
+  async getAllUsers(): Promise<User[]> {
+    const rows = await db
+      .select({
+        id: users.id,
+        email: users.email,
+        fullName: users.fullName,
+        phoneNumber: users.phoneNumber,
+        gender: users.gender,
+        status: users.status,
+        privacySetting: users.privacySetting,
+        avatarUrl: users.avatarUrl,
+        coverImageUrl: users.coverImageUrl,
+        isDemo: users.isDemo,
+        createdAt: users.createdAt,
+        lastLogin: users.lastLogin,
+        roleId: roles.id,
+        roleName: roles.name,
+      })
+      .from(users)
+      .leftJoin(userRoles, eq(users.id, userRoles.userId))
+      .leftJoin(roles, eq(userRoles.roleId, roles.id))
+      .orderBy(desc(users.createdAt));
 
-  const userMap: Record<number, User> = {};
+    const userMap: Record<number, User> = {};
 
-  for (const row of rows) {
-    if (!userMap[row.id]) {
-      userMap[row.id] = {
-        id: row.id,
-        email: row.email,
-        fullName: row.fullName,
-        phoneNumber: row.phoneNumber,
-        gender: row.gender,
-        status: row.status,
-        privacySetting: row.privacySetting,
-        avatarUrl: row.avatarUrl,
-        coverImageUrl: row.coverImageUrl,
-        isDemo: row.isDemo,
-        createdAt: row.createdAt,
-        lastLogin: row.lastLogin,
-        roles: [],
-      };
+    for (const row of rows) {
+      if (!userMap[row.id]) {
+        userMap[row.id] = {
+          id: row.id,
+          email: row.email,
+          fullName: row.fullName,
+          phoneNumber: row.phoneNumber,
+          gender: row.gender,
+          status: row.status,
+          privacySetting: row.privacySetting,
+          avatarUrl: row.avatarUrl,
+          coverImageUrl: row.coverImageUrl,
+          isDemo: row.isDemo,
+          createdAt: row.createdAt,
+          lastLogin: row.lastLogin,
+          roles: [],
+        };
+      }
+
+      if (row.roleId) {
+        userMap[row.id].roles.push({
+          id: row.roleId,
+          name: row.roleName!,
+        });
+      }
     }
 
-    if (row.roleId) {
-      userMap[row.id].roles.push({
-        id: row.roleId,
-        name: row.roleName!,
-      });
-    }
+    return Object.values(userMap);
   }
-
-  return Object.values(userMap);
-}
 
 
   // Duplicate methods removed - keeping proper implementation below
@@ -6674,6 +6678,17 @@ async getAllUsers(): Promise<User[]> {
     return result[0];
   }
 
+  // Stage Plot by bookingId
+  async getStagePlotByBooking(bookingId: number): Promise<any | null> {
+    const [row] = await db
+      .select()
+      .from(stagePlots) // যদি তোমার stage_plots নামে table থাকে
+      .where(eq(stagePlots.bookingId, bookingId))
+      .limit(1);
+
+    return row || null;
+  }
+
   async createStagePlot(stagePlot: any): Promise<any> {
     // Ensure clean data without timestamp fields that could cause issues
     const cleanData = {
@@ -9487,110 +9502,205 @@ async getAllUsers(): Promise<User[]> {
     }
   }
 
-  async createContract(contract: any): Promise<any> {
+  async createOrUpdateContract(contractData: any): Promise<any> {
     try {
-      // Create contract with database integration - DEBUG VERSION
-      console.log("🔍 Creating contract with data:", contract);
       const result = await db.execute(sql`
-        INSERT INTO contracts (contract_type, content, status)
-        VALUES (${contract.type || "general"}, ${contract.terms || ""
-        }, ${"draft"})
-        RETURNING *
+        INSERT INTO contracts
+          (booking_id, contract_type, title, content, created_by_user_id, assigned_to_user_id, metadata, status)
+        VALUES
+          (${contractData.bookingId}, ${contractData.contractType}, ${contractData.title}, ${contractData.content}, 
+           ${contractData.createdByUserId}, ${contractData.assignedToUserId || null}, ${contractData.metadata || null}, 
+           ${contractData.status || "draft"})
+        ON CONFLICT (booking_id, contract_type)
+        DO UPDATE SET
+          title = EXCLUDED.title,
+          content = EXCLUDED.content,
+          assigned_to_user_id = EXCLUDED.assigned_to_user_id,
+          metadata = EXCLUDED.metadata,
+          status = EXCLUDED.status,
+          updated_at = NOW()
+        RETURNING *;
       `);
 
-      console.log("✅ Contract database result:", result.rows[0]);
+      console.log("✅ Contract upserted:", result.rows[0]);
       return result.rows[0];
     } catch (error) {
-      console.error("❌ Create contract error:", error);
-      console.log("🔄 Falling back to in-memory data");
-      return {
-        id: Date.now(),
-        ...contract,
-        createdAt: new Date(),
-        status: "draft",
-      };
+      console.error("❌ Failed to upsert contract:", error);
+      throw error;
     }
   }
 
-  // Fix 4: Technical Riders API - OppHub AI Learning: Performance specification management
+
+  // Get contract by ID
+  async getContractById(id: number) {
+    try {
+      const contract = await db
+        .select()
+        .from(contracts)
+        .where(eq(contracts.id, id))
+        .limit(1);
+
+      return contract[0] || null;
+    } catch (error) {
+      console.error("❌ Get contract by ID error:", error);
+      return null;
+    }
+  }
+
+  // Get contracts by booking ID (optional filter by type)
+  async getContractsByBooking(
+    bookingId: number,
+    contractType?: "booking_agreement" | "performance_contract"
+  ) {
+    try {
+      let query = db.select().from(contracts).where(eq(contracts.bookingId, bookingId));
+
+      if (contractType) {
+        query = db.select().from(contracts).where(
+          eq(contracts.bookingId, bookingId),
+          eq(contracts.contractType, contractType)
+        );
+      }
+
+      return await query;
+    } catch (error) {
+      console.error("❌ Get contracts by booking error:", error);
+      return [];
+    }
+  }
+
+
+  // Get all technical riders
   async getTechnicalRiders(): Promise<any[]> {
     try {
-      // Get technical riders from database
-      const result = await db.execute(
-        sql`SELECT * FROM technical_riders ORDER BY id DESC`
-      );
-      return result.rows;
+      const rows = await db
+        .select()
+        .from(technicalRiders)
+        .orderBy(desc(technicalRiders.id));
+
+      return rows;
     } catch (error) {
       console.error("Get technical riders error:", error);
       return [];
     }
   }
 
+  // Create new technical rider
   async createTechnicalRider(technicalRider: any): Promise<any> {
     try {
-      // Create technical rider with database integration
-      const result = await db.execute(sql`
-        INSERT INTO technical_riders (equipment_requirements, stage_requirements, additional_notes)
-        VALUES (${JSON.stringify(
-        technicalRider.requirements || []
-      )}, ${JSON.stringify(technicalRider.specifications || {})}, ${technicalRider.eventName || "Event requirements"
+      const [row] = await db
+        .insert(technicalRiders)
+        .values({
+          bookingId: technicalRider.bookingId,
+          artistTechnicalSpecs: technicalRider.artistTechnicalSpecs || {},
+          musicianTechnicalSpecs: technicalRider.musicianTechnicalSpecs || {},
+          equipmentRequirements: technicalRider.equipmentRequirements || [],
+          stageRequirements: technicalRider.stageRequirements || {},
+          lightingRequirements: technicalRider.lightingRequirements || {},
+          soundRequirements: technicalRider.soundRequirements || {},
+          additionalNotes: technicalRider.additionalNotes || null,
+          createdAt: new Date()
         })
-        RETURNING *
-      `);
+        .returning();
 
-      return result.rows[0];
+      return row;
     } catch (error) {
       console.error("Create technical rider error:", error);
       return {
         id: Date.now(),
         ...technicalRider,
         createdAt: new Date(),
-        status: "active",
+        status: "fallback",
       };
     }
   }
 
-  // Fix 5: ISRC Codes API - OppHub AI Learning: Music identification system
+  async updateTechnicalRider(id: number, updates: any): Promise<any> {
+    try {
+      const [row] = await db
+        .update(technicalRiders)
+        .set({
+          ...updates,
+          updatedAt: new Date(),
+        })
+        .where(eq(technicalRiders.id, id))
+        .returning();
+
+      return row;
+    } catch (error) {
+      console.error("Update technical rider error:", error);
+      throw error;
+    }
+  }
+
+  // Technical Rider by bookingId
+  async getTechnicalRiderByBooking(bookingId: number): Promise<any | null> {
+    const [row] = await db
+      .select()
+      .from(technicalRiders)
+      .where(eq(technicalRiders.bookingId, bookingId))
+      .limit(1);
+
+    return row || null;
+  }
+
+  async deleteTechnicalRider(id: number): Promise<void> {
+    try {
+      await db.delete(technicalRiders).where(eq(technicalRiders.id, id));
+    } catch (error) {
+      console.error("Delete technical rider error:", error);
+      throw error;
+    }
+  }
+
+
+
+  // Get ISRC Codes
   async getIsrcCodes(): Promise<any[]> {
     try {
-      // Get ISRC codes from database
-      const result = await db.execute(
-        sql`SELECT * FROM isrc_codes ORDER BY id DESC`
-      );
-      return result.rows;
+      const rows = await db
+        .select()
+        .from(isrcCodes)
+        .orderBy(desc(isrcCodes.id));
+
+      return rows;
     } catch (error) {
       console.error("Get ISRC codes error:", error);
       return [];
     }
   }
 
-  // Fix 6: Newsletters API - OppHub AI Learning: Marketing communication system
+  // Get Newsletters
   async getNewsletters(): Promise<any[]> {
     try {
-      // Get newsletters from database
-      const result = await db.execute(
-        sql`SELECT * FROM newsletters ORDER BY id DESC`
-      );
-      return result.rows;
+      const rows = await db
+        .select()
+        .from(newsletters)
+        .orderBy(desc(newsletters.id));
+
+      return rows;
     } catch (error) {
       console.error("Get newsletters error:", error);
       return [];
     }
   }
 
+  // Create Newsletter
   async createNewsletter(newsletter: any): Promise<any> {
     try {
-      // Create newsletter with proper user ID handling
-      const createdBy = newsletter.created_by || 24; // Use superadmin as default
+      const createdBy = newsletter.created_by || 24; // superadmin fallback
 
-      const result = await db.execute(sql`
-        INSERT INTO newsletters (title, content, status, created_by)
-        VALUES (${newsletter.title || "Untitled Newsletter"}, ${newsletter.content || ""
-        }, ${"draft"}, ${createdBy})
-        RETURNING *
-      `);
+      const [row] = await db
+        .insert(newsletters)
+        .values({
+          title: newsletter.title || "Untitled Newsletter",
+          content: newsletter.content || "",
+          status: "draft", // default
+          createdBy,
+        })
+        .returning();
 
-      return result.rows[0];
+      return row;
     } catch (error) {
       console.error("Create newsletter error:", error);
       return {
@@ -9601,6 +9711,7 @@ async getAllUsers(): Promise<User[]> {
       };
     }
   }
+
   // Media files implementation
   async createMediaFile(mediaFile: any): Promise<any> {
     try {
