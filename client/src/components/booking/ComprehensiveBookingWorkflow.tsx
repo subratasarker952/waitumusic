@@ -763,6 +763,7 @@ export default function BookingWorkflow({
           const err = await response.json().catch(() => ({}));
           throw new Error(err.message || `Failed to save ${talent.name}`);
         }
+        stepConfirmations[1] = true
 
         return await response.json();
       });
