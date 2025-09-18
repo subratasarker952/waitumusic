@@ -548,11 +548,179 @@ export default function BookingWorkflow({
     }
   };
 
+  // NEW ENHANCED TECHNICAL RIDER SYSTEM - ALL OLD INTERFACE DESTROYED  
+  // Step 3: Technical Rider Creation - Original Technical Rider Code with Templates
+  const [rider, setRider] = useState<any>({
+    artistTechnicalSpecs: {},
+    musicianTechnicalSpecs: {},
+    equipmentRequirements: [],
+    stageRequirements: {},
+    lightingRequirements: {},
+    soundRequirements: {},
+    additionalNotes: '',
+  });
+  const [technicalStep, setTechnicalStep] = useState(1);
+  const [selectedTemplate, setSelectedTemplate] = useState('');
+  const [stagePlot, setStagePlot] = useState({
+    stageWidth: 32,
+    stageDepth: 24,
+    performers: [
+      { id: 1, name: 'Lead Vocals', position: { x: 16, y: 4 }, instrument: 'vocals', musician: '' },
+      { id: 2, name: 'Guitar', position: { x: 8, y: 8 }, instrument: 'guitar', musician: '' },
+      { id: 3, name: 'Bass', position: { x: 24, y: 8 }, instrument: 'bass', musician: '' },
+      { id: 4, name: 'Drums', position: { x: 16, y: 16 }, instrument: 'drums', musician: '' },
+      { id: 5, name: 'Keyboards', position: { x: 4, y: 12 }, instrument: 'keyboard', musician: '' }
+    ],
+    monitors: [
+      { id: 1, position: { x: 14, y: 2 }, mix: 'Vocal Mix' },
+      { id: 2, position: { x: 18, y: 2 }, mix: 'Vocal Mix' },
+      { id: 3, position: { x: 6, y: 6 }, mix: 'Guitar Mix' },
+      { id: 4, position: { x: 26, y: 6 }, mix: 'Bass Mix' },
+      { id: 5, position: { x: 2, y: 10 }, mix: 'Keys Mix' }
+    ],
+    lighting: true,
+    videoRecording: false,
+    photographyArea: true,
+    template: ''
+  });
+
+  const stageTemplates = {
+    'solo-acoustic': {
+      name: 'Solo Acoustic',
+      performers: [
+        { id: 1, name: 'Lead Vocals', position: { x: 16, y: 4 }, instrument: 'vocals', musician: '' },
+        { id: 2, name: 'Acoustic Guitar', position: { x: 16, y: 8 }, instrument: 'guitar', musician: '' }
+      ],
+      monitors: [
+        { id: 1, position: { x: 14, y: 2 }, mix: 'Vocal/Guitar Mix' },
+        { id: 2, position: { x: 18, y: 2 }, mix: 'Vocal/Guitar Mix' }
+      ]
+    },
+    'duo': {
+      name: 'Duo Setup',
+      performers: [
+        { id: 1, name: 'Lead Vocals', position: { x: 12, y: 4 }, instrument: 'vocals', musician: '' },
+        { id: 2, name: 'Guitar', position: { x: 8, y: 8 }, instrument: 'guitar', musician: '' },
+        { id: 3, name: 'Keyboard/Vocals', position: { x: 20, y: 8 }, instrument: 'keyboard', musician: '' }
+      ],
+      monitors: [
+        { id: 1, position: { x: 10, y: 2 }, mix: 'Vocal Mix' },
+        { id: 2, position: { x: 18, y: 6 }, mix: 'Keys Mix' }
+      ]
+    },
+    'full-band': {
+      name: 'Full Band',
+      performers: [
+        { id: 1, name: 'Lead Vocals', position: { x: 16, y: 4 }, instrument: 'vocals', musician: '' },
+        { id: 2, name: 'Guitar', position: { x: 8, y: 8 }, instrument: 'guitar', musician: '' },
+        { id: 3, name: 'Bass', position: { x: 24, y: 8 }, instrument: 'bass', musician: '' },
+        { id: 4, name: 'Drums', position: { x: 16, y: 16 }, instrument: 'drums', musician: '' },
+        { id: 5, name: 'Keyboards', position: { x: 4, y: 12 }, instrument: 'keyboard', musician: '' }
+      ],
+      monitors: [
+        { id: 1, position: { x: 14, y: 2 }, mix: 'Vocal Mix' },
+        { id: 2, position: { x: 18, y: 2 }, mix: 'Vocal Mix' },
+        { id: 3, position: { x: 6, y: 6 }, mix: 'Guitar Mix' },
+        { id: 4, position: { x: 26, y: 6 }, mix: 'Bass Mix' },
+        { id: 5, position: { x: 2, y: 10 }, mix: 'Keys Mix' }
+      ]
+    }
+  };
+
+  const [mixerConfig, setMixerConfig] = useState({
+    inputs: [
+      { channel: 1, source: 'Lead Vocal', mic: 'SM58', location: 'Center Stage', notes: 'Main vocal microphone', musician: '' },
+      { channel: 2, source: 'Backup Vocal 1', mic: 'SM57', location: 'Stage Left', notes: 'Harmony vocals', musician: '' },
+      { channel: 3, source: 'Backup Vocal 2', mic: 'SM57', location: 'Stage Right', notes: 'Harmony vocals', musician: '' },
+      { channel: 4, source: 'Acoustic Guitar', mic: 'DI + SM81', location: 'Stage Left', notes: 'Direct input + condenser mic', musician: '' },
+      { channel: 5, source: 'Electric Guitar', mic: 'SM57', location: 'Guitar Amp', notes: 'Close mic on amp', musician: '' },
+      { channel: 6, source: 'Bass Guitar', mic: 'DI', location: 'Bass Amp', notes: 'Direct input from bass', musician: '' },
+      { channel: 7, source: 'Kick Drum', mic: 'Beta 52', location: 'Drum Kit', notes: 'Inside kick drum', musician: '' },
+      { channel: 8, source: 'Snare Drum', mic: 'SM57', location: 'Drum Kit', notes: 'Top of snare', musician: '' },
+      { channel: 9, source: 'Hi-Hat', mic: 'SM81', location: 'Drum Kit', notes: 'Condenser mic above hi-hat', musician: '' },
+      { channel: 10, source: 'Overhead L', mic: 'SM81', location: 'Drum Kit', notes: 'Left overhead cymbal mic', musician: '' },
+      { channel: 11, source: 'Overhead R', mic: 'SM81', location: 'Drum Kit', notes: 'Right overhead cymbal mic', musician: '' },
+      { channel: 12, source: 'Keyboard', mic: 'DI (Stereo)', location: 'Stage Left', notes: 'Stereo direct input', musician: '' }
+    ],
+    monitors: [
+      { mix: 1, name: 'Lead Vocal Mix', sends: 'Vocal, Drums, Bass, Keys' },
+      { mix: 2, name: 'Guitar Mix', sends: 'Guitar, Drums, Bass, Vocal' },
+      { mix: 3, name: 'Bass Mix', sends: 'Bass, Drums, Vocal, Guitar' },
+      { mix: 4, name: 'Drums Mix', sends: 'Drums, Bass, Guitar, Vocal' },
+      { mix: 5, name: 'Keys Mix', sends: 'Keys, Vocal, Drums, Bass' }
+    ],
+    effects: [
+      { name: 'Vocal Reverb', type: 'Hall Reverb', settings: 'Medium decay, warm tone' },
+      { name: 'Vocal Delay', type: 'Digital Delay', settings: '1/8 note, 15% feedback' },
+      { name: 'Drum Compression', type: 'Compressor', settings: 'Fast attack, medium release' },
+      { name: 'Master EQ', type: 'Graphic EQ', settings: 'House curve adjustment' }
+    ]
+  });
+
+  const [setlist, setSetlist] = useState({
+    songs: [
+      { id: 1, title: 'Opening Song', key: 'G', duration: '3:45', transition: 'Direct', notes: 'High energy opener, crowd interaction', chords: 'G-D-Em-C' },
+      { id: 2, title: 'Fan Favorite #1', key: 'C', duration: '4:12', transition: 'Guitar intro', notes: 'Audience participation, clap along', chords: 'C-Am-F-G' },
+      { id: 3, title: 'Ballad', key: 'Em', duration: '5:30', transition: 'Acoustic', notes: 'Stripped down, intimate moment', chords: 'Em-C-G-D' },
+      { id: 4, title: 'Dance Track', key: 'A', duration: '3:55', transition: 'Build up', notes: 'Get the crowd moving, lights flash', chords: 'A-D-E-A' },
+      { id: 5, title: 'Cover Song', key: 'D', duration: '4:20', transition: 'Medley', notes: 'Popular cover, sing-along moment', chords: 'D-A-Bm-G' },
+      { id: 6, title: 'New Single', key: 'F', duration: '3:38', transition: 'Direct', notes: 'Promote new release, energy boost', chords: 'F-C-Dm-Bb' },
+      { id: 7, title: 'Instrumental Break', key: 'Bb', duration: '2:45', transition: 'Solo intro', notes: 'Showcase musicians, guitar/drum solos', chords: 'Bb-F-Gm-Eb' },
+      { id: 8, title: 'Emotional Peak', key: 'Am', duration: '4:55', transition: 'Slow build', notes: 'Powerful vocals, emotional connection', chords: 'Am-F-C-G' },
+      { id: 9, title: 'Party Anthem', key: 'E', duration: '3:25', transition: 'Immediate', notes: 'High energy, crowd jumping', chords: 'E-A-B-E' },
+      { id: 10, title: 'Regional Hit', key: 'G', duration: '4:05', transition: 'Call back', notes: 'Local crowd favorite, cultural moment', chords: 'G-Em-C-D' },
+      { id: 11, title: 'Closing Song', key: 'C', duration: '5:15', transition: 'Epic build', notes: 'Big finish, confetti, thank you speech', chords: 'C-G-Am-F' }
+    ],
+    timing: {
+      mainSet: '38:33',
+      encore: '7:40',
+      totalShow: '~54:00'
+    },
+    notes: 'Energy flow: High → Mixed → Emotional peak → Party finish. Include 2-3 crowd interaction moments.',
+    specialRequirements: 'Confetti cannons for final song, backup wireless mics available, towels for performers'
+  });
+
+  const generateChords = (key: string) => {
+    const chordProgressions = {
+      'C': ['C-Am-F-G', 'C-F-G-C', 'Am-F-C-G'],
+      'G': ['G-D-Em-C', 'G-C-D-G', 'Em-C-G-D'],
+      'D': ['D-A-Bm-G', 'D-G-A-D', 'Bm-G-D-A'],
+      'A': ['A-D-E-A', 'A-F#m-D-E', 'F#m-D-A-E'],
+      'E': ['E-A-B-E', 'E-C#m-A-B', 'C#m-A-E-B'],
+      'Em': ['Em-C-G-D', 'Em-Am-B-Em', 'C-G-Em-D'],
+      'Am': ['Am-F-C-G', 'Am-Dm-G-Am', 'F-C-Am-G'],
+      'F': ['F-C-Dm-Bb', 'F-Bb-C-F', 'Dm-Bb-F-C'],
+      'Bb': ['Bb-F-Gm-Eb', 'Bb-Eb-F-Bb', 'Gm-Eb-Bb-F']
+    };
+    const progressions = chordProgressions[key as keyof typeof chordProgressions] || ['C-Am-F-G'];
+    return progressions[Math.floor(Math.random() * progressions.length)];
+  };
+
+  const getInstrumentColor = (instrument: string) => {
+    const colors = {
+      vocals: '#FF6B6B',
+      guitar: '#4ECDC4',
+      bass: '#45B7D1',
+      drums: '#96CEB4',
+      keyboard: '#FFEAA7'
+    };
+    return colors[instrument as keyof typeof colors] || '#DDD';
+  };
+
+  const { data: technicalRider, refetch: refetchRider, isLoading: riderLoading } = useQuery({
+    queryKey: ['technical-rider', bookingId],
+    queryFn: async () => apiRequest(`/api/bookings/${bookingId}/enhanced-technical-rider`),
+    refetchOnWindowFocus: false
+  });
+
+  if (!technicalRider && riderLoading) {
+    return <LoadingSpinner />;
+  }
 
 
 
 
-  // Function to save all assigned talent to database
+  // 1 Function to save all assigned talent to database
   const saveBatchAssignments = async () => {
     if (!assignedTalent || assignedTalent.length === 0) {
       toast({
@@ -613,13 +781,13 @@ export default function BookingWorkflow({
     }
   };
 
-
+  // 2
   const saveContracts = async (): Promise<void> => {
     try {
       // Generate previews and save
       await generateContractPreview("booking");
       await generateContractPreview("performance");
-  
+
       if (!contractPreview.bookingAgreement || !contractPreview.performanceContract) {
         toast({
           title: "Preview Missing",
@@ -628,7 +796,7 @@ export default function BookingWorkflow({
         });
         return;
       }
-  
+
       const payloads = [
         {
           bookingId,
@@ -643,7 +811,7 @@ export default function BookingWorkflow({
           content: contractPreview.performanceContract,
         },
       ];
-  
+
       // Save contracts
       await Promise.all(
         payloads.map((data) =>
@@ -653,7 +821,7 @@ export default function BookingWorkflow({
           })
         )
       );
-  
+
       toast({
         title: "Contracts Saved",
         description: "Booking & Performance contracts saved successfully",
@@ -667,13 +835,15 @@ export default function BookingWorkflow({
       });
     }
   };
-  
 
-
-
-  export const saveTechnicalRider = async (bookingId: number, rider: any) => {
-    if (!rider) {
-      toast({ title: "No Technical Rider", description: "Please fill technical rider data", variant: "destructive" });
+  // 3
+  const saveTechnicalRider = async () => {
+    if (!bookingId || !rider) {
+      toast({
+        title: "Missing Data",
+        description: "Please fill the technical rider form",
+        variant: "destructive",
+      });
       return;
     }
 
@@ -682,21 +852,30 @@ export default function BookingWorkflow({
         method: "POST",
         body: JSON.stringify(rider),
       });
+
       if (!response.ok) throw new Error("Failed to save technical rider");
 
       const result = await response.json();
-      queryClient.invalidateQueries({ queryKey: ["booking-technical-rider", bookingId] });
-      toast({ title: "Technical Rider Saved" });
+      toast({ title: "✅ Technical Rider Saved" });
       return result;
     } catch (error: any) {
       console.error("❌ Save Technical Rider Error:", error);
-      toast({ title: "Save Failed", description: error.message, variant: "destructive" });
+      toast({
+        title: "Save Failed",
+        description: error.message,
+        variant: "destructive",
+      });
     }
   };
 
-  export const saveStagePlot = async (bookingId: number, stagePlot: any) => {
+
+  const saveStagePlot = async (): Promise<void> => {
     if (!stagePlot) {
-      toast({ title: "No Stage Plot", description: "Please fill stage plot data", variant: "destructive" });
+      toast({
+        title: "No Stage Plot",
+        description: "Please fill stage plot data",
+        variant: "destructive",
+      });
       return;
     }
 
@@ -705,19 +884,28 @@ export default function BookingWorkflow({
         method: "POST",
         body: JSON.stringify(stagePlot),
       });
-      if (!response.ok) throw new Error("Failed to save stage plot");
 
-      const result = await response.json();
+      if (!response.ok) {
+        const err = await response.text();
+        throw new Error(err || "Failed to save stage plot");
+      }
+
+      await response.json();
       queryClient.invalidateQueries({ queryKey: ["booking-stage-plot", bookingId] });
+
       toast({ title: "Stage Plot Saved" });
-      return result;
     } catch (error: any) {
       console.error("❌ Save Stage Plot Error:", error);
-      toast({ title: "Save Failed", description: error.message, variant: "destructive" });
+      toast({
+        title: "Save Failed",
+        description: error.message || "Unable to save stage plot",
+        variant: "destructive",
+      });
     }
   };
 
-  export const saveSignatures = async (bookingId: number, signatures: any[]) => {
+
+  const saveSignatures = async () => {
     if (!signatures || signatures.length === 0) {
       toast({ title: "No Signatures", description: "Please collect signatures", variant: "destructive" });
       return;
@@ -745,7 +933,7 @@ export default function BookingWorkflow({
     }
   };
 
-  export const savePayments = async (bookingId: number, payments: any[]) => {
+  const savePayments = async () => {
     if (!payments || payments.length === 0) {
       toast({ title: "No Payments", description: "Please record payments", variant: "destructive" });
       return;
@@ -796,10 +984,7 @@ export default function BookingWorkflow({
       title: "Technical Rider",
       description: "Stage plot & technical requirements",
       requiredDataCheck: () => technicalConfirmed,
-      saveFunction: async () => {
-        await saveTechnicalRider();
-        await saveStagePlot();
-      },
+      saveFunction: async () => { await Promise.all([saveTechnicalRider(), saveStagePlot()]); },
       canProgress: technicalConfirmed,
     },
     {
@@ -2213,169 +2398,6 @@ export default function BookingWorkflow({
       </div>
     );
   };
-
-  // NEW ENHANCED TECHNICAL RIDER SYSTEM - ALL OLD INTERFACE DESTROYED  
-  // Step 3: Technical Rider Creation - Original Technical Rider Code with Templates
-  const [technicalStep, setTechnicalStep] = useState(1);
-  const [selectedTemplate, setSelectedTemplate] = useState('');
-  const [stagePlot, setStagePlot] = useState({
-    stageWidth: 32,
-    stageDepth: 24,
-    performers: [
-      { id: 1, name: 'Lead Vocals', position: { x: 16, y: 4 }, instrument: 'vocals', musician: '' },
-      { id: 2, name: 'Guitar', position: { x: 8, y: 8 }, instrument: 'guitar', musician: '' },
-      { id: 3, name: 'Bass', position: { x: 24, y: 8 }, instrument: 'bass', musician: '' },
-      { id: 4, name: 'Drums', position: { x: 16, y: 16 }, instrument: 'drums', musician: '' },
-      { id: 5, name: 'Keyboards', position: { x: 4, y: 12 }, instrument: 'keyboard', musician: '' }
-    ],
-    monitors: [
-      { id: 1, position: { x: 14, y: 2 }, mix: 'Vocal Mix' },
-      { id: 2, position: { x: 18, y: 2 }, mix: 'Vocal Mix' },
-      { id: 3, position: { x: 6, y: 6 }, mix: 'Guitar Mix' },
-      { id: 4, position: { x: 26, y: 6 }, mix: 'Bass Mix' },
-      { id: 5, position: { x: 2, y: 10 }, mix: 'Keys Mix' }
-    ],
-    lighting: true,
-    videoRecording: false,
-    photographyArea: true,
-    template: ''
-  });
-
-  const stageTemplates = {
-    'solo-acoustic': {
-      name: 'Solo Acoustic',
-      performers: [
-        { id: 1, name: 'Lead Vocals', position: { x: 16, y: 4 }, instrument: 'vocals', musician: '' },
-        { id: 2, name: 'Acoustic Guitar', position: { x: 16, y: 8 }, instrument: 'guitar', musician: '' }
-      ],
-      monitors: [
-        { id: 1, position: { x: 14, y: 2 }, mix: 'Vocal/Guitar Mix' },
-        { id: 2, position: { x: 18, y: 2 }, mix: 'Vocal/Guitar Mix' }
-      ]
-    },
-    'duo': {
-      name: 'Duo Setup',
-      performers: [
-        { id: 1, name: 'Lead Vocals', position: { x: 12, y: 4 }, instrument: 'vocals', musician: '' },
-        { id: 2, name: 'Guitar', position: { x: 8, y: 8 }, instrument: 'guitar', musician: '' },
-        { id: 3, name: 'Keyboard/Vocals', position: { x: 20, y: 8 }, instrument: 'keyboard', musician: '' }
-      ],
-      monitors: [
-        { id: 1, position: { x: 10, y: 2 }, mix: 'Vocal Mix' },
-        { id: 2, position: { x: 18, y: 6 }, mix: 'Keys Mix' }
-      ]
-    },
-    'full-band': {
-      name: 'Full Band',
-      performers: [
-        { id: 1, name: 'Lead Vocals', position: { x: 16, y: 4 }, instrument: 'vocals', musician: '' },
-        { id: 2, name: 'Guitar', position: { x: 8, y: 8 }, instrument: 'guitar', musician: '' },
-        { id: 3, name: 'Bass', position: { x: 24, y: 8 }, instrument: 'bass', musician: '' },
-        { id: 4, name: 'Drums', position: { x: 16, y: 16 }, instrument: 'drums', musician: '' },
-        { id: 5, name: 'Keyboards', position: { x: 4, y: 12 }, instrument: 'keyboard', musician: '' }
-      ],
-      monitors: [
-        { id: 1, position: { x: 14, y: 2 }, mix: 'Vocal Mix' },
-        { id: 2, position: { x: 18, y: 2 }, mix: 'Vocal Mix' },
-        { id: 3, position: { x: 6, y: 6 }, mix: 'Guitar Mix' },
-        { id: 4, position: { x: 26, y: 6 }, mix: 'Bass Mix' },
-        { id: 5, position: { x: 2, y: 10 }, mix: 'Keys Mix' }
-      ]
-    }
-  };
-
-  const [mixerConfig, setMixerConfig] = useState({
-    inputs: [
-      { channel: 1, source: 'Lead Vocal', mic: 'SM58', location: 'Center Stage', notes: 'Main vocal microphone', musician: '' },
-      { channel: 2, source: 'Backup Vocal 1', mic: 'SM57', location: 'Stage Left', notes: 'Harmony vocals', musician: '' },
-      { channel: 3, source: 'Backup Vocal 2', mic: 'SM57', location: 'Stage Right', notes: 'Harmony vocals', musician: '' },
-      { channel: 4, source: 'Acoustic Guitar', mic: 'DI + SM81', location: 'Stage Left', notes: 'Direct input + condenser mic', musician: '' },
-      { channel: 5, source: 'Electric Guitar', mic: 'SM57', location: 'Guitar Amp', notes: 'Close mic on amp', musician: '' },
-      { channel: 6, source: 'Bass Guitar', mic: 'DI', location: 'Bass Amp', notes: 'Direct input from bass', musician: '' },
-      { channel: 7, source: 'Kick Drum', mic: 'Beta 52', location: 'Drum Kit', notes: 'Inside kick drum', musician: '' },
-      { channel: 8, source: 'Snare Drum', mic: 'SM57', location: 'Drum Kit', notes: 'Top of snare', musician: '' },
-      { channel: 9, source: 'Hi-Hat', mic: 'SM81', location: 'Drum Kit', notes: 'Condenser mic above hi-hat', musician: '' },
-      { channel: 10, source: 'Overhead L', mic: 'SM81', location: 'Drum Kit', notes: 'Left overhead cymbal mic', musician: '' },
-      { channel: 11, source: 'Overhead R', mic: 'SM81', location: 'Drum Kit', notes: 'Right overhead cymbal mic', musician: '' },
-      { channel: 12, source: 'Keyboard', mic: 'DI (Stereo)', location: 'Stage Left', notes: 'Stereo direct input', musician: '' }
-    ],
-    monitors: [
-      { mix: 1, name: 'Lead Vocal Mix', sends: 'Vocal, Drums, Bass, Keys' },
-      { mix: 2, name: 'Guitar Mix', sends: 'Guitar, Drums, Bass, Vocal' },
-      { mix: 3, name: 'Bass Mix', sends: 'Bass, Drums, Vocal, Guitar' },
-      { mix: 4, name: 'Drums Mix', sends: 'Drums, Bass, Guitar, Vocal' },
-      { mix: 5, name: 'Keys Mix', sends: 'Keys, Vocal, Drums, Bass' }
-    ],
-    effects: [
-      { name: 'Vocal Reverb', type: 'Hall Reverb', settings: 'Medium decay, warm tone' },
-      { name: 'Vocal Delay', type: 'Digital Delay', settings: '1/8 note, 15% feedback' },
-      { name: 'Drum Compression', type: 'Compressor', settings: 'Fast attack, medium release' },
-      { name: 'Master EQ', type: 'Graphic EQ', settings: 'House curve adjustment' }
-    ]
-  });
-
-  const [setlist, setSetlist] = useState({
-    songs: [
-      { id: 1, title: 'Opening Song', key: 'G', duration: '3:45', transition: 'Direct', notes: 'High energy opener, crowd interaction', chords: 'G-D-Em-C' },
-      { id: 2, title: 'Fan Favorite #1', key: 'C', duration: '4:12', transition: 'Guitar intro', notes: 'Audience participation, clap along', chords: 'C-Am-F-G' },
-      { id: 3, title: 'Ballad', key: 'Em', duration: '5:30', transition: 'Acoustic', notes: 'Stripped down, intimate moment', chords: 'Em-C-G-D' },
-      { id: 4, title: 'Dance Track', key: 'A', duration: '3:55', transition: 'Build up', notes: 'Get the crowd moving, lights flash', chords: 'A-D-E-A' },
-      { id: 5, title: 'Cover Song', key: 'D', duration: '4:20', transition: 'Medley', notes: 'Popular cover, sing-along moment', chords: 'D-A-Bm-G' },
-      { id: 6, title: 'New Single', key: 'F', duration: '3:38', transition: 'Direct', notes: 'Promote new release, energy boost', chords: 'F-C-Dm-Bb' },
-      { id: 7, title: 'Instrumental Break', key: 'Bb', duration: '2:45', transition: 'Solo intro', notes: 'Showcase musicians, guitar/drum solos', chords: 'Bb-F-Gm-Eb' },
-      { id: 8, title: 'Emotional Peak', key: 'Am', duration: '4:55', transition: 'Slow build', notes: 'Powerful vocals, emotional connection', chords: 'Am-F-C-G' },
-      { id: 9, title: 'Party Anthem', key: 'E', duration: '3:25', transition: 'Immediate', notes: 'High energy, crowd jumping', chords: 'E-A-B-E' },
-      { id: 10, title: 'Regional Hit', key: 'G', duration: '4:05', transition: 'Call back', notes: 'Local crowd favorite, cultural moment', chords: 'G-Em-C-D' },
-      { id: 11, title: 'Closing Song', key: 'C', duration: '5:15', transition: 'Epic build', notes: 'Big finish, confetti, thank you speech', chords: 'C-G-Am-F' }
-    ],
-    timing: {
-      mainSet: '38:33',
-      encore: '7:40',
-      totalShow: '~54:00'
-    },
-    notes: 'Energy flow: High → Mixed → Emotional peak → Party finish. Include 2-3 crowd interaction moments.',
-    specialRequirements: 'Confetti cannons for final song, backup wireless mics available, towels for performers'
-  });
-
-  // Chord progression generator
-  const generateChords = (key: string) => {
-    const chordProgressions = {
-      'C': ['C-Am-F-G', 'C-F-G-C', 'Am-F-C-G'],
-      'G': ['G-D-Em-C', 'G-C-D-G', 'Em-C-G-D'],
-      'D': ['D-A-Bm-G', 'D-G-A-D', 'Bm-G-D-A'],
-      'A': ['A-D-E-A', 'A-F#m-D-E', 'F#m-D-A-E'],
-      'E': ['E-A-B-E', 'E-C#m-A-B', 'C#m-A-E-B'],
-      'Em': ['Em-C-G-D', 'Em-Am-B-Em', 'C-G-Em-D'],
-      'Am': ['Am-F-C-G', 'Am-Dm-G-Am', 'F-C-Am-G'],
-      'F': ['F-C-Dm-Bb', 'F-Bb-C-F', 'Dm-Bb-F-C'],
-      'Bb': ['Bb-F-Gm-Eb', 'Bb-Eb-F-Bb', 'Gm-Eb-Bb-F']
-    };
-    const progressions = chordProgressions[key as keyof typeof chordProgressions] || ['C-Am-F-G'];
-    return progressions[Math.floor(Math.random() * progressions.length)];
-  };
-
-  const getInstrumentColor = (instrument: string) => {
-    const colors = {
-      vocals: '#FF6B6B',
-      guitar: '#4ECDC4',
-      bass: '#45B7D1',
-      drums: '#96CEB4',
-      keyboard: '#FFEAA7'
-    };
-    return colors[instrument as keyof typeof colors] || '#DDD';
-  };
-
-  const { data: technicalRider, refetch: refetchRider } = useQuery({
-    queryKey: ['technical-rider', bookingId],
-    queryFn: async () => apiRequest(`/api/bookings/${bookingId}/enhanced-technical-rider`),
-    refetchOnWindowFocus: false
-  });
-
-  if (!technicalRider && isLoading) {
-    return <LoadingSpinner />;
-  }
-
-
 
   const renderTechnicalRider = () => {
     return (

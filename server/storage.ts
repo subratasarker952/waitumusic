@@ -9585,8 +9585,7 @@ export class DatabaseStorage implements IStorage {
     }
   }
 
-  // Create new technical rider
-  async createTechnicalRider(technicalRider: any): Promise<any> {
+  async upsertTechnicalRider(technicalRider: any): Promise<any> {
     try {
       const [row] = await db
         .insert(technicalRiders)
@@ -9599,39 +9598,31 @@ export class DatabaseStorage implements IStorage {
           lightingRequirements: technicalRider.lightingRequirements || {},
           soundRequirements: technicalRider.soundRequirements || {},
           additionalNotes: technicalRider.additionalNotes || null,
-          createdAt: new Date()
-        })
-        .returning();
-
-      return row;
-    } catch (error) {
-      console.error("Create technical rider error:", error);
-      return {
-        id: Date.now(),
-        ...technicalRider,
-        createdAt: new Date(),
-        status: "fallback",
-      };
-    }
-  }
-
-  async updateTechnicalRider(id: number, updates: any): Promise<any> {
-    try {
-      const [row] = await db
-        .update(technicalRiders)
-        .set({
-          ...updates,
+          createdAt: new Date(),
           updatedAt: new Date(),
         })
-        .where(eq(technicalRiders.id, id))
+        .onConflictDoUpdate({
+          target: technicalRiders.bookingId, // unique ধরে নিতে হবে
+          set: {
+            artistTechnicalSpecs: sql`excluded.artist_technical_specs`,
+            musicianTechnicalSpecs: sql`excluded.musician_technical_specs`,
+            equipmentRequirements: sql`excluded.equipment_requirements`,
+            stageRequirements: sql`excluded.stage_requirements`,
+            lightingRequirements: sql`excluded.lighting_requirements`,
+            soundRequirements: sql`excluded.sound_requirements`,
+            additionalNotes: sql`excluded.additional_notes`,
+            updatedAt: new Date(),
+          },
+        })
         .returning();
-
+  
       return row;
     } catch (error) {
-      console.error("Update technical rider error:", error);
+      console.error("Upsert technical rider error:", error);
       throw error;
     }
   }
+  
 
   // Technical Rider by bookingId
   async getTechnicalRiderByBooking(bookingId: number): Promise<any | null> {

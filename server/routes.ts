@@ -10033,6 +10033,62 @@ export async function registerRoutes(app: Express): Promise<Server> {
       }
     }
   );
+  // Save / Update Technical Rider
+  app.post(
+    "/api/bookings/:id/technical-rider",
+    authenticateToken,
+    async (req: Request, res: Response) => {
+      try {
+        const bookingId = parseInt(req.params.id);
+        const {
+          artistTechnicalSpecs,
+          musicianTechnicalSpecs,
+          equipmentRequirements,
+          stageRequirements,
+          lightingRequirements,
+          soundRequirements,
+          additionalNotes,
+        } = req.body;
+
+        const riderData = {
+          bookingId,
+          artistTechnicalSpecs,
+          musicianTechnicalSpecs,
+          equipmentRequirements,
+          stageRequirements,
+          lightingRequirements,
+          soundRequirements,
+          additionalNotes,
+        };
+
+        const savedRider = await storage.upsertTechnicalRider(riderData)
+
+        res.json(savedRider);
+      } catch (error: any) {
+        console.error("❌ Rider Save Error:", error);
+        res.status(500).json({ message: "Failed to save technical rider" });
+      }
+    }
+  );
+
+
+  // Fix 4: Technical Riders API - OppHub AI Learning: Complete CRUD implementation
+  app.get(
+    "/api/technical-riders",
+    authenticateToken,
+    requireRole([3, 4, 5, 6]),
+    async (req: Request, res: Response) => {
+      try {
+        const technicalRiders = await storage.getTechnicalRiders();
+        res.json(technicalRiders);
+      } catch (error) {
+        console.error("Get technical riders error:", error);
+        res
+          .status(500)
+          .json({ success: false, error: "Failed to fetch technical riders" });
+      }
+    }
+  );
 
   // ==================== CONTRACT PREVIEW ENDPOINTS ====================
 
@@ -11964,6 +12020,7 @@ This is a preview of the performance engagement contract. Final agreement will i
   //     }
   //   }
   // );
+
   app.get(
     "/api/bookings/:id",
     authenticateToken,
@@ -11996,8 +12053,8 @@ This is a preview of the performance engagement contract. Final agreement will i
         const dbTechnicalRider = await storage.getTechnicalRiderByBooking(bookingId);
         const dbStagePlot = await storage.getStagePlotByBooking(bookingId);
 
-        const technicalRider = dbTechnicalRider || workflowData.technicalRider || null;
-        const stagePlot = dbStagePlot || workflowData.stagePlot || null;
+        const technicalRider = dbTechnicalRider ?? workflowData.technicalRider ?? {};
+        const stagePlot = dbStagePlot ?? workflowData.stagePlot ?? {};        
 
         const bookingDetails = {
           ...booking,
@@ -26262,7 +26319,7 @@ This is a preview of the performance engagement contract. Final agreement will i
     async (req: Request, res: Response) => {
       try {
         const riderData = req.body;
-        const rider = await storage.saveTechnicalRider(riderData);
+        const rider = await storage.createTechnicalRider(riderData);
         res.json({ success: true, rider });
       } catch (error) {
         res
@@ -27823,40 +27880,6 @@ ${messageData.messageText}
         res
           .status(500)
           .json({ success: false, error: "Failed to create contract" });
-      }
-    }
-  );
-
-  // Fix 4: Technical Riders API - OppHub AI Learning: Complete CRUD implementation
-  app.get(
-    "/api/technical-riders",
-    authenticateToken,
-    requireRole(ROLE_GROUPS.PERFORMERS),
-    async (req: Request, res: Response) => {
-      try {
-        const technicalRiders = await storage.getTechnicalRiders();
-        res.json(technicalRiders);
-      } catch (error) {
-        console.error("Get technical riders error:", error);
-        res
-          .status(500)
-          .json({ success: false, error: "Failed to fetch technical riders" });
-      }
-    }
-  );
-
-  app.post(
-    "/api/technical-riders",
-    authenticateToken,
-    async (req: Request, res: Response) => {
-      try {
-        const technicalRider = await storage.createTechnicalRider(req.body);
-        res.json({ success: true, data: technicalRider });
-      } catch (error) {
-        console.error("Create technical rider error:", error);
-        res
-          .status(500)
-          .json({ success: false, error: "Failed to create technical rider" });
       }
     }
   );
