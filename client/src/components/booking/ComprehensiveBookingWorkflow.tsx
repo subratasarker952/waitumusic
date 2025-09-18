@@ -24,7 +24,8 @@ import {
   AlertCircle, Download, Signature, Music, User, ArrowLeft, ArrowRight,
   ChevronRight, ChevronLeft, Edit, Save, Loader2, CheckCircle2,
   Settings, Wrench, Volume2, Mic, Target, DollarSign, UserPlus,
-  Crown, Guitar, Star, Briefcase, AlertTriangle, PenTool, Send, Receipt, Layout
+  Crown, Guitar, Star, Briefcase, AlertTriangle, PenTool, Send, Receipt, Layout,
+  Sliders
 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { TOAST_CONFIGS, BUTTON_CONFIGS, COLOR_CONFIGS, SPACING_CONFIGS } from '@shared/ui-config';
@@ -45,9 +46,12 @@ interface WorkflowStep {
   id: string;
   title: string;
   description: string;
-  requiredDataCheck?: () => boolean; // returns true if step ready to save
+  requiredDataCheck?: () => boolean; // returns true if step ready
   saveFunction?: () => Promise<void>; // step complete হলে save করবে
-  canProgress: boolean;
+  canProgress: boolean; // Next button enable হবে কি না
+  status?: "pending" | "in_progress" | "completed"; // step progress indicator
+  icon?: React.ReactNode; // lucide-react বা অন্য যেকোনো icon
+  isActive: boolean;
 }
 
 
@@ -94,6 +98,7 @@ export default function BookingWorkflow({
   const [isTransitioning, setIsTransitioning] = useState(false);
 
   console.log(booking)
+  console.log(assignedTalent)
 
 
   // Modal states for technical rider components
@@ -765,6 +770,7 @@ export default function BookingWorkflow({
       const results = await Promise.allSettled(promises);
       const savedCount = results.filter((r) => r.status === "fulfilled" && r.value !== null).length;
 
+      queryClient.invalidateQueries({ queryKey: ["booking-workflow", bookingId] });
       queryClient.invalidateQueries({ queryKey: ["booking-assigned-talent", bookingId] });
 
       toast({
@@ -906,59 +912,59 @@ export default function BookingWorkflow({
 
 
   const saveSignatures = async () => {
-    if (!signatures || signatures.length === 0) {
-      toast({ title: "No Signatures", description: "Please collect signatures", variant: "destructive" });
-      return;
-    }
+    // if (!signatures || signatures.length === 0) {
+    //   toast({ title: "No Signatures", description: "Please collect signatures", variant: "destructive" });
+    //   return;
+    // }
 
-    try {
-      const promises = signatures.map(async (sig) => {
-        const response = await apiRequest(`/api/bookings/${bookingId}/signatures`, {
-          method: "POST",
-          body: JSON.stringify(sig),
-        });
-        if (!response.ok) throw new Error(`Failed to save signature: ${sig.name}`);
-        return await response.json();
-      });
+    // try {
+    //   const promises = signatures.map(async (sig) => {
+    //     const response = await apiRequest(`/api/bookings/${bookingId}/signatures`, {
+    //       method: "POST",
+    //       body: JSON.stringify(sig),
+    //     });
+    //     if (!response.ok) throw new Error(`Failed to save signature: ${sig.name}`);
+    //     return await response.json();
+    //   });
 
-      const results = await Promise.allSettled(promises);
-      const savedCount = results.filter((r) => r.status === "fulfilled").length;
+    //   const results = await Promise.allSettled(promises);
+    //   const savedCount = results.filter((r) => r.status === "fulfilled").length;
 
-      queryClient.invalidateQueries({ queryKey: ["booking-signatures", bookingId] });
+    //   queryClient.invalidateQueries({ queryKey: ["booking-signatures", bookingId] });
 
-      toast({ title: "Signatures Saved", description: `${savedCount} signatures saved` });
-    } catch (error: any) {
-      console.error("❌ Save Signatures Error:", error);
-      toast({ title: "Save Failed", description: error.message, variant: "destructive" });
-    }
+    //   toast({ title: "Signatures Saved", description: `${savedCount} signatures saved` });
+    // } catch (error: any) {
+    //   console.error("❌ Save Signatures Error:", error);
+    //   toast({ title: "Save Failed", description: error.message, variant: "destructive" });
+    // }
   };
 
   const savePayments = async () => {
-    if (!payments || payments.length === 0) {
-      toast({ title: "No Payments", description: "Please record payments", variant: "destructive" });
-      return;
-    }
+    // if (!payments || payments.length === 0) {
+    //   toast({ title: "No Payments", description: "Please record payments", variant: "destructive" });
+    //   return;
+    // }
 
-    try {
-      const promises = payments.map(async (pay) => {
-        const response = await apiRequest(`/api/bookings/${bookingId}/payments`, {
-          method: "POST",
-          body: JSON.stringify(pay),
-        });
-        if (!response.ok) throw new Error(`Failed to save payment: ${pay.amount}`);
-        return await response.json();
-      });
+    // try {
+    //   const promises = payments.map(async (pay) => {
+    //     const response = await apiRequest(`/api/bookings/${bookingId}/payments`, {
+    //       method: "POST",
+    //       body: JSON.stringify(pay),
+    //     });
+    //     if (!response.ok) throw new Error(`Failed to save payment: ${pay.amount}`);
+    //     return await response.json();
+    //   });
 
-      const results = await Promise.allSettled(promises);
-      const savedCount = results.filter((r) => r.status === "fulfilled").length;
+    //   const results = await Promise.allSettled(promises);
+    //   const savedCount = results.filter((r) => r.status === "fulfilled").length;
 
-      queryClient.invalidateQueries({ queryKey: ["booking-payments", bookingId] });
+    //   queryClient.invalidateQueries({ queryKey: ["booking-payments", bookingId] });
 
-      toast({ title: "Payments Saved", description: `${savedCount} payments saved` });
-    } catch (error: any) {
-      console.error("❌ Save Payments Error:", error);
-      toast({ title: "Save Failed", description: error.message, variant: "destructive" });
-    }
+    //   toast({ title: "Payments Saved", description: `${savedCount} payments saved` });
+    // } catch (error: any) {
+    //   console.error("❌ Save Payments Error:", error);
+    //   toast({ title: "Save Failed", description: error.message, variant: "destructive" });
+    // }
   };
 
   // Define the new 6-step workflow as requested
@@ -969,7 +975,14 @@ export default function BookingWorkflow({
       description: "Assign Artists, Musicians and Professionals",
       requiredDataCheck: () => assignedTalent.length > 0,
       saveFunction: saveBatchAssignments,
-      canProgress: assignedTalent.length > 0,
+      canProgress: stepConfirmations[1] === true,
+      status: stepConfirmations[1]
+        ? "completed"
+        : currentStep === 1
+          ? "in_progress"
+          : "pending",
+      icon: <Users className="h-5 w-5" />,
+      isActive: currentStep === 1
     },
     {
       id: "contract_generation",
@@ -977,15 +990,44 @@ export default function BookingWorkflow({
       description: "Generate booking contracts",
       requiredDataCheck: () => stepConfirmations[2] === true,
       saveFunction: saveContracts,
-      canProgress: stepConfirmations[2] === true,
+      canProgress: stepConfirmations[2] === true || false,
+      status: stepConfirmations[2]
+        ? "completed"
+        : currentStep === 2
+          ? "in_progress"
+          : "pending",
+      icon: <FileText className="h-5 w-5" />,
+      isActive: currentStep === 2
     },
     {
       id: "technical_rider",
       title: "Technical Rider",
-      description: "Stage plot & technical requirements",
-      requiredDataCheck: () => technicalConfirmed,
-      saveFunction: async () => { await Promise.all([saveTechnicalRider(), saveStagePlot()]); },
-      canProgress: technicalConfirmed,
+      description: "Technical requirements",
+      requiredDataCheck: () => stepConfirmations[3] === true,
+      saveFunction: saveTechnicalRider,
+      canProgress: stepConfirmations[3] === true || false,
+      status: stepConfirmations[3]
+        ? "completed"
+        : currentStep === 3
+          ? "in_progress"
+          : "pending",
+      icon: <Sliders className="h-5 w-5" />,
+      isActive: currentStep === 3
+    },
+    {
+      id: "stage_plot",
+      title: "Stage Plot",
+      description: "Stage plot requirements",
+      requiredDataCheck: () => stepConfirmations[4] === true,
+      saveFunction: saveStagePlot,
+      canProgress: stepConfirmations[4] === true || false,
+      status: stepConfirmations[4]
+        ? "completed"
+        : currentStep === 4
+          ? "in_progress"
+          : "pending",
+      icon: <Sliders className="h-5 w-5" />,
+      isActive: currentStep === 4
     },
     {
       id: "signature_collection",
@@ -994,6 +1036,14 @@ export default function BookingWorkflow({
       requiredDataCheck: () => (booking?.signatures?.length || 0) >= 1,
       saveFunction: saveSignatures,
       canProgress: (booking?.signatures?.length || 0) >= 1,
+      status:
+        (booking?.signatures?.length || 0) >= 1
+          ? "completed"
+          : currentStep === 5
+            ? "in_progress"
+            : "pending",
+      icon: <PenTool className="h-5 w-5" />,
+      isActive: currentStep === 5
     },
     {
       id: "payment_processing",
@@ -1002,43 +1052,50 @@ export default function BookingWorkflow({
       requiredDataCheck: () => (booking?.payments?.length || 0) > 0,
       saveFunction: savePayments,
       canProgress: (booking?.payments?.length || 0) > 0,
+      status:
+        (booking?.signatures?.length || 0) > 0
+          ? "completed"
+          : currentStep === 6
+            ? "in_progress"
+            : "pending",
+      icon: <CreditCard className="h-5 w-5" />,
+      isActive: currentStep === 6
     },
   ];
 
-  const progressToNextStep = async () => {
-    const currentStepInfo = workflowSteps[currentStep - 1];
 
-    // Step validation
-    if (currentStepInfo.requiredDataCheck && !currentStepInfo.requiredDataCheck()) {
-      toast({
-        title: "Step Incomplete",
-        description: `Please complete ${currentStepInfo.title} before proceeding`,
-        variant: "destructive",
-      });
-      return;
-    }
+  const goToNextStep = async () => {
+    const step = workflowSteps[currentStep];
 
-    // Save current step data
-    if (currentStepInfo.saveFunction) {
-      try {
-        await currentStepInfo.saveFunction();
+    if (!step) return; // step না থাকলে কিছু করবে না
+
+    try {
+      // যদি saveFunction থাকে তাহলে call করো
+      if (step.saveFunction) {
+        await step.saveFunction();
+      }
+
+      // যদি requiredDataCheck থাকে তাহলে confirm করো
+      if (step.requiredDataCheck && !step.requiredDataCheck()) {
         toast({
-          title: "Step Saved",
-          description: `${currentStepInfo.title} data saved successfully`,
-        });
-      } catch (error) {
-        toast({
-          title: "Save Failed",
-          description: `Failed to save ${currentStepInfo.title} data`,
+          title: "Step Incomplete",
+          description: `Please complete ${step.title} before proceeding`,
           variant: "destructive",
         });
-        return; // stop progression if save failed
+        return;
       }
-    }
 
-    // Move to next step
-    if (currentStep < workflowSteps.length) {
-      setCurrentStep(currentStep + 1);
+      // Next step এ যাও
+      if (currentStep < workflowSteps.length - 1) {
+        setCurrentStep((prev) => prev + 1);
+      }
+    } catch (error: any) {
+      console.error("❌ Next step error:", error);
+      toast({
+        title: "Error",
+        description: error.message || "Could not proceed to next step",
+        variant: "destructive",
+      });
     }
   };
 
@@ -1231,7 +1288,6 @@ export default function BookingWorkflow({
                           try {
                             await updateBookingMutation.mutateAsync({
                               status: 'accepted',
-                              primaryArtistAccepted: true
                             });
                             toast({ title: "Booking Accepted", description: "The booking has been accepted by the primary artist" });
                           } catch (error) {
@@ -1240,12 +1296,12 @@ export default function BookingWorkflow({
                         }}>
                         Accept Booking
                       </Button>
+
                       <Button variant="outline" size="sm" className="border-red-500 text-red-700 hover:bg-red-50"
                         onClick={async () => {
                           try {
                             await updateBookingMutation.mutateAsync({
                               status: 'declined',
-                              primaryArtistAccepted: false
                             });
                             toast({ title: "Booking Declined", description: "The booking has been declined by the primary artist" });
                           } catch (error) {
@@ -1821,6 +1877,12 @@ export default function BookingWorkflow({
             </p>
           </CardContent>
         </Card>
+
+        <div>
+          <Button className='w-full' onClick={saveBatchAssignments} >
+            Save Step {currentStep} Data
+          </Button>
+        </div>
       </div>
     );
   };
@@ -2402,13 +2464,103 @@ export default function BookingWorkflow({
   const renderTechnicalRider = () => {
     return (
       <div className="space-y-6">
-        <div className="flex items-center justify-between mb-6">
-          <div>
-            <h3 className="text-xl font-semibold mb-2">Enhanced Technical Rider System</h3>
-            <p className="text-muted-foreground">Professional technical requirements management with stage plot, mixer configuration, and setlist integration</p>
-          </div>
-        </div>
+        {/* Enhanced Mixer Patch System */}
+        <Card className="mb-6">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Volume2 className="h-5 w-5" />
+              Enhanced Technical Rider System
+            </CardTitle>
+            <CardDescription>
+              Professional technical requirements management with stage plot, mixer configuration, and setlist integration
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <EnhancedTechnicalRider
+              bookingId={bookingId}
+              assignedMusicians={assignedTalent.map((talent: any) => {
+                // Find the user details from available users
+                const userDetails = (availableUsers as any[] || []).find((user: any) => user.id === talent.userId);
 
+                // Find artist/musician/professional profile for profile data
+                const artistProfile = (availableArtists as any[]).find((artist: any) => artist.userId === talent.userId);
+                const musicianProfile = (availableMusicians as any[]).find((musician: any) => musician.userId === talent.userId);
+                const professionalProfile = (availableProfessionals as any[]).find((professional: any) => professional.userId === talent.userId);
+
+                const profile = artistProfile || musicianProfile || professionalProfile;
+
+                // If talent doesn't have database talent fields, populate from profile data
+                let primaryTalent = talent.primaryTalent;
+                let secondaryTalents = talent.secondaryTalents;
+
+                if (!primaryTalent && profile) {
+                  // Extract primary talent from profile based on user type
+                  if (profile.primaryTalent) {
+                    primaryTalent = profile.primaryTalent;
+                  } else if (profile.primary_talent) {
+                    primaryTalent = profile.primary_talent;
+                  } else if (profile.primaryRole) {
+                    primaryTalent = profile.primaryRole;
+                  }
+                }
+
+                if (!secondaryTalents && profile) {
+                  // Extract secondary talents from profile
+                  secondaryTalents = profile.secondaryTalents || profile.secondary_talents || [];
+                }
+
+                return {
+                  id: talent.userId || talent.id,
+                  userId: talent.userId,
+                  roleId: talent.roleId, // CRITICAL: Include roleId for membership determination
+                  fullName: talent.fullName,
+                  stageName: profile?.stageNames?.[0] || talent.stageName || '',
+                  name: talent.stageName || talent.name || talent.fullName,
+                  role: talent.role,
+                  primaryRole: profile?.primary_role || profile?.primaryRole || 'Lead Vocalist',
+                  skillsAndInstruments: profile?.skills_and_instruments || profile?.skillsAndInstruments || profile?.instruments || [],
+                  availableRoles: profile?.performance_roles || profile?.performanceRoles || [],
+                  instruments: profile?.instruments || [],
+                  selectedRoles: talent.selectedRoles || (profile?.performance_roles || profile?.performanceRoles || []).slice(0, 2),
+                  isMainBookedTalent: talent.isPrimary || talent.isMainBookedTalent || false,
+                  assignedRole: talent.role, // The role specifically assigned in the booking workflow
+                  type: talent.type || (talent.isPrimary ? 'Main Booked Talent' : 'Supporting Musician'), // Assignment feature
+                  talentType: talent.talentType || 'Artist', // For sorting - use server-provided talentType
+                  assignmentRole: talent.type || (talent.isPrimary ? 'Main Booked Talent' : 'Supporting Musician'), // Assignment feature for role column
+                  // DATABASE FIELDS: Use populated talent fields
+                  primaryTalent: primaryTalent,
+                  secondaryTalents: secondaryTalents || [],
+                  hasPrimaryTalent: !!primaryTalent,
+                  hasSecondaryTalents: !!(secondaryTalents && secondaryTalents.length > 0)
+                };
+              })}
+              eventDetails={{
+                eventName: booking?.eventName || '',
+                venueName: booking?.venueName || '',
+                eventDate: booking?.eventDate || '',
+                eventType: booking?.eventType || '',
+                duration: 60
+              }}
+              canEdit={canEdit}
+              userRole={userRole}
+              onSave={async (data) => {
+                await apiRequest(`/api/bookings/${bookingId}/enhanced-technical-rider`, { method: 'POST', body: JSON.stringify(data) });
+                toast(TOAST_CONFIGS.SUCCESS.SAVE);
+                refetchRider();
+              }}
+              onLoad={async () => technicalRider ?? null}
+            />
+          </CardContent>
+        </Card>
+
+
+      </div>
+    );
+  };
+
+  const renderStagePlot = () => {
+    return (
+      <div className="space-y-6">
         {/* Enhanced Mixer Patch System */}
         <Card className="mb-6">
           <CardHeader>
@@ -2455,81 +2607,6 @@ export default function BookingWorkflow({
             />
           </CardContent>
         </Card>
-
-        <EnhancedTechnicalRider
-          bookingId={bookingId}
-          assignedMusicians={assignedTalent.map((talent: any) => {
-            // Find the user details from available users
-            const userDetails = (availableUsers as any[] || []).find((user: any) => user.id === talent.userId);
-
-            // Find artist/musician/professional profile for profile data
-            const artistProfile = (availableArtists as any[]).find((artist: any) => artist.userId === talent.userId);
-            const musicianProfile = (availableMusicians as any[]).find((musician: any) => musician.userId === talent.userId);
-            const professionalProfile = (availableProfessionals as any[]).find((professional: any) => professional.userId === talent.userId);
-
-            const profile = artistProfile || musicianProfile || professionalProfile;
-
-            // If talent doesn't have database talent fields, populate from profile data
-            let primaryTalent = talent.primaryTalent;
-            let secondaryTalents = talent.secondaryTalents;
-
-            if (!primaryTalent && profile) {
-              // Extract primary talent from profile based on user type
-              if (profile.primaryTalent) {
-                primaryTalent = profile.primaryTalent;
-              } else if (profile.primary_talent) {
-                primaryTalent = profile.primary_talent;
-              } else if (profile.primaryRole) {
-                primaryTalent = profile.primaryRole;
-              }
-            }
-
-            if (!secondaryTalents && profile) {
-              // Extract secondary talents from profile
-              secondaryTalents = profile.secondaryTalents || profile.secondary_talents || [];
-            }
-
-            return {
-              id: talent.userId || talent.id,
-              userId: talent.userId,
-              roleId: talent.roleId, // CRITICAL: Include roleId for membership determination
-              fullName: talent.fullName,
-              stageName: profile?.stageNames?.[0] || talent.stageName || '',
-              name: talent.stageName || talent.name || talent.fullName,
-              role: talent.role,
-              primaryRole: profile?.primary_role || profile?.primaryRole || 'Lead Vocalist',
-              skillsAndInstruments: profile?.skills_and_instruments || profile?.skillsAndInstruments || profile?.instruments || [],
-              availableRoles: profile?.performance_roles || profile?.performanceRoles || [],
-              instruments: profile?.instruments || [],
-              selectedRoles: talent.selectedRoles || (profile?.performance_roles || profile?.performanceRoles || []).slice(0, 2),
-              isMainBookedTalent: talent.isPrimary || talent.isMainBookedTalent || false,
-              assignedRole: talent.role, // The role specifically assigned in the booking workflow
-              type: talent.type || (talent.isPrimary ? 'Main Booked Talent' : 'Supporting Musician'), // Assignment feature
-              talentType: talent.talentType || 'Artist', // For sorting - use server-provided talentType
-              assignmentRole: talent.type || (talent.isPrimary ? 'Main Booked Talent' : 'Supporting Musician'), // Assignment feature for role column
-              // DATABASE FIELDS: Use populated talent fields
-              primaryTalent: primaryTalent,
-              secondaryTalents: secondaryTalents || [],
-              hasPrimaryTalent: !!primaryTalent,
-              hasSecondaryTalents: !!(secondaryTalents && secondaryTalents.length > 0)
-            };
-          })}
-          eventDetails={{
-            eventName: booking?.eventName || '',
-            venueName: booking?.venueName || '',
-            eventDate: booking?.eventDate || '',
-            eventType: booking?.eventType || '',
-            duration: 60
-          }}
-          canEdit={canEdit}
-          userRole={userRole}
-          onSave={async (data) => {
-            await apiRequest(`/api/bookings/${bookingId}/enhanced-technical-rider`, { method: 'POST', body: JSON.stringify(data) });
-            toast(TOAST_CONFIGS.SUCCESS.SAVE);
-            refetchRider();
-          }}
-          onLoad={async () => technicalRider ?? null}
-        />
       </div>
     );
   };
@@ -2645,8 +2722,9 @@ export default function BookingWorkflow({
         {currentStep === 1 && renderTalentAssignment()}
         {currentStep === 2 && renderContractGeneration()}
         {currentStep === 3 && renderTechnicalRider()}
-        {currentStep === 4 && renderSignatureCollection()}
-        {currentStep === 5 && renderPaymentProcessing()}
+        {currentStep === 4 && renderStagePlot()}
+        {currentStep === 5 && renderSignatureCollection()}
+        {currentStep === 6 && renderPaymentProcessing()}
       </div>
 
       {/* Navigation */}
@@ -2672,8 +2750,8 @@ export default function BookingWorkflow({
         </div>
 
         <Button
-          onClick={progressToNextStep}
-          disabled={!workflowSteps[currentStep - 1].canProgress}        >
+          onClick={goToNextStep}
+          disabled={!workflowSteps[currentStep]?.canProgress || false}        >
           Next
           <ChevronRight className="w-4 h-4 ml-2" />
         </Button>

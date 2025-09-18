@@ -12054,7 +12054,7 @@ This is a preview of the performance engagement contract. Final agreement will i
         const dbStagePlot = await storage.getStagePlotByBooking(bookingId);
 
         const technicalRider = dbTechnicalRider ?? workflowData.technicalRider ?? {};
-        const stagePlot = dbStagePlot ?? workflowData.stagePlot ?? {};        
+        const stagePlot = dbStagePlot ?? workflowData.stagePlot ?? {};
 
         const bookingDetails = {
           ...booking,
@@ -13050,9 +13050,11 @@ This is a preview of the performance engagement contract. Final agreement will i
         // Create update object with only allowed fields
         const allowedFields = [
           "status",
+          "primaryArtistAccepted",
+          "technicalRider",
+          "stagePlot",
           "signatures",
           "payments",
-          "primaryArtistAccepted",
         ];
         const filteredUpdate: any = {};
 
@@ -13068,26 +13070,22 @@ This is a preview of the performance engagement contract. Final agreement will i
         }
 
         // Handle signatures - ensure they're stored as JSON string if needed
+        let updatedBooking = null
+        if (filteredUpdate.status) {
+          updatedBooking = await storage.updateBooking(bookingId, filteredUpdate)
+        }
+        if (filteredUpdate.technicalRider) {
+
+        }
+        if (filteredUpdate.stagePlot) {
+
+        }
         if (filteredUpdate.signatures) {
-          filteredUpdate.signatures =
-            typeof filteredUpdate.signatures === "string"
-              ? filteredUpdate.signatures
-              : JSON.stringify(filteredUpdate.signatures);
-        }
 
-        // Handle payments - ensure they're stored as JSON string if needed
-        if (filteredUpdate.payments) {
-          filteredUpdate.payments =
-            typeof filteredUpdate.payments === "string"
-              ? filteredUpdate.payments
-              : JSON.stringify(filteredUpdate.payments);
         }
+        if (filteredUpdate.signatures) {
 
-        // Update the booking
-        const updatedBooking = await storage.updateBooking(
-          bookingId,
-          filteredUpdate
-        );
+        }
 
         if (!updatedBooking) {
           return res.status(500).json({ message: "Failed to update booking" });
