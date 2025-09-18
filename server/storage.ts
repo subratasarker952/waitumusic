@@ -5345,32 +5345,60 @@ export class DatabaseStorage implements IStorage {
     return enrichedAssignments;
   }
 
-  async getBookingAssignmentsByBooking(
-    bookingId: number
-  ): Promise<BookingAssignment[]> {
-    const assignments = await db
-      .select()
-      .from(bookingAssignments)
-      .where(
-        and(
-          eq(bookingAssignments.bookingId, bookingId),
-          eq(bookingAssignments.isActive, true)
-        )
-      );
+async getBookingAssignmentsByBooking(
+  bookingId: number
+): Promise<any[]> {
+  const assignments = await db
+    .select({
+      id: bookingAssignmentsMembers.id,
+      bookingId: bookingAssignmentsMembers.bookingId,
+      userId: bookingAssignmentsMembers.userId,
+      roleInBooking: bookingAssignmentsMembers.roleInBooking,
+      status: bookingAssignmentsMembers.status,
+      selectedTalent: bookingAssignmentsMembers.selectedTalent,
+      isMainBookedTalent: bookingAssignmentsMembers.isMainBookedTalent,
+      assignedAt: bookingAssignmentsMembers.assignedAt,
 
-    const enrichedAssignments = await Promise.all(
-      assignments.map(async (assignment) => {
-        const assignedUser = await this.getUser(assignment.assignedUserId);
-
-        return {
-          ...assignment,
-          assignedUserName: assignedUser?.fullName || "Unknown User",
-        };
-      })
+      // Joined info
+      userFullName: users.fullName,
+      userEmail: users.email,
+      roleName: rolesManagement.name,
+      instrumentName: allInstruments.name,
+    })
+    .from(bookingAssignmentsMembers)
+    .innerJoin(users, eq(bookingAssignmentsMembers.userId, users.id))
+    .leftJoin(
+      rolesManagement,
+      eq(bookingAssignmentsMembers.roleInBooking, rolesManagement.id)
+    )
+    .leftJoin(
+      allInstruments,
+      eq(bookingAssignmentsMembers.selectedTalent, allInstruments.id)
+    )
+    .where(
+      and(
+        eq(bookingAssignmentsMembers.bookingId, bookingId),
+        eq(bookingAssignmentsMembers.status, "active")
+      )
     );
 
-    return enrichedAssignments;
-  }
+  return assignments.map((a) => ({
+    id: a.id,
+    bookingId: a.bookingId,
+    userId: a.userId,
+    roleInBooking: a.roleInBooking,
+    status: a.status,
+    selectedTalent: a.selectedTalent,
+    isMainBookedTalent: a.isMainBookedTalent,
+    assignedAt: a.assignedAt,
+
+    // Enhanced fields
+    assignedUserName: a.userFullName || "Unknown User",
+    userEmail: a.userEmail,
+    role: a.roleName || "N/A",
+    talent: a.instrumentName || null,
+  }));
+}
 
   async getBookingAssignment(
     id: number

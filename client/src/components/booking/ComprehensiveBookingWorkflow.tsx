@@ -122,7 +122,6 @@ export default function BookingWorkflow({
     refetchOnReconnect: false,
   });
 
-  console.log(bookingData)
 
   // Load all bookings for selection
   const { data: availableBookings = [] } = useQuery({
@@ -132,6 +131,16 @@ export default function BookingWorkflow({
       return data;
     }
   });
+
+  // Load all bookings for selection
+  const { data: existingTalentsInBooking = [] } = useQuery({
+    queryKey: ['existing-talents-in-booking', bookingId],
+    queryFn: async () => {
+      const data = await apiRequest(`/api/bookings/${bookingId}/talent-by-role`);
+      return data;
+    }
+  });
+  console.log('🔍 Existing talents in booking by role:', existingTalentsInBooking);
 
   // Load available users for assignment with controlled caching
   const { data: availableUsers = [] } = useQuery({
@@ -160,6 +169,7 @@ export default function BookingWorkflow({
     refetchOnMount: 'always',
     refetchOnReconnect: false
   });
+  console.log(assignedTalentData)
 
   // Load specific user types for assignment
   const { data: availableArtists = [] } = useQuery({

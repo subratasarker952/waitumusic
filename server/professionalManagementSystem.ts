@@ -3,7 +3,7 @@ import { and, eq, inArray } from "drizzle-orm";
 
 import { users, ;
 
-  roles, ;
+  rolesManagement, ;
   userProfessionalServices, ;
   enhancedSplitsheets, ;
   songs, ;
@@ -37,7 +37,7 @@ export class ProfessionalManagementSystem {
       // Verify the manager is a professional
       const manager = await db.select();
         .from(users);
-        .innerJoin(roles, eq(users.roleId, roles.id));
+        .innerJoin(rolesManagement, eq(users.roleId, rolesManagement.id));
         .where(eq(users.id, config.managerId));
         .limit(1);
 
