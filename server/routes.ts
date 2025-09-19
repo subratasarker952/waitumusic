@@ -3566,6 +3566,24 @@ export async function registerRoutes(app: Express): Promise<Server> {
             assignedBy: req.user!.userId,
             status: "active",
           })
+          .onConflictDoUpdate({
+            target: [
+              schema.bookingAssignmentsMembers.bookingId,
+              schema.bookingAssignmentsMembers.userId,
+              schema.bookingAssignmentsMembers.roleInBooking,
+            ],
+            set: {
+              selectedTalent: selectedTalent || null,
+              isMainBookedTalent: isMainBookedTalent || false,
+              assignedGroup,
+              assignedChannelPair,
+              assignedChannel,
+              assignmentType,
+              status: "active",
+              assignedBy: req.user!.userId,
+              updatedAt: new Date(), // auto update timestamp
+            },
+          })
           .returning();
 
         // Return assignment with joined data
@@ -3624,6 +3642,61 @@ export async function registerRoutes(app: Express): Promise<Server> {
       }
     }
   );
+
+  app.post(
+    "/api/bookings/:id/assign/batch",
+    authenticateToken,
+    requireRole([1, 2]),
+    validateParams(schemas.idParamSchema),
+    async (req: Request, res: Response) => {
+      try {
+        const bookingId = parseInt(req.params.id);
+        const { assignments } = req.body;
+
+        if (!Array.isArray(assignments) || assignments.length === 0) {
+          return res
+            .status(400)
+            .json({ message: "Assignments array is required" });
+        }
+
+        // Step 1: পুরোনো assignment গুলো delete করা
+        await db
+          .delete(schema.bookingAssignmentsMembers)
+          .where(eq(schema.bookingAssignmentsMembers.bookingId, bookingId));
+
+        // Step 2: নতুন assignment গুলো insert করা
+        const inserted = await db
+          .insert(schema.bookingAssignmentsMembers)
+          .values(
+            assignments.map((a: any) => ({
+              bookingId,
+              userId: a.userId,
+              roleInBooking: a.roleId,
+              assignmentType: a.assignmentType || "workflow",
+              selectedTalent: a.selectedTalent || null,
+              isMainBookedTalent: a.isMainBookedTalent || false,
+              assignedGroup: a.assignedGroup || null,
+              assignedChannelPair: a.assignedChannelPair || null,
+              assignedChannel: a.assignedChannel || null,
+              assignedBy: req.user!.userId,
+              status: "active",
+            }))
+          )
+          .returning();
+
+        invalidateCache(`booking-assignments:${bookingId}`);
+        res.status(201).json(inserted);
+      } catch (error) {
+        logError(error, ErrorSeverity.ERROR, {
+          endpoint: "/api/bookings/:id/assign/batch",
+          bookingId: req.params.id,
+        });
+        res.status(500).json({ message: "Internal server error" });
+      }
+    }
+  );
+
+
 
   // Update enhanced booking assignment member
   app.patch(
@@ -10000,36 +10073,43 @@ export async function registerRoutes(app: Express): Promise<Server> {
   );
 
   app.post(
-    "/api/bookings/:id/contracts",
+    "/api/bookings/:bookingId/contracts",
     authenticateToken,
-    requireRole([1, 2]),
+    requireRole([1, 2]), // allowed roles
     async (req: Request, res: Response) => {
       try {
         const createdByUserId = req.user?.userId;
-        const id = parseInt(req.params.id);
-        const {
-          contractType,
-          bookingId,
-          title,
-          content,
-        } = req.body;
+        const bookingId = parseInt(req.params.bookingId);
 
-        if (!(id === bookingId)) {
-          res.status(500).json({ message: "Booking Id mismatch" || "Failed to save contract" });
-          return;
+        if (!bookingId) {
+          return res.status(400).json({ message: "Booking ID is required" });
         }
+
+        const { contractType, title, content, assignedToUserId, metadata, status } = req.body;
+
+        if (!contractType || !title || !content) {
+          return res.status(400).json({ message: "Missing required contract data" });
+        }
+
+        const assignedToUserId = req.user?.userId;
+
         const contractData = {
+          bookingId,
           contractType,
           title,
           content,
-          bookingId,
-          createdByUserId
+          createdByUserId,
+          metadata,
+          status,
+          assignedToUserId
         };
-        const newContract = await storage.createContract(contractData);
-        res.json(newContract);
+
+        const newContract = await storage.upsertContract(contractData);
+
+        return res.json(newContract);
       } catch (error: any) {
-        console.error(error);
-        res.status(500).json({ message: error.message || "Failed to save contract" });
+        console.error("❌ Save contract error:", error);
+        return res.status(500).json({ message: error.message || "Failed to save contract" });
       }
     }
   );
@@ -19897,93 +19977,44 @@ This is a preview of the performance engagement contract. Final agreement will i
     async (req: Request, res: Response) => {
       try {
         const bookingId = parseInt(req.params.bookingId);
-        // Get booking assignments
-        const assignments = await storage.getBookingAssignmentsByBooking(
-          bookingId
-        );
-        // Enhance assignments with user information and talent data
-        const enhancedAssignments = await Promise.all(
-          assignments.map(async (assignment) => {
-            const user = await storage.getUser(assignment.assignedUserId);
-            if (!user) return null;
 
-            // Get user roles
-            const userRoles = await storage.getUserRoles(user.id);
-            const roleIds = userRoles.map((r) => r.id);
+        // Get booking assignments with joined info
+        const assignments = await storage.getBookingAssignmentsByBooking(bookingId);
+        console.log("📋 Assignments:", assignments);
 
-            // Fetch talent info depending on role
-            let talentInfo: any = null;
-            if (roleIds.some((r) => [3, 4].includes(r))) {
-              talentInfo = await storage.getArtist(user.id);
-            } else if (roleIds.some((r) => [5, 6].includes(r))) {
-              talentInfo = await storage.getMusician(user.id);
-            } else if (roleIds.some((r) => [7, 8].includes(r))) {
-              talentInfo = await storage.getProfessional(user.id);
-            }
+        const enhancedAssignments = assignments.map((assignment) => {
+          const isMainBooked = assignment.isMainBookedTalent === true;
 
-            // Primary talent
-            let primaryTalent: string | null = null;
-            if (talentInfo?.primaryTalentId) {
-              const talent = await storage.getPrimaryTalentById(
-                talentInfo.primaryTalentId
-              );
-              primaryTalent = talent?.name ?? null;
-            }
+          return {
+            id: `assignment-${assignment.id}`,
+            userId: assignment.userId,
+            name: assignment.assignedUserName,
+            assignmentName: assignment.assignedUserName,
+            fullName: assignment.assignedUserName,
+            stageName: assignment.stageName || null,
+            type: assignment.role || assignment.roleInBooking,
+            role: assignment.role || assignment.roleInBooking,
+            isMainBookedTalent: isMainBooked,
+            isPrimary: isMainBooked,
+            primaryTalent: assignment.talent || null,
+            secondaryTalents: [], // চাইলে পরে আলাদা query করে যোগ করতে পারো
+            assignmentId: assignment.id,
+            assignedAt: assignment.assignedAt,
+            // Button flags
+            isOriginallyBooked: isMainBooked,
+            showAcceptDecline: isMainBooked,
+            showRemove: !isMainBooked,
+          };
+        });
 
-            // Secondary talents
-            const secondaryPerformanceTalents =
-              await storage.getUserSecondaryPerformanceTalents(user.id);
-            const secondaryProfessionalTalents =
-              await storage.getUserSecondaryProfessionalTalents(user.id);
-
-            const secondaryTalents = [
-              ...secondaryPerformanceTalents.map((t) => t.talentName),
-              ...secondaryProfessionalTalents.map((t) => t.talentName),
-            ];
-
-            // Display / assignment name
-            const stageName = talentInfo?.stageName ?? null;
-            const displayName = stageName || user.fullName;
-            const assignmentName = stageName
-              ? `${user.fullName} (${stageName})`
-              : user.fullName;
-
-            // Flags
-            const isMainBooked =
-              assignment.assignmentRole === "Main Booked Talent";
-
-            return {
-              id: `assignment-${assignment.id}`,
-              userId: user.id,
-              name: displayName,
-              assignmentName,
-              fullName: user.fullName,
-              stageName,
-              type: assignment.assignmentRole,
-              role: assignment.assignmentRole,
-              isMainBookedTalent: isMainBooked,
-              isPrimary: isMainBooked,
-              // talentType: getUserTalentType(user.roleId),
-              primaryTalent,
-              secondaryTalents,
-              assignmentId: assignment.id,
-              // assignedAt: assignment.createdAt,
-              // Button flags
-              isOriginallyBooked: isMainBooked,
-              showAcceptDecline: isMainBooked,
-              showRemove: !isMainBooked,
-            };
-          })
-        );
-
-        const validAssignments = enhancedAssignments.filter(Boolean);
-        res.json(validAssignments);
+        res.json(enhancedAssignments);
       } catch (error) {
         console.error("❌ Fetch assigned talent error:", error);
         res.status(500).json({ message: "Failed to fetch assigned talent" });
       }
     }
   );
+
 
   // Get talent information for a specific user
   app.get(

@@ -9558,6 +9558,78 @@ async getBookingAssignmentsByBooking(
     }
   }
 
+  async upsertContract({
+    bookingId,
+    contractType,
+    title,
+    content,
+    createdByUserId,
+    assignedToUserId,
+    metadata = {},
+    status = "draft"
+  }: {
+    bookingId: number;
+    contractType: "booking_agreement" | "performance_contract";
+    title: string;
+    content: any; // JSON terms
+    createdByUserId: number;
+    assignedToUserId?: number;
+    metadata?: Record<string, any>;
+    status?: "draft" | "sent" | "signed" | "countered" | "completed";
+  }) {
+    try {
+      // চেক করবো ওই bookingId + contractType এর contract আছে কিনা
+      const existing = await db
+        .select()
+        .from(contracts)
+        .where(
+          and(
+            eq(contracts.bookingId, bookingId),
+            eq(contracts.contractType, contractType)
+          )
+        )
+        .limit(1);
+  
+      if (existing.length > 0) {
+        // থাকলে update করবো
+        const [updated] = await db
+          .update(contracts)
+          .set({
+            title,
+            content,
+            assignedToUserId,
+            metadata,
+            status,
+            updatedAt: new Date()
+          })
+          .where(eq(contracts.id, existing[0].id))
+          .returning();
+  
+        return { action: "updated", contract: updated };
+      } else {
+        // না থাকলে নতুন insert করবো
+        const [inserted] = await db
+          .insert(contracts)
+          .values({
+            bookingId,
+            contractType,
+            title,
+            content,
+            createdByUserId,
+            assignedToUserId,
+            metadata,
+            status
+          })
+          .returning();
+  
+        return { action: "inserted", contract: inserted };
+      }
+    } catch (error) {
+      console.error("❌ Error in upsertContract:", error);
+      throw new Error("Failed to upsert contract");
+    }
+  }
+
 
   // Get contract by ID
   async getContractById(id: number) {

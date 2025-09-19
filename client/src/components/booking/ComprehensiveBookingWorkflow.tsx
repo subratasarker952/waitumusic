@@ -46,8 +46,6 @@ interface WorkflowStep {
   id: string;
   title: string;
   description: string;
-  requiredDataCheck?: () => boolean; // returns true if step ready
-  saveFunction?: () => Promise<void>; // step complete হলে save করবে
   canProgress: boolean; // Next button enable হবে কি না
   status?: "pending" | "in_progress" | "completed"; // step progress indicator
   icon?: React.ReactNode; // lucide-react বা অন্য যেকোনো icon
@@ -122,6 +120,7 @@ export default function BookingWorkflow({
     refetchOnReconnect: false,
   });
 
+  console.log(bookingData)
 
   // Load all bookings for selection
   const { data: availableBookings = [] } = useQuery({
@@ -131,16 +130,6 @@ export default function BookingWorkflow({
       return data;
     }
   });
-
-  // Load all bookings for selection
-  const { data: existingTalentsInBooking = [] } = useQuery({
-    queryKey: ['existing-talents-in-booking', bookingId],
-    queryFn: async () => {
-      const data = await apiRequest(`/api/bookings/${bookingId}/talent-by-role`);
-      return data;
-    }
-  });
-  console.log('🔍 Existing talents in booking by role:', existingTalentsInBooking);
 
   // Load available users for assignment with controlled caching
   const { data: availableUsers = [] } = useQuery({
@@ -169,7 +158,6 @@ export default function BookingWorkflow({
     refetchOnMount: 'always',
     refetchOnReconnect: false
   });
-  console.log(assignedTalentData)
 
   // Load specific user types for assignment
   const { data: availableArtists = [] } = useQuery({
@@ -192,10 +180,10 @@ export default function BookingWorkflow({
       setIsLoading(false);
 
       // Auto-assign primary artist as main booked talent if not already assigned
-      if (booking.primaryArtist && assignedTalentData !== undefined && Array.isArray(assignedTalentData) && assignedTalentData.length === 0) {
-        console.log('🎯 AUTO-ASSIGNMENT TRIGGER: Primary artist exists, no assignments found');
-        autoAssignPrimaryArtist(booking.primaryArtist);
-      }
+      // if (booking.primaryArtist && assignedTalentData !== undefined && Array.isArray(assignedTalentData) && assignedTalentData.length === 0) {
+      //   console.log('🎯 AUTO-ASSIGNMENT TRIGGER: Primary artist exists, no assignments found');
+      //   autoAssignPrimaryArtist(booking.primaryArtist);
+      // }
     }
   }, [bookingData, assignedTalentData]);
 
@@ -212,44 +200,44 @@ export default function BookingWorkflow({
   }, [assignedTalentData]);
 
   // Function to auto-assign primary artist as main booked talent
-  const autoAssignPrimaryArtist = async (primaryArtist: any) => {
-    try {
-      console.log('🎯 AUTO-ASSIGNING primary artist as main booked talent:', primaryArtist);
+  // const autoAssignPrimaryArtist = async (primaryArtist: any) => {
+  //   try {
+  //     console.log('🎯 AUTO-ASSIGNING primary artist as main booked talent:', primaryArtist);
 
-      // Check if primary artist is already assigned as main booked talent
-      const existingMainTalent = assignedTalentData?.find(
-        (talent: any) => talent.userId === (primaryArtist.userId || primaryArtist.id) && talent.role === 'Main Booked Talent'
-      );
+  //     // Check if primary artist is already assigned as main booked talent
+  //     const existingMainTalent = assignedTalentData?.find(
+  //       (talent: any) => talent.userId === (primaryArtist.userId || primaryArtist.id) && talent.role === 'Main Booked Talent'
+  //     );
 
-      if (existingMainTalent) {
-        console.log('✅ Primary artist already assigned as main booked talent');
-        return;
-      }
+  //     if (existingMainTalent) {
+  //       console.log('✅ Primary artist already assigned as main booked talent');
+  //       return;
+  //     }
 
-      const assignmentData = {
-        userId: primaryArtist.userId || primaryArtist.id,
-        roleId: primaryArtist.roleId || 3, // Default to managed_artist role
-        name: primaryArtist.stageName || primaryArtist.fullName,
-        type: 'Main Booked Talent',
-        role: primaryArtist.primaryTalent || 'Artist',
-        selectedRoles: [primaryArtist.primaryTalent || 'Artist'],
-        availableRoles: [primaryArtist.primaryTalent, ...(primaryArtist.secondaryTalents || [])].filter(Boolean),
-        isMainBookedTalent: true,
-        isPrimary: true,
-        talentType: primaryArtist.userType || 'managed_artist',
-        assignmentType: 'auto'
-      };
+  //     const assignmentData = {
+  //       userId: primaryArtist.userId || primaryArtist.id,
+  //       roleId: primaryArtist.roleId || 3, // Default to managed_artist role
+  //       name: primaryArtist.stageName || primaryArtist.fullName,
+  //       type: 'Main Booked Talent',
+  //       role: primaryArtist.primaryTalent || 'Artist',
+  //       selectedRoles: [primaryArtist.primaryTalent || 'Artist'],
+  //       availableRoles: [primaryArtist.primaryTalent, ...(primaryArtist.secondaryTalents || [])].filter(Boolean),
+  //       isMainBookedTalent: true,
+  //       isPrimary: true,
+  //       talentType: primaryArtist.userType || 'managed_artist',
+  //       assignmentType: 'auto'
+  //     };
 
-      console.log('📝 Creating main booked talent assignment:', assignmentData);
+  //     console.log('📝 Creating main booked talent assignment:', assignmentData);
 
-      // Create the assignment
-      await createAssignmentMutation.mutateAsync(assignmentData);
-      console.log('✅ Primary artist auto-assigned successfully');
+  //     // Create the assignment
+  //     await createAssignmentMutation.mutateAsync(assignmentData);
+  //     console.log('✅ Primary artist auto-assigned successfully');
 
-    } catch (error) {
-      console.error('❌ Failed to auto-assign primary artist:', error);
-    }
-  };
+  //   } catch (error) {
+  //     console.error('❌ Failed to auto-assign primary artist:', error);
+  //   }
+  // };
 
   const updateBookingMutation = useMutation({
     mutationFn: async (data: any) => {
@@ -471,7 +459,7 @@ export default function BookingWorkflow({
     'Musician': '',
     'Managed Musician': '',
     'Professional': '',
-    'Managed Professional': '',
+    'Contracted Professional': '',
     // 'Performance Professional': '',
   });
 
@@ -747,46 +735,55 @@ export default function BookingWorkflow({
     }
 
     try {
-      const existingCheck = await apiRequest(`/api/bookings/${bookingId}/talent-by-role`);
-      let existingTalent: any[] = [];
-      if (existingCheck.ok) existingTalent = await existingCheck.json();
-
-      const promises = assignedTalent.map(async (talent) => {
-        if (existingTalent.some((et) => et.userId === talent.userId)) return null;
-
+      // payload তৈরি
+      setIsLoading(true)
+      const assignments = assignedTalent.map((talent) => {
         const roleId =
           talent.roleId ??
-          (talent.isMainBookedTalent ? 3 : talent.type === "Artist" ? 4 : talent.type === "Managed Musician" ? 5 : talent.type === "Musician" ? 6 : talent.type === "Managed Professional" ? 7 : talent.type === "Professional" ? 8 : 6);
+          (talent.isMainBookedTalent
+            ? 3
+            : talent.type === "Artist"
+              ? 4
+              : talent.type === "Managed Musician"
+                ? 5
+                : talent.type === "Musician"
+                  ? 6
+                  : talent.type === "Contracted Professional"
+                    ? 7
+                    : talent.type === "Professional"
+                      ? 8
+                      : 6);
 
-        const response = await apiRequest(`/api/bookings/${bookingId}/assign`, {
-          method: "POST",
-          body: JSON.stringify({
-            userId: talent.userId,
-            roleId,
-            selectedTalent: talent.selectedTalent || null,
-            isMainBookedTalent: talent.isMainBookedTalent || false,
-            assignmentType: "workflow",
-          }),
-        });
-
-        if (!response.ok) {
-          const err = await response.json().catch(() => ({}));
-          throw new Error(err.message || `Failed to save ${talent.name}`);
-        }
-        stepConfirmations[1] = true
-
-        return await response.json();
+        return {
+          userId: talent.userId,
+          roleId,
+          selectedTalent: talent.selectedTalent || null,
+          isMainBookedTalent: talent.isMainBookedTalent || false,
+          assignedGroup: talent.assignedGroup || null,
+          assignedChannelPair: talent.assignedChannelPair || null,
+          assignedChannel: talent.assignedChannel || null,
+          assignmentType: "workflow",
+        };
       });
 
-      const results = await Promise.allSettled(promises);
-      const savedCount = results.filter((r) => r.status === "fulfilled" && r.value !== null).length;
+      // একবারে সব পাঠানো
+      const result = await apiRequest(`/api/bookings/${bookingId}/assign/batch`, {
+        method: "POST",
+        body: JSON.stringify({ assignments }),
+      });
+
+      // এখানে response already JSON
+      stepConfirmations[1] = true;
 
       queryClient.invalidateQueries({ queryKey: ["booking-workflow", bookingId] });
       queryClient.invalidateQueries({ queryKey: ["booking-assigned-talent", bookingId] });
+      setIsLoading(false)
 
       toast({
         title: "Database Updated",
-        description: `${savedCount} talent assignments saved to database`,
+        description: Array.isArray(result)
+          ? `${result.length} talent assignments saved to database`
+          : "Assignments saved successfully",
       });
     } catch (error: any) {
       console.error("❌ BATCH SAVE FAILED:", error);
@@ -795,54 +792,84 @@ export default function BookingWorkflow({
         description: error.message || "Failed to save assignments",
         variant: "destructive",
       });
+    } finally {
+      setIsLoading(false)
     }
   };
 
-  // 2
-  const saveContracts = async (): Promise<void> => {
+
+
+  const saveContracts = async () => {
     try {
-      // Generate previews and save
-      await generateContractPreview("booking");
-      await generateContractPreview("performance");
-
-      if (!contractPreview.bookingAgreement || !contractPreview.performanceContract) {
-        toast({
-          title: "Preview Missing",
-          description: "Please generate contract previews first",
-          variant: "destructive",
-        });
-        return;
-      }
-
-      const payloads = [
-        {
-          bookingId,
+      if (!bookingId) throw new Error("Booking ID not found");
+      if (assignedTalent.length === 0) throw new Error("No talent assigned");
+  
+      const token = localStorage.getItem("token"); // যদি authorization লাগে
+  
+      // Booking Agreement save
+      const bookingResponse = await fetch(`/api/bookings/${bookingId}/contracts`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        },
+        body: JSON.stringify({
           contractType: "booking_agreement",
-          title: "Booking Agreement",
-          content: contractPreview.bookingAgreement,
+          title: `Booking Agreement for ${booking?.eventName || "Event"}`,
+          content: {
+            totalBookingPrice: contractConfig.totalBookingPrice || calculateTotalBookingPrice(),
+            categoryPricing,
+            individualPricing,
+            contractConfig,
+            counterOffer,
+          },
+          metadata: { generatedBy: "system", step: "contract_generation" },
+          status: "draft",
+        }),
+      });
+  
+      if (!bookingResponse.ok) {
+        const errorText = await bookingResponse.text();
+        throw new Error(errorText || "Failed to save booking contract");
+      }
+  
+      const bookingContract = await bookingResponse.json();
+  
+      // Performance Contract save
+      const performanceResponse = await fetch(`/api/bookings/${bookingId}/contracts`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          ...(token ? { Authorization: `Bearer ${token}` } : {}),
         },
-        {
-          bookingId,
+        body: JSON.stringify({
           contractType: "performance_contract",
-          title: "Performance Contract",
-          content: contractPreview.performanceContract,
-        },
-      ];
-
-      // Save contracts
-      await Promise.all(
-        payloads.map((data) =>
-          apiRequest(`/api/bookings/${bookingId}/contracts`, {
-            method: "POST",
-            body: JSON.stringify(data),
-          })
-        )
-      );
-
+          title: `Performance Contract for ${booking?.eventName || "Event"}`,
+          content: {
+            totalBookingPrice: contractConfig.totalBookingPrice || calculateTotalBookingPrice(),
+            categoryPricing,
+            individualPricing,
+            contractConfig,
+            counterOffer,
+          },
+          metadata: { generatedBy: "system", step: "contract_generation" },
+          status: "draft",
+        }),
+      });
+  
+      if (!performanceResponse.ok) {
+        const errorText = await performanceResponse.text();
+        throw new Error(errorText || "Failed to save performance contract");
+      }
+  
+      const performanceContract = await performanceResponse.json();
+  
       toast({
         title: "Contracts Saved",
         description: "Booking & Performance contracts saved successfully",
       });
+  
+      return { bookingContract, performanceContract };
     } catch (error: any) {
       console.error("❌ Save contracts error:", error);
       toast({
@@ -852,6 +879,7 @@ export default function BookingWorkflow({
       });
     }
   };
+  
 
   // 3
   const saveTechnicalRider = async () => {
@@ -984,68 +1012,62 @@ export default function BookingWorkflow({
       id: "talent_assignment",
       title: "Talent Assignment",
       description: "Assign Artists, Musicians and Professionals",
-      requiredDataCheck: () => assignedTalent.length > 0,
-      saveFunction: saveBatchAssignments,
-      canProgress: stepConfirmations[1] === true,
-      status: stepConfirmations[1]
-        ? "completed"
-        : currentStep === 1
-          ? "in_progress"
-          : "pending",
+      canProgress: assignedTalent.length > 0,
+      status:
+        assignedTalent.length > 0
+          ? "completed"
+          : currentStep === 1
+            ? "in_progress"
+            : "pending",
       icon: <Users className="h-5 w-5" />,
-      isActive: currentStep === 1
+      isActive: currentStep === 1,
     },
     {
       id: "contract_generation",
       title: "Contract Generation",
       description: "Generate booking contracts",
-      requiredDataCheck: () => stepConfirmations[2] === true,
-      saveFunction: saveContracts,
-      canProgress: stepConfirmations[2] === true || false,
-      status: stepConfirmations[2]
-        ? "completed"
-        : currentStep === 2
-          ? "in_progress"
-          : "pending",
+      canProgress: stepConfirmations[2] === true,
+      status:
+        stepConfirmations[2]
+          ? "completed"
+          : currentStep === 2
+            ? "in_progress"
+            : "pending",
       icon: <FileText className="h-5 w-5" />,
-      isActive: currentStep === 2
+      isActive: currentStep === 2,
     },
     {
       id: "technical_rider",
       title: "Technical Rider",
       description: "Technical requirements",
-      requiredDataCheck: () => stepConfirmations[3] === true,
-      saveFunction: saveTechnicalRider,
-      canProgress: stepConfirmations[3] === true || false,
-      status: stepConfirmations[3]
-        ? "completed"
-        : currentStep === 3
-          ? "in_progress"
-          : "pending",
+      canProgress: stepConfirmations[3] === true,
+      status:
+        stepConfirmations[3]
+          ? "completed"
+          : currentStep === 3
+            ? "in_progress"
+            : "pending",
       icon: <Sliders className="h-5 w-5" />,
-      isActive: currentStep === 3
+      isActive: currentStep === 3,
     },
     {
       id: "stage_plot",
       title: "Stage Plot",
       description: "Stage plot requirements",
-      requiredDataCheck: () => stepConfirmations[4] === true,
-      saveFunction: saveStagePlot,
-      canProgress: stepConfirmations[4] === true || false,
-      status: stepConfirmations[4]
-        ? "completed"
-        : currentStep === 4
-          ? "in_progress"
-          : "pending",
+      canProgress: stepConfirmations[4] === true,
+      status:
+        stepConfirmations[4]
+          ? "completed"
+          : currentStep === 4
+            ? "in_progress"
+            : "pending",
       icon: <Sliders className="h-5 w-5" />,
-      isActive: currentStep === 4
+      isActive: currentStep === 4,
     },
     {
       id: "signature_collection",
       title: "Signature Collection",
       description: "Collect contract signatures",
-      requiredDataCheck: () => (booking?.signatures?.length || 0) >= 1,
-      saveFunction: saveSignatures,
       canProgress: (booking?.signatures?.length || 0) >= 1,
       status:
         (booking?.signatures?.length || 0) >= 1
@@ -1054,61 +1076,37 @@ export default function BookingWorkflow({
             ? "in_progress"
             : "pending",
       icon: <PenTool className="h-5 w-5" />,
-      isActive: currentStep === 5
+      isActive: currentStep === 5,
     },
     {
       id: "payment_processing",
       title: "Payment Processing",
       description: "Process payments & receipts",
-      requiredDataCheck: () => (booking?.payments?.length || 0) > 0,
-      saveFunction: savePayments,
       canProgress: (booking?.payments?.length || 0) > 0,
       status:
-        (booking?.signatures?.length || 0) > 0
+        (booking?.payments?.length || 0) > 0
           ? "completed"
           : currentStep === 6
             ? "in_progress"
             : "pending",
       icon: <CreditCard className="h-5 w-5" />,
-      isActive: currentStep === 6
+      isActive: currentStep === 6,
     },
   ];
 
 
-  const goToNextStep = async () => {
-    const step = workflowSteps[currentStep];
+  console.log(workflowSteps[currentStep])
+  console.log(workflowSteps[currentStep]?.canProgress)
 
-    if (!step) return; // step না থাকলে কিছু করবে না
-
-    try {
-      // যদি saveFunction থাকে তাহলে call করো
-      if (step.saveFunction) {
-        await step.saveFunction();
+  const goToNextStep = () => {
+    setCurrentStep((prev) => {
+      if (prev < workflowSteps.length) {
+        return prev + 1;
       }
-
-      // যদি requiredDataCheck থাকে তাহলে confirm করো
-      if (step.requiredDataCheck && !step.requiredDataCheck()) {
-        toast({
-          title: "Step Incomplete",
-          description: `Please complete ${step.title} before proceeding`,
-          variant: "destructive",
-        });
-        return;
-      }
-
-      // Next step এ যাও
-      if (currentStep < workflowSteps.length - 1) {
-        setCurrentStep((prev) => prev + 1);
-      }
-    } catch (error: any) {
-      console.error("❌ Next step error:", error);
-      toast({
-        title: "Error",
-        description: error.message || "Could not proceed to next step",
-        variant: "destructive",
-      });
-    }
+      return prev; // শেষ step এ থাকলে আর বাড়বে না
+    });
   };
+
 
 
 
@@ -1870,7 +1868,7 @@ export default function BookingWorkflow({
           </CardContent>
         </Card>
 
-        {/* Talent Review Confirmation */}
+        {/* Talent Review Confirmation
         <Card>
           <CardContent className="pt-6">
             <div className="flex items-center space-x-2">
@@ -1887,10 +1885,10 @@ export default function BookingWorkflow({
               Check this box to enable the Next button and proceed to technical setup.
             </p>
           </CardContent>
-        </Card>
+        </Card> */}
 
         <div>
-          <Button className='w-full' onClick={saveBatchAssignments} >
+          <Button className='w-full' onClick={saveBatchAssignments} disabled={isLoading}>
             Save Step {currentStep} Data
           </Button>
         </div>
@@ -2317,7 +2315,7 @@ export default function BookingWorkflow({
                   <div className="flex items-end gap-2">
                     <Button
                       variant="default"
-                      className="bg-green-600 hover:bg-green-700"
+                      className="bg-green-600 hover:bg-green-700 w-full"
                       onClick={() => {
                         setContractConfig(prev => ({ ...prev, proposedPrice: counterOffer.amount }));
                         toast({ title: "Counter-Offer Approved", description: "Contract price updated" });
@@ -2327,6 +2325,7 @@ export default function BookingWorkflow({
                     </Button>
                     <Button
                       variant="destructive"
+                      className='w-full'
                       onClick={() => {
                         setCounterOffer({ received: false, amount: 0, deadline: '', notes: '' });
                         toast({ title: "Counter-Offer Declined", description: "Original terms maintained" });
@@ -2468,6 +2467,12 @@ export default function BookingWorkflow({
             </div>
           </CardContent>
         </Card>
+
+        <div>
+          <Button className='w-full' onClick={saveContracts} disabled={isLoading}>
+            Save Step {currentStep} Data
+          </Button>
+        </div>
       </div>
     );
   };
@@ -2565,6 +2570,11 @@ export default function BookingWorkflow({
         </Card>
 
 
+        <div>
+          <Button className='w-full' onClick={saveTechnicalRider} disabled={isLoading}>
+            Save Step {currentStep} Data
+          </Button>
+        </div>
       </div>
     );
   };
@@ -2618,6 +2628,12 @@ export default function BookingWorkflow({
             />
           </CardContent>
         </Card>
+
+        <div>
+          <Button className='w-full' onClick={saveStagePlot} disabled={isLoading}>
+            Save Step {currentStep} Data
+          </Button>
+        </div>
       </div>
     );
   };
@@ -2646,6 +2662,12 @@ export default function BookingWorkflow({
             </div>
           </CardContent>
         </Card>
+
+        <div>
+          <Button className='w-full' onClick={saveSignatures} disabled={isLoading}>
+            Save Step {currentStep} Data
+          </Button>
+        </div>
       </div>
     );
   };
@@ -2674,6 +2696,12 @@ export default function BookingWorkflow({
             </div>
           </CardContent>
         </Card>
+        
+        <div>
+          <Button className='w-full' onClick={savePayments} disabled={isLoading}>
+            Save Step {currentStep} Data
+          </Button>
+        </div>
       </div>
     );
   };
@@ -2762,7 +2790,8 @@ export default function BookingWorkflow({
 
         <Button
           onClick={goToNextStep}
-          disabled={!workflowSteps[currentStep]?.canProgress || false}        >
+          disabled={!workflowSteps[currentStep - 1]?.canProgress}
+        >
           Next
           <ChevronRight className="w-4 h-4 ml-2" />
         </Button>
