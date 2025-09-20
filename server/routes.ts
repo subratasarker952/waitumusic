@@ -3530,8 +3530,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
     "/api/bookings/:id/assign",
     authenticateToken,
     requireRole([1, 2]),
-    validateParams(schemas.idParamSchema),
-    validate(schemas.createBookingAssignmentSchema),
     async (req: Request, res: Response) => {
       try {
         const bookingId = parseInt(req.params.id);
@@ -3540,53 +3538,38 @@ export async function registerRoutes(app: Express): Promise<Server> {
           roleId,
           selectedTalent,
           isMainBookedTalent,
+          assignmentType = "workflow",
           assignedGroup,
-          assignedChannelPair,
           assignedChannel,
-          assignmentType = "manual",
+          assignedChannelPair,
         } = req.body;
-
-        if (!roleId) {
-          return res.status(400).json({ message: "roleInBooking is required" });
+  
+        if (!userId || !roleId) {
+          return res.status(400).json({ message: "userId and roleId are required" });
         }
-
-        // Create booking assignment
+  
+        // Insert new assignment
         const [assignment] = await db
           .insert(schema.bookingAssignmentsMembers)
           .values({
             bookingId,
             userId,
             roleInBooking: roleId,
-            assignmentType,
             selectedTalent: selectedTalent || null,
             isMainBookedTalent: isMainBookedTalent || false,
+            assignmentType,
             assignedGroup,
             assignedChannelPair,
             assignedChannel,
             assignedBy: req.user!.userId,
             status: "active",
-          })
-          .onConflictDoUpdate({
-            target: [
-              schema.bookingAssignmentsMembers.bookingId,
-              schema.bookingAssignmentsMembers.userId,
-              schema.bookingAssignmentsMembers.roleInBooking,
-            ],
-            set: {
-              selectedTalent: selectedTalent || null,
-              isMainBookedTalent: isMainBookedTalent || false,
-              assignedGroup,
-              assignedChannelPair,
-              assignedChannel,
-              assignmentType,
-              status: "active",
-              assignedBy: req.user!.userId,
-              updatedAt: new Date(), // auto update timestamp
-            },
+            assignedAt: new Date(),
+            createdAt: new Date(),
+            updatedAt: new Date(),
           })
           .returning();
-
-        // Return assignment with joined data
+  
+        // Optionally join user/role info for frontend convenience
         const detailedAssignment = await db
           .select({
             id: schema.bookingAssignmentsMembers.id,
@@ -3597,51 +3580,30 @@ export async function registerRoutes(app: Express): Promise<Server> {
             roleName: schema.rolesManagement.name,
             assignmentType: schema.bookingAssignmentsMembers.assignmentType,
             selectedTalent: schema.bookingAssignmentsMembers.selectedTalent,
-            instrumentName: schema.allInstruments.name,
-            instrumentPlayerName: schema.allInstruments.playerName,
-            mixerGroup: schema.allInstruments.mixerGroup,
-            isMainBookedTalent:
-              schema.bookingAssignmentsMembers.isMainBookedTalent,
+            isMainBookedTalent: schema.bookingAssignmentsMembers.isMainBookedTalent,
             assignedGroup: schema.bookingAssignmentsMembers.assignedGroup,
-            assignedChannelPair:
-              schema.bookingAssignmentsMembers.assignedChannelPair,
+            assignedChannelPair: schema.bookingAssignmentsMembers.assignedChannelPair,
             assignedChannel: schema.bookingAssignmentsMembers.assignedChannel,
             status: schema.bookingAssignmentsMembers.status,
             assignedAt: schema.bookingAssignmentsMembers.assignedAt,
           })
           .from(schema.bookingAssignmentsMembers)
-          .innerJoin(
-            schema.users,
-            eq(schema.bookingAssignmentsMembers.userId, schema.users.id)
-          )
-          .innerJoin(
-            schema.rolesManagement,
-            eq(
-              schema.bookingAssignmentsMembers.roleInBooking,
-              schema.rolesManagement.id
-            )
-          )
-          .leftJoin(
-            schema.allInstruments,
-            eq(
-              schema.bookingAssignmentsMembers.selectedTalent,
-              schema.allInstruments.id
-            )
-          )
+          .innerJoin(schema.users, eq(schema.bookingAssignmentsMembers.userId, schema.users.id))
+          .innerJoin(schema.rolesManagement, eq(schema.bookingAssignmentsMembers.roleInBooking, schema.rolesManagement.id))
           .where(eq(schema.bookingAssignmentsMembers.id, assignment.id))
           .limit(1);
-
+  
+        // Invalidate cache if needed
         invalidateCache(`booking-assignments:${bookingId}`);
+  
         res.status(201).json(detailedAssignment[0]);
-      } catch (error) {
-        logError(error, ErrorSeverity.ERROR, {
-          endpoint: "/api/bookings/:id/assign",
-          bookingId: req.params.id,
-        });
-        res.status(500).json({ message: "Internal server error" });
+      } catch (error: any) {
+        console.error("❌ Create assignment error:", error);
+        res.status(500).json({ message: error.message || "Internal server error" });
       }
     }
   );
+  
 
   app.post(
     "/api/bookings/:id/assign/batch",
@@ -3781,42 +3743,36 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   // Remove enhanced booking assignment member
   app.delete(
-    "/api/booking-assignments/:id",
+    "/api/assignments/:id",
     authenticateToken,
-    requireRole(ROLE_GROUPS.ADMIN_ONLY),
-    validateParams(schemas.idParamSchema),
+    requireRole([1, 2]),
     async (req: Request, res: Response) => {
       try {
         const assignmentId = parseInt(req.params.id);
 
-        // Soft delete - mark as inactive instead of hard delete
-        const [deletedAssignment] = await db
-          .update(schema.bookingAssignmentsMembers)
-          .set({
-            status: "inactive",
-            updatedAt: new Date(),
-          })
+        if (!assignmentId) {
+          return res.status(400).json({ message: "Assignment ID is required" });
+        }
+
+        const deleted = await db
+          .delete(schema.bookingAssignmentsMembers)
           .where(eq(schema.bookingAssignmentsMembers.id, assignmentId))
           .returning();
 
-        if (!deletedAssignment) {
+        if (!deleted.length) {
           return res.status(404).json({ message: "Assignment not found" });
         }
 
-        invalidateCache("booking-assignments");
-        res.json({
-          message: "Assignment removed successfully",
-          id: assignmentId,
-        });
+        invalidateCache(`booking-assignments:${deleted[0].bookingId}`);
+
+        return res.status(200).json({ message: "Assignment removed", deleted: deleted[0] });
       } catch (error) {
-        logError(error, ErrorSeverity.ERROR, {
-          endpoint: "/api/booking-assignments/:id",
-          assignmentId: req.params.id,
-        });
-        res.status(500).json({ message: "Internal server error" });
+        console.error("❌ Remove assignment error:", error);
+        return res.status(500).json({ message: "Failed to remove assignment" });
       }
     }
   );
+
 
   // Get talent grouped by instrument/mixer roles for a booking
   app.get(
@@ -19984,7 +19940,7 @@ This is a preview of the performance engagement contract. Final agreement will i
           const isMainBooked = assignment.isMainBookedTalent === true;
 
           return {
-            id: `assignment-${assignment.id}`,
+            id: assignment.id,
             userId: assignment.userId,
             name: assignment.assignedUserName,
             assignmentName: assignment.assignedUserName,
