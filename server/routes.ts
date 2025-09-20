@@ -10078,14 +10078,14 @@ export async function registerRoutes(app: Express): Promise<Server> {
     requireRole([1, 2]), // allowed roles
     async (req: Request, res: Response) => {
       try {
-        const createdByUserId = req.user?.userId;
         const bookingId = parseInt(req.params.bookingId);
+        const createdByUserId = parseInt(req.user.userId);
 
         if (!bookingId) {
           return res.status(400).json({ message: "Booking ID is required" });
         }
 
-        const { contractType, title, content, assignedToUserId, metadata, status } = req.body;
+        const { contractType, title, content, metadata, status } = req.body;
 
         if (!contractType || !title || !content) {
           return res.status(400).json({ message: "Missing required contract data" });
@@ -10093,7 +10093,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
         const assignedToUserId = req.user?.userId;
 
-        const contractData = {
+        const newContract = await storage.upsertContract({
           bookingId,
           contractType,
           title,
@@ -10102,9 +10102,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
           metadata,
           status,
           assignedToUserId
-        };
-
-        const newContract = await storage.upsertContract(contractData);
+        });
 
         return res.json(newContract);
       } catch (error: any) {

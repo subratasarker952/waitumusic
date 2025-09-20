@@ -460,7 +460,6 @@ export default function BookingWorkflow({
     'Managed Musician': '',
     'Professional': '',
     'Contracted Professional': '',
-    // 'Performance Professional': '',
   });
 
   // Individual talent pricing overrides
@@ -740,7 +739,7 @@ export default function BookingWorkflow({
       const assignments = assignedTalent.map((talent) => {
         const roleId =
           talent.roleId ??
-          (talent.isMainBookedTalent
+          (talent.type ==="Main Booked Talent"
             ? 3
             : talent.type === "Artist"
               ? 4
@@ -804,15 +803,10 @@ export default function BookingWorkflow({
       if (!bookingId) throw new Error("Booking ID not found");
       if (assignedTalent.length === 0) throw new Error("No talent assigned");
   
-      const token = localStorage.getItem("token"); // যদি authorization লাগে
-  
+      setIsLoading(true)
       // Booking Agreement save
-      const bookingResponse = await fetch(`/api/bookings/${bookingId}/contracts`, {
+      const bookingResponse = await apiRequest(`/api/bookings/${bookingId}/contracts`, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          ...(token ? { Authorization: `Bearer ${token}` } : {}),
-        },
         body: JSON.stringify({
           contractType: "booking_agreement",
           title: `Booking Agreement for ${booking?.eventName || "Event"}`,
@@ -836,12 +830,8 @@ export default function BookingWorkflow({
       const bookingContract = await bookingResponse.json();
   
       // Performance Contract save
-      const performanceResponse = await fetch(`/api/bookings/${bookingId}/contracts`, {
+      const performanceResponse = await apiRequest(`/api/bookings/${bookingId}/contracts`, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          ...(token ? { Authorization: `Bearer ${token}` } : {}),
-        },
         body: JSON.stringify({
           contractType: "performance_contract",
           title: `Performance Contract for ${booking?.eventName || "Event"}`,
@@ -863,6 +853,12 @@ export default function BookingWorkflow({
       }
   
       const performanceContract = await performanceResponse.json();
+
+      stepConfirmations[2] = true;
+
+      queryClient.invalidateQueries({ queryKey: ["booking-workflow", bookingId] });
+      queryClient.invalidateQueries({ queryKey: ["booking-contract", bookingId] });
+      setIsLoading(false)
   
       toast({
         title: "Contracts Saved",
@@ -877,6 +873,8 @@ export default function BookingWorkflow({
         description: error.message || "Unable to save contracts",
         variant: "destructive",
       });
+    }finally {
+      setIsLoading(false)
     }
   };
   
@@ -1441,7 +1439,7 @@ export default function BookingWorkflow({
                             <p className="text-sm text-muted-foreground">Managed Artist • {artist.primaryTalent}</p>
                           </div>
                         </div>
-                        {assignedTalent.some(t => t.userId === artist.userId) ? (
+                        {assignedTalent.some( t => t.userId === artist.userId || t.userId === booking?.primaryArtist?.userId) ? (
                           <Badge variant="secondary">Already Assigned</Badge>
                         ) : (
                           <Button variant="outline" size="sm" className="border-emerald-300 hover:bg-emerald-100"
@@ -1498,7 +1496,7 @@ export default function BookingWorkflow({
                             <p className="text-sm text-muted-foreground">Artist • {artist.primaryTalent}</p>
                           </div>
                         </div>
-                        {assignedTalent.some(t => t.userId === artist.userId) ? (
+                        {assignedTalent.some( t => t.userId === artist.userId || t.userId === booking?.primaryArtist?.userId) ? (
                           <Badge variant="secondary">Already Assigned</Badge>
                         ) : (
                           <Button variant="outline" size="sm"
@@ -1593,7 +1591,7 @@ export default function BookingWorkflow({
                           </div>
                         </div>
                         <div className="flex flex-col gap-2 min-w-32">
-                          {assignedTalent.some(t => t.userId === musician.userId) ? (
+                          {assignedTalent.some( t => t.userId === musician.userId || t.userId === booking?.primaryArtist?.userId) ? (
                             <Badge variant="secondary">Already Assigned</Badge>
                           ) : (
                             <Button variant="outline" size="sm" className="border-purple-300 hover:bg-purple-100"
@@ -2376,7 +2374,7 @@ export default function BookingWorkflow({
                   Preview Booking Agreement
                 </Button>
                 {contractPreview.bookingAgreement && (
-                  <div className="p-3 bg-gray-50 rounded border max-h-40 overflow-y-auto">
+                  <div className="p-3 bg-gray-50 rounded border max-h-screen overflow-y-auto">
                     <h4 className="font-medium text-sm mb-2">Booking Agreement Preview:</h4>
                     <div className="text-xs text-gray-700 whitespace-pre-line">
                       {contractPreview.bookingAgreement.substring(0, 500)}...
@@ -2413,7 +2411,7 @@ export default function BookingWorkflow({
                   Preview Performance Contracts
                 </Button>
                 {contractPreview.performanceContract && (
-                  <div className="p-3 bg-gray-50 rounded border max-h-40 overflow-y-auto">
+                  <div className="p-3 bg-gray-50 rounded border max-h-screen overflow-y-auto">
                     <h4 className="font-medium text-sm mb-2">Performance Contract Preview:</h4>
                     <div className="text-xs text-gray-700 whitespace-pre-line">
                       {contractPreview.performanceContract.substring(0, 500)}...
@@ -2441,7 +2439,7 @@ export default function BookingWorkflow({
               </div>
             </div>
 
-            {/* Contract Confirmation */}
+            {/* Contract Confirmation 
             <div className="mt-6 p-4 bg-blue-50 rounded border border-blue-200">
               <div className="flex items-start gap-3">
                 <input
@@ -2464,7 +2462,7 @@ export default function BookingWorkflow({
                   </ul>
                 </label>
               </div>
-            </div>
+            </div>*/}
           </CardContent>
         </Card>
 
