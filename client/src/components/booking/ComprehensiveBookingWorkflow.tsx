@@ -1239,7 +1239,7 @@ export default function BookingWorkflow({
       return [];
     };
 
-    const availableTalent = allTalent.filter(talent => talent.id !== booking?.primaryArtist?.userId);
+    const availableTalent = allTalent.filter(talent => talent.userId !== booking?.primaryArtist?.userId);
 
     const categorizedTalent = {
       managedArtists: availableTalent.filter(talent => getRoles(talent).some(r => managedRoles.includes(r) && r === 3)),
