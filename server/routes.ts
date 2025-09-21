@@ -3543,11 +3543,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
           assignedChannel,
           assignedChannelPair,
         } = req.body;
-  
+
         if (!userId || !roleId) {
           return res.status(400).json({ message: "userId and roleId are required" });
         }
-  
+
         // Insert new assignment
         const [assignment] = await db
           .insert(schema.bookingAssignmentsMembers)
@@ -3568,7 +3568,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
             updatedAt: new Date(),
           })
           .returning();
-  
+
         // Optionally join user/role info for frontend convenience
         const detailedAssignment = await db
           .select({
@@ -3592,10 +3592,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
           .innerJoin(schema.rolesManagement, eq(schema.bookingAssignmentsMembers.roleInBooking, schema.rolesManagement.id))
           .where(eq(schema.bookingAssignmentsMembers.id, assignment.id))
           .limit(1);
-  
+
         // Invalidate cache if needed
         invalidateCache(`booking-assignments:${bookingId}`);
-  
+
         res.status(201).json(detailedAssignment[0]);
       } catch (error: any) {
         console.error("❌ Create assignment error:", error);
@@ -3603,7 +3603,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       }
     }
   );
-  
+
 
   app.post(
     "/api/bookings/:id/assign/batch",
@@ -10035,7 +10035,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     async (req: Request, res: Response) => {
       try {
         const bookingId = parseInt(req.params.bookingId);
-        const createdByUserId = parseInt(req.user.userId);
+        const createdByUserId = req.user?.userId;
 
         if (!bookingId) {
           return res.status(400).json({ message: "Booking ID is required" });
@@ -12086,6 +12086,7 @@ This is a preview of the performance engagement contract. Final agreement will i
         // --- NEW: Try DB first ---
         const dbTechnicalRider = await storage.getTechnicalRiderByBooking(bookingId);
         const dbStagePlot = await storage.getStagePlotByBooking(bookingId);
+        const dbContractedData = await storage.getContractByBooking(bookingId);
 
         const technicalRider = dbTechnicalRider ?? workflowData.technicalRider ?? {};
         const stagePlot = dbStagePlot ?? workflowData.stagePlot ?? {};
@@ -12113,6 +12114,7 @@ This is a preview of the performance engagement contract. Final agreement will i
           stagePlot,
           signatures,
           payments,
+          contracts: dbContractedData
         };
 
         res.json(bookingDetails);

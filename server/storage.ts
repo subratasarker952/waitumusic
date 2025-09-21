@@ -9572,7 +9572,7 @@ async getBookingAssignmentsByBooking(
     contractType: "booking_agreement" | "performance_contract";
     title: string;
     content: any; // JSON terms
-    createdByUserId: number;
+    createdByUserId?: number;
     assignedToUserId?: number;
     metadata?: Record<string, any>;
     status?: "draft" | "sent" | "signed" | "countered" | "completed";
@@ -9648,26 +9648,17 @@ async getBookingAssignmentsByBooking(
   }
 
   // Get contracts by booking ID (optional filter by type)
-  async getContractsByBooking(
-    bookingId: number,
-    contractType?: "booking_agreement" | "performance_contract"
-  ) {
+  async getContractByBooking(bookingId: number) {
     try {
-      let query = db.select().from(contracts).where(eq(contracts.bookingId, bookingId));
-
-      if (contractType) {
-        query = db.select().from(contracts).where(
-          eq(contracts.bookingId, bookingId),
-          eq(contracts.contractType, contractType)
-        );
-      }
-
-      return await query;
+      return await db
+        .select()
+        .from(contracts)
+        .where(eq(contracts.bookingId, bookingId));
     } catch (error) {
       console.error("❌ Get contracts by booking error:", error);
       return [];
     }
-  }
+  } 
 
 
   // Get all technical riders

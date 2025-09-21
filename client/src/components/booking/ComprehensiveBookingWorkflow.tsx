@@ -478,6 +478,48 @@ export default function BookingWorkflow({
     notes: ''
   });
 
+
+  useEffect(() => {
+    if (booking?.contracts && booking.contracts.length > 0) {
+      const bookingAgreement = booking.contracts.find(
+        (c: any) => c.contractType === "booking_agreement"
+      );
+      const performanceContract = booking.contracts.find(
+        (c: any) => c.contractType === "performance_contract"
+      );
+
+      // preview titles
+      // setContractPreview({
+      //   bookingAgreement: bookingAgreement?.title || null,
+      //   performanceContract: performanceContract?.title || null,
+      // });
+
+      // যদি content এর ভিতরে saved config থাকে
+      if (bookingAgreement?.content?.contractConfig) {
+        setContractConfig((prev) => ({
+          ...prev,
+          ...bookingAgreement.content.contractConfig,
+        }));
+      }
+
+      // যদি counter offer থাকে
+      if (bookingAgreement?.content?.counterOffer) {
+        setCounterOffer(bookingAgreement.content.counterOffer);
+      }
+
+      // categoryPricing
+      if (bookingAgreement?.content?.categoryPricing) {
+        setCategoryPricing(bookingAgreement.content.categoryPricing);
+      }
+
+      // individualPricing
+      if (bookingAgreement?.content?.individualPricing) {
+        setIndividualPricing(bookingAgreement.content.individualPricing);
+      }
+      stepConfirmations[2] = true
+    }
+  }, [booking]);
+
   const generateContractPreview = async (type: 'booking' | 'performance') => {
     try {
       // Enhanced preview data with category-based and individual pricing
@@ -797,17 +839,17 @@ export default function BookingWorkflow({
   };
 
 
-
   const saveContracts = async () => {
     try {
       if (!bookingId) throw new Error("Booking ID not found");
       if (assignedTalent.length === 0) throw new Error("No talent assigned");
 
-      setIsLoading(true)
-      // Booking Agreement save
-      const bookingResponse = await apiRequest(`/api/bookings/${bookingId}/contracts`, {
+      setIsLoading(true);
+
+      // Booking Agreement
+      const bookingContract = await apiRequest(`/api/bookings/${bookingId}/contracts`, {
         method: "POST",
-        body: JSON.stringify({
+        body: {
           contractType: "booking_agreement",
           title: `Booking Agreement for ${booking?.eventName || "Event"}`,
           content: {
@@ -819,20 +861,13 @@ export default function BookingWorkflow({
           },
           metadata: { generatedBy: "system", step: "contract_generation" },
           status: "draft",
-        }),
+        },
       });
 
-      if (!bookingResponse.ok) {
-        const errorText = await bookingResponse.text();
-        throw new Error(errorText || "Failed to save booking contract");
-      }
-
-      const bookingContract = await bookingResponse.json();
-
-      // Performance Contract save
-      const performanceResponse = await apiRequest(`/api/bookings/${bookingId}/contracts`, {
+      // Performance Contract
+      const performanceContract = await apiRequest(`/api/bookings/${bookingId}/contracts`, {
         method: "POST",
-        body: JSON.stringify({
+        body: {
           contractType: "performance_contract",
           title: `Performance Contract for ${booking?.eventName || "Event"}`,
           content: {
@@ -844,21 +879,13 @@ export default function BookingWorkflow({
           },
           metadata: { generatedBy: "system", step: "contract_generation" },
           status: "draft",
-        }),
+        },
       });
-
-      if (!performanceResponse.ok) {
-        const errorText = await performanceResponse.text();
-        throw new Error(errorText || "Failed to save performance contract");
-      }
-
-      const performanceContract = await performanceResponse.json();
 
       stepConfirmations[2] = true;
 
       queryClient.invalidateQueries({ queryKey: ["booking-workflow", bookingId] });
       queryClient.invalidateQueries({ queryKey: ["booking-contract", bookingId] });
-      setIsLoading(false)
 
       toast({
         title: "Contracts Saved",
@@ -874,9 +901,10 @@ export default function BookingWorkflow({
         variant: "destructive",
       });
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
   };
+
 
 
   // 3
@@ -1092,9 +1120,6 @@ export default function BookingWorkflow({
     },
   ];
 
-
-  console.log(workflowSteps[currentStep])
-  console.log(workflowSteps[currentStep]?.canProgress)
 
   const goToNextStep = () => {
     setCurrentStep((prev) => {
@@ -1482,16 +1507,16 @@ export default function BookingWorkflow({
                                 assignmentType: 'manual'
                               };
                               // setAssignedTalent([...assignedTalent, assignmentData]);
-                              toast({
-                                title: "Assignment",
-                                description: `${artist.stageName || artist.user?.fullName} assigned as ${isMainBookedTalent ? 'Main Booked Talent' : 'Supporting Talent'}`
-                              });
+                              // toast({
+                              //   title: "Assignment",
+                              //   description: `${artist.stageName || artist.user?.fullName} assigned as ${isMainBookedTalent ? 'Main Booked Talent' : 'Supporting Talent'}`
+                              // });
 
                               // Save immediately to database
                               try {
                                 await createAssignmentMutation.mutateAsync({
                                   ...newAssignment,
-                                  roleId: artist.userId === booking?.primaryArtist?.userId ? 3 : 4
+                                  roleId: 4
                                 });
                                 console.log('✅ Assignment saved to database immediately');
                               } catch (error) {
@@ -1553,16 +1578,16 @@ export default function BookingWorkflow({
                                 isMainBookedTalent: isMainBookedTalent
                               };
                               // setAssignedTalent([...assignedTalent, newAssignment]);
-                              toast({
-                                title: "Assignment",
-                                description: `${artist.stageName || artist.user?.fullName} assigned as ${isMainBookedTalent ? 'Main Booked Talent' : 'Supporting Talent'}`
-                              });
+                              // toast({
+                              //   title: "Assignment",
+                              //   description: `${artist.stageName || artist.user?.fullName} assigned as ${isMainBookedTalent ? 'Main Booked Talent' : 'Supporting Talent'}`
+                              // });
 
                               // Save immediately to database
                               try {
                                 await createAssignmentMutation.mutateAsync({
                                   ...newAssignment,
-                                  roleId: artist.userId === booking?.primaryArtist?.userId ? 3 : 4
+                                  roleId: 4
                                 });
                                 console.log('✅ Assignment saved to database immediately');
                               } catch (error) {
@@ -1646,10 +1671,10 @@ export default function BookingWorkflow({
                                   isMainBookedTalent: isMainBookedTalent
                                 };
                                 // setAssignedTalent([...assignedTalent, newAssignment]);
-                                toast({
-                                  title: "Assignment",
-                                  description: `${musician.stageName || musician.user?.fullName} assigned as ${isMainBookedTalent ? 'Main Booked Talent' : primaryRole}`
-                                });
+                                // toast({
+                                //   title: "Assignment",
+                                //   description: `${musician.stageName || musician.user?.fullName} assigned as ${isMainBookedTalent ? 'Main Booked Talent' : primaryRole}`
+                                // });
                                 // Save immediately to database
                                 try {
                                   await createAssignmentMutation.mutateAsync({
@@ -1739,10 +1764,10 @@ export default function BookingWorkflow({
                                   isMainBookedTalent: isMainBookedTalent
                                 };
                                 // setAssignedTalent([...assignedTalent, newAssignment]);
-                                toast({
-                                  title: "Assignment",
-                                  description: `${musician.stageName || musician.user?.fullName} assigned as ${isMainBookedTalent ? 'Main Booked Talent' : primaryRole}`
-                                });
+                                // toast({
+                                //   title: "Assignment",
+                                //   description: `${musician.stageName || musician.user?.fullName} assigned as ${isMainBookedTalent ? 'Main Booked Talent' : primaryRole}`
+                                // });
                                 // Save immediately to database
                                 try {
                                   await createAssignmentMutation.mutateAsync({
@@ -1802,10 +1827,10 @@ export default function BookingWorkflow({
                                 avatarUrl: professional.profile?.avatarUrl
                               };
                               // setAssignedTalent([...assignedTalent, newAssignment]);
-                              toast({
-                                title: "Assignment",
-                                description: `${professional.stageName || professional.user?.fullName} assigned as ${professional.serviceType || 'Professional'}`
-                              });
+                              // toast({
+                              //   title: "Assignment",
+                              //   description: `${professional.stageName || professional.user?.fullName} assigned as ${professional.serviceType || 'Professional'}`
+                              // });
 
                               // Save immediately to database
                               try {
@@ -1865,10 +1890,10 @@ export default function BookingWorkflow({
                                 avatarUrl: professional.profile?.avatarUrl
                               };
                               // setAssignedTalent([...assignedTalent, newAssignment]);
-                              toast({
-                                title: "Assignment",
-                                description: `${professional.stageName || professional.user?.fullName} assigned as ${professional.serviceType || 'Professional'}`
-                              });
+                              // toast({
+                              //   title: "Assignment",
+                              //   description: `${professional.stageName || professional.user?.fullName} assigned as ${professional.serviceType || 'Professional'}`
+                              // });
                               try {
                                 await createAssignmentMutation.mutateAsync({
                                   ...newAssignment,
@@ -1927,11 +1952,11 @@ export default function BookingWorkflow({
           </CardContent>
         </Card> */}
 
-        <div>
+        {/* <div>
           <Button className='w-full' onClick={saveBatchAssignments} disabled={isLoading}>
             Save Step {currentStep} Data
           </Button>
-        </div>
+        </div> */}
       </div>
     );
   };
@@ -2416,10 +2441,10 @@ export default function BookingWorkflow({
                   Preview Booking Agreement
                 </Button>
                 {contractPreview.bookingAgreement && (
-                  <div className="p-3 bg-gray-50 rounded border max-h-screen overflow-y-auto">
+                  <div className="p-3 bg-gray-50 rounded border max-h-[60vh] overflow-y-auto">
                     <h4 className="font-medium text-sm mb-2">Booking Agreement Preview:</h4>
                     <div className="text-xs text-gray-700 whitespace-pre-line">
-                      {contractPreview.bookingAgreement.substring(0, 500)}...
+                      {contractPreview.bookingAgreement}
                     </div>
                     <Button
                       size="sm"
@@ -2453,10 +2478,10 @@ export default function BookingWorkflow({
                   Preview Performance Contracts
                 </Button>
                 {contractPreview.performanceContract && (
-                  <div className="p-3 bg-gray-50 rounded border max-h-screen overflow-y-auto">
+                  <div className="p-3 bg-gray-50 rounded border max-h-[60vh] overflow-y-auto">
                     <h4 className="font-medium text-sm mb-2">Performance Contract Preview:</h4>
                     <div className="text-xs text-gray-700 whitespace-pre-line">
-                      {contractPreview.performanceContract.substring(0, 500)}...
+                      {contractPreview.performanceContract}
                     </div>
                     <Button
                       size="sm"
