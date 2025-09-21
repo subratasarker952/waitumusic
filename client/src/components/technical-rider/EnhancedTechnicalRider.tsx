@@ -4301,56 +4301,58 @@ function EnhancedTechnicalRider({
 
                     {/* Band Member Placement Tracking */}
                     <div>
-                      <div className="flex items-center justify-between mb-2">
+                      <div className='flex lg:flex-col justify-center items-center gap-4'>
                         <Label>Band Member Placement</Label>
-                        <div className="flex items-center gap-2">
-                          <Badge variant="outline" className="text-xs">
-                            {(() => {
-                              // Count only BAND members (not TEAM or MANAGEMENT)
-                              const totalBandMembers = bandMembers.filter(member => member.membership === 'BAND').length;
-                              // Count placed BAND members based on stage legend assignments
-                              const placedMembers = stageLegend.filter(legend =>
-                                bandMembers.some(member =>
-                                  member.membership === 'BAND' &&
-                                  (legend.assignedTo === member.fullName || legend.assignedTo === member.stageName)
-                                )
-                              ).length;
-                              return `${placedMembers} / ${totalBandMembers} Placed`;
-                            })()}
-                          </Badge>
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            onClick={() => {
-                              // Place all unplaced band members
-                              const unplacedMembers = bandMembers.filter(member => {
-                                if (member.membership !== 'BAND') return false;
-                                // Process all assigned talent (restriction removed)
-                                return !stageLegend.some(legend =>
-                                  legend.assignedTo === member.fullName || legend.assignedTo === member.stageName
-                                );
-                              });
+                        <div className="flex items-center justify-between mb-2">
+                          <div className="flex items-center gap-2">
+                            <Button variant="outline" className="text-xs h-7">
+                              {(() => {
+                                // Count only BAND members (not TEAM or MANAGEMENT)
+                                const totalBandMembers = bandMembers.filter(member => member.membership === 'BAND').length;
+                                // Count placed BAND members based on stage legend assignments
+                                const placedMembers = stageLegend.filter(legend =>
+                                  bandMembers.some(member =>
+                                    member.membership === 'BAND' &&
+                                    (legend.assignedTo === member.fullName || legend.assignedTo === member.stageName)
+                                  )
+                                ).length;
+                                return `${placedMembers} / ${totalBandMembers} Placed`;
+                              })()}
+                            </Button>
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              onClick={() => {
+                                // Place all unplaced band members
+                                const unplacedMembers = bandMembers.filter(member => {
+                                  if (member.membership !== 'BAND') return false;
+                                  // Process all assigned talent (restriction removed)
+                                  return !stageLegend.some(legend =>
+                                    legend.assignedTo === member.fullName || legend.assignedTo === member.stageName
+                                  );
+                                });
 
-                              unplacedMembers.forEach((member, index) => {
-                                const userInstruments = getUserInstruments(member);
-                                if (userInstruments.length > 0) {
-                                  // Use first instrument
-                                  addStageElement(userInstruments[0].type, userInstruments[0].name, member);
-                                } else {
-                                  // Default to mic
-                                  addStageElement('🎤', 'Mic', member);
-                                }
-                              });
-                            }}
-                            disabled={!canEdit}
-                            className="text-xs h-7"
-                          >
-                            Place All
-                          </Button>
+                                unplacedMembers.forEach((member, index) => {
+                                  const userInstruments = getUserInstruments(member);
+                                  if (userInstruments.length > 0) {
+                                    // Use first instrument
+                                    addStageElement(userInstruments[0].type, userInstruments[0].name, member);
+                                  } else {
+                                    // Default to mic
+                                    addStageElement('🎤', 'Mic', member);
+                                  }
+                                });
+                              }}
+                              disabled={!canEdit}
+                              className="text-xs h-7"
+                            >
+                              Place All
+                            </Button>
+                          </div>
                         </div>
                       </div>
 
-                      <div className="space-y-2 mt-2 max-h-40 overflow-y-auto">
+                      <div className="space-y-2 mt-2 max-h-[60vh] overflow-y-auto">
                         {(() => {
                           const totalBandMembers = bandMembers.filter(member => member.membership === 'BAND');
                           const placedMembers: any[] = [];
@@ -4380,8 +4382,8 @@ function EnhancedTechnicalRider({
                             <div
                               key={user.id}
                               className={`border rounded p-2 transition-all duration-200 ${isPlaced
-                                  ? 'bg-green-50 border-green-200 opacity-75'
-                                  : 'bg-white border-gray-200 hover:border-blue-300'
+                                ? 'bg-green-50 border-green-200 opacity-75'
+                                : 'bg-white border-gray-200 hover:border-blue-300'
                                 }`}
                             >
                               <div className="flex items-center justify-between mb-1">
@@ -4394,7 +4396,7 @@ function EnhancedTechnicalRider({
                                   </Badge>
                                 )}
                               </div>
-                              <div className="grid grid-cols-2 gap-1">
+                              <div className="grid grid-cols-1 gap-1">
                                 {userInstruments.length > 0 ? userInstruments.map((instrument: any, i: number) => (
                                   <Button
                                     key={i}
@@ -4403,8 +4405,8 @@ function EnhancedTechnicalRider({
                                     onClick={() => addStageElement(instrument.type, instrument.name, user)}
                                     disabled={!canEdit || isPlaced}
                                     className={`text-xs h-7 ${isPlaced
-                                        ? 'bg-green-100 text-green-700 cursor-not-allowed'
-                                        : 'hover:bg-blue-50'
+                                      ? 'bg-green-100 text-green-700 cursor-not-allowed'
+                                      : 'hover:bg-blue-50'
                                       }`}
                                   >
                                     {instrument.type} {instrument.name}
@@ -4417,8 +4419,8 @@ function EnhancedTechnicalRider({
                                     onClick={() => addStageElement('🎤', 'Mic', user)}
                                     disabled={!canEdit || isPlaced}
                                     className={`text-xs h-7 col-span-2 ${isPlaced
-                                        ? 'bg-green-100 text-green-700 cursor-not-allowed'
-                                        : 'hover:bg-blue-50'
+                                      ? 'bg-green-100 text-green-700 cursor-not-allowed'
+                                      : 'hover:bg-blue-50'
                                       }`}
                                   >
                                     🎤 Add {user.fullName}
@@ -4632,11 +4634,11 @@ function EnhancedTechnicalRider({
                   )}
 
                   {/* Dynamic Legend - MANUAL EDITING ONLY */}
-                  <div id="stage-legend" className="bg-white border rounded p-3 mt-4" style={{ width: '400px' }}>
+                  <div id="stage-legend" className="bg-white border rounded p-3 mt-4 w-full">
                     <h4 className="font-semibold text-sm mb-2 leading-tight">Legend ({stageLegend.length} items)</h4>
-                    <div className="space-y-2">
+                    <div className="space-y-2 w-full">
                       {stageLegend.map((item) => (
-                        <div key={item.id} className="flex items-center gap-3 p-2 border rounded bg-gray-50">
+                        <div key={item.id} className="flex items-center gap-3 p-2 border rounded bg-gray-50 w-full">
                           <div
                             className="w-4 h-4 rounded border flex-shrink-0"
                             style={{ backgroundColor: item.color }}
@@ -4796,13 +4798,13 @@ function EnhancedTechnicalRider({
                               </div>
                             )}
                             <h4 className={`font-semibold text-sm p-2 rounded capitalize ${sectionName === 'drums' ? 'bg-yellow-100' :
-                                sectionName === 'bass' ? 'bg-blue-100' :
-                                  sectionName === 'guitar' ? 'bg-green-100' :
-                                    sectionName === 'keyboards' ? 'bg-purple-100' :
-                                      sectionName === 'percussion' ? 'bg-orange-100' :
-                                        sectionName === 'brass' ? 'bg-red-100' :
-                                          sectionName === 'vocals' ? 'bg-pink-100' :
-                                            'bg-gray-100'
+                              sectionName === 'bass' ? 'bg-blue-100' :
+                                sectionName === 'guitar' ? 'bg-green-100' :
+                                  sectionName === 'keyboards' ? 'bg-purple-100' :
+                                    sectionName === 'percussion' ? 'bg-orange-100' :
+                                      sectionName === 'brass' ? 'bg-red-100' :
+                                        sectionName === 'vocals' ? 'bg-pink-100' :
+                                          'bg-gray-100'
                               }`}>
                               {sectionName.toUpperCase()}
                               <span className="ml-2 text-xs text-muted-foreground">
@@ -5105,11 +5107,11 @@ function EnhancedTechnicalRider({
 
                                 return (
                                   <div key={channelId} className={`flex items-center gap-3 p-3 rounded border ${sectionName === 'drums' ? 'bg-yellow-50 border-yellow-200' :
-                                      sectionName === 'bass' ? 'bg-blue-50 border-blue-200' :
-                                        sectionName === 'guitar' ? 'bg-green-50 border-green-200' :
-                                          sectionName === 'keyboards' ? 'bg-purple-50 border-purple-200' :
-                                            sectionName === 'vocals' ? 'bg-pink-50 border-pink-200' :
-                                              'bg-orange-50 border-orange-200'
+                                    sectionName === 'bass' ? 'bg-blue-50 border-blue-200' :
+                                      sectionName === 'guitar' ? 'bg-green-50 border-green-200' :
+                                        sectionName === 'keyboards' ? 'bg-purple-50 border-purple-200' :
+                                          sectionName === 'vocals' ? 'bg-pink-50 border-pink-200' :
+                                            'bg-orange-50 border-orange-200'
                                     }`}>
                                     <div className="flex-1">
                                       <div className="flex items-center gap-2 mb-1">

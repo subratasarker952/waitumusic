@@ -3555,7 +3555,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
             bookingId,
             userId,
             roleInBooking: roleId,
-            selectedTalent: selectedTalent || null,
+            selectedTalent: selectedTalent,
             isMainBookedTalent: isMainBookedTalent || false,
             assignmentType,
             assignedGroup,

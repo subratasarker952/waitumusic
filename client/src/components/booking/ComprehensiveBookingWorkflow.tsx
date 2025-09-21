@@ -265,9 +265,9 @@ export default function BookingWorkflow({
       const backendPayload = {
         userId: assignmentData.userId,
         roleId: assignmentData.roleId,
-        selectedTalent: assignmentData.primaryTalentId || assignmentData.selectedTalent || null,
-        isMainBookedTalent: assignmentData.isMainBookedTalent || false,
-        assignmentType: assignmentData.assignmentType || 'workflow'
+        selectedTalent: assignmentData.primaryTalentId,
+        isMainBookedTalent: assignmentData.isMainBookedTalent,
+        assignmentType: assignmentData.assignmentType
       };
 
       console.log('💾 SAVING TO DATABASE - Backend payload:', backendPayload);
@@ -751,17 +751,6 @@ export default function BookingWorkflow({
     return colors[instrument as keyof typeof colors] || '#DDD';
   };
 
-  const { data: technicalRider, refetch: refetchRider, isLoading: riderLoading } = useQuery({
-    queryKey: ['technical-rider', bookingId],
-    queryFn: async () => apiRequest(`/api/bookings/${bookingId}/enhanced-technical-rider`),
-    refetchOnWindowFocus: false
-  });
-
-  if (!technicalRider && riderLoading) {
-    return <LoadingSpinner />;
-  }
-
-
 
 
   // 1 Function to save all assigned talent to database
@@ -885,8 +874,6 @@ export default function BookingWorkflow({
       stepConfirmations[2] = true;
 
       queryClient.invalidateQueries({ queryKey: ["booking-workflow", bookingId] });
-      queryClient.invalidateQueries({ queryKey: ["booking-contract", bookingId] });
-
       toast({
         title: "Contracts Saved",
         description: "Booking & Performance contracts saved successfully",
@@ -909,35 +896,50 @@ export default function BookingWorkflow({
 
   // 3
   const saveTechnicalRider = async () => {
-    if (!bookingId || !rider) {
-      toast({
-        title: "Missing Data",
-        description: "Please fill the technical rider form",
-        variant: "destructive",
-      });
-      return;
-    }
-
     try {
-      const response = await apiRequest(`/api/bookings/${bookingId}/technical-rider`, {
+      if (!bookingId) throw new Error("Booking ID not found");
+      if (assignedTalent.length === 0) throw new Error("No talent assigned");
+      
+      setIsLoading(true);
+
+      // Database এ পাঠানোর payload তৈরি করলাম
+      const payload = {
+        bookingId: bookingId,
+        artistTechnicalSpecs: rider.artistTechnicalSpecs || {},
+        musicianTechnicalSpecs: rider.musicianTechnicalSpecs || {},
+        equipmentRequirements: rider.equipmentRequirements || [],
+        stageRequirements: {
+          ...stagePlot
+        },
+        lightingRequirements: {
+          lighting: stagePlot.lighting,
+          videoRecording: stagePlot.videoRecording,
+          photographyArea: stagePlot.photographyArea
+        },
+        soundRequirements: {
+          ...mixerConfig
+        },
+        additionalNotes: rider.additionalNotes || '',
+        setlist: setlist // চাইলে এটাকেও save করতে পারো (extra jsonb column লাগবে)
+      };
+  
+      // API call
+      await apiRequest(`/api/bookings/${bookingId}/technical-rider`, {
         method: "POST",
-        body: JSON.stringify(rider),
+        body: JSON.stringify(payload),
       });
-
-      if (!response.ok) throw new Error("Failed to save technical rider");
-
-      const result = await response.json();
-      toast({ title: "✅ Technical Rider Saved" });
-      return result;
-    } catch (error: any) {
-      console.error("❌ Save Technical Rider Error:", error);
-      toast({
-        title: "Save Failed",
-        description: error.message,
-        variant: "destructive",
-      });
+  
+      toast(TOAST_CONFIGS.SUCCESS.SAVE);
+      setIsLoading(false)
+      queryClient.invalidateQueries({ queryKey: ["booking-workflow", bookingId] });
+    } catch (error) {
+      console.error("Error saving technical rider:", error);
+      toast(TOAST_CONFIGS.ERROR.SAVE_FAILED);
+    } finally {
+      setIsLoading(false);
     }
   };
+  
 
 
   const saveStagePlot = async (): Promise<void> => {
