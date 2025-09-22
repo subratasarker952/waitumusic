@@ -3446,6 +3446,7 @@ function EnhancedTechnicalRider({
                 <span className="hidden sm:inline">{isGenerating ? 'Generating...' : 'Auto Generate'}</span>
                 <span className="sm:hidden">🎪 {isGenerating ? 'Creating...' : 'Auto Magic'}</span>
               </Button>
+              
               <Button
                 onClick={exportRider}
                 variant="outline"
