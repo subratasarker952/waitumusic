@@ -116,8 +116,8 @@
 
 /* Stage Plot Legend Full Width Styling */
 #stage-legend {
-  width: 400px !important;
-  max-width: 400px !important;
+  width: 100% !important;
+  max-width: 100% !important;
   min-width: 300px !important;
 }
 
@@ -231,7 +231,7 @@
 @media (max-width: 768px) {
   .musical-tabs-list {
     display: grid;
-    grid-template-columns: repeat(5, 1fr);
+    grid-template-columns: repeat(6, 1fr);
     gap: 0.25rem;
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     padding: 0.5rem;
@@ -274,7 +274,7 @@
 @media (min-width: 769px) {
   .musical-tabs-list {
     display: grid;
-    grid-template-columns: repeat(5, 1fr);
+    grid-template-columns: repeat(6, 1fr);
     background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
     border: 1px solid #e2e8f0;
     border-radius: 0.5rem;

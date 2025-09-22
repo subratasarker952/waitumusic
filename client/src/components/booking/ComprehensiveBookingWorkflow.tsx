@@ -1751,8 +1751,7 @@ export default function BookingWorkflow({
         getRoles(talent).some((r) => regularRoles.includes(r) && r === 8)
       ),
     };
-    console.log(allTalent);
-    console.log(availableTalent);
+
 
     return (
       <div className="space-y-6">
@@ -3615,101 +3614,6 @@ export default function BookingWorkflow({
           <CardContent>
             <EnhancedTechnicalRider
               bookingId={bookingId}
-              assignedMusicians={assignedTalent.map((talent: any) => {
-                // Find the user details from available users
-                const userDetails = ((availableUsers as any[]) || []).find(
-                  (user: any) => user.id === talent.userId
-                );
-
-                // Find artist/musician/professional profile for profile data
-                const artistProfile = (availableArtists as any[]).find(
-                  (artist: any) => artist.userId === talent.userId
-                );
-                const musicianProfile = (availableMusicians as any[]).find(
-                  (musician: any) => musician.userId === talent.userId
-                );
-                const professionalProfile = (
-                  availableProfessionals as any[]
-                ).find(
-                  (professional: any) => professional.userId === talent.userId
-                );
-
-                const profile =
-                  artistProfile || musicianProfile || professionalProfile;
-
-                // If talent doesn't have database talent fields, populate from profile data
-                let primaryTalent = talent.primaryTalent;
-                let secondaryTalents = talent.secondaryTalents;
-
-                if (!primaryTalent && profile) {
-                  // Extract primary talent from profile based on user type
-                  if (profile.primaryTalent) {
-                    primaryTalent = profile.primaryTalent;
-                  } else if (profile.primary_talent) {
-                    primaryTalent = profile.primary_talent;
-                  } else if (profile.primaryRole) {
-                    primaryTalent = profile.primaryRole;
-                  }
-                }
-
-                if (!secondaryTalents && profile) {
-                  // Extract secondary talents from profile
-                  secondaryTalents =
-                    profile.secondaryTalents || profile.secondary_talents || [];
-                }
-
-                return {
-                  id: talent.userId || talent.id,
-                  userId: talent.userId,
-                  roleId: talent.roleId, // CRITICAL: Include roleId for membership determination
-                  fullName: talent.fullName,
-                  stageName: profile?.stageNames?.[0] || talent.stageName || "",
-                  name: talent.stageName || talent.name || talent.fullName,
-                  role: talent.role,
-                  primaryRole:
-                    profile?.primary_role ||
-                    profile?.primaryRole ||
-                    "Lead Vocalist",
-                  skillsAndInstruments:
-                    profile?.skills_and_instruments ||
-                    profile?.skillsAndInstruments ||
-                    profile?.instruments ||
-                    [],
-                  availableRoles:
-                    profile?.performance_roles ||
-                    profile?.performanceRoles ||
-                    [],
-                  instruments: profile?.instruments || [],
-                  selectedRoles:
-                    talent.selectedRoles ||
-                    (
-                      profile?.performance_roles ||
-                      profile?.performanceRoles ||
-                      []
-                    ).slice(0, 2),
-                  isMainBookedTalent:
-                    talent.isPrimary || talent.isMainBookedTalent || false,
-                  assignedRole: talent.role, // The role specifically assigned in the booking workflow
-                  type:
-                    talent.type ||
-                    (talent.isPrimary
-                      ? "Main Booked Talent"
-                      : "Supporting Musician"), // Assignment feature
-                  talentType: talent.talentType || "Artist", // For sorting - use server-provided talentType
-                  assignmentRole:
-                    talent.type ||
-                    (talent.isPrimary
-                      ? "Main Booked Talent"
-                      : "Supporting Musician"), // Assignment feature for role column
-                  // DATABASE FIELDS: Use populated talent fields
-                  primaryTalent: primaryTalent,
-                  secondaryTalents: secondaryTalents || [],
-                  hasPrimaryTalent: !!primaryTalent,
-                  hasSecondaryTalents: !!(
-                    secondaryTalents && secondaryTalents.length > 0
-                  ),
-                };
-              })}
               eventDetails={{
                 eventName: booking?.eventName || "",
                 venueName: booking?.venueName || "",
