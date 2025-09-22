@@ -1,39 +1,92 @@
-import React, { useState, useEffect } from 'react';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { Progress } from '@/components/ui/progress';
-import { Separator } from '@/components/ui/separator';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
-import { Checkbox } from '@/components/ui/checkbox';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import React, { useState, useEffect } from "react";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+} from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Progress } from "@/components/ui/progress";
+import { Separator } from "@/components/ui/separator";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import { Checkbox } from "@/components/ui/checkbox";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 
-// Import technical rider components  
-import Enhanced32PortMixer from '@/components/modals/Enhanced32PortMixer';
+// Import technical rider components
+import Enhanced32PortMixer from "@/components/modals/Enhanced32PortMixer";
 
-import EnhancedTechnicalRider from '@/components/technical-rider/EnhancedTechnicalRider';
-import EnhancedMixerPatchSystem from '@/components/stage-plot/EnhancedMixerPatchSystem';
+import EnhancedTechnicalRider from "@/components/technical-rider/EnhancedTechnicalRider";
+import EnhancedMixerPatchSystem from "@/components/stage-plot/EnhancedMixerPatchSystem";
 
 import {
-  Calendar, Clock, Users, FileText, CreditCard, CheckCircle,
-  AlertCircle, Download, Signature, Music, User, ArrowLeft, ArrowRight,
-  ChevronRight, ChevronLeft, Edit, Save, Loader2, CheckCircle2,
-  Settings, Wrench, Volume2, Mic, Target, DollarSign, UserPlus,
-  Crown, Guitar, Star, Briefcase, AlertTriangle, PenTool, Send, Receipt, Layout,
-  Sliders
-} from 'lucide-react';
-import { useToast } from '@/hooks/use-toast';
-import { TOAST_CONFIGS, BUTTON_CONFIGS, COLOR_CONFIGS, SPACING_CONFIGS } from '@shared/ui-config';
-import { apiRequest } from '@/lib/queryClient';
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { workerData } from 'worker_threads';
-import { LoadingSpinner } from '../ui/loading-spinner';
-import { Alert } from '../ui/alert';
+  Calendar,
+  Clock,
+  Users,
+  FileText,
+  CreditCard,
+  CheckCircle,
+  AlertCircle,
+  Download,
+  Signature,
+  Music,
+  User,
+  ArrowLeft,
+  ArrowRight,
+  ChevronRight,
+  ChevronLeft,
+  Edit,
+  Save,
+  Loader2,
+  CheckCircle2,
+  Settings,
+  Wrench,
+  Volume2,
+  Mic,
+  Target,
+  DollarSign,
+  UserPlus,
+  Crown,
+  Guitar,
+  Star,
+  Briefcase,
+  AlertTriangle,
+  PenTool,
+  Send,
+  Receipt,
+  Layout,
+  Sliders,
+} from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
+import {
+  TOAST_CONFIGS,
+  BUTTON_CONFIGS,
+  COLOR_CONFIGS,
+  SPACING_CONFIGS,
+} from "@shared/ui-config";
+import { apiRequest } from "@/lib/queryClient";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { workerData } from "worker_threads";
+import { LoadingSpinner } from "../ui/loading-spinner";
+import { Alert } from "../ui/alert";
 
 interface ComprehensiveBookingWorkflowProps {
   bookingId: number;
@@ -51,7 +104,6 @@ interface WorkflowStep {
   icon?: React.ReactNode; // lucide-react বা অন্য যেকোনো icon
   isActive: boolean;
 }
-
 
 interface BookingData {
   id: number;
@@ -79,8 +131,8 @@ interface BookingData {
 export default function BookingWorkflow({
   bookingId,
   onStatusChange,
-  userRole = 'admin',
-  canEdit = true
+  userRole = "admin",
+  canEdit = true,
 }: ComprehensiveBookingWorkflowProps) {
   const { toast } = useToast();
   const queryClient = useQueryClient();
@@ -90,14 +142,17 @@ export default function BookingWorkflow({
   const [saving, setSaving] = useState(false);
   const [assignedTalent, setAssignedTalent] = useState<any[]>([]);
   const [talentReviewConfirmed, setTalentReviewConfirmed] = useState(false);
-  const [stepConfirmations, setStepConfirmations] = useState<Record<number, boolean>>({});
+  const [stepConfirmations, setStepConfirmations] = useState<
+    Record<number, boolean>
+  >({});
   const [technicalConfirmed, setTechnicalConfirmed] = useState(false);
-  const [selectedRolesByUser, setSelectedRolesByUser] = useState<Record<number, string[]>>({});
+  const [selectedRolesByUser, setSelectedRolesByUser] = useState<
+    Record<number, string[]>
+  >({});
   const [isTransitioning, setIsTransitioning] = useState(false);
 
-  console.log(booking)
-  console.log(assignedTalent)
-
+  console.log(booking);
+  console.log(assignedTalent);
 
   // Modal states for technical rider components
   const [mixerModalOpen, setMixerModalOpen] = useState(false);
@@ -105,8 +160,12 @@ export default function BookingWorkflow({
   const [technicalRiderModalOpen, setTechnicalRiderModalOpen] = useState(false);
 
   // Load booking data with controlled caching
-  const { data: bookingData, isLoading: bookingLoading, refetch: refetchBooking } = useQuery({
-    queryKey: ['booking-workflow', bookingId],
+  const {
+    data: bookingData,
+    isLoading: bookingLoading,
+    refetch: refetchBooking,
+  } = useQuery({
+    queryKey: ["booking-workflow", bookingId],
     enabled: !!bookingId,
     queryFn: async () => {
       if (!bookingId) return {};
@@ -114,67 +173,76 @@ export default function BookingWorkflow({
       return res; // or res.json() depending on your apiRequest
     },
     staleTime: 5 * 60 * 1000, // 5 minutes
-    gcTime: 10 * 60 * 1000,   // 10 minutes
+    gcTime: 10 * 60 * 1000, // 10 minutes
     refetchOnWindowFocus: false,
-    refetchOnMount: 'always',
+    refetchOnMount: "always",
     refetchOnReconnect: false,
   });
 
-  console.log(bookingData)
+  console.log(bookingData);
 
   // Load all bookings for selection
   const { data: availableBookings = [] } = useQuery({
-    queryKey: ['available-bookings'],
+    queryKey: ["available-bookings"],
     queryFn: async () => {
-      const data = await apiRequest('/api/bookings/all');
+      const data = await apiRequest("/api/bookings/all");
       return data;
-    }
+    },
   });
 
   // Load available users for assignment with controlled caching
   const { data: availableUsers = [] } = useQuery({
-    queryKey: ['available-users'],
+    queryKey: ["available-users"],
     staleTime: 10 * 60 * 1000, // 10 minutes for user list
     gcTime: 15 * 60 * 1000, // 15 minutes
     refetchOnWindowFocus: false,
     refetchOnMount: false,
-    refetchOnReconnect: false
+    refetchOnReconnect: false,
   });
 
   // Load assigned talent data with controlled caching
-  const { data: assignedTalentData, isLoading: assignedTalentLoading, refetch: refetchAssignedTalent } = useQuery({
-    queryKey: ['booking-assigned-talent', bookingId],
+  const {
+    data: assignedTalentData,
+    isLoading: assignedTalentLoading,
+    refetch: refetchAssignedTalent,
+  } = useQuery({
+    queryKey: ["booking-assigned-talent", bookingId],
     queryFn: async () => {
       if (!bookingId) return [];
-      console.log('🔍 FRONTEND: Fetching assigned talent for booking ID:', bookingId);
-      const data = await apiRequest(`/api/bookings/${bookingId}/assigned-talent`);
-      console.log('📋 FRONTEND: Received assigned talent data:', data);
+      console.log(
+        "🔍 FRONTEND: Fetching assigned talent for booking ID:",
+        bookingId
+      );
+      const data = await apiRequest(
+        `/api/bookings/${bookingId}/assigned-talent`
+      );
+      console.log("📋 FRONTEND: Received assigned talent data:", data);
       return data;
     },
     enabled: !!bookingId,
     staleTime: 5 * 60 * 1000, // 5 minutes
     gcTime: 10 * 60 * 1000, // 10 minutes
     refetchOnWindowFocus: false,
-    refetchOnMount: 'always',
-    refetchOnReconnect: false
+    refetchOnMount: "always",
+    refetchOnReconnect: false,
   });
 
   // Load specific user types for assignment
   const { data: availableArtists = [] } = useQuery({
-    queryKey: ['/api/artists'],
+    queryKey: ["/api/artists"],
   });
 
   const { data: availableMusicians = [] } = useQuery({
-    queryKey: ['/api/musicians'],
+    queryKey: ["/api/musicians"],
   });
 
   const { data: availableProfessionals = [] } = useQuery({
-    queryKey: ['/api/professionals'],
+    queryKey: ["/api/professionals"],
   });
 
   // Set booking data and auto-assign primary artist
   useEffect(() => {
-    if (bookingData && typeof bookingData === 'object') {
+    if (bookingData && typeof bookingData === "object") {
       const booking = bookingData as BookingData;
       setBooking(booking);
       setIsLoading(false);
@@ -190,11 +258,23 @@ export default function BookingWorkflow({
   // Update assigned talent state when data loads
   useEffect(() => {
     if (assignedTalentData) {
-      console.log('📋 UPDATING assigned talent state:', assignedTalentData);
-      console.log('🔍 DETAILED DATA CHECK - First talent object:', assignedTalentData[0]);
-      console.log('🔍 KEYS in first talent:', Object.keys(assignedTalentData[0] || {}));
-      console.log('🔍 PRIMARY TALENT field:', assignedTalentData[0]?.primaryTalent);
-      console.log('🔍 SECONDARY TALENTS field:', assignedTalentData[0]?.secondaryTalents);
+      console.log("📋 UPDATING assigned talent state:", assignedTalentData);
+      console.log(
+        "🔍 DETAILED DATA CHECK - First talent object:",
+        assignedTalentData[0]
+      );
+      console.log(
+        "🔍 KEYS in first talent:",
+        Object.keys(assignedTalentData[0] || {})
+      );
+      console.log(
+        "🔍 PRIMARY TALENT field:",
+        assignedTalentData[0]?.primaryTalent
+      );
+      console.log(
+        "🔍 SECONDARY TALENTS field:",
+        assignedTalentData[0]?.secondaryTalents
+      );
       setAssignedTalent(assignedTalentData);
     }
   }, [assignedTalentData]);
@@ -242,21 +322,29 @@ export default function BookingWorkflow({
   const updateBookingMutation = useMutation({
     mutationFn: async (data: any) => {
       const response = await apiRequest(`/api/bookings/${bookingId}`, {
-        method: 'PATCH',
-        body: data
+        method: "PATCH",
+        body: data,
       });
-      if (!response.ok) throw new Error('Failed to update booking');
+      if (!response.ok) throw new Error("Failed to update booking");
       return response.json();
     },
     onSuccess: () => {
       // Only invalidate the specific booking queries
-      queryClient.invalidateQueries({ queryKey: ['booking-workflow', bookingId] });
-      queryClient.invalidateQueries({ queryKey: ['booking-assigned-talent', bookingId] });
+      queryClient.invalidateQueries({
+        queryKey: ["booking-workflow", bookingId],
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["booking-assigned-talent", bookingId],
+      });
       toast({ title: "Success", description: "Booking updated successfully" });
     },
     onError: () => {
-      toast({ title: "Error", description: "Failed to update booking", variant: "destructive" });
-    }
+      toast({
+        title: "Error",
+        description: "Failed to update booking",
+        variant: "destructive",
+      });
+    },
   });
 
   // Assignment creation mutation with comprehensive cache invalidation
@@ -267,20 +355,20 @@ export default function BookingWorkflow({
         roleId: assignmentData.roleId,
         selectedTalent: assignmentData.primaryTalentId,
         isMainBookedTalent: assignmentData.isMainBookedTalent,
-        assignmentType: assignmentData.assignmentType
+        assignmentType: assignmentData.assignmentType,
       };
 
-      console.log('💾 SAVING TO DATABASE - Backend payload:', backendPayload);
+      console.log("💾 SAVING TO DATABASE - Backend payload:", backendPayload);
 
       // apiRequest থেকে already JSON পাওয়া যাবে
       const data = await apiRequest(`/api/bookings/${bookingId}/assign`, {
-        method: 'POST',
-        body: backendPayload
+        method: "POST",
+        body: backendPayload,
       });
 
       // যদি backend error দিয়ে থাকে
       if (!data || data.error) {
-        throw new Error(data?.message || 'Failed to create assignment');
+        throw new Error(data?.message || "Failed to create assignment");
       }
 
       return data; // ✅ Already parsed object
@@ -288,37 +376,47 @@ export default function BookingWorkflow({
 
     onSuccess: (data, variables) => {
       // Only invalidate specific booking queries to prevent loops
-      queryClient.invalidateQueries({ queryKey: ['booking-workflow', bookingId] });
-      queryClient.invalidateQueries({ queryKey: ['booking-assigned-talent', bookingId] });
+      queryClient.invalidateQueries({
+        queryKey: ["booking-workflow", bookingId],
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["booking-assigned-talent", bookingId],
+      });
 
       toast({
         title: "Assignment Created",
-        description: `${variables.name} has been assigned to the booking`
+        description: `${variables.name} has been assigned to the booking`,
       });
     },
     onError: (error: any) => {
-      console.error('Assignment mutation error:', error);
-      const errorMessage = typeof error?.message === 'string' ? error.message : "Failed to create assignment";
+      console.error("Assignment mutation error:", error);
+      const errorMessage =
+        typeof error?.message === "string"
+          ? error.message
+          : "Failed to create assignment";
       toast({
         title: "Assignment Failed",
         description: errorMessage,
-        variant: "destructive"
+        variant: "destructive",
       });
-    }
+    },
   });
 
-  const sendWorkflowNotification = async (type: string, additionalData?: any) => {
+  const sendWorkflowNotification = async (
+    type: string,
+    additionalData?: any
+  ) => {
     try {
       await apiRequest(`/api/bookings/${bookingId}/workflow/notify`, {
-        method: 'POST',
+        method: "POST",
         body: {
           type,
-          recipients: ['admin@waitumusic.com'],
-          ...additionalData
-        }
+          recipients: ["admin@waitumusic.com"],
+          ...additionalData,
+        },
       });
     } catch (error) {
-      console.error('Failed to send workflow notification:', error);
+      console.error("Failed to send workflow notification:", error);
     }
   };
 
@@ -335,30 +433,34 @@ export default function BookingWorkflow({
         technicalStep,
         selectedTemplate,
         stepConfirmations,
-        talentReviewConfirmed
+        talentReviewConfirmed,
       };
 
-      console.log(workflowData)
+      console.log(workflowData);
 
       // API call
-      const response = await apiRequest(`/api/bookings/${bookingId}/workflow/save`, {
-        method: 'POST',
-        body: { workflowData }
-      });
+      const response = await apiRequest(
+        `/api/bookings/${bookingId}/workflow/save`,
+        {
+          method: "POST",
+          body: { workflowData },
+        }
+      );
 
       // ✅ No need to check .ok, just check if response has message
-      if (!response || !response.message) throw new Error('Failed to save workflow');
+      if (!response || !response.message)
+        throw new Error("Failed to save workflow");
 
       toast({
         title: "Workflow Saved",
-        description: response.message
+        description: response.message,
       });
     } catch (error: any) {
-      console.error('Save workflow error:', error);
+      console.error("Save workflow error:", error);
       toast({
         title: "Save Failed",
         description: error.message || "Failed to save workflow data",
-        variant: "destructive"
+        variant: "destructive",
       });
     } finally {
       setSaving(false);
@@ -369,25 +471,25 @@ export default function BookingWorkflow({
   const generatePDF = async () => {
     try {
       // Create a link that navigates to the PDF endpoint directly for download
-      const token = localStorage.getItem('token');
+      const token = localStorage.getItem("token");
       const url = `/api/bookings/${bookingId}/workflow/pdf`;
 
       // Create a temporary link with authentication headers
       const response = await fetch(url, {
-        method: 'GET',
+        method: "GET",
         headers: {
-          'Authorization': `Bearer ${token}`
-        }
+          Authorization: `Bearer ${token}`,
+        },
       });
 
-      if (!response.ok) throw new Error('Failed to generate PDF');
+      if (!response.ok) throw new Error("Failed to generate PDF");
 
       // Get the PDF as blob
       const blob = await response.blob();
       const downloadUrl = window.URL.createObjectURL(blob);
 
       // Create download link
-      const link = document.createElement('a');
+      const link = document.createElement("a");
       link.href = downloadUrl;
       link.download = `booking-workflow-${bookingId}.pdf`;
       document.body.appendChild(link);
@@ -399,32 +501,35 @@ export default function BookingWorkflow({
 
       toast({
         title: "PDF Generated",
-        description: "Comprehensive booking workflow PDF has been downloaded"
+        description: "Comprehensive booking workflow PDF has been downloaded",
       });
     } catch (error) {
-      console.error('Generate PDF error:', error);
+      console.error("Generate PDF error:", error);
       toast({
         title: "PDF Generation Failed",
         description: "Failed to generate workflow PDF",
-        variant: "destructive"
+        variant: "destructive",
       });
     }
   };
 
   // Step 2: Enhanced Contract Generation with Category-Based Pricing
-  const [contractPreview, setContractPreview] = useState<{ bookingAgreement: string | null; performanceContract: string | null; }>({
+  const [contractPreview, setContractPreview] = useState<{
+    bookingAgreement: string | null;
+    performanceContract: string | null;
+  }>({
     bookingAgreement: null,
-    performanceContract: null
+    performanceContract: null,
   });
 
   const [contractConfig, setContractConfig] = useState({
-    counterOfferDeadline: '',
-    paymentTerms: '50% deposit, 50% on completion',
-    cancellationPolicy: '72 hours notice required',
-    additionalTerms: '',
-    waituMusicPlatformName: 'Wai\'tuMusic',
-    labelAddress: '123 Music Lane\nNashville, TN 37203\nUnited States',
-    totalBookingPrice: 0
+    counterOfferDeadline: "",
+    paymentTerms: "50% deposit, 50% on completion",
+    cancellationPolicy: "72 hours notice required",
+    additionalTerms: "",
+    waituMusicPlatformName: "Wai'tuMusic",
+    labelAddress: "123 Music Lane\nNashville, TN 37203\nUnited States",
+    totalBookingPrice: 0,
   });
 
   // Calculate dynamic total booking price based on category and individual pricing
@@ -432,19 +537,33 @@ export default function BookingWorkflow({
     return assignedTalent.reduce((total, talent) => {
       // Main Booked Talent has special priority - only individual overrides apply
       if (talent.isMainBookedTalent) {
-        return total + (individualPricing[talent.id]?.price || parseFloat(categoryPricing['Main Booked Talent'] as string) || 0);
+        return (
+          total +
+          (individualPricing[talent.id]?.price ||
+            parseFloat(categoryPricing["Main Booked Talent"] as string) ||
+            0)
+        );
       }
       // For other talent, individual pricing overrides category pricing
-      return total + (individualPricing[talent.id]?.price || parseFloat(categoryPricing[talent.type as keyof typeof categoryPricing] as string) || 0);
+      return (
+        total +
+        (individualPricing[talent.id]?.price ||
+          parseFloat(
+            categoryPricing[
+              talent.type as keyof typeof categoryPricing
+            ] as string
+          ) ||
+          0)
+      );
     }, 0);
   };
 
   // Get assigned talent categories for readonly logic
   const getAssignedCategories = () => {
     const categories = new Set<string>();
-    assignedTalent.forEach(talent => {
+    assignedTalent.forEach((talent) => {
       if (talent.isMainBookedTalent) {
-        categories.add('Main Booked Talent');
+        categories.add("Main Booked Talent");
       } else {
         categories.add(talent.type);
       }
@@ -454,30 +573,34 @@ export default function BookingWorkflow({
 
   // Category-based pricing for talent types with Main Booked Talent priority
   const [categoryPricing, setCategoryPricing] = useState({
-    'Main Booked Talent': '',
-    'Artist': '',
-    'Musician': '',
-    'Managed Musician': '',
-    'Professional': '',
-    'Contracted Professional': '',
+    "Main Booked Talent": "",
+    Artist: "",
+    Musician: "",
+    "Managed Musician": "",
+    Professional: "",
+    "Contracted Professional": "",
   });
 
   // Individual talent pricing overrides
-  const [individualPricing, setIndividualPricing] = useState<Record<string, {
-    price: number;
-    counterOfferDeadline: string;
-    paymentTerms: string;
-    cancellationPolicy: string;
-    additionalTerms: string;
-  }>>({});
+  const [individualPricing, setIndividualPricing] = useState<
+    Record<
+      string,
+      {
+        price: number;
+        counterOfferDeadline: string;
+        paymentTerms: string;
+        cancellationPolicy: string;
+        additionalTerms: string;
+      }
+    >
+  >({});
 
   const [counterOffer, setCounterOffer] = useState({
     received: false,
     amount: 0,
-    deadline: '',
-    notes: ''
+    deadline: "",
+    notes: "",
   });
-
 
   useEffect(() => {
     if (booking?.contracts && booking.contracts.length > 0) {
@@ -516,83 +639,107 @@ export default function BookingWorkflow({
       if (bookingAgreement?.content?.individualPricing) {
         setIndividualPricing(bookingAgreement.content.individualPricing);
       }
-      stepConfirmations[2] = true
+      stepConfirmations[2] = true;
     }
   }, [booking]);
 
-  const generateContractPreview = async (type: 'booking' | 'performance') => {
+  const generateContractPreview = async (type: "booking" | "performance") => {
     try {
       // Enhanced preview data with category-based and individual pricing
       const previewData = {
-        assignedTalent: assignedTalent.map(talent => ({
+        assignedTalent: assignedTalent.map((talent) => ({
           ...talent,
-          individualPrice: individualPricing[talent.id]?.price || parseFloat(categoryPricing[talent.type as keyof typeof categoryPricing] as string) || 0,
-          paymentTerms: individualPricing[talent.id]?.paymentTerms || contractConfig.paymentTerms,
-          cancellationPolicy: individualPricing[talent.id]?.cancellationPolicy || contractConfig.cancellationPolicy,
-          additionalTerms: individualPricing[talent.id]?.additionalTerms || '',
-          counterOfferDeadline: individualPricing[talent.id]?.counterOfferDeadline || contractConfig.counterOfferDeadline
+          individualPrice:
+            individualPricing[talent.id]?.price ||
+            parseFloat(
+              categoryPricing[
+                talent.type as keyof typeof categoryPricing
+              ] as string
+            ) ||
+            0,
+          paymentTerms:
+            individualPricing[talent.id]?.paymentTerms ||
+            contractConfig.paymentTerms,
+          cancellationPolicy:
+            individualPricing[talent.id]?.cancellationPolicy ||
+            contractConfig.cancellationPolicy,
+          additionalTerms: individualPricing[talent.id]?.additionalTerms || "",
+          counterOfferDeadline:
+            individualPricing[talent.id]?.counterOfferDeadline ||
+            contractConfig.counterOfferDeadline,
         })),
         contractConfig: {
           ...contractConfig,
           categoryPricing,
           totalTalentCost: assignedTalent.reduce((total, talent) => {
-            const talentPrice = individualPricing[talent.id]?.price || categoryPricing[talent.type as keyof typeof categoryPricing] || 0;
+            const talentPrice =
+              individualPricing[talent.id]?.price ||
+              categoryPricing[talent.type as keyof typeof categoryPricing] ||
+              0;
             return total + talentPrice;
           }, 0),
           // Ensure platform name is included in contract generation
           platformName: contractConfig.waituMusicPlatformName,
-          labelAddress: contractConfig.labelAddress
+          labelAddress: contractConfig.labelAddress,
         },
         counterOffer,
         booking: {
           ...booking,
-          clientName: booking?.bookerName || booking?.clientName || '',
-          eventName: booking?.eventName || '',
-          eventDate: booking?.eventDate || '',
-          venueName: booking?.venueName || booking?.venueDetails || 'TBD'
+          clientName: booking?.bookerName || booking?.clientName || "",
+          eventName: booking?.eventName || "",
+          eventDate: booking?.eventDate || "",
+          venueName: booking?.venueName || booking?.venueDetails || "TBD",
         },
-        totalBookingPrice: contractConfig.totalBookingPrice || calculateTotalBookingPrice(),
-        finalOfferPrice: contractConfig.totalBookingPrice || calculateTotalBookingPrice(),
-        talentAskingPrice: calculateTotalBookingPrice()
+        totalBookingPrice:
+          contractConfig.totalBookingPrice || calculateTotalBookingPrice(),
+        finalOfferPrice:
+          contractConfig.totalBookingPrice || calculateTotalBookingPrice(),
+        talentAskingPrice: calculateTotalBookingPrice(),
       };
 
       // Make raw fetch request since server returns text/plain, not JSON
-      const token = localStorage.getItem('token');
-      const response = await fetch(`/api/bookings/${bookingId}/${type}-agreement-preview`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          ...(token && { 'Authorization': `Bearer ${token}` }),
-        },
-        body: JSON.stringify(previewData),
-        credentials: 'include'
-      });
+      const token = localStorage.getItem("token");
+      const response = await fetch(
+        `/api/bookings/${bookingId}/${type}-agreement-preview`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            ...(token && { Authorization: `Bearer ${token}` }),
+          },
+          body: JSON.stringify(previewData),
+          credentials: "include",
+        }
+      );
 
       if (response.ok) {
         const preview = await response.text();
-        setContractPreview(prev => ({
+        setContractPreview((prev) => ({
           ...prev,
-          [type === 'booking' ? 'bookingAgreement' : 'performanceContract']: preview
+          [type === "booking" ? "bookingAgreement" : "performanceContract"]:
+            preview,
         }));
         toast({
           title: "Contract Preview Generated",
-          description: `${type === 'booking' ? 'Booking Agreement' : 'Performance Contract'} preview with enhanced pricing`
+          description: `${
+            type === "booking" ? "Booking Agreement" : "Performance Contract"
+          } preview with enhanced pricing`,
         });
       } else {
         const errorText = await response.text();
         throw new Error(`${response.status}: ${errorText}`);
       }
     } catch (error) {
-      console.error('Contract preview error:', error);
+      console.error("Contract preview error:", error);
       toast({
         title: "Preview Error",
         description: "Unable to generate contract preview",
-        variant: "destructive"
+        variant: "destructive",
       });
     }
   };
 
-  // NEW ENHANCED TECHNICAL RIDER SYSTEM - ALL OLD INTERFACE DESTROYED  
+  // NEW ENHANCED TECHNICAL RIDER SYSTEM - ALL OLD INTERFACE DESTROYED
   // Step 3: Technical Rider Creation - Original Technical Rider Code with Templates
   const [rider, setRider] = useState<any>({
     artistTechnicalSpecs: {},
@@ -601,157 +748,452 @@ export default function BookingWorkflow({
     stageRequirements: {},
     lightingRequirements: {},
     soundRequirements: {},
-    additionalNotes: '',
+    additionalNotes: "",
   });
   const [technicalStep, setTechnicalStep] = useState(1);
-  const [selectedTemplate, setSelectedTemplate] = useState('');
+  const [selectedTemplate, setSelectedTemplate] = useState("");
   const [stagePlot, setStagePlot] = useState({
     stageWidth: 32,
     stageDepth: 24,
     performers: [
-      { id: 1, name: 'Lead Vocals', position: { x: 16, y: 4 }, instrument: 'vocals', musician: '' },
-      { id: 2, name: 'Guitar', position: { x: 8, y: 8 }, instrument: 'guitar', musician: '' },
-      { id: 3, name: 'Bass', position: { x: 24, y: 8 }, instrument: 'bass', musician: '' },
-      { id: 4, name: 'Drums', position: { x: 16, y: 16 }, instrument: 'drums', musician: '' },
-      { id: 5, name: 'Keyboards', position: { x: 4, y: 12 }, instrument: 'keyboard', musician: '' }
+      {
+        id: 1,
+        name: "Lead Vocals",
+        position: { x: 16, y: 4 },
+        instrument: "vocals",
+        musician: "",
+      },
+      {
+        id: 2,
+        name: "Guitar",
+        position: { x: 8, y: 8 },
+        instrument: "guitar",
+        musician: "",
+      },
+      {
+        id: 3,
+        name: "Bass",
+        position: { x: 24, y: 8 },
+        instrument: "bass",
+        musician: "",
+      },
+      {
+        id: 4,
+        name: "Drums",
+        position: { x: 16, y: 16 },
+        instrument: "drums",
+        musician: "",
+      },
+      {
+        id: 5,
+        name: "Keyboards",
+        position: { x: 4, y: 12 },
+        instrument: "keyboard",
+        musician: "",
+      },
     ],
     monitors: [
-      { id: 1, position: { x: 14, y: 2 }, mix: 'Vocal Mix' },
-      { id: 2, position: { x: 18, y: 2 }, mix: 'Vocal Mix' },
-      { id: 3, position: { x: 6, y: 6 }, mix: 'Guitar Mix' },
-      { id: 4, position: { x: 26, y: 6 }, mix: 'Bass Mix' },
-      { id: 5, position: { x: 2, y: 10 }, mix: 'Keys Mix' }
+      { id: 1, position: { x: 14, y: 2 }, mix: "Vocal Mix" },
+      { id: 2, position: { x: 18, y: 2 }, mix: "Vocal Mix" },
+      { id: 3, position: { x: 6, y: 6 }, mix: "Guitar Mix" },
+      { id: 4, position: { x: 26, y: 6 }, mix: "Bass Mix" },
+      { id: 5, position: { x: 2, y: 10 }, mix: "Keys Mix" },
     ],
     lighting: true,
     videoRecording: false,
     photographyArea: true,
-    template: ''
+    template: "",
   });
 
   const stageTemplates = {
-    'solo-acoustic': {
-      name: 'Solo Acoustic',
+    "solo-acoustic": {
+      name: "Solo Acoustic",
       performers: [
-        { id: 1, name: 'Lead Vocals', position: { x: 16, y: 4 }, instrument: 'vocals', musician: '' },
-        { id: 2, name: 'Acoustic Guitar', position: { x: 16, y: 8 }, instrument: 'guitar', musician: '' }
+        {
+          id: 1,
+          name: "Lead Vocals",
+          position: { x: 16, y: 4 },
+          instrument: "vocals",
+          musician: "",
+        },
+        {
+          id: 2,
+          name: "Acoustic Guitar",
+          position: { x: 16, y: 8 },
+          instrument: "guitar",
+          musician: "",
+        },
       ],
       monitors: [
-        { id: 1, position: { x: 14, y: 2 }, mix: 'Vocal/Guitar Mix' },
-        { id: 2, position: { x: 18, y: 2 }, mix: 'Vocal/Guitar Mix' }
-      ]
+        { id: 1, position: { x: 14, y: 2 }, mix: "Vocal/Guitar Mix" },
+        { id: 2, position: { x: 18, y: 2 }, mix: "Vocal/Guitar Mix" },
+      ],
     },
-    'duo': {
-      name: 'Duo Setup',
+    duo: {
+      name: "Duo Setup",
       performers: [
-        { id: 1, name: 'Lead Vocals', position: { x: 12, y: 4 }, instrument: 'vocals', musician: '' },
-        { id: 2, name: 'Guitar', position: { x: 8, y: 8 }, instrument: 'guitar', musician: '' },
-        { id: 3, name: 'Keyboard/Vocals', position: { x: 20, y: 8 }, instrument: 'keyboard', musician: '' }
+        {
+          id: 1,
+          name: "Lead Vocals",
+          position: { x: 12, y: 4 },
+          instrument: "vocals",
+          musician: "",
+        },
+        {
+          id: 2,
+          name: "Guitar",
+          position: { x: 8, y: 8 },
+          instrument: "guitar",
+          musician: "",
+        },
+        {
+          id: 3,
+          name: "Keyboard/Vocals",
+          position: { x: 20, y: 8 },
+          instrument: "keyboard",
+          musician: "",
+        },
       ],
       monitors: [
-        { id: 1, position: { x: 10, y: 2 }, mix: 'Vocal Mix' },
-        { id: 2, position: { x: 18, y: 6 }, mix: 'Keys Mix' }
-      ]
+        { id: 1, position: { x: 10, y: 2 }, mix: "Vocal Mix" },
+        { id: 2, position: { x: 18, y: 6 }, mix: "Keys Mix" },
+      ],
     },
-    'full-band': {
-      name: 'Full Band',
+    "full-band": {
+      name: "Full Band",
       performers: [
-        { id: 1, name: 'Lead Vocals', position: { x: 16, y: 4 }, instrument: 'vocals', musician: '' },
-        { id: 2, name: 'Guitar', position: { x: 8, y: 8 }, instrument: 'guitar', musician: '' },
-        { id: 3, name: 'Bass', position: { x: 24, y: 8 }, instrument: 'bass', musician: '' },
-        { id: 4, name: 'Drums', position: { x: 16, y: 16 }, instrument: 'drums', musician: '' },
-        { id: 5, name: 'Keyboards', position: { x: 4, y: 12 }, instrument: 'keyboard', musician: '' }
+        {
+          id: 1,
+          name: "Lead Vocals",
+          position: { x: 16, y: 4 },
+          instrument: "vocals",
+          musician: "",
+        },
+        {
+          id: 2,
+          name: "Guitar",
+          position: { x: 8, y: 8 },
+          instrument: "guitar",
+          musician: "",
+        },
+        {
+          id: 3,
+          name: "Bass",
+          position: { x: 24, y: 8 },
+          instrument: "bass",
+          musician: "",
+        },
+        {
+          id: 4,
+          name: "Drums",
+          position: { x: 16, y: 16 },
+          instrument: "drums",
+          musician: "",
+        },
+        {
+          id: 5,
+          name: "Keyboards",
+          position: { x: 4, y: 12 },
+          instrument: "keyboard",
+          musician: "",
+        },
       ],
       monitors: [
-        { id: 1, position: { x: 14, y: 2 }, mix: 'Vocal Mix' },
-        { id: 2, position: { x: 18, y: 2 }, mix: 'Vocal Mix' },
-        { id: 3, position: { x: 6, y: 6 }, mix: 'Guitar Mix' },
-        { id: 4, position: { x: 26, y: 6 }, mix: 'Bass Mix' },
-        { id: 5, position: { x: 2, y: 10 }, mix: 'Keys Mix' }
-      ]
-    }
+        { id: 1, position: { x: 14, y: 2 }, mix: "Vocal Mix" },
+        { id: 2, position: { x: 18, y: 2 }, mix: "Vocal Mix" },
+        { id: 3, position: { x: 6, y: 6 }, mix: "Guitar Mix" },
+        { id: 4, position: { x: 26, y: 6 }, mix: "Bass Mix" },
+        { id: 5, position: { x: 2, y: 10 }, mix: "Keys Mix" },
+      ],
+    },
   };
 
   const [mixerConfig, setMixerConfig] = useState({
     inputs: [
-      { channel: 1, source: 'Lead Vocal', mic: 'SM58', location: 'Center Stage', notes: 'Main vocal microphone', musician: '' },
-      { channel: 2, source: 'Backup Vocal 1', mic: 'SM57', location: 'Stage Left', notes: 'Harmony vocals', musician: '' },
-      { channel: 3, source: 'Backup Vocal 2', mic: 'SM57', location: 'Stage Right', notes: 'Harmony vocals', musician: '' },
-      { channel: 4, source: 'Acoustic Guitar', mic: 'DI + SM81', location: 'Stage Left', notes: 'Direct input + condenser mic', musician: '' },
-      { channel: 5, source: 'Electric Guitar', mic: 'SM57', location: 'Guitar Amp', notes: 'Close mic on amp', musician: '' },
-      { channel: 6, source: 'Bass Guitar', mic: 'DI', location: 'Bass Amp', notes: 'Direct input from bass', musician: '' },
-      { channel: 7, source: 'Kick Drum', mic: 'Beta 52', location: 'Drum Kit', notes: 'Inside kick drum', musician: '' },
-      { channel: 8, source: 'Snare Drum', mic: 'SM57', location: 'Drum Kit', notes: 'Top of snare', musician: '' },
-      { channel: 9, source: 'Hi-Hat', mic: 'SM81', location: 'Drum Kit', notes: 'Condenser mic above hi-hat', musician: '' },
-      { channel: 10, source: 'Overhead L', mic: 'SM81', location: 'Drum Kit', notes: 'Left overhead cymbal mic', musician: '' },
-      { channel: 11, source: 'Overhead R', mic: 'SM81', location: 'Drum Kit', notes: 'Right overhead cymbal mic', musician: '' },
-      { channel: 12, source: 'Keyboard', mic: 'DI (Stereo)', location: 'Stage Left', notes: 'Stereo direct input', musician: '' }
+      {
+        channel: 1,
+        source: "Lead Vocal",
+        mic: "SM58",
+        location: "Center Stage",
+        notes: "Main vocal microphone",
+        musician: "",
+      },
+      {
+        channel: 2,
+        source: "Backup Vocal 1",
+        mic: "SM57",
+        location: "Stage Left",
+        notes: "Harmony vocals",
+        musician: "",
+      },
+      {
+        channel: 3,
+        source: "Backup Vocal 2",
+        mic: "SM57",
+        location: "Stage Right",
+        notes: "Harmony vocals",
+        musician: "",
+      },
+      {
+        channel: 4,
+        source: "Acoustic Guitar",
+        mic: "DI + SM81",
+        location: "Stage Left",
+        notes: "Direct input + condenser mic",
+        musician: "",
+      },
+      {
+        channel: 5,
+        source: "Electric Guitar",
+        mic: "SM57",
+        location: "Guitar Amp",
+        notes: "Close mic on amp",
+        musician: "",
+      },
+      {
+        channel: 6,
+        source: "Bass Guitar",
+        mic: "DI",
+        location: "Bass Amp",
+        notes: "Direct input from bass",
+        musician: "",
+      },
+      {
+        channel: 7,
+        source: "Kick Drum",
+        mic: "Beta 52",
+        location: "Drum Kit",
+        notes: "Inside kick drum",
+        musician: "",
+      },
+      {
+        channel: 8,
+        source: "Snare Drum",
+        mic: "SM57",
+        location: "Drum Kit",
+        notes: "Top of snare",
+        musician: "",
+      },
+      {
+        channel: 9,
+        source: "Hi-Hat",
+        mic: "SM81",
+        location: "Drum Kit",
+        notes: "Condenser mic above hi-hat",
+        musician: "",
+      },
+      {
+        channel: 10,
+        source: "Overhead L",
+        mic: "SM81",
+        location: "Drum Kit",
+        notes: "Left overhead cymbal mic",
+        musician: "",
+      },
+      {
+        channel: 11,
+        source: "Overhead R",
+        mic: "SM81",
+        location: "Drum Kit",
+        notes: "Right overhead cymbal mic",
+        musician: "",
+      },
+      {
+        channel: 12,
+        source: "Keyboard",
+        mic: "DI (Stereo)",
+        location: "Stage Left",
+        notes: "Stereo direct input",
+        musician: "",
+      },
     ],
     monitors: [
-      { mix: 1, name: 'Lead Vocal Mix', sends: 'Vocal, Drums, Bass, Keys' },
-      { mix: 2, name: 'Guitar Mix', sends: 'Guitar, Drums, Bass, Vocal' },
-      { mix: 3, name: 'Bass Mix', sends: 'Bass, Drums, Vocal, Guitar' },
-      { mix: 4, name: 'Drums Mix', sends: 'Drums, Bass, Guitar, Vocal' },
-      { mix: 5, name: 'Keys Mix', sends: 'Keys, Vocal, Drums, Bass' }
+      { mix: 1, name: "Lead Vocal Mix", sends: "Vocal, Drums, Bass, Keys" },
+      { mix: 2, name: "Guitar Mix", sends: "Guitar, Drums, Bass, Vocal" },
+      { mix: 3, name: "Bass Mix", sends: "Bass, Drums, Vocal, Guitar" },
+      { mix: 4, name: "Drums Mix", sends: "Drums, Bass, Guitar, Vocal" },
+      { mix: 5, name: "Keys Mix", sends: "Keys, Vocal, Drums, Bass" },
     ],
     effects: [
-      { name: 'Vocal Reverb', type: 'Hall Reverb', settings: 'Medium decay, warm tone' },
-      { name: 'Vocal Delay', type: 'Digital Delay', settings: '1/8 note, 15% feedback' },
-      { name: 'Drum Compression', type: 'Compressor', settings: 'Fast attack, medium release' },
-      { name: 'Master EQ', type: 'Graphic EQ', settings: 'House curve adjustment' }
-    ]
+      {
+        name: "Vocal Reverb",
+        type: "Hall Reverb",
+        settings: "Medium decay, warm tone",
+      },
+      {
+        name: "Vocal Delay",
+        type: "Digital Delay",
+        settings: "1/8 note, 15% feedback",
+      },
+      {
+        name: "Drum Compression",
+        type: "Compressor",
+        settings: "Fast attack, medium release",
+      },
+      {
+        name: "Master EQ",
+        type: "Graphic EQ",
+        settings: "House curve adjustment",
+      },
+    ],
   });
 
   const [setlist, setSetlist] = useState({
     songs: [
-      { id: 1, title: 'Opening Song', key: 'G', duration: '3:45', transition: 'Direct', notes: 'High energy opener, crowd interaction', chords: 'G-D-Em-C' },
-      { id: 2, title: 'Fan Favorite #1', key: 'C', duration: '4:12', transition: 'Guitar intro', notes: 'Audience participation, clap along', chords: 'C-Am-F-G' },
-      { id: 3, title: 'Ballad', key: 'Em', duration: '5:30', transition: 'Acoustic', notes: 'Stripped down, intimate moment', chords: 'Em-C-G-D' },
-      { id: 4, title: 'Dance Track', key: 'A', duration: '3:55', transition: 'Build up', notes: 'Get the crowd moving, lights flash', chords: 'A-D-E-A' },
-      { id: 5, title: 'Cover Song', key: 'D', duration: '4:20', transition: 'Medley', notes: 'Popular cover, sing-along moment', chords: 'D-A-Bm-G' },
-      { id: 6, title: 'New Single', key: 'F', duration: '3:38', transition: 'Direct', notes: 'Promote new release, energy boost', chords: 'F-C-Dm-Bb' },
-      { id: 7, title: 'Instrumental Break', key: 'Bb', duration: '2:45', transition: 'Solo intro', notes: 'Showcase musicians, guitar/drum solos', chords: 'Bb-F-Gm-Eb' },
-      { id: 8, title: 'Emotional Peak', key: 'Am', duration: '4:55', transition: 'Slow build', notes: 'Powerful vocals, emotional connection', chords: 'Am-F-C-G' },
-      { id: 9, title: 'Party Anthem', key: 'E', duration: '3:25', transition: 'Immediate', notes: 'High energy, crowd jumping', chords: 'E-A-B-E' },
-      { id: 10, title: 'Regional Hit', key: 'G', duration: '4:05', transition: 'Call back', notes: 'Local crowd favorite, cultural moment', chords: 'G-Em-C-D' },
-      { id: 11, title: 'Closing Song', key: 'C', duration: '5:15', transition: 'Epic build', notes: 'Big finish, confetti, thank you speech', chords: 'C-G-Am-F' }
+      {
+        id: 1,
+        title: "Opening Song",
+        key: "G",
+        duration: "3:45",
+        transition: "Direct",
+        notes: "High energy opener, crowd interaction",
+        chords: "G-D-Em-C",
+      },
+      {
+        id: 2,
+        title: "Fan Favorite #1",
+        key: "C",
+        duration: "4:12",
+        transition: "Guitar intro",
+        notes: "Audience participation, clap along",
+        chords: "C-Am-F-G",
+      },
+      {
+        id: 3,
+        title: "Ballad",
+        key: "Em",
+        duration: "5:30",
+        transition: "Acoustic",
+        notes: "Stripped down, intimate moment",
+        chords: "Em-C-G-D",
+      },
+      {
+        id: 4,
+        title: "Dance Track",
+        key: "A",
+        duration: "3:55",
+        transition: "Build up",
+        notes: "Get the crowd moving, lights flash",
+        chords: "A-D-E-A",
+      },
+      {
+        id: 5,
+        title: "Cover Song",
+        key: "D",
+        duration: "4:20",
+        transition: "Medley",
+        notes: "Popular cover, sing-along moment",
+        chords: "D-A-Bm-G",
+      },
+      {
+        id: 6,
+        title: "New Single",
+        key: "F",
+        duration: "3:38",
+        transition: "Direct",
+        notes: "Promote new release, energy boost",
+        chords: "F-C-Dm-Bb",
+      },
+      {
+        id: 7,
+        title: "Instrumental Break",
+        key: "Bb",
+        duration: "2:45",
+        transition: "Solo intro",
+        notes: "Showcase musicians, guitar/drum solos",
+        chords: "Bb-F-Gm-Eb",
+      },
+      {
+        id: 8,
+        title: "Emotional Peak",
+        key: "Am",
+        duration: "4:55",
+        transition: "Slow build",
+        notes: "Powerful vocals, emotional connection",
+        chords: "Am-F-C-G",
+      },
+      {
+        id: 9,
+        title: "Party Anthem",
+        key: "E",
+        duration: "3:25",
+        transition: "Immediate",
+        notes: "High energy, crowd jumping",
+        chords: "E-A-B-E",
+      },
+      {
+        id: 10,
+        title: "Regional Hit",
+        key: "G",
+        duration: "4:05",
+        transition: "Call back",
+        notes: "Local crowd favorite, cultural moment",
+        chords: "G-Em-C-D",
+      },
+      {
+        id: 11,
+        title: "Closing Song",
+        key: "C",
+        duration: "5:15",
+        transition: "Epic build",
+        notes: "Big finish, confetti, thank you speech",
+        chords: "C-G-Am-F",
+      },
     ],
     timing: {
-      mainSet: '38:33',
-      encore: '7:40',
-      totalShow: '~54:00'
+      mainSet: "38:33",
+      encore: "7:40",
+      totalShow: "~54:00",
     },
-    notes: 'Energy flow: High → Mixed → Emotional peak → Party finish. Include 2-3 crowd interaction moments.',
-    specialRequirements: 'Confetti cannons for final song, backup wireless mics available, towels for performers'
+    notes:
+      "Energy flow: High → Mixed → Emotional peak → Party finish. Include 2-3 crowd interaction moments.",
+    specialRequirements:
+      "Confetti cannons for final song, backup wireless mics available, towels for performers",
   });
 
   const generateChords = (key: string) => {
     const chordProgressions = {
-      'C': ['C-Am-F-G', 'C-F-G-C', 'Am-F-C-G'],
-      'G': ['G-D-Em-C', 'G-C-D-G', 'Em-C-G-D'],
-      'D': ['D-A-Bm-G', 'D-G-A-D', 'Bm-G-D-A'],
-      'A': ['A-D-E-A', 'A-F#m-D-E', 'F#m-D-A-E'],
-      'E': ['E-A-B-E', 'E-C#m-A-B', 'C#m-A-E-B'],
-      'Em': ['Em-C-G-D', 'Em-Am-B-Em', 'C-G-Em-D'],
-      'Am': ['Am-F-C-G', 'Am-Dm-G-Am', 'F-C-Am-G'],
-      'F': ['F-C-Dm-Bb', 'F-Bb-C-F', 'Dm-Bb-F-C'],
-      'Bb': ['Bb-F-Gm-Eb', 'Bb-Eb-F-Bb', 'Gm-Eb-Bb-F']
+      C: ["C-Am-F-G", "C-F-G-C", "Am-F-C-G"],
+      G: ["G-D-Em-C", "G-C-D-G", "Em-C-G-D"],
+      D: ["D-A-Bm-G", "D-G-A-D", "Bm-G-D-A"],
+      A: ["A-D-E-A", "A-F#m-D-E", "F#m-D-A-E"],
+      E: ["E-A-B-E", "E-C#m-A-B", "C#m-A-E-B"],
+      Em: ["Em-C-G-D", "Em-Am-B-Em", "C-G-Em-D"],
+      Am: ["Am-F-C-G", "Am-Dm-G-Am", "F-C-Am-G"],
+      F: ["F-C-Dm-Bb", "F-Bb-C-F", "Dm-Bb-F-C"],
+      Bb: ["Bb-F-Gm-Eb", "Bb-Eb-F-Bb", "Gm-Eb-Bb-F"],
     };
-    const progressions = chordProgressions[key as keyof typeof chordProgressions] || ['C-Am-F-G'];
+    const progressions = chordProgressions[
+      key as keyof typeof chordProgressions
+    ] || ["C-Am-F-G"];
     return progressions[Math.floor(Math.random() * progressions.length)];
   };
 
   const getInstrumentColor = (instrument: string) => {
     const colors = {
-      vocals: '#FF6B6B',
-      guitar: '#4ECDC4',
-      bass: '#45B7D1',
-      drums: '#96CEB4',
-      keyboard: '#FFEAA7'
+      vocals: "#FF6B6B",
+      guitar: "#4ECDC4",
+      bass: "#45B7D1",
+      drums: "#96CEB4",
+      keyboard: "#FFEAA7",
     };
-    return colors[instrument as keyof typeof colors] || '#DDD';
+    return colors[instrument as keyof typeof colors] || "#DDD";
   };
 
+  const {
+    data: technicalRider,
+    refetch: refetchRider,
+    isLoading: riderLoading,
+  } = useQuery({
+    queryKey: ["technical-rider", bookingId],
+    queryFn: async () =>
+      apiRequest(`/api/bookings/${bookingId}/enhanced-technical-rider`),
+    refetchOnWindowFocus: false,
+  });
 
+  if (!technicalRider && riderLoading) {
+    return <LoadingSpinner />;
+  }
 
   // 1 Function to save all assigned talent to database
   const saveBatchAssignments = async () => {
@@ -766,23 +1208,23 @@ export default function BookingWorkflow({
 
     try {
       // payload তৈরি
-      setIsLoading(true)
+      setIsLoading(true);
       const assignments = assignedTalent.map((talent) => {
         const roleId =
           talent.roleId ??
           (talent.type === "Main Booked Talent"
             ? 3
             : talent.type === "Artist"
-              ? 4
-              : talent.type === "Managed Musician"
-                ? 5
-                : talent.type === "Musician"
-                  ? 6
-                  : talent.type === "Contracted Professional"
-                    ? 7
-                    : talent.type === "Professional"
-                      ? 8
-                      : 6);
+            ? 4
+            : talent.type === "Managed Musician"
+            ? 5
+            : talent.type === "Musician"
+            ? 6
+            : talent.type === "Contracted Professional"
+            ? 7
+            : talent.type === "Professional"
+            ? 8
+            : 6);
 
         return {
           userId: talent.userId,
@@ -797,17 +1239,24 @@ export default function BookingWorkflow({
       });
 
       // একবারে সব পাঠানো
-      const result = await apiRequest(`/api/bookings/${bookingId}/assign/batch`, {
-        method: "POST",
-        body: JSON.stringify({ assignments }),
-      });
+      const result = await apiRequest(
+        `/api/bookings/${bookingId}/assign/batch`,
+        {
+          method: "POST",
+          body: JSON.stringify({ assignments }),
+        }
+      );
 
       // এখানে response already JSON
       stepConfirmations[1] = true;
 
-      queryClient.invalidateQueries({ queryKey: ["booking-workflow", bookingId] });
-      queryClient.invalidateQueries({ queryKey: ["booking-assigned-talent", bookingId] });
-      setIsLoading(false)
+      queryClient.invalidateQueries({
+        queryKey: ["booking-workflow", bookingId],
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["booking-assigned-talent", bookingId],
+      });
+      setIsLoading(false);
 
       toast({
         title: "Database Updated",
@@ -823,10 +1272,9 @@ export default function BookingWorkflow({
         variant: "destructive",
       });
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
   };
-
 
   const saveContracts = async () => {
     try {
@@ -836,44 +1284,56 @@ export default function BookingWorkflow({
       setIsLoading(true);
 
       // Booking Agreement
-      const bookingContract = await apiRequest(`/api/bookings/${bookingId}/contracts`, {
-        method: "POST",
-        body: {
-          contractType: "booking_agreement",
-          title: `Booking Agreement for ${booking?.eventName || "Event"}`,
-          content: {
-            totalBookingPrice: contractConfig.totalBookingPrice || calculateTotalBookingPrice(),
-            categoryPricing,
-            individualPricing,
-            contractConfig,
-            counterOffer,
+      const bookingContract = await apiRequest(
+        `/api/bookings/${bookingId}/contracts`,
+        {
+          method: "POST",
+          body: {
+            contractType: "booking_agreement",
+            title: `Booking Agreement for ${booking?.eventName || "Event"}`,
+            content: {
+              totalBookingPrice:
+                contractConfig.totalBookingPrice ||
+                calculateTotalBookingPrice(),
+              categoryPricing,
+              individualPricing,
+              contractConfig,
+              counterOffer,
+            },
+            metadata: { generatedBy: "system", step: "contract_generation" },
+            status: "draft",
           },
-          metadata: { generatedBy: "system", step: "contract_generation" },
-          status: "draft",
-        },
-      });
+        }
+      );
 
       // Performance Contract
-      const performanceContract = await apiRequest(`/api/bookings/${bookingId}/contracts`, {
-        method: "POST",
-        body: {
-          contractType: "performance_contract",
-          title: `Performance Contract for ${booking?.eventName || "Event"}`,
-          content: {
-            totalBookingPrice: contractConfig.totalBookingPrice || calculateTotalBookingPrice(),
-            categoryPricing,
-            individualPricing,
-            contractConfig,
-            counterOffer,
+      const performanceContract = await apiRequest(
+        `/api/bookings/${bookingId}/contracts`,
+        {
+          method: "POST",
+          body: {
+            contractType: "performance_contract",
+            title: `Performance Contract for ${booking?.eventName || "Event"}`,
+            content: {
+              totalBookingPrice:
+                contractConfig.totalBookingPrice ||
+                calculateTotalBookingPrice(),
+              categoryPricing,
+              individualPricing,
+              contractConfig,
+              counterOffer,
+            },
+            metadata: { generatedBy: "system", step: "contract_generation" },
+            status: "draft",
           },
-          metadata: { generatedBy: "system", step: "contract_generation" },
-          status: "draft",
-        },
-      });
+        }
+      );
 
       stepConfirmations[2] = true;
 
-      queryClient.invalidateQueries({ queryKey: ["booking-workflow", bookingId] });
+      queryClient.invalidateQueries({
+        queryKey: ["booking-workflow", bookingId],
+      });
       toast({
         title: "Contracts Saved",
         description: "Booking & Performance contracts saved successfully",
@@ -892,14 +1352,12 @@ export default function BookingWorkflow({
     }
   };
 
-
-
   // 3
   const saveTechnicalRider = async () => {
     try {
       if (!bookingId) throw new Error("Booking ID not found");
       if (assignedTalent.length === 0) throw new Error("No talent assigned");
-      
+
       setIsLoading(true);
 
       // Database এ পাঠানোর payload তৈরি করলাম
@@ -909,29 +1367,31 @@ export default function BookingWorkflow({
         musicianTechnicalSpecs: rider.musicianTechnicalSpecs || {},
         equipmentRequirements: rider.equipmentRequirements || [],
         stageRequirements: {
-          ...stagePlot
+          ...stagePlot,
         },
         lightingRequirements: {
           lighting: stagePlot.lighting,
           videoRecording: stagePlot.videoRecording,
-          photographyArea: stagePlot.photographyArea
+          photographyArea: stagePlot.photographyArea,
         },
         soundRequirements: {
-          ...mixerConfig
+          ...mixerConfig,
         },
-        additionalNotes: rider.additionalNotes || '',
-        setlist: setlist // চাইলে এটাকেও save করতে পারো (extra jsonb column লাগবে)
+        additionalNotes: rider.additionalNotes || "",
+        setlist: setlist, // চাইলে এটাকেও save করতে পারো (extra jsonb column লাগবে)
       };
-  
+
       // API call
       await apiRequest(`/api/bookings/${bookingId}/technical-rider`, {
         method: "POST",
         body: JSON.stringify(payload),
       });
-  
+
       toast(TOAST_CONFIGS.SUCCESS.SAVE);
-      setIsLoading(false)
-      queryClient.invalidateQueries({ queryKey: ["booking-workflow", bookingId] });
+      setIsLoading(false);
+      queryClient.invalidateQueries({
+        queryKey: ["booking-workflow", bookingId],
+      });
     } catch (error) {
       console.error("Error saving technical rider:", error);
       toast(TOAST_CONFIGS.ERROR.SAVE_FAILED);
@@ -939,8 +1399,6 @@ export default function BookingWorkflow({
       setIsLoading(false);
     }
   };
-  
-
 
   const saveStagePlot = async (): Promise<void> => {
     if (!stagePlot) {
@@ -953,10 +1411,13 @@ export default function BookingWorkflow({
     }
 
     try {
-      const response = await apiRequest(`/api/bookings/${bookingId}/stage-plot`, {
-        method: "POST",
-        body: JSON.stringify(stagePlot),
-      });
+      const response = await apiRequest(
+        `/api/bookings/${bookingId}/stage-plot`,
+        {
+          method: "POST",
+          body: JSON.stringify(stagePlot),
+        }
+      );
 
       if (!response.ok) {
         const err = await response.text();
@@ -964,7 +1425,9 @@ export default function BookingWorkflow({
       }
 
       await response.json();
-      queryClient.invalidateQueries({ queryKey: ["booking-stage-plot", bookingId] });
+      queryClient.invalidateQueries({
+        queryKey: ["booking-stage-plot", bookingId],
+      });
 
       toast({ title: "Stage Plot Saved" });
     } catch (error: any) {
@@ -977,13 +1440,11 @@ export default function BookingWorkflow({
     }
   };
 
-
   const saveSignatures = async () => {
     // if (!signatures || signatures.length === 0) {
     //   toast({ title: "No Signatures", description: "Please collect signatures", variant: "destructive" });
     //   return;
     // }
-
     // try {
     //   const promises = signatures.map(async (sig) => {
     //     const response = await apiRequest(`/api/bookings/${bookingId}/signatures`, {
@@ -993,12 +1454,9 @@ export default function BookingWorkflow({
     //     if (!response.ok) throw new Error(`Failed to save signature: ${sig.name}`);
     //     return await response.json();
     //   });
-
     //   const results = await Promise.allSettled(promises);
     //   const savedCount = results.filter((r) => r.status === "fulfilled").length;
-
     //   queryClient.invalidateQueries({ queryKey: ["booking-signatures", bookingId] });
-
     //   toast({ title: "Signatures Saved", description: `${savedCount} signatures saved` });
     // } catch (error: any) {
     //   console.error("❌ Save Signatures Error:", error);
@@ -1011,7 +1469,6 @@ export default function BookingWorkflow({
     //   toast({ title: "No Payments", description: "Please record payments", variant: "destructive" });
     //   return;
     // }
-
     // try {
     //   const promises = payments.map(async (pay) => {
     //     const response = await apiRequest(`/api/bookings/${bookingId}/payments`, {
@@ -1021,12 +1478,9 @@ export default function BookingWorkflow({
     //     if (!response.ok) throw new Error(`Failed to save payment: ${pay.amount}`);
     //     return await response.json();
     //   });
-
     //   const results = await Promise.allSettled(promises);
     //   const savedCount = results.filter((r) => r.status === "fulfilled").length;
-
     //   queryClient.invalidateQueries({ queryKey: ["booking-payments", bookingId] });
-
     //   toast({ title: "Payments Saved", description: `${savedCount} payments saved` });
     // } catch (error: any) {
     //   console.error("❌ Save Payments Error:", error);
@@ -1045,8 +1499,8 @@ export default function BookingWorkflow({
         assignedTalent.length > 0
           ? "completed"
           : currentStep === 1
-            ? "in_progress"
-            : "pending",
+          ? "in_progress"
+          : "pending",
       icon: <Users className="h-5 w-5" />,
       isActive: currentStep === 1,
     },
@@ -1055,12 +1509,11 @@ export default function BookingWorkflow({
       title: "Contract Generation",
       description: "Generate booking contracts",
       canProgress: stepConfirmations[2] === true,
-      status:
-        stepConfirmations[2]
-          ? "completed"
-          : currentStep === 2
-            ? "in_progress"
-            : "pending",
+      status: stepConfirmations[2]
+        ? "completed"
+        : currentStep === 2
+        ? "in_progress"
+        : "pending",
       icon: <FileText className="h-5 w-5" />,
       isActive: currentStep === 2,
     },
@@ -1069,12 +1522,11 @@ export default function BookingWorkflow({
       title: "Technical Rider",
       description: "Technical requirements",
       canProgress: stepConfirmations[3] === true,
-      status:
-        stepConfirmations[3]
-          ? "completed"
-          : currentStep === 3
-            ? "in_progress"
-            : "pending",
+      status: stepConfirmations[3]
+        ? "completed"
+        : currentStep === 3
+        ? "in_progress"
+        : "pending",
       icon: <Sliders className="h-5 w-5" />,
       isActive: currentStep === 3,
     },
@@ -1083,12 +1535,11 @@ export default function BookingWorkflow({
       title: "Stage Plot",
       description: "Stage plot requirements",
       canProgress: stepConfirmations[4] === true,
-      status:
-        stepConfirmations[4]
-          ? "completed"
-          : currentStep === 4
-            ? "in_progress"
-            : "pending",
+      status: stepConfirmations[4]
+        ? "completed"
+        : currentStep === 4
+        ? "in_progress"
+        : "pending",
       icon: <Sliders className="h-5 w-5" />,
       isActive: currentStep === 4,
     },
@@ -1101,8 +1552,8 @@ export default function BookingWorkflow({
         (booking?.signatures?.length || 0) >= 1
           ? "completed"
           : currentStep === 5
-            ? "in_progress"
-            : "pending",
+          ? "in_progress"
+          : "pending",
       icon: <PenTool className="h-5 w-5" />,
       isActive: currentStep === 5,
     },
@@ -1115,13 +1566,12 @@ export default function BookingWorkflow({
         (booking?.payments?.length || 0) > 0
           ? "completed"
           : currentStep === 6
-            ? "in_progress"
-            : "pending",
+          ? "in_progress"
+          : "pending",
       icon: <CreditCard className="h-5 w-5" />,
       isActive: currentStep === 6,
     },
   ];
-
 
   const goToNextStep = () => {
     setCurrentStep((prev) => {
@@ -1132,9 +1582,6 @@ export default function BookingWorkflow({
     });
   };
 
-
-
-
   const goToPreviousStep = () => {
     if (currentStep > 1) {
       setCurrentStep(currentStep - 1);
@@ -1144,21 +1591,28 @@ export default function BookingWorkflow({
   // Handle navigation step click with role-based permissions
   const handleStepClick = (stepNumber: number) => {
     // Superadmins can jump to any step
-    if (userRole === 'superadmin') {
+    if (userRole === "superadmin") {
       setCurrentStep(stepNumber);
       toast({
         title: "Navigation",
-        description: `Jumped to step ${stepNumber}: ${workflowSteps[stepNumber - 1]?.title}`
+        description: `Jumped to step ${stepNumber}: ${
+          workflowSteps[stepNumber - 1]?.title
+        }`,
       });
       return;
     }
 
     // Admins and assigned admins can only jump to steps after completing Technical Rider (step 3)
-    if ((userRole === 'admin' || userRole === 'assigned_admin') && technicalConfirmed) {
+    if (
+      (userRole === "admin" || userRole === "assigned_admin") &&
+      technicalConfirmed
+    ) {
       setCurrentStep(stepNumber);
       toast({
         title: "Navigation",
-        description: `Jumped to step ${stepNumber}: ${workflowSteps[stepNumber - 1]?.title}`
+        description: `Jumped to step ${stepNumber}: ${
+          workflowSteps[stepNumber - 1]?.title
+        }`,
       });
       return;
     }
@@ -1169,21 +1623,21 @@ export default function BookingWorkflow({
     } else {
       toast({
         title: "Navigation Restricted",
-        description: userRole === 'admin' || userRole === 'assigned_admin'
-          ? "Complete the Technical Rider section first to enable step navigation"
-          : "You can only navigate to previous or current steps",
-        variant: "destructive"
+        description:
+          userRole === "admin" || userRole === "assigned_admin"
+            ? "Complete the Technical Rider section first to enable step navigation"
+            : "You can only navigate to previous or current steps",
+        variant: "destructive",
       });
     }
   };
 
   const getProgressPercentage = () => {
-    const completedSteps = workflowSteps.filter(step => step.status === 'completed').length;
+    const completedSteps = workflowSteps.filter(
+      (step) => step.status === "completed"
+    ).length;
     return (completedSteps / workflowSteps.length) * 100;
   };
-
-
-
 
   // Step 1: Booking Selection
   const renderBookingSelection = () => (
@@ -1210,7 +1664,7 @@ export default function BookingWorkflow({
                 </div>
                 <div>
                   <Label className="text-sm font-medium">Primary Artist</Label>
-                  <p>{booking.primaryArtist?.stageName || 'Not assigned'}</p>
+                  <p>{booking.primaryArtist?.stageName || "Not assigned"}</p>
                 </div>
               </div>
             ) : (
@@ -1226,8 +1680,14 @@ export default function BookingWorkflow({
           <CardContent>
             <div className="space-y-2 max-h-64 overflow-y-auto">
               {availableBookings.map((bkg: any) => (
-                <div key={bkg.id} className={`p-3 border rounded cursor-pointer transition-colors ${bkg.id === bookingId ? 'bg-primary/10 border-primary' : 'hover:bg-muted'
-                  }`}>
+                <div
+                  key={bkg.id}
+                  className={`p-3 border rounded cursor-pointer transition-colors ${
+                    bkg.id === bookingId
+                      ? "bg-primary/10 border-primary"
+                      : "hover:bg-muted"
+                  }`}
+                >
                   <div className="flex justify-between items-center">
                     <div>
                       <p className="font-medium">{bkg.eventName}</p>
@@ -1252,7 +1712,7 @@ export default function BookingWorkflow({
     const allTalent = [
       ...(Array.isArray(availableArtists) ? availableArtists : []),
       ...(Array.isArray(availableMusicians) ? availableMusicians : []),
-      ...(Array.isArray(availableProfessionals) ? availableProfessionals : [])
+      ...(Array.isArray(availableProfessionals) ? availableProfessionals : []),
     ];
 
     const managedRoles = [3, 5, 7];
@@ -1266,19 +1726,33 @@ export default function BookingWorkflow({
       return [];
     };
 
-    const availableTalent = allTalent.filter(talent => talent.userId !== booking?.primaryArtist?.userId);
+    const availableTalent = allTalent.filter(
+      (talent) => talent.userId !== booking?.primaryArtist?.userId
+    );
 
     const categorizedTalent = {
-      managedArtists: availableTalent.filter(talent => getRoles(talent).some(r => managedRoles.includes(r) && r === 3)),
-      managedMusicians: availableTalent.filter(talent => getRoles(talent).some(r => managedRoles.includes(r) && r === 5)),
-      managedProfessionals: availableTalent.filter(talent => getRoles(talent).some(r => managedRoles.includes(r) && r === 7)),
+      managedArtists: availableTalent.filter((talent) =>
+        getRoles(talent).some((r) => managedRoles.includes(r) && r === 3)
+      ),
+      managedMusicians: availableTalent.filter((talent) =>
+        getRoles(talent).some((r) => managedRoles.includes(r) && r === 5)
+      ),
+      managedProfessionals: availableTalent.filter((talent) =>
+        getRoles(talent).some((r) => managedRoles.includes(r) && r === 7)
+      ),
 
-      artists: availableTalent.filter(talent => getRoles(talent).some(r => regularRoles.includes(r) && r === 4)),
-      musicians: availableTalent.filter(talent => getRoles(talent).some(r => regularRoles.includes(r) && r === 6)),
-      professionals: availableTalent.filter(talent => getRoles(talent).some(r => regularRoles.includes(r) && r === 8)),
+      artists: availableTalent.filter((talent) =>
+        getRoles(talent).some((r) => regularRoles.includes(r) && r === 4)
+      ),
+      musicians: availableTalent.filter((talent) =>
+        getRoles(talent).some((r) => regularRoles.includes(r) && r === 6)
+      ),
+      professionals: availableTalent.filter((talent) =>
+        getRoles(talent).some((r) => regularRoles.includes(r) && r === 8)
+      ),
     };
-    console.log(allTalent)
-    console.log(availableTalent)
+    console.log(allTalent);
+    console.log(availableTalent);
 
     return (
       <div className="space-y-6">
@@ -1293,59 +1767,107 @@ export default function BookingWorkflow({
             </CardHeader>
             <CardContent>
               <div className="flex items-center space-x-4 p-4 border rounded bg-gradient-to-r from-emerald-50 to-cyan-50">
-                <Avatar className="w-16 h-16 border-2 border-emerald-500">
-                  <AvatarImage src={booking.primaryArtist?.profile?.avatarUrl || booking.primaryArtist?.avatarUrl} />
-                  <AvatarFallback className="bg-emerald-500 text-white text-xl font-bold">
-                    {booking.primaryArtist?.stageName?.[0] || booking.primaryArtist?.fullName?.[0] || 'P'}
-                  </AvatarFallback>
-                </Avatar>
-                <div className="flex-1">
-                  <h3 className="text-xl font-bold text-emerald-800">
-                    {booking.primaryArtist?.stageName || booking.primaryArtist?.fullName || 'Primary Talent'}
-                  </h3>
-                  <p className="text-emerald-600 font-medium">
-                    {booking.primaryArtist?.isManaged ? 'Managed ' : ''}{booking.primaryArtist?.userType || 'Artist'}
-                  </p>
-                  <p className="text-sm text-gray-600 mt-1">
-                    Event: {booking.eventName} • {booking.eventDate ? new Date(booking.eventDate).toLocaleDateString() : 'Date TBD'}
-                  </p>
-                  <Badge variant="default" className="mt-2 bg-emerald-600">
-                    Main Booked Talent
-                  </Badge>
-                </div>
-                <div className="text-right">
-                  <div className="flex flex-col items-end gap-2">
-                    <Badge variant={booking.status === 'approved' ? 'default' : 'secondary'}>
-                      {booking.status || 'pending'}
-                    </Badge>
-                    <div className="flex gap-2">
-                      <Button variant="outline" size="sm" className="border-green-500 text-green-700 hover:bg-green-50"
-                        onClick={async () => {
-                          try {
-                            await updateBookingMutation.mutateAsync({
-                              status: 'accepted',
-                            });
-                            toast({ title: "Booking Accepted", description: "The booking has been accepted by the primary artist" });
-                          } catch (error) {
-                            toast({ title: "Error", description: "Failed to accept booking", variant: "destructive" });
+                <div className="flex flex-col gap-4 lg:flex-row justify-between w-full">
+                  <div className="flex-1 flex gap-4">
+                    <Avatar className="w-16 h-16 border-2 border-emerald-500">
+                      <AvatarImage
+                        src={
+                          booking.primaryArtist?.profile?.avatarUrl ||
+                          booking.primaryArtist?.avatarUrl
+                        }
+                      />
+                      <AvatarFallback className="bg-emerald-500 text-white text-xl font-bold">
+                        {booking.primaryArtist?.stageName?.[0] ||
+                          booking.primaryArtist?.fullName?.[0] ||
+                          "P"}
+                      </AvatarFallback>
+                    </Avatar>
+                    <div>
+                      <h3 className="text-xl font-bold text-emerald-800">
+                        {booking.primaryArtist?.stageName ||
+                          booking.primaryArtist?.fullName ||
+                          "Primary Talent"}
+                      </h3>
+                      <p className="text-emerald-600 font-medium">
+                        {booking.primaryArtist?.isManaged ? "Managed " : ""}
+                        {booking.primaryArtist?.userType || "Artist"}
+                      </p>
+                      <p className="text-sm text-gray-600 mt-1">
+                        Event: {booking.eventName} •{" "}
+                        {booking.eventDate
+                          ? new Date(booking.eventDate).toLocaleDateString()
+                          : "Date TBD"}
+                      </p>
+                      <Badge variant="default" className="mt-2 bg-emerald-600">
+                        Main Booked Talent
+                      </Badge>
+                    </div>
+                  </div>
+                  <div className="flex-1">
+                    <div className="flex flex-col gap-2">
+                        <Badge
+                          className="capitalize"
+                          variant={
+                            booking.status === "approved"
+                              ? "default"
+                              : "secondary"
                           }
-                        }}>
-                        Accept Booking
-                      </Button>
+                        >
+                          {booking.status || "pending"}
+                        </Badge>
+                        <div className="flex gap-2">
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            className="border-green-500 text-green-700 hover:bg-green-50 w-full"
+                            onClick={async () => {
+                              try {
+                                await updateBookingMutation.mutateAsync({
+                                  status: "accepted",
+                                });
+                                toast({
+                                  title: "Booking Accepted",
+                                  description:
+                                    "The booking has been accepted by the primary artist",
+                                });
+                              } catch (error) {
+                                toast({
+                                  title: "Error",
+                                  description: "Failed to accept booking",
+                                  variant: "destructive",
+                                });
+                              }
+                            }}
+                          >
+                            Accept Booking
+                          </Button>
 
-                      <Button variant="outline" size="sm" className="border-red-500 text-red-700 hover:bg-red-50"
-                        onClick={async () => {
-                          try {
-                            await updateBookingMutation.mutateAsync({
-                              status: 'declined',
-                            });
-                            toast({ title: "Booking Declined", description: "The booking has been declined by the primary artist" });
-                          } catch (error) {
-                            toast({ title: "Error", description: "Failed to decline booking", variant: "destructive" });
-                          }
-                        }}>
-                        Decline Booking
-                      </Button>
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            className="border-red-500 text-red-700 hover:bg-red-50 w-full"
+                            onClick={async () => {
+                              try {
+                                await updateBookingMutation.mutateAsync({
+                                  status: "declined",
+                                });
+                                toast({
+                                  title: "Booking Declined",
+                                  description:
+                                    "The booking has been declined by the primary artist",
+                                });
+                              } catch (error) {
+                                toast({
+                                  title: "Error",
+                                  description: "Failed to decline booking",
+                                  variant: "destructive",
+                                });
+                              }
+                            }}
+                          >
+                            Decline Booking
+                          </Button>
+                        </div>
                     </div>
                   </div>
                 </div>
@@ -1366,49 +1888,78 @@ export default function BookingWorkflow({
             <div className="space-y-3">
               {assignedTalent.length > 0 ? (
                 assignedTalent.map((talent: any, index: number) => (
-                  <div key={index} className="flex items-center justify-between p-3 border rounded bg-blue-50">
+                  <div
+                    key={index}
+                    className="flex items-center justify-between p-3 border rounded bg-blue-50"
+                  >
                     <div className="flex items-center space-x-3">
                       <Avatar>
                         <AvatarImage src={talent.avatarUrl} />
                         <AvatarFallback className="bg-blue-500 text-white">
-                          {talent.name?.[0] || 'T'}
+                          {talent.name?.[0] || "T"}
                         </AvatarFallback>
                       </Avatar>
                       <div className="flex-1">
-                        <p className="font-medium">{talent.assignmentName || talent.name || 'No name'}</p>
-                        <p className="text-sm text-muted-foreground">{talent.type || 'No type'} • {talent.genre || talent.role || 'No role'}</p>
+                        <p className="font-medium">
+                          {talent.assignmentName || talent.name || "No name"}
+                        </p>
+                        <p className="text-sm text-muted-foreground">
+                          {talent.type || "No type"} •{" "}
+                          {talent.genre || talent.role || "No role"}
+                        </p>
                         {/* Performance Professional Rate Field */}
-                        {talent.type === 'Performance Professional' && (
+                        {talent.type === "Performance Professional" && (
                           <div className="mt-2 flex items-center gap-2">
-                            <Label htmlFor={`rate-${talent.id}`} className="text-xs">Rate:</Label>
+                            <Label
+                              htmlFor={`rate-${talent.id}`}
+                              className="text-xs"
+                            >
+                              Rate:
+                            </Label>
                             <Input
                               id={`rate-${talent.id}`}
                               type="number"
                               placeholder="$0.00"
                               className="w-24 h-6 text-xs"
-                              defaultValue={talent.rate || ''}
+                              defaultValue={talent.rate || ""}
                               onChange={(e) => {
-                                const updatedTalent = assignedTalent.map(t =>
-                                  t.id === talent.id ? { ...t, rate: e.target.value } : t
+                                const updatedTalent = assignedTalent.map((t) =>
+                                  t.id === talent.id
+                                    ? { ...t, rate: e.target.value }
+                                    : t
                                 );
                                 setAssignedTalent(updatedTalent);
                               }}
                             />
-                            <span className="text-xs text-muted-foreground">per hour</span>
+                            <span className="text-xs text-muted-foreground">
+                              per hour
+                            </span>
                           </div>
                         )}
                       </div>
                     </div>
-                    {((talent.type === 'Main Booked Talent') || (talent.userId === booking?.primaryArtist.userId)) ? (
+                    {talent.type === "Main Booked Talent" ||
+                    talent.userId === booking?.primaryArtist.userId ? (
                       <div className="flex flex-col items-end gap-1">
-                        <Badge variant="outline" className="border-emerald-500 text-emerald-700 bg-emerald-50">
+                        <Badge
+                          variant="outline"
+                          className="border-emerald-500 text-emerald-700 bg-emerald-50"
+                        >
                           Main Booked Talent
                         </Badge>
                         <div className="flex gap-1">
-                          <Button variant="outline" size="sm" className="border-green-500 text-green-700 hover:bg-green-50 text-xs px-2 py-1">
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            className="border-green-500 text-green-700 hover:bg-green-50 text-xs px-2 py-1"
+                          >
                             Accept
                           </Button>
-                          <Button variant="outline" size="sm" className="border-red-500 text-red-700 hover:bg-red-50 text-xs px-2 py-1">
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            className="border-red-500 text-red-700 hover:bg-red-50 text-xs px-2 py-1"
+                          >
                             Decline
                           </Button>
                         </div>
@@ -1424,7 +1975,9 @@ export default function BookingWorkflow({
                               method: "DELETE",
                             });
 
-                            setAssignedTalent(prev => prev.filter(t => t.id !== talent.id));
+                            setAssignedTalent((prev) =>
+                              prev.filter((t) => t.id !== talent.id)
+                            );
 
                             toast({
                               title: "Unassigned",
@@ -1433,7 +1986,8 @@ export default function BookingWorkflow({
                           } catch (error: any) {
                             toast({
                               title: "Remove Failed",
-                              description: error.message || "Something went wrong",
+                              description:
+                                error.message || "Something went wrong",
                               variant: "destructive",
                             });
                           }
@@ -1445,7 +1999,9 @@ export default function BookingWorkflow({
                   </div>
                 ))
               ) : (
-                <p className="text-muted-foreground text-center py-8">No talent assigned yet</p>
+                <p className="text-muted-foreground text-center py-8">
+                  No talent assigned yet
+                </p>
               )}
             </div>
           </CardContent>
@@ -1457,7 +2013,9 @@ export default function BookingWorkflow({
             <CardTitle className="flex items-center gap-2">
               <UserPlus className="h-5 w-5" />
               Available Talent
-              <Badge variant="outline" className="ml-auto">Admin Access Only</Badge>
+              <Badge variant="outline" className="ml-auto">
+                Admin Access Only
+              </Badge>
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -1470,66 +2028,100 @@ export default function BookingWorkflow({
                     Managed Artists
                   </h4>
                   <div className="space-y-2">
-                    {categorizedTalent.managedArtists.map((artist: any, index: number) => (
-                      <div key={index} className="flex items-center justify-between p-3 border rounded bg-emerald-50">
-                        <div className="flex items-center space-x-3">
-                          <Avatar>
-                            <AvatarImage src={artist.profile?.avatarUrl} />
-                            <AvatarFallback className="bg-emerald-500 text-white">
-                              {artist.stageName?.[0] || artist.user?.fullName?.[0] || 'A'}
-                            </AvatarFallback>
-                          </Avatar>
-                          <div>
-                            <p className="font-medium">{artist.stageName || artist.user?.fullName}</p>
-                            <p className="text-sm text-muted-foreground">Managed Artist • {artist.primaryTalent}</p>
+                    {categorizedTalent.managedArtists.map(
+                      (artist: any, index: number) => (
+                        <div
+                          key={index}
+                          className="flex items-center justify-between p-3 border rounded bg-emerald-50"
+                        >
+                          <div className="flex items-center space-x-3">
+                            <Avatar>
+                              <AvatarImage src={artist.profile?.avatarUrl} />
+                              <AvatarFallback className="bg-emerald-500 text-white">
+                                {artist.stageName?.[0] ||
+                                  artist.user?.fullName?.[0] ||
+                                  "A"}
+                              </AvatarFallback>
+                            </Avatar>
+                            <div>
+                              <p className="font-medium">
+                                {artist.stageName || artist.user?.fullName}
+                              </p>
+                              <p className="text-sm text-muted-foreground">
+                                Managed Artist • {artist.primaryTalent}
+                              </p>
+                            </div>
                           </div>
-                        </div>
-                        {assignedTalent.some(t => t.userId === artist.userId) ? (
-                          <Badge variant="secondary">Already Assigned</Badge>
-                        ) : (
-                          <Button variant="outline" size="sm" className="border-emerald-300 hover:bg-emerald-100"
-                            onClick={async () => {
-                              const isMainBookedTalent = assignedTalent.length === 0; // First assigned becomes Main Booked Talent
-                              // Use the artist's primary role instead of management status  
-                              const primaryRole = artist.primaryRole || 'Lead Vocalist';
-                              const artistRoles = [primaryRole, ...(artist.skillsAndInstruments || [])].filter(Boolean);
-                              const newAssignment = {
-                                id: Date.now(),
-                                userId: artist.userId,
-                                name: artist.stageName || artist.user?.fullName,
-                                type: isMainBookedTalent ? 'Main Booked Talent' : 'Artist',
-                                role: isMainBookedTalent ? 'Main Booked Talent' : primaryRole,
-                                selectedRoles: isMainBookedTalent ? ['Main Booked Talent', ...artistRoles] : artistRoles,
-                                availableRoles: artistRoles,
-                                avatarUrl: artist.profile?.avatarUrl,
-                                genre: artist.genre,
-                                isPrimary: isMainBookedTalent,
-                                isMainBookedTalent: isMainBookedTalent,
-                                primaryTalentId: artist.primaryTalentId,
-                                assignmentType: 'manual'
-                              };
-                              // setAssignedTalent([...assignedTalent, assignmentData]);
-                              // toast({
-                              //   title: "Assignment",
-                              //   description: `${artist.stageName || artist.user?.fullName} assigned as ${isMainBookedTalent ? 'Main Booked Talent' : 'Supporting Talent'}`
-                              // });
+                          {assignedTalent.some(
+                            (t) => t.userId === artist.userId
+                          ) ? (
+                            <Badge variant="secondary">Already Assigned</Badge>
+                          ) : (
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              className="border-emerald-300 hover:bg-emerald-100"
+                              onClick={async () => {
+                                const isMainBookedTalent =
+                                  assignedTalent.length === 0; // First assigned becomes Main Booked Talent
+                                // Use the artist's primary role instead of management status
+                                const primaryRole =
+                                  artist.primaryRole || "Lead Vocalist";
+                                const artistRoles = [
+                                  primaryRole,
+                                  ...(artist.skillsAndInstruments || []),
+                                ].filter(Boolean);
+                                const newAssignment = {
+                                  id: Date.now(),
+                                  userId: artist.userId,
+                                  name:
+                                    artist.stageName || artist.user?.fullName,
+                                  type: isMainBookedTalent
+                                    ? "Main Booked Talent"
+                                    : "Artist",
+                                  role: isMainBookedTalent
+                                    ? "Main Booked Talent"
+                                    : primaryRole,
+                                  selectedRoles: isMainBookedTalent
+                                    ? ["Main Booked Talent", ...artistRoles]
+                                    : artistRoles,
+                                  availableRoles: artistRoles,
+                                  avatarUrl: artist.profile?.avatarUrl,
+                                  genre: artist.genre,
+                                  isPrimary: isMainBookedTalent,
+                                  isMainBookedTalent: isMainBookedTalent,
+                                  primaryTalentId: artist.primaryTalentId,
+                                  assignmentType: "manual",
+                                };
+                                // setAssignedTalent([...assignedTalent, assignmentData]);
+                                // toast({
+                                //   title: "Assignment",
+                                //   description: `${artist.stageName || artist.user?.fullName} assigned as ${isMainBookedTalent ? 'Main Booked Talent' : 'Supporting Talent'}`
+                                // });
 
-                              // Save immediately to database
-                              try {
-                                await createAssignmentMutation.mutateAsync({
-                                  ...newAssignment,
-                                  roleId: 4
-                                });
-                                console.log('✅ Assignment saved to database immediately');
-                              } catch (error) {
-                                console.error('❌ Failed to save assignment:', error);
-                              }
-                            }}>
-                            Assign
-                          </Button>
-                        )}
-                      </div>
-                    ))}
+                                // Save immediately to database
+                                try {
+                                  await createAssignmentMutation.mutateAsync({
+                                    ...newAssignment,
+                                    roleId: 4,
+                                  });
+                                  console.log(
+                                    "✅ Assignment saved to database immediately"
+                                  );
+                                } catch (error) {
+                                  console.error(
+                                    "❌ Failed to save assignment:",
+                                    error
+                                  );
+                                }
+                              }}
+                            >
+                              Assign
+                            </Button>
+                          )}
+                        </div>
+                      )
+                    )}
                   </div>
                 </div>
               )}
@@ -1543,41 +2135,65 @@ export default function BookingWorkflow({
                   </h4>
                   <div className="space-y-2">
                     {categorizedTalent.artists.map((artist: any, index) => (
-                      <div key={index} className="flex items-center justify-between p-3 border rounded">
+                      <div
+                        key={index}
+                        className="flex items-center justify-between p-3 border rounded"
+                      >
                         <div className="flex items-center space-x-3">
                           <Avatar>
                             <AvatarImage src={artist.profile?.avatarUrl} />
                             <AvatarFallback className="bg-blue-500 text-white">
-                              {artist.stageName?.[0] || artist.user?.fullName?.[0] || 'A'}
+                              {artist.stageName?.[0] ||
+                                artist.user?.fullName?.[0] ||
+                                "A"}
                             </AvatarFallback>
                           </Avatar>
                           <div>
-                            <p className="font-medium">{artist.stageName || artist.user?.fullName}</p>
-                            <p className="text-sm text-muted-foreground">Artist • {artist.primaryTalent}</p>
+                            <p className="font-medium">
+                              {artist.stageName || artist.user?.fullName}
+                            </p>
+                            <p className="text-sm text-muted-foreground">
+                              Artist • {artist.primaryTalent}
+                            </p>
                           </div>
                         </div>
-                        {assignedTalent.some(t => t.userId === artist.userId) ? (
+                        {assignedTalent.some(
+                          (t) => t.userId === artist.userId
+                        ) ? (
                           <Badge variant="secondary">Already Assigned</Badge>
                         ) : (
-                          <Button variant="outline" size="sm"
+                          <Button
+                            variant="outline"
+                            size="sm"
                             onClick={async () => {
-                              const isMainBookedTalent = assignedTalent.length === 0; // First assigned becomes Main Booked Talent
+                              const isMainBookedTalent =
+                                assignedTalent.length === 0; // First assigned becomes Main Booked Talent
                               // Use the artist's primary role instead of management status
-                              const primaryRole = artist.primaryRole || 'Lead Vocalist';
-                              const artistRoles = [primaryRole, ...(artist.skillsAndInstruments || [])].filter(Boolean);
+                              const primaryRole =
+                                artist.primaryRole || "Lead Vocalist";
+                              const artistRoles = [
+                                primaryRole,
+                                ...(artist.skillsAndInstruments || []),
+                              ].filter(Boolean);
                               const newAssignment = {
                                 id: Date.now(),
                                 userId: artist.userId,
                                 name: artist.stageName || artist.user?.fullName,
-                                type: isMainBookedTalent ? 'Main Booked Talent' : 'Artist',
-                                role: isMainBookedTalent ? 'Main Booked Talent' : primaryRole,
-                                selectedRoles: isMainBookedTalent ? ['Main Booked Talent', ...artistRoles] : artistRoles,
+                                type: isMainBookedTalent
+                                  ? "Main Booked Talent"
+                                  : "Artist",
+                                role: isMainBookedTalent
+                                  ? "Main Booked Talent"
+                                  : primaryRole,
+                                selectedRoles: isMainBookedTalent
+                                  ? ["Main Booked Talent", ...artistRoles]
+                                  : artistRoles,
                                 availableRoles: artistRoles,
                                 avatarUrl: artist.profile?.avatarUrl,
                                 genre: artist.genre,
                                 primaryTalentId: artist.primaryTalentId,
                                 isPrimary: isMainBookedTalent,
-                                isMainBookedTalent: isMainBookedTalent
+                                isMainBookedTalent: isMainBookedTalent,
                               };
                               // setAssignedTalent([...assignedTalent, newAssignment]);
                               // toast({
@@ -1589,13 +2205,19 @@ export default function BookingWorkflow({
                               try {
                                 await createAssignmentMutation.mutateAsync({
                                   ...newAssignment,
-                                  roleId: 4
+                                  roleId: 4,
                                 });
-                                console.log('✅ Assignment saved to database immediately');
+                                console.log(
+                                  "✅ Assignment saved to database immediately"
+                                );
                               } catch (error) {
-                                console.error('❌ Failed to save assignment:', error);
+                                console.error(
+                                  "❌ Failed to save assignment:",
+                                  error
+                                );
                               }
-                            }}>
+                            }}
+                          >
                             Assign
                           </Button>
                         )}
@@ -1613,87 +2235,141 @@ export default function BookingWorkflow({
                     Managed Musicians
                   </h4>
                   <div className="space-y-2">
-                    {categorizedTalent.managedMusicians.map((musician: any, index) => (
-                      <div key={index} className="flex items-center justify-between p-3 border rounded bg-purple-50">
-                        <div className="flex items-center space-x-3">
-                          <Avatar>
-                            <AvatarImage src={musician.profile?.avatarUrl} />
-                            <AvatarFallback className="bg-purple-500 text-white">
-                              {musician.stageName?.[0] || musician.user?.fullName?.[0] || 'M'}
-                            </AvatarFallback>
-                          </Avatar>
-                          <div className="flex-1">
-                            <p className="font-medium">{musician.stageName || musician.user?.fullName}</p>
-                            <div className="mt-1">
-                              <div className="flex flex-wrap gap-1 items-center">
-                                <span className="text-xs text-muted-foreground">Talents/Skills:</span>
-                                {/* Primary Talent Badge */}
-                                {musician.primaryTalent && (
-                                  <Badge variant="default" className="text-xs bg-purple-600 text-white">
-                                    {musician.primaryTalent}
-                                  </Badge>
-                                )}
-                                {/* Secondary Talents */}
-                                {musician.secondaryTalents && musician.secondaryTalents.length > 0 ? (
-                                  musician.secondaryTalents.slice(0, 3).map((talent: string, idx: number) => (
-                                    <Badge key={idx} variant="outline" className="text-xs border-purple-300 text-purple-700">
-                                      {talent}
+                    {categorizedTalent.managedMusicians.map(
+                      (musician: any, index) => (
+                        <div
+                          key={index}
+                          className="flex items-center justify-between p-3 border rounded bg-purple-50"
+                        >
+                          <div className="flex items-center space-x-3">
+                            <Avatar>
+                              <AvatarImage src={musician.profile?.avatarUrl} />
+                              <AvatarFallback className="bg-purple-500 text-white">
+                                {musician.stageName?.[0] ||
+                                  musician.user?.fullName?.[0] ||
+                                  "M"}
+                              </AvatarFallback>
+                            </Avatar>
+                            <div className="flex-1">
+                              <p className="font-medium">
+                                {musician.stageName || musician.user?.fullName}
+                              </p>
+                              <div className="mt-1">
+                                <div className="flex flex-wrap gap-1 items-center">
+                                  <span className="text-xs text-muted-foreground">
+                                    Talents/Skills:
+                                  </span>
+                                  {/* Primary Talent Badge */}
+                                  {musician.primaryTalent && (
+                                    <Badge
+                                      variant="default"
+                                      className="text-xs bg-purple-600 text-white"
+                                    >
+                                      {musician.primaryTalent}
                                     </Badge>
-                                  ))
-                                ) : (
-                                  <span className="text-xs text-muted-foreground italic">No secondary talents listed</span>
-                                )}
-                                {musician.secondaryTalents && musician.secondaryTalents.length > 3 && (
-                                  <span className="text-xs text-muted-foreground">+{musician.secondaryTalents.length - 3} more</span>
-                                )}
+                                  )}
+                                  {/* Secondary Talents */}
+                                  {musician.secondaryTalents &&
+                                  musician.secondaryTalents.length > 0 ? (
+                                    musician.secondaryTalents
+                                      .slice(0, 3)
+                                      .map((talent: string, idx: number) => (
+                                        <Badge
+                                          key={idx}
+                                          variant="outline"
+                                          className="text-xs border-purple-300 text-purple-700"
+                                        >
+                                          {talent}
+                                        </Badge>
+                                      ))
+                                  ) : (
+                                    <span className="text-xs text-muted-foreground italic">
+                                      No secondary talents listed
+                                    </span>
+                                  )}
+                                  {musician.secondaryTalents &&
+                                    musician.secondaryTalents.length > 3 && (
+                                      <span className="text-xs text-muted-foreground">
+                                        +{musician.secondaryTalents.length - 3}{" "}
+                                        more
+                                      </span>
+                                    )}
+                                </div>
                               </div>
                             </div>
                           </div>
+                          <div className="flex flex-col gap-2 min-w-32">
+                            {assignedTalent.some(
+                              (t) => t.userId === musician.userId
+                            ) ? (
+                              <Badge variant="secondary">
+                                Already Assigned
+                              </Badge>
+                            ) : (
+                              <Button
+                                variant="outline"
+                                size="sm"
+                                className="border-purple-300 hover:bg-purple-100"
+                                onClick={async () => {
+                                  const isMainBookedTalent =
+                                    assignedTalent.length === 0;
+                                  const primaryRole =
+                                    musician.primaryTalent ||
+                                    "Managed Musician";
+                                  const musicianRoles = [
+                                    primaryRole,
+                                    ...(musician.secondaryTalents || []),
+                                  ].filter(Boolean);
+                                  const newAssignment = {
+                                    id: Date.now(),
+                                    userId: musician.userId,
+                                    name:
+                                      musician.stageName ||
+                                      musician.user?.fullName,
+                                    type: isMainBookedTalent
+                                      ? "Main Booked Talent"
+                                      : "Managed Musician",
+                                    role: isMainBookedTalent
+                                      ? "Main Booked Talent"
+                                      : primaryRole,
+                                    selectedRoles: isMainBookedTalent
+                                      ? ["Main Booked Talent", ...musicianRoles]
+                                      : musicianRoles,
+                                    availableRoles: musicianRoles,
+                                    avatarUrl: musician.profile?.avatarUrl,
+                                    isPrimary: isMainBookedTalent,
+                                    primaryTalentId: musician.primaryTalentId,
+                                    isMainBookedTalent: isMainBookedTalent,
+                                  };
+                                  // setAssignedTalent([...assignedTalent, newAssignment]);
+                                  // toast({
+                                  //   title: "Assignment",
+                                  //   description: `${musician.stageName || musician.user?.fullName} assigned as ${isMainBookedTalent ? 'Main Booked Talent' : primaryRole}`
+                                  // });
+                                  // Save immediately to database
+                                  try {
+                                    await createAssignmentMutation.mutateAsync({
+                                      ...newAssignment,
+                                      roleId: 5, // managed_musician role
+                                    });
+                                    console.log(
+                                      "✅ Managed musician assignment saved to database immediately"
+                                    );
+                                  } catch (error) {
+                                    console.error(
+                                      "❌ Failed to save managed musician assignment:",
+                                      error
+                                    );
+                                  }
+                                }}
+                              >
+                                Assign
+                              </Button>
+                            )}
+                          </div>
                         </div>
-                        <div className="flex flex-col gap-2 min-w-32">
-                          {assignedTalent.some(t => t.userId === musician.userId) ? (
-                            <Badge variant="secondary">Already Assigned</Badge>
-                          ) : (
-                            <Button variant="outline" size="sm" className="border-purple-300 hover:bg-purple-100"
-                              onClick={async () => {
-                                const isMainBookedTalent = assignedTalent.length === 0;
-                                const primaryRole = musician.primaryTalent || 'Managed Musician';
-                                const musicianRoles = [primaryRole, ...(musician.secondaryTalents || [])].filter(Boolean);
-                                const newAssignment = {
-                                  id: Date.now(),
-                                  userId: musician.userId,
-                                  name: musician.stageName || musician.user?.fullName,
-                                  type: isMainBookedTalent ? 'Main Booked Talent' : 'Managed Musician',
-                                  role: isMainBookedTalent ? 'Main Booked Talent' : primaryRole,
-                                  selectedRoles: isMainBookedTalent ? ['Main Booked Talent', ...musicianRoles] : musicianRoles,
-                                  availableRoles: musicianRoles,
-                                  avatarUrl: musician.profile?.avatarUrl,
-                                  isPrimary: isMainBookedTalent,
-                                  primaryTalentId: musician.primaryTalentId,
-                                  isMainBookedTalent: isMainBookedTalent
-                                };
-                                // setAssignedTalent([...assignedTalent, newAssignment]);
-                                // toast({
-                                //   title: "Assignment",
-                                //   description: `${musician.stageName || musician.user?.fullName} assigned as ${isMainBookedTalent ? 'Main Booked Talent' : primaryRole}`
-                                // });
-                                // Save immediately to database
-                                try {
-                                  await createAssignmentMutation.mutateAsync({
-                                    ...newAssignment,
-                                    roleId: 5 // managed_musician role
-                                  });
-                                  console.log('✅ Managed musician assignment saved to database immediately');
-                                } catch (error) {
-                                  console.error('❌ Failed to save managed musician assignment:', error);
-                                }
-                              }}>
-                              Assign
-                            </Button>
-                          )}
-                        </div>
-                      </div>
-                    ))}
+                      )
+                    )}
                   </div>
                 </div>
               )}
@@ -1706,230 +2382,356 @@ export default function BookingWorkflow({
                     Musicians
                   </h4>
                   <div className="space-y-2">
-                    {categorizedTalent.musicians.map((musician: any, index: number) => (
-                      <div key={index} className="flex items-center justify-between p-3 border rounded">
-                        <div className="flex items-center space-x-3">
-                          <Avatar>
-                            <AvatarImage src={musician.profile?.avatarUrl} />
-                            <AvatarFallback className="bg-indigo-500 text-white">
-                              {musician.stageName?.[0] || musician.user?.fullName?.[0] || 'M'}
-                            </AvatarFallback>
-                          </Avatar>
-                          <div className="flex-1">
-                            <p className="font-medium">{musician.stageName || musician.user?.fullName}</p>
-                            <div className="mt-1">
-                              <div className="flex flex-wrap gap-1 items-center">
-                                <span className="text-xs text-muted-foreground">Talents/Skills:</span>
-                                {/* Primary Talent Badge */}
-                                {musician.primaryTalent && (
-                                  <Badge variant="default" className="text-xs bg-purple-600 text-white">
-                                    {musician.primaryTalent}
-                                  </Badge>
-                                )}
-                                {/* Secondary Talents */}
-                                {musician.secondaryTalents && musician.secondaryTalents.length > 0 ? (
-                                  musician.secondaryTalents.slice(0, 3).map((talent: string, idx: number) => (
-                                    <Badge key={idx} variant="outline" className="text-xs border-indigo-300 text-indigo-700">
-                                      {talent}
+                    {categorizedTalent.musicians.map(
+                      (musician: any, index: number) => (
+                        <div
+                          key={index}
+                          className="flex items-center justify-between p-3 border rounded"
+                        >
+                          <div className="flex items-center space-x-3">
+                            <Avatar>
+                              <AvatarImage src={musician.profile?.avatarUrl} />
+                              <AvatarFallback className="bg-indigo-500 text-white">
+                                {musician.stageName?.[0] ||
+                                  musician.user?.fullName?.[0] ||
+                                  "M"}
+                              </AvatarFallback>
+                            </Avatar>
+                            <div className="flex-1">
+                              <p className="font-medium">
+                                {musician.stageName || musician.user?.fullName}
+                              </p>
+                              <div className="mt-1">
+                                <div className="flex flex-wrap gap-1 items-center">
+                                  <span className="text-xs text-muted-foreground">
+                                    Talents/Skills:
+                                  </span>
+                                  {/* Primary Talent Badge */}
+                                  {musician.primaryTalent && (
+                                    <Badge
+                                      variant="default"
+                                      className="text-xs bg-purple-600 text-white"
+                                    >
+                                      {musician.primaryTalent}
                                     </Badge>
-                                  ))
-                                ) : (
-                                  <span className="text-xs text-muted-foreground italic">No secondary talents listed</span>
-                                )}
-                                {musician.secondaryTalents && musician.secondaryTalents.length > 3 && (
-                                  <span className="text-xs text-muted-foreground">+{musician.secondaryTalents.length - 3} more</span>
-                                )}
+                                  )}
+                                  {/* Secondary Talents */}
+                                  {musician.secondaryTalents &&
+                                  musician.secondaryTalents.length > 0 ? (
+                                    musician.secondaryTalents
+                                      .slice(0, 3)
+                                      .map((talent: string, idx: number) => (
+                                        <Badge
+                                          key={idx}
+                                          variant="outline"
+                                          className="text-xs border-indigo-300 text-indigo-700"
+                                        >
+                                          {talent}
+                                        </Badge>
+                                      ))
+                                  ) : (
+                                    <span className="text-xs text-muted-foreground italic">
+                                      No secondary talents listed
+                                    </span>
+                                  )}
+                                  {musician.secondaryTalents &&
+                                    musician.secondaryTalents.length > 3 && (
+                                      <span className="text-xs text-muted-foreground">
+                                        +{musician.secondaryTalents.length - 3}{" "}
+                                        more
+                                      </span>
+                                    )}
+                                </div>
                               </div>
                             </div>
                           </div>
+                          <div className="flex flex-col gap-2 min-w-32">
+                            {assignedTalent.some(
+                              (t) => t.userId === musician.userId
+                            ) ? (
+                              <Badge variant="secondary">
+                                Already Assigned
+                              </Badge>
+                            ) : (
+                              <Button
+                                variant="outline"
+                                size="sm"
+                                onClick={async () => {
+                                  const isMainBookedTalent =
+                                    assignedTalent.length === 0;
+                                  const primaryRole =
+                                    musician.primaryTalent || "Musician";
+                                  const musicianRoles = [
+                                    primaryRole,
+                                    ...(musician.secondaryTalents || []),
+                                  ].filter(Boolean);
+                                  const newAssignment = {
+                                    id: Date.now(),
+                                    userId: musician.userId,
+                                    name:
+                                      musician.stageName ||
+                                      musician.user?.fullName,
+                                    type: isMainBookedTalent
+                                      ? "Main Booked Talent"
+                                      : "Musician",
+                                    role: isMainBookedTalent
+                                      ? "Main Booked Talent"
+                                      : primaryRole,
+                                    selectedRoles: isMainBookedTalent
+                                      ? ["Main Booked Talent", ...musicianRoles]
+                                      : musicianRoles,
+                                    availableRoles: musicianRoles,
+                                    avatarUrl: musician.profile?.avatarUrl,
+                                    isPrimary: isMainBookedTalent,
+                                    primaryTalentId: musician.primaryTalentId,
+                                    isMainBookedTalent: isMainBookedTalent,
+                                  };
+                                  // setAssignedTalent([...assignedTalent, newAssignment]);
+                                  // toast({
+                                  //   title: "Assignment",
+                                  //   description: `${musician.stageName || musician.user?.fullName} assigned as ${isMainBookedTalent ? 'Main Booked Talent' : primaryRole}`
+                                  // });
+                                  // Save immediately to database
+                                  try {
+                                    await createAssignmentMutation.mutateAsync({
+                                      ...newAssignment,
+                                      roleId: 6, // musician role
+                                    });
+                                    console.log(
+                                      "✅ Musician assignment saved to database immediately"
+                                    );
+                                  } catch (error) {
+                                    console.error(
+                                      "❌ Failed to save musician assignment:",
+                                      error
+                                    );
+                                  }
+                                }}
+                              >
+                                Assign
+                              </Button>
+                            )}
+                          </div>
                         </div>
-                        <div className="flex flex-col gap-2 min-w-32">
-                          {assignedTalent.some(t => t.userId === musician.userId) ? (
-                            <Badge variant="secondary">Already Assigned</Badge>
-                          ) : (
-                            <Button variant="outline" size="sm"
-                              onClick={async () => {
-                                const isMainBookedTalent = assignedTalent.length === 0;
-                                const primaryRole = musician.primaryTalent || 'Musician';
-                                const musicianRoles = [primaryRole, ...(musician.secondaryTalents || [])].filter(Boolean);
-                                const newAssignment = {
-                                  id: Date.now(),
-                                  userId: musician.userId,
-                                  name: musician.stageName || musician.user?.fullName,
-                                  type: isMainBookedTalent ? 'Main Booked Talent' : 'Musician',
-                                  role: isMainBookedTalent ? 'Main Booked Talent' : primaryRole,
-                                  selectedRoles: isMainBookedTalent ? ['Main Booked Talent', ...musicianRoles] : musicianRoles,
-                                  availableRoles: musicianRoles,
-                                  avatarUrl: musician.profile?.avatarUrl,
-                                  isPrimary: isMainBookedTalent,
-                                  primaryTalentId: musician.primaryTalentId,
-                                  isMainBookedTalent: isMainBookedTalent
-                                };
-                                // setAssignedTalent([...assignedTalent, newAssignment]);
-                                // toast({
-                                //   title: "Assignment",
-                                //   description: `${musician.stageName || musician.user?.fullName} assigned as ${isMainBookedTalent ? 'Main Booked Talent' : primaryRole}`
-                                // });
-                                // Save immediately to database
-                                try {
-                                  await createAssignmentMutation.mutateAsync({
-                                    ...newAssignment,
-                                    roleId: 6 // musician role
-                                  });
-                                  console.log('✅ Musician assignment saved to database immediately');
-                                } catch (error) {
-                                  console.error('❌ Failed to save musician assignment:', error);
-                                }
-                              }}>
-                              Assign
-                            </Button>
-                          )}
-                        </div>
-                      </div>
-                    ))}
+                      )
+                    )}
                   </div>
                 </div>
               )}
 
               {/* 5. Managed Professionals */}
-              {categorizedTalent.managedProfessionals && categorizedTalent.managedProfessionals.length > 0 && (
-                <div>
-                  <h4 className="font-semibold text-sm text-purple-700 uppercase tracking-wide mb-3 flex items-center gap-2">
-                    <Briefcase className="w-4 h-4 text-purple-600" />
-                    Managed Professionals
-                  </h4>
-                  <div className="space-y-2">
-                    {categorizedTalent.managedProfessionals.map((professional: any, index: number) => (
-                      <div key={index} className="flex items-center justify-between p-3 border rounded bg-purple-50">
-                        <div className="flex items-center space-x-3">
-                          <Avatar>
-                            <AvatarImage src={professional.profile?.avatarUrl} />
-                            <AvatarFallback className="bg-purple-500 text-white">
-                              {professional.stageName?.[0] || professional.user?.fullName?.[0] || 'P'}
-                            </AvatarFallback>
-                          </Avatar>
-                          <div>
-                            <p className="font-medium">{professional.stageName || professional.user?.fullName}</p>
-                            <p className="text-sm text-muted-foreground">Managed Professional • {professional.primaryTalent}</p>
-                          </div>
-                        </div>
-                        {assignedTalent.some(t => t.userId === professional.userId) ? (
-                          <Badge variant="secondary">Already Assigned</Badge>
-                        ) : (
-                          <Button variant="outline" size="sm" className="border-purple-300 hover:bg-purple-100"
-                            onClick={async () => {
-                              // Simple assignment for professionals - they don't need talent dropdowns
-                              const newAssignment = {
-                                id: Date.now(),
-                                userId: professional.userId,
-                                name: professional.stageName || professional.user?.fullName,
-                                type: 'Contracted Professional',
-                                role: professional.serviceType || 'Contracted Professional',
-                                primaryTalentId: professional.primaryTalentId,
-                                avatarUrl: professional.profile?.avatarUrl
-                              };
-                              // setAssignedTalent([...assignedTalent, newAssignment]);
-                              // toast({
-                              //   title: "Assignment",
-                              //   description: `${professional.stageName || professional.user?.fullName} assigned as ${professional.serviceType || 'Professional'}`
-                              // });
-
-                              // Save immediately to database
-                              try {
-                                await createAssignmentMutation.mutateAsync({
-                                  ...newAssignment,
-                                  roleId: 7 // professional role
-                                });
-                                console.log('✅ Professional assignment saved to database immediately');
-                              } catch (error) {
-                                console.error('❌ Failed to save professional assignment:', error);
-                              }
-                            }}
+              {categorizedTalent.managedProfessionals &&
+                categorizedTalent.managedProfessionals.length > 0 && (
+                  <div>
+                    <h4 className="font-semibold text-sm text-purple-700 uppercase tracking-wide mb-3 flex items-center gap-2">
+                      <Briefcase className="w-4 h-4 text-purple-600" />
+                      Managed Professionals
+                    </h4>
+                    <div className="space-y-2">
+                      {categorizedTalent.managedProfessionals.map(
+                        (professional: any, index: number) => (
+                          <div
+                            key={index}
+                            className="flex items-center justify-between p-3 border rounded bg-purple-50"
                           >
-                            Assign
-                          </Button>
-                        )}
-                      </div>
-                    ))}
+                            <div className="flex items-center space-x-3">
+                              <Avatar>
+                                <AvatarImage
+                                  src={professional.profile?.avatarUrl}
+                                />
+                                <AvatarFallback className="bg-purple-500 text-white">
+                                  {professional.stageName?.[0] ||
+                                    professional.user?.fullName?.[0] ||
+                                    "P"}
+                                </AvatarFallback>
+                              </Avatar>
+                              <div>
+                                <p className="font-medium">
+                                  {professional.stageName ||
+                                    professional.user?.fullName}
+                                </p>
+                                <p className="text-sm text-muted-foreground">
+                                  Managed Professional •{" "}
+                                  {professional.primaryTalent}
+                                </p>
+                              </div>
+                            </div>
+                            {assignedTalent.some(
+                              (t) => t.userId === professional.userId
+                            ) ? (
+                              <Badge variant="secondary">
+                                Already Assigned
+                              </Badge>
+                            ) : (
+                              <Button
+                                variant="outline"
+                                size="sm"
+                                className="border-purple-300 hover:bg-purple-100"
+                                onClick={async () => {
+                                  // Simple assignment for professionals - they don't need talent dropdowns
+                                  const newAssignment = {
+                                    id: Date.now(),
+                                    userId: professional.userId,
+                                    name:
+                                      professional.stageName ||
+                                      professional.user?.fullName,
+                                    type: "Contracted Professional",
+                                    role:
+                                      professional.serviceType ||
+                                      "Contracted Professional",
+                                    primaryTalentId:
+                                      professional.primaryTalentId,
+                                    avatarUrl: professional.profile?.avatarUrl,
+                                  };
+                                  // setAssignedTalent([...assignedTalent, newAssignment]);
+                                  // toast({
+                                  //   title: "Assignment",
+                                  //   description: `${professional.stageName || professional.user?.fullName} assigned as ${professional.serviceType || 'Professional'}`
+                                  // });
+
+                                  // Save immediately to database
+                                  try {
+                                    await createAssignmentMutation.mutateAsync({
+                                      ...newAssignment,
+                                      roleId: 7, // professional role
+                                    });
+                                    console.log(
+                                      "✅ Professional assignment saved to database immediately"
+                                    );
+                                  } catch (error) {
+                                    console.error(
+                                      "❌ Failed to save professional assignment:",
+                                      error
+                                    );
+                                  }
+                                }}
+                              >
+                                Assign
+                              </Button>
+                            )}
+                          </div>
+                        )
+                      )}
+                    </div>
                   </div>
-                </div>
-              )}
+                )}
 
               {/* 6. Professionals */}
-              {categorizedTalent.professionals && categorizedTalent.professionals.length > 0 && (
-                <div>
-                  <h4 className="font-semibold text-sm text-slate-700 uppercase tracking-wide mb-3 flex items-center gap-2">
-                    <Briefcase className="w-4 h-4 text-slate-600" />
-                    Professionals
-                  </h4>
-                  <div className="space-y-2">
-                    {categorizedTalent.professionals.map((professional: any, index: number) => (
-                      <div key={index} className="flex items-center justify-between p-3 border rounded">
-                        <div className="flex items-center space-x-3">
-                          <Avatar>
-                            <AvatarImage src={professional.profile?.avatarUrl} />
-                            <AvatarFallback className="bg-slate-500 text-white">
-                              {professional.stageName?.[0] || professional.user?.fullName?.[0] || 'P'}
-                            </AvatarFallback>
-                          </Avatar>
-                          <div>
-                            <p className="font-medium">{professional.stageName || professional.user?.fullName}</p>
-                            <p className="text-sm text-muted-foreground">Professional • {professional.primaryTalent}</p>
-                          </div>
-                        </div>
-                        {assignedTalent.some(t => t.userId === professional.userId) ? (
-                          <Badge variant="secondary">Already Assigned</Badge>
-                        ) : (
-                          <Button variant="outline" size="sm"
-                            onClick={async () => {
-                              // Simple assignment for professionals - they don't need talent dropdowns
-                              const newAssignment = {
-                                id: Date.now(),
-                                userId: professional.userId,
-                                name: professional.stageName || professional.user?.fullName,
-                                type: 'Professional',
-                                role: professional.serviceType || 'Professional',
-                                avatarUrl: professional.profile?.avatarUrl
-                              };
-                              // setAssignedTalent([...assignedTalent, newAssignment]);
-                              // toast({
-                              //   title: "Assignment",
-                              //   description: `${professional.stageName || professional.user?.fullName} assigned as ${professional.serviceType || 'Professional'}`
-                              // });
-                              try {
-                                await createAssignmentMutation.mutateAsync({
-                                  ...newAssignment,
-                                  roleId: 8 // professional role
-                                });
-                                console.log('✅ Professional assignment saved to database immediately');
-                              } catch (error) {
-                                console.error('❌ Failed to save professional assignment:', error);
-                              }
-                            }}
+              {categorizedTalent.professionals &&
+                categorizedTalent.professionals.length > 0 && (
+                  <div>
+                    <h4 className="font-semibold text-sm text-slate-700 uppercase tracking-wide mb-3 flex items-center gap-2">
+                      <Briefcase className="w-4 h-4 text-slate-600" />
+                      Professionals
+                    </h4>
+                    <div className="space-y-2">
+                      {categorizedTalent.professionals.map(
+                        (professional: any, index: number) => (
+                          <div
+                            key={index}
+                            className="flex items-center justify-between p-3 border rounded"
                           >
-                            Assign
-                          </Button>
-                        )}
-                      </div>
-                    ))}
+                            <div className="flex items-center space-x-3">
+                              <Avatar>
+                                <AvatarImage
+                                  src={professional.profile?.avatarUrl}
+                                />
+                                <AvatarFallback className="bg-slate-500 text-white">
+                                  {professional.stageName?.[0] ||
+                                    professional.user?.fullName?.[0] ||
+                                    "P"}
+                                </AvatarFallback>
+                              </Avatar>
+                              <div>
+                                <p className="font-medium">
+                                  {professional.stageName ||
+                                    professional.user?.fullName}
+                                </p>
+                                <p className="text-sm text-muted-foreground">
+                                  Professional • {professional.primaryTalent}
+                                </p>
+                              </div>
+                            </div>
+                            {assignedTalent.some(
+                              (t) => t.userId === professional.userId
+                            ) ? (
+                              <Badge variant="secondary">
+                                Already Assigned
+                              </Badge>
+                            ) : (
+                              <Button
+                                variant="outline"
+                                size="sm"
+                                onClick={async () => {
+                                  // Simple assignment for professionals - they don't need talent dropdowns
+                                  const newAssignment = {
+                                    id: Date.now(),
+                                    userId: professional.userId,
+                                    name:
+                                      professional.stageName ||
+                                      professional.user?.fullName,
+                                    type: "Professional",
+                                    role:
+                                      professional.serviceType ||
+                                      "Professional",
+                                    avatarUrl: professional.profile?.avatarUrl,
+                                  };
+                                  // setAssignedTalent([...assignedTalent, newAssignment]);
+                                  // toast({
+                                  //   title: "Assignment",
+                                  //   description: `${professional.stageName || professional.user?.fullName} assigned as ${professional.serviceType || 'Professional'}`
+                                  // });
+                                  try {
+                                    await createAssignmentMutation.mutateAsync({
+                                      ...newAssignment,
+                                      roleId: 8, // professional role
+                                    });
+                                    console.log(
+                                      "✅ Professional assignment saved to database immediately"
+                                    );
+                                  } catch (error) {
+                                    console.error(
+                                      "❌ Failed to save professional assignment:",
+                                      error
+                                    );
+                                  }
+                                }}
+                              >
+                                Assign
+                              </Button>
+                            )}
+                          </div>
+                        )
+                      )}
+                    </div>
                   </div>
-                </div>
-              )}
-
+                )}
 
               {/* Loading states */}
-              {(!availableArtists || !availableMusicians || !availableProfessionals) && (
+              {(!availableArtists ||
+                !availableMusicians ||
+                !availableProfessionals) && (
                 <div className="text-center py-4">
                   <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900 mx-auto mb-2"></div>
-                  <p className="text-muted-foreground">Loading available talent...</p>
+                  <p className="text-muted-foreground">
+                    Loading available talent...
+                  </p>
                 </div>
               )}
 
               {/* No talent available */}
-              {(Array.isArray(availableArtists) ? availableArtists.length : 0) === 0 &&
-                (Array.isArray(availableMusicians) ? availableMusicians.length : 0) === 0 &&
-                (Array.isArray(availableProfessionals) ? availableProfessionals.length : 0) === 0 && (
-                  <p className="text-muted-foreground text-center py-4">No talent available for assignment</p>
+              {(Array.isArray(availableArtists)
+                ? availableArtists.length
+                : 0) === 0 &&
+                (Array.isArray(availableMusicians)
+                  ? availableMusicians.length
+                  : 0) === 0 &&
+                (Array.isArray(availableProfessionals)
+                  ? availableProfessionals.length
+                  : 0) === 0 && (
+                  <p className="text-muted-foreground text-center py-4">
+                    No talent available for assignment
+                  </p>
                 )}
             </div>
           </CardContent>
@@ -1975,20 +2777,25 @@ export default function BookingWorkflow({
               Contract Configuration
             </CardTitle>
             <p className="text-sm text-muted-foreground">
-              Configure contract terms, set category-based pricing, and customize individual talent terms
+              Configure contract terms, set category-based pricing, and
+              customize individual talent terms
             </p>
           </CardHeader>
           <CardContent className="space-y-6">
             {/* Counter-Offer Deadline */}
             <div>
-              <label className="text-sm font-medium">Counter-Offer Deadline</label>
+              <label className="text-sm font-medium">
+                Counter-Offer Deadline
+              </label>
               <input
                 type="datetime-local"
                 value={contractConfig.counterOfferDeadline}
-                onChange={(e) => setContractConfig(prev => ({
-                  ...prev,
-                  counterOfferDeadline: e.target.value
-                }))}
+                onChange={(e) =>
+                  setContractConfig((prev) => ({
+                    ...prev,
+                    counterOfferDeadline: e.target.value,
+                  }))
+                }
                 className="w-full mt-1 p-2 border rounded"
               />
             </div>
@@ -2000,18 +2807,33 @@ export default function BookingWorkflow({
                 Category-Based Pricing
               </h4>
               <p className="text-sm text-muted-foreground mb-4">
-                Set default asking prices for each talent category. Unassigned categories are readonly and set to zero.
+                Set default asking prices for each talent category. Unassigned
+                categories are readonly and set to zero.
               </p>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 {Object.entries(categoryPricing).map(([category, price]) => (
-                  <div key={category} className={`p-3 rounded-lg border ${getAssignedCategories().has(category)
-                    ? 'bg-gradient-to-br from-green-50 to-emerald-50 border-green-200'
-                    : 'bg-gradient-to-br from-gray-50 to-slate-50 border-gray-200'
-                    }`}>
-                    <label className={`text-sm font-medium flex items-center gap-2 ${getAssignedCategories().has(category) ? 'text-green-800' : 'text-gray-600'
-                      }`}>
-                      <div className={`w-2 h-2 rounded-full ${getAssignedCategories().has(category) ? 'bg-green-500' : 'bg-gray-400'
-                        }`}></div>
+                  <div
+                    key={category}
+                    className={`p-3 rounded-lg border ${
+                      getAssignedCategories().has(category)
+                        ? "bg-gradient-to-br from-green-50 to-emerald-50 border-green-200"
+                        : "bg-gradient-to-br from-gray-50 to-slate-50 border-gray-200"
+                    }`}
+                  >
+                    <label
+                      className={`text-sm font-medium flex items-center gap-2 ${
+                        getAssignedCategories().has(category)
+                          ? "text-green-800"
+                          : "text-gray-600"
+                      }`}
+                    >
+                      <div
+                        className={`w-2 h-2 rounded-full ${
+                          getAssignedCategories().has(category)
+                            ? "bg-green-500"
+                            : "bg-gray-400"
+                        }`}
+                      ></div>
                       {category}
                     </label>
                     <input
@@ -2019,22 +2841,31 @@ export default function BookingWorkflow({
                       min="0"
                       value={price}
                       onChange={(e) => {
-                        setCategoryPricing(prev => ({
+                        setCategoryPricing((prev) => ({
                           ...prev,
-                          [category]: e.target.value
+                          [category]: e.target.value,
                         }));
                       }}
-                      className={`w-full mt-2 p-2 border rounded ${!getAssignedCategories().has(category)
-                        ? 'bg-gray-100 text-gray-500'
-                        : 'bg-white focus:ring-2 focus:ring-green-500 focus:border-transparent'
-                        }`}
-                      placeholder={getAssignedCategories().has(category) ? `Enter ${category.toLowerCase()} rate` : 'No talent assigned'}
+                      className={`w-full mt-2 p-2 border rounded ${
+                        !getAssignedCategories().has(category)
+                          ? "bg-gray-100 text-gray-500"
+                          : "bg-white focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                      }`}
+                      placeholder={
+                        getAssignedCategories().has(category)
+                          ? `Enter ${category.toLowerCase()} rate`
+                          : "No talent assigned"
+                      }
                       readOnly={!getAssignedCategories().has(category)}
                     />
                     {!getAssignedCategories().has(category) ? (
-                      <p className="text-xs text-gray-500 mt-1">No talent assigned</p>
+                      <p className="text-xs text-gray-500 mt-1">
+                        No talent assigned
+                      </p>
                     ) : (
-                      <p className="text-xs text-green-600 mt-1">Active category</p>
+                      <p className="text-xs text-green-600 mt-1">
+                        Active category
+                      </p>
                     )}
                   </div>
                 ))}
@@ -2043,9 +2874,12 @@ export default function BookingWorkflow({
 
             {/* Individual Talent Overrides */}
             <div>
-              <h4 className="text-lg font-medium mb-3">Individual Talent Pricing</h4>
+              <h4 className="text-lg font-medium mb-3">
+                Individual Talent Pricing
+              </h4>
               <p className="text-sm text-muted-foreground mb-4">
-                Override category pricing and set individual terms for specific talent
+                Override category pricing and set individual terms for specific
+                talent
               </p>
               <div className="space-y-4">
                 {assignedTalent.map((talent) => (
@@ -2053,34 +2887,63 @@ export default function BookingWorkflow({
                     <div className="flex items-center gap-3 mb-3">
                       <Avatar className="w-10 h-10">
                         <AvatarImage src={talent.avatarUrl} />
-                        <AvatarFallback>{talent.name.split(' ').map((n: string) => n[0]).join('')}</AvatarFallback>
+                        <AvatarFallback>
+                          {talent.name
+                            .split(" ")
+                            .map((n: string) => n[0])
+                            .join("")}
+                        </AvatarFallback>
                       </Avatar>
                       <div>
-                        <p className="font-medium">{talent.assignmentName || talent.name}</p>
+                        <p className="font-medium">
+                          {talent.assignmentName || talent.name}
+                        </p>
                         <p className="text-sm text-muted-foreground">
-                          {talent.isMainBookedTalent ? 'Main Booked Talent' : talent.type} - {talent.role}
+                          {talent.isMainBookedTalent
+                            ? "Main Booked Talent"
+                            : talent.type}{" "}
+                          - {talent.role}
                         </p>
                       </div>
                     </div>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       <div>
-                        <label className="text-sm font-medium">Individual Price ($)</label>
+                        <label className="text-sm font-medium">
+                          Individual Price ($)
+                        </label>
                         <input
                           type="number"
                           min="0"
-                          value={individualPricing[talent.id]?.price || parseFloat(categoryPricing[talent.type as keyof typeof categoryPricing] as string) || ''}
+                          value={
+                            individualPricing[talent.id]?.price ||
+                            parseFloat(
+                              categoryPricing[
+                                talent.type as keyof typeof categoryPricing
+                              ] as string
+                            ) ||
+                            ""
+                          }
                           onChange={(e) => {
-                            const value = Math.max(0, parseFloat(e.target.value) || 0);
-                            setIndividualPricing(prev => ({
+                            const value = Math.max(
+                              0,
+                              parseFloat(e.target.value) || 0
+                            );
+                            setIndividualPricing((prev) => ({
                               ...prev,
                               [talent.id]: {
                                 ...prev[talent.id],
                                 price: value,
-                                counterOfferDeadline: prev[talent.id]?.counterOfferDeadline || '',
-                                paymentTerms: prev[talent.id]?.paymentTerms || '50% deposit, 50% on completion',
-                                cancellationPolicy: prev[talent.id]?.cancellationPolicy || '72 hours notice required',
-                                additionalTerms: prev[talent.id]?.additionalTerms || ''
-                              }
+                                counterOfferDeadline:
+                                  prev[talent.id]?.counterOfferDeadline || "",
+                                paymentTerms:
+                                  prev[talent.id]?.paymentTerms ||
+                                  "50% deposit, 50% on completion",
+                                cancellationPolicy:
+                                  prev[talent.id]?.cancellationPolicy ||
+                                  "72 hours notice required",
+                                additionalTerms:
+                                  prev[talent.id]?.additionalTerms || "",
+                              },
                             }));
                           }}
                           className="w-full mt-1 p-2 border rounded"
@@ -2088,87 +2951,176 @@ export default function BookingWorkflow({
                         />
                       </div>
                       <div>
-                        <label className="text-sm font-medium">Counter-Offer Deadline</label>
+                        <label className="text-sm font-medium">
+                          Counter-Offer Deadline
+                        </label>
                         <input
                           type="datetime-local"
-                          value={individualPricing[talent.id]?.counterOfferDeadline || ''}
-                          onChange={(e) => setIndividualPricing(prev => ({
-                            ...prev,
-                            [talent.id]: {
-                              ...prev[talent.id],
-                              price: prev[talent.id]?.price || parseFloat(categoryPricing[talent.type as keyof typeof categoryPricing] as string) || 0,
-                              counterOfferDeadline: e.target.value,
-                              paymentTerms: prev[talent.id]?.paymentTerms || '50% deposit, 50% on completion',
-                              cancellationPolicy: prev[talent.id]?.cancellationPolicy || '72 hours notice required',
-                              additionalTerms: prev[talent.id]?.additionalTerms || ''
-                            }
-                          }))}
+                          value={
+                            individualPricing[talent.id]
+                              ?.counterOfferDeadline || ""
+                          }
+                          onChange={(e) =>
+                            setIndividualPricing((prev) => ({
+                              ...prev,
+                              [talent.id]: {
+                                ...prev[talent.id],
+                                price:
+                                  prev[talent.id]?.price ||
+                                  parseFloat(
+                                    categoryPricing[
+                                      talent.type as keyof typeof categoryPricing
+                                    ] as string
+                                  ) ||
+                                  0,
+                                counterOfferDeadline: e.target.value,
+                                paymentTerms:
+                                  prev[talent.id]?.paymentTerms ||
+                                  "50% deposit, 50% on completion",
+                                cancellationPolicy:
+                                  prev[talent.id]?.cancellationPolicy ||
+                                  "72 hours notice required",
+                                additionalTerms:
+                                  prev[talent.id]?.additionalTerms || "",
+                              },
+                            }))
+                          }
                           className="w-full mt-1 p-2 border rounded"
                         />
                       </div>
                       <div>
-                        <label className="text-sm font-medium">Payment Terms</label>
+                        <label className="text-sm font-medium">
+                          Payment Terms
+                        </label>
                         <select
-                          value={individualPricing[talent.id]?.paymentTerms || '50% deposit, 50% on completion'}
-                          onChange={(e) => setIndividualPricing(prev => ({
-                            ...prev,
-                            [talent.id]: {
-                              ...prev[talent.id],
-                              price: prev[talent.id]?.price || parseFloat(categoryPricing[talent.type as keyof typeof categoryPricing] as string) || 0,
-                              counterOfferDeadline: prev[talent.id]?.counterOfferDeadline || '',
-                              paymentTerms: e.target.value,
-                              cancellationPolicy: prev[talent.id]?.cancellationPolicy || '72 hours notice required',
-                              additionalTerms: prev[talent.id]?.additionalTerms || ''
-                            }
-                          }))}
+                          value={
+                            individualPricing[talent.id]?.paymentTerms ||
+                            "50% deposit, 50% on completion"
+                          }
+                          onChange={(e) =>
+                            setIndividualPricing((prev) => ({
+                              ...prev,
+                              [talent.id]: {
+                                ...prev[talent.id],
+                                price:
+                                  prev[talent.id]?.price ||
+                                  parseFloat(
+                                    categoryPricing[
+                                      talent.type as keyof typeof categoryPricing
+                                    ] as string
+                                  ) ||
+                                  0,
+                                counterOfferDeadline:
+                                  prev[talent.id]?.counterOfferDeadline || "",
+                                paymentTerms: e.target.value,
+                                cancellationPolicy:
+                                  prev[talent.id]?.cancellationPolicy ||
+                                  "72 hours notice required",
+                                additionalTerms:
+                                  prev[talent.id]?.additionalTerms || "",
+                              },
+                            }))
+                          }
                           className="w-full mt-1 p-2 border rounded"
                         >
-                          <option value="50% deposit, 50% on completion">50% deposit, 50% on completion</option>
+                          <option value="50% deposit, 50% on completion">
+                            50% deposit, 50% on completion
+                          </option>
                           <option value="100% upfront">100% upfront</option>
-                          <option value="Payment on completion">Payment on completion</option>
+                          <option value="Payment on completion">
+                            Payment on completion
+                          </option>
                           <option value="Net 30 terms">Net 30 terms</option>
-                          <option value="Payment within 7 days">Payment within 7 days</option>
+                          <option value="Payment within 7 days">
+                            Payment within 7 days
+                          </option>
                         </select>
                       </div>
                       <div>
-                        <label className="text-sm font-medium">Cancellation Policy</label>
+                        <label className="text-sm font-medium">
+                          Cancellation Policy
+                        </label>
                         <select
-                          value={individualPricing[talent.id]?.cancellationPolicy || '72 hours notice required'}
-                          onChange={(e) => setIndividualPricing(prev => ({
-                            ...prev,
-                            [talent.id]: {
-                              ...prev[talent.id],
-                              price: prev[talent.id]?.price || parseFloat(categoryPricing[talent.type as keyof typeof categoryPricing] as string) || 0,
-                              counterOfferDeadline: prev[talent.id]?.counterOfferDeadline || '',
-                              paymentTerms: prev[talent.id]?.paymentTerms || '50% deposit, 50% on completion',
-                              cancellationPolicy: e.target.value,
-                              additionalTerms: prev[talent.id]?.additionalTerms || ''
-                            }
-                          }))}
+                          value={
+                            individualPricing[talent.id]?.cancellationPolicy ||
+                            "72 hours notice required"
+                          }
+                          onChange={(e) =>
+                            setIndividualPricing((prev) => ({
+                              ...prev,
+                              [talent.id]: {
+                                ...prev[talent.id],
+                                price:
+                                  prev[talent.id]?.price ||
+                                  parseFloat(
+                                    categoryPricing[
+                                      talent.type as keyof typeof categoryPricing
+                                    ] as string
+                                  ) ||
+                                  0,
+                                counterOfferDeadline:
+                                  prev[talent.id]?.counterOfferDeadline || "",
+                                paymentTerms:
+                                  prev[talent.id]?.paymentTerms ||
+                                  "50% deposit, 50% on completion",
+                                cancellationPolicy: e.target.value,
+                                additionalTerms:
+                                  prev[talent.id]?.additionalTerms || "",
+                              },
+                            }))
+                          }
                           className="w-full mt-1 p-2 border rounded"
                         >
-                          <option value="72 hours notice required">72 hours notice required</option>
-                          <option value="7 days notice required">7 days notice required</option>
-                          <option value="14 days notice required">14 days notice required</option>
-                          <option value="30 days notice required">30 days notice required</option>
-                          <option value="No cancellation allowed">No cancellation allowed</option>
+                          <option value="72 hours notice required">
+                            72 hours notice required
+                          </option>
+                          <option value="7 days notice required">
+                            7 days notice required
+                          </option>
+                          <option value="14 days notice required">
+                            14 days notice required
+                          </option>
+                          <option value="30 days notice required">
+                            30 days notice required
+                          </option>
+                          <option value="No cancellation allowed">
+                            No cancellation allowed
+                          </option>
                         </select>
                       </div>
                       <div className="md:col-span-2">
-                        <label className="text-sm font-medium">Additional Terms for {talent.name}</label>
+                        <label className="text-sm font-medium">
+                          Additional Terms for {talent.name}
+                        </label>
                         <textarea
-                          value={individualPricing[talent.id]?.additionalTerms || ''}
-                          onChange={(e) => setIndividualPricing(prev => ({
-                            ...prev,
-                            [talent.id]: {
-                              ...prev[talent.id],
-                              price: prev[talent.id]?.price || parseFloat(categoryPricing[talent.type as keyof typeof categoryPricing] as string) || 0,
-                              counterOfferDeadline: prev[talent.id]?.counterOfferDeadline || '',
-                              paymentTerms: prev[talent.id]?.paymentTerms || '50% deposit, 50% on completion',
-                              cancellationPolicy: prev[talent.id]?.cancellationPolicy || '72 hours notice required',
-                              additionalTerms: e.target.value
-                            }
-                          }))}
+                          value={
+                            individualPricing[talent.id]?.additionalTerms || ""
+                          }
+                          onChange={(e) =>
+                            setIndividualPricing((prev) => ({
+                              ...prev,
+                              [talent.id]: {
+                                ...prev[talent.id],
+                                price:
+                                  prev[talent.id]?.price ||
+                                  parseFloat(
+                                    categoryPricing[
+                                      talent.type as keyof typeof categoryPricing
+                                    ] as string
+                                  ) ||
+                                  0,
+                                counterOfferDeadline:
+                                  prev[talent.id]?.counterOfferDeadline || "",
+                                paymentTerms:
+                                  prev[talent.id]?.paymentTerms ||
+                                  "50% deposit, 50% on completion",
+                                cancellationPolicy:
+                                  prev[talent.id]?.cancellationPolicy ||
+                                  "72 hours notice required",
+                                additionalTerms: e.target.value,
+                              },
+                            }))
+                          }
                           rows={2}
                           className="w-full mt-1 p-2 border rounded"
                           placeholder="Special terms or requirements for this talent"
@@ -2182,19 +3134,29 @@ export default function BookingWorkflow({
 
             {/* Global Contract Terms */}
             <div>
-              <h4 className="text-lg font-medium mb-3">Global Contract Terms</h4>
+              <h4 className="text-lg font-medium mb-3">
+                Global Contract Terms
+              </h4>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div>
-                  <label className="text-sm font-medium">Total Booking Price ($)</label>
+                  <label className="text-sm font-medium">
+                    Total Booking Price ($)
+                  </label>
                   <input
                     type="number"
                     min="0"
-                    value={contractConfig.totalBookingPrice || calculateTotalBookingPrice()}
+                    value={
+                      contractConfig.totalBookingPrice ||
+                      calculateTotalBookingPrice()
+                    }
                     onChange={(e) => {
-                      const value = Math.max(0, parseFloat(e.target.value) || 0);
-                      setContractConfig(prev => ({
+                      const value = Math.max(
+                        0,
+                        parseFloat(e.target.value) || 0
+                      );
+                      setContractConfig((prev) => ({
                         ...prev,
-                        totalBookingPrice: value
+                        totalBookingPrice: value,
                       }));
                     }}
                     className="w-full mt-1 p-2 border rounded font-semibold text-green-700 bg-green-50"
@@ -2204,26 +3166,44 @@ export default function BookingWorkflow({
                   <div className="mt-2 p-3 bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-lg">
                     <div className="flex items-center gap-2 mb-2">
                       <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
-                      <p className="text-sm font-medium text-blue-800">Pricing Breakdown</p>
+                      <p className="text-sm font-medium text-blue-800">
+                        Pricing Breakdown
+                      </p>
                     </div>
                     <div className="space-y-1 text-xs">
                       <div className="flex justify-between">
-                        <span className="text-blue-700">Talent asking total:</span>
-                        <span className="font-semibold text-blue-900">${calculateTotalBookingPrice()}</span>
+                        <span className="text-blue-700">
+                          Talent asking total:
+                        </span>
+                        <span className="font-semibold text-blue-900">
+                          ${calculateTotalBookingPrice()}
+                        </span>
                       </div>
                       <div className="flex justify-between">
-                        <span className="text-blue-700">Your offer/counter:</span>
-                        <span className="font-semibold text-green-700">${contractConfig.totalBookingPrice || calculateTotalBookingPrice()}</span>
+                        <span className="text-blue-700">
+                          Your offer/counter:
+                        </span>
+                        <span className="font-semibold text-green-700">
+                          $
+                          {contractConfig.totalBookingPrice ||
+                            calculateTotalBookingPrice()}
+                        </span>
                       </div>
                       {counterOffer.received && (
                         <div className="flex justify-between border-t pt-1">
-                          <span className="text-orange-700">Counter-offer received:</span>
-                          <span className="font-semibold text-orange-900">${counterOffer.amount}</span>
+                          <span className="text-orange-700">
+                            Counter-offer received:
+                          </span>
+                          <span className="font-semibold text-orange-900">
+                            ${counterOffer.amount}
+                          </span>
                         </div>
                       )}
                       <div className="flex justify-between text-gray-600 pt-1 border-t">
                         <span>Talent assigned:</span>
-                        <span className="font-semibold">{assignedTalent.length}</span>
+                        <span className="font-semibold">
+                          {assignedTalent.length}
+                        </span>
                       </div>
                     </div>
                   </div>
@@ -2236,14 +3216,18 @@ export default function BookingWorkflow({
                   <input
                     type="text"
                     value={contractConfig.waituMusicPlatformName}
-                    onChange={(e) => setContractConfig(prev => ({
-                      ...prev,
-                      waituMusicPlatformName: e.target.value
-                    }))}
+                    onChange={(e) =>
+                      setContractConfig((prev) => ({
+                        ...prev,
+                        waituMusicPlatformName: e.target.value,
+                      }))
+                    }
                     className="w-full mt-2 p-3 border border-emerald-300 rounded-lg bg-white focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
                     placeholder="Platform name for contracts"
                   />
-                  <p className="text-xs text-emerald-600 mt-1">Used in all generated contracts</p>
+                  <p className="text-xs text-emerald-600 mt-1">
+                    Used in all generated contracts
+                  </p>
                 </div>
                 <div className="bg-gradient-to-br from-purple-50 to-pink-50 p-4 rounded-lg border border-purple-200">
                   <label className="text-sm font-medium text-purple-800 flex items-center gap-2">
@@ -2252,15 +3236,19 @@ export default function BookingWorkflow({
                   </label>
                   <textarea
                     value={contractConfig.labelAddress}
-                    onChange={(e) => setContractConfig(prev => ({
-                      ...prev,
-                      labelAddress: e.target.value
-                    }))}
+                    onChange={(e) =>
+                      setContractConfig((prev) => ({
+                        ...prev,
+                        labelAddress: e.target.value,
+                      }))
+                    }
                     className="w-full mt-2 p-3 border border-purple-300 rounded-lg bg-white focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                     rows={3}
                     placeholder="Complete address for inclusion in agreements"
                   />
-                  <p className="text-xs text-purple-600 mt-1">Complete business address</p>
+                  <p className="text-xs text-purple-600 mt-1">
+                    Complete business address
+                  </p>
                 </div>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
@@ -2271,15 +3259,21 @@ export default function BookingWorkflow({
                   </label>
                   <select
                     value={contractConfig.paymentTerms}
-                    onChange={(e) => setContractConfig(prev => ({
-                      ...prev,
-                      paymentTerms: e.target.value
-                    }))}
+                    onChange={(e) =>
+                      setContractConfig((prev) => ({
+                        ...prev,
+                        paymentTerms: e.target.value,
+                      }))
+                    }
                     className="w-full mt-2 p-3 border border-amber-300 rounded-lg bg-white focus:ring-2 focus:ring-amber-500 focus:border-transparent"
                   >
-                    <option value="50% deposit, 50% on completion">50% deposit, 50% on completion</option>
+                    <option value="50% deposit, 50% on completion">
+                      50% deposit, 50% on completion
+                    </option>
                     <option value="100% upfront">100% upfront</option>
-                    <option value="Payment on completion">Payment on completion</option>
+                    <option value="Payment on completion">
+                      Payment on completion
+                    </option>
                     <option value="Net 30 terms">Net 30 terms</option>
                   </select>
                 </div>
@@ -2290,16 +3284,26 @@ export default function BookingWorkflow({
                   </label>
                   <select
                     value={contractConfig.cancellationPolicy}
-                    onChange={(e) => setContractConfig(prev => ({
-                      ...prev,
-                      cancellationPolicy: e.target.value
-                    }))}
+                    onChange={(e) =>
+                      setContractConfig((prev) => ({
+                        ...prev,
+                        cancellationPolicy: e.target.value,
+                      }))
+                    }
                     className="w-full mt-2 p-3 border border-red-300 rounded-lg bg-white focus:ring-2 focus:ring-red-500 focus:border-transparent"
                   >
-                    <option value="72 hours notice required">72 hours notice required</option>
-                    <option value="7 days notice required">7 days notice required</option>
-                    <option value="14 days notice required">14 days notice required</option>
-                    <option value="No cancellation allowed">No cancellation allowed</option>
+                    <option value="72 hours notice required">
+                      72 hours notice required
+                    </option>
+                    <option value="7 days notice required">
+                      7 days notice required
+                    </option>
+                    <option value="14 days notice required">
+                      14 days notice required
+                    </option>
+                    <option value="No cancellation allowed">
+                      No cancellation allowed
+                    </option>
                   </select>
                 </div>
               </div>
@@ -2310,15 +3314,19 @@ export default function BookingWorkflow({
                 </label>
                 <textarea
                   value={contractConfig.additionalTerms}
-                  onChange={(e) => setContractConfig(prev => ({
-                    ...prev,
-                    additionalTerms: e.target.value
-                  }))}
+                  onChange={(e) =>
+                    setContractConfig((prev) => ({
+                      ...prev,
+                      additionalTerms: e.target.value,
+                    }))
+                  }
                   className="w-full mt-2 p-3 border border-slate-300 rounded-lg bg-white focus:ring-2 focus:ring-slate-500 focus:border-transparent"
                   rows={4}
                   placeholder="Enter any additional contract terms or special requirements"
                 />
-                <p className="text-xs text-slate-600 mt-1">Special clauses and custom requirements</p>
+                <p className="text-xs text-slate-600 mt-1">
+                  Special clauses and custom requirements
+                </p>
               </div>
             </div>
           </CardContent>
@@ -2338,11 +3346,15 @@ export default function BookingWorkflow({
           <CardContent className="space-y-4">
             {!counterOffer.received ? (
               <div className="text-center py-4">
-                <p className="text-muted-foreground">No counter-offers received yet</p>
+                <p className="text-muted-foreground">
+                  No counter-offers received yet
+                </p>
                 <Button
                   variant="outline"
                   className="mt-2"
-                  onClick={() => setCounterOffer(prev => ({ ...prev, received: true }))}
+                  onClick={() =>
+                    setCounterOffer((prev) => ({ ...prev, received: true }))
+                  }
                 >
                   Simulate Counter-Offer
                 </Button>
@@ -2351,16 +3363,21 @@ export default function BookingWorkflow({
               <div className="space-y-4 bg-orange-50 p-4 rounded">
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                   <div>
-                    <label className="text-sm font-medium">Counter-Offer Amount ($)</label>
+                    <label className="text-sm font-medium">
+                      Counter-Offer Amount ($)
+                    </label>
                     <input
                       type="number"
                       min="0"
                       value={counterOffer.amount}
                       onChange={(e) => {
-                        const value = Math.max(0, parseFloat(e.target.value) || 0);
-                        setCounterOffer(prev => ({
+                        const value = Math.max(
+                          0,
+                          parseFloat(e.target.value) || 0
+                        );
+                        setCounterOffer((prev) => ({
                           ...prev,
-                          amount: value
+                          amount: value,
                         }));
                       }}
                       className="w-full mt-1 p-2 border rounded"
@@ -2368,14 +3385,18 @@ export default function BookingWorkflow({
                     />
                   </div>
                   <div>
-                    <label className="text-sm font-medium">Response Deadline</label>
+                    <label className="text-sm font-medium">
+                      Response Deadline
+                    </label>
                     <input
                       type="datetime-local"
                       value={counterOffer.deadline}
-                      onChange={(e) => setCounterOffer(prev => ({
-                        ...prev,
-                        deadline: e.target.value
-                      }))}
+                      onChange={(e) =>
+                        setCounterOffer((prev) => ({
+                          ...prev,
+                          deadline: e.target.value,
+                        }))
+                      }
                       className="w-full mt-1 p-2 border rounded"
                     />
                   </div>
@@ -2384,18 +3405,32 @@ export default function BookingWorkflow({
                       variant="default"
                       className="bg-green-600 hover:bg-green-700 w-full"
                       onClick={() => {
-                        setContractConfig(prev => ({ ...prev, proposedPrice: counterOffer.amount }));
-                        toast({ title: "Counter-Offer Approved", description: "Contract price updated" });
+                        setContractConfig((prev) => ({
+                          ...prev,
+                          proposedPrice: counterOffer.amount,
+                        }));
+                        toast({
+                          title: "Counter-Offer Approved",
+                          description: "Contract price updated",
+                        });
                       }}
                     >
                       Approve
                     </Button>
                     <Button
                       variant="destructive"
-                      className='w-full'
+                      className="w-full"
                       onClick={() => {
-                        setCounterOffer({ received: false, amount: 0, deadline: '', notes: '' });
-                        toast({ title: "Counter-Offer Declined", description: "Original terms maintained" });
+                        setCounterOffer({
+                          received: false,
+                          amount: 0,
+                          deadline: "",
+                          notes: "",
+                        });
+                        toast({
+                          title: "Counter-Offer Declined",
+                          description: "Original terms maintained",
+                        });
                       }}
                     >
                       Decline
@@ -2406,10 +3441,12 @@ export default function BookingWorkflow({
                   <label className="text-sm font-medium">Notes</label>
                   <textarea
                     value={counterOffer.notes}
-                    onChange={(e) => setCounterOffer(prev => ({
-                      ...prev,
-                      notes: e.target.value
-                    }))}
+                    onChange={(e) =>
+                      setCounterOffer((prev) => ({
+                        ...prev,
+                        notes: e.target.value,
+                      }))
+                    }
                     className="w-full mt-1 p-2 border rounded"
                     rows={2}
                     placeholder="Negotiation notes and reasoning"
@@ -2436,7 +3473,7 @@ export default function BookingWorkflow({
               <div className="space-y-2">
                 <Button
                   className="w-full flex items-center gap-2"
-                  onClick={() => generateContractPreview('booking')}
+                  onClick={() => generateContractPreview("booking")}
                   disabled={false}
                 >
                   <FileText className="h-4 w-4" />
@@ -2444,7 +3481,9 @@ export default function BookingWorkflow({
                 </Button>
                 {contractPreview.bookingAgreement && (
                   <div className="p-3 bg-gray-50 rounded border max-h-[60vh] overflow-y-auto">
-                    <h4 className="font-medium text-sm mb-2">Booking Agreement Preview:</h4>
+                    <h4 className="font-medium text-sm mb-2">
+                      Booking Agreement Preview:
+                    </h4>
                     <div className="text-xs text-gray-700 whitespace-pre-line">
                       {contractPreview.bookingAgreement}
                     </div>
@@ -2454,11 +3493,14 @@ export default function BookingWorkflow({
                       className="mt-2"
                       onClick={() => {
                         // Download full preview
-                        const blob = new Blob([contractPreview.bookingAgreement!], { type: 'text/plain' });
+                        const blob = new Blob(
+                          [contractPreview.bookingAgreement!],
+                          { type: "text/plain" }
+                        );
                         const url = URL.createObjectURL(blob);
-                        const a = document.createElement('a');
+                        const a = document.createElement("a");
                         a.href = url;
-                        a.download = 'booking-agreement-preview.txt';
+                        a.download = "booking-agreement-preview.txt";
                         a.click();
                         URL.revokeObjectURL(url);
                       }}
@@ -2473,7 +3515,7 @@ export default function BookingWorkflow({
               <div className="space-y-2">
                 <Button
                   className="w-full flex items-center gap-2"
-                  onClick={() => generateContractPreview('performance')}
+                  onClick={() => generateContractPreview("performance")}
                   disabled={assignedTalent.length === 0}
                 >
                   <FileText className="h-4 w-4" />
@@ -2481,7 +3523,9 @@ export default function BookingWorkflow({
                 </Button>
                 {contractPreview.performanceContract && (
                   <div className="p-3 bg-gray-50 rounded border max-h-[60vh] overflow-y-auto">
-                    <h4 className="font-medium text-sm mb-2">Performance Contract Preview:</h4>
+                    <h4 className="font-medium text-sm mb-2">
+                      Performance Contract Preview:
+                    </h4>
                     <div className="text-xs text-gray-700 whitespace-pre-line">
                       {contractPreview.performanceContract}
                     </div>
@@ -2491,11 +3535,14 @@ export default function BookingWorkflow({
                       className="mt-2"
                       onClick={() => {
                         // Download full preview
-                        const blob = new Blob([contractPreview.performanceContract!], { type: 'text/plain' });
+                        const blob = new Blob(
+                          [contractPreview.performanceContract!],
+                          { type: "text/plain" }
+                        );
                         const url = URL.createObjectURL(blob);
-                        const a = document.createElement('a');
+                        const a = document.createElement("a");
                         a.href = url;
-                        a.download = 'performance-contract-preview.txt';
+                        a.download = "performance-contract-preview.txt";
                         a.click();
                         URL.revokeObjectURL(url);
                       }}
@@ -2536,7 +3583,11 @@ export default function BookingWorkflow({
         </Card>
 
         <div>
-          <Button className='w-full' onClick={saveContracts} disabled={isLoading}>
+          <Button
+            className="w-full"
+            onClick={saveContracts}
+            disabled={isLoading}
+          >
             Save Step {currentStep} Data
           </Button>
         </div>
@@ -2555,7 +3606,8 @@ export default function BookingWorkflow({
               Enhanced Technical Rider System
             </CardTitle>
             <CardDescription>
-              Professional technical requirements management with stage plot, mixer configuration, and setlist integration
+              Professional technical requirements management with stage plot,
+              mixer configuration, and setlist integration
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -2563,14 +3615,25 @@ export default function BookingWorkflow({
               bookingId={bookingId}
               assignedMusicians={assignedTalent.map((talent: any) => {
                 // Find the user details from available users
-                const userDetails = (availableUsers as any[] || []).find((user: any) => user.id === talent.userId);
+                const userDetails = ((availableUsers as any[]) || []).find(
+                  (user: any) => user.id === talent.userId
+                );
 
                 // Find artist/musician/professional profile for profile data
-                const artistProfile = (availableArtists as any[]).find((artist: any) => artist.userId === talent.userId);
-                const musicianProfile = (availableMusicians as any[]).find((musician: any) => musician.userId === talent.userId);
-                const professionalProfile = (availableProfessionals as any[]).find((professional: any) => professional.userId === talent.userId);
+                const artistProfile = (availableArtists as any[]).find(
+                  (artist: any) => artist.userId === talent.userId
+                );
+                const musicianProfile = (availableMusicians as any[]).find(
+                  (musician: any) => musician.userId === talent.userId
+                );
+                const professionalProfile = (
+                  availableProfessionals as any[]
+                ).find(
+                  (professional: any) => professional.userId === talent.userId
+                );
 
-                const profile = artistProfile || musicianProfile || professionalProfile;
+                const profile =
+                  artistProfile || musicianProfile || professionalProfile;
 
                 // If talent doesn't have database talent fields, populate from profile data
                 let primaryTalent = talent.primaryTalent;
@@ -2589,7 +3652,8 @@ export default function BookingWorkflow({
 
                 if (!secondaryTalents && profile) {
                   // Extract secondary talents from profile
-                  secondaryTalents = profile.secondaryTalents || profile.secondary_talents || [];
+                  secondaryTalents =
+                    profile.secondaryTalents || profile.secondary_talents || [];
                 }
 
                 return {
@@ -2597,37 +3661,67 @@ export default function BookingWorkflow({
                   userId: talent.userId,
                   roleId: talent.roleId, // CRITICAL: Include roleId for membership determination
                   fullName: talent.fullName,
-                  stageName: profile?.stageNames?.[0] || talent.stageName || '',
+                  stageName: profile?.stageNames?.[0] || talent.stageName || "",
                   name: talent.stageName || talent.name || talent.fullName,
                   role: talent.role,
-                  primaryRole: profile?.primary_role || profile?.primaryRole || 'Lead Vocalist',
-                  skillsAndInstruments: profile?.skills_and_instruments || profile?.skillsAndInstruments || profile?.instruments || [],
-                  availableRoles: profile?.performance_roles || profile?.performanceRoles || [],
+                  primaryRole:
+                    profile?.primary_role ||
+                    profile?.primaryRole ||
+                    "Lead Vocalist",
+                  skillsAndInstruments:
+                    profile?.skills_and_instruments ||
+                    profile?.skillsAndInstruments ||
+                    profile?.instruments ||
+                    [],
+                  availableRoles:
+                    profile?.performance_roles ||
+                    profile?.performanceRoles ||
+                    [],
                   instruments: profile?.instruments || [],
-                  selectedRoles: talent.selectedRoles || (profile?.performance_roles || profile?.performanceRoles || []).slice(0, 2),
-                  isMainBookedTalent: talent.isPrimary || talent.isMainBookedTalent || false,
+                  selectedRoles:
+                    talent.selectedRoles ||
+                    (
+                      profile?.performance_roles ||
+                      profile?.performanceRoles ||
+                      []
+                    ).slice(0, 2),
+                  isMainBookedTalent:
+                    talent.isPrimary || talent.isMainBookedTalent || false,
                   assignedRole: talent.role, // The role specifically assigned in the booking workflow
-                  type: talent.type || (talent.isPrimary ? 'Main Booked Talent' : 'Supporting Musician'), // Assignment feature
-                  talentType: talent.talentType || 'Artist', // For sorting - use server-provided talentType
-                  assignmentRole: talent.type || (talent.isPrimary ? 'Main Booked Talent' : 'Supporting Musician'), // Assignment feature for role column
+                  type:
+                    talent.type ||
+                    (talent.isPrimary
+                      ? "Main Booked Talent"
+                      : "Supporting Musician"), // Assignment feature
+                  talentType: talent.talentType || "Artist", // For sorting - use server-provided talentType
+                  assignmentRole:
+                    talent.type ||
+                    (talent.isPrimary
+                      ? "Main Booked Talent"
+                      : "Supporting Musician"), // Assignment feature for role column
                   // DATABASE FIELDS: Use populated talent fields
                   primaryTalent: primaryTalent,
                   secondaryTalents: secondaryTalents || [],
                   hasPrimaryTalent: !!primaryTalent,
-                  hasSecondaryTalents: !!(secondaryTalents && secondaryTalents.length > 0)
+                  hasSecondaryTalents: !!(
+                    secondaryTalents && secondaryTalents.length > 0
+                  ),
                 };
               })}
               eventDetails={{
-                eventName: booking?.eventName || '',
-                venueName: booking?.venueName || '',
-                eventDate: booking?.eventDate || '',
-                eventType: booking?.eventType || '',
-                duration: 60
+                eventName: booking?.eventName || "",
+                venueName: booking?.venueName || "",
+                eventDate: booking?.eventDate || "",
+                eventType: booking?.eventType || "",
+                duration: 60,
               }}
               canEdit={canEdit}
               userRole={userRole}
               onSave={async (data) => {
-                await apiRequest(`/api/bookings/${bookingId}/enhanced-technical-rider`, { method: 'POST', body: JSON.stringify(data) });
+                await apiRequest(
+                  `/api/bookings/${bookingId}/enhanced-technical-rider`,
+                  { method: "POST", body: JSON.stringify(data) }
+                );
                 toast(TOAST_CONFIGS.SUCCESS.SAVE);
                 refetchRider();
               }}
@@ -2636,9 +3730,12 @@ export default function BookingWorkflow({
           </CardContent>
         </Card>
 
-
         <div>
-          <Button className='w-full' onClick={saveTechnicalRider} disabled={isLoading}>
+          <Button
+            className="w-full"
+            onClick={saveTechnicalRider}
+            disabled={isLoading}
+          >
             Save Step {currentStep} Data
           </Button>
         </div>
@@ -2657,7 +3754,8 @@ export default function BookingWorkflow({
               Stage Plot & Mixer Patch System
             </CardTitle>
             <CardDescription>
-              Automatically generate mixer input patch list from assigned talent with proper instrument ordering
+              Automatically generate mixer input patch list from assigned talent
+              with proper instrument ordering
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -2668,27 +3766,33 @@ export default function BookingWorkflow({
                 userId: talent.userId,
                 name: talent.name || talent.fullName,
                 stageName: talent.stageName || talent.name || talent.fullName,
-                primaryTalent: talent.primaryTalent || talent.role || 'Lead Vocalist',
+                primaryTalent:
+                  talent.primaryTalent || talent.role || "Lead Vocalist",
                 secondaryTalents: talent.secondaryTalents || [],
                 assignedTo: talent.assignedTo || talent.name || talent.fullName,
-                isMainBookedTalent: talent.isPrimary || talent.isMainBookedTalent || false
+                isMainBookedTalent:
+                  talent.isPrimary || talent.isMainBookedTalent || false,
               }))}
               canEdit={canEdit}
               onSave={async (patchData: any) => {
                 try {
-                  await apiRequest(`/api/bookings/${bookingId}/mixer-patch-list`, {
-                    method: 'POST',
-                    body: JSON.stringify(patchData)
-                  });
+                  await apiRequest(
+                    `/api/bookings/${bookingId}/mixer-patch-list`,
+                    {
+                      method: "POST",
+                      body: JSON.stringify(patchData),
+                    }
+                  );
                   toast({
                     title: "Mixer Patch List Saved",
-                    description: "Stage plot assignments converted to mixer channels successfully"
+                    description:
+                      "Stage plot assignments converted to mixer channels successfully",
                   });
                 } catch (error) {
                   toast({
                     title: "Save Failed",
                     description: "Could not save mixer patch list",
-                    variant: "destructive"
+                    variant: "destructive",
                   });
                 }
               }}
@@ -2697,7 +3801,11 @@ export default function BookingWorkflow({
         </Card>
 
         <div>
-          <Button className='w-full' onClick={saveStagePlot} disabled={isLoading}>
+          <Button
+            className="w-full"
+            onClick={saveStagePlot}
+            disabled={isLoading}
+          >
             Save Step {currentStep} Data
           </Button>
         </div>
@@ -2716,13 +3824,16 @@ export default function BookingWorkflow({
               Signature Collection
             </CardTitle>
             <CardDescription>
-              Collect digital signatures from all parties on contracts and agreements
+              Collect digital signatures from all parties on contracts and
+              agreements
             </CardDescription>
           </CardHeader>
           <CardContent>
             <div className="text-center py-8">
               <Signature className="h-16 w-16 mx-auto text-gray-400 mb-4" />
-              <p className="text-gray-600">Signature collection functionality will be implemented here</p>
+              <p className="text-gray-600">
+                Signature collection functionality will be implemented here
+              </p>
               <Button variant="outline" className="mt-4">
                 Initiate Signature Process
               </Button>
@@ -2731,7 +3842,11 @@ export default function BookingWorkflow({
         </Card>
 
         <div>
-          <Button className='w-full' onClick={saveSignatures} disabled={isLoading}>
+          <Button
+            className="w-full"
+            onClick={saveSignatures}
+            disabled={isLoading}
+          >
             Save Step {currentStep} Data
           </Button>
         </div>
@@ -2756,7 +3871,9 @@ export default function BookingWorkflow({
           <CardContent>
             <div className="text-center py-8">
               <CreditCard className="h-16 w-16 mx-auto text-gray-400 mb-4" />
-              <p className="text-gray-600">Payment processing functionality will be implemented here</p>
+              <p className="text-gray-600">
+                Payment processing functionality will be implemented here
+              </p>
               <Button variant="outline" className="mt-4">
                 Process Payment
               </Button>
@@ -2765,7 +3882,11 @@ export default function BookingWorkflow({
         </Card>
 
         <div>
-          <Button className='w-full' onClick={savePayments} disabled={isLoading}>
+          <Button
+            className="w-full"
+            onClick={savePayments}
+            disabled={isLoading}
+          >
             Save Step {currentStep} Data
           </Button>
         </div>
@@ -2781,9 +3902,12 @@ export default function BookingWorkflow({
         <CardHeader>
           <div className="flex items-center justify-between">
             <div>
-              <CardTitle className="text-2xl">Comprehensive Booking Workflow</CardTitle>
+              <CardTitle className="text-2xl">
+                Comprehensive Booking Workflow
+              </CardTitle>
               <CardDescription>
-                Manage the complete booking process from assignment to completion
+                Manage the complete booking process from assignment to
+                completion
               </CardDescription>
             </div>
             <Badge variant="outline" className="px-3 py-1">
@@ -2798,16 +3922,25 @@ export default function BookingWorkflow({
         {workflowSteps.map((step, index) => (
           <Card
             key={step.id}
-            className={`cursor-pointer transition-all ${step.isActive ? 'ring-2 ring-primary shadow-lg' : ''
-              } ${step.status === 'completed' ? 'bg-green-50 border-green-200' : ''}`}
+            className={`cursor-pointer transition-all ${
+              step.isActive ? "ring-2 ring-primary shadow-lg" : ""
+            } ${
+              step.status === "completed" ? "bg-green-50 border-green-200" : ""
+            }`}
             onClick={() => setCurrentStep(index + 1)}
           >
             <CardContent className="p-4">
               <div className="flex items-center space-x-3">
-                <div className={`w-10 h-10 rounded-full flex items-center justify-center ${step.status === 'completed' ? 'bg-green-500 text-white' :
-                  step.isActive ? 'bg-primary text-white' : 'bg-gray-200'
-                  }`}>
-                  {step.status === 'completed' ? (
+                <div
+                  className={`w-10 h-10 rounded-full flex items-center justify-center ${
+                    step.status === "completed"
+                      ? "bg-green-500 text-white"
+                      : step.isActive
+                      ? "bg-primary text-white"
+                      : "bg-gray-200"
+                  }`}
+                >
+                  {step.status === "completed" ? (
                     <CheckCircle className="w-5 h-5" />
                   ) : (
                     step.icon
@@ -2815,7 +3948,9 @@ export default function BookingWorkflow({
                 </div>
                 <div className="flex-1">
                   <h3 className="font-medium text-sm">{step.title}</h3>
-                  <p className="text-xs text-muted-foreground">{step.description}</p>
+                  <p className="text-xs text-muted-foreground">
+                    {step.description}
+                  </p>
                 </div>
               </div>
             </CardContent>
@@ -2851,7 +3986,7 @@ export default function BookingWorkflow({
             ) : (
               <Save className="w-4 h-4 mr-2" />
             )}
-            {saving ? 'Saving...' : 'Save Progress'}
+            {saving ? "Saving..." : "Save Progress"}
           </Button>
         </div>
 
