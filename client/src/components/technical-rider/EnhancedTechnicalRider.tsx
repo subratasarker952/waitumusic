@@ -79,9 +79,33 @@ interface AudioConfig {
   recordingRequirements?: string;
 }
 
+interface Talent {
+  userId?: number;
+  roleId?: number;
+  name?: string;
+  fullName?: string;
+  stageName?: string;
+  role?: string;
+  talentType?: string;
+  type?: string;
+  primaryTalent?: string;
+  secondaryTalents?: string[];
+  assignedRole?: string;
+  selectedRoles?: string[];
+  isMainBookedTalent?: boolean;
+  isPrimary?: boolean;
+
+  // Optional profiles
+  artistProfile?: Record<string, unknown>;
+  musicianProfile?: Record<string, unknown>;
+  professionalProfile?: Record<string, unknown>;
+  instruments?: string[];
+}
+
+
 interface EnhancedTechnicalRiderProps {
   bookingId: number;
-  assignedTalents: any;
+  assignedTalents: Talent[];
   eventDetails?: {
     eventName: string;
     venueName: string;
@@ -1596,7 +1620,7 @@ function EnhancedTechnicalRider({
       const talent = memberData.primaryTalent;
       options.push({
         value: talent,
-        label: `${talent} ⭐`,
+        label: talent,
         color: 'blue',
         icon: '⭐',
         tier: 1,
@@ -1793,7 +1817,7 @@ function EnhancedTechnicalRider({
             assignedRole: musician.assignedRole,
             selectedRoles: musician.selectedRoles || [],
             isMainBookedTalent: musician.isMainBookedTalent || musician.isPrimary || false,
-            assignmentRole: musician.type || (musician.isMainBookedTalent ? 'Main Booked Talent' : (musician.assignmentRole || 'Supporting Musician')),
+            assignmentRole: musician.type || (musician.isMainBookedTalent ? 'Main Booked Talent' : (musician.assignedRole || 'Supporting Musician')),
             talentType: musician.talentType || musician.type || 'Artist',
             type: isProfessional ? 'Professional' : (musician.type || 'Artist'), // Add type property
             selectedTalent: primaryRole, // Only use database-derived role, no fallbacks
@@ -1809,6 +1833,7 @@ function EnhancedTechnicalRider({
             hasPrimaryTalent: !!musician.primaryTalent,
             hasSecondaryTalents: !!(musician.secondaryTalents && musician.secondaryTalents.length > 0)
           };
+          console.log(memberData)
 
 
           members.push(memberData);
@@ -3410,7 +3435,7 @@ function EnhancedTechnicalRider({
       {/* Header with Progress */}
       <Card>
         <CardHeader>
-          <div className="flex items-center justify-between">
+          <div className="flex flex-col lg:flex-row gap-2 items-center justify-between">
             <div>
               <CardTitle className="flex items-center gap-3">
                 <Target className="h-6 w-6 text-primary" />
@@ -3420,7 +3445,7 @@ function EnhancedTechnicalRider({
                 Enhanced technical rider with real-time collaboration and professional export
               </p>
             </div>
-            <div className="flex flex-col md:flex-row gap-2">
+            <div className="flex gap-2">
               <Button
                 onClick={generateRequirements}
                 disabled={isGenerating}
@@ -3487,7 +3512,7 @@ function EnhancedTechnicalRider({
           </TabsTrigger>
           <TabsTrigger value="hospitality" className="musical-tab-trigger musical-tab">
             <div className="mobile-tab-icon">🏨</div>
-            <div className="mobile-tab-text">Hospi & Dress</div>
+            <div className="mobile-tab-text">Hosp. & Dress.</div>
           </TabsTrigger>
           <TabsTrigger value="overview" className="musical-tab-trigger musical-tab">
             <div className="mobile-tab-icon">📋</div>
@@ -3651,15 +3676,15 @@ function EnhancedTechnicalRider({
               <div>
                 <h4 className="font-semibold mb-3">MANAGEMENT TEAM and BAND members are:</h4>
                 <div className="space-y-2">
-                  <div className="grid grid-cols-5 gap-4 font-semibold text-sm bg-gray-100 p-3 rounded">
+                  <div className="grid grid-cols-6 gap-4 font-semibold text-sm bg-gray-100 p-3 rounded">
                     <div className="col-span-1">Membership</div>
-                    <div className="col-span-1">Talent/Skill</div>
+                    <div className="col-span-2">Talent/Skill</div>
                     <div className="col-span-2">Full Name (Stage Name)</div>
                     <div className="col-span-1">Role</div>
                   </div>
 
                   {bandMembers.map((member, index) => (
-                    <div key={member.id} className="grid grid-cols-5 gap-4 p-3 border rounded items-center">
+                    <div key={member.id} className="grid grid-cols-6 gap-4 p-3 border rounded items-center">
                       {/* Column 1: Membership (smaller) */}
                       <Badge
                         variant={member.membership === "BAND" ? "default" : member.membership === "TEAM" ? "outline" : "secondary"}
@@ -3670,66 +3695,67 @@ function EnhancedTechnicalRider({
                       </Badge>
 
                       {/* Column 2: Talent/Skill Dropdown */}
-                      <Select
-                        value={member.selectedTalent || ""}
-                        onValueChange={(value) => {
-                          // Skip divider option
-                          if (value === '__divider__') return;
+                      <div className='col-span-2'>
+                        <Select
+                          value={member.selectedTalent || ""}
+                          onValueChange={(value) => {
+                            // Skip divider option
+                            if (value === '__divider__') return;
 
-                          console.log(`🎯 TALENT/SKILL CHANGE: ${member.fullName} selected "${value}"`);
+                            console.log(`🎯 TALENT/SKILL CHANGE: ${member.fullName} selected "${value}"`);
 
-                          // Use the new unified talent change handler
-                          handleTalentChange(member.id, value);
+                            // Use the new unified talent change handler
+                            handleTalentChange(member.id, value);
 
-                          // Also update band member directly for immediate UI update
-                          updateBandMember(member.id, { selectedTalent: value });
+                            // Also update band member directly for immediate UI update
+                            updateBandMember(member.id, { selectedTalent: value });
 
-
-                        }}
-                      >
-                        <SelectTrigger className="h-8 text-xs">
-                          <SelectValue />
-                        </SelectTrigger>
-                        <SelectContent>
-                          {/* Enhanced database-driven talent options with generic alternatives */}
-                          {buildTalentDropdownOptions(member).map((option, idx) => {
-                            // Handle divider specially - non-selectable
-                            if (option.type === 'Divider') {
-                              return (
-                                <div key={idx} className="px-2 py-1 text-center text-gray-400 text-xs border-b">
-                                  {option.label}
-                                </div>
-                              );
-                            }
-
-                            return (
-                              <SelectItem
-                                key={idx}
-                                value={option.value}
-                                className={option.type === 'Primary' ? 'bg-blue-50 font-medium' :
-                                  option.type === 'Secondary' ? 'bg-gray-50' :
-                                    option.type === 'Generic' ? 'bg-green-50' : ''}
-                              >
-                                <div className="flex items-center justify-between w-full">
-                                  <span style={{
-                                    color: option.color === 'blue' ? '#3b82f6' :
-                                      option.color === 'green' ? '#16a34a' :
-                                        option.color === 'orange' ? '#ea580c' :
-                                          option.color === 'purple' ? '#9333ea' : '#6b7280'
-                                  }}>
+                          }}
+                        >
+                          <SelectTrigger className="h-8 text-xs">
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent>
+                            {/* Enhanced database-driven talent options with generic alternatives */}
+                            {buildTalentDropdownOptions(member).map((option, idx) => {
+                              // Handle divider specially - non-selectable
+                              if (option.type === 'Divider') {
+                                return (
+                                  <div key={idx} className="px-2 py-1 text-center text-gray-400 text-xs border-b">
                                     {option.label}
-                                  </span>
-                                  <span className="text-xs text-muted-foreground ml-2">
-                                    {option.icon} {option.type}
-                                  </span>
-                                </div>
-                              </SelectItem>
-                            );
-                          })}
+                                  </div>
+                                );
+                              }
 
-                          {/* NO FALLBACK OPTIONS - USER POLICY: Zero tolerance for hardcoded values */}
-                        </SelectContent>
-                      </Select>
+                              return (
+                                <SelectItem
+                                  key={idx}
+                                  value={option.value}
+                                  className={option.type === 'Primary' ? 'bg-blue-50 font-medium' :
+                                    option.type === 'Secondary' ? 'bg-gray-50' :
+                                      option.type === 'Generic' ? 'bg-green-50' : ''}
+                                >
+                                  <div className="flex items-center justify-between w-full">
+                                    <span style={{
+                                      color: option.color === 'blue' ? '#3b82f6' :
+                                        option.color === 'green' ? '#16a34a' :
+                                          option.color === 'orange' ? '#ea580c' :
+                                            option.color === 'purple' ? '#9333ea' : '#6b7280'
+                                    }}>
+                                      {option.label}
+                                    </span>
+                                    <span className="text-xs text-muted-foreground ml-2">
+                                      {option.icon} {option.type}
+                                    </span>
+                                  </div>
+                                </SelectItem>
+                              );
+                            })}
+
+                            {/* NO FALLBACK OPTIONS - USER POLICY: Zero tolerance for hardcoded values */}
+                          </SelectContent>
+                        </Select>
+                      </div>
 
                       {/* Column 3-4: Full Name (Stage Name) - spans 2 columns */}
                       <div className="col-span-2 flex items-center gap-2">

@@ -106,7 +106,7 @@ export default function EnhancedSetlistSection({
           const bIsMainTalent = assignedTalent.some(t => t.name === b.codedBy && t.role.includes('main'));
           const aIsManaged = a.codedByRole.includes('managed');
           const bIsManaged = b.codedByRole.includes('managed');
-          
+
           if (aIsMainTalent && !bIsMainTalent) return -1;
           if (!aIsMainTalent && bIsMainTalent) return 1;
           if (aIsManaged && !bIsManaged) return -1;
@@ -122,7 +122,7 @@ export default function EnhancedSetlistSection({
 
   const searchYoutube = async () => {
     if (!searchQuery.trim()) return;
-    
+
     setIsSearching(true);
     try {
       const response = await fetch(`/api/youtube/search`, {
@@ -130,7 +130,7 @@ export default function EnhancedSetlistSection({
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ query: searchQuery, maxResults: 10 })
       });
-      
+
       if (response.ok) {
         const results = await response.json();
         setSearchResults(results.items || []);
@@ -290,33 +290,30 @@ export default function EnhancedSetlistSection({
       <div className="space-y-4">
         <Card>
           <CardHeader>
-            <div className="flex items-center justify-between">
-              <div>
-                <CardTitle className="flex items-center gap-2">
-                  <Music className="h-5 w-5" />
-                  Performance Setlist
-                </CardTitle>
-                <Input
-                  value={setlistName}
-                  onChange={(e) => setSetlistName(e.target.value)}
-                  placeholder="Setlist name..."
-                  className="mt-2 h-8"
-                />
-              </div>
-              <div className="flex items-center gap-2">
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={optimizeSetlist}
-                  disabled={setlistSongs.length === 0 || showOptimization}
-                >
-                  <Brain className="h-4 w-4 mr-1" />
-                  {showOptimization ? 'Optimizing...' : 'Smart Optimize'}
-                </Button>
-                <Badge variant="outline">
-                  {setlistSongs.filter(song => song.assignedTo).length} Assigned
-                </Badge>
-              </div>
+            <div className='flex justify-between gap-2'>
+              <CardTitle className="flex items-center gap-2 w-full">
+                <Music className="h-5 w-5" />
+                Performance Setlist
+              </CardTitle>
+              <Badge variant="outline" className='whitespace-nowrap'>
+                {setlistSongs.filter(song => song.assignedTo).length} Assigned
+              </Badge>
+            </div>
+            <div className="flex items-center gap-2">
+              <Input
+                value={setlistName}
+                onChange={(e) => setSetlistName(e.target.value)}
+                placeholder="Setlist name..."
+              />
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={optimizeSetlist}
+                disabled={setlistSongs.length === 0 || showOptimization}
+              >
+                <Brain className="h-4 w-4 mr-1" />
+                {showOptimization ? 'Optimizing...' : 'Smart Optimize'}
+              </Button>
             </div>
           </CardHeader>
           <CardContent>
@@ -331,11 +328,10 @@ export default function EnhancedSetlistSection({
                 setlistSongs.map((song, index) => (
                   <div
                     key={song.id}
-                    className={`p-3 border rounded-lg cursor-pointer transition-all ${
-                      selectedSong?.id === song.id 
-                        ? 'border-blue-500 bg-blue-50 dark:bg-blue-950' 
-                        : 'border-gray-300 hover:border-gray-400'
-                    }`}
+                    className={`p-3 border rounded-lg cursor-pointer transition-all ${selectedSong?.id === song.id
+                      ? 'border-blue-500 bg-blue-50 dark:bg-blue-950'
+                      : 'border-gray-300 hover:border-gray-400'
+                      }`}
                     onClick={() => setSelectedSong(song)}
                   >
                     <div className="flex items-center justify-between">
@@ -359,7 +355,7 @@ export default function EnhancedSetlistSection({
                           <Badge variant="outline" className="text-xs">
                             {song.bpm} BPM
                           </Badge>
-                          <div 
+                          <div
                             className={`w-3 h-3 rounded-full ${getEnergyColor(song.energy)}`}
                             title={`${song.energy} energy`}
                           />
@@ -388,7 +384,7 @@ export default function EnhancedSetlistSection({
                 ))
               )}
             </div>
-            
+
             <div className="mt-4 pt-4 border-t">
               <div className="flex items-center justify-between text-sm text-muted-foreground">
                 <span>Total Songs: {setlistSongs.length}</span>
@@ -519,7 +515,7 @@ export default function EnhancedSetlistSection({
                     value={selectedSong.key}
                     onValueChange={(value) => {
                       setSelectedSong({ ...selectedSong, key: value });
-                      setSetlistSongs(prev => prev.map(song => 
+                      setSetlistSongs(prev => prev.map(song =>
                         song.id === selectedSong.id ? { ...song, key: value } : song
                       ));
                     }}
@@ -542,7 +538,7 @@ export default function EnhancedSetlistSection({
                     onChange={(e) => {
                       const bpm = parseInt(e.target.value) || 120;
                       setSelectedSong({ ...selectedSong, bpm });
-                      setSetlistSongs(prev => prev.map(song => 
+                      setSetlistSongs(prev => prev.map(song =>
                         song.id === selectedSong.id ? { ...song, bpm } : song
                       ));
                     }}
@@ -550,14 +546,14 @@ export default function EnhancedSetlistSection({
                   />
                 </div>
               </div>
-              
+
               <div>
                 <Label>Assigned To</Label>
                 <Select
                   value={selectedSong.assignedTo || ''}
                   onValueChange={(value) => {
                     setSelectedSong({ ...selectedSong, assignedTo: value });
-                    setSetlistSongs(prev => prev.map(song => 
+                    setSetlistSongs(prev => prev.map(song =>
                       song.id === selectedSong.id ? { ...song, assignedTo: value } : song
                     ));
                   }}
@@ -575,14 +571,14 @@ export default function EnhancedSetlistSection({
                   </SelectContent>
                 </Select>
               </div>
-              
+
               <div>
                 <Label>Performance Notes</Label>
                 <Textarea
                   value={selectedSong.notes}
                   onChange={(e) => {
                     setSelectedSong({ ...selectedSong, notes: e.target.value });
-                    setSetlistSongs(prev => prev.map(song => 
+                    setSetlistSongs(prev => prev.map(song =>
                       song.id === selectedSong.id ? { ...song, notes: e.target.value } : song
                     ));
                   }}
