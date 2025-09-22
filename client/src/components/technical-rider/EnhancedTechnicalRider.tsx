@@ -3434,7 +3434,7 @@ function EnhancedTechnicalRider({
                 Enhanced technical rider with real-time collaboration and professional export
               </p>
             </div>
-            <div className="flex flex-col sm:flex-row gap-2">
+            <div className="flex flex-col md:flex-row gap-2">
               <Button
                 onClick={generateRequirements}
                 disabled={isGenerating}

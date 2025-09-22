@@ -1803,8 +1803,9 @@ export default function BookingWorkflow({
                       </Badge>
                     </div>
                   </div>
-                  <div className="flex-1">
-                    <div className="flex flex-col gap-2">
+                  <div className="flex-1 flex justify-center items-center w-full h-full">
+                    <div className="flex flex-col gap-2 w-full">
+                      <div className="text-right">
                         <Badge
                           className="capitalize"
                           variant={
@@ -1815,59 +1816,60 @@ export default function BookingWorkflow({
                         >
                           {booking.status || "pending"}
                         </Badge>
-                        <div className="flex gap-2">
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            className="border-green-500 text-green-700 hover:bg-green-50 w-full"
-                            onClick={async () => {
-                              try {
-                                await updateBookingMutation.mutateAsync({
-                                  status: "accepted",
-                                });
-                                toast({
-                                  title: "Booking Accepted",
-                                  description:
-                                    "The booking has been accepted by the primary artist",
-                                });
-                              } catch (error) {
-                                toast({
-                                  title: "Error",
-                                  description: "Failed to accept booking",
-                                  variant: "destructive",
-                                });
-                              }
-                            }}
-                          >
-                            Accept Booking
-                          </Button>
+                      </div>
+                      <div className="flex gap-2">
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          className="border-green-500 text-green-700 hover:bg-green-50 w-full"
+                          onClick={async () => {
+                            try {
+                              await updateBookingMutation.mutateAsync({
+                                status: "accepted",
+                              });
+                              toast({
+                                title: "Booking Accepted",
+                                description:
+                                  "The booking has been accepted by the primary artist",
+                              });
+                            } catch (error) {
+                              toast({
+                                title: "Error",
+                                description: "Failed to accept booking",
+                                variant: "destructive",
+                              });
+                            }
+                          }}
+                        >
+                          Accept Booking
+                        </Button>
 
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            className="border-red-500 text-red-700 hover:bg-red-50 w-full"
-                            onClick={async () => {
-                              try {
-                                await updateBookingMutation.mutateAsync({
-                                  status: "declined",
-                                });
-                                toast({
-                                  title: "Booking Declined",
-                                  description:
-                                    "The booking has been declined by the primary artist",
-                                });
-                              } catch (error) {
-                                toast({
-                                  title: "Error",
-                                  description: "Failed to decline booking",
-                                  variant: "destructive",
-                                });
-                              }
-                            }}
-                          >
-                            Decline Booking
-                          </Button>
-                        </div>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          className="border-red-500 text-red-700 hover:bg-red-50 w-full"
+                          onClick={async () => {
+                            try {
+                              await updateBookingMutation.mutateAsync({
+                                status: "declined",
+                              });
+                              toast({
+                                title: "Booking Declined",
+                                description:
+                                  "The booking has been declined by the primary artist",
+                              });
+                            } catch (error) {
+                              toast({
+                                title: "Error",
+                                description: "Failed to decline booking",
+                                variant: "destructive",
+                              });
+                            }
+                          }}
+                        >
+                          Decline Booking
+                        </Button>
+                      </div>
                     </div>
                   </div>
                 </div>
