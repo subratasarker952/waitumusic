@@ -81,6 +81,7 @@ interface AudioConfig {
 
 interface EnhancedTechnicalRiderProps {
   bookingId: number;
+  assignedTalents: any;
   eventDetails?: {
     eventName: string;
     venueName: string;
@@ -97,6 +98,7 @@ interface EnhancedTechnicalRiderProps {
 function EnhancedTechnicalRider({
   bookingId,
   eventDetails,
+  assignedTalents = [],
   canEdit = true,
   userRole = 'user',
   onSave,
@@ -105,11 +107,6 @@ function EnhancedTechnicalRider({
   const { toast } = useEnhancedToast();
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
-  // Fetch assigned talent data directly from API using same endpoint as assignment system
-  const { data: apiAssignedTalent, isLoading: talentLoading } = useQuery({
-    queryKey: [`/api/bookings/${bookingId}/assigned-talent`],
-    enabled: !!bookingId
-  });
 
   // Use API data if available, otherwise fall back to props
   // Individual Band Member Hospitality Section with individual data queries
@@ -1304,7 +1301,7 @@ function EnhancedTechnicalRider({
       [section]: prev[section].filter((channel: any) => channel.id !== channelId)
     }));
 
-    console.log(`🎚️ Removed channel ${channelId} from ${section} section`);
+    console.log(`🎚️ Removed channel ${channelId} from ${String(section)} section`);
   };
 
 
@@ -1756,11 +1753,11 @@ function EnhancedTechnicalRider({
   useEffect(() => {
     const initializeBandMembers = () => {
       console.log('🔄 TECHNICAL RIDER: Initializing band members');
-      console.log('🔄 Final assigned musicians (API) count:', Array.isArray(apiAssignedTalent) ? apiAssignedTalent.length : 0);
+      console.log('🔄 Final assigned musicians (API) count:', Array.isArray(assignedTalents) ? assignedTalents.length : 0);
       const members = [];
 
-      if (apiAssignedTalent && Array.isArray(apiAssignedTalent)) {
-        apiAssignedTalent.forEach((musician, index) => {
+      if (assignedTalents && Array.isArray(assignedTalents)) {
+        assignedTalents.forEach((musician, index) => {
           // Determine role badge from musician data - use server-provided talentType
           const roleBadge = musician.talentType;
 
@@ -1823,7 +1820,7 @@ function EnhancedTechnicalRider({
       console.log(`🔄 Total members added from API: ${members.length}`);
 
       // Add default management team members if no admins provided
-      if (!apiAssignedTalent || !Array.isArray(apiAssignedTalent) || !apiAssignedTalent.some((m: any) => m.role === 'admin')) {
+      if (!assignedTalents || !Array.isArray(assignedTalents) || !assignedTalents.some((m: any) => m.role === 'admin')) {
         members.push(
           {
             id: 'mgmt-ceo',
@@ -1900,7 +1897,7 @@ function EnhancedTechnicalRider({
     };
 
     initializeBandMembers();
-  }, [apiAssignedTalent, talentLoading]);
+  }, [assignedTalents]);
 
   // Note: Mixer rebuilds are handled in the initial band member loading above
   // No need for additional useEffect to rebuild on band member changes
@@ -2992,7 +2989,7 @@ function EnhancedTechnicalRider({
       const assignedMemberIds = new Set();
 
       // Update mixer channels directly
-      setMixerChannels(prevChannels => {
+      setMixerChannels((prevChannels: any) => {
         const updatedChannels = { ...prevChannels };
 
         // Clear all existing assignments first (for re-assignment when user returns)
@@ -3435,7 +3432,7 @@ function EnhancedTechnicalRider({
                 <span className="hidden sm:inline">{isGenerating ? 'Generating...' : 'Auto Generate'}</span>
                 <span className="sm:hidden">🎪 {isGenerating ? 'Creating...' : 'Auto Magic'}</span>
               </Button>
-              
+
               <Button
                 onClick={exportRider}
                 variant="outline"
@@ -3575,7 +3572,7 @@ function EnhancedTechnicalRider({
               </CardHeader>
               <CardContent>
                 <div className="space-y-3">
-                  {apiAssignedTalent?.map((musician, index) => (
+                  {assignedTalents?.map((musician, index) => (
                     <div key={index} className="p-3 border rounded-lg">
                       <div className="font-medium">{musician.name}</div>
                       <div className="text-sm text-muted-foreground">
@@ -3588,7 +3585,7 @@ function EnhancedTechnicalRider({
                       )}
                     </div>
                   ))}
-                  {apiAssignedTalent?.length === 0 && (
+                  {assignedTalents?.length === 0 && (
                     <div className="text-center py-4 text-muted-foreground">
                       <Users className="h-8 w-8 mx-auto mb-2 opacity-50" />
                       <p>No musicians assigned yet</p>
@@ -5217,7 +5214,7 @@ function EnhancedTechnicalRider({
         <TabsContent value="schedule" className="space-y-4 lg:space-y-6 animate-fade-in-up mobile-container">
           <EnhancedSetlistSection
             bookingId={bookingId}
-            assignedTalent={apiAssignedTalent?.map((member: any) => ({
+            assignedTalent={assignedTalents?.map((member: any) => ({
               id: member.userId,
               name: member.fullName || member.stageName || 'Band Member',
               role: member.selectedTalent || member.assignedRole || 'Performer',

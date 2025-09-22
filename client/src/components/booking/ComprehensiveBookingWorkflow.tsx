@@ -550,7 +550,7 @@ export default function BookingWorkflow({
         (individualPricing[talent.id]?.price ||
           parseFloat(
             categoryPricing[
-              talent.type as keyof typeof categoryPricing
+            talent.type as keyof typeof categoryPricing
             ] as string
           ) ||
           0)
@@ -653,7 +653,7 @@ export default function BookingWorkflow({
             individualPricing[talent.id]?.price ||
             parseFloat(
               categoryPricing[
-                talent.type as keyof typeof categoryPricing
+              talent.type as keyof typeof categoryPricing
               ] as string
             ) ||
             0,
@@ -721,9 +721,8 @@ export default function BookingWorkflow({
         }));
         toast({
           title: "Contract Preview Generated",
-          description: `${
-            type === "booking" ? "Booking Agreement" : "Performance Contract"
-          } preview with enhanced pricing`,
+          description: `${type === "booking" ? "Booking Agreement" : "Performance Contract"
+            } preview with enhanced pricing`,
         });
       } else {
         const errorText = await response.text();
@@ -1215,16 +1214,16 @@ export default function BookingWorkflow({
           (talent.type === "Main Booked Talent"
             ? 3
             : talent.type === "Artist"
-            ? 4
-            : talent.type === "Managed Musician"
-            ? 5
-            : talent.type === "Musician"
-            ? 6
-            : talent.type === "Contracted Professional"
-            ? 7
-            : talent.type === "Professional"
-            ? 8
-            : 6);
+              ? 4
+              : talent.type === "Managed Musician"
+                ? 5
+                : talent.type === "Musician"
+                  ? 6
+                  : talent.type === "Contracted Professional"
+                    ? 7
+                    : talent.type === "Professional"
+                      ? 8
+                      : 6);
 
         return {
           userId: talent.userId,
@@ -1499,8 +1498,8 @@ export default function BookingWorkflow({
         assignedTalent.length > 0
           ? "completed"
           : currentStep === 1
-          ? "in_progress"
-          : "pending",
+            ? "in_progress"
+            : "pending",
       icon: <Users className="h-5 w-5" />,
       isActive: currentStep === 1,
     },
@@ -1512,8 +1511,8 @@ export default function BookingWorkflow({
       status: stepConfirmations[2]
         ? "completed"
         : currentStep === 2
-        ? "in_progress"
-        : "pending",
+          ? "in_progress"
+          : "pending",
       icon: <FileText className="h-5 w-5" />,
       isActive: currentStep === 2,
     },
@@ -1525,8 +1524,8 @@ export default function BookingWorkflow({
       status: stepConfirmations[3]
         ? "completed"
         : currentStep === 3
-        ? "in_progress"
-        : "pending",
+          ? "in_progress"
+          : "pending",
       icon: <Sliders className="h-5 w-5" />,
       isActive: currentStep === 3,
     },
@@ -1538,8 +1537,8 @@ export default function BookingWorkflow({
       status: stepConfirmations[4]
         ? "completed"
         : currentStep === 4
-        ? "in_progress"
-        : "pending",
+          ? "in_progress"
+          : "pending",
       icon: <Sliders className="h-5 w-5" />,
       isActive: currentStep === 4,
     },
@@ -1552,8 +1551,8 @@ export default function BookingWorkflow({
         (booking?.signatures?.length || 0) >= 1
           ? "completed"
           : currentStep === 5
-          ? "in_progress"
-          : "pending",
+            ? "in_progress"
+            : "pending",
       icon: <PenTool className="h-5 w-5" />,
       isActive: currentStep === 5,
     },
@@ -1566,8 +1565,8 @@ export default function BookingWorkflow({
         (booking?.payments?.length || 0) > 0
           ? "completed"
           : currentStep === 6
-          ? "in_progress"
-          : "pending",
+            ? "in_progress"
+            : "pending",
       icon: <CreditCard className="h-5 w-5" />,
       isActive: currentStep === 6,
     },
@@ -1595,9 +1594,8 @@ export default function BookingWorkflow({
       setCurrentStep(stepNumber);
       toast({
         title: "Navigation",
-        description: `Jumped to step ${stepNumber}: ${
-          workflowSteps[stepNumber - 1]?.title
-        }`,
+        description: `Jumped to step ${stepNumber}: ${workflowSteps[stepNumber - 1]?.title
+          }`,
       });
       return;
     }
@@ -1610,9 +1608,8 @@ export default function BookingWorkflow({
       setCurrentStep(stepNumber);
       toast({
         title: "Navigation",
-        description: `Jumped to step ${stepNumber}: ${
-          workflowSteps[stepNumber - 1]?.title
-        }`,
+        description: `Jumped to step ${stepNumber}: ${workflowSteps[stepNumber - 1]?.title
+          }`,
       });
       return;
     }
@@ -1682,11 +1679,10 @@ export default function BookingWorkflow({
               {availableBookings.map((bkg: any) => (
                 <div
                   key={bkg.id}
-                  className={`p-3 border rounded cursor-pointer transition-colors ${
-                    bkg.id === bookingId
+                  className={`p-3 border rounded cursor-pointer transition-colors ${bkg.id === bookingId
                       ? "bg-primary/10 border-primary"
                       : "hover:bg-muted"
-                  }`}
+                    }`}
                 >
                   <div className="flex justify-between items-center">
                     <div>
@@ -1940,7 +1936,7 @@ export default function BookingWorkflow({
                       </div>
                     </div>
                     {talent.type === "Main Booked Talent" ||
-                    talent.userId === booking?.primaryArtist.userId ? (
+                      talent.userId === booking?.primaryArtist.userId ? (
                       <div className="flex flex-col items-end gap-1">
                         <Badge
                           variant="outline"
@@ -2271,7 +2267,7 @@ export default function BookingWorkflow({
                                   )}
                                   {/* Secondary Talents */}
                                   {musician.secondaryTalents &&
-                                  musician.secondaryTalents.length > 0 ? (
+                                    musician.secondaryTalents.length > 0 ? (
                                     musician.secondaryTalents
                                       .slice(0, 3)
                                       .map((talent: string, idx: number) => (
@@ -2418,7 +2414,7 @@ export default function BookingWorkflow({
                                   )}
                                   {/* Secondary Talents */}
                                   {musician.secondaryTalents &&
-                                  musician.secondaryTalents.length > 0 ? (
+                                    musician.secondaryTalents.length > 0 ? (
                                     musician.secondaryTalents
                                       .slice(0, 3)
                                       .map((talent: string, idx: number) => (
@@ -2712,13 +2708,13 @@ export default function BookingWorkflow({
               {(!availableArtists ||
                 !availableMusicians ||
                 !availableProfessionals) && (
-                <div className="text-center py-4">
-                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900 mx-auto mb-2"></div>
-                  <p className="text-muted-foreground">
-                    Loading available talent...
-                  </p>
-                </div>
-              )}
+                  <div className="text-center py-4">
+                    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900 mx-auto mb-2"></div>
+                    <p className="text-muted-foreground">
+                      Loading available talent...
+                    </p>
+                  </div>
+                )}
 
               {/* No talent available */}
               {(Array.isArray(availableArtists)
@@ -2815,25 +2811,22 @@ export default function BookingWorkflow({
                 {Object.entries(categoryPricing).map(([category, price]) => (
                   <div
                     key={category}
-                    className={`p-3 rounded-lg border ${
-                      getAssignedCategories().has(category)
+                    className={`p-3 rounded-lg border ${getAssignedCategories().has(category)
                         ? "bg-gradient-to-br from-green-50 to-emerald-50 border-green-200"
                         : "bg-gradient-to-br from-gray-50 to-slate-50 border-gray-200"
-                    }`}
+                      }`}
                   >
                     <label
-                      className={`text-sm font-medium flex items-center gap-2 ${
-                        getAssignedCategories().has(category)
+                      className={`text-sm font-medium flex items-center gap-2 ${getAssignedCategories().has(category)
                           ? "text-green-800"
                           : "text-gray-600"
-                      }`}
+                        }`}
                     >
                       <div
-                        className={`w-2 h-2 rounded-full ${
-                          getAssignedCategories().has(category)
+                        className={`w-2 h-2 rounded-full ${getAssignedCategories().has(category)
                             ? "bg-green-500"
                             : "bg-gray-400"
-                        }`}
+                          }`}
                       ></div>
                       {category}
                     </label>
@@ -2847,11 +2840,10 @@ export default function BookingWorkflow({
                           [category]: e.target.value,
                         }));
                       }}
-                      className={`w-full mt-2 p-2 border rounded ${
-                        !getAssignedCategories().has(category)
+                      className={`w-full mt-2 p-2 border rounded ${!getAssignedCategories().has(category)
                           ? "bg-gray-100 text-gray-500"
                           : "bg-white focus:ring-2 focus:ring-green-500 focus:border-transparent"
-                      }`}
+                        }`}
                       placeholder={
                         getAssignedCategories().has(category)
                           ? `Enter ${category.toLowerCase()} rate`
@@ -2919,7 +2911,7 @@ export default function BookingWorkflow({
                             individualPricing[talent.id]?.price ||
                             parseFloat(
                               categoryPricing[
-                                talent.type as keyof typeof categoryPricing
+                              talent.type as keyof typeof categoryPricing
                               ] as string
                             ) ||
                             ""
@@ -2970,7 +2962,7 @@ export default function BookingWorkflow({
                                   prev[talent.id]?.price ||
                                   parseFloat(
                                     categoryPricing[
-                                      talent.type as keyof typeof categoryPricing
+                                    talent.type as keyof typeof categoryPricing
                                     ] as string
                                   ) ||
                                   0,
@@ -3007,7 +2999,7 @@ export default function BookingWorkflow({
                                   prev[talent.id]?.price ||
                                   parseFloat(
                                     categoryPricing[
-                                      talent.type as keyof typeof categoryPricing
+                                    talent.type as keyof typeof categoryPricing
                                     ] as string
                                   ) ||
                                   0,
@@ -3055,7 +3047,7 @@ export default function BookingWorkflow({
                                   prev[talent.id]?.price ||
                                   parseFloat(
                                     categoryPricing[
-                                      talent.type as keyof typeof categoryPricing
+                                    talent.type as keyof typeof categoryPricing
                                     ] as string
                                   ) ||
                                   0,
@@ -3106,7 +3098,7 @@ export default function BookingWorkflow({
                                   prev[talent.id]?.price ||
                                   parseFloat(
                                     categoryPricing[
-                                      talent.type as keyof typeof categoryPricing
+                                    talent.type as keyof typeof categoryPricing
                                     ] as string
                                   ) ||
                                   0,
@@ -3614,6 +3606,7 @@ export default function BookingWorkflow({
           <CardContent>
             <EnhancedTechnicalRider
               bookingId={bookingId}
+              assignedTalents={assignedTalent}
               eventDetails={{
                 eventName: booking?.eventName || "",
                 venueName: booking?.venueName || "",
@@ -3828,23 +3821,20 @@ export default function BookingWorkflow({
         {workflowSteps.map((step, index) => (
           <Card
             key={step.id}
-            className={`cursor-pointer transition-all ${
-              step.isActive ? "ring-2 ring-primary shadow-lg" : ""
-            } ${
-              step.status === "completed" ? "bg-green-50 border-green-200" : ""
-            }`}
+            className={`cursor-pointer transition-all ${step.isActive ? "ring-2 ring-primary shadow-lg" : ""
+              } ${step.status === "completed" ? "bg-green-50 border-green-200" : ""
+              }`}
             onClick={() => setCurrentStep(index + 1)}
           >
             <CardContent className="p-4">
               <div className="flex items-center space-x-3">
                 <div
-                  className={`w-10 h-10 rounded-full flex items-center justify-center ${
-                    step.status === "completed"
+                  className={`w-10 h-10 rounded-full flex items-center justify-center ${step.status === "completed"
                       ? "bg-green-500 text-white"
                       : step.isActive
-                      ? "bg-primary text-white"
-                      : "bg-gray-200"
-                  }`}
+                        ? "bg-primary text-white"
+                        : "bg-gray-200"
+                    }`}
                 >
                   {step.status === "completed" ? (
                     <CheckCircle className="w-5 h-5" />
