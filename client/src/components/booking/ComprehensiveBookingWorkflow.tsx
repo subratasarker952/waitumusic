@@ -1680,8 +1680,8 @@ export default function BookingWorkflow({
                 <div
                   key={bkg.id}
                   className={`p-3 border rounded cursor-pointer transition-colors ${bkg.id === bookingId
-                      ? "bg-primary/10 border-primary"
-                      : "hover:bg-muted"
+                    ? "bg-primary/10 border-primary"
+                    : "hover:bg-muted"
                     }`}
                 >
                   <div className="flex justify-between items-center">
@@ -1945,7 +1945,7 @@ export default function BookingWorkflow({
                           Main Booked Talent
                         </Badge>
                         <div className="flex gap-1">
-                          <Button
+                          {/* <Button
                             variant="outline"
                             size="sm"
                             className="border-green-500 text-green-700 hover:bg-green-50 text-xs px-2 py-1"
@@ -1958,6 +1958,36 @@ export default function BookingWorkflow({
                             className="border-red-500 text-red-700 hover:bg-red-50 text-xs px-2 py-1"
                           >
                             Decline
+                          </Button> */}
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            className="border-red-300 text-red-600 hover:bg-red-50"
+                            onClick={async () => {
+                              try {
+                                await apiRequest(`/api/assignments/${talent.id}`, {
+                                  method: "DELETE",
+                                });
+
+                                setAssignedTalent((prev) =>
+                                  prev.filter((t) => t.id !== talent.id)
+                                );
+
+                                toast({
+                                  title: "Unassigned",
+                                  description: `${talent.name} removed from booking`,
+                                });
+                              } catch (error: any) {
+                                toast({
+                                  title: "Remove Failed",
+                                  description:
+                                    error.message || "Something went wrong",
+                                  variant: "destructive",
+                                });
+                              }
+                            }}
+                          >
+                            Remove
                           </Button>
                         </div>
                       </div>
@@ -2812,20 +2842,20 @@ export default function BookingWorkflow({
                   <div
                     key={category}
                     className={`p-3 rounded-lg border ${getAssignedCategories().has(category)
-                        ? "bg-gradient-to-br from-green-50 to-emerald-50 border-green-200"
-                        : "bg-gradient-to-br from-gray-50 to-slate-50 border-gray-200"
+                      ? "bg-gradient-to-br from-green-50 to-emerald-50 border-green-200"
+                      : "bg-gradient-to-br from-gray-50 to-slate-50 border-gray-200"
                       }`}
                   >
                     <label
                       className={`text-sm font-medium flex items-center gap-2 ${getAssignedCategories().has(category)
-                          ? "text-green-800"
-                          : "text-gray-600"
+                        ? "text-green-800"
+                        : "text-gray-600"
                         }`}
                     >
                       <div
                         className={`w-2 h-2 rounded-full ${getAssignedCategories().has(category)
-                            ? "bg-green-500"
-                            : "bg-gray-400"
+                          ? "bg-green-500"
+                          : "bg-gray-400"
                           }`}
                       ></div>
                       {category}
@@ -2841,8 +2871,8 @@ export default function BookingWorkflow({
                         }));
                       }}
                       className={`w-full mt-2 p-2 border rounded ${!getAssignedCategories().has(category)
-                          ? "bg-gray-100 text-gray-500"
-                          : "bg-white focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                        ? "bg-gray-100 text-gray-500"
+                        : "bg-white focus:ring-2 focus:ring-green-500 focus:border-transparent"
                         }`}
                       placeholder={
                         getAssignedCategories().has(category)
@@ -3830,10 +3860,10 @@ export default function BookingWorkflow({
               <div className="flex items-center space-x-3">
                 <div
                   className={`w-10 h-10 rounded-full flex items-center justify-center ${step.status === "completed"
-                      ? "bg-green-500 text-white"
-                      : step.isActive
-                        ? "bg-primary text-white"
-                        : "bg-gray-200"
+                    ? "bg-green-500 text-white"
+                    : step.isActive
+                      ? "bg-primary text-white"
+                      : "bg-gray-200"
                     }`}
                 >
                   {step.status === "completed" ? (

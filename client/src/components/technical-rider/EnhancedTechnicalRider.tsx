@@ -3362,18 +3362,18 @@ function EnhancedTechnicalRider({
         completion_status: completionStatus || {},
         saved_at: new Date().toISOString(),
       };
+      console.log(saveData)
+      // const response = await fetch(`/api/bookings/${bookingId}/enhanced-technical-rider`, {
+      //   method: 'POST',
+      //   body: JSON.stringify(saveData),
+      // });
 
-      const response = await fetch(`/api/bookings/${bookingId}/enhanced-technical-rider`, {
-        method: 'POST',
-        body: JSON.stringify(saveData),
-      });
+      // if (!response.ok) {
+      //   throw new Error("Failed to save technical rider");
+      // }
 
-      if (!response.ok) {
-        throw new Error("Failed to save technical rider");
-      }
-
-      const result = await response.json(); // Optional: backend থেকে return আসলে ব্যবহার করতে পারো
-      onSave?.(result.data ?? riderData);
+      // const result = await response.json(); // Optional: backend থেকে return আসলে ব্যবহার করতে পারো
+      // onSave?.(result.data ?? riderData);
 
       toast(TOAST_CONFIGS.SUCCESS.SAVE);
       scrollToTop();
@@ -3468,7 +3468,7 @@ function EnhancedTechnicalRider({
 
       {/* Main Tabs - Musical Mobile Optimized */}
       <Tabs value={activeTab} onValueChange={(value: string) => setActiveTab(value as any)}>
-        <TabsList className="musical-tabs-list ">
+        <TabsList className="musical-tabs-list">
           <TabsTrigger value="requirements" className="musical-tab-trigger musical-tab">
             <div className="mobile-tab-icon">🎛️</div>
             <div className="mobile-tab-text">Requirements</div>
@@ -3651,15 +3651,15 @@ function EnhancedTechnicalRider({
               <div>
                 <h4 className="font-semibold mb-3">MANAGEMENT TEAM and BAND members are:</h4>
                 <div className="space-y-2">
-                  <div className="grid grid-cols-5 gap-4 font-semibold text-sm bg-gray-100 p-3 rounded">
+                  <div className="grid grid-cols-6 gap-4 font-semibold text-sm bg-gray-100 p-3 rounded">
                     <div className="col-span-1">Membership</div>
-                    <div className="col-span-1">Talent/Skill</div>
+                    <div className="col-span-2">Talent/Skill</div>
                     <div className="col-span-2">Full Name (Stage Name)</div>
                     <div className="col-span-1">Role</div>
                   </div>
 
                   {bandMembers.map((member, index) => (
-                    <div key={member.id} className="grid grid-cols-5 gap-4 p-3 border rounded items-center">
+                    <div key={member.id} className="grid grid-cols-6 gap-4 p-3 border rounded items-center">
                       {/* Column 1: Membership (smaller) */}
                       <Badge
                         variant={member.membership === "BAND" ? "default" : member.membership === "TEAM" ? "outline" : "secondary"}
@@ -3670,67 +3670,68 @@ function EnhancedTechnicalRider({
                       </Badge>
 
                       {/* Column 2: Talent/Skill Dropdown */}
-                      <Select
-                        value={member.selectedTalent || ""}
-                        onValueChange={(value) => {
-                          // Skip divider option
-                          if (value === '__divider__') return;
+                      <div className='col-span-2'>
+                        <Select
+                          value={member.selectedTalent || ""}
+                          onValueChange={(value) => {
+                            // Skip divider option
+                            if (value === '__divider__') return;
 
-                          console.log(`🎯 TALENT/SKILL CHANGE: ${member.fullName} selected "${value}"`);
+                            console.log(`🎯 TALENT/SKILL CHANGE: ${member.fullName} selected "${value}"`);
 
-                          // Use the new unified talent change handler
-                          handleTalentChange(member.id, value);
+                            // Use the new unified talent change handler
+                            handleTalentChange(member.id, value);
 
-                          // Also update band member directly for immediate UI update
-                          updateBandMember(member.id, { selectedTalent: value });
+                            // Also update band member directly for immediate UI update
+                            updateBandMember(member.id, { selectedTalent: value });
 
 
-                        }}
-                      >
-                        <SelectTrigger className="h-8 text-xs">
-                          <SelectValue />
-                        </SelectTrigger>
-                        <SelectContent>
-                          {/* Enhanced database-driven talent options with generic alternatives */}
-                          {buildTalentDropdownOptions(member).map((option, idx) => {
-                            // Handle divider specially - non-selectable
-                            if (option.type === 'Divider') {
-                              return (
-                                <div key={idx} className="px-2 py-1 text-center text-gray-400 text-xs border-b">
-                                  {option.label}
-                                </div>
-                              );
-                            }
-
-                            return (
-                              <SelectItem
-                                key={idx}
-                                value={option.value}
-                                className={option.type === 'Primary' ? 'bg-blue-50 font-medium' :
-                                  option.type === 'Secondary' ? 'bg-gray-50' :
-                                    option.type === 'Generic' ? 'bg-green-50' : ''}
-                              >
-                                <div className="flex items-center justify-between w-full">
-                                  <span style={{
-                                    color: option.color === 'blue' ? '#3b82f6' :
-                                      option.color === 'green' ? '#16a34a' :
-                                        option.color === 'orange' ? '#ea580c' :
-                                          option.color === 'purple' ? '#9333ea' : '#6b7280'
-                                  }}>
+                          }}
+                        >
+                          <SelectTrigger className="h-8 text-xs">
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent>
+                            {/* Enhanced database-driven talent options with generic alternatives */}
+                            {buildTalentDropdownOptions(member).map((option, idx) => {
+                              // Handle divider specially - non-selectable
+                              if (option.type === 'Divider') {
+                                return (
+                                  <div key={idx} className="px-2 py-1 text-center text-gray-400 text-xs border-b">
                                     {option.label}
-                                  </span>
-                                  <span className="text-xs text-muted-foreground ml-2">
-                                    {option.icon} {option.type}
-                                  </span>
-                                </div>
-                              </SelectItem>
-                            );
-                          })}
+                                  </div>
+                                );
+                              }
 
-                          {/* NO FALLBACK OPTIONS - USER POLICY: Zero tolerance for hardcoded values */}
-                        </SelectContent>
-                      </Select>
+                              return (
+                                <SelectItem
+                                  key={idx}
+                                  value={option.value}
+                                  className={option.type === 'Primary' ? 'bg-blue-50 font-medium' :
+                                    option.type === 'Secondary' ? 'bg-gray-50' :
+                                      option.type === 'Generic' ? 'bg-green-50' : ''}
+                                >
+                                  <div className="flex items-center justify-between">
+                                    <span className='whitespace-nowrap block' style={{
+                                      color: option.color === 'blue' ? '#3b82f6' :
+                                        option.color === 'green' ? '#16a34a' :
+                                          option.color === 'orange' ? '#ea580c' :
+                                            option.color === 'purple' ? '#9333ea' : '#6b7280'
+                                    }}>
+                                      {option.label}
+                                    </span>
+                                    <span className="text-xs text-muted-foreground ml-2 whitespace-nowrap block">
+                                      {option.icon} {option.type}
+                                    </span>
+                                  </div>
+                                </SelectItem>
+                              );
+                            })}
 
+                            {/* NO FALLBACK OPTIONS - USER POLICY: Zero tolerance for hardcoded values */}
+                          </SelectContent>
+                        </Select>
+                      </div>
                       {/* Column 3-4: Full Name (Stage Name) - spans 2 columns */}
                       <div className="col-span-2 flex items-center gap-2">
                         <div className="flex-1 flex items-center gap-2">

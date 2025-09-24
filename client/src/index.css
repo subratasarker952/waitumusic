@@ -237,6 +237,7 @@
     padding: 0.5rem;
     border-radius: 1rem;
     margin: 0.5rem 0;
+    height: 100%;
   }
   
   .musical-tab-trigger {
@@ -279,6 +280,7 @@
     border: 1px solid #e2e8f0;
     border-radius: 0.5rem;
     padding: 0.25rem;
+    height: 100%;
   }
   
   .musical-tab-trigger {
