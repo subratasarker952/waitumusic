@@ -254,6 +254,7 @@
     font-weight: 500;
     transition: all 0.3s ease;
     touch-action: manipulation;
+    height: 100%;
   }
   
   .musical-tab-trigger:hover {
@@ -293,6 +294,7 @@
     font-weight: 500;
     transition: all 0.2s ease;
     color: #64748b;
+    height: 100%;
   }
   
   .musical-tab-trigger:hover {

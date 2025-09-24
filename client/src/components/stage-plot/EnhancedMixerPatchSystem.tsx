@@ -14,8 +14,8 @@ import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Checkbox } from '@/components/ui/checkbox';
-import { 
-  Volume2, Mic, Settings, Save, Download, RotateCw, 
+import {
+  Volume2, Mic, Settings, Save, Download, RotateCw,
   Zap, Speaker, Music, Guitar, Piano, Drum
 } from 'lucide-react';
 
@@ -63,25 +63,25 @@ const INSTRUMENT_PRIORITY: Record<string, number> = {
   'Drummer': 1,
   'Percussion': 2,
   'Percussionist': 2,
-  
+
   // Bass instruments
   'Bass Player': 3,
   'Bass': 3,
   'Upright Bass': 3,
-  
+
   // Guitars
   'Lead Guitarist': 4,
   'Rhythm Guitarist': 5,
   'Guitar': 4,
   'Electric Guitar': 4,
   'Acoustic Guitar': 5,
-  
+
   // Keys/Piano
   'Keyboardist': 6,
   'Piano': 6,
   'Keyboard': 6,
   'Synth': 6,
-  
+
   // Other instruments
   'Violinist': 7,
   'Violin': 7,
@@ -90,7 +90,7 @@ const INSTRUMENT_PRIORITY: Record<string, number> = {
   'Trumpet': 9,
   'Trombone': 10,
   'Flute': 11,
-  
+
   // Vocals last
   'Lead Vocalist': 20,
   'Background Vocalist': 21,
@@ -111,16 +111,16 @@ const getInstrumentInputType = (instrument: string): MixerChannel['inputType'] =
 
 const getInstrumentPhantomPower = (instrument: string): boolean => {
   const lowerInstrument = instrument.toLowerCase();
-  return lowerInstrument.includes('vocal') || lowerInstrument.includes('condenser') || 
-         lowerInstrument.includes('overhead') || lowerInstrument.includes('acoustic') ||
-         lowerInstrument.includes('singer');
+  return lowerInstrument.includes('vocal') || lowerInstrument.includes('condenser') ||
+    lowerInstrument.includes('overhead') || lowerInstrument.includes('acoustic') ||
+    lowerInstrument.includes('singer');
 };
 
-export default function EnhancedMixerPatchSystem({ 
-  bookingId, 
-  assignedTalent = [], 
+export default function EnhancedMixerPatchSystem({
+  bookingId,
+  assignedTalent = [],
   canEdit = true,
-  onSave 
+  onSave
 }: EnhancedMixerPatchSystemProps) {
   const { toast } = useToast();
   const [mixerChannels, setMixerChannels] = useState<MixerChannel[]>([]);
@@ -144,7 +144,7 @@ export default function EnhancedMixerPatchSystem({
 
     // Sort by instrument priority (drums first, vocals last)
     const sortedInstruments = talentWithInstruments
-      .flatMap(talent => 
+      .flatMap(talent =>
         talent.instruments.map(instrument => ({
           talent,
           instrument,
@@ -158,7 +158,7 @@ export default function EnhancedMixerPatchSystem({
       if (channelNumber <= totalChannels) {
         const inputType = getInstrumentInputType(instrument);
         const phantom = getInstrumentPhantomPower(instrument);
-        
+
         channels.push({
           channel: channelNumber,
           instrument: instrument,
@@ -173,7 +173,7 @@ export default function EnhancedMixerPatchSystem({
           assigned: true,
           notes: `Stage Plot Assignment: ${talent.stageName}`
         });
-        
+
         channelNumber++;
       }
     });
@@ -291,8 +291,9 @@ export default function EnhancedMixerPatchSystem({
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-4">
+      <div className="flex flex-col lg:flex-row gap-2 items-center justify-between">
+        <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+
           <h3 className="text-xl font-semibold flex items-center gap-2">
             <Volume2 className="h-5 w-5" />
             Mixer Input Patch List
@@ -300,7 +301,8 @@ export default function EnhancedMixerPatchSystem({
           <Badge variant="outline" className="bg-green-50 text-green-700 border-green-200">
             Generated from Stage Plot
           </Badge>
-          <Badge variant="secondary">
+
+          <Badge variant="secondary" className='whitespace-nowrap'>
             {assignedChannels.length}/{totalChannels} Channels
           </Badge>
         </div>
@@ -333,7 +335,7 @@ export default function EnhancedMixerPatchSystem({
         <CardContent>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
             {assignedChannels.map((channel) => (
-              <div 
+              <div
                 key={channel.channel}
                 className={`p-3 rounded-lg border ${getChannelColor(channel)}`}
               >
@@ -381,8 +383,8 @@ export default function EnhancedMixerPatchSystem({
               </thead>
               <tbody>
                 {assignedChannels.map((channel) => (
-                  <tr 
-                    key={channel.channel} 
+                  <tr
+                    key={channel.channel}
                     className={`border-b hover:bg-gray-50 dark:hover:bg-gray-800 ${getChannelColor(channel)}`}
                   >
                     <td className="p-3 font-mono font-bold">
@@ -449,7 +451,7 @@ export default function EnhancedMixerPatchSystem({
                 <Input value={selectedChannel.stageName} disabled />
               </div>
             </div>
-            
+
             <div className="grid grid-cols-3 gap-4">
               <div>
                 <label className="text-sm font-medium">Input Type</label>
@@ -477,9 +479,9 @@ export default function EnhancedMixerPatchSystem({
 
             <div>
               <label className="text-sm font-medium">Notes</label>
-              <Input 
-                value={selectedChannel.notes || 'Auto-generated from stage plot assignments'} 
-                disabled 
+              <Input
+                value={selectedChannel.notes || 'Auto-generated from stage plot assignments'}
+                disabled
               />
             </div>
           </div>
