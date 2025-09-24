@@ -81,7 +81,7 @@ export const managementTiers = pgTable("management_tiers", {
 
 export const rolesManagement = pgTable("roles_management", {
   id: serial("id").primaryKey(),
-  name: text("name").notNull(), 
+  name: text("name").notNull(),
   canApply: boolean("can_apply").default(false),
 
   // Universal percentages
@@ -470,32 +470,32 @@ export const bookings = pgTable("bookings", {
   status: text("status").default("pending"), // pending, approved, contract_generated, signed, paid, completed, cancelled
   totalBudget: decimal("total_budget", { precision: 10, scale: 2 }),
   finalPrice: decimal("final_price", { precision: 10, scale: 2 }),
-  
+
   // Guest booking fields
   guestName: text("guest_name"), // For non-registered users
   guestEmail: text("guest_email"), // For non-registered users  
   guestPhone: text("guest_phone"), // For non-registered users
   isGuestBooking: boolean("is_guest_booking").default(false),
-  
+
   // Admin assignment to managed users
   assignedAdminId: integer("assigned_admin_id").references(() => users.id),
   adminApprovedAt: timestamp("admin_approved_at"),
-  
+
   // Internal booking objectives (not visible to booker)
   internalObjectives: jsonb("internal_objectives"), // Admin/managed talent internal goals and notes
   internalNotes: text("internal_notes"), // Private notes for managed talent and admin team
-  
+
   // Contract and payment tracking
   contractsGenerated: boolean("contracts_generated").default(false),
   allSignaturesCompleted: boolean("all_signatures_completed").default(false),
   paymentCompleted: boolean("payment_completed").default(false),
   receiptGenerated: boolean("receipt_generated").default(false),
-  
+
   // Comprehensive Booking Workflow fields
   workflowData: jsonb("workflow_data"), // Stores technical rider, stage plot, setlist, etc.
   currentWorkflowStep: integer("current_workflow_step").default(1), // Current step in workflow
   lastModified: timestamp("last_modified").defaultNow(),
-  
+
   createdAt: timestamp("created_at").defaultNow(),
   updatedAt: timestamp("updated_at").defaultNow(),
 });
@@ -521,19 +521,19 @@ export const bookingMusicians = pgTable("booking_musicians", {
   musicianResponse: text("musician_response"), // accept, decline, counter_offer
   musicianResponseMessage: text("musician_response_message"),
   rateNotes: text("rate_notes"), // Admin notes about rate determination
-  
+
   // Counter offer fields
   counterOfferAmount: decimal("counter_offer_amount", { precision: 10, scale: 2 }),
   counterOfferCurrency: text("counter_offer_currency"),
   counterOfferUsdEquivalent: decimal("counter_offer_usd_equivalent", { precision: 10, scale: 2 }),
   counterOfferMessage: text("counter_offer_message"),
   counterOfferAt: timestamp("counter_offer_at"),
-  
+
   // Admin response to counter offer
   adminCounterResponse: text("admin_counter_response"), // accepted, declined, counter_counter
   adminCounterResponseMessage: text("admin_counter_response_message"),
   adminCounterResponseAt: timestamp("admin_counter_response_at"),
-  
+
   assignedAt: timestamp("assigned_at").defaultNow(),
   rateSetAt: timestamp("rate_set_at"),
   musicianResponseAt: timestamp("musician_response_at"),
@@ -541,7 +541,7 @@ export const bookingMusicians = pgTable("booking_musicians", {
 
 export const technicalRiders = pgTable("technical_riders", {
   id: serial("id").primaryKey(),
-  bookingId: integer("booking_id").references(() => bookings.id),
+  bookingId: integer("booking_id").references(() => bookings.id).notNull().unique(),
   // Auto-populated from user profiles
   artistTechnicalSpecs: jsonb("artist_technical_specs"), // From artist's private profile
   musicianTechnicalSpecs: jsonb("musician_technical_specs"), // From musicians' private profiles
@@ -788,23 +788,23 @@ export const releaseContracts = pgTable("release_contracts", {
   releaseRequestReason: text("release_request_reason").notNull(),
   contractTerms: jsonb("contract_terms").notNull(), // Release terms, conditions, obligations
   managementTierAtRelease: integer("management_tier_at_release").references(() => managementTiers.id),
-  
+
   // Contract status workflow
   status: text("status").default("pending"), // pending, approved, signed, completed, cancelled
   requestedAt: timestamp("requested_at").defaultNow(),
   approvedAt: timestamp("approved_at"),
   signedAt: timestamp("signed_at"),
   completedAt: timestamp("completed_at"),
-  
+
   // Financial terms
   releaseCompensation: decimal("release_compensation", { precision: 10, scale: 2 }),
   retainedRoyaltyPercentage: decimal("retained_royalty_percentage", { precision: 5, scale: 2 }),
   releaseEffectiveDate: timestamp("release_effective_date"),
-  
+
   // Document management
   contractDocumentUrl: text("contract_document_url"),
   signedContractUrl: text("signed_contract_url"),
-  
+
   createdAt: timestamp("created_at").defaultNow(),
   updatedAt: timestamp("updated_at").defaultNow(),
 });
@@ -830,11 +830,11 @@ export const managementTransitions = pgTable("management_transitions", {
   toRoleId: integer("to_role_id").references(() => roles.id).notNull(),
   fromManagementTierId: integer("from_management_tier_id").references(() => managementTiers.id),
   toManagementTierId: integer("to_management_tier_id").references(() => managementTiers.id),
-  
+
   transitionType: text("transition_type").notNull(), // 'promotion', 'demotion', 'release_contract', 'termination'
   releaseContractId: integer("release_contract_id").references(() => releaseContracts.id),
   processedByUserId: integer("processed_by_user_id").references(() => users.id).notNull(),
-  
+
   reason: text("reason").notNull(),
   notes: text("notes"),
   effectiveDate: timestamp("effective_date").notNull(),
@@ -845,7 +845,7 @@ export const managementTransitions = pgTable("management_transitions", {
 export const managementApplications = pgTable("management_applications", {
   id: serial("id").primaryKey(),
   applicantUserId: integer("applicant_user_id").references(() => users.id).notNull(),
-  requestedRoleId: integer("requested_role_id").references(() => rolesManagement.id).notNull(), 
+  requestedRoleId: integer("requested_role_id").references(() => rolesManagement.id).notNull(),
   requestedManagementTierId: integer("requested_management_tier_id").references(() => managementTiers.id).notNull(),
   applicationReason: text("application_reason").notNull(),
   businessPlan: text("business_plan"),
@@ -867,7 +867,7 @@ export const managementApplications = pgTable("management_applications", {
   completedAt: timestamp("completed_at"),
   rejectionReason: text("rejection_reason"),
   createdAt: timestamp("created_at").defaultNow(),
-  updatedAt: timestamp("updated_at").defaultNow(),               
+  updatedAt: timestamp("updated_at").defaultNow(),
 });
 
 
@@ -1240,7 +1240,7 @@ export const playbackTracks = pgTable("playback_tracks", {
   originalFileUrl: text("original_file_url"),
   originalFileName: text("original_file_name"),
   originalFileSize: integer("original_file_size"),
-  
+
   // Vocal analysis results
   vocalAnalysis: jsonb("vocal_analysis").$type<{
     vocalConfidence: number;
@@ -1251,19 +1251,19 @@ export const playbackTracks = pgTable("playback_tracks", {
     channels: number;
     analyzedAt: string;
   }>(),
-  
+
   // Separated tracks (if vocal separation was performed)
   instrumentalTrackUrl: text("instrumental_track_url"), // DJ-ready track
   vocalsTrackUrl: text("vocals_track_url"), // Vocals only (reference)
   djReadyTrackUrl: text("dj_ready_track_url"), // Final DJ track (instrumental or original)
   separationPerformed: boolean("separation_performed").default(false),
   separationStatus: text("separation_status").default("pending"), // pending, processing, completed, failed, not_needed
-  
+
   // Processing metadata
   processedAt: timestamp("processed_at"),
   processedByUserId: integer("processed_by_user_id").references(() => users.id),
   processingNotes: text("processing_notes"),
-  
+
   // Setlist position and performance data
   setlistPosition: integer("setlist_position"),
   songKey: text("song_key"),
@@ -1271,14 +1271,14 @@ export const playbackTracks = pgTable("playback_tracks", {
   duration: text("duration"), // Performance duration (may differ from track duration)
   transitionNotes: text("transition_notes"),
   performanceNotes: text("performance_notes"),
-  
+
   // DJ access and management
   djAccessEnabled: boolean("dj_access_enabled").default(false),
   djAccessCode: text("dj_access_code"), // Unique code for DJ to access tracks
   djAccessExpiresAt: timestamp("dj_access_expires_at"),
   downloadCount: integer("download_count").default(0),
   lastDownloadedAt: timestamp("last_downloaded_at"),
-  
+
   isActive: boolean("is_active").default(true),
   createdAt: timestamp("created_at").defaultNow(),
   updatedAt: timestamp("updated_at").defaultNow(),
@@ -1292,23 +1292,23 @@ export const djAccess = pgTable("dj_access", {
   djName: text("dj_name").notNull(), // DJ name/company
   djEmail: text("dj_email").notNull(),
   djPhone: text("dj_phone"),
-  
+
   // Access control
   accessCode: text("access_code").notNull().unique(),
   accessLevel: text("access_level").default("full"), // full, preview, restricted
   downloadLimit: integer("download_limit"), // Max downloads allowed
   downloadCount: integer("download_count").default(0),
   accessExpiresAt: timestamp("access_expires_at"),
-  
+
   // Track access
   allowedTracks: jsonb("allowed_tracks"), // Array of playback track IDs DJ can access
   restrictedTracks: jsonb("restricted_tracks"), // Array of tracks DJ cannot access
-  
+
   // Activity tracking
   lastAccessedAt: timestamp("last_accessed_at"),
   loginAttempts: integer("login_attempts").default(0),
   isActive: boolean("is_active").default(true),
-  
+
   // Creator tracking
   grantedByUserId: integer("granted_by_user_id").references(() => users.id).notNull(),
   createdAt: timestamp("created_at").defaultNow(),
@@ -1322,7 +1322,7 @@ export const playbackTrackDownloads = pgTable("playback_track_downloads", {
   djAccessId: integer("dj_access_id").references(() => djAccess.id),
   downloadedByUserId: integer("downloaded_by_user_id").references(() => users.id),
   downloadedByDjCode: text("downloaded_by_dj_code"), // If downloaded via DJ access code
-  
+
   trackType: text("track_type").notNull(), // instrumental, vocals, dj_ready, original
   fileUrl: text("file_url").notNull(),
   downloadedAt: timestamp("downloaded_at").defaultNow(),
@@ -1338,26 +1338,26 @@ export const curators = pgTable("curators", {
   organization: text("organization"),
   website: text("website"),
   socialMediaHandles: jsonb("social_media_handles"), // Array of {platform, handle}
-  
+
   // Curator specialization and preferences
   genres: jsonb("genres"), // Array of genres they curate
   regions: jsonb("regions"), // Geographic regions they focus on
   platforms: jsonb("platforms"), // Streaming platforms, blogs, radio, etc.
   audienceSize: integer("audience_size"), // Estimated reach
   influenceScore: integer("influence_score").default(0), // Internal rating 1-100
-  
+
   // Contact and submission preferences
   preferredContactMethod: text("preferred_contact_method").default("email"),
   submissionGuidelines: text("submission_guidelines"),
   responseRate: integer("response_rate"), // Percentage of submissions they respond to
   averageResponseTime: integer("average_response_time"), // Days
-  
+
   // Relationship tracking
   relationshipStatus: text("relationship_status").default("new"), // new, contacted, responsive, partner, inactive
   lastContactedAt: timestamp("last_contacted_at"),
   totalSubmissions: integer("total_submissions").default(0),
   successfulPlacements: integer("successful_placements").default(0),
-  
+
   // Account management
   isActive: boolean("is_active").default(true),
   addedByUserId: integer("added_by_user_id").references(() => users.id).notNull(),
@@ -1372,35 +1372,35 @@ export const curatorSubmissions = pgTable("curator_submissions", {
   songId: integer("song_id").references(() => songs.id),
   albumId: integer("album_id").references(() => albums.id),
   releaseType: text("release_type").notNull(), // single, album, ep
-  
+
   // Submission timing and strategy
   submissionDate: timestamp("submission_date").notNull(),
   submissionStrategy: text("submission_strategy"), // post_fan_release, pre_release, exclusive
   daysSinceRelease: integer("days_since_release"), // Calculated field
-  
+
   // Submission content and personalization
   subject: text("subject").notNull(),
   message: text("message").notNull(),
   personalizedNote: text("personalized_note"), // Curator-specific personalization
   attachedFiles: jsonb("attached_files"), // Array of file URLs and descriptions
-  
+
   // Response tracking
   status: text("status").default("sent"), // sent, opened, responded, declined, placed, no_response
   curatorResponse: text("curator_response"),
   responseDate: timestamp("response_date"),
   placementDetails: jsonb("placement_details"), // Where/when placed if successful
   placementUrl: text("placement_url"),
-  
+
   // Follow-up management
   followUpScheduled: boolean("follow_up_scheduled").default(false),
   followUpDate: timestamp("follow_up_date"),
   followUpCount: integer("follow_up_count").default(0),
-  
+
   // Metrics and analytics
   emailOpenTracking: jsonb("email_open_tracking"), // Open times, locations, devices
   linkClicks: integer("link_clicks").default(0),
   streamingIncrease: integer("streaming_increase"), // Post-placement streaming increase
-  
+
   // Creator tracking
   submittedByUserId: integer("submitted_by_user_id").references(() => users.id).notNull(),
   createdAt: timestamp("created_at").defaultNow(),
@@ -1414,25 +1414,25 @@ export const curatorEmailCampaigns = pgTable("curator_email_campaigns", {
   description: text("description"),
   releaseId: integer("release_id"), // Could be song_id or album_id depending on release_type
   releaseType: text("release_type").notNull(), // single, album, ep
-  
+
   // Campaign configuration
   emailTemplate: text("email_template").notNull(),
   subject: text("subject").notNull(),
   fromName: text("from_name").notNull(),
   fromEmail: text("from_email").notNull(),
   replyTo: text("reply_to"),
-  
+
   // Send timing and strategy
   scheduledSendDate: timestamp("scheduled_send_date"),
   actualSendDate: timestamp("actual_send_date"),
   daysSinceRelease: integer("days_since_release"), // Strategy timing
-  
+
   // Targeting and segmentation
   targetGenres: jsonb("target_genres"), // Array of genres to target
   targetRegions: jsonb("target_regions"), // Geographic targeting
   curatorCriteria: jsonb("curator_criteria"), // Advanced targeting criteria
   excludedCurators: jsonb("excluded_curators"), // Array of curator IDs to exclude
-  
+
   // Campaign performance
   totalRecipients: integer("total_recipients").default(0),
   sentCount: integer("sent_count").default(0),
@@ -1441,11 +1441,11 @@ export const curatorEmailCampaigns = pgTable("curator_email_campaigns", {
   clickCount: integer("click_count").default(0),
   responseCount: integer("response_count").default(0),
   placementCount: integer("placement_count").default(0),
-  
+
   // Campaign status and management
   status: text("status").default("draft"), // draft, scheduled, sending, sent, completed
   errorLog: jsonb("error_log"), // Any send errors or issues
-  
+
   createdByUserId: integer("created_by_user_id").references(() => users.id).notNull(),
   createdAt: timestamp("created_at").defaultNow(),
   updatedAt: timestamp("updated_at").defaultNow(),
@@ -1620,19 +1620,19 @@ export const pressReleases = pgTable('press_releases', {
   content: text('content').notNull(), // Full press release content in HTML
   summary: text('summary').notNull(), // Brief summary for media previews
   type: text('type').notNull().default('song_release'), // song_release, album_release, tour_announcement, general
-  
+
   // Artist/Release Information
   primaryArtistId: integer('primary_artist_id').references(() => artists.userId).notNull(),
   featuredArtistIds: jsonb('featured_artist_ids').default([]), // Array of artist user IDs
   songId: integer('song_id').references(() => songs.id), // For song-specific press releases
   albumId: integer('album_id').references(() => albums.id), // For album-specific press releases
   releaseDate: timestamp('release_date'), // When the song/album was released
-  
+
   // Press Release Metadata
   status: text('status').notNull().default('draft'), // draft, scheduled, published, archived
   publishedAt: timestamp('published_at'),
   scheduledFor: timestamp('scheduled_for'),
-  
+
   // Media Assets
   mediaAssets: jsonb('media_assets').default([]).$type<Array<{
     type: 'image' | 'audio' | 'video';
@@ -1641,20 +1641,20 @@ export const pressReleases = pgTable('press_releases', {
     altText?: string;
     isHeroImage?: boolean;
   }>>(),
-  
+
   // Distribution and Contact Information
   contactName: text('contact_name'),
   contactEmail: text('contact_email'),
   contactPhone: text('contact_phone'),
   distributionChannels: jsonb('distribution_channels').default([]), // Array of platforms/outlets
   targetRegions: jsonb('target_regions').default(['global']), // Geographic targeting
-  
+
   // Analytics and Tracking
   viewCount: integer('view_count').default(0),
   downloadCount: integer('download_count').default(0),
   shareCount: integer('share_count').default(0),
   pickupCount: integer('pickup_count').default(0), // Number of media outlets that picked up the story
-  
+
   // SEO and Social Media
   metaTitle: text('meta_title'),
   metaDescription: text('meta_description'),
@@ -1663,13 +1663,13 @@ export const pressReleases = pgTable('press_releases', {
     description: string;
     imageUrl?: string;
   }>(),
-  
+
   // Creation and Management
   createdBy: integer('created_by').references(() => users.id).notNull(),
   lastModifiedBy: integer('last_modified_by').references(() => users.id),
   isAutoGenerated: boolean('is_auto_generated').default(false), // True if generated automatically
   generationTrigger: text('generation_trigger'), // song_upload, album_create, manual
-  
+
   createdAt: timestamp('created_at').defaultNow(),
   updatedAt: timestamp('updated_at').defaultNow(),
   isDemo: boolean('is_demo').default(false)
@@ -1757,7 +1757,7 @@ export const industryRecipients = pgTable('industry_recipients', {
   name: text('name').notNull(), // Organization/Person name
   email: text('email').notNull(),
   categoryId: integer('category_id').references(() => recipientCategories.id).notNull(),
-  
+
   // Contact Information
   contactPerson: text('contact_person'), // Primary contact name
   phone: text('phone'),
@@ -1769,38 +1769,38 @@ export const industryRecipients = pgTable('industry_recipients', {
     country?: string;
     zipCode?: string;
   }>(),
-  
+
   // Genre Preferences and Specializations
   preferredGenres: jsonb('preferred_genres').default([]), // Array of genre IDs they cover
   excludedGenres: jsonb('excluded_genres').default([]), // Array of genre IDs they don't want
-  
+
   // Geographic Coverage
   coverageRegions: jsonb('coverage_regions').default(['global']), // Array of regions they cover
   localMarkets: jsonb('local_markets').default([]), // Specific cities/markets
-  
+
   // Professional Details
   organizationType: text('organization_type'), // station, network, independent, agency, venue
   audienceSize: integer('audience_size'), // Estimated reach/audience
   influence: integer('influence').default(5), // 1-10 influence rating
-  
+
   // Preferences and Requirements
   preferredFileFormats: jsonb('preferred_file_formats').default(['mp3', 'wav']), // For music submissions
   submissionGuidelines: text('submission_guidelines'), // Specific requirements
   preferredContactMethod: text('preferred_contact_method').default('email'), // email, phone, portal
-  
+
   // Relationship Management
   relationshipType: text('relationship_type').default('prospect'), // prospect, contact, partner, vip
   lastContactDate: timestamp('last_contact_date'),
   responseRate: decimal('response_rate', { precision: 5, scale: 2 }).default('0.00'), // Success rate
   notes: text('notes'), // Internal notes about the contact
-  
+
   // Status and Management
   status: text('status').default('active'), // active, inactive, bounced, blacklisted
   source: text('source').default('manual'), // manual, imported, discovered, referral
   addedBy: integer('added_by').references(() => users.id).notNull(),
   verifiedBy: integer('verified_by').references(() => users.id),
   verifiedAt: timestamp('verified_at'),
-  
+
   createdAt: timestamp('created_at').defaultNow(),
   updatedAt: timestamp('updated_at').defaultNow(),
   isDemo: boolean('is_demo').default(false)
@@ -1811,47 +1811,47 @@ export const contentDistribution = pgTable('content_distribution', {
   id: serial('id').primaryKey(),
   contentType: text('content_type').notNull(), // 'newsletter' or 'press_release'
   contentId: integer('content_id').notNull(), // Newsletter ID or Press Release ID
-  
+
   // Fan Distribution (Priority 1 - Always First)
   includeFans: boolean('include_fans').default(true),
   fanArtistIds: jsonb('fan_artist_ids').default([]), // Specific artist fans to include
   fanDelay: integer('fan_delay_minutes').default(0), // Fans get it immediately
-  
+
   // Industry Distribution (Priority 2)
   industryDelay: integer('industry_delay_minutes').default(60), // Industry gets it after fans
-  
+
   // Recipient Category Targeting
   recipientCategoryIds: jsonb('recipient_category_ids').default([]), // Array of category IDs (radio, TV, etc.)
   specificRecipientIds: jsonb('specific_recipient_ids').default([]), // Array of specific recipient IDs
   excludeRecipientIds: jsonb('exclude_recipient_ids').default([]), // Recipients to exclude
-  
+
   // Genre-Based Content Matching
   contentGenres: jsonb('content_genres').default([]), // Genres of the content
   targetGenres: jsonb('target_genres').default([]), // Override content genres if needed
   excludeGenres: jsonb('exclude_genres').default([]), // Genres to exclude
   requireGenreMatch: boolean('require_genre_match').default(true), // Gospel content -> Gospel recipients
   genreMatchStrength: text('genre_match_strength').default('strict'), // strict, loose, any
-  
+
   // Professional Targeting Rules
   targetMediaTypes: jsonb('target_media_types').default([]), // radio, tv, print, digital, podcast
   minimumAudienceSize: integer('minimum_audience_size').default(0),
   minimumInfluence: integer('minimum_influence').default(1), // 1-10
-  
+
   // Geographic and Market Targeting
   targetRegions: jsonb('target_regions').default(['global']),
   localMarkets: jsonb('local_markets').default([]),
   artistHomeMarkets: boolean('artist_home_markets').default(true), // Include artist's local markets
-  
+
   // Relationship-Based Targeting
   includePartners: boolean('include_partners').default(true),
   includeVIPs: boolean('include_vips').default(true),
   includeNewContacts: boolean('include_new_contacts').default(false),
-  
+
   // Distribution Timing and Status
   scheduledFor: timestamp('scheduled_for'),
   sentAt: timestamp('sent_at'),
   distributionStatus: text('distribution_status').default('pending'), // pending, sending, sent, failed
-  
+
   // Distribution Analytics
   totalRecipients: integer('total_recipients').default(0),
   totalSent: integer('total_sent').default(0),
@@ -1859,7 +1859,7 @@ export const contentDistribution = pgTable('content_distribution', {
   totalOpened: integer('total_opened').default(0),
   totalClicked: integer('total_clicked').default(0),
   totalResponded: integer('total_responded').default(0),
-  
+
   createdAt: timestamp('created_at').defaultNow(),
   createdBy: integer('created_by').references(() => users.id).notNull()
 });
@@ -1870,27 +1870,27 @@ export const recipientEngagements = pgTable('recipient_engagements', {
   recipientId: integer('recipient_id').references(() => industryRecipients.id).notNull(),
   contentType: text('content_type').notNull(), // newsletter, press_release
   contentId: integer('content_id').notNull(), // ID of newsletter or press release
-  
+
   // Engagement Details
   engagementType: text('engagement_type').notNull(), // sent, delivered, opened, clicked, responded, picked_up
   engagementDate: timestamp('engagement_date').defaultNow(),
-  
+
   // Response Information
   responseType: text('response_type'), // positive, negative, request_info, coverage_planned
   responseContent: text('response_content'), // Actual response text
   followUpRequired: boolean('follow_up_required').default(false),
   followUpDate: timestamp('follow_up_date'),
-  
+
   // Coverage Tracking (for press releases)
   coverageProvided: boolean('coverage_provided').default(false),
   coverageUrl: text('coverage_url'),
   coverageType: text('coverage_type'), // article, interview, playlist_add, air_play
   estimatedReach: integer('estimated_reach'),
-  
+
   // Internal Tracking
   handledBy: integer('handled_by').references(() => users.id),
   notes: text('notes'),
-  
+
   createdAt: timestamp('created_at').defaultNow(),
   isDemo: boolean('is_demo').default(false)
 });
@@ -3343,7 +3343,7 @@ export const usersRelations = relations(users, ({ many, one }) => ({
   bookingsAsArtist: many(bookings, { relationName: "artistBookings" }),
 
   // নতুন Many-to-Many relation
-  roles: many(userRoles),  
+  roles: many(userRoles),
 
   // Normalized user data relations
   secondaryRoles: many(userSecondaryRoles),
@@ -3519,13 +3519,13 @@ export const videos = pgTable('videos', {
   title: varchar('title', { length: 255 }).notNull(),
   description: text('description'),
   videoUrl: varchar('video_url', { length: 500 }).notNull(), // Full YouTube URL
-  youtubeVideoId: varchar('youtube_video_id', { length: 50}), // Extracted video ID for embedding
+  youtubeVideoId: varchar('youtube_video_id', { length: 50 }), // Extracted video ID for embedding
   thumbnailUrl: varchar('thumbnail_url', { length: 500 }),
   uploadedByUserId: integer('uploaded_by_user_id').references(() => users.id),
   isPublic: boolean('is_public').default(true),
   videoType: varchar('video_type', { length: 50 }).default('youtube'), // youtube, vimeo, direct
   embedCode: text('embed_code'), // Generated embed HTML
-  playlistId: varchar('playlist_id', { length: 100}), // For YouTube playlist support
+  playlistId: varchar('playlist_id', { length: 100 }), // For YouTube playlist support
   duration: integer('duration'), // Duration in seconds
   viewCount: integer('view_count').default(0),
   createdAt: timestamp('created_at').defaultNow(),
@@ -3660,11 +3660,11 @@ export const enhancedSplitsheets = pgTable('enhanced_splitsheets', {
   songTitle: varchar('song_title', { length: 255 }).notNull(),
   songReference: varchar('song_reference', { length: 50 }).notNull(),
   agreementDate: timestamp('agreement_date'),
-  
+
   // Work registration and coding
   workId: varchar('work_id', { length: 50 }), // PRO-issued work ID
   upcEan: varchar('upc_ean', { length: 20 }), // UPC/EAN from distributor
-  
+
   // Audio file and ISRC integration
   audioFileUrl: text('audio_file_url'),
   originalFileName: varchar('original_file_name', { length: 255 }),
@@ -3672,16 +3672,16 @@ export const enhancedSplitsheets = pgTable('enhanced_splitsheets', {
   fileDuration: decimal('file_duration', { precision: 8, scale: 2 }), // in seconds
   isrcCode: varchar('isrc_code', { length: 15 }), // Auto-generated DM-WTM-YY-XXXXX format
   metadataEmbedded: boolean('metadata_embedded').default(false),
-  
+
   // Participants with role assignments
   participants: jsonb('participants').notNull(),
-  
+
   // Status tracking
   status: varchar('status', { length: 20 }).default('draft'), // 'draft', 'pending_signatures', 'fully_signed', 'completed'
   allSigned: boolean('all_signed').default(false),
   signedCount: integer('signed_count').default(0),
   totalParticipants: integer('total_participants').default(0),
-  
+
   // Payment and service integration
   serviceType: text('service_type').default('enhanced_splitsheet'),
   basePrice: decimal('base_price', { precision: 10, scale: 2 }).default('5.00'),
@@ -3690,25 +3690,25 @@ export const enhancedSplitsheets = pgTable('enhanced_splitsheets', {
   paymentStatus: text('payment_status').default('pending'), // 'pending', 'paid', 'failed', 'free'
   isPaidFor: boolean('is_paid_for').default(false),
   canDownload: boolean('can_download').default(false),
-  
+
   // Work percentage validation (composition + publishing = 100%)
   songwritingPercentageTotal: decimal('songwriting_percentage_total', { precision: 5, scale: 2 }).default('0'),
   melodyPercentageTotal: decimal('melody_percentage_total', { precision: 5, scale: 2 }).default('0'),
   beatProductionPercentageTotal: decimal('beat_production_percentage_total', { precision: 5, scale: 2 }).default('0'),
   publishingPercentageTotal: decimal('publishing_percentage_total', { precision: 5, scale: 2 }).default('0'), // Out of 200%
   executiveProducerPercentageTotal: decimal('executive_producer_percentage_total', { precision: 5, scale: 2 }).default('0'),
-  
+
   // Management and tracking
   invoiceId: integer('invoice_id').references(() => invoices.id),
   createdBy: integer('created_by').notNull(),
   managementTierApplied: integer('management_tier_applied').references(() => managementTiers.id),
   notificationsSent: integer('notifications_sent').default(0),
-  
+
   // Download tracking
   downloadCount: integer('download_count').default(0),
   lastDownloadAt: timestamp('last_download_at'),
   finalPdfUrl: text('final_pdf_url'),
-  
+
   createdAt: timestamp('created_at').defaultNow(),
   updatedAt: timestamp('updated_at').defaultNow()
 });
@@ -3744,12 +3744,12 @@ export const audioFileMetadata = pgTable('audio_file_metadata', {
   sampleRate: varchar('sample_rate', { length: 20 }), // '44.1kHz', etc.
   duration: decimal('duration', { precision: 8, scale: 2 }), // in seconds
   fileSize: integer('file_size'), // in bytes
-  
+
   // ISRC coding data
   isrcCode: varchar('isrc_code', { length: 15 }).notNull(),
   isrcEmbedded: boolean('isrc_embedded').default(false),
   embeddedAt: timestamp('embedded_at'),
-  
+
   // Metadata embedding
   title: varchar('title', { length: 255 }),
   artist: varchar('artist', { length: 255 }),
@@ -3757,15 +3757,15 @@ export const audioFileMetadata = pgTable('audio_file_metadata', {
   year: varchar('year', { length: 4 }),
   genre: varchar('genre', { length: 100 }),
   publisher: varchar('publisher', { length: 255 }),
-  
+
   // Processing status
   processingStatus: varchar('processing_status', { length: 50 }).default('pending'), // 'pending', 'processing', 'completed', 'failed'
   processingError: text('processing_error'),
-  
+
   // Storage
   storageUrl: text('storage_url'),
   publicUrl: text('public_url'),
-  
+
   createdAt: timestamp('created_at').defaultNow(),
   updatedAt: timestamp('updated_at').defaultNow()
 });

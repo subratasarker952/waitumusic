@@ -22,6 +22,7 @@ import {
 import DrumKitConfigModal from '../modals/DrumKitConfigModal';
 import EnhancedSetlistSection from '@/components/setlist/EnhancedSetlistSection';
 import { ShareButton } from '@/components/share/ShareButton';
+import { apiRequest } from '@/lib/queryClient';
 
 interface TechnicalRequirement {
   id: string;
@@ -115,7 +116,7 @@ interface EnhancedTechnicalRiderProps {
   };
   canEdit?: boolean;
   userRole?: string;
-  onSave?: (data: any) => void;
+  onSave: (data: any) => void;
   onLoad?: (data: any) => void;
 }
 
@@ -3379,28 +3380,25 @@ function EnhancedTechnicalRider({
       setIsGenerating(true);
 
       const saveData = {
-        booking_id: bookingId,
-        band_members: bandMembers,
-        equipment_requests: riderData.equipmentRequests || [],
-        stage_layout: riderData.stageLayout || {},
-        audio_config: riderData.audioConfig || {},
-        completion_status: completionStatus || {},
-        saved_at: new Date().toISOString(),
+        bookingId,
+        artistTechnicalSpecs: {},
+        musicianTechnicalSpecs: bandMembers, // only supporting talents
+        equipmentRequirements: riderData.equipmentRequests || [],
+        stageRequirements: riderData.stageLayout || {},
+        soundRequirements: riderData.audioConfig || {},
+        lightingRequirements: riderData.lighting || {},
+        additionalNotes: riderData.additionalNotes || "",
       };
 
-      const response = await fetch(`/api/bookings/${bookingId}/enhanced-technical-rider`, {
+      
+      const response = await apiRequest(`/api/bookings/${bookingId}/technical-rider`, {
         method: 'POST',
         body: JSON.stringify(saveData),
       });
+      
+      onSave(response);
 
-      if (!response.ok) {
-        throw new Error("Failed to save technical rider");
-      }
-
-      const result = await response.json(); // Optional: backend থেকে return আসলে ব্যবহার করতে পারো
-      onSave?.(result.data ?? riderData);
-
-      toast(TOAST_CONFIGS.SUCCESS.SAVE);
+      // toast(TOAST_CONFIGS.SUCCESS.SAVE);
       scrollToTop();
     } catch (error) {
       console.error("Save error:", error);
@@ -3808,17 +3806,17 @@ function EnhancedTechnicalRider({
                               }
 
                               // Show only database role from role_id - no fallbacks
-                              if ((member as any).roleId) {
-                                const dbRoleName = getRoleNameFromId((member as any).roleId);
-                                if (dbRoleName && !roles.has(dbRoleName)) {
-                                  roles.add(dbRoleName);
-                                  roleElements.push(
-                                    <Badge key="primary" variant="default" className="text-xs bg-blue-600 text-white">
-                                      ⭐ {dbRoleName}
-                                    </Badge>
-                                  );
-                                }
-                              }
+                              // if ((member as any).roleId) {
+                              //   const dbRoleName = getRoleNameFromId((member as any).roleId);
+                              //   if (dbRoleName && !roles.has(dbRoleName)) {
+                              //     roles.add(dbRoleName);
+                              //     roleElements.push(
+                              //       <Badge key="primary" variant="default" className="text-xs bg-blue-600 text-white">
+                              //         ⭐ {dbRoleName}
+                              //       </Badge>
+                              //     );
+                              //   }
+                              // }
 
                               return roleElements;
                             })()}

@@ -10067,6 +10067,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       }
     }
   );
+  
   // Save / Update Technical Rider
   app.post(
     "/api/bookings/:id/technical-rider",

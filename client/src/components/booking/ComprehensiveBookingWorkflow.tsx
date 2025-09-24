@@ -641,6 +641,11 @@ export default function BookingWorkflow({
       }
       stepConfirmations[2] = true;
     }
+    if (booking?.technicalRider) {
+      stepConfirmations[3] === true
+      stepConfirmations[4] === true
+    }
+
   }, [booking]);
 
   const generateContractPreview = async (type: "booking" | "performance") => {
@@ -1352,42 +1357,46 @@ export default function BookingWorkflow({
   };
 
   // 3
-  const saveTechnicalRider = async () => {
+  const saveTechnicalRider = async (data: any) => {
     try {
       if (!bookingId) throw new Error("Booking ID not found");
       if (assignedTalent.length === 0) throw new Error("No talent assigned");
+      if (!data) throw new Error("No Data Found");
 
       setIsLoading(true);
+      console.log(data)
 
       // Database এ পাঠানোর payload তৈরি করলাম
-      const payload = {
-        bookingId: bookingId,
-        artistTechnicalSpecs: rider.artistTechnicalSpecs || {},
-        musicianTechnicalSpecs: rider.musicianTechnicalSpecs || {},
-        equipmentRequirements: rider.equipmentRequirements || [],
-        stageRequirements: {
-          ...stagePlot,
-        },
-        lightingRequirements: {
-          lighting: stagePlot.lighting,
-          videoRecording: stagePlot.videoRecording,
-          photographyArea: stagePlot.photographyArea,
-        },
-        soundRequirements: {
-          ...mixerConfig,
-        },
-        additionalNotes: rider.additionalNotes || "",
-        setlist: setlist, // চাইলে এটাকেও save করতে পারো (extra jsonb column লাগবে)
-      };
+      // const payload = {
+      //   bookingId: bookingId,
+      //   artistTechnicalSpecs: rider.artistTechnicalSpecs || {},
+      //   musicianTechnicalSpecs: rider.musicianTechnicalSpecs || {},
+      //   equipmentRequirements: rider.equipmentRequirements || [],
+      //   stageRequirements: {
+      //     ...stagePlot,
+      //   },
+      //   lightingRequirements: {
+      //     lighting: stagePlot.lighting,
+      //     videoRecording: stagePlot.videoRecording,
+      //     photographyArea: stagePlot.photographyArea,
+      //   },
+      //   soundRequirements: {
+      //     ...mixerConfig,
+      //   },
+      //   additionalNotes: rider.additionalNotes || "",
+      //   setlist: setlist, // চাইলে এটাকেও save করতে পারো (extra jsonb column লাগবে)
+      // };
 
-      // API call
-      await apiRequest(`/api/bookings/${bookingId}/technical-rider`, {
-        method: "POST",
-        body: JSON.stringify(payload),
-      });
+      // // API call
+      // await apiRequest(`/api/bookings/${bookingId}/technical-rider`, {
+      //   method: "POST",
+      //   body: JSON.stringify(payload),
+      // });
+
 
       toast(TOAST_CONFIGS.SUCCESS.SAVE);
       setIsLoading(false);
+      stepConfirmations[3] === true
       queryClient.invalidateQueries({
         queryKey: ["booking-workflow", bookingId],
       });
@@ -1705,7 +1714,7 @@ export default function BookingWorkflow({
   // Step 2: Talent Assignment
   const renderTalentAssignment = () => {
     // Categorize available talent by their primary talent type, not role_id
-    const allTalent = [
+    const availableTalent = [
       ...(Array.isArray(availableArtists) ? availableArtists : []),
       ...(Array.isArray(availableMusicians) ? availableMusicians : []),
       ...(Array.isArray(availableProfessionals) ? availableProfessionals : []),
@@ -1722,9 +1731,9 @@ export default function BookingWorkflow({
       return [];
     };
 
-    const availableTalent = allTalent.filter(
-      (talent) => talent.userId !== booking?.primaryArtist?.userId
-    );
+    // const availableTalent = allTalent.filter(
+    //   (talent) => talent.userId !== booking?.primaryArtist?.userId
+    // );
 
     const categorizedTalent = {
       managedArtists: availableTalent.filter((talent) =>
@@ -1945,7 +1954,7 @@ export default function BookingWorkflow({
                           Main Booked Talent
                         </Badge>
                         <div className="flex gap-1">
-                          {/* <Button
+                          <Button
                             variant="outline"
                             size="sm"
                             className="border-green-500 text-green-700 hover:bg-green-50 text-xs px-2 py-1"
@@ -1958,8 +1967,8 @@ export default function BookingWorkflow({
                             className="border-red-500 text-red-700 hover:bg-red-50 text-xs px-2 py-1"
                           >
                             Decline
-                          </Button> */}
-                          <Button
+                          </Button>
+                          {/* <Button
                             variant="outline"
                             size="sm"
                             className="border-red-300 text-red-600 hover:bg-red-50"
@@ -1988,7 +1997,7 @@ export default function BookingWorkflow({
                             }}
                           >
                             Remove
-                          </Button>
+                          </Button> */}
                         </div>
                       </div>
                     ) : (
@@ -3646,14 +3655,7 @@ export default function BookingWorkflow({
               }}
               canEdit={canEdit}
               userRole={userRole}
-              onSave={async (data) => {
-                await apiRequest(
-                  `/api/bookings/${bookingId}/enhanced-technical-rider`,
-                  { method: "POST", body: JSON.stringify(data) }
-                );
-                toast(TOAST_CONFIGS.SUCCESS.SAVE);
-                refetchRider();
-              }}
+              onSave={async (data) => saveTechnicalRider(data)}
               onLoad={async () => technicalRider ?? null}
             />
           </CardContent>
