@@ -290,33 +290,6 @@ export default function EnhancedSetlistSection({
       <div className="space-y-4">
         <Card>
           <CardHeader>
-<<<<<<< HEAD
-              <div className='flex items-center justify-between gap-2'>
-                <CardTitle className="flex items-center gap-2">
-                  <Music className="h-5 w-5" />
-                  Performance Setlist
-                </CardTitle>
-                <Badge variant="outline">
-                  {setlistSongs.filter(song => song.assignedTo).length} Assigned
-                </Badge>
-              </div>
-              <div className="flex items-center gap-2">
-                <Input
-                  value={setlistName}
-                  onChange={(e) => setSetlistName(e.target.value)}
-                  placeholder="Setlist name..."
-                />
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={optimizeSetlist}
-                  disabled={setlistSongs.length === 0 || showOptimization}
-                >
-                  <Brain className="h-4 w-4 mr-1" />
-                  {showOptimization ? 'Optimizing...' : 'Smart Optimize'}
-                </Button>
-              </div>
-=======
             <div className='flex justify-between gap-2'>
               <CardTitle className="flex items-center gap-2 w-full">
                 <Music className="h-5 w-5" />
@@ -342,7 +315,6 @@ export default function EnhancedSetlistSection({
                 {showOptimization ? 'Optimizing...' : 'Smart Optimize'}
               </Button>
             </div>
->>>>>>> b373aa6baa75008be5f150aa95f3131dd33faed8
           </CardHeader>
           <CardContent>
             <div className="space-y-2 max-h-96 overflow-y-auto">
@@ -357,13 +329,8 @@ export default function EnhancedSetlistSection({
                   <div
                     key={song.id}
                     className={`p-3 border rounded-lg cursor-pointer transition-all ${selectedSong?.id === song.id
-<<<<<<< HEAD
-                        ? 'border-blue-500 bg-blue-50 dark:bg-blue-950'
-                        : 'border-gray-300 hover:border-gray-400'
-=======
                       ? 'border-blue-500 bg-blue-50 dark:bg-blue-950'
                       : 'border-gray-300 hover:border-gray-400'
->>>>>>> b373aa6baa75008be5f150aa95f3131dd33faed8
                       }`}
                     onClick={() => setSelectedSong(song)}
                   >
