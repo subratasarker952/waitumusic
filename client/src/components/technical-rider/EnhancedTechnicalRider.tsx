@@ -3387,18 +3387,18 @@ function EnhancedTechnicalRider({
         completion_status: completionStatus || {},
         saved_at: new Date().toISOString(),
       };
-      console.log(saveData)
-      // const response = await fetch(`/api/bookings/${bookingId}/enhanced-technical-rider`, {
-      //   method: 'POST',
-      //   body: JSON.stringify(saveData),
-      // });
 
-      // if (!response.ok) {
-      //   throw new Error("Failed to save technical rider");
-      // }
+      const response = await fetch(`/api/bookings/${bookingId}/enhanced-technical-rider`, {
+        method: 'POST',
+        body: JSON.stringify(saveData),
+      });
 
-      // const result = await response.json(); // Optional: backend থেকে return আসলে ব্যবহার করতে পারো
-      // onSave?.(result.data ?? riderData);
+      if (!response.ok) {
+        throw new Error("Failed to save technical rider");
+      }
+
+      const result = await response.json(); // Optional: backend থেকে return আসলে ব্যবহার করতে পারো
+      onSave?.(result.data ?? riderData);
 
       toast(TOAST_CONFIGS.SUCCESS.SAVE);
       scrollToTop();
@@ -3493,7 +3493,7 @@ function EnhancedTechnicalRider({
 
       {/* Main Tabs - Musical Mobile Optimized */}
       <Tabs value={activeTab} onValueChange={(value: string) => setActiveTab(value as any)}>
-        <TabsList className="musical-tabs-list">
+        <TabsList className="musical-tabs-list ">
           <TabsTrigger value="requirements" className="musical-tab-trigger musical-tab">
             <div className="mobile-tab-icon">🎛️</div>
             <div className="mobile-tab-text">Requirements</div>
@@ -3710,52 +3710,52 @@ function EnhancedTechnicalRider({
                             // Also update band member directly for immediate UI update
                             updateBandMember(member.id, { selectedTalent: value });
 
-
-                        }}
-                      >
-                        <SelectTrigger className="h-8 text-xs">
-                          <SelectValue />
-                        </SelectTrigger>
-                        <SelectContent>
-                          {/* Enhanced database-driven talent options with generic alternatives */}
-                          {buildTalentDropdownOptions(member).map((option, idx) => {
-                            // Handle divider specially - non-selectable
-                            if (option.type === 'Divider') {
-                              return (
-                                <div key={idx} className="px-2 py-1 text-center text-gray-400 text-xs border-b">
-                                  {option.label}
-                                </div>
-                              );
-                            }
-
-                            return (
-                              <SelectItem
-                                key={idx}
-                                value={option.value}
-                                className={option.type === 'Primary' ? 'bg-blue-50 font-medium' :
-                                  option.type === 'Secondary' ? 'bg-gray-50' :
-                                    option.type === 'Generic' ? 'bg-green-50' : ''}
-                              >
-                                <div className="flex items-center justify-between w-full">
-                                  <span style={{
-                                    color: option.color === 'blue' ? '#3b82f6' :
-                                      option.color === 'green' ? '#16a34a' :
-                                        option.color === 'orange' ? '#ea580c' :
-                                          option.color === 'purple' ? '#9333ea' : '#6b7280'
-                                  }}>
+                          }}
+                        >
+                          <SelectTrigger className="h-8 text-xs">
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent>
+                            {/* Enhanced database-driven talent options with generic alternatives */}
+                            {buildTalentDropdownOptions(member).map((option, idx) => {
+                              // Handle divider specially - non-selectable
+                              if (option.type === 'Divider') {
+                                return (
+                                  <div key={idx} className="px-2 py-1 text-center text-gray-400 text-xs border-b">
                                     {option.label}
-                                  </span>
-                                  <span className="text-xs text-muted-foreground ml-2">
-                                    {option.icon} {option.type}
-                                  </span>
-                                </div>
-                              </SelectItem>
-                            );
-                          })}
+                                  </div>
+                                );
+                              }
 
-                          {/* NO FALLBACK OPTIONS - USER POLICY: Zero tolerance for hardcoded values */}
-                        </SelectContent>
-                      </Select>
+                              return (
+                                <SelectItem
+                                  key={idx}
+                                  value={option.value}
+                                  className={option.type === 'Primary' ? 'bg-blue-50 font-medium' :
+                                    option.type === 'Secondary' ? 'bg-gray-50' :
+                                      option.type === 'Generic' ? 'bg-green-50' : ''}
+                                >
+                                  <div className="flex items-center justify-between w-full">
+                                    <span style={{
+                                      color: option.color === 'blue' ? '#3b82f6' :
+                                        option.color === 'green' ? '#16a34a' :
+                                          option.color === 'orange' ? '#ea580c' :
+                                            option.color === 'purple' ? '#9333ea' : '#6b7280'
+                                    }}>
+                                      {option.label}
+                                    </span>
+                                    <span className="text-xs text-muted-foreground ml-2">
+                                      {option.icon} {option.type}
+                                    </span>
+                                  </div>
+                                </SelectItem>
+                              );
+                            })}
+
+                            {/* NO FALLBACK OPTIONS - USER POLICY: Zero tolerance for hardcoded values */}
+                          </SelectContent>
+                        </Select>
+                      </div>
 
                       {/* Column 3-4: Full Name (Stage Name) - spans 2 columns */}
                       <div className="col-span-2 flex items-center gap-2">
