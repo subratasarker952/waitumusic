@@ -3777,7 +3777,7 @@ export class DatabaseStorage implements IStorage {
   }
 
 // documents insert
-async createDocument(doc: {
+async createOrUpdateDocument(doc: {
   fileName: string;
   fileUrl: string;
   documentType: string;
@@ -3785,11 +3785,44 @@ async createDocument(doc: {
   bookingId: number;
   status: string;
 }) {
-  return await db.insert(documents).values(doc).returning().then(r => r[0]);
+  const existing = await db
+    .select()
+    .from(documents)
+    .where(
+      and(
+        eq(documents.bookingId, doc.bookingId),
+        eq(documents.documentType, doc.documentType)
+      )
+    )
+    .limit(1)
+    .then((rows) => rows[0]);
+
+  if (existing) {
+    return await db
+      .update(documents)
+      .set({
+        fileName: doc.fileName,
+        fileUrl: doc.fileUrl,
+        uploadedBy: doc.uploadedBy,
+        status: doc.status,
+      })
+      .where(eq(documents.id, existing.id))
+      .returning()
+      .then((r) => r[0]);
+  }
+
+  return await db
+    .insert(documents)
+    .values(doc)
+    .returning()
+    .then((r) => r[0]);
 }
+
+
 
 // signatures insert
 async createOrUpdateDefaultSignatures(documentId: number, bookingId: number) {
+  // Booking info
   const booking = await db
     .select()
     .from(bookings)
@@ -3799,6 +3832,7 @@ async createOrUpdateDefaultSignatures(documentId: number, bookingId: number) {
 
   if (!booking) throw new Error("Booking not found");
 
+  // Booker info
   const bookerUser = await db
     .select()
     .from(users)
@@ -3806,11 +3840,12 @@ async createOrUpdateDefaultSignatures(documentId: number, bookingId: number) {
     .limit(1)
     .then(rows => rows[0]);
 
+  // Admin info
   const adminUserRow = await db
     .select()
     .from(users)
     .innerJoin(userRoles, eq(users.id, userRoles.userId))
-    .where(eq(userRoles.roleId, 2))
+    .where(eq(userRoles.roleId, 2)) // roleId = 2 means admin
     .limit(1)
     .then(rows => rows[0]);
 
@@ -3828,10 +3863,9 @@ async createOrUpdateDefaultSignatures(documentId: number, bookingId: number) {
     const existing = await db
       .select()
       .from(contractSignatures)
-      .innerJoin(documents, eq(contractSignatures.documentId, documents.id))
       .where(
         and(
-          eq(documents.id, documentId),
+          eq(contractSignatures.documentId, documentId),
           eq(contractSignatures.signerType, signerType)
         )
       )
@@ -3848,7 +3882,7 @@ async createOrUpdateDefaultSignatures(documentId: number, bookingId: number) {
           signerEmail,
           status: "pending",
         })
-        .where(eq(contractSignatures.id, existing.contract_signatures.id));
+        .where(eq(contractSignatures.id, existing.id));
     } else {
       // Insert
       await db.insert(contractSignatures).values({
@@ -3862,7 +3896,7 @@ async createOrUpdateDefaultSignatures(documentId: number, bookingId: number) {
     }
   };
 
-  // Booker
+  // Booker signature
   await upsertSignature(
     "booker",
     bookerUser?.id || null,
@@ -3870,7 +3904,7 @@ async createOrUpdateDefaultSignatures(documentId: number, bookingId: number) {
     bookerUser?.email || ""
   );
 
-  // Admin
+  // Admin signature
   await upsertSignature(
     "admin",
     adminUser?.id || null,
@@ -3878,6 +3912,7 @@ async createOrUpdateDefaultSignatures(documentId: number, bookingId: number) {
     adminUser?.email || ""
   );
 }
+
 
 
 

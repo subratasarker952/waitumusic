@@ -10027,28 +10027,27 @@ export async function registerRoutes(app: Express): Promise<Server> {
       }
     }
   );
+  
   app.post(
     "/api/bookings/:bookingId/contracts",
     authenticateToken,
-    requireRole([1, 2]), // allowed roles
+    requireRole([1, 2]),
     async (req: Request, res: Response) => {
       try {
         const bookingId = parseInt(req.params.bookingId);
-        const createdByUserId = req.user.userId;
-  
-        if (!bookingId) {
-          return res.status(400).json({ message: "Booking ID is required" });
+        if (isNaN(bookingId)) {
+          return res.status(400).json({ message: "Invalid booking ID" });
         }
   
         const { contractType, title, content, metadata, status } = req.body;
-  
         if (!contractType || !title || !content) {
           return res.status(400).json({ message: "Missing required contract data" });
         }
   
-        const assignedToUserId = req.user?.userId;
+        const createdByUserId = req.user.userId;
+        const assignedToUserId = createdByUserId;
   
-        // 1. Contract তৈরি
+        // 1. Contract create or update
         const newContract = await storage.upsertContract({
           bookingId,
           contractType,
@@ -10060,17 +10059,17 @@ export async function registerRoutes(app: Express): Promise<Server> {
           assignedToUserId,
         });
   
-        // 2. Document রেকর্ড তৈরি (documents টেবিল এ)
-        const newDoc = await storage.createDocument({
-          fileName: `${contractType}_${bookingId}.pdf`, // পরে জেনারেট করলে নাম আপডেট করা যাবে
-          fileUrl: "", // ফাইল জেনারেট হলে path বসবে
+        // 2. Document create or update
+        const newDoc = await storage.createOrUpdateDocument({
+          fileName: `${contractType}_${bookingId}.pdf`,
+          fileUrl: "",
           documentType: contractType,
           uploadedBy: createdByUserId,
           bookingId,
           status: "pending_signature",
         });
   
-        // 3. Default signatures insert করা (Booker + Admin)
+        // 3. Default signatures create/update
         await storage.createOrUpdateDefaultSignatures(newDoc.id, bookingId);
   
         return res.json(newContract);
@@ -10080,6 +10079,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       }
     }
   );
+  
   
   
   // Save / Update Technical Rider

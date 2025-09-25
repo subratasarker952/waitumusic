@@ -610,36 +610,36 @@ export default function BookingWorkflow({
       const performanceContract = booking.contracts.find(
         (c: any) => c.contractType === "performance_contract"
       );
-  
+
       if (bookingAgreement?.content?.contractConfig) {
         setContractConfig((prev) => ({
           ...prev,
           ...bookingAgreement.content.contractConfig,
         }));
       }
-  
+
       if (bookingAgreement?.content?.counterOffer) {
         setCounterOffer(bookingAgreement.content.counterOffer);
       }
-  
+
       if (bookingAgreement?.content?.categoryPricing) {
         setCategoryPricing(bookingAgreement.content.categoryPricing);
       }
-  
+
       if (bookingAgreement?.content?.individualPricing) {
         setIndividualPricing(bookingAgreement.content.individualPricing);
       }
-  
+
       // ✅ contract_generation step complete
       setStepConfirmations((prev) => ({ ...prev, 2: true }));
     }
-  
+
     if (booking?.technicalRider) {
       // ✅ technical_rider + stage_plot step complete
       setStepConfirmations((prev) => ({ ...prev, 3: true, 4: true }));
     }
   }, [booking]);
-  
+
 
   const generateContractPreview = async (type: "booking" | "performance") => {
     try {
@@ -1277,9 +1277,9 @@ export default function BookingWorkflow({
     try {
       if (!bookingId) throw new Error("Booking ID not found");
       if (assignedTalent.length === 0) throw new Error("No talent assigned");
-  
+
       setIsLoading(true);
-  
+
       // Booking Agreement
       const bookingContract = await apiRequest(
         `/api/bookings/${bookingId}/contracts`,
@@ -1300,7 +1300,7 @@ export default function BookingWorkflow({
           },
         }
       );
-  
+
       // Performance Contract
       const performanceContract = await apiRequest(
         `/api/bookings/${bookingId}/contracts`,
@@ -1321,20 +1321,20 @@ export default function BookingWorkflow({
           },
         }
       );
-  
+
       // Step confirm
       setStepConfirmations((prev) => ({ ...prev, 2: true }));
-  
+
       // Refetch
       queryClient.invalidateQueries({ queryKey: ["booking-workflow", bookingId] });
       queryClient.invalidateQueries({ queryKey: ["booking-contract", bookingId] });
       queryClient.invalidateQueries({ queryKey: ["booking-signatures", bookingId] });
-  
+
       toast({
         title: "Contracts Saved",
         description: "Booking & Performance contracts saved successfully",
       });
-  
+
       return { bookingContract, performanceContract };
     } catch (error: any) {
       console.error("❌ Save contracts error:", error);
@@ -1347,7 +1347,7 @@ export default function BookingWorkflow({
       setIsLoading(false);
     }
   };
-  
+
 
   // 3
   const saveTechnicalRider = async (data: any) => {
@@ -2801,14 +2801,27 @@ export default function BookingWorkflow({
         {/* Enhanced Contract Configuration with Category-Based Pricing */}
         <Card>
           <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Settings className="h-5 w-5" />
-              Contract Configuration
-            </CardTitle>
-            <p className="text-sm text-muted-foreground">
-              Configure contract terms, set category-based pricing, and
-              customize individual talent terms
-            </p>
+            <div className="flex flex-col md:flex-row gap-2 md:justify-between">
+              <div>
+                <CardTitle className="flex items-center gap-2">
+                  <Settings className="h-5 w-5" />
+                  Contract Configuration
+                </CardTitle>
+                <p className="text-sm text-muted-foreground">
+                  Configure contract terms, set category-based pricing, and
+                  customize individual talent terms
+                </p>
+              </div>
+              <div>
+                <Button
+                  className="w-full"
+                  onClick={saveContracts}
+                  disabled={isLoading}
+                >
+                  Save Contract Data
+                </Button>
+              </div>
+            </div>
           </CardHeader>
           <CardContent className="space-y-6">
             {/* Counter-Offer Deadline */}
@@ -3607,7 +3620,7 @@ export default function BookingWorkflow({
           </CardContent>
         </Card>
 
-        <div>
+        {/* <div>
           <Button
             className="w-full"
             onClick={saveContracts}
@@ -3615,7 +3628,7 @@ export default function BookingWorkflow({
           >
             Save Step {currentStep} Data
           </Button>
-        </div>
+        </div> */}
       </div>
     );
   };
@@ -3749,10 +3762,10 @@ export default function BookingWorkflow({
         </Card>
       );
     }
-  
-    const bookerSignatures = booking?.signatures.filter(sig => sig.signerType === "booker");
-    const adminSignatures = booking?.signatures.filter(sig => sig.signerType === "admin");
-  
+
+    const bookerSignatures = booking?.signatures.filter(sig => sig.signerType === "booker") || [];
+    const adminSignatures = booking?.signatures.filter(sig => sig.signerType === "admin") || [];
+
     const renderSignatureCard = (sig: any) => (
       <Card key={sig.signatureId} className="border border-gray-200">
         <CardHeader>
@@ -3774,8 +3787,8 @@ export default function BookingWorkflow({
                     sig.status === "signed"
                       ? "text-green-600"
                       : sig.status === "pending"
-                      ? "text-yellow-600"
-                      : "text-gray-600"
+                        ? "text-yellow-600"
+                        : "text-gray-600"
                   }
                 >
                   {sig.status}
@@ -3800,25 +3813,29 @@ export default function BookingWorkflow({
         </CardContent>
       </Card>
     );
-  
+
     return (
       <div className="space-y-6">
         {/* Booker Signatures */}
         <div>
           <h3 className="text-lg font-semibold mb-2">Booker Signatures</h3>
-          {bookerSignatures.length > 0
-            ? bookerSignatures.map(renderSignatureCard)
-            : <p className="text-gray-500">No booker signatures yet.</p>}
+          <div className="space-y-6">
+            {bookerSignatures?.length > 0
+              ? bookerSignatures?.map(renderSignatureCard)
+              : <p className="text-gray-500">No booker signatures yet.</p>}
+          </div>
         </div>
-  
+
         {/* Admin Signatures */}
         <div>
           <h3 className="text-lg font-semibold mb-2">Admin Signatures</h3>
-          {adminSignatures.length > 0
-            ? adminSignatures.map(renderSignatureCard)
-            : <p className="text-gray-500">No admin signatures yet.</p>}
+          <div className="space-y-6">
+            {adminSignatures?.length > 0
+              ? adminSignatures?.map(renderSignatureCard)
+              : <p className="text-gray-500">No admin signatures yet.</p>}
+          </div>
         </div>
-  
+
         {/* Save Button */}
         <div>
           <Button className="w-full" onClick={saveSignatures} disabled={isLoading}>
@@ -3828,7 +3845,7 @@ export default function BookingWorkflow({
       </div>
     );
   };
-  
+
 
   // Render Payment Processing step
   const renderPaymentProcessing = () => {
