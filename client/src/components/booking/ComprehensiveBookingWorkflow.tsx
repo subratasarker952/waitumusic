@@ -1277,9 +1277,9 @@ export default function BookingWorkflow({
     try {
       if (!bookingId) throw new Error("Booking ID not found");
       if (assignedTalent.length === 0) throw new Error("No talent assigned");
-
+  
       setIsLoading(true);
-
+  
       // Booking Agreement
       const bookingContract = await apiRequest(
         `/api/bookings/${bookingId}/contracts`,
@@ -1289,9 +1289,7 @@ export default function BookingWorkflow({
             contractType: "booking_agreement",
             title: `Booking Agreement for ${booking?.eventName || "Event"}`,
             content: {
-              totalBookingPrice:
-                contractConfig.totalBookingPrice ||
-                calculateTotalBookingPrice(),
+              totalBookingPrice: contractConfig.totalBookingPrice || calculateTotalBookingPrice(),
               categoryPricing,
               individualPricing,
               contractConfig,
@@ -1302,7 +1300,7 @@ export default function BookingWorkflow({
           },
         }
       );
-
+  
       // Performance Contract
       const performanceContract = await apiRequest(
         `/api/bookings/${bookingId}/contracts`,
@@ -1312,9 +1310,7 @@ export default function BookingWorkflow({
             contractType: "performance_contract",
             title: `Performance Contract for ${booking?.eventName || "Event"}`,
             content: {
-              totalBookingPrice:
-                contractConfig.totalBookingPrice ||
-                calculateTotalBookingPrice(),
+              totalBookingPrice: contractConfig.totalBookingPrice || calculateTotalBookingPrice(),
               categoryPricing,
               individualPricing,
               contractConfig,
@@ -1325,17 +1321,20 @@ export default function BookingWorkflow({
           },
         }
       );
-
-      stepConfirmations[2] = true;
-
-      queryClient.invalidateQueries({
-        queryKey: ["booking-workflow", bookingId],
-      });
+  
+      // Step confirm
+      setStepConfirmations((prev) => ({ ...prev, 2: true }));
+  
+      // Refetch
+      queryClient.invalidateQueries({ queryKey: ["booking-workflow", bookingId] });
+      queryClient.invalidateQueries({ queryKey: ["booking-contract", bookingId] });
+      queryClient.invalidateQueries({ queryKey: ["booking-signatures", bookingId] });
+  
       toast({
         title: "Contracts Saved",
         description: "Booking & Performance contracts saved successfully",
       });
-
+  
       return { bookingContract, performanceContract };
     } catch (error: any) {
       console.error("❌ Save contracts error:", error);
@@ -1348,6 +1347,7 @@ export default function BookingWorkflow({
       setIsLoading(false);
     }
   };
+  
 
   // 3
   const saveTechnicalRider = async (data: any) => {
@@ -3739,44 +3739,96 @@ export default function BookingWorkflow({
 
   // Render Signature Collection step
   const renderSignatureCollection = () => {
-    return (
-      <div className="space-y-6">
+    if (booking?.signatures && booking.signatures.length === 0) {
+      return (
         <Card>
           <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <PenTool className="h-5 w-5" />
-              Signature Collection
-            </CardTitle>
-            <CardDescription>
-              Collect digital signatures from all parties on contracts and
-              agreements
-            </CardDescription>
+            <CardTitle>Signature Collection</CardTitle>
+            <CardDescription>No signatures found yet.</CardDescription>
           </CardHeader>
-          <CardContent>
-            <div className="text-center py-8">
-              <Signature className="h-16 w-16 mx-auto text-gray-400 mb-4" />
-              <p className="text-gray-600">
-                Signature collection functionality will be implemented here
-              </p>
-              <Button variant="outline" className="mt-4">
-                Initiate Signature Process
-              </Button>
-            </div>
-          </CardContent>
         </Card>
-
+      );
+    }
+  
+    const bookerSignatures = booking?.signatures.filter(sig => sig.signerType === "booker");
+    const adminSignatures = booking?.signatures.filter(sig => sig.signerType === "admin");
+  
+    const renderSignatureCard = (sig: any) => (
+      <Card key={sig.signatureId} className="border border-gray-200">
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <PenTool className="h-5 w-5" />
+            {sig.signerType === "booker" ? "Booker Signature" : "Admin Signature"}
+          </CardTitle>
+          <CardDescription>
+            {sig.signerName} ({sig.signerEmail})
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="flex justify-between items-center">
+            <div>
+              <p>
+                <strong>Status:</strong>{" "}
+                <span
+                  className={
+                    sig.status === "signed"
+                      ? "text-green-600"
+                      : sig.status === "pending"
+                      ? "text-yellow-600"
+                      : "text-gray-600"
+                  }
+                >
+                  {sig.status}
+                </span>
+              </p>
+              <p>
+                <strong>Signed At:</strong>{" "}
+                {sig.signedAt ? new Date(sig.signedAt).toLocaleString() : "Not signed yet"}
+              </p>
+            </div>
+            <div>
+              {sig.status === "pending" && (
+                <Button size="sm" variant="outline">
+                  Sign
+                </Button>
+              )}
+              {sig.status === "signed" && (
+                <span className="text-green-500 font-semibold">✅ Signed</span>
+              )}
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+    );
+  
+    return (
+      <div className="space-y-6">
+        {/* Booker Signatures */}
         <div>
-          <Button
-            className="w-full"
-            onClick={saveSignatures}
-            disabled={isLoading}
-          >
+          <h3 className="text-lg font-semibold mb-2">Booker Signatures</h3>
+          {bookerSignatures.length > 0
+            ? bookerSignatures.map(renderSignatureCard)
+            : <p className="text-gray-500">No booker signatures yet.</p>}
+        </div>
+  
+        {/* Admin Signatures */}
+        <div>
+          <h3 className="text-lg font-semibold mb-2">Admin Signatures</h3>
+          {adminSignatures.length > 0
+            ? adminSignatures.map(renderSignatureCard)
+            : <p className="text-gray-500">No admin signatures yet.</p>}
+        </div>
+  
+        {/* Save Button */}
+        <div>
+          <Button className="w-full" onClick={saveSignatures} disabled={isLoading}>
             Save Step {currentStep} Data
           </Button>
         </div>
       </div>
     );
   };
+  
 
   // Render Payment Processing step
   const renderPaymentProcessing = () => {

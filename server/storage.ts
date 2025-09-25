@@ -3763,11 +3763,11 @@ export class DatabaseStorage implements IStorage {
   }
 
   // Booking-এর সব contract signatures
-  async getContractSignatures(bookingId: number) {
-    const rows = await db.select().from(contractSignatures)
-      .where(eq(contractSignatures.documentId, bookingId));
-    return rows;
-  }
+  // async getContractSignatures(bookingId: number) {
+  //   const rows = await db.select().from(contractSignatures)
+  //     .where(eq(contractSignatures.documentId, bookingId));
+  //   return rows;
+  // }
 
   // Booking-এর সব payment records
   async getPayments(bookingId: number) {
@@ -3775,6 +3775,135 @@ export class DatabaseStorage implements IStorage {
       .where(eq(payments.bookingId, bookingId));
     return rows;
   }
+
+// documents insert
+async createDocument(doc: {
+  fileName: string;
+  fileUrl: string;
+  documentType: string;
+  uploadedBy: number;
+  bookingId: number;
+  status: string;
+}) {
+  return await db.insert(documents).values(doc).returning().then(r => r[0]);
+}
+
+// signatures insert
+async createOrUpdateDefaultSignatures(documentId: number, bookingId: number) {
+  const booking = await db
+    .select()
+    .from(bookings)
+    .where(eq(bookings.id, bookingId))
+    .limit(1)
+    .then(rows => rows[0]);
+
+  if (!booking) throw new Error("Booking not found");
+
+  const bookerUser = await db
+    .select()
+    .from(users)
+    .where(eq(users.id, booking.bookerUserId!))
+    .limit(1)
+    .then(rows => rows[0]);
+
+  const adminUserRow = await db
+    .select()
+    .from(users)
+    .innerJoin(userRoles, eq(users.id, userRoles.userId))
+    .where(eq(userRoles.roleId, 2))
+    .limit(1)
+    .then(rows => rows[0]);
+
+  const adminUser = adminUserRow?.users;
+
+  if (!adminUser) throw new Error("Admin user not found");
+
+  // Upsert function
+  const upsertSignature = async (
+    signerType: "booker" | "admin",
+    signerUserId: number | null,
+    signerName: string,
+    signerEmail: string
+  ) => {
+    const existing = await db
+      .select()
+      .from(contractSignatures)
+      .innerJoin(documents, eq(contractSignatures.documentId, documents.id))
+      .where(
+        and(
+          eq(documents.id, documentId),
+          eq(contractSignatures.signerType, signerType)
+        )
+      )
+      .limit(1)
+      .then(rows => rows[0]);
+
+    if (existing) {
+      // Update
+      await db
+        .update(contractSignatures)
+        .set({
+          signerUserId,
+          signerName,
+          signerEmail,
+          status: "pending",
+        })
+        .where(eq(contractSignatures.id, existing.contract_signatures.id));
+    } else {
+      // Insert
+      await db.insert(contractSignatures).values({
+        documentId,
+        signerUserId,
+        signerType,
+        signerName,
+        signerEmail,
+        status: "pending",
+      });
+    }
+  };
+
+  // Booker
+  await upsertSignature(
+    "booker",
+    bookerUser?.id || null,
+    bookerUser?.fullName || "Booker",
+    bookerUser?.email || ""
+  );
+
+  // Admin
+  await upsertSignature(
+    "admin",
+    adminUser?.id || null,
+    adminUser?.fullName || "Admin",
+    adminUser?.email || ""
+  );
+}
+
+
+
+
+// contract signatures fetch by booking
+async getContractSignatures(bookingId: number) {
+  return await db
+    .select({
+      signatureId: contractSignatures.id,
+      documentId: contractSignatures.documentId,
+      signerType: contractSignatures.signerType,
+      signerName: contractSignatures.signerName,
+      signerEmail: contractSignatures.signerEmail,
+      signatureData: contractSignatures.signatureData,
+      signedAt: contractSignatures.signedAt,
+      status: contractSignatures.status,
+    })
+    .from(contractSignatures)
+    .innerJoin(documents, eq(contractSignatures.documentId, documents.id))
+    .where(eq(documents.bookingId, bookingId));
+}
+
+
+
+
+
   // async getAllBookings(): Promise<Booking[]> {
   //   try {
   //     const bookingsList = await db.select().from(bookings);

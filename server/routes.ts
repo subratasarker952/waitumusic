@@ -10027,7 +10027,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
       }
     }
   );
-
   app.post(
     "/api/bookings/:bookingId/contracts",
     authenticateToken,
@@ -10035,20 +10034,21 @@ export async function registerRoutes(app: Express): Promise<Server> {
     async (req: Request, res: Response) => {
       try {
         const bookingId = parseInt(req.params.bookingId);
-        const createdByUserId = req.user?.userId;
-
+        const createdByUserId = req.user.userId;
+  
         if (!bookingId) {
           return res.status(400).json({ message: "Booking ID is required" });
         }
-
+  
         const { contractType, title, content, metadata, status } = req.body;
-
+  
         if (!contractType || !title || !content) {
           return res.status(400).json({ message: "Missing required contract data" });
         }
-
+  
         const assignedToUserId = req.user?.userId;
-
+  
+        // 1. Contract তৈরি
         const newContract = await storage.upsertContract({
           bookingId,
           contractType,
@@ -10057,9 +10057,22 @@ export async function registerRoutes(app: Express): Promise<Server> {
           createdByUserId,
           metadata,
           status,
-          assignedToUserId
+          assignedToUserId,
         });
-
+  
+        // 2. Document রেকর্ড তৈরি (documents টেবিল এ)
+        const newDoc = await storage.createDocument({
+          fileName: `${contractType}_${bookingId}.pdf`, // পরে জেনারেট করলে নাম আপডেট করা যাবে
+          fileUrl: "", // ফাইল জেনারেট হলে path বসবে
+          documentType: contractType,
+          uploadedBy: createdByUserId,
+          bookingId,
+          status: "pending_signature",
+        });
+  
+        // 3. Default signatures insert করা (Booker + Admin)
+        await storage.createOrUpdateDefaultSignatures(newDoc.id, bookingId);
+  
         return res.json(newContract);
       } catch (error: any) {
         console.error("❌ Save contract error:", error);
@@ -10067,6 +10080,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       }
     }
   );
+  
   
   // Save / Update Technical Rider
   app.post(
