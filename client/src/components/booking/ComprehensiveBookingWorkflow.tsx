@@ -610,43 +610,36 @@ export default function BookingWorkflow({
       const performanceContract = booking.contracts.find(
         (c: any) => c.contractType === "performance_contract"
       );
-
-      // preview titles
-      // setContractPreview({
-      //   bookingAgreement: bookingAgreement?.title || null,
-      //   performanceContract: performanceContract?.title || null,
-      // });
-
-      // যদি content এর ভিতরে saved config থাকে
+  
       if (bookingAgreement?.content?.contractConfig) {
         setContractConfig((prev) => ({
           ...prev,
           ...bookingAgreement.content.contractConfig,
         }));
       }
-
-      // যদি counter offer থাকে
+  
       if (bookingAgreement?.content?.counterOffer) {
         setCounterOffer(bookingAgreement.content.counterOffer);
       }
-
-      // categoryPricing
+  
       if (bookingAgreement?.content?.categoryPricing) {
         setCategoryPricing(bookingAgreement.content.categoryPricing);
       }
-
-      // individualPricing
+  
       if (bookingAgreement?.content?.individualPricing) {
         setIndividualPricing(bookingAgreement.content.individualPricing);
       }
-      stepConfirmations[2] = true;
+  
+      // ✅ contract_generation step complete
+      setStepConfirmations((prev) => ({ ...prev, 2: true }));
     }
+  
     if (booking?.technicalRider) {
-      stepConfirmations[3] === true
-      stepConfirmations[4] === true
+      // ✅ technical_rider + stage_plot step complete
+      setStepConfirmations((prev) => ({ ...prev, 3: true, 4: true }));
     }
-
   }, [booking]);
+  
 
   const generateContractPreview = async (type: "booking" | "performance") => {
     try {
