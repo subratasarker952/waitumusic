@@ -10072,6 +10072,43 @@ app.post(
     }
   }
 );
+
+app.post(
+  "/api/contracts/:contractId/signatures/:signerId",
+  authenticateToken,
+  async (req: Request, res: Response) => {
+    try {
+      const contractId = parseInt(req.params.contractId);
+      const signerId = parseInt(req.params.signerId);
+      const { signatureData } = req.body;
+
+      if (isNaN(contractId) || isNaN(signerId)) {
+        return res.status(400).json({ message: "Invalid contractId or signerId" });
+      }
+
+      if (!signatureData) {
+        return res.status(400).json({ message: "Missing signature data" });
+      }
+
+      const updatedSignature = await storage.signContract(
+        contractId,
+        signerId,
+        signatureData
+      );
+
+      return res.json({
+        message: "Signature saved successfully",
+        signature: updatedSignature,
+      });
+    } catch (error: any) {
+      console.error("❌ Save signature error:", error);
+      return res.status(500).json({
+        message: error.message || "Failed to save signature",
+      });
+    }
+  }
+);
+
   
   
   

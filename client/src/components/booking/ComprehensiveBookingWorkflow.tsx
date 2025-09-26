@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   Card,
   CardContent,
@@ -3752,60 +3752,114 @@ export default function BookingWorkflow({
 
   // Render Signature Collection step
   const renderSignatureCollection = () => {
-    const groupedSignatures = booking.signatures.reduce((acc, sig) => {
+
+    const [activeSigner, setActiveSigner] = useState<number | null>(null);
+    const sigCanvas = useRef<any>({});
+
+    const groupedSignatures = booking?.signatures.reduce((acc, sig) => {
       if (!acc[sig.contractId]) acc[sig.contractId] = [];
       acc[sig.contractId].push(sig);
       return acc;
     }, {});
 
-    const handleSign = async (contractId, signerId) => {
+    // Generate base64 signature
+    const signatureData = sigCanvas.current.getTrimmedCanvas().toDataURL("image/png");
+
+    const handleSign = async (contractId: Number, signerId: Number) => {
       const signatureData = "SIGNED_BY_USER_" + signerId; // Simple placeholder
-    
-      await fetch(`/api/contracts/${contractId}/signatures/${signerId}`, {
+
+      const response = await apiRequest(`/api/contracts/${contractId}/signatures/${signerId}`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ signatureData }),
       });
-    
-      alert("Signed successfully!");
-      window.location.reload(); // অথবা state update
+      console.log(response)
+
     };
 
     return (
       <div className="space-y-6">
-        {
-          Object.entries(groupedSignatures).map(([contractId, signatures]) => (
-            <div key={contractId}>
-              <h3>Contract {contractId} Signatures</h3>
-              {signatures?.map(sig => (
-                <Card key={sig.signatureId}>
-                  <CardHeader>
-                    <CardTitle>{sig.signerType} Signature</CardTitle>
-                    <CardDescription>{sig.signerName} ({sig.signerEmail})</CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    <div>Status: {sig.status}</div>
-                    {sig.status === "pending" && (
-                      <Button onClick={() => handleSign(sig.contractId, sig.signerUserId)}>
-                        Sign
-                      </Button>
-                    )}
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          ))
-        }
+        <Card>
+          <CardHeader>
+            <div className="flex flex-col md:flex-row gap-2 md:justify-between">
+              <div>
+                <CardTitle className="flex items-center gap-2">
+                  <PenTool className="h-5 w-5" />
+                  Signature Collection
+                </CardTitle>
+                <CardDescription>
+                  Collect digital signatures from all parties on contracts and
+                  agreements
+                </CardDescription>
+              </div>
 
-        {/* Save Button */}
-        {/* <div>
-          <Button className="w-full" onClick={saveSignatures} disabled={isLoading}>
-            Save Step {currentStep} Data
-          </Button>
-        </div> */}
+              <div>
+                <Button
+                  className="w-full"
+                  onClick={saveSignatures}
+                  disabled={isLoading}
+                >
+                  Save Step {currentStep} Data
+                </Button>
+              </div>
+            </div>
+          </CardHeader>
+          <CardContent>
+            {Object.entries(groupedSignatures).map(([contractId, signatures]) => {
+              const contractType = signatures[0]?.contractType || "Unknown";
+
+              return (
+                <div key={contractId} className="mb-6">
+                  <h3 className="text-lg font-semibold mb-3 capitalize">
+                    {contractType.replace("_", " ")} Signatures
+                  </h3>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {signatures?.map((sig) => (
+                      <Card key={sig.signatureId} className="border border-gray-200">
+                        <CardHeader>
+                          <CardTitle className="capitalize">
+                            {sig.signerType} Signature
+                          </CardTitle>
+                          <CardDescription>
+                            {sig.signerName} ({sig.signerEmail})
+                          </CardDescription>
+                        </CardHeader>
+                        <CardContent>
+                          <div className="flex justify-between items-center">
+                            <span>
+                              <strong>Status:</strong> {sig.status}
+                            </span>
+                            {sig.status === "pending" && (
+                              <Button
+                                size="sm"
+                                variant="outline"
+                                onClick={() =>
+                                  handleSign(sig.contractId, sig.signerUserId)
+                                }
+                              >
+                                Sign
+                              </Button>
+                            )}
+                            {sig.status === "signed" && (
+                              <span className="text-green-600 font-semibold">
+                                ✅ Signed
+                              </span>
+                            )}
+                          </div>
+                        </CardContent>
+                      </Card>
+                    ))}
+                  </div>
+                </div>
+              );
+            })}
+
+          </CardContent>
+        </Card>
       </div>
     );
   };
+
 
 
   // Render Payment Processing step

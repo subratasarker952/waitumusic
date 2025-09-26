@@ -3930,14 +3930,40 @@ async getContractSignatures(bookingId: number) {
       signatureData: contractSignatures.signatureData,
       signedAt: contractSignatures.signedAt,
       status: contractSignatures.status,
+      contractType: contracts.contractType,   // 👈 এখানে যুক্ত করলেন
+      title: contracts.title
     })
     .from(contractSignatures)
-    .innerJoin(contracts, eq(contractSignatures.contractId, contracts.id)) // ✅ contracts join
-    .where(eq(contracts.bookingId, bookingId)); // ✅ bookingId contracts table থেকে
+    .innerJoin(contracts, eq(contractSignatures.contractId, contracts.id))
+    .where(eq(contracts.bookingId, bookingId));
 }
 
+async signContract(contractId: number, signerId: number, signatureData: string) {
+  if (!contractId || !signerId || !signatureData) {
+    throw new Error("Missing required signature info");
+  }
 
+  const updated = await db
+    .update(contractSignatures)
+    .set({
+      signatureData,
+      status: "signed",
+      signedAt: new Date(),
+    })
+    .where(
+      and(
+        eq(contractSignatures.contractId, contractId),
+        eq(contractSignatures.signerUserId, signerId)
+      )
+    )
+    .returning();
 
+  if (!updated || updated.length === 0) {
+    throw new Error("Signature record not found");
+  }
+
+  return updated[0];
+}
 
 
   // async getAllBookings(): Promise<Booking[]> {
