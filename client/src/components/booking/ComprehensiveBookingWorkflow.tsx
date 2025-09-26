@@ -1,4 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
+// @ts-ignore
+import SignatureCanvas from "react-signature-canvas";
 import {
   Card,
   CardContent,
@@ -150,6 +152,42 @@ export default function BookingWorkflow({
     Record<number, string[]>
   >({});
   const [isTransitioning, setIsTransitioning] = useState(false);
+
+  const [activeSignature, setActiveSignature] = useState<number | null>(null);
+  const sigCanvas = useRef<SignatureCanvas | null>(null);
+
+  const handleSign = (contractId: number, signerId: number) => {
+    setActiveSignature(signerId); // Open signature pad
+  };
+
+  const saveSignature = async (contractId: number, signerId: number) => {
+    if (!sigCanvas.current) return;
+  
+    try {
+      const trimmedCanvas = sigCanvas.current.getTrimmedCanvas();
+      const signatureData = trimmedCanvas.toDataURL("image/png");
+  
+      console.log("Signature Data:", signatureData);
+  
+      const response = await apiRequest(
+        `/api/contracts/${contractId}/signatures/${signerId}`,
+        {
+          method: "POST",
+          body: JSON.stringify({ signatureData }),
+        }
+      );
+      console.log(response);
+  
+      setActiveSignature(null); // Close signature pad
+    } catch (err) {
+      console.error("Signature saving failed:", err);
+    }
+  };
+  
+
+  const clearSignature = () => {
+    sigCanvas.current?.clear();
+  };
 
   console.log(booking);
   console.log(assignedTalent);
@@ -3751,30 +3789,14 @@ export default function BookingWorkflow({
   };
 
   // Render Signature Collection step
-  const renderSignatureCollection = () => {
 
-    const [activeSigner, setActiveSigner] = useState<number | null>(null);
-    const sigCanvas = useRef<any>({});
+  const renderSignatureCollection = () => {
 
     const groupedSignatures = booking?.signatures.reduce((acc, sig) => {
       if (!acc[sig.contractId]) acc[sig.contractId] = [];
       acc[sig.contractId].push(sig);
       return acc;
-    }, {});
-
-    // Generate base64 signature
-    const signatureData = sigCanvas.current.getTrimmedCanvas().toDataURL("image/png");
-
-    const handleSign = async (contractId: Number, signerId: Number) => {
-      const signatureData = "SIGNED_BY_USER_" + signerId; // Simple placeholder
-
-      const response = await apiRequest(`/api/contracts/${contractId}/signatures/${signerId}`, {
-        method: "POST",
-        body: JSON.stringify({ signatureData }),
-      });
-      console.log(response)
-
-    };
+    }, {} as Record<number, any[]>);
 
     return (
       <div className="space-y-6">
@@ -3787,17 +3809,12 @@ export default function BookingWorkflow({
                   Signature Collection
                 </CardTitle>
                 <CardDescription>
-                  Collect digital signatures from all parties on contracts and
-                  agreements
+                  Collect digital signatures from all parties on contracts and agreements
                 </CardDescription>
               </div>
 
               <div>
-                <Button
-                  className="w-full"
-                  onClick={saveSignatures}
-                  disabled={isLoading}
-                >
+                <Button className="w-full" onClick={saveSignatures} disabled={isLoading}>
                   Save Step {currentStep} Data
                 </Button>
               </div>
@@ -3814,12 +3831,10 @@ export default function BookingWorkflow({
                   </h3>
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    {signatures?.map((sig) => (
+                    {signatures?.map((sig: any) => (
                       <Card key={sig.signatureId} className="border border-gray-200">
                         <CardHeader>
-                          <CardTitle className="capitalize">
-                            {sig.signerType} Signature
-                          </CardTitle>
+                          <CardTitle className="capitalize">{sig.signerType} Signature</CardTitle>
                           <CardDescription>
                             {sig.signerName} ({sig.signerEmail})
                           </CardDescription>
@@ -3829,6 +3844,7 @@ export default function BookingWorkflow({
                             <span>
                               <strong>Status:</strong> {sig.status}
                             </span>
+
                             {sig.status === "pending" && (
                               <Button
                                 size="sm"
@@ -3840,12 +3856,33 @@ export default function BookingWorkflow({
                                 Sign
                               </Button>
                             )}
+
                             {sig.status === "signed" && (
-                              <span className="text-green-600 font-semibold">
-                                ✅ Signed
-                              </span>
+                              <span className="text-green-600 font-semibold">✅ Signed</span>
                             )}
                           </div>
+
+                          {/* Signature pad modal */}
+                          {activeSignature === sig.signerUserId && (
+                            <div className="mt-4 p-4 border rounded bg-gray-50">
+                              <SignatureCanvas
+                                ref={sigCanvas}
+                                penColor="black"
+                                canvasProps={{ className: "border w-full h-40" }}
+                              />
+                              <div className="flex gap-2 mt-2">
+                                <Button size="sm" onClick={() => saveSignature(sig.contractId, sig.signerUserId)}>
+                                  Save
+                                </Button>
+                                <Button size="sm" variant="outline" onClick={clearSignature}>
+                                  Clear
+                                </Button>
+                                <Button size="sm" variant="ghost" onClick={() => setActiveSignature(null)}>
+                                  Cancel
+                                </Button>
+                              </div>
+                            </div>
+                          )}
                         </CardContent>
                       </Card>
                     ))}
@@ -3853,12 +3890,12 @@ export default function BookingWorkflow({
                 </div>
               );
             })}
-
           </CardContent>
         </Card>
       </div>
     );
   };
+
 
 
 
