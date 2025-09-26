@@ -575,7 +575,7 @@ export const bookingDocuments = pgTable("booking_documents", {
 // Contract signatures tracking
 export const contractSignatures = pgTable("contract_signatures", {
   id: serial("id").primaryKey(),
-  documentId: integer("document_id").references(() => documents.id).notNull(),
+  contractId: integer("contract_id").references(() => contracts.id).notNull(),
   signerUserId: integer("signer_user_id").references(() => users.id),
   signerType: text("signer_type").notNull(), // artist, musician, booker, admin
   signerName: text("signer_name").notNull(), // For guest bookings

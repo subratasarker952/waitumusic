@@ -579,7 +579,7 @@ CREATE TABLE "content_distribution" (
 --> statement-breakpoint
 CREATE TABLE "contract_signatures" (
 	"id" serial PRIMARY KEY NOT NULL,
-	"document_id" integer NOT NULL,
+	"contract_id" integer NOT NULL,
 	"signer_user_id" integer,
 	"signer_type" text NOT NULL,
 	"signer_name" text NOT NULL,

@@ -3821,7 +3821,7 @@ async createOrUpdateDocument(doc: {
 
 
 // signatures insert
-async createOrUpdateDefaultSignatures(documentId: number, bookingId: number) {
+async createOrUpdateDefaultSignatures(contractId: number, bookingId: number) {
   // Booking info
   const booking = await db
     .select()
@@ -3845,7 +3845,7 @@ async createOrUpdateDefaultSignatures(documentId: number, bookingId: number) {
     .select()
     .from(users)
     .innerJoin(userRoles, eq(users.id, userRoles.userId))
-    .where(eq(userRoles.roleId, 2)) // roleId = 2 means admin
+    .where(eq(userRoles.roleId, 1)) // roleId = 1 means superadmin
     .limit(1)
     .then(rows => rows[0]);
 
@@ -3855,7 +3855,7 @@ async createOrUpdateDefaultSignatures(documentId: number, bookingId: number) {
 
   // Upsert function
   const upsertSignature = async (
-    signerType: "booker" | "admin",
+    signerType: "booker" | "superadmin",
     signerUserId: number | null,
     signerName: string,
     signerEmail: string
@@ -3865,7 +3865,7 @@ async createOrUpdateDefaultSignatures(documentId: number, bookingId: number) {
       .from(contractSignatures)
       .where(
         and(
-          eq(contractSignatures.documentId, documentId),
+          eq(contractSignatures.contractId, contractId), // ✅ contractSignatures.contractId ব্যবহার
           eq(contractSignatures.signerType, signerType)
         )
       )
@@ -3886,7 +3886,7 @@ async createOrUpdateDefaultSignatures(documentId: number, bookingId: number) {
     } else {
       // Insert
       await db.insert(contractSignatures).values({
-        documentId,
+        contractId,
         signerUserId,
         signerType,
         signerName,
@@ -3906,12 +3906,13 @@ async createOrUpdateDefaultSignatures(documentId: number, bookingId: number) {
 
   // Admin signature
   await upsertSignature(
-    "admin",
+    "superadmin",
     adminUser?.id || null,
-    adminUser?.fullName || "Admin",
+    adminUser?.fullName || "SuperAdmin",
     adminUser?.email || ""
   );
 }
+
 
 
 
@@ -3922,7 +3923,7 @@ async getContractSignatures(bookingId: number) {
   return await db
     .select({
       signatureId: contractSignatures.id,
-      documentId: contractSignatures.documentId,
+      contractId: contractSignatures.contractId,
       signerType: contractSignatures.signerType,
       signerName: contractSignatures.signerName,
       signerEmail: contractSignatures.signerEmail,
@@ -3931,8 +3932,8 @@ async getContractSignatures(bookingId: number) {
       status: contractSignatures.status,
     })
     .from(contractSignatures)
-    .innerJoin(documents, eq(contractSignatures.documentId, documents.id))
-    .where(eq(documents.bookingId, bookingId));
+    .innerJoin(contracts, eq(contractSignatures.contractId, contracts.id)) // ✅ contracts join
+    .where(eq(contracts.bookingId, bookingId)); // ✅ bookingId contracts table থেকে
 }
 
 

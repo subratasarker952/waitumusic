@@ -10028,57 +10028,50 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   );
   
-  app.post(
-    "/api/bookings/:bookingId/contracts",
-    authenticateToken,
-    requireRole([1, 2]),
-    async (req: Request, res: Response) => {
-      try {
-        const bookingId = parseInt(req.params.bookingId);
-        if (isNaN(bookingId)) {
-          return res.status(400).json({ message: "Invalid booking ID" });
-        }
-  
-        const { contractType, title, content, metadata, status } = req.body;
-        if (!contractType || !title || !content) {
-          return res.status(400).json({ message: "Missing required contract data" });
-        }
-  
-        const createdByUserId = req.user.userId;
-        const assignedToUserId = createdByUserId;
-  
-        // 1. Contract create or update
-        const newContract = await storage.upsertContract({
-          bookingId,
-          contractType,
-          title,
-          content,
-          createdByUserId,
-          metadata,
-          status,
-          assignedToUserId,
-        });
-  
-        // 2. Document create or update
-        const newDoc = await storage.createOrUpdateDocument({
-          fileName: `${contractType}_${bookingId}.pdf`,
-          fileUrl: "",
-          documentType: contractType,
-          uploadedBy: createdByUserId,
-          bookingId,
-          status: "pending_signature",
-        });
-  
-        // 3. Default signatures create/update
-        await storage.createOrUpdateDefaultSignatures(newDoc.id, bookingId);
-  
-        return res.json(newContract);
-      } catch (error: any) {
-        console.error("❌ Save contract error:", error);
-        return res.status(500).json({ message: error.message || "Failed to save contract" });
+// POST /api/bookings/:bookingId/contracts
+app.post(
+  "/api/bookings/:bookingId/contracts",
+  authenticateToken,
+  requireRole([1, 2]),
+  async (req: Request, res: Response) => {
+    try {
+      const bookingId = parseInt(req.params.bookingId);
+      if (isNaN(bookingId)) {
+        return res.status(400).json({ message: "Invalid booking ID" });
       }
+
+      const { contractType, title, content, metadata, status } = req.body;
+      if (!contractType || !title || !content) {
+        return res.status(400).json({ message: "Missing required contract data" });
+      }
+
+      const createdByUserId = req.user.userId;
+      const assignedToUserId = createdByUserId;
+
+      // শুধু Contract create/update
+      const newContract = await storage.upsertContract({
+        bookingId,
+        contractType,
+        title,
+        content,
+        createdByUserId,
+        metadata,
+        status,
+        assignedToUserId,
+      });
+
+      await storage.createOrUpdateDefaultSignatures(newContract.contract.id, bookingId);
+
+      return res.json(newContract);
+
+    } catch (error: any) {
+      console.error("❌ Save contract error:", error);
+      return res
+        .status(500)
+        .json({ message: error.message || "Failed to save contract" });
     }
-  );
+  }
+);
   
   
   

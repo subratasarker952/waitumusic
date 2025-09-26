@@ -3752,96 +3752,57 @@ export default function BookingWorkflow({
 
   // Render Signature Collection step
   const renderSignatureCollection = () => {
-    if (booking?.signatures && booking.signatures.length === 0) {
-      return (
-        <Card>
-          <CardHeader>
-            <CardTitle>Signature Collection</CardTitle>
-            <CardDescription>No signatures found yet.</CardDescription>
-          </CardHeader>
-        </Card>
-      );
-    }
+    const groupedSignatures = booking.signatures.reduce((acc, sig) => {
+      if (!acc[sig.contractId]) acc[sig.contractId] = [];
+      acc[sig.contractId].push(sig);
+      return acc;
+    }, {});
 
-    const bookerSignatures = booking?.signatures.filter(sig => sig.signerType === "booker") || [];
-    const adminSignatures = booking?.signatures.filter(sig => sig.signerType === "admin") || [];
-
-    const renderSignatureCard = (sig: any) => (
-      <Card key={sig.signatureId} className="border border-gray-200">
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <PenTool className="h-5 w-5" />
-            {sig.signerType === "booker" ? "Booker Signature" : "Admin Signature"}
-          </CardTitle>
-          <CardDescription>
-            {sig.signerName} ({sig.signerEmail})
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="flex justify-between items-center">
-            <div>
-              <p>
-                <strong>Status:</strong>{" "}
-                <span
-                  className={
-                    sig.status === "signed"
-                      ? "text-green-600"
-                      : sig.status === "pending"
-                        ? "text-yellow-600"
-                        : "text-gray-600"
-                  }
-                >
-                  {sig.status}
-                </span>
-              </p>
-              <p>
-                <strong>Signed At:</strong>{" "}
-                {sig.signedAt ? new Date(sig.signedAt).toLocaleString() : "Not signed yet"}
-              </p>
-            </div>
-            <div>
-              {sig.status === "pending" && (
-                <Button size="sm" variant="outline">
-                  Sign
-                </Button>
-              )}
-              {sig.status === "signed" && (
-                <span className="text-green-500 font-semibold">✅ Signed</span>
-              )}
-            </div>
-          </div>
-        </CardContent>
-      </Card>
-    );
+    const handleSign = async (contractId, signerId) => {
+      const signatureData = "SIGNED_BY_USER_" + signerId; // Simple placeholder
+    
+      await fetch(`/api/contracts/${contractId}/signatures/${signerId}`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ signatureData }),
+      });
+    
+      alert("Signed successfully!");
+      window.location.reload(); // অথবা state update
+    };
 
     return (
       <div className="space-y-6">
-        {/* Booker Signatures */}
-        <div>
-          <h3 className="text-lg font-semibold mb-2">Booker Signatures</h3>
-          <div className="space-y-6">
-            {bookerSignatures?.length > 0
-              ? bookerSignatures?.map(renderSignatureCard)
-              : <p className="text-gray-500">No booker signatures yet.</p>}
-          </div>
-        </div>
-
-        {/* Admin Signatures */}
-        <div>
-          <h3 className="text-lg font-semibold mb-2">Admin Signatures</h3>
-          <div className="space-y-6">
-            {adminSignatures?.length > 0
-              ? adminSignatures?.map(renderSignatureCard)
-              : <p className="text-gray-500">No admin signatures yet.</p>}
-          </div>
-        </div>
+        {
+          Object.entries(groupedSignatures).map(([contractId, signatures]) => (
+            <div key={contractId}>
+              <h3>Contract {contractId} Signatures</h3>
+              {signatures?.map(sig => (
+                <Card key={sig.signatureId}>
+                  <CardHeader>
+                    <CardTitle>{sig.signerType} Signature</CardTitle>
+                    <CardDescription>{sig.signerName} ({sig.signerEmail})</CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <div>Status: {sig.status}</div>
+                    {sig.status === "pending" && (
+                      <Button onClick={() => handleSign(sig.contractId, sig.signerUserId)}>
+                        Sign
+                      </Button>
+                    )}
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          ))
+        }
 
         {/* Save Button */}
-        <div>
+        {/* <div>
           <Button className="w-full" onClick={saveSignatures} disabled={isLoading}>
             Save Step {currentStep} Data
           </Button>
-        </div>
+        </div> */}
       </div>
     );
   };
