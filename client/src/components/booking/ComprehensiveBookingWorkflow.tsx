@@ -175,8 +175,6 @@ export default function BookingWorkflow({
     try {
       const signatureData = canvas.getTrimmedCanvas().toDataURL("image/png");
 
-      console.log(signatureData)
-
       for (const contractId of contractIds) {
         await apiRequest(`/api/contracts/${contractId}/signatures`, {
           method: "POST",
@@ -184,7 +182,7 @@ export default function BookingWorkflow({
         });
       }
 
-      console.log(`Signature saved for ${signerType} on contracts: ${contractIds.join(", ")}`);
+      queryClient.invalidateQueries({ queryKey: ["booking-workflow", bookingId], });
       setActiveSignature(null);
     } catch (err) {
       console.error("Signature save failed:", err);
@@ -689,6 +687,21 @@ export default function BookingWorkflow({
       // ✅ technical_rider + stage_plot step complete
       setStepConfirmations((prev) => ({ ...prev, 3: true, 4: true }));
     }
+
+    if (booking?.signatures && booking.signatures.length > 0) {
+      // ✅ check if all signatures signed
+      const allSigned = booking.signatures.every(
+        (sig: any) => sig.status === "signed"
+      );
+
+      setStepConfirmations((prev) => ({
+        ...prev,
+        5: allSigned, // যদি সব signed → true, নাহলে false
+      }));
+    }
+
+
+
   }, [booking]);
 
 
@@ -1599,13 +1612,13 @@ export default function BookingWorkflow({
       id: "signature_collection",
       title: "Signature Collection",
       description: "Collect contract signatures",
-      canProgress: (booking?.signatures?.length || 0) >= 1,
+      canProgress: (booking?.signatures?.length) >= 1 && booking.signatures.every((sig: any) => sig.status === "signed"), // boolean
       status:
-        (booking?.signatures?.length || 0) >= 1
+        (booking?.signatures?.length || 0) >= 1 && booking.signatures.every((sig: any) => sig.status === "signed")
           ? "completed"
           : currentStep === 5
             ? "in_progress"
-            : "pending",
+            : "pending", // matches union type
       icon: <PenTool className="h-5 w-5" />,
       isActive: currentStep === 5,
     },
@@ -1613,7 +1626,7 @@ export default function BookingWorkflow({
       id: "payment_processing",
       title: "Payment Processing",
       description: "Process payments & receipts",
-      canProgress: (booking?.payments?.length || 0) > 0,
+      canProgress: (booking?.payments?.length || 0) > 1,
       status:
         (booking?.payments?.length || 0) > 0
           ? "completed"
@@ -3830,7 +3843,7 @@ export default function BookingWorkflow({
               </h2>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {sigList?.map((sig:any) => (
+                {sigList?.map((sig: any) => (
                   <div
                     key={sig.signatureId}
                     className="border p-3 rounded bg-gray-50"
@@ -3900,9 +3913,14 @@ export default function BookingWorkflow({
 
                 return (
                   <div key={key} className="mb-6">
-                    <h3 className="text-lg font-semibold mb-3 capitalize">
-                      {signerType} Signatures
-                    </h3>
+                    <div>
+
+                      <h3 className="text-lg font-semibold mb-3 capitalize">
+                        {signerType} Signatures      {signatures?.every((sig: any) => sig.status === "signed") && (
+                          <span className="text-green-600 font-semibold">(Signed)</span>
+                        )}
+                      </h3>
+                    </div>
 
                     <Card className="border border-gray-200">
                       <CardHeader>
@@ -3947,10 +3965,6 @@ export default function BookingWorkflow({
                               </Button>
                             </div>
                           </div>
-                        )}
-
-                        {signatures?.every((sig: any) => sig.status === "signed") && (
-                          <span className="text-green-600 font-semibold">✅ Signed</span>
                         )}
                       </CardContent>
                     </Card>

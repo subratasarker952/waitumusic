@@ -3776,194 +3776,199 @@ export class DatabaseStorage implements IStorage {
     return rows;
   }
 
-// documents insert
-async createOrUpdateDocument(doc: {
-  fileName: string;
-  fileUrl: string;
-  documentType: string;
-  uploadedBy: number;
-  bookingId: number;
-  status: string;
-}) {
-  const existing = await db
-    .select()
-    .from(documents)
-    .where(
-      and(
-        eq(documents.bookingId, doc.bookingId),
-        eq(documents.documentType, doc.documentType)
+  // documents insert
+  async createOrUpdateDocument(doc: {
+    fileName: string;
+    fileUrl: string;
+    documentType: string;
+    uploadedBy: number;
+    bookingId: number;
+    status: string;
+  }) {
+    const existing = await db
+      .select()
+      .from(documents)
+      .where(
+        and(
+          eq(documents.bookingId, doc.bookingId),
+          eq(documents.documentType, doc.documentType)
+        )
       )
-    )
-    .limit(1)
-    .then((rows) => rows[0]);
+      .limit(1)
+      .then((rows) => rows[0]);
 
-  if (existing) {
+    if (existing) {
+      return await db
+        .update(documents)
+        .set({
+          fileName: doc.fileName,
+          fileUrl: doc.fileUrl,
+          uploadedBy: doc.uploadedBy,
+          status: doc.status,
+        })
+        .where(eq(documents.id, existing.id))
+        .returning()
+        .then((r) => r[0]);
+    }
+
     return await db
-      .update(documents)
-      .set({
-        fileName: doc.fileName,
-        fileUrl: doc.fileUrl,
-        uploadedBy: doc.uploadedBy,
-        status: doc.status,
-      })
-      .where(eq(documents.id, existing.id))
+      .insert(documents)
+      .values(doc)
       .returning()
       .then((r) => r[0]);
   }
 
-  return await db
-    .insert(documents)
-    .values(doc)
-    .returning()
-    .then((r) => r[0]);
-}
 
 
-
-// signatures insert
-async createOrUpdateDefaultSignatures(contractId: number, bookingId: number) {
-  // Booking info
-  const booking = await db
-    .select()
-    .from(bookings)
-    .where(eq(bookings.id, bookingId))
-    .limit(1)
-    .then(rows => rows[0]);
-
-  if (!booking) throw new Error("Booking not found");
-
-  // Booker info
-  const bookerUser = await db
-    .select()
-    .from(users)
-    .where(eq(users.id, booking.bookerUserId!))
-    .limit(1)
-    .then(rows => rows[0]);
-
-  // Admin info
-  const adminUserRow = await db
-    .select()
-    .from(users)
-    .innerJoin(userRoles, eq(users.id, userRoles.userId))
-    .where(eq(userRoles.roleId, 1)) // roleId = 1 means superadmin
-    .limit(1)
-    .then(rows => rows[0]);
-
-  const adminUser = adminUserRow?.users;
-
-  if (!adminUser) throw new Error("Admin user not found");
-
-  // Upsert function
-  const upsertSignature = async (
-    signerType: "booker" | "superadmin",
-    signerUserId: number | null,
-    signerName: string,
-    signerEmail: string
-  ) => {
-    const existing = await db
+  // signatures insert
+  async createOrUpdateDefaultSignatures(contractId: number, bookingId: number) {
+    // Booking info
+    const booking = await db
       .select()
-      .from(contractSignatures)
-      .where(
-        and(
-          eq(contractSignatures.contractId, contractId), // ✅ contractSignatures.contractId ব্যবহার
-          eq(contractSignatures.signerType, signerType)
-        )
-      )
+      .from(bookings)
+      .where(eq(bookings.id, bookingId))
       .limit(1)
       .then(rows => rows[0]);
 
-    if (existing) {
-      // Update
-      await db
-        .update(contractSignatures)
-        .set({
+    if (!booking) throw new Error("Booking not found");
+
+    // Booker info
+    const bookerUser = await db
+      .select()
+      .from(users)
+      .where(eq(users.id, booking.bookerUserId!))
+      .limit(1)
+      .then(rows => rows[0]);
+
+    // Admin info
+    const adminUserRow = await db
+      .select()
+      .from(users)
+      .innerJoin(userRoles, eq(users.id, userRoles.userId))
+      .where(eq(userRoles.roleId, 1)) // roleId = 1 means superadmin
+      .limit(1)
+      .then(rows => rows[0]);
+
+    const adminUser = adminUserRow?.users;
+
+    if (!adminUser) throw new Error("Admin user not found");
+
+    // Upsert function
+    const upsertSignature = async (
+      signerType: "booker" | "superadmin",
+      signerUserId: number | null,
+      signerName: string,
+      signerEmail: string
+    ) => {
+      const existing = await db
+        .select()
+        .from(contractSignatures)
+        .where(
+          and(
+            eq(contractSignatures.contractId, contractId), // ✅ contractSignatures.contractId ব্যবহার
+            eq(contractSignatures.signerType, signerType)
+          )
+        )
+        .limit(1)
+        .then(rows => rows[0]);
+
+      if (existing) {
+        // Update
+        await db
+          .update(contractSignatures)
+          .set({
+            signerUserId,
+            signerName,
+            signerEmail,
+            status: "pending",
+          })
+          .where(eq(contractSignatures.id, existing.id));
+      } else {
+        // Insert
+        await db.insert(contractSignatures).values({
+          contractId,
           signerUserId,
+          signerType,
           signerName,
           signerEmail,
           status: "pending",
-        })
-        .where(eq(contractSignatures.id, existing.id));
-    } else {
-      // Insert
-      await db.insert(contractSignatures).values({
-        contractId,
-        signerUserId,
-        signerType,
-        signerName,
-        signerEmail,
-        status: "pending",
-      });
+        });
+      }
+    };
+
+    // Booker signature
+    await upsertSignature(
+      "booker",
+      bookerUser?.id || null,
+      bookerUser?.fullName || "Booker",
+      bookerUser?.email || ""
+    );
+
+    // Admin signature
+    await upsertSignature(
+      "superadmin",
+      adminUser?.id || null,
+      adminUser?.fullName || "SuperAdmin",
+      adminUser?.email || ""
+    );
+  }
+
+
+
+
+
+
+  // contract signatures fetch by booking
+  async getContractSignatures(bookingId: number) {
+    return await db
+      .select({
+        signatureId: contractSignatures.id,
+        contractId: contractSignatures.contractId,
+        signerType: contractSignatures.signerType,
+        signerName: contractSignatures.signerName,
+        signerEmail: contractSignatures.signerEmail,
+        signatureData: contractSignatures.signatureData,
+        signedAt: contractSignatures.signedAt,
+        status: contractSignatures.status,
+        contractType: contracts.contractType,   // 👈 এখানে যুক্ত করলেন
+        title: contracts.title
+      })
+      .from(contractSignatures)
+      .innerJoin(contracts, eq(contractSignatures.contractId, contracts.id))
+      .where(eq(contracts.bookingId, bookingId));
+  }
+
+  async signContract(contractId: number, signerType: string, signatureData: string) {
+    if (!contractId || !signerType || !signatureData) {
+      throw new Error("Missing required signature info");
     }
-  };
 
-  // Booker signature
-  await upsertSignature(
-    "booker",
-    bookerUser?.id || null,
-    bookerUser?.fullName || "Booker",
-    bookerUser?.email || ""
-  );
-
-  // Admin signature
-  await upsertSignature(
-    "superadmin",
-    adminUser?.id || null,
-    adminUser?.fullName || "SuperAdmin",
-    adminUser?.email || ""
-  );
-}
-
-
-
-
-
-
-// contract signatures fetch by booking
-async getContractSignatures(bookingId: number) {
-  return await db
-    .select({
-      signatureId: contractSignatures.id,
-      contractId: contractSignatures.contractId,
-      signerType: contractSignatures.signerType,
-      signerName: contractSignatures.signerName,
-      signerEmail: contractSignatures.signerEmail,
-      signatureData: contractSignatures.signatureData,
-      signedAt: contractSignatures.signedAt,
-      status: contractSignatures.status,
-      contractType: contracts.contractType,   // 👈 এখানে যুক্ত করলেন
-      title: contracts.title
-    })
-    .from(contractSignatures)
-    .innerJoin(contracts, eq(contractSignatures.contractId, contracts.id))
-    .where(eq(contracts.bookingId, bookingId));
-}
-
-async signContract(contractId: number, signerId: number, signatureData: string) {
-  if (!contractId || !signerId || !signatureData) {
-    throw new Error("Missing required signature info");
-  }
-
-  const updated = await db
-    .update(contractSignatures)
-    .set({
-      signatureData,
-      status: "signed",
-      signedAt: new Date(),
-    })
-    .where(
-      and(
-        eq(contractSignatures.contractId, contractId),
-        eq(contractSignatures.signerUserId, signerId)
+    const updated = await db
+      .update(contractSignatures)
+      .set({
+        signatureData,
+        status: "signed",
+        signedAt: new Date(),
+      })
+      .where(
+        and(
+          eq(contractSignatures.contractId, contractId),
+          eq(contractSignatures.signerType, signerType) // signerUserId বাদ দিয়ে signerType ব্যবহার
+        )
       )
-    )
-    .returning();
+      .returning();
 
-  if (!updated || updated.length === 0) {
-    throw new Error("Signature record not found");
+    if (!updated || updated.length === 0) {
+      throw new Error("Signature record not found");
+    }
+    // Contract status update
+    await db.update(contracts)
+      .set({ status: "signed" })
+      .where(eq(contracts.id, contractId));
+
+    return updated[0];
   }
 
-  return updated[0];
-}
 
 
   // async getAllBookings(): Promise<Booking[]> {
@@ -5536,60 +5541,60 @@ async signContract(contractId: number, signerId: number, signatureData: string) 
     return enrichedAssignments;
   }
 
-async getBookingAssignmentsByBooking(
-  bookingId: number
-): Promise<any[]> {
-  const assignments = await db
-    .select({
-      id: bookingAssignmentsMembers.id,
-      bookingId: bookingAssignmentsMembers.bookingId,
-      userId: bookingAssignmentsMembers.userId,
-      roleInBooking: bookingAssignmentsMembers.roleInBooking,
-      status: bookingAssignmentsMembers.status,
-      selectedTalent: bookingAssignmentsMembers.selectedTalent,
-      isMainBookedTalent: bookingAssignmentsMembers.isMainBookedTalent,
-      assignedAt: bookingAssignmentsMembers.assignedAt,
+  async getBookingAssignmentsByBooking(
+    bookingId: number
+  ): Promise<any[]> {
+    const assignments = await db
+      .select({
+        id: bookingAssignmentsMembers.id,
+        bookingId: bookingAssignmentsMembers.bookingId,
+        userId: bookingAssignmentsMembers.userId,
+        roleInBooking: bookingAssignmentsMembers.roleInBooking,
+        status: bookingAssignmentsMembers.status,
+        selectedTalent: bookingAssignmentsMembers.selectedTalent,
+        isMainBookedTalent: bookingAssignmentsMembers.isMainBookedTalent,
+        assignedAt: bookingAssignmentsMembers.assignedAt,
 
-      // Joined info
-      userFullName: users.fullName,
-      userEmail: users.email,
-      roleName: rolesManagement.name,
-      instrumentName: allInstruments.name,
-    })
-    .from(bookingAssignmentsMembers)
-    .innerJoin(users, eq(bookingAssignmentsMembers.userId, users.id))
-    .leftJoin(
-      rolesManagement,
-      eq(bookingAssignmentsMembers.roleInBooking, rolesManagement.id)
-    )
-    .leftJoin(
-      allInstruments,
-      eq(bookingAssignmentsMembers.selectedTalent, allInstruments.id)
-    )
-    .where(
-      and(
-        eq(bookingAssignmentsMembers.bookingId, bookingId),
-        eq(bookingAssignmentsMembers.status, "active")
+        // Joined info
+        userFullName: users.fullName,
+        userEmail: users.email,
+        roleName: rolesManagement.name,
+        instrumentName: allInstruments.name,
+      })
+      .from(bookingAssignmentsMembers)
+      .innerJoin(users, eq(bookingAssignmentsMembers.userId, users.id))
+      .leftJoin(
+        rolesManagement,
+        eq(bookingAssignmentsMembers.roleInBooking, rolesManagement.id)
       )
-    );
+      .leftJoin(
+        allInstruments,
+        eq(bookingAssignmentsMembers.selectedTalent, allInstruments.id)
+      )
+      .where(
+        and(
+          eq(bookingAssignmentsMembers.bookingId, bookingId),
+          eq(bookingAssignmentsMembers.status, "active")
+        )
+      );
 
-  return assignments.map((a) => ({
-    id: a.id,
-    bookingId: a.bookingId,
-    userId: a.userId,
-    roleInBooking: a.roleInBooking,
-    status: a.status,
-    selectedTalent: a.selectedTalent,
-    isMainBookedTalent: a.isMainBookedTalent,
-    assignedAt: a.assignedAt,
+    return assignments.map((a) => ({
+      id: a.id,
+      bookingId: a.bookingId,
+      userId: a.userId,
+      roleInBooking: a.roleInBooking,
+      status: a.status,
+      selectedTalent: a.selectedTalent,
+      isMainBookedTalent: a.isMainBookedTalent,
+      assignedAt: a.assignedAt,
 
-    // Enhanced fields
-    assignedUserName: a.userFullName || "Unknown User",
-    userEmail: a.userEmail,
-    role: a.roleName || "N/A",
-    talent: a.instrumentName || null,
-  }));
-}
+      // Enhanced fields
+      assignedUserName: a.userFullName || "Unknown User",
+      userEmail: a.userEmail,
+      role: a.roleName || "N/A",
+      talent: a.instrumentName || null,
+    }));
+  }
 
   async getBookingAssignment(
     id: number
@@ -9780,7 +9785,7 @@ async getBookingAssignmentsByBooking(
           )
         )
         .limit(1);
-  
+
       if (existing.length > 0) {
         // থাকলে update করবো
         const [updated] = await db
@@ -9795,7 +9800,7 @@ async getBookingAssignmentsByBooking(
           })
           .where(eq(contracts.id, existing[0].id))
           .returning();
-  
+
         return { action: "updated", contract: updated };
       } else {
         // না থাকলে নতুন insert করবো
@@ -9812,7 +9817,7 @@ async getBookingAssignmentsByBooking(
             status
           })
           .returning();
-  
+
         return { action: "inserted", contract: inserted };
       }
     } catch (error) {
@@ -9849,7 +9854,7 @@ async getBookingAssignmentsByBooking(
       console.error("❌ Get contracts by booking error:", error);
       return [];
     }
-  } 
+  }
 
 
   // Get all technical riders
@@ -9897,14 +9902,14 @@ async getBookingAssignmentsByBooking(
           },
         })
         .returning();
-  
+
       return row;
     } catch (error) {
       console.error("Upsert technical rider error:", error);
       throw error;
     }
   }
-  
+
 
   // Technical Rider by bookingId
   async getTechnicalRiderByBooking(bookingId: number): Promise<any | null> {

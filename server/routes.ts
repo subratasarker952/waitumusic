@@ -10027,90 +10027,82 @@ export async function registerRoutes(app: Express): Promise<Server> {
       }
     }
   );
-  
-// POST /api/bookings/:bookingId/contracts
-app.post(
-  "/api/bookings/:bookingId/contracts",
-  authenticateToken,
-  requireRole([1, 2]),
-  async (req: Request, res: Response) => {
-    try {
-      const bookingId = parseInt(req.params.bookingId);
-      if (isNaN(bookingId)) {
-        return res.status(400).json({ message: "Invalid booking ID" });
+
+  // POST /api/bookings/:bookingId/contracts
+  app.post(
+    "/api/bookings/:bookingId/contracts",
+    authenticateToken,
+    requireRole([1, 2]),
+    async (req: Request, res: Response) => {
+      try {
+        const bookingId = parseInt(req.params.bookingId);
+        if (isNaN(bookingId)) {
+          return res.status(400).json({ message: "Invalid booking ID" });
+        }
+
+        const { contractType, title, content, metadata, status } = req.body;
+        if (!contractType || !title || !content) {
+          return res.status(400).json({ message: "Missing required contract data" });
+        }
+
+        const createdByUserId = req.user.userId;
+        const assignedToUserId = createdByUserId;
+
+        // শুধু Contract create/update
+        const newContract = await storage.upsertContract({
+          bookingId,
+          contractType,
+          title,
+          content,
+          createdByUserId,
+          metadata,
+          status,
+          assignedToUserId,
+        });
+
+        await storage.createOrUpdateDefaultSignatures(newContract.contract.id, bookingId);
+
+        return res.json(newContract);
+
+      } catch (error: any) {
+        console.error("❌ Save contract error:", error);
+        return res
+          .status(500)
+          .json({ message: error.message || "Failed to save contract" });
       }
-
-      const { contractType, title, content, metadata, status } = req.body;
-      if (!contractType || !title || !content) {
-        return res.status(400).json({ message: "Missing required contract data" });
-      }
-
-      const createdByUserId = req.user.userId;
-      const assignedToUserId = createdByUserId;
-
-      // শুধু Contract create/update
-      const newContract = await storage.upsertContract({
-        bookingId,
-        contractType,
-        title,
-        content,
-        createdByUserId,
-        metadata,
-        status,
-        assignedToUserId,
-      });
-
-      await storage.createOrUpdateDefaultSignatures(newContract.contract.id, bookingId);
-
-      return res.json(newContract);
-
-    } catch (error: any) {
-      console.error("❌ Save contract error:", error);
-      return res
-        .status(500)
-        .json({ message: error.message || "Failed to save contract" });
     }
-  }
-);
+  );
 
-app.post(
-  "/api/contracts/:contractId/signatures",
-  authenticateToken,
-  async (req: Request, res: Response) => {
-    try {
-      const contractId = parseInt(req.params.contractId);
-      const { signatureData, signerId } = req.body;
+  app.post(
+    "/api/contracts/:contractId/signatures",
+    authenticateToken,
+    async (req: Request, res: Response) => {
+      try {
+        const contractId = parseInt(req.params.contractId);
+        const { signatureData, signerType } = req.body;
 
-      if (isNaN(contractId) || isNaN(signerId)) {
-        return res.status(400).json({ message: "Invalid contractId or signerId" });
+        if (!signatureData || !signerType) {
+          return res.status(400).json({ message: "Missing signature data or signer type" });
+        }
+
+        const updatedSignature = await storage.signContract(contractId, signerType, signatureData );
+
+        return res.json({
+          message: "Signature saved successfully",
+          signature: updatedSignature,
+        });
+      } catch (error: any) {
+        console.error("❌ Save signature error:", error);
+        return res.status(500).json({
+          message: error.message || "Failed to save signature",
+        });
       }
-
-      if (!signatureData) {
-        return res.status(400).json({ message: "Missing signature data" });
-      }
-
-      const updatedSignature = await storage.signContract(
-        contractId,
-        signerId,
-        signatureData
-      );
-
-      return res.json({
-        message: "Signature saved successfully",
-        signature: updatedSignature,
-      });
-    } catch (error: any) {
-      console.error("❌ Save signature error:", error);
-      return res.status(500).json({
-        message: error.message || "Failed to save signature",
-      });
     }
-  }
-);
+  );
 
-  
-  
-  
+
+
+
   // Save / Update Technical Rider
   app.post(
     "/api/bookings/:id/technical-rider",
