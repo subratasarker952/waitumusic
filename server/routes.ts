@@ -10074,13 +10074,12 @@ app.post(
 );
 
 app.post(
-  "/api/contracts/:contractId/signatures/:signerId",
+  "/api/contracts/:contractId/signatures",
   authenticateToken,
   async (req: Request, res: Response) => {
     try {
       const contractId = parseInt(req.params.contractId);
-      const signerId = parseInt(req.params.signerId);
-      const { signatureData } = req.body;
+      const { signatureData, signerId } = req.body;
 
       if (isNaN(contractId) || isNaN(signerId)) {
         return res.status(400).json({ message: "Invalid contractId or signerId" });

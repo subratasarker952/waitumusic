@@ -89,6 +89,7 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { workerData } from "worker_threads";
 import { LoadingSpinner } from "../ui/loading-spinner";
 import { Alert } from "../ui/alert";
+import { singlestoreDatabase } from "drizzle-orm/singlestore-core";
 
 interface ComprehensiveBookingWorkflowProps {
   bookingId: number;
@@ -153,40 +154,52 @@ export default function BookingWorkflow({
   >({});
   const [isTransitioning, setIsTransitioning] = useState(false);
 
-  const [activeSignature, setActiveSignature] = useState<number | null>(null);
-  const sigCanvas = useRef<SignatureCanvas | null>(null);
+  const [activeSignature, setActiveSignature] = useState<string | null>(null);
+  const sigRefs = useRef<{ [key: string]: SignatureCanvas | null }>({});
 
-  const handleSign = (contractId: number, signerId: number) => {
-    setActiveSignature(signerId); // Open signature pad
+
+  const openSignaturePad = (signerType: string) => {
+    setActiveSignature(signerType);
   };
 
-  const saveSignature = async (contractId: number, signerId: number) => {
-    if (!sigCanvas.current) return;
-  
+
+  const saveSignature = async (signerType: string, contractIds: number[]) => {
+    const canvas = sigRefs.current[signerType];
+    if (!canvas) return;
+
+    if (canvas.isEmpty()) {
+      alert("Signature pad is empty!");
+      return;
+    }
+
     try {
-      const trimmedCanvas = sigCanvas.current.getTrimmedCanvas();
-      const signatureData = trimmedCanvas.toDataURL("image/png");
-  
-      console.log("Signature Data:", signatureData);
-  
-      const response = await apiRequest(
-        `/api/contracts/${contractId}/signatures/${signerId}`,
-        {
+      const signatureData = canvas.getTrimmedCanvas().toDataURL("image/png");
+
+      console.log(signatureData)
+
+      for (const contractId of contractIds) {
+        await apiRequest(`/api/contracts/${contractId}/signatures`, {
           method: "POST",
-          body: JSON.stringify({ signatureData }),
-        }
-      );
-      console.log(response);
-  
-      setActiveSignature(null); // Close signature pad
+          body: JSON.stringify({ signatureData, signerType }),
+        });
+      }
+
+      console.log(`Signature saved for ${signerType} on contracts: ${contractIds.join(", ")}`);
+      setActiveSignature(null);
     } catch (err) {
-      console.error("Signature saving failed:", err);
+      console.error("Signature save failed:", err);
     }
   };
-  
 
-  const clearSignature = () => {
-    sigCanvas.current?.clear();
+
+  const clearSignature = (signerType: string) => {
+    const canvas = sigRefs.current[signerType];
+    if (canvas) {
+      canvas.clear();
+      console.log(`Cleared signature for ${signerType}`);
+    } else {
+      console.warn(`No signature pad found for ${signerType}`);
+    }
   };
 
   console.log(booking);
@@ -3789,14 +3802,65 @@ export default function BookingWorkflow({
   };
 
   // Render Signature Collection step
-
   const renderSignatureCollection = () => {
+    if (!booking?.signatures?.length) return null;
 
     const groupedSignatures = booking?.signatures.reduce((acc, sig) => {
-      if (!acc[sig.contractId]) acc[sig.contractId] = [];
-      acc[sig.contractId].push(sig);
+      if (!acc[sig.signerType]) acc[sig.signerType] = [];
+      acc[sig.signerType].push(sig);
       return acc;
-    }, {} as Record<number, any[]>);
+    }, {} as Record<string, any[]>);
+
+
+
+    const renderSignatures = (signatures: any[]) => {
+      // 1. Group by contractId
+      const groupedByContract = signatures.reduce((acc, sig) => {
+        if (!acc[sig.contractId]) acc[sig.contractId] = [];
+        acc[sig.contractId].push(sig);
+        return acc;
+      }, {} as Record<number, any[]>);
+
+      return (
+        <div className="space-y-6">
+          {Object.entries(groupedByContract).map(([contractId, sigList]) => (
+            <div key={contractId} className="border p-4 rounded shadow-sm">
+              <h2 className="text-xl font-bold mb-2">
+                Contract ID: {contractId} — {sigList[0]?.title || "Untitled"}
+              </h2>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {sigList?.map((sig:any) => (
+                  <div
+                    key={sig.signatureId}
+                    className="border p-3 rounded bg-gray-50"
+                  >
+                    <h3 className="font-semibold">
+                      {sig.signerType.toUpperCase()} Signature
+                    </h3>
+                    <p><strong>Name:</strong> {sig.signerName}</p>
+                    <p><strong>Email:</strong> {sig.signerEmail}</p>
+                    <p><strong>Status:</strong> {sig.status}</p>
+                    <p><strong>Signed At:</strong> {sig.signedAt || "Not signed yet"}</p>
+
+                    {sig.signatureData ? (
+                      <img
+                        src={sig.signatureData}
+                        alt="Signature"
+                        style={{ maxWidth: "100%", height: "auto", marginTop: "8px" }}
+                      />
+                    ) : (
+                      <p className="text-sm text-gray-500 mt-2">No signature yet</p>
+                    )}
+                  </div>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+      );
+    };
+
 
     return (
       <div className="space-y-6">
@@ -3809,92 +3873,97 @@ export default function BookingWorkflow({
                   Signature Collection
                 </CardTitle>
                 <CardDescription>
-                  Collect digital signatures from all parties on contracts and agreements
+                  Collect digital signatures from all parties on contracts and
+                  agreements
                 </CardDescription>
               </div>
 
-              <div>
+              {/* <div>
                 <Button className="w-full" onClick={saveSignatures} disabled={isLoading}>
                   Save Step {currentStep} Data
                 </Button>
-              </div>
+              </div> */}
             </div>
           </CardHeader>
+
           <CardContent>
-            {Object.entries(groupedSignatures).map(([contractId, signatures]) => {
-              const contractType = signatures[0]?.contractType || "Unknown";
 
-              return (
-                <div key={contractId} className="mb-6">
-                  <h3 className="text-lg font-semibold mb-3 capitalize">
-                    {contractType.replace("_", " ")} Signatures
-                  </h3>
+            <div className="p-4">
+              <h1 className="text-2xl font-bold mb-4">Signature Collection</h1>
+              {renderSignatures(booking?.signatures)}
+            </div>
 
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    {signatures?.map((sig: any) => (
-                      <Card key={sig.signatureId} className="border border-gray-200">
-                        <CardHeader>
-                          <CardTitle className="capitalize">{sig.signerType} Signature</CardTitle>
-                          <CardDescription>
-                            {sig.signerName} ({sig.signerEmail})
-                          </CardDescription>
-                        </CardHeader>
-                        <CardContent>
-                          <div className="flex justify-between items-center">
-                            <span>
-                              <strong>Status:</strong> {sig.status}
-                            </span>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {Object.entries(groupedSignatures || {}).map(([signerType, signatures]) => {
+                const contractIds = signatures?.map((s: any) => s.contractId);
+                const key = signerType;
 
-                            {sig.status === "pending" && (
-                              <Button
-                                size="sm"
-                                variant="outline"
-                                onClick={() =>
-                                  handleSign(sig.contractId, sig.signerUserId)
-                                }
-                              >
-                                Sign
+                return (
+                  <div key={key} className="mb-6">
+                    <h3 className="text-lg font-semibold mb-3 capitalize">
+                      {signerType} Signatures
+                    </h3>
+
+                    <Card className="border border-gray-200">
+                      <CardHeader>
+                        <CardTitle className="capitalize">{signerType} Signature</CardTitle>
+                        <CardDescription>
+                          {signatures[0]?.signerName} ({signatures[0]?.signerEmail})
+                        </CardDescription>
+                      </CardHeader>
+                      <CardContent>
+                        {activeSignature !== key && (
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            className="w-full"
+                            onClick={() => setActiveSignature(key)}
+                          >
+                            Sign
+                          </Button>
+                        )}
+
+                        {activeSignature === key && (
+                          <div className="space-y-2">
+                            <SignatureCanvas
+                              ref={(ref: any) => {
+                                sigRefs.current[key] = ref;
+                              }}
+                              penColor="black"
+                              canvasProps={{
+                                height: 200,
+                                className: "border border-gray-400 rounded bg-white w-full",
+                              }}
+                            />
+                            <div className="flex gap-2">
+                              <Button className="w-full" onClick={() => saveSignature(key, contractIds)}>
+                                Save
                               </Button>
-                            )}
-
-                            {sig.status === "signed" && (
-                              <span className="text-green-600 font-semibold">✅ Signed</span>
-                            )}
-                          </div>
-
-                          {/* Signature pad modal */}
-                          {activeSignature === sig.signerUserId && (
-                            <div className="mt-4 p-4 border rounded bg-gray-50">
-                              <SignatureCanvas
-                                ref={sigCanvas}
-                                penColor="black"
-                                canvasProps={{ className: "border w-full h-40" }}
-                              />
-                              <div className="flex gap-2 mt-2">
-                                <Button size="sm" onClick={() => saveSignature(sig.contractId, sig.signerUserId)}>
-                                  Save
-                                </Button>
-                                <Button size="sm" variant="outline" onClick={clearSignature}>
-                                  Clear
-                                </Button>
-                                <Button size="sm" variant="ghost" onClick={() => setActiveSignature(null)}>
-                                  Cancel
-                                </Button>
-                              </div>
+                              <Button className="w-full" variant="outline" onClick={() => clearSignature(key)}>
+                                Clear
+                              </Button>
+                              <Button className="w-full" variant="ghost" onClick={() => setActiveSignature(null)}>
+                                Cancel
+                              </Button>
                             </div>
-                          )}
-                        </CardContent>
-                      </Card>
-                    ))}
+                          </div>
+                        )}
+
+                        {signatures?.every((sig: any) => sig.status === "signed") && (
+                          <span className="text-green-600 font-semibold">✅ Signed</span>
+                        )}
+                      </CardContent>
+                    </Card>
                   </div>
-                </div>
-              );
-            })}
+                );
+              })}
+            </div>
           </CardContent>
         </Card>
       </div>
     );
   };
+
 
 
 
