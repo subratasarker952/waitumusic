@@ -3978,6 +3978,72 @@ export default function BookingWorkflow({
     );
   };
 
+  function getPaymentSummary(contracts: any[]) {
+    let totalPrice = 0;
+    let paymentTerms = "";
+  
+    contracts?.forEach(contract => {
+      // যদি categoryPricing থাকে
+      if (contract.content?.categoryPricing) {
+        const categoryPricing = contract.content.categoryPricing;
+        totalPrice += Object.values(categoryPricing)
+          .map(v => Number(v) || 0)
+          .reduce((a, b) => a + b, 0);
+      }
+  
+      // paymentTerms নেওয়া (শেষ এরটাই use হবে)
+      if (contract.content?.contractConfig?.paymentTerms) {
+        paymentTerms = contract.content.contractConfig.paymentTerms;
+      }
+    });
+  
+    let depositAmount = 0;
+    let remainingAmount = 0;
+  
+    if (paymentTerms.includes("50% deposit")) {
+      depositAmount = totalPrice * 0.5;
+      remainingAmount = totalPrice - depositAmount;
+    } else {
+      depositAmount = totalPrice;
+      remainingAmount = 0;
+    }
+  
+    return {
+      totalPrice,
+      paymentTerms,
+      depositAmount,
+      remainingAmount
+    };
+  }
+  
+
+  const paymentSummary = getPaymentSummary(booking?.contracts);
+  console.log(paymentSummary);
+
+  const processPayment = async (amount: number) => {
+    try {
+      const response = await apiRequest(`/api/bookings/${bookingId}/payment-transaction`, {
+        method: "POST",
+        body: JSON.stringify({
+          transactionType: "payment",
+          amount,
+          paymentMethod: "card"
+        })
+      });
+
+      console.log(response)
+      // if (data.success) {
+      //   toast.success("Payment processed successfully");
+      //   refreshBooking();
+      // } else {
+      //   toast.error("Payment failed");
+      // }
+    } catch (err) {
+      console.error(err);
+      // toast.error("Payment processing error");
+    }
+  };
+
 
 
 
@@ -3997,13 +4063,29 @@ export default function BookingWorkflow({
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <div className="text-center py-8">
-              <CreditCard className="h-16 w-16 mx-auto text-gray-400 mb-4" />
-              <p className="text-gray-600">
-                Payment processing functionality will be implemented here
-              </p>
-              <Button variant="outline" className="mt-4">
-                Process Payment
+
+            <Card>
+              <CardHeader>
+                <CardTitle>Payment Summary</CardTitle>
+                <CardDescription>Review before processing payment</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-2">
+                  <p><strong>Total Booking Price:</strong> ${paymentSummary.totalPrice}</p>
+                  <p><strong>Payment Terms:</strong> {paymentSummary.paymentTerms}</p>
+                  <p><strong>Deposit Amount:</strong> ${paymentSummary.depositAmount}</p>
+                  <p><strong>Remaining Amount:</strong> ${paymentSummary.remainingAmount}</p>
+                </div>
+              </CardContent>
+            </Card>
+            <div className="space-y-6">
+
+              <Button onClick={() => processPayment(paymentSummary.depositAmount)}>
+                Pay Deposit (${paymentSummary.depositAmount})
+              </Button>
+
+              <Button onClick={() => processPayment(paymentSummary.totalPrice)}>
+                Pay Full Amount (${paymentSummary.totalPrice})
               </Button>
             </div>
           </CardContent>
