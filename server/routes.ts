@@ -10085,7 +10085,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
           return res.status(400).json({ message: "Missing signature data or signer type" });
         }
 
-        const updatedSignature = await storage.signContract(contractId, signerType, signatureData );
+        const updatedSignature = await storage.signContract(contractId, signerType, signatureData);
 
         return res.json({
           message: "Signature saved successfully",
@@ -18498,6 +18498,7 @@ This is a preview of the performance engagement contract. Final agreement will i
   app.post(
     "/api/bookings/:id/payment-transaction",
     authenticateToken,
+    requireRole([1, 2]),
     async (req: Request, res: Response) => {
       try {
         const bookingId = parseInt(req.params.id);
@@ -18510,13 +18511,6 @@ This is a preview of the performance engagement contract. Final agreement will i
           payoutRequestId,
           gatewayTransactionId,
         } = req.body;
-
-        // Check permissions
-        if (![1, 2].includes(user.roleId)) {
-          return res.status(403).json({
-            message: "Insufficient permissions to create payment transactions",
-          });
-        }
 
         const transactionId =
           await financialAutomation.createPaymentTransaction(
@@ -18547,18 +18541,12 @@ This is a preview of the performance engagement contract. Final agreement will i
   app.post(
     "/api/bookings/:id/generate-receipt",
     authenticateToken,
+    requireRole([1, 2]),
     async (req: Request, res: Response) => {
       try {
         const bookingId = parseInt(req.params.id);
         const user = req.user!;
         const { paymentId, contractIds = [] } = req.body;
-
-        // Check permissions
-        if (![1, 2].includes(user.roleId)) {
-          return res
-            .status(403)
-            .json({ message: "Insufficient permissions to generate receipts" });
-        }
 
         const receiptId = await financialAutomation.generateReceiptWithLinkage(
           bookingId,

@@ -3880,6 +3880,7 @@ export class DatabaseStorage implements IStorage {
             signerUserId,
             signerName,
             signerEmail,
+            signatureData:null,
             status: "pending",
           })
           .where(eq(contractSignatures.id, existing.id));
@@ -3891,6 +3892,7 @@ export class DatabaseStorage implements IStorage {
           signerType,
           signerName,
           signerEmail,
+          signatureData:null,
           status: "pending",
         });
       }

@@ -3856,7 +3856,7 @@ export default function BookingWorkflow({
                     <p><strong>Status:</strong> {sig.status}</p>
                     <p><strong>Signed At:</strong> {sig.signedAt || "Not signed yet"}</p>
 
-                    {sig.signatureData ? (
+                    {(sig.status === 'signed' && sig.signatureData) ? (
                       <img
                         src={sig.signatureData}
                         alt="Signature"
@@ -3981,68 +3981,99 @@ export default function BookingWorkflow({
   function getPaymentSummary(contracts: any[]) {
     let totalPrice = 0;
     let paymentTerms = "";
-  
+
     contracts?.forEach(contract => {
-      // যদি categoryPricing থাকে
+      // categoryPricing থেকে total বের করো
       if (contract.content?.categoryPricing) {
         const categoryPricing = contract.content.categoryPricing;
         totalPrice += Object.values(categoryPricing)
           .map(v => Number(v) || 0)
           .reduce((a, b) => a + b, 0);
       }
-  
-      // paymentTerms নেওয়া (শেষ এরটাই use হবে)
+
+      // paymentTerms override করবে শেষ contract এরটা
       if (contract.content?.contractConfig?.paymentTerms) {
         paymentTerms = contract.content.contractConfig.paymentTerms;
       }
     });
-  
+
     let depositAmount = 0;
     let remainingAmount = 0;
-  
-    if (paymentTerms.includes("50% deposit")) {
-      depositAmount = totalPrice * 0.5;
-      remainingAmount = totalPrice - depositAmount;
-    } else {
-      depositAmount = totalPrice;
-      remainingAmount = 0;
+
+    // সব condition check
+    switch (true) {
+      case /50% deposit/i.test(paymentTerms):
+        depositAmount = totalPrice * 0.5;
+        remainingAmount = totalPrice - depositAmount;
+        break;
+
+      case /100% upfront/i.test(paymentTerms):
+        depositAmount = totalPrice;
+        remainingAmount = 0;
+        break;
+
+      case /Payment on completion/i.test(paymentTerms):
+        depositAmount = 0;
+        remainingAmount = totalPrice;
+        break;
+
+      case /Net 30/i.test(paymentTerms):
+        depositAmount = 0;
+        remainingAmount = totalPrice; // সম্পূর্ণ টাকা ৩০ দিনের মধ্যে দিতে হবে
+        break;
+
+      case /within 7 days/i.test(paymentTerms):
+        depositAmount = 0;
+        remainingAmount = totalPrice; // ৭ দিনের মধ্যে full payment
+        break;
+
+      default:
+        // fallback: full upfront
+        depositAmount = totalPrice;
+        remainingAmount = 0;
     }
-  
+
     return {
       totalPrice,
       paymentTerms,
       depositAmount,
-      remainingAmount
+      remainingAmount,
     };
   }
-  
 
-  const paymentSummary = getPaymentSummary(booking?.contracts);
+
+  const paymentSummary = getPaymentSummary(booking?.contracts!);
   console.log(paymentSummary);
 
-  const processPayment = async (amount: number) => {
+  const processPayment = async (amount: number, type: "deposit" | "full") => {
     try {
-      const response = await apiRequest(`/api/bookings/${bookingId}/payment-transaction`, {
+      setIsLoading(true);
+
+      const res = await apiRequest(`/api/bookings/${bookingId}/payment-transaction`, {
         method: "POST",
         body: JSON.stringify({
-          transactionType: "payment",
+          transactionType: type,
           amount,
-          paymentMethod: "card"
-        })
+          paymentMethod: "card", // অথবা user select করলে dynamic দাও
+          gatewayTransactionId: "pi_test_123", // stripe intent id এখানে আসবে
+        }),
       });
 
-      console.log(response)
-      // if (data.success) {
-      //   toast.success("Payment processed successfully");
-      //   refreshBooking();
-      // } else {
-      //   toast.error("Payment failed");
-      // }
-    } catch (err) {
-      console.error(err);
-      // toast.error("Payment processing error");
+      console.log(res)
+      // const data = await res.json();
+      // if (!res.ok) throw new Error(data.message || "Payment failed");
+
+      // toast.success(`Payment successful! Booking is now ${data.bookingStatus}`);
+      // UI refresh
+      // refetchBooking(); // তোমার booking reload function
+
+    } catch (err: any) {
+      console.error("Payment error:", err);
+      // toast.error(err.message || "Payment failed");
+    } finally {
+      setIsLoading(false);
     }
-  };
+  }
 
 
 
@@ -4063,7 +4094,6 @@ export default function BookingWorkflow({
             </CardDescription>
           </CardHeader>
           <CardContent>
-
             <Card>
               <CardHeader>
                 <CardTitle>Payment Summary</CardTitle>
@@ -4078,13 +4108,21 @@ export default function BookingWorkflow({
                 </div>
               </CardContent>
             </Card>
-            <div className="space-y-6">
 
-              <Button onClick={() => processPayment(paymentSummary.depositAmount)}>
-                Pay Deposit (${paymentSummary.depositAmount})
-              </Button>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+              {/* যদি deposit > 0 থাকে তখনই deposit বাটন দেখাও */}
+              {paymentSummary.depositAmount > 0 && (
+                <Button
+                  onClick={() => processPayment(paymentSummary.depositAmount, "deposit")}
+                >
+                  Pay Deposit (${paymentSummary.depositAmount})
+                </Button>
+              )}
 
-              <Button onClick={() => processPayment(paymentSummary.totalPrice)}>
+              {/* সবসময় Full Amount option থাকবে */}
+              <Button
+                onClick={() => processPayment(paymentSummary.totalPrice, "full")}
+              >
                 Pay Full Amount (${paymentSummary.totalPrice})
               </Button>
             </div>

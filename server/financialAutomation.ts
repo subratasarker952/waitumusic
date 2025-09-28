@@ -630,7 +630,7 @@ export class FinancialAutomationService {
       newTransaction.id,
       'created',
       `Payment transaction created: ${transactionType} of $${amount} for booking ${bookingId}`,
-      null,
+      payoutRequestId,
       true,
       null,
       transactionData
