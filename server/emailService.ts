@@ -46,12 +46,12 @@ export async function sendEmail(options: EmailOptions): Promise<boolean> {
 
 // Workflow-specific email templates
 export async function sendBookingWorkflowEmail(
-  type: 'started' | 'step_completed' | 'completed' | 'error',
+  type: 'started' | 'step_completed' | 'completed' | 'error' | 'talent_response',
   booking: any,
   recipient: string,
   additionalData?: any
 ): Promise<boolean> {
-  const templates = {
+  const templates: Record<string, { subject: string; html: string }> = {
     started: {
       subject: `Booking Workflow Started - ${booking.eventName}`,
       html: `
@@ -105,16 +105,35 @@ export async function sendBookingWorkflowEmail(
         </ul>
         <p>Please review and resolve the issue.</p>
       `
+    },
+    talent_response: {
+      subject: `Talent Response Received - ${booking.eventName}`,
+      html: `
+        <h2>Talent Response</h2>
+        <p>A talent has responded to the booking:</p>
+        <ul>
+          <li><strong>Event:</strong> ${booking.eventName}</li>
+          <li><strong>Talent User ID:</strong> ${additionalData?.talentUserId}</li>
+          <li><strong>Action:</strong> ${additionalData?.action}</li>
+          ${additionalData?.counterOffer ? `<li><strong>Counter Offer:</strong> ${additionalData.counterOffer}</li>` : ''}
+          ${additionalData?.notes ? `<li><strong>Notes:</strong> ${additionalData.notes}</li>` : ''}
+        </ul>
+      `
     }
   };
 
   const template = templates[type];
+  if (!template) {
+    throw new Error(`No email template found for type: ${type}`);
+  }
+
   return await sendEmail({
     to: recipient,
     subject: template.subject,
     html: template.html
   });
 }
+
 
 // Test email connectivity
 export async function testEmailConnection(): Promise<boolean> {

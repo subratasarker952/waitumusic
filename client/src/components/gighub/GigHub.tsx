@@ -21,10 +21,10 @@ import { PerfectLoading } from '@/components/ui/perfect-loading';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 
 // Icons
-import { 
-  Calendar, MapPin, Clock, Music, Camera, Video, 
-  FileText, Download, Eye, Edit, CheckCircle, 
-  XCircle, AlertCircle, DollarSign, Send, 
+import {
+  Calendar, MapPin, Clock, Music, Camera, Video,
+  FileText, Download, Eye, Edit, CheckCircle,
+  XCircle, AlertCircle, DollarSign, Send,
   Mic, Guitar, Headphones, Users, Receipt,
   FileMusic, SplitSquareVertical, Target, Layout,
   BookOpen, PenTool, Image, Briefcase
@@ -63,13 +63,14 @@ interface BookingDetails {
 }
 
 export default function GigHub() {
-  const { user } = useAuth();
+  const { user, roles } = useAuth();
+  const roleIds = roles.map(r => r.id)
   const { config } = useConfiguration();
   const params = useParams();
   const bookingId = parseInt(params.id as string);
   const { toast } = useToast();
   const queryClient = useQueryClient();
-  
+
   const [activeTab, setActiveTab] = useState('overview');
   const [counterOfferOpen, setCounterOfferOpen] = useState(false);
 
@@ -85,30 +86,29 @@ export default function GigHub() {
 
   // Determine user's role type for UI adaptation
   const getUserRoleType = () => {
-    if (!user) return 'unknown';
-    
+    if (!user) return "unknown";
+  
     // Artists and Musicians
-    if ([3, 4, 5, 6].includes(user.roleId)) return 'performer';
-    
-    // DJs (Audio Professionals)
-    if (user.roleId === 7 || user.roleId === 8) {
-      // Check if they're specifically a DJ based on their talent
-      if (booking?.assignmentInfo?.selectedTalent?.toLowerCase().includes('dj')) {
-        return 'dj';
-      }
-      return 'audio_professional';
+    if (roleIds.some(r => [3, 4, 5, 6].includes(r))) {
+      return "performer";
     }
-    
-    // Photographers/Videographers (Visual Professionals)
-    if (user.roleId === 7 || user.roleId === 8) {
-      const talent = booking?.assignmentInfo?.selectedTalent?.toLowerCase() || '';
-      if (talent.includes('photo') || talent.includes('video') || talent.includes('visual')) {
-        return 'visual_professional';
+  
+    // Audio or Visual Professionals (roles 7 or 8)
+    if (roleIds.some(r => [7, 8].includes(r))) {
+      const talent = booking?.assignmentInfo?.selectedTalent?.toLowerCase() || "";
+  
+      if (talent.includes("dj")) {
+        return "dj";
       }
+      if (talent.includes("photo") || talent.includes("video") || talent.includes("visual")) {
+        return "visual_professional";
+      }
+      return "audio_professional";
     }
-    
-    return 'professional';
+  
+    return "professional";
   };
+  
 
   const roleType = getUserRoleType();
 
@@ -181,7 +181,7 @@ export default function GigHub() {
           { value: 'technical', label: 'Technical', icon: <Layout className="h-4 w-4" /> },
           ...baseTabs.slice(1)
         ];
-      
+
       case 'dj':
         return [
           ...baseTabs.slice(0, 1),
@@ -189,7 +189,7 @@ export default function GigHub() {
           { value: 'spleeter', label: 'Stem Separation', icon: <SplitSquareVertical className="h-4 w-4" /> },
           ...baseTabs.slice(1)
         ];
-      
+
       case 'visual_professional':
         return [
           ...baseTabs.slice(0, 1),
@@ -197,7 +197,7 @@ export default function GigHub() {
           { value: 'stage-layout', label: 'Stage Layout', icon: <Layout className="h-4 w-4" /> },
           ...baseTabs.slice(1)
         ];
-      
+
       default:
         return baseTabs;
     }
@@ -205,10 +205,10 @@ export default function GigHub() {
 
   const renderBookingActions = () => {
     const canRespond = booking.assignmentInfo?.status === 'pending' || booking.status === 'pending';
-    
+
     if (!canRespond) {
       return (
-        <Badge variant={booking.assignmentInfo?.status === 'active' ? 'default' : 'secondary'}>
+        <Badge variant={booking.assignmentInfo?.status === 'active' ? 'default' : 'secondary'} className='capitalize'>
           {booking.assignmentInfo?.status || booking.status}
         </Badge>
       );
@@ -380,7 +380,7 @@ export default function GigHub() {
                         </p>
                       </div>
                     )}
-                    
+
                     <Button variant="outline" className="w-full">
                       <Layout className="h-4 w-4 mr-2" />
                       View Stage Plot
@@ -448,8 +448,8 @@ export default function GigHub() {
                   <CardTitle>Stage Layout & Positioning</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <img 
-                    src={`/api/bookings/${bookingId}/stage-plot`} 
+                  <img
+                    src={`/api/bookings/${bookingId}/stage-plot`}
                     alt="Stage Plot"
                     className="w-full rounded-lg border"
                   />

@@ -260,101 +260,7 @@ export class FinancialAutomationService {
     await this.generateInvoicePDF(proformaInvoiceId);
     return proformaInvoiceId; // Return same ID since it's the same invoice
   }
-
-  // 1. Automatic Invoice Generation on Booking Acceptance (Updated for proforma workflow)
-  async generateInvoiceOnBookingAcceptance(
-    bookingId: number,
-    triggeredByUserId?: number
-  ): Promise<number> {
-    // Get booking details
-    const booking = await db
-      .select()
-      .from(bookings)
-      .where(eq(bookings.id, bookingId))
-      .then(result => result[0]);
-
-    if (!booking) {
-      throw new Error(`Booking ${bookingId} not found`);
-    }
-
-    // Generate invoice number
-    const invoiceNumber = await this.generateInvoiceNumber();
-
-    // Calculate amounts (example logic - can be enhanced)
-    const subtotalAmount = parseFloat(booking.totalBudget || "0");
-    const taxAmount = subtotalAmount * 0.08; // 8% tax
-    const totalAmount = subtotalAmount + taxAmount;
-
-    // Determine payment terms based on booking type
-    const paymentTerms = booking.eventType === 'corporate' ? 'Net 30' : 'Due on Receipt';
-    const dueDate = paymentTerms === 'Net 30' 
-      ? new Date(Date.now() + 30 * 24 * 60 * 60 * 1000) // 30 days from now
-      : new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);  // 7 days from now
-
-    // Create line items
-    const lineItems = [
-      {
-        description: `${booking.eventType} Performance - ${booking.eventName}`,
-        quantity: 1,
-        rate: subtotalAmount,
-        amount: subtotalAmount
-      }
-    ];
-
-    // Create invoice
-    const invoiceData: InsertInvoice = {
-      bookingId,
-      invoiceNumber,
-      invoiceType: 'booking_deposit',
-      issuerName: "Wai'tuMusic",
-      issuerAddress: "123 Music Lane, Sound City, SC 12345",
-      issuerTaxId: "TAX-123456789",
-      recipientName: booking.guestName || "Client",
-      recipientAddress: booking.venueAddress || "Client Address",
-      recipientTaxId: null,
-      lineItems,
-      subtotalAmount: subtotalAmount.toString(),
-      taxAmount: taxAmount.toString(),
-      totalAmount: totalAmount.toString(),
-      dueDate,
-      paymentTerms,
-      status: 'pending',
-      triggeredBy: 'booking_acceptance',
-      triggeredByUserId,
-      invoiceUrl: null // Will be generated after PDF creation
-    };
-
-    const [newInvoice] = await db.insert(invoices).values(invoiceData).returning();
-
-    // Create audit log
-    await this.createAuditLog(
-      'invoice',
-      newInvoice.id,
-      'created',
-      `Invoice ${invoiceNumber} automatically generated for booking ${bookingId} acceptance`,
-      triggeredByUserId,
-      true,
-      null,
-      invoiceData
-    );
-
-    // Link invoice to booking
-    await this.createDocumentLinkage(
-      'booking',
-      bookingId,
-      'invoice',
-      newInvoice.id,
-      'generates',
-      `Invoice generated from booking acceptance`,
-      triggeredByUserId
-    );
-
-    // Generate PDF for the invoice
-    await this.generateInvoicePDF(newInvoice.id);
-
-    return newInvoice.id;
-  }
-
+  
   // Generate PDF for invoice
   async generateInvoicePDF(invoiceId: number): Promise<string> {
     // Get invoice details with booking and user information
@@ -482,6 +388,100 @@ export class FinancialAutomationService {
 
       stream.on('error', reject);
     });
+  }
+
+  // 1. Automatic Invoice Generation on Booking Acceptance (Updated for proforma workflow)
+  async generateInvoiceOnBookingAcceptance(
+    bookingId: number,
+    triggeredByUserId?: number
+  ): Promise<number> {
+    // Get booking details
+    const booking = await db
+      .select()
+      .from(bookings)
+      .where(eq(bookings.id, bookingId))
+      .then(result => result[0]);
+
+    if (!booking) {
+      throw new Error(`Booking ${bookingId} not found`);
+    }
+
+    // Generate invoice number
+    const invoiceNumber = await this.generateInvoiceNumber();
+
+    // Calculate amounts (example logic - can be enhanced)
+    const subtotalAmount = parseFloat(booking.totalBudget || "0");
+    const taxAmount = subtotalAmount * 0.08; // 8% tax
+    const totalAmount = subtotalAmount + taxAmount;
+
+    // Determine payment terms based on booking type
+    const paymentTerms = booking.eventType === 'corporate' ? 'Net 30' : 'Due on Receipt';
+    const dueDate = paymentTerms === 'Net 30' 
+      ? new Date(Date.now() + 30 * 24 * 60 * 60 * 1000) // 30 days from now
+      : new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);  // 7 days from now
+
+    // Create line items
+    const lineItems = [
+      {
+        description: `${booking.eventType} Performance - ${booking.eventName}`,
+        quantity: 1,
+        rate: subtotalAmount,
+        amount: subtotalAmount
+      }
+    ];
+
+    // Create invoice
+    const invoiceData: InsertInvoice = {
+      bookingId,
+      invoiceNumber,
+      invoiceType: 'booking_deposit',
+      issuerName: "Wai'tuMusic",
+      issuerAddress: "123 Music Lane, Sound City, SC 12345",
+      issuerTaxId: "TAX-123456789",
+      recipientName: booking.guestName || "Client",
+      recipientAddress: booking.venueAddress || "Client Address",
+      recipientTaxId: null,
+      lineItems,
+      subtotalAmount: subtotalAmount.toString(),
+      taxAmount: taxAmount.toString(),
+      totalAmount: totalAmount.toString(),
+      dueDate,
+      paymentTerms,
+      status: 'pending',
+      triggeredBy: 'booking_acceptance',
+      triggeredByUserId,
+      invoiceUrl: null // Will be generated after PDF creation
+    };
+
+    const [newInvoice] = await db.insert(invoices).values(invoiceData).returning();
+
+    // Create audit log
+    await this.createAuditLog(
+      'invoice',
+      newInvoice.id,
+      'created',
+      `Invoice ${invoiceNumber} automatically generated for booking ${bookingId} acceptance`,
+      triggeredByUserId,
+      true,
+      null,
+      invoiceData
+    );
+
+    // Link invoice to booking
+    await this.createDocumentLinkage(
+      'booking',
+      bookingId,
+      'invoice',
+      newInvoice.id,
+      'generates',
+      `Invoice generated from booking acceptance`,
+      triggeredByUserId
+    );
+
+    // Generate PDF for the invoice
+    await this.generateInvoicePDF(newInvoice.id);
+
+    return newInvoice.id;
   }
 
   // 2. Automatic Payout Request System

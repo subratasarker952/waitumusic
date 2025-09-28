@@ -3095,11 +3095,25 @@ export async function registerRoutes(app: Express): Promise<Server> {
           .from(schema.technicalRiders)
           .where(eq(schema.technicalRiders.bookingId, bookingId));
 
-        // Get signatures for this booking (to show approval status)
+        // Get contract signatures for this booking
         const signatures = await db
-          .select()
-          .from(schema.signatures)
-          .where(eq(schema.signatures.bookingId, bookingId));
+          .select({
+            signatureId: schema.contractSignatures.id,
+            contractId: schema.contractSignatures.contractId,
+            signerUserId: schema.contractSignatures.signerUserId,
+            signerType: schema.contractSignatures.signerType,
+            signerName: schema.contractSignatures.signerName,
+            signerEmail: schema.contractSignatures.signerEmail,
+            signatureData: schema.contractSignatures.signatureData,
+            signedAt: schema.contractSignatures.signedAt,
+            status: schema.contractSignatures.status,
+          })
+          .from(schema.contractSignatures)
+          .innerJoin(
+            schema.contracts,
+            eq(schema.contractSignatures.contractId, schema.contracts.id)
+          )
+          .where(eq(schema.contracts.bookingId, bookingId));
 
         res.json({
           booking,
@@ -3127,12 +3141,20 @@ export async function registerRoutes(app: Express): Promise<Server> {
     async (req: Request, res: Response) => {
       try {
         const bookingId = parseInt(req.params.id);
-        const userId = req.user?.userId;
-        const { action, counterOffer, notes } = req.body;
-
-        if (!userId) {
-          return res.status(401).json({ message: "Invalid token" });
+        const booking = await storage.getBooking(bookingId)
+        if (!booking) {
+          return res
+            .status(400)
+            .json({ message: "Booking not found" });
         }
+        const booker = await storage.getUser(booking.bookerUserId!)
+        if (!booker) {
+          return res
+            .status(400)
+            .json({ message: "Booker not found" });
+        }
+        const userId = req.user!.userId;
+        const { action, counterOffer, notes } = req.body;
 
         // Validate action
         if (!["approve", "reject", "counter_offer"].includes(action)) {
@@ -3202,13 +3224,13 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
         // Send notification to admin/booker about the talent response
         try {
-          await sendBookingWorkflowEmail("talent_response", {
-            bookingId,
-            action,
+          await sendBookingWorkflowEmail("talent_response", booking, booker.email!, {
             talentUserId: userId,
+            action,
             counterOffer,
             notes,
           });
+
         } catch (emailError) {
           console.error(
             "Failed to send talent response notification:",
@@ -18326,23 +18348,11 @@ This is a preview of the performance engagement contract. Final agreement will i
   app.get(
     "/api/bookings/:id/invoice-preview",
     authenticateToken,
+    requireRole([1, 2]),
     async (req: Request, res: Response) => {
       try {
         const bookingId = parseInt(req.params.id);
         const user = req.user!;
-
-        // Check if user has permission to view invoice previews
-        console.log(
-          "User roleId for invoice preview:",
-          user.roleId,
-          "User:",
-          user
-        );
-        if (![1, 2].includes(user.roleId)) {
-          return res.status(403).json({
-            message: "Insufficient permissions to view invoice preview",
-          });
-        }
 
         const preview = await financialAutomation.generateInvoicePreview(
           bookingId
@@ -18360,17 +18370,11 @@ This is a preview of the performance engagement contract. Final agreement will i
   app.post(
     "/api/bookings/:id/create-proforma-invoice",
     authenticateToken,
+    requireRole([1, 2]),
     async (req: Request, res: Response) => {
       try {
         const bookingId = parseInt(req.params.id);
         const user = req.user!;
-
-        // Check if user has permission to create proforma invoices
-        if (![1, 2].includes(user.roleId)) {
-          return res.status(403).json({
-            message: "Insufficient permissions to create proforma invoices",
-          });
-        }
 
         const invoiceId = await financialAutomation.createProformaInvoice(
           bookingId,
@@ -18393,17 +18397,11 @@ This is a preview of the performance engagement contract. Final agreement will i
   app.post(
     "/api/invoices/:proformaId/convert-to-final",
     authenticateToken,
+    requireRole([1, 2]),
     async (req: Request, res: Response) => {
       try {
         const proformaId = parseInt(req.params.proformaId);
         const user = req.user!;
-
-        // Check if user has permission to convert invoices
-        if (![1, 2].includes(user.roleId)) {
-          return res
-            .status(403)
-            .json({ message: "Insufficient permissions to convert invoices" });
-        }
 
         const finalInvoiceId = await financialAutomation.convertProformaToFinal(
           proformaId,
@@ -18426,17 +18424,11 @@ This is a preview of the performance engagement contract. Final agreement will i
   app.post(
     "/api/bookings/:id/generate-invoice",
     authenticateToken,
+    requireRole([1, 2]),
     async (req: Request, res: Response) => {
       try {
         const bookingId = parseInt(req.params.id);
         const user = req.user!;
-
-        // Check if user has permission to generate invoices
-        if (![1, 2].includes(user.roleId)) {
-          return res
-            .status(403)
-            .json({ message: "Insufficient permissions to generate invoices" });
-        }
 
         const invoiceId =
           await financialAutomation.generateInvoiceOnBookingAcceptance(
@@ -18460,19 +18452,13 @@ This is a preview of the performance engagement contract. Final agreement will i
   app.post(
     "/api/bookings/:id/generate-payout/:performerId",
     authenticateToken,
+    requireRole([1, 2]),
     async (req: Request, res: Response) => {
       try {
         const bookingId = parseInt(req.params.id);
         const performerUserId = parseInt(req.params.performerId);
         const user = req.user!;
         const { requestType = "performance_fee" } = req.body;
-
-        // Check permissions
-        if (![1, 2].includes(user.roleId)) {
-          return res.status(403).json({
-            message: "Insufficient permissions to generate payout requests",
-          });
-        }
 
         const payoutId =
           await financialAutomation.generatePayoutRequestOnCompletion(
@@ -18571,6 +18557,7 @@ This is a preview of the performance engagement contract. Final agreement will i
   app.get(
     "/api/bookings/:id/financial-summary",
     authenticateToken,
+    requireRole([1, 2]),
     async (req: Request, res: Response) => {
       try {
         const bookingId = parseInt(req.params.id);
@@ -18583,9 +18570,7 @@ This is a preview of the performance engagement contract. Final agreement will i
         }
 
         // Allow access if user is superadmin/admin, or booking owner, or assigned to booking
-        const hasAccess =
-          [1, 2].includes(user.roleId) ||
-          booking.userId === user.userId ||
+        const hasAccess = booking.userId === user.userId ||
           booking.mainArtistUserId === user.userId;
 
         if (!hasAccess) {
@@ -18610,6 +18595,7 @@ This is a preview of the performance engagement contract. Final agreement will i
   app.patch(
     "/api/bookings/:id/status",
     authenticateToken,
+    requireRole([1, 2]),
     async (req: Request, res: Response) => {
       try {
         const bookingId = parseInt(req.params.id);
@@ -18623,9 +18609,7 @@ This is a preview of the performance engagement contract. Final agreement will i
         }
 
         // Check permissions
-        const hasAccess =
-          [1, 2].includes(user.roleId) ||
-          currentBooking.userId === user.userId ||
+        const hasAccess = currentBooking.userId === user.userId ||
           currentBooking.mainArtistUserId === user.userId;
 
         if (!hasAccess) {
@@ -18771,17 +18755,10 @@ This is a preview of the performance engagement contract. Final agreement will i
   app.get(
     "/api/invoices",
     authenticateToken,
+    requireRole([1, 2]),
     async (req: Request, res: Response) => {
       try {
         const user = req.user!;
-
-        // Only superadmin and admin can view all invoices
-        if (![1, 2].includes(user.roleId)) {
-          return res
-            .status(403)
-            .json({ message: "Insufficient permissions to view invoices" });
-        }
-
         const invoices = await storage.getAllInvoices();
         res.json(invoices);
       } catch (error) {
@@ -18862,10 +18839,11 @@ This is a preview of the performance engagement contract. Final agreement will i
     async (req: Request, res: Response) => {
       try {
         const userId = req.user!.userId;
-        const userRole = req.user!.role;
+        const userRole = await storage.getUserRoles(userId);
+        const userRoleIds = userRole.map(role => role.id)
 
         let integrations;
-        if (userRole === "superadmin" || userRole === "admin") {
+        if (userRoleIds.some(r => [1, 2].includes(r))) {
           integrations = await storage.getAllWebsiteIntegrations();
         } else {
           integrations = await storage.getWebsiteIntegrationsByUser(userId);
@@ -18965,11 +18943,9 @@ This is a preview of the performance engagement contract. Final agreement will i
         }
 
         // Allow superadmin/admin/assigned_admin to create for other users, otherwise use their own userId
-        const targetUserId =
-          (user.roleId === 1 || user.roleId === 2 || user.roleId === 3) &&
-            req.body.userId
-            ? req.body.userId
-            : user.userId;
+        const targetUserId = req.body.userId
+          ? req.body.userId
+          : user.userId;
 
         const integrationData = insertWebsiteIntegrationSchema.parse({
           ...req.body,
@@ -19013,7 +18989,8 @@ This is a preview of the performance engagement contract. Final agreement will i
         const integrationId = parseInt(req.params.id);
         const updates = req.body;
         const user = req.user!;
-
+        const userRoles = await storage.getUserRoles(req.user!.userId)
+        const userRoleIds = userRoles.map(r => r.id)
         // Get the existing integration to check permissions
         const existingIntegration = await storage.getWebsiteIntegration(
           integrationId
@@ -19025,7 +19002,7 @@ This is a preview of the performance engagement contract. Final agreement will i
         }
 
         // Check permissions: users can only edit their own, unless they're superadmin
-        if (user.roleId !== 1 && existingIntegration.userId !== user.userId) {
+        if (!userRoleIds.includes(1) && existingIntegration.userId !== user.userId) {
           return res
             .status(403)
             .json({ message: "You can only edit your own All Links pages" });
@@ -19074,6 +19051,8 @@ This is a preview of the performance engagement contract. Final agreement will i
       try {
         const integrationId = parseInt(req.params.id);
         const user = req.user!;
+        const userRoles = await storage.getUserRoles(req.user!.userId)
+        const userRoleIds = userRoles.map(r => r.id)
 
         // Get the existing integration to check permissions
         const existingIntegration = await storage.getWebsiteIntegration(
@@ -19086,7 +19065,7 @@ This is a preview of the performance engagement contract. Final agreement will i
         }
 
         // Check permissions: users can only delete their own, unless they're superadmin
-        if (user.roleId !== 1 && existingIntegration.userId !== user.userId) {
+        if (!userRoleIds.includes(1) && existingIntegration.userId !== user.userId) {
           return res
             .status(403)
             .json({ message: "You can only delete your own All Links pages" });
@@ -19114,6 +19093,8 @@ This is a preview of the performance engagement contract. Final agreement will i
       try {
         const integrationId = parseInt(req.params.id);
         const user = req.user!;
+        const userRoles = await storage.getUserRoles(req.user!.userId!)
+        const userRoleIds = userRoles.map(r => r.id)
 
         const integration = await storage.getWebsiteIntegration(integrationId);
         if (!integration) {
@@ -19123,7 +19104,7 @@ This is a preview of the performance engagement contract. Final agreement will i
         }
 
         // Check permissions: users can only update their own pages, unless they're superadmin
-        if (user.roleId !== 1 && integration.userId !== user.userId) {
+        if (!userRoleIds.includes(1) && integration.userId !== user.userId) {
           return res
             .status(403)
             .json({ message: "You can only update your own All Links pages" });
@@ -19157,6 +19138,7 @@ This is a preview of the performance engagement contract. Final agreement will i
   app.get(
     "/api/website-integrations/:id/qr-code",
     authenticateToken,
+    requireRole([1, 2]),
     async (req: Request, res: Response) => {
       try {
         const integrationId = parseInt(req.params.id);
@@ -19178,12 +19160,6 @@ This is a preview of the performance engagement contract. Final agreement will i
         }
 
         // Check permissions: users can only generate QR codes for their own pages, unless they're superadmin/admin
-        if (
-          ![1, 2].includes(user.roleId) &&
-          integration.userId !== user.userId
-        ) {
-          return res.status(403).json({ message: "Access denied" });
-        }
 
         const url = `https://www.waitumusic.com/${integration.slug}`;
 
@@ -19250,7 +19226,7 @@ This is a preview of the performance engagement contract. Final agreement will i
 
               // Draw profile picture
               ctx.drawImage(
-                profileImage,
+                imageUrl,
                 centerX,
                 centerY,
                 centerSize,
@@ -19330,10 +19306,11 @@ This is a preview of the performance engagement contract. Final agreement will i
     async (req: Request, res: Response) => {
       try {
         const userId = req.user!.userId;
-        const userRole = req.user!.role;
+        const userRoles = await storage.getUserRoles(userId);
+        const userRoleIds = userRoles.map(r => r.id)
 
         let widgets;
-        if (userRole === "superadmin" || userRole === "admin") {
+        if (userRoleIds.some(r => [1, 2].includes(r))) {
           widgets = await storage.getAllEmbeddableWidgets();
         } else {
           widgets = await storage.getEmbeddableWidgetsByUser(userId);

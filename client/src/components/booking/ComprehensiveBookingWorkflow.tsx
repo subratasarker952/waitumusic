@@ -682,10 +682,8 @@ export default function BookingWorkflow({
       // ✅ contract_generation step complete
       setStepConfirmations((prev) => ({ ...prev, 2: true }));
     }
-
-    if (booking?.technicalRider) {
-      // ✅ technical_rider + stage_plot step complete
-      setStepConfirmations((prev) => ({ ...prev, 3: true, 4: true }));
+    if (booking?.technicalRider && Object.keys(booking.technicalRider).length > 0) {
+      setStepConfirmations(prev => ({ ...prev, 3: true, 4: true }));
     }
 
     if (booking?.signatures && booking.signatures.length > 0) {
