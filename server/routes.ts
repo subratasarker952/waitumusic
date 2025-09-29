@@ -3419,9 +3419,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
           for (const ed of eventDates) {
             await storage.createBookingDate({
               bookingId: booking.id,
-              eventDate: new Date(ed.date), // ed.date হলে data object হবে
-              startTime: ed.startTime || null,
-              endTime: ed.endTime || null,
+              eventDate: new Date(ed), // ed.date হলে data object হবে
+              startTime: startTime,
+              endTime: endTime,
             });
           }
         }
