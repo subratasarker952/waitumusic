@@ -2267,63 +2267,6 @@ export class MemStorage {
     return updatedBooking;
   }
 
-
-  async createBookingDate(data: {
-    bookingId: number;
-    eventDate: Date;
-    startTime?: string | null;
-    endTime?: string | null;
-  }) {
-    const [newDate] = await db
-      .insert(bookingDates)
-      .values({
-        bookingId: data.bookingId,
-        eventDate: data.eventDate,
-        startTime: data.startTime || null,
-        endTime: data.endTime || null,
-      })
-      .returning();
-
-    return newDate;
-  }
-
-  async getBookingDates(bookingId: number) {
-    return await db
-      .select()
-      .from(bookingDates)
-      .where(eq(bookingDates.bookingId, bookingId));
-  }
-
-  async updateBookingDate(id: number, data: {
-    eventDate?: Date;
-    startTime?: string | null;
-    endTime?: string | null;
-  }) {
-    const [updated] = await db
-      .update(bookingDates)
-      .set(data)
-      .where(eq(bookingDates.id, id))
-      .returning();
-
-    return updated;
-  }
-
-  async deleteBookingDate(id: number) {
-    const [deleted] = await db
-      .delete(bookingDates)
-      .where(eq(bookingDates.id, id))
-      .returning();
-
-    return deleted;
-  }
-
-  async deleteBookingDatesByBookingId(bookingId: number) {
-    return await db
-      .delete(bookingDates)
-      .where(eq(bookingDates.bookingId, bookingId));
-  }
-  
-
   async getEventsByArtist(artistUserId: number): Promise<Event[]> {
     return Array.from(this.events.values()).filter(
       (event) => event.artistUserId === artistUserId
@@ -2736,6 +2679,8 @@ export class MemStorage {
   }
 }
 
+// Databasestorage start from hereeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
+
 export class DatabaseStorage implements IStorage {
   async getUser(id: number): Promise<User | undefined> {
     const [user] = await db.select().from(users).where(eq(users.id, id));
@@ -2842,6 +2787,62 @@ export class DatabaseStorage implements IStorage {
       .delete(userRoles)
       .where(and(eq(userRoles.userId, userId), eq(userRoles.roleId, roleId)));
   }
+
+  async createBookingDate(data: {
+    bookingId: number;
+    eventDate: Date;
+    startTime?: string | null;
+    endTime?: string | null;
+  }) {
+    const [newDate] = await db
+      .insert(bookingDates)
+      .values({
+        bookingId: data.bookingId,
+        eventDate: data.eventDate,
+        startTime: data.startTime || null,
+        endTime: data.endTime || null,
+      })
+      .returning();
+
+    return newDate;
+  }
+
+  async getBookingDates(bookingId: number) {
+    return await db
+      .select()
+      .from(bookingDates)
+      .where(eq(bookingDates.bookingId, bookingId));
+  }
+
+  async updateBookingDate(id: number, data: {
+    eventDate?: Date;
+    startTime?: string | null;
+    endTime?: string | null;
+  }) {
+    const [updated] = await db
+      .update(bookingDates)
+      .set(data)
+      .where(eq(bookingDates.id, id))
+      .returning();
+
+    return updated;
+  }
+
+  async deleteBookingDate(id: number) {
+    const [deleted] = await db
+      .delete(bookingDates)
+      .where(eq(bookingDates.id, id))
+      .returning();
+
+    return deleted;
+  }
+
+  async deleteBookingDatesByBookingId(bookingId: number) {
+    return await db
+      .delete(bookingDates)
+      .where(eq(bookingDates.bookingId, bookingId));
+  }
+
   // END NEW CODEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
   // Enhanced user management with role information
   async getUserWithRoles(id: number): Promise<
@@ -3108,9 +3109,7 @@ export class DatabaseStorage implements IStorage {
     return {};
   }
 
-  // async getRoles(): Promise<Role[]> {
-  //   return await db.select().from(roles);
-  // }
+
 
   // Get role by ID
   // async getRoleById(roleId: number): Promise<Role | undefined> {
@@ -3122,14 +3121,14 @@ export class DatabaseStorage implements IStorage {
   //     return undefined;
   //   }
   // }
-
-  async getRoleById(roleId: number): Promise<Role | null> {
+  async getRoleById(roleId: number): Promise<Role | undefined> {
     try {
       const [role] = await db
         .select()
         .from(rolesManagement)
         .where(eq(rolesManagement.id, roleId));
-      if (!role) return null;
+
+      if (!role) return undefined; // ✅ matches interface
 
       return {
         id: role.id,
@@ -3143,9 +3142,10 @@ export class DatabaseStorage implements IStorage {
       };
     } catch (err) {
       console.error("Error fetching role by ID:", err);
-      return null;
+      return undefined; // ✅ matches interface
     }
   }
+
 
   // Get role name by ID
   async getRoleName(roleId: number): Promise<string> {
@@ -3232,7 +3232,7 @@ export class DatabaseStorage implements IStorage {
   // Role management methods
   async createRole(roleData: Partial<Role>): Promise<Role> {
     const [role] = await db
-      .insert(roles)
+      .insert(rolesManagement)
       .values(roleData as any)
       .returning();
     return role;
@@ -3243,20 +3243,25 @@ export class DatabaseStorage implements IStorage {
     updates: Partial<Role>
   ): Promise<Role | undefined> {
     const [role] = await db
-      .update(roles)
+      .update(rolesManagement)
       .set(updates)
-      .where(eq(roles.id, id))
+      .where(eq(rolesManagement.id, id))
       .returning();
     return role || undefined;
   }
 
   async deleteRole(id: number): Promise<boolean> {
-    const result = await db.delete(roles).where(eq(roles.id, id));
+    const result = await db.delete(rolesManagement).where(eq(rolesManagement.id, id));
     return result.rowCount > 0;
   }
 
   async getUsersByRole(roleId: number): Promise<User[]> {
-    return await db.select().from(users).where(eq(users.roleId, roleId));
+    const result = await db
+      .select()
+      .from(users)
+      .innerJoin(userRoles, eq(users.id, userRoles.userId))
+      .where(eq(userRoles.roleId, roleId));
+    return result;
   }
 
   async getArtist(userId: number): Promise<Artist | undefined> {
@@ -3324,7 +3329,7 @@ export class DatabaseStorage implements IStorage {
   async getAllUsers(): Promise<User[]> {
     const rows = await db
       .select({
-        id: users.id,
+        userId: users.id,
         email: users.email,
         fullName: users.fullName,
         phoneNumber: users.phoneNumber,
@@ -3336,20 +3341,20 @@ export class DatabaseStorage implements IStorage {
         isDemo: users.isDemo,
         createdAt: users.createdAt,
         lastLogin: users.lastLogin,
-        roleId: roles.id,
-        roleName: roles.name,
+        roleId: rolesManagement.id,
+        roleName: rolesManagement.name,
       })
       .from(users)
       .leftJoin(userRoles, eq(users.id, userRoles.userId))
-      .leftJoin(roles, eq(userRoles.roleId, roles.id))
+      .leftJoin(rolesManagement, eq(userRoles.roleId, rolesManagement.id))
       .orderBy(desc(users.createdAt));
-
+  
     const userMap: Record<number, User> = {};
-
+  
     for (const row of rows) {
-      if (!userMap[row.id]) {
-        userMap[row.id] = {
-          id: row.id,
+      if (!userMap[row.userId]) {
+        userMap[row.userId] = {
+          id: row.userId,
           email: row.email,
           fullName: row.fullName,
           phoneNumber: row.phoneNumber,
@@ -3364,17 +3369,18 @@ export class DatabaseStorage implements IStorage {
           roles: [],
         };
       }
-
+  
       if (row.roleId) {
-        userMap[row.id].roles.push({
+        userMap[row.userId].roles.push({
           id: row.roleId,
           name: row.roleName!,
         });
       }
     }
-
+  
     return Object.values(userMap);
   }
+  
 
 
   // Duplicate methods removed - keeping proper implementation below
