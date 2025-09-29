@@ -2267,6 +2267,63 @@ export class MemStorage {
     return updatedBooking;
   }
 
+
+  async createBookingDate(data: {
+    bookingId: number;
+    eventDate: Date;
+    startTime?: string | null;
+    endTime?: string | null;
+  }) {
+    const [newDate] = await db
+      .insert(bookingDates)
+      .values({
+        bookingId: data.bookingId,
+        eventDate: data.eventDate,
+        startTime: data.startTime || null,
+        endTime: data.endTime || null,
+      })
+      .returning();
+
+    return newDate;
+  }
+
+  async getBookingDates(bookingId: number) {
+    return await db
+      .select()
+      .from(bookingDates)
+      .where(eq(bookingDates.bookingId, bookingId));
+  }
+
+  async updateBookingDate(id: number, data: {
+    eventDate?: Date;
+    startTime?: string | null;
+    endTime?: string | null;
+  }) {
+    const [updated] = await db
+      .update(bookingDates)
+      .set(data)
+      .where(eq(bookingDates.id, id))
+      .returning();
+
+    return updated;
+  }
+
+  async deleteBookingDate(id: number) {
+    const [deleted] = await db
+      .delete(bookingDates)
+      .where(eq(bookingDates.id, id))
+      .returning();
+
+    return deleted;
+  }
+
+  async deleteBookingDatesByBookingId(bookingId: number) {
+    return await db
+      .delete(bookingDates)
+      .where(eq(bookingDates.bookingId, bookingId));
+  }
+  
+
   async getEventsByArtist(artistUserId: number): Promise<Event[]> {
     return Array.from(this.events.values()).filter(
       (event) => event.artistUserId === artistUserId
@@ -3880,7 +3937,7 @@ export class DatabaseStorage implements IStorage {
             signerUserId,
             signerName,
             signerEmail,
-            signatureData:null,
+            signatureData: null,
             status: "pending",
           })
           .where(eq(contractSignatures.id, existing.id));
@@ -3892,7 +3949,7 @@ export class DatabaseStorage implements IStorage {
           signerType,
           signerName,
           signerEmail,
-          signatureData:null,
+          signatureData: null,
           status: "pending",
         });
       }

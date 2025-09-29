@@ -18,13 +18,13 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } f
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
-import { 
-  Calendar as CalendarIcon, 
-  Clock, 
-  MapPin, 
-  Music, 
-  Users, 
-  Mic2, 
+import {
+  Calendar as CalendarIcon,
+  Clock,
+  MapPin,
+  Music,
+  Users,
+  Mic2,
   CheckCircle,
   Star,
   Crown,
@@ -60,7 +60,7 @@ const bookingFormSchema = z.object({
   endTime: z.string().min(1, 'End time is required'),
   expectedAttendees: z.string().optional(),
   additionalNotes: z.string().optional(),
-  budget: z.string().optional(),
+  totalBudget: z.string().optional(),
   createAccount: z.boolean().default(false),
 });
 
@@ -154,20 +154,20 @@ const getInitials = (talent: Artist | Musician): string => {
 const getDateAvailability = (date: Date, artist: Artist | Musician | null) => {
   const today = startOfDay(new Date());
   const currentDate = startOfDay(date);
-  
+
   // Past dates are disabled
   if (isBefore(currentDate, today)) {
     return { status: 'past', color: 'bg-gray-200 text-gray-400', available: false };
   }
-  
+
   // Weekends (consultation booking style - unavailable)
   if (isWeekend(date)) {
     return { status: 'weekend', color: 'bg-red-100 text-red-600 border-red-200', available: false };
   }
-  
+
   // In production, check artist's actual availability from database
   // For now, assume most dates are available (would be loaded from API)
-  
+
   // Available dates (green)
   return { status: 'available', color: 'bg-green-100 text-green-600 border-green-200 hover:bg-green-200', available: true };
 };
@@ -178,11 +178,11 @@ export default function BookingPage() {
   const queryClient = useQueryClient();
   const isMobile = useMobile();
   const [location] = useLocation();
-  
+
   const [selectedTalent, setSelectedTalent] = useState<Artist | Musician | null>(null);
   const [multiTalentMode, setMultiTalentMode] = useState(false);
   const [selectedTalents, setSelectedTalents] = useState<(Artist | Musician)[]>([]);
-  
+
   const [selectedAddOns, setSelectedAddOns] = useState<string[]>([]);
   const [selectedDates, setSelectedDates] = useState<Date[]>([]);
   const [multiDateMode, setMultiDateMode] = useState(false);
@@ -273,18 +273,19 @@ export default function BookingPage() {
       endTime: '',
       expectedAttendees: '',
       additionalNotes: '',
-      budget: '',
+      totalBudget: '',
       createAccount: false,
     },
   });
 
   const createBookingMutation = useMutation({
     mutationFn: async (data: BookingFormData) => {
+      console.log(data)
       let bookingData;
-  
+
       const primaryTalent = multiTalentMode ? selectedTalents[0] : selectedTalent;
       const additionalTalents = multiTalentMode ? selectedTalents.slice(1) : [];
-  
+
       if (user) {
         // Authenticated booking
         bookingData = {
@@ -298,9 +299,9 @@ export default function BookingPage() {
           bookerUserId: user.id,
           isGuestBooking: false,
         };
-  
+
         console.log("Authenticated Booking Data:", bookingData);
-  
+
         return await apiRequest('/api/bookings', {
           method: 'POST',
           body: bookingData,
@@ -318,16 +319,16 @@ export default function BookingPage() {
           isGuestBooking: true,
           createAccount: data.createAccount || false,
         };
-  
+
         console.log("Guest Booking Data:", bookingData);
-  
+
         return await apiRequest('/api/bookings/guest', {
           method: 'POST',
           body: bookingData,
         });
       }
     },
-  
+
     onSuccess: () => {
       toast({
         title: "Booking Submitted",
@@ -335,12 +336,12 @@ export default function BookingPage() {
       });
       setBookingSuccess(true);
       setShowBookingDialog(false);
-  
+
       queryClient.invalidateQueries({ queryKey: ['/api/bookings'] });
       queryClient.invalidateQueries({ queryKey: ['/api/bookings/all'] });
       queryClient.invalidateQueries({ queryKey: ['/api/bookings/user'] });
     },
-  
+
     onError: (error: any) => {
       toast({
         title: "Error",
@@ -349,11 +350,11 @@ export default function BookingPage() {
       });
     },
   });
-  
+
 
   const calculateTotalPrice = () => {
     let basePrice = 0;
-    
+
     if (multiTalentMode) {
       // Sum all selected talents' prices
       basePrice = selectedTalents.reduce((total, talent) => {
@@ -363,7 +364,7 @@ export default function BookingPage() {
       // Single talent price
       basePrice = parseFloat(selectedTalent?.basePrice || '0');
     }
-    
+
     const addOnTotal = selectedAddOns.reduce((total, addOnId) => {
       const addOn = filteredAddOns.find((a: any) => a.id.toString() === addOnId);
       return total + (addOn ? parseFloat(addOn.basePrice || '0') : 0);
@@ -373,9 +374,9 @@ export default function BookingPage() {
 
   const handleDateSelect = (date: Date | undefined) => {
     if (!date || isBefore(date, startOfDay(new Date()))) return;
-    
+
     const hasSelectedTalent = multiTalentMode ? selectedTalents.length > 0 : selectedTalent;
-    
+
     if (!hasSelectedTalent) {
       toast({
         title: "Select Talent First",
@@ -404,7 +405,7 @@ export default function BookingPage() {
 
   const handleConfirmDates = () => {
     const hasSelectedTalent = multiTalentMode ? selectedTalents.length > 0 : selectedTalent;
-    
+
     if (selectedDates.length > 0 && hasSelectedTalent) {
       setShowBookingDialog(true);
     }
@@ -413,20 +414,20 @@ export default function BookingPage() {
   const formatDateRange = (dates: Date[]) => {
     if (dates.length === 0) return '';
     if (dates.length === 1) return format(dates[0], 'MMM d, yyyy');
-    
+
     const sortedDates = [...dates].sort((a, b) => a.getTime() - b.getTime());
-    
+
     // Group consecutive dates into ranges
     const ranges = [];
     let currentRange = [sortedDates[0]];
-    
+
     for (let i = 1; i < sortedDates.length; i++) {
       const currentDate = sortedDates[i];
       const previousDate = sortedDates[i - 1];
-      
+
       // Check if current date is consecutive to previous date
       const daysDiff = Math.floor((currentDate.getTime() - previousDate.getTime()) / (1000 * 60 * 60 * 24));
-      
+
       if (daysDiff === 1) {
         // Consecutive date, add to current range
         currentRange.push(currentDate);
@@ -436,10 +437,10 @@ export default function BookingPage() {
         currentRange = [currentDate];
       }
     }
-    
+
     // Add the last range
     ranges.push(currentRange);
-    
+
     // Format ranges
     const formattedRanges = ranges.map(range => {
       if (range.length === 1) {
@@ -450,14 +451,14 @@ export default function BookingPage() {
         return `${format(first, 'MMM d')}-${format(last, 'd')}`;
       }
     });
-    
+
     const year = format(sortedDates[0], 'yyyy');
     return formattedRanges.join(', ') + `, ${year}`;
   };
 
   const handleAddOnToggle = (addOnId: string) => {
-    setSelectedAddOns(prev => 
-      prev.includes(addOnId) 
+    setSelectedAddOns(prev =>
+      prev.includes(addOnId)
         ? prev.filter(id => id !== addOnId)
         : [...prev, addOnId]
     );
@@ -530,18 +531,18 @@ export default function BookingPage() {
                   <Music className="w-5 h-5" />
                   Select Talent
                 </CardTitle>
-                
+
                 {/* Multi-Talent Selection Checkbox */}
                 <div className="mt-3 p-2 bg-white/10 rounded">
                   <div className="flex items-center space-x-2">
-                    <Checkbox 
+                    <Checkbox
                       id="multi-talent"
                       checked={multiTalentMode}
                       onCheckedChange={handleMultiTalentToggle}
                       className="border-white data-[state=checked]:bg-white data-[state=checked]:text-purple-600"
                     />
-                    <label 
-                      htmlFor="multi-talent" 
+                    <label
+                      htmlFor="multi-talent"
                       className="text-sm font-medium cursor-pointer select-none"
                     >
                       Book multiple talents for this event
@@ -595,49 +596,47 @@ export default function BookingPage() {
                     ) : (
                       <div className="space-y-3">
                         {managedArtists?.map((artist: Artist) => {
-                          const isSelected = multiTalentMode 
+                          const isSelected = multiTalentMode
                             ? selectedTalents.some(t => t.userId === artist.userId)
                             : selectedTalent?.userId === artist.userId;
-                          
+
                           return (
-                            <Card 
+                            <Card
                               key={`managed-artist-${artist.userId || artist.id}`}
-                              className={`cursor-pointer transition-all duration-300 hover:shadow-lg hover:scale-105 ${
-                                isSelected ? 'ring-2 ring-purple-500 bg-purple-50 shadow-lg' : 'hover:bg-blue-50'
-                              }`}
+                              className={`cursor-pointer transition-all duration-300 hover:shadow-lg hover:scale-105 ${isSelected ? 'ring-2 ring-purple-500 bg-purple-50 shadow-lg' : 'hover:bg-blue-50'
+                                }`}
                               onClick={() => handleTalentSelection(artist)}
                             >
-                        
-                            <CardContent className="p-3 min-h-[80px]">
-                              <div className="flex items-start space-x-3">
-                                <Avatar className="w-14 h-14 border-2 border-white shadow-md">
-                                  <AvatarImage 
-                                    src={artist.bookingFormPictureUrl || artist.userProfile?.avatarUrl || artist.profile?.avatarUrl || ''} 
-                                    className="object-cover"
-                                  />
-                                  <AvatarFallback className="bg-gradient-to-br from-purple-500 to-blue-500 text-white font-bold text-lg">
-                                    {getInitials(artist)}
-                                  </AvatarFallback>
-                                </Avatar>
-                                <div className="flex-1 min-w-0 flex flex-col">
-                                  <h4 className="font-bold text-sm break-words leading-tight mb-1">{getDisplayName(artist)}</h4>
-                                  <p className="text-xs text-gray-500 truncate mb-2">{artist.primaryGenre || 'Various'}</p>
-                                  <div className="flex items-center justify-between mt-auto">
-                                    <Badge variant="secondary" className={`text-xs px-1 py-0.5 ${
-                                      isSelected 
-                                        ? 'bg-gradient-to-r from-green-500 to-green-600 text-white' 
-                                        : 'bg-gradient-to-r from-yellow-400 to-yellow-500 text-yellow-900'
-                                    }`}>
-                                      <Crown className="w-2 h-2 mr-1" />
-                                      {isSelected ? 'SELECTED' : 'Managed'}
-                                    </Badge>
-                                    <span className="text-sm font-bold text-green-600">
-                                      ${artist.basePrice || '0'}
-                                    </span>
+
+                              <CardContent className="p-3 min-h-[80px]">
+                                <div className="flex items-start space-x-3">
+                                  <Avatar className="w-14 h-14 border-2 border-white shadow-md">
+                                    <AvatarImage
+                                      src={artist.bookingFormPictureUrl || artist.userProfile?.avatarUrl || artist.profile?.avatarUrl || ''}
+                                      className="object-cover"
+                                    />
+                                    <AvatarFallback className="bg-gradient-to-br from-purple-500 to-blue-500 text-white font-bold text-lg">
+                                      {getInitials(artist)}
+                                    </AvatarFallback>
+                                  </Avatar>
+                                  <div className="flex-1 min-w-0 flex flex-col">
+                                    <h4 className="font-bold text-sm break-words leading-tight mb-1">{getDisplayName(artist)}</h4>
+                                    <p className="text-xs text-gray-500 truncate mb-2">{artist.primaryGenre || 'Various'}</p>
+                                    <div className="flex items-center justify-between mt-auto">
+                                      <Badge variant="secondary" className={`text-xs px-1 py-0.5 ${isSelected
+                                          ? 'bg-gradient-to-r from-green-500 to-green-600 text-white'
+                                          : 'bg-gradient-to-r from-yellow-400 to-yellow-500 text-yellow-900'
+                                        }`}>
+                                        <Crown className="w-2 h-2 mr-1" />
+                                        {isSelected ? 'SELECTED' : 'Managed'}
+                                      </Badge>
+                                      <span className="text-sm font-bold text-green-600">
+                                        ${artist.basePrice || '0'}
+                                      </span>
+                                    </div>
                                   </div>
                                 </div>
-                              </div>
-                            </CardContent>
+                              </CardContent>
                             </Card>
                           );
                         })}
@@ -658,60 +657,58 @@ export default function BookingPage() {
                     ) : (
                       <div className="space-y-3">
                         {managedMusicians?.map((musician: Musician) => {
-                          const isSelected = multiTalentMode 
+                          const isSelected = multiTalentMode
                             ? selectedTalents?.some(t => t.userId === musician.userId)
                             : selectedTalent?.userId === musician.userId;
-                          
+
                           return (
-                            <Card 
+                            <Card
                               key={`managed-musician-${musician.userId || musician.id}`}
-                              className={`cursor-pointer transition-all duration-300 hover:shadow-lg hover:scale-105 ${
-                                isSelected ? 'ring-2 ring-purple-500 bg-purple-50 shadow-lg' : 'hover:bg-blue-50'
-                              }`}
+                              className={`cursor-pointer transition-all duration-300 hover:shadow-lg hover:scale-105 ${isSelected ? 'ring-2 ring-purple-500 bg-purple-50 shadow-lg' : 'hover:bg-blue-50'
+                                }`}
                               onClick={() => handleTalentSelection(musician)}
                             >
-                        
-                            <CardContent className="p-3 min-h-[80px]">
-                              <div className="flex items-start space-x-3">
-                                <Avatar className="w-14 h-14 border-2 border-white shadow-md">
-                                  <AvatarImage 
-                                    src={musician.bookingFormPictureUrl || musician.userProfile?.avatarUrl || musician.profile?.avatarUrl || ''} 
-                                    className="object-cover"
-                                  />
-                                  <AvatarFallback className="bg-gradient-to-br from-blue-500 to-indigo-500 text-white">
-                                    <Mic2 className="w-4 h-4" />
-                                  </AvatarFallback>
-                                </Avatar>
-                                <div className="flex-1 min-w-0 flex flex-col">
-                                  <h4 className="font-bold text-sm break-words leading-tight mb-1">{musician.user?.fullName || 'Musician'}</h4>
-                                  <p className="text-xs text-gray-500 truncate mb-2">Session Musician</p>
-                                  <div className="flex items-center justify-between mt-auto">
-                                    <Badge variant="secondary" className={`text-xs px-1 py-0.5 ${
-                                      isSelected 
-                                        ? 'bg-gradient-to-r from-green-500 to-green-600 text-white' 
-                                        : 'bg-gradient-to-r from-blue-400 to-blue-500 text-blue-900'
-                                    }`}>
-                                      <Shield className="w-2 h-2 mr-1" />
-                                      {isSelected ? 'SELECTED' : 'Managed'}
-                                    </Badge>
-                                    <span className="text-sm font-bold text-green-600">
-                                      ${musician.basePrice || '0'}
-                                    </span>
+
+                              <CardContent className="p-3 min-h-[80px]">
+                                <div className="flex items-start space-x-3">
+                                  <Avatar className="w-14 h-14 border-2 border-white shadow-md">
+                                    <AvatarImage
+                                      src={musician.bookingFormPictureUrl || musician.userProfile?.avatarUrl || musician.profile?.avatarUrl || ''}
+                                      className="object-cover"
+                                    />
+                                    <AvatarFallback className="bg-gradient-to-br from-blue-500 to-indigo-500 text-white">
+                                      <Mic2 className="w-4 h-4" />
+                                    </AvatarFallback>
+                                  </Avatar>
+                                  <div className="flex-1 min-w-0 flex flex-col">
+                                    <h4 className="font-bold text-sm break-words leading-tight mb-1">{musician.user?.fullName || 'Musician'}</h4>
+                                    <p className="text-xs text-gray-500 truncate mb-2">Session Musician</p>
+                                    <div className="flex items-center justify-between mt-auto">
+                                      <Badge variant="secondary" className={`text-xs px-1 py-0.5 ${isSelected
+                                          ? 'bg-gradient-to-r from-green-500 to-green-600 text-white'
+                                          : 'bg-gradient-to-r from-blue-400 to-blue-500 text-blue-900'
+                                        }`}>
+                                        <Shield className="w-2 h-2 mr-1" />
+                                        {isSelected ? 'SELECTED' : 'Managed'}
+                                      </Badge>
+                                      <span className="text-sm font-bold text-green-600">
+                                        ${musician.basePrice || '0'}
+                                      </span>
+                                    </div>
                                   </div>
                                 </div>
-                              </div>
-                            </CardContent>
+                              </CardContent>
                             </Card>
                           );
                         })}
                       </div>
                     )}
                   </div>
-                  
+
                   {/* Next Button for Desktop - Talent Selection */}
                   {!isMobile && (selectedTalent || selectedTalents.length > 0) && (
                     <div className="mt-4 pt-4 border-t">
-                      <Button 
+                      <Button
                         onClick={() => {
                           document.getElementById('addons-section')?.scrollIntoView({ behavior: 'smooth' });
                         }}
@@ -877,11 +874,11 @@ export default function BookingPage() {
                     )}
                   </div>
                 )}
-                
+
                 {/* Next Button for Desktop - Add-ons Section */}
                 {!isMobile && (selectedTalent || selectedTalents.length > 0) && (
                   <div className="mt-4 pt-4 border-t">
-                    <Button 
+                    <Button
                       onClick={() => {
                         document.getElementById('calendar-section')?.scrollIntoView({ behavior: 'smooth' });
                       }}
@@ -940,8 +937,8 @@ export default function BookingPage() {
                         <span>Past</span>
                       </div>
                       {multiDateMode && selectedDates.length > 0 && (
-                        <Button 
-                          size="sm" 
+                        <Button
+                          size="sm"
                           variant="outline"
                           onClick={() => setSelectedDates([])}
                           className="text-red-600 border-red-200 hover:bg-red-50"
@@ -957,7 +954,7 @@ export default function BookingPage() {
                 <div className="flex flex-col flex-1 space-y-4">
                   {/* Multi-date selection toggle */}
                   <div className="flex items-center gap-3 p-3 bg-white rounded-lg border">
-                    <Checkbox 
+                    <Checkbox
                       checked={multiDateMode}
                       onCheckedChange={(checked) => setMultiDateMode(checked === true)}
                       id="multi-date"
@@ -967,8 +964,8 @@ export default function BookingPage() {
                     </label>
                     {multiDateMode && selectedDates.length > 0 && (
                       <div className="ml-auto">
-                        <Button 
-                          size="sm" 
+                        <Button
+                          size="sm"
                           onClick={handleConfirmDates}
                           className="bg-green-600 hover:bg-green-700"
                         >
@@ -999,48 +996,48 @@ export default function BookingPage() {
                         selected: (date) => selectedDates.some(d => isSameDay(d, date)),
                       }}
                       modifiersStyles={{
-                        available: { 
-                          backgroundColor: '#dcfce7', 
-                          color: '#166534', 
+                        available: {
+                          backgroundColor: '#dcfce7',
+                          color: '#166534',
                           border: '2px solid #bbf7d0',
                           borderRadius: '12px',
                           fontWeight: '600',
                           fontSize: '1.1rem'
                         },
-                        unavailable: { 
-                          backgroundColor: '#fecaca', 
-                          color: '#dc2626', 
+                        unavailable: {
+                          backgroundColor: '#fecaca',
+                          color: '#dc2626',
                           border: '2px solid #fca5a5',
                           borderRadius: '12px',
                           fontWeight: '600',
                           fontSize: '1.1rem'
                         },
-                        booked: { 
-                          backgroundColor: '#fed7aa', 
-                          color: '#ea580c', 
+                        booked: {
+                          backgroundColor: '#fed7aa',
+                          color: '#ea580c',
                           border: '2px solid #fdba74',
                           borderRadius: '12px',
                           fontWeight: '600',
                           fontSize: '1.1rem'
                         },
-                        weekend: { 
-                          backgroundColor: '#fecaca', 
-                          color: '#dc2626', 
+                        weekend: {
+                          backgroundColor: '#fecaca',
+                          color: '#dc2626',
                           border: '2px solid #fca5a5',
                           borderRadius: '12px',
                           fontWeight: '600',
                           fontSize: '1.1rem'
                         },
-                        past: { 
-                          backgroundColor: '#e5e7eb', 
+                        past: {
+                          backgroundColor: '#e5e7eb',
                           color: '#6b7280',
                           borderRadius: '12px',
                           fontWeight: '500',
                           fontSize: '1.1rem'
                         },
-                        selected: { 
-                          backgroundColor: '#3b82f6', 
-                          color: 'white', 
+                        selected: {
+                          backgroundColor: '#3b82f6',
+                          color: 'white',
                           fontWeight: 'bold',
                           border: '2px solid #1d4ed8',
                           borderRadius: '12px',
@@ -1107,7 +1104,7 @@ export default function BookingPage() {
                         )}
                       </div>
                       {selectedDates.length > 0 && (selectedTalent || selectedTalents.length > 0) && (!multiDateMode || selectedDates.length === 1) && (
-                        <Button 
+                        <Button
                           onClick={() => setShowBookingDialog(true)}
                           className="w-full mt-4 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700"
                         >
@@ -1136,7 +1133,7 @@ export default function BookingPage() {
                 Please provide your contact information and event details to complete your booking.
               </DialogDescription>
             </DialogHeader>
-            
+
             <Form {...form}>
               <form onSubmit={form.handleSubmit(handleBookingSubmit)} className="space-y-4">
                 <div className="grid grid-cols-2 gap-4">
@@ -1153,7 +1150,7 @@ export default function BookingPage() {
                       </FormItem>
                     )}
                   />
-                  
+
                   <FormField
                     control={form.control}
                     name="guestEmail"
@@ -1197,7 +1194,7 @@ export default function BookingPage() {
                       </FormItem>
                     )}
                   />
-                  
+
                   <FormField
                     control={form.control}
                     name="eventType"
@@ -1239,7 +1236,7 @@ export default function BookingPage() {
                       </FormItem>
                     )}
                   />
-                  
+
                   <FormField
                     control={form.control}
                     name="venueAddress"
@@ -1269,7 +1266,7 @@ export default function BookingPage() {
                       </FormItem>
                     )}
                   />
-                  
+
                   <FormField
                     control={form.control}
                     name="endTime"
@@ -1293,7 +1290,7 @@ export default function BookingPage() {
                       <FormItem>
                         <FormLabel>Expected Attendees</FormLabel>
                         <FormControl>
-                          <Input placeholder="Approximate number of guests" {...field} />
+                          <Input type='number' placeholder="Approximate number of guests" {...field} />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -1302,14 +1299,15 @@ export default function BookingPage() {
 
                   <FormField
                     control={form.control}
-                    name="budget"
+                    name="totalBudget"
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>Your Budget</FormLabel>
                         <FormControl>
-                          <Input 
+                          <Input
+                            type='number'
                             placeholder="e.g., $5000"
-                            {...field} 
+                            {...field}
                           />
                         </FormControl>
                         <FormMessage />
@@ -1355,10 +1353,10 @@ export default function BookingPage() {
                     <FormItem>
                       <FormLabel>Additional Notes</FormLabel>
                       <FormControl>
-                        <Textarea 
+                        <Textarea
                           placeholder="Any special requirements or additional information..."
                           rows={3}
-                          {...field} 
+                          {...field}
                         />
                       </FormControl>
                       <FormMessage />

@@ -3396,119 +3396,101 @@ export async function registerRoutes(app: Express): Promise<Server> {
     async (req: Request, res: Response) => {
       try {
         const bookingData = req.body;
-        console.log(bookingData)
-        // const {
-        //   additionalTalentUserIds,
-        //   multiTalentBooking,
-        //   ...coreBookingData
-        // } = bookingData;
-
-        // // --- Fix eventDate ---
-        // if (coreBookingData.eventDate) {
-        //   if (typeof coreBookingData.eventDate === "string") {
-        //     try {
-        //       const dateObj = new Date(coreBookingData.eventDate);
-        //       if (isNaN(dateObj.getTime())) {
-        //         throw new Error("Invalid date format");
-        //       }
-        //       coreBookingData.eventDate = dateObj;
-        //     } catch (error) {
-        //       console.error("Date parsing error:", error);
-        //       return res
-        //         .status(400)
-        //         .json({ message: "Invalid event date format" });
-        //     }
-        //   } else if (!(coreBookingData.eventDate instanceof Date)) {
-        //     coreBookingData.eventDate = null;
-        //   }
-        // } else {
-        //   coreBookingData.eventDate = null;
-        // }
-
-        // console.log(
-        //   "Processed eventDate:",
-        //   coreBookingData.eventDate,
-        //   "Type:",
-        //   typeof coreBookingData.eventDate
-        // );
-
-        // // --- Create booking ---
-        // const booking = await storage.createBooking({
-        //   ...coreBookingData,
-        //   bookerUserId: req.user?.userId,
-        // });
-
-        // // --- Assign primary artist ---
-        // if (coreBookingData.primaryArtistUserId) {
-        //   const primaryUser = await storage.getUser(
-        //     coreBookingData.primaryArtistUserId
-        //   );
-        //   const roles = await storage.getUserRoles(
-        //     coreBookingData.primaryArtistUserId
-        //   );
-        //   const roleIds = roles.map((r) => r.id);
-
-        //   if (roleIds.some((id) => [3, 4, 5, 6].includes(id))) {
-        //     const assignmentRole = "Main Booked Talent";
-        //     const assignmentNotes = `Primary talent - ${roleIds.includes(3)
-        //       ? "managed artist"
-        //       : roleIds.includes(4)
-        //         ? "artist"
-        //         : roleIds.includes(5)
-        //           ? "managed musician"
-        //           : "musician"
-        //       }`;
-
-        //     await storage.createBookingAssignment({
-        //       bookingId: booking.id,
-        //       assignedUserId: coreBookingData.primaryArtistUserId,
-        //       assignmentRole,
-        //       assignedByUserId: req.user!.userId,
-        //       notes: assignmentNotes,
-        //     });
-        //   }
-        // }
-
-        // // --- Assign additional talents ---
-        // if (multiTalentBooking && additionalTalentUserIds?.length > 0) {
-        //   for (const talentUserId of additionalTalentUserIds) {
-        //     const user = await storage.getUser(talentUserId);
-        //     const roles = await storage.getUserRoles(talentUserId);
-        //     const roleIds = roles.map((r) => r.id);
-
-        //     let assignmentRole = "Main Booked Talent"; // default
-        //     let assignmentNotes = "Multi-talent booking";
-
-        //     if (roleIds.some((id) => [3, 5].includes(id))) {
-        //       assignmentRole = "Main Booked Talent";
-        //       assignmentNotes = `Multi-talent booking - ${roleIds.includes(3) ? "managed artist" : "managed musician"
-        //         }`;
-        //     } else if (roleIds.some((id) => [4, 6].includes(id))) {
-        //       assignmentRole = "Main Booked Talent";
-        //       assignmentNotes = `Multi-talent booking - ${roleIds.includes(4) ? "artist" : "musician"
-        //         }`;
-        //     } else if (roleIds.some((id) => [7, 8].includes(id))) {
-        //       assignmentRole = "Supporting Professional";
-        //       assignmentNotes = `Multi-talent booking - ${roleIds.includes(7) ? "managed professional" : "professional"
-        //         }`;
-        //     }
-
-        //     await storage.createBookingAssignment({
-        //       bookingId: booking.id,
-        //       assignedUserId: talentUserId,
-        //       assignmentRole,
-        //       assignedByUserId: req.user!.userId,
-        //       notes: assignmentNotes,
-        //     });
-        //   }
-        // }
-
-        // cacheHelpers.invalidateBookingCache();
-        // res.status(201).json({
-        //   ...booking,
-        //   multiTalentBooking,
-        //   additionalTalentsCount: additionalTalentUserIds?.length || 0,
-        // });
+  
+        const {
+          additionalTalentUserIds,
+          multiTalentBooking,
+          eventDates, // array আসবে frontend থেকে
+          startTime,
+          endTime,
+          ...coreBookingData
+        } = bookingData;
+  
+        console.log("Booking data received:", bookingData);
+  
+        // --- Create booking ---
+        const booking = await storage.createBooking({
+          ...coreBookingData,
+          bookerUserId: req.user?.userId,
+        });
+  
+        // --- Save eventDates in booking_dates ---
+        if (Array.isArray(eventDates) && eventDates.length > 0) {
+          for (const ed of eventDates) {
+            await storage.createBookingDate({
+              bookingId: booking.id,
+              eventDate: new Date(ed.date), // ed.date হলে data object হবে
+              startTime: ed.startTime || null,
+              endTime: ed.endTime || null,
+            });
+          }
+        }
+  
+        // --- Assign primary artist ---
+        if (coreBookingData.primaryArtistUserId) {
+          const primaryUser = await storage.getUser(coreBookingData.primaryArtistUserId);
+          const roles = await storage.getUserRoles(coreBookingData.primaryArtistUserId);
+          const roleIds = roles.map((r) => r.id);
+  
+          if (roleIds.some((id) => [3, 4, 5, 6].includes(id))) {
+            const assignmentRole = "Main Booked Talent";
+            const assignmentNotes = `Primary talent - ${roleIds.includes(3)
+              ? "managed artist"
+              : roleIds.includes(4)
+                ? "artist"
+                : roleIds.includes(5)
+                  ? "managed musician"
+                  : "musician"
+              }`;
+  
+            await storage.createBookingAssignment({
+              bookingId: booking.id,
+              assignedUserId: coreBookingData.primaryArtistUserId,
+              assignmentRole,
+              assignedByUserId: req.user!.userId,
+              notes: assignmentNotes,
+            });
+          }
+        }
+  
+        // --- Assign additional talents ---
+        if (multiTalentBooking && additionalTalentUserIds?.length > 0) {
+          for (const talentUserId of additionalTalentUserIds) {
+            const user = await storage.getUser(talentUserId);
+            const roles = await storage.getUserRoles(talentUserId);
+            const roleIds = roles.map((r) => r.id);
+  
+            let assignmentRole = "Main Booked Talent"; // default
+            let assignmentNotes = "Multi-talent booking";
+  
+            if (roleIds.some((id) => [3, 5].includes(id))) {
+              assignmentRole = "Main Booked Talent";
+              assignmentNotes = `Multi-talent booking - ${roleIds.includes(3) ? "managed artist" : "managed musician"}`;
+            } else if (roleIds.some((id) => [4, 6].includes(id))) {
+              assignmentRole = "Main Booked Talent";
+              assignmentNotes = `Multi-talent booking - ${roleIds.includes(4) ? "artist" : "musician"}`;
+            } else if (roleIds.some((id) => [7, 8].includes(id))) {
+              assignmentRole = "Supporting Professional";
+              assignmentNotes = `Multi-talent booking - ${roleIds.includes(7) ? "managed professional" : "professional"}`;
+            }
+  
+            await storage.createBookingAssignment({
+              bookingId: booking.id,
+              assignedUserId: talentUserId,
+              assignmentRole,
+              assignedByUserId: req.user!.userId,
+              notes: assignmentNotes,
+            });
+          }
+        }
+  
+        cacheHelpers.invalidateBookingCache();
+  
+        res.status(201).json({
+          ...booking,
+          multiTalentBooking,
+          additionalTalentsCount: additionalTalentUserIds?.length || 0,
+        });
       } catch (error) {
         logError(error, ErrorSeverity.ERROR, {
           endpoint: "/api/bookings",
@@ -3518,6 +3500,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
       }
     }
   );
+  
+  
 
   // ================== ENHANCED BOOKING ASSIGNMENT API ENDPOINTS ==================
 
