@@ -110,7 +110,7 @@ export const createBookingSchema = z.object({
   primaryArtistUserId: z.number().int().positive(),
   eventName: z.string().min(1).max(200).transform(sanitizeSqlString),
   eventType: z.string().min(1).max(100),
-  eventDate: z.string().datetime().optional(),
+  eventDates: z.array(z.string().datetime()), // আপডেট: এখন একাধিক তারিখ সমর্থন করে
   venueName: z.string().transform(sanitizeSqlString).optional(),
   venueAddress: z.string().transform(sanitizeSqlString).optional(),
   requirements: z.string().transform(sanitizeHtml).optional(),
@@ -119,7 +119,14 @@ export const createBookingSchema = z.object({
   guestEmail: z.string().email().optional(),
   guestPhone: z.string().optional(),
   isGuestBooking: z.boolean().optional(),
+  additionalTalentUserIds: z.array(z.number()).optional(),
+  multiTalentBooking: z.boolean().optional(),
+  selectedAddOns: z.array(z.any()).optional(),
+  totalPrice: z.number().positive().optional(),
+  bookerUserId: z.number().optional(),
+  createAccount: z.boolean().optional(),
 });
+
 
 export const updateBookingSchema = z.object({
   status: z.enum(["pending", "confirmed", "cancelled", "completed"]).optional(),

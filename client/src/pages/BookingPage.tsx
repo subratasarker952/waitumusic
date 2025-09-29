@@ -281,53 +281,53 @@ export default function BookingPage() {
   const createBookingMutation = useMutation({
     mutationFn: async (data: BookingFormData) => {
       let bookingData;
-      
+  
       const primaryTalent = multiTalentMode ? selectedTalents[0] : selectedTalent;
       const additionalTalents = multiTalentMode ? selectedTalents.slice(1) : [];
-      
+  
       if (user) {
         // Authenticated booking
         bookingData = {
-          ...data,
+          ...data, // Preserve all form fields
           primaryArtistUserId: primaryTalent?.userId,
           additionalTalentUserIds: additionalTalents.map(t => t.userId),
           multiTalentBooking: multiTalentMode,
           eventDates: selectedDates.map(date => date.toISOString()),
-          selectedAddOns,
+          selectedAddOns: selectedAddOns,
           totalPrice: calculateTotalPrice(),
           bookerUserId: user.id,
           isGuestBooking: false,
         };
-        console.log(bookingData)
-
+  
+        console.log("Authenticated Booking Data:", bookingData);
+  
         return await apiRequest('/api/bookings', {
           method: 'POST',
           body: bookingData,
         });
       } else {
-        // Guest booking - map to expected fields
+        // Guest booking
         bookingData = {
-          guestName: data.guestName,
-          guestEmail: data.guestEmail,
-          guestPhone: data.guestPhone,
+          ...data, // Preserve all form fields
           primaryArtistUserId: primaryTalent?.userId,
           additionalTalentUserIds: additionalTalents.map(t => t.userId),
           multiTalentBooking: multiTalentMode,
-          eventName: data.eventName,
-          eventType: data.eventType,
-          eventDate: selectedDates.length > 0 ? selectedDates[0].toISOString() : null,
-          venueName: data.venueName,
-          venueAddress: data.venueAddress,
-          requirements: data.additionalNotes,
-          totalBudget: calculateTotalPrice(),
+          eventDates: selectedDates.map(date => date.toISOString()), // Always array
+          selectedAddOns: selectedAddOns,
+          totalPrice: calculateTotalPrice(),
+          isGuestBooking: true,
           createAccount: data.createAccount || false,
         };
+  
+        console.log("Guest Booking Data:", bookingData);
+  
         return await apiRequest('/api/bookings/guest', {
           method: 'POST',
           body: bookingData,
         });
       }
     },
+  
     onSuccess: () => {
       toast({
         title: "Booking Submitted",
@@ -335,11 +335,12 @@ export default function BookingPage() {
       });
       setBookingSuccess(true);
       setShowBookingDialog(false);
-      // Invalidate both user bookings and admin bookings queries
+  
       queryClient.invalidateQueries({ queryKey: ['/api/bookings'] });
       queryClient.invalidateQueries({ queryKey: ['/api/bookings/all'] });
       queryClient.invalidateQueries({ queryKey: ['/api/bookings/user'] });
     },
+  
     onError: (error: any) => {
       toast({
         title: "Error",
@@ -348,6 +349,7 @@ export default function BookingPage() {
       });
     },
   });
+  
 
   const calculateTotalPrice = () => {
     let basePrice = 0;
@@ -462,6 +464,7 @@ export default function BookingPage() {
   };
 
   const handleBookingSubmit = (data: BookingFormData) => {
+    console.log(data)
     createBookingMutation.mutate(data);
   };
 

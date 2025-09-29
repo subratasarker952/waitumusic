@@ -79,24 +79,27 @@ export default function GigHub() {
     queryKey: ['booking-details', bookingId],
     queryFn: async () => {
       const response = await apiRequest(`/api/bookings/${bookingId}/talent-view`);
-      return response as BookingDetails;
+      return response ;
     },
     enabled: !!bookingId && !!user
   });
 
+
+  console.log(booking);
+
   // Determine user's role type for UI adaptation
   const getUserRoleType = () => {
     if (!user) return "unknown";
-  
+
     // Artists and Musicians
     if (roleIds.some(r => [3, 4, 5, 6].includes(r))) {
       return "performer";
     }
-  
+
     // Audio or Visual Professionals (roles 7 or 8)
     if (roleIds.some(r => [7, 8].includes(r))) {
       const talent = booking?.assignmentInfo?.selectedTalent?.toLowerCase() || "";
-  
+
       if (talent.includes("dj")) {
         return "dj";
       }
@@ -105,10 +108,10 @@ export default function GigHub() {
       }
       return "audio_professional";
     }
-  
+
     return "professional";
   };
-  
+
 
   const roleType = getUserRoleType();
 
