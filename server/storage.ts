@@ -3786,19 +3786,64 @@ export class DatabaseStorage implements IStorage {
     return createdMerchandise;
   }
 
-  async getBooking(id: number): Promise<Booking | undefined> {
+  // async getBooking(id: number): Promise<Booking | undefined> {
+  //   const [booking] = await db
+  //     .select()
+  //     .from(bookings)
+  //     .where(eq(bookings.id, id));
+  //   return booking || undefined;
+  // }
+
+  // async getBookingsByUser(userId: number): Promise<Booking[]> {
+  //   return await db
+  //     .select()
+  //     .from(bookings)
+  //     .where(eq(bookings.bookerUserId, userId));
+  // }
+
+  async getBooking(id: number) {
     const [booking] = await db
       .select()
       .from(bookings)
       .where(eq(bookings.id, id));
-    return booking || undefined;
+  
+    if (!booking) return undefined;
+  
+    const dates = await db
+      .select({ eventDate: bookingDates.eventDate })
+      .from(bookingDates)
+      .where(eq(bookingDates.bookingId, id));
+  
+    return {
+      ...booking,
+      eventDates: dates.map(d => d.eventDate),
+    };
   }
-
-  async getBookingsByUser(userId: number): Promise<Booking[]> {
-    return await db
+  
+  async getBookingsByUser(userId: number) {
+    const bookingsList = await db
       .select()
       .from(bookings)
       .where(eq(bookings.bookerUserId, userId));
+  
+    const bookingIds = bookingsList.map(b => b.id);
+  
+    if (bookingIds.length === 0) return []; // কোন booking নেই
+  
+    const dates = await db
+      .select({
+        bookingId: bookingDates.bookingId,
+        eventDate: bookingDates.eventDate,
+      })
+      .from(bookingDates)
+      .where(inArray(bookingDates.bookingId, bookingIds));
+  
+    return bookingsList.map(b => ({
+      ...b,
+      eventDates: dates
+        .filter(d => d.bookingId === b.id)
+        .map(d => d.eventDate),
+    }));
   }
 
   async createBooking(booking: InsertBooking): Promise<Booking> {
@@ -4082,6 +4127,67 @@ export class DatabaseStorage implements IStorage {
   //   }
   // }
 
+  // async getAllBookings(): Promise<any[]> {
+  //   try {
+  //     const results = await db
+  //       .select({
+  //         id: bookings.id,
+  //         eventName: bookings.eventName,
+  //         venueName: bookings.venueName,
+  //         eventDates: bookings.eventDate,
+  //         status: bookings.status,
+  //         isGuestBooking: bookings.isGuestBooking,
+  //         guestName: bookings.guestName,
+  //         guestEmail: bookings.guestEmail,
+  //         guestPhone: bookings.guestPhone,
+
+  //         // Artist/Musician/Professional fields
+  //         primaryArtistUserId: bookings.primaryArtistUserId,
+  //         artistStageName: artists.stageName,
+  //         artistBio: artists.bio,
+  //         artistEpkUrl: artists.epkUrl,
+  //         artistPrimaryGenre: artists.primaryGenre,
+  //         artistBasePrice: artists.basePrice,
+  //         artistIdealPerformanceRate: artists.idealPerformanceRate,
+  //         artistMinimumAcceptableRate: artists.minimumAcceptableRate,
+  //         artistIsManaged: artists.isManaged,
+  //         artistManagementTierId: artists.managementTierId,
+  //         artistBookingFormPictureUrl: artists.bookingFormPictureUrl,
+  //         artistIsRegisteredWithPro: artists.isRegisteredWithPro,
+  //         artistPerformingRightsOrganization:
+  //           artists.performingRightsOrganization,
+  //         artistIpiNumber: artists.ipiNumber,
+  //         artistPrimaryTalentId: artists.primaryTalentId,
+  //         artistIsDemo: artists.isDemo,
+  //         artistIsComplete: artists.isComplete,
+
+  //         // Workflow + contract/payment
+  //         workflowData: bookings.workflowData,
+  //         currentWorkflowStep: bookings.currentWorkflowStep,
+  //         contractsGenerated: bookings.contractsGenerated,
+  //         allSignaturesCompleted: bookings.allSignaturesCompleted,
+  //         paymentCompleted: bookings.paymentCompleted,
+  //         receiptGenerated: bookings.receiptGenerated,
+  //       })
+  //       .from(bookings)
+  //       .leftJoin(artists, eq(bookings.primaryArtistUserId, artists.userId));
+
+  //     // Fetch booking assignments separately
+  //     const assignments = await db.select().from(bookingAssignments);
+
+  //     // Attach assignments into bookings
+  //     const enriched = results.map((b) => ({
+  //       ...b,
+  //       assignments: assignments.filter((a) => a.bookingId === b.id),
+  //     }));
+
+  //     return enriched;
+  //   } catch (error) {
+  //     console.error("Error fetching bookings with artists:", error);
+  //     return [];
+  //   }
+  // }
+
   async getAllBookings(): Promise<any[]> {
     try {
       const results = await db
@@ -4089,13 +4195,13 @@ export class DatabaseStorage implements IStorage {
           id: bookings.id,
           eventName: bookings.eventName,
           venueName: bookings.venueName,
-          eventDate: bookings.eventDate,
+          eventDates: sql`array_agg(${bookingDates.eventDate} ORDER BY ${bookingDates.eventDate})`,
           status: bookings.status,
           isGuestBooking: bookings.isGuestBooking,
           guestName: bookings.guestName,
           guestEmail: bookings.guestEmail,
           guestPhone: bookings.guestPhone,
-
+  
           // Artist/Musician/Professional fields
           primaryArtistUserId: bookings.primaryArtistUserId,
           artistStageName: artists.stageName,
@@ -4109,13 +4215,12 @@ export class DatabaseStorage implements IStorage {
           artistManagementTierId: artists.managementTierId,
           artistBookingFormPictureUrl: artists.bookingFormPictureUrl,
           artistIsRegisteredWithPro: artists.isRegisteredWithPro,
-          artistPerformingRightsOrganization:
-            artists.performingRightsOrganization,
+          artistPerformingRightsOrganization: artists.performingRightsOrganization,
           artistIpiNumber: artists.ipiNumber,
           artistPrimaryTalentId: artists.primaryTalentId,
           artistIsDemo: artists.isDemo,
           artistIsComplete: artists.isComplete,
-
+  
           // Workflow + contract/payment
           workflowData: bookings.workflowData,
           currentWorkflowStep: bookings.currentWorkflowStep,
@@ -4125,23 +4230,60 @@ export class DatabaseStorage implements IStorage {
           receiptGenerated: bookings.receiptGenerated,
         })
         .from(bookings)
-        .leftJoin(artists, eq(bookings.primaryArtistUserId, artists.userId));
-
-      // Fetch booking assignments separately
-      const assignments = await db.select().from(bookingAssignments);
-
-      // Attach assignments into bookings
+        .leftJoin(artists, eq(bookings.primaryArtistUserId, artists.userId))
+        .leftJoin(bookingDates, eq(bookingDates.bookingId, bookings.id))
+        .groupBy(
+          bookings.id,
+          artists.stageName,
+          artists.bio,
+          artists.epkUrl,
+          artists.primaryGenre,
+          artists.basePrice,
+          artists.idealPerformanceRate,
+          artists.minimumAcceptableRate,
+          artists.isManaged,
+          artists.managementTierId,
+          artists.bookingFormPictureUrl,
+          artists.isRegisteredWithPro,
+          artists.performingRightsOrganization,
+          artists.ipiNumber,
+          artists.primaryTalentId,
+          artists.isDemo,
+          artists.isComplete
+        );
+  
+      const assignments = await db
+        .select({
+          id: bookingAssignmentsMembers.id,
+          bookingId: bookingAssignmentsMembers.bookingId,
+          userId: bookingAssignmentsMembers.userId,
+          roleInBooking: bookingAssignmentsMembers.roleInBooking,
+          assignmentType: bookingAssignmentsMembers.assignmentType,
+          assignedAt: bookingAssignmentsMembers.assignedAt,
+          assignedBy: bookingAssignmentsMembers.assignedBy,
+          status: bookingAssignmentsMembers.status,
+          selectedTalent: bookingAssignmentsMembers.selectedTalent,
+          isMainBookedTalent: bookingAssignmentsMembers.isMainBookedTalent,
+          assignedGroup: bookingAssignmentsMembers.assignedGroup,
+          assignedChannelPair: bookingAssignmentsMembers.assignedChannelPair,
+          assignedChannel: bookingAssignmentsMembers.assignedChannel,
+          createdAt: bookingAssignmentsMembers.createdAt,
+          updatedAt: bookingAssignmentsMembers.updatedAt,
+        })
+        .from(bookingAssignmentsMembers);
+  
       const enriched = results.map((b) => ({
         ...b,
         assignments: assignments.filter((a) => a.bookingId === b.id),
       }));
-
+  
       return enriched;
     } catch (error) {
-      console.error("Error fetching bookings with artists:", error);
+      console.error("Error fetching bookings with assignments:", error);
       return [];
     }
   }
+  
 
   async getBookingsByArtist(artistUserId: number): Promise<Booking[]> {
     return await db
@@ -10969,7 +11111,7 @@ export class DatabaseStorage implements IStorage {
         userId: bookingAssignmentsMembers.userId,
         roleInBooking: bookingAssignmentsMembers.roleInBooking,
         selectedTalent: bookingAssignmentsMembers.selectedTalent,
-        instrumentId: bookingAssignmentsMembers.selectedTalent,
+        instrumentId: bookingAssignmentsMembers.selectedTalent.as("instrumentId"),
         assignedGroup: bookingAssignmentsMembers.assignedGroup,
         assignedChannelPair: bookingAssignmentsMembers.assignedChannelPair,
         assignedChannel: bookingAssignmentsMembers.assignedChannel,

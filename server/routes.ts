@@ -2999,7 +2999,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
               bookerUserId: schema.bookings.bookerUserId,
               eventName: schema.bookings.eventName,
               eventType: schema.bookings.eventType,
-              eventDate: sql`array_agg(${schema.bookingDates.eventDate})`,
               venueName: schema.bookings.venueName,
               venueAddress: schema.bookings.venueAddress,
               status: schema.bookings.status,
@@ -3010,6 +3009,12 @@ export async function registerRoutes(app: Express): Promise<Server> {
               assignmentRole: schema.bookingAssignmentsMembers.roleInBooking,
               assignmentStatus: schema.bookingAssignmentsMembers.status,
               assignedAt: schema.bookingAssignmentsMembers.assignedAt,
+
+              eventDates: sql`(
+      SELECT array_agg(${schema.bookingDates.eventDate})
+      FROM ${schema.bookingDates}
+      WHERE ${schema.bookingDates.bookingId} = ${schema.bookings.id}
+    )`,
             })
             .from(schema.bookings)
             .innerJoin(
@@ -3547,11 +3552,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
           assignedChannel,
           assignedChannelPair,
         } = req.body;
-  
+
         if (!userId || !roleId) {
           return res.status(400).json({ message: "userId and roleId are required" });
         }
-  
+
         const assignment = await storage.createBookingAssignmentMember({
           bookingId,
           userId,
@@ -3564,11 +3569,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
           assignedChannelPair,
           assignedBy: req.user!.userId,
         });
-  
+
         const detailedAssignment = await storage.getBookingAssignmentDetails(assignment.id);
-  
+
         invalidateCache(`booking-assignments:${bookingId}`);
-  
+
         res.status(201).json(detailedAssignment);
       } catch (error: any) {
         console.error("❌ Create assignment error:", error);
@@ -5241,12 +5246,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
         }
 
         const user = await storage.getUser(userId);
-        const roles = await storage.getUserRoles(user.id); // array of roles [{id, name}]
-        if (!roles || roles.length === 0) {
+        const roleIds = await storage.getUserRoleIds(userId);
+        if (!roleIds || roleIds.length === 0) {
           return res.status(404).json({ message: "User role not found" });
         }
 
-        const roleIds = roles.map((r) => r.id);
         const allBookings = await storage.getAllBookings();
         let userBookings: any[] = [];
 

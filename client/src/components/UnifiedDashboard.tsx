@@ -1167,7 +1167,7 @@ export default function UnifiedDashboard({ stats, bookings, applications }: Unif
               </CardHeader>
               <CardContent>
                 <div className="space-y-3 sm:space-y-4">
-                  {bookings.map((booking: any) => (
+                  {bookings?.map((booking: any) => (
                     <Card key={booking.id}>
                       <CardContent className="p-3 sm:p-4">
                         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">

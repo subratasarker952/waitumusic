@@ -111,7 +111,7 @@ interface WorkflowStep {
 interface BookingData {
   id: number;
   eventName: string;
-  eventDate: string;
+  eventDates: any[];
   eventType?: string;
   venueName?: string;
   venueDetails?: string;
@@ -1705,11 +1705,16 @@ export default function BookingWorkflow({
                 </div>
                 <div>
                   <Label className="text-sm font-medium">Date</Label>
-                  <p>{new Date(booking.eventDate).toLocaleDateString()}</p>
+                  <div>
+                    {booking?.eventDates?.map((date: string, i: number) => (
+                      <p key={i}>{new Date(date).toLocaleDateString()}</p>
+                    ))}
+                  </div>
+
                 </div>
                 <div>
                   <Label className="text-sm font-medium">Status</Label>
-                  <Badge variant="outline">{booking.status}</Badge>
+                  <Badge variant="outline" className="capitalize">{booking.status}</Badge>
                 </div>
                 <div>
                   <Label className="text-sm font-medium">Primary Artist</Label>
@@ -2131,60 +2136,87 @@ export default function BookingWorkflow({
                               </p>
                             </div>
                           </div>
-                          {assignedTalent.some(
-                            (t) => t.userId === artist.userId
-                          ) ? (
+                          {assignedTalent.some((t) => t.userId === artist.userId) ? (
                             <Badge variant="secondary">Already Assigned</Badge>
                           ) : (
-                            <Button
-                              variant="outline"
-                              size="sm"
-                              className="border-emerald-300 hover:bg-emerald-100"
-                              onClick={async () => {
-                                const isMainBookedTalent = assignedTalent.length === 0; // First assigned becomes Main Booked Talent
-                                const primaryRole = artist.primaryRole || "Lead Vocalist";
-                                const artistRoles = [primaryRole, ...(artist.skillsAndInstruments || []),].filter(Boolean);
-                                const newAssignment = {
-                                  id: Date.now(),
-                                  userId: artist.userId,
-                                  name: artist.stageName || artist.user?.fullName,
-                                  type: isMainBookedTalent ? "Main Booked Talent" : "Artist",
-                                  role: isMainBookedTalent ? "Main Booked Talent" : primaryRole,
-                                  selectedRoles: isMainBookedTalent ? ["Main Booked Talent", ...artistRoles] : artistRoles,
-                                  availableRoles: artistRoles,
-                                  avatarUrl: artist.profile?.avatarUrl,
-                                  genre: artist.genre,
-                                  isPrimary: isMainBookedTalent,
-                                  isMainBookedTalent: isMainBookedTalent,
-                                  primaryTalentId: artist.primaryTalentId,
-                                  assignmentType: "manual",
-                                };
-                                // setAssignedTalent([...assignedTalent, assignmentData]);
-                                // toast({
-                                //   title: "Assignment",
-                                //   description: `${artist.stageName || artist.user?.fullName} assigned as ${isMainBookedTalent ? 'Main Booked Talent' : 'Supporting Talent'}`
-                                // });
+                            <div className="flex gap-2">
+                              {/* Assign as Main Talent */}
+                              <Button
+                                variant="default"
+                                size="sm"
+                                className="bg-emerald-600 hover:bg-emerald-700 text-white"
+                                onClick={async () => {
+                                  const primaryRole = artist.primaryRole || "Lead Vocalist";
+                                  const artistRoles = [primaryRole, ...(artist.skillsAndInstruments || [])].filter(Boolean);
+                                  const newAssignment = {
+                                    id: Date.now(),
+                                    userId: artist.userId,
+                                    name: artist.stageName || artist.user?.fullName,
+                                    type: "Main Booked Talent",
+                                    role: "Main Booked Talent",
+                                    selectedRoles: ["Main Booked Talent", ...artistRoles],
+                                    availableRoles: artistRoles,
+                                    avatarUrl: artist.profile?.avatarUrl,
+                                    genre: artist.genre,
+                                    isPrimary: true,
+                                    isMainBookedTalent: true,
+                                    primaryTalentId: artist.primaryTalentId,
+                                    assignmentType: "manual",
+                                  };
 
-                                // Save immediately to database
-                                try {
-                                  await createAssignmentMutation.mutateAsync({
-                                    ...newAssignment,
-                                    roleId: 4,
-                                  });
-                                  console.log(
-                                    "✅ Assignment saved to database immediately"
-                                  );
-                                } catch (error) {
-                                  console.error(
-                                    "❌ Failed to save assignment:",
-                                    error
-                                  );
-                                }
-                              }}
-                            >
-                              Assign
-                            </Button>
+                                  try {
+                                    await createAssignmentMutation.mutateAsync({
+                                      ...newAssignment,
+                                      roleId: 3,
+                                    });
+                                    console.log("✅ Main talent assigned");
+                                  } catch (error) {
+                                    console.error("❌ Failed to assign main talent:", error);
+                                  }
+                                }}
+                              >
+                                Assign as Main Talent
+                              </Button>
+                              {/* Normal Assign */}
+                              <Button
+                                variant="outline"
+                                size="sm"
+                                className="border-emerald-300 hover:bg-emerald-100"
+                                onClick={async () => {
+                                  const primaryRole = artist.primaryRole || "Lead Vocalist";
+                                  const artistRoles = [primaryRole, ...(artist.skillsAndInstruments || [])].filter(Boolean);
+                                  const newAssignment = {
+                                    id: Date.now(),
+                                    userId: artist.userId,
+                                    name: artist.stageName || artist.user?.fullName,
+                                    type: "Artist",
+                                    role: primaryRole,
+                                    selectedRoles: artistRoles,
+                                    availableRoles: artistRoles,
+                                    avatarUrl: artist.profile?.avatarUrl,
+                                    genre: artist.genre,
+                                    isPrimary: false,
+                                    isMainBookedTalent: false,
+                                    primaryTalentId: artist.primaryTalentId,
+                                    assignmentType: "manual",
+                                  };
+
+                                  try {
+                                    await createAssignmentMutation.mutateAsync({
+                                      ...newAssignment,
+                                      roleId: 4,
+                                    });
+                                    console.log("✅ Supporting talent assigned");
+                                  } catch (error) {
+                                    console.error("❌ Failed to assign:", error);
+                                  }
+                                }}
+                              >
+                                Assign
+                              </Button>
+                            </div>
                           )}
+
                         </div>
                       )
                     )}
@@ -2223,70 +2255,88 @@ export default function BookingWorkflow({
                             </p>
                           </div>
                         </div>
-                        {assignedTalent.some(
-                          (t) => t.userId === artist.userId
-                        ) ? (
+                        {assignedTalent.some((t) => t.userId === artist.userId) ? (
                           <Badge variant="secondary">Already Assigned</Badge>
                         ) : (
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            onClick={async () => {
-                              const isMainBookedTalent =
-                                assignedTalent.length === 0; // First assigned becomes Main Booked Talent
-                              // Use the artist's primary role instead of management status
-                              const primaryRole =
-                                artist.primaryRole || "Lead Vocalist";
-                              const artistRoles = [
-                                primaryRole,
-                                ...(artist.skillsAndInstruments || []),
-                              ].filter(Boolean);
-                              const newAssignment = {
-                                id: Date.now(),
-                                userId: artist.userId,
-                                name: artist.stageName || artist.user?.fullName,
-                                type: isMainBookedTalent
-                                  ? "Main Booked Talent"
-                                  : "Artist",
-                                role: isMainBookedTalent
-                                  ? "Main Booked Talent"
-                                  : primaryRole,
-                                selectedRoles: isMainBookedTalent
-                                  ? ["Main Booked Talent", ...artistRoles]
-                                  : artistRoles,
-                                availableRoles: artistRoles,
-                                avatarUrl: artist.profile?.avatarUrl,
-                                genre: artist.genre,
-                                primaryTalentId: artist.primaryTalentId,
-                                isPrimary: isMainBookedTalent,
-                                isMainBookedTalent: isMainBookedTalent,
-                              };
-                              // setAssignedTalent([...assignedTalent, newAssignment]);
-                              // toast({
-                              //   title: "Assignment",
-                              //   description: `${artist.stageName || artist.user?.fullName} assigned as ${isMainBookedTalent ? 'Main Booked Talent' : 'Supporting Talent'}`
-                              // });
+                          <div className="flex gap-2">
+                            {/* Assign as Main Talent */}
+                            <Button
+                              variant="default"
+                              size="sm"
+                              className="bg-emerald-600 hover:bg-emerald-700 text-white"
+                              onClick={async () => {
+                                const primaryRole = artist.primaryRole || "Lead Vocalist";
+                                const artistRoles = [primaryRole, ...(artist.skillsAndInstruments || [])].filter(Boolean);
+                                const newAssignment = {
+                                  id: Date.now(),
+                                  userId: artist.userId,
+                                  name: artist.stageName || artist.user?.fullName,
+                                  type: "Main Booked Talent",
+                                  role: "Main Booked Talent",
+                                  selectedRoles: ["Main Booked Talent", ...artistRoles],
+                                  availableRoles: artistRoles,
+                                  avatarUrl: artist.profile?.avatarUrl,
+                                  genre: artist.genre,
+                                  isPrimary: true,
+                                  isMainBookedTalent: true,
+                                  primaryTalentId: artist.primaryTalentId,
+                                  assignmentType: "manual",
+                                };
 
-                              // Save immediately to database
-                              try {
-                                await createAssignmentMutation.mutateAsync({
-                                  ...newAssignment,
-                                  roleId: 4,
-                                });
-                                console.log(
-                                  "✅ Assignment saved to database immediately"
-                                );
-                              } catch (error) {
-                                console.error(
-                                  "❌ Failed to save assignment:",
-                                  error
-                                );
-                              }
-                            }}
-                          >
-                            Assign
-                          </Button>
+                                try {
+                                  await createAssignmentMutation.mutateAsync({
+                                    ...newAssignment,
+                                    roleId: 4,
+                                  });
+                                  console.log("✅ Main talent assigned");
+                                } catch (error) {
+                                  console.error("❌ Failed to assign main talent:", error);
+                                }
+                              }}
+                            >
+                              Assign as Main Talent
+                            </Button>
+                            {/* Normal Assign */}
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              className="border-emerald-300 hover:bg-emerald-100"
+                              onClick={async () => {
+                                const primaryRole = artist.primaryRole || "Lead Vocalist";
+                                const artistRoles = [primaryRole, ...(artist.skillsAndInstruments || [])].filter(Boolean);
+                                const newAssignment = {
+                                  id: Date.now(),
+                                  userId: artist.userId,
+                                  name: artist.stageName || artist.user?.fullName,
+                                  type: "Artist",
+                                  role: primaryRole,
+                                  selectedRoles: artistRoles,
+                                  availableRoles: artistRoles,
+                                  avatarUrl: artist.profile?.avatarUrl,
+                                  genre: artist.genre,
+                                  isPrimary: false,
+                                  isMainBookedTalent: false,
+                                  primaryTalentId: artist.primaryTalentId,
+                                  assignmentType: "manual",
+                                };
+
+                                try {
+                                  await createAssignmentMutation.mutateAsync({
+                                    ...newAssignment,
+                                    roleId: 4,
+                                  });
+                                  console.log("✅ Supporting talent assigned");
+                                } catch (error) {
+                                  console.error("❌ Failed to assign:", error);
+                                }
+                              }}
+                            >
+                              Assign
+                            </Button>
+
+                          </div>
                         )}
+
                       </div>
                     ))}
                   </div>
@@ -2377,30 +2427,16 @@ export default function BookingWorkflow({
                                 size="sm"
                                 className="border-purple-300 hover:bg-purple-100"
                                 onClick={async () => {
-                                  const isMainBookedTalent =
-                                    assignedTalent.length === 0;
-                                  const primaryRole =
-                                    musician.primaryTalent ||
-                                    "Managed Musician";
-                                  const musicianRoles = [
-                                    primaryRole,
-                                    ...(musician.secondaryTalents || []),
-                                  ].filter(Boolean);
+                                  const isMainBookedTalent = assignedTalent.length === 0;
+                                  const primaryRole = musician.primaryTalent || "Managed Musician";
+                                  const musicianRoles = [primaryRole, ...(musician.secondaryTalents || []),].filter(Boolean);
                                   const newAssignment = {
                                     id: Date.now(),
                                     userId: musician.userId,
-                                    name:
-                                      musician.stageName ||
-                                      musician.user?.fullName,
-                                    type: isMainBookedTalent
-                                      ? "Main Booked Talent"
-                                      : "Managed Musician",
-                                    role: isMainBookedTalent
-                                      ? "Main Booked Talent"
-                                      : primaryRole,
-                                    selectedRoles: isMainBookedTalent
-                                      ? ["Main Booked Talent", ...musicianRoles]
-                                      : musicianRoles,
+                                    name: musician.stageName || musician.user?.fullName,
+                                    type: isMainBookedTalent ? "Main Booked Talent" : "Managed Musician",
+                                    role: isMainBookedTalent ? "Main Booked Talent" : primaryRole,
+                                    selectedRoles: isMainBookedTalent ? ["Main Booked Talent", ...musicianRoles] : musicianRoles,
                                     availableRoles: musicianRoles,
                                     avatarUrl: musician.profile?.avatarUrl,
                                     isPrimary: isMainBookedTalent,
@@ -4047,10 +4083,6 @@ export default function BookingWorkflow({
       setIsLoading(false);
     }
   }
-
-
-
-
 
   // Render Payment Processing step
   const renderPaymentProcessing = () => {
