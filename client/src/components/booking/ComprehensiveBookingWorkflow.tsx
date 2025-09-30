@@ -379,12 +379,8 @@ export default function BookingWorkflow({
     },
     onSuccess: () => {
       // Only invalidate the specific booking queries
-      queryClient.invalidateQueries({
-        queryKey: ["booking-workflow", bookingId],
-      });
-      queryClient.invalidateQueries({
-        queryKey: ["booking-assigned-talent", bookingId],
-      });
+      queryClient.invalidateQueries({ queryKey: ["booking-workflow", bookingId], });
+      queryClient.invalidateQueries({ queryKey: ["booking-assigned-talent", bookingId], });
       toast({ title: "Success", description: "Booking updated successfully" });
     },
     onError: () => {
@@ -425,12 +421,8 @@ export default function BookingWorkflow({
 
     onSuccess: (data, variables) => {
       // Only invalidate specific booking queries to prevent loops
-      queryClient.invalidateQueries({
-        queryKey: ["booking-workflow", bookingId],
-      });
-      queryClient.invalidateQueries({
-        queryKey: ["booking-assigned-talent", bookingId],
-      });
+      queryClient.invalidateQueries({ queryKey: ["booking-workflow", bookingId], });
+      queryClient.invalidateQueries({ queryKey: ["booking-assigned-talent", bookingId], });
 
       toast({
         title: "Assignment Created",
@@ -1239,11 +1231,7 @@ export default function BookingWorkflow({
     return colors[instrument as keyof typeof colors] || "#DDD";
   };
 
-  const {
-    data: technicalRider,
-    refetch: refetchRider,
-    isLoading: riderLoading,
-  } = useQuery({
+  const { data: technicalRider, refetch: refetchRider, isLoading: riderLoading, } = useQuery({
     queryKey: ["technical-rider", bookingId],
     queryFn: async () =>
       apiRequest(`/api/bookings/${bookingId}/enhanced-technical-rider`),
@@ -2153,29 +2141,16 @@ export default function BookingWorkflow({
                               size="sm"
                               className="border-emerald-300 hover:bg-emerald-100"
                               onClick={async () => {
-                                const isMainBookedTalent =
-                                  assignedTalent.length === 0; // First assigned becomes Main Booked Talent
-                                // Use the artist's primary role instead of management status
-                                const primaryRole =
-                                  artist.primaryRole || "Lead Vocalist";
-                                const artistRoles = [
-                                  primaryRole,
-                                  ...(artist.skillsAndInstruments || []),
-                                ].filter(Boolean);
+                                const isMainBookedTalent = assignedTalent.length === 0; // First assigned becomes Main Booked Talent
+                                const primaryRole = artist.primaryRole || "Lead Vocalist";
+                                const artistRoles = [primaryRole, ...(artist.skillsAndInstruments || []),].filter(Boolean);
                                 const newAssignment = {
                                   id: Date.now(),
                                   userId: artist.userId,
-                                  name:
-                                    artist.stageName || artist.user?.fullName,
-                                  type: isMainBookedTalent
-                                    ? "Main Booked Talent"
-                                    : "Artist",
-                                  role: isMainBookedTalent
-                                    ? "Main Booked Talent"
-                                    : primaryRole,
-                                  selectedRoles: isMainBookedTalent
-                                    ? ["Main Booked Talent", ...artistRoles]
-                                    : artistRoles,
+                                  name: artist.stageName || artist.user?.fullName,
+                                  type: isMainBookedTalent ? "Main Booked Talent" : "Artist",
+                                  role: isMainBookedTalent ? "Main Booked Talent" : primaryRole,
+                                  selectedRoles: isMainBookedTalent ? ["Main Booked Talent", ...artistRoles] : artistRoles,
                                   availableRoles: artistRoles,
                                   avatarUrl: artist.profile?.avatarUrl,
                                   genre: artist.genre,

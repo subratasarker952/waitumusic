@@ -3348,9 +3348,9 @@ export class DatabaseStorage implements IStorage {
       .leftJoin(userRoles, eq(users.id, userRoles.userId))
       .leftJoin(rolesManagement, eq(userRoles.roleId, rolesManagement.id))
       .orderBy(desc(users.createdAt));
-  
+
     const userMap: Record<number, User> = {};
-  
+
     for (const row of rows) {
       if (!userMap[row.userId]) {
         userMap[row.userId] = {
@@ -3369,7 +3369,7 @@ export class DatabaseStorage implements IStorage {
           roles: [],
         };
       }
-  
+
       if (row.roleId) {
         userMap[row.userId].roles.push({
           id: row.roleId,
@@ -3377,10 +3377,10 @@ export class DatabaseStorage implements IStorage {
         });
       }
     }
-  
+
     return Object.values(userMap);
   }
-  
+
 
 
   // Duplicate methods removed - keeping proper implementation below
@@ -5565,7 +5565,7 @@ export class DatabaseStorage implements IStorage {
     assignment: InsertBookingAssignment
   ): Promise<BookingAssignment> {
     const [created] = await db
-      .insert(bookingAssignments)
+      .insert(bookingAssignmentsMembers)
       .values(assignment)
       .returning();
 
@@ -10934,46 +10934,61 @@ export class DatabaseStorage implements IStorage {
     return created;
   }
 
-  async getBookingAssignmentMembers(bookingId: number): Promise<
-    Array<
-      BookingAssignmentsMember & {
-        user: { id: number; fullName: string; email: string };
-        role: { id: number; name: string };
-        instrument?: {
-          id: number;
-          name: string;
-          playerName: string;
-          mixerGroup: string;
-        };
-      }
-    >
-  > {
+  async getBookingAssignmentDetails(assignmentId: number) {
+    const [assignment] = await db
+      .select({
+        id: bookingAssignmentsMembers.id,
+        bookingId: bookingAssignmentsMembers.bookingId,
+        userId: bookingAssignmentsMembers.userId,
+        userFullName: users.fullName,
+        roleInBooking: bookingAssignmentsMembers.roleInBooking,
+        roleName: rolesManagement.name,
+        assignmentType: bookingAssignmentsMembers.assignmentType,
+        selectedTalent: bookingAssignmentsMembers.selectedTalent,
+        isMainBookedTalent: bookingAssignmentsMembers.isMainBookedTalent,
+        assignedGroup: bookingAssignmentsMembers.assignedGroup,
+        assignedChannelPair: bookingAssignmentsMembers.assignedChannelPair,
+        assignedChannel: bookingAssignmentsMembers.assignedChannel,
+        status: bookingAssignmentsMembers.status,
+        assignedAt: bookingAssignmentsMembers.assignedAt,
+      })
+      .from(bookingAssignmentsMembers)
+      .innerJoin(users, eq(bookingAssignmentsMembers.userId, users.id))
+      .innerJoin(rolesManagement, eq(bookingAssignmentsMembers.roleInBooking, rolesManagement.id))
+      .where(eq(bookingAssignmentsMembers.id, assignmentId))
+      .limit(1);
+
+    return assignment;
+  }
+
+  async getBookingAssignmentMembers(bookingId: number): Promise<any[]> {
     const result = await db
       .select({
         id: bookingAssignmentsMembers.id,
         bookingId: bookingAssignmentsMembers.bookingId,
         userId: bookingAssignmentsMembers.userId,
-        roleInBookingId: bookingAssignmentsMembers.roleInBookingId,
-        instrumentId: bookingAssignmentsMembers.instrumentId,
+        roleInBooking: bookingAssignmentsMembers.roleInBooking,
+        selectedTalent: bookingAssignmentsMembers.selectedTalent,
+        instrumentId: bookingAssignmentsMembers.selectedTalent,
         assignedGroup: bookingAssignmentsMembers.assignedGroup,
         assignedChannelPair: bookingAssignmentsMembers.assignedChannelPair,
         assignedChannel: bookingAssignmentsMembers.assignedChannel,
-        isMainTalent: bookingAssignmentsMembers.isMainTalent,
+        isMainBookedTalent: bookingAssignmentsMembers.isMainBookedTalent,
         assignedBy: bookingAssignmentsMembers.assignedBy,
         assignedAt: bookingAssignmentsMembers.assignedAt,
         createdAt: bookingAssignmentsMembers.createdAt,
-        // User data
+  
         user: {
           id: users.id,
           fullName: users.fullName,
           email: users.email,
         },
-        // Role data
+  
         role: {
-          id: roles.id,
-          name: roles.name,
+          id: rolesManagement.id,
+          name: rolesManagement.name,
         },
-        // Instrument data (optional)
+  
         instrument: {
           id: allInstruments.id,
           name: allInstruments.name,
@@ -10983,19 +10998,14 @@ export class DatabaseStorage implements IStorage {
       })
       .from(bookingAssignmentsMembers)
       .innerJoin(users, eq(bookingAssignmentsMembers.userId, users.id))
-      .innerJoin(roles, eq(bookingAssignmentsMembers.roleInBookingId, roles.id))
-      .leftJoin(
-        allInstruments,
-        eq(bookingAssignmentsMembers.instrumentId, allInstruments.id)
-      )
+      .innerJoin(rolesManagement, eq(bookingAssignmentsMembers.roleInBooking, rolesManagement.id))
+      .leftJoin(allInstruments, eq(bookingAssignmentsMembers.selectedTalent, allInstruments.id))
       .where(eq(bookingAssignmentsMembers.bookingId, bookingId))
-      .orderBy(
-        bookingAssignmentsMembers.isMainTalent,
-        bookingAssignmentsMembers.assignedAt
-      );
-
+      .orderBy(desc(bookingAssignmentsMembers.isMainBookedTalent));
+  
     return result;
   }
+
 
   async getBookingAssignmentMember(
     id: number

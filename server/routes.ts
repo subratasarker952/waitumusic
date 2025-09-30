@@ -258,15 +258,14 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
         // 6. Fetch role-specific data (optional, based on first role)
         const roleData = [];
-
         for (const role of roles) {
           let data = {};
           if ([3, 4].includes(role.id)) {
-            data = await storage.getArtist(user.id);
+            data = (await storage.getArtist(user.id)) || {};
           } else if ([5, 6].includes(role.id)) {
-            data = await storage.getMusician(user.id);
+            data = (await storage.getMusician(user.id)) || {};
           } else if ([7, 8].includes(role.id)) {
-            data = await storage.getProfessional(user.id);
+            data = (await storage.getProfessional(user.id)) || {};
           }
           roleData.push({ role, data });
         }
@@ -533,9 +532,13 @@ export async function registerRoutes(app: Express): Promise<Server> {
         const roleData = [];
         for (const role of roles) {
           let data = {};
-          if ([3, 4].includes(role.id)) data = await storage.getArtist(user.id);
-          if ([5, 6].includes(role.id)) data = await storage.getMusician(user.id);
-          if ([7, 8].includes(role.id)) data = await storage.getProfessional(user.id);
+          if ([3, 4].includes(role.id)) {
+            data = (await storage.getArtist(user.id)) || {};
+          } else if ([5, 6].includes(role.id)) {
+            data = (await storage.getMusician(user.id)) || {};
+          } else if ([7, 8].includes(role.id)) {
+            data = (await storage.getProfessional(user.id)) || {};
+          }
           roleData.push({ role, data });
         }
 
@@ -754,18 +757,18 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
         // 6. Fetch role-specific data (optional, based on first role)
         const roleData = [];
-
         for (const role of roles) {
           let data = {};
           if ([3, 4].includes(role.id)) {
-            data = await storage.getArtist(user.id);
+            data = (await storage.getArtist(user.id)) || {};
           } else if ([5, 6].includes(role.id)) {
-            data = await storage.getMusician(user.id);
+            data = (await storage.getMusician(user.id)) || {};
           } else if ([7, 8].includes(role.id)) {
-            data = await storage.getProfessional(user.id);
+            data = (await storage.getProfessional(user.id)) || {};
           }
           roleData.push({ role, data });
         }
+
         // 7. Return response
         const { passwordHash: _, ...userWithoutPassword } = user;
         res.json({
@@ -811,18 +814,18 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
         // 6. Fetch role-specific data (optional, based on first role)
         const roleData = [];
-
         for (const role of roles) {
           let data = {};
           if ([3, 4].includes(role.id)) {
-            data = await storage.getArtist(user.id);
+            data = (await storage.getArtist(user.id)) || {};
           } else if ([5, 6].includes(role.id)) {
-            data = await storage.getMusician(user.id);
+            data = (await storage.getMusician(user.id)) || {};
           } else if ([7, 8].includes(role.id)) {
-            data = await storage.getProfessional(user.id);
+            data = (await storage.getProfessional(user.id)) || {};
           }
           roleData.push({ role, data });
         }
+
 
         const { passwordHash, ...userWithoutPassword } = user;
 
@@ -957,9 +960,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
         const roleData = [];
         for (const role of updatedRoles) {
           let data = {};
-          if ([3, 4].includes(role.id)) data = await storage.getArtist(userId);
-          if ([5, 6].includes(role.id)) data = await storage.getMusician(userId);
-          if ([7, 8].includes(role.id)) data = await storage.getProfessional(userId);
+          if ([3, 4].includes(role.id)) data = await storage.getArtist(userId) || {};
+          if ([5, 6].includes(role.id)) data = await storage.getMusician(userId) || {};
+          if ([7, 8].includes(role.id)) data = await storage.getProfessional(userId) || {};
           roleData.push({ role, data });
         }
 
@@ -1439,9 +1442,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
       try {
         const artistId = parseInt(req.params.id);
         const updates = req.body;
+        const userId = req.user?.userId!
 
-        const userRoles = await storage.getUserRoles(req.userId);
-        const userRoleIds = userRoles.map((r: any) => r.id);
+        const userRoleIds = await storage.getUserRoleIds(userId);
 
         // Flatten allowed roles
         const allowedRoles = [1, 2];
@@ -1451,7 +1454,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
           allowedRoles.includes(id)
         );
 
-        if (!hasRole || req.user?.userId !== artistId) {
+        if (!hasRole || userId !== artistId) {
           return res.status(403).json({ message: "Access denied" });
         }
 
@@ -1685,10 +1688,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
               let primaryTalent = null;
               if (professional.primaryTalentId) {
-                const talent = await storage.getPrimaryTalentById(
-                  professional.primaryTalentId,
-                  "professional"
-                );
+                const talent = await storage.getPrimaryTalentById(pofessional.primaryTalentId);
                 primaryTalent = talent ? talent.name : null;
               }
 
@@ -2017,13 +2017,13 @@ export async function registerRoutes(app: Express): Promise<Server> {
           const searchTerms = query
             .toLowerCase()
             .split(" ")
-            .filter((term) => term.length > 1);
+            .filter((term: any) => term.length > 1);
           const matchingSongs = popularSongs.filter((song) => {
             const titleWords = song.title.toLowerCase();
             const artistWords = song.artist.toLowerCase();
 
             return searchTerms.some(
-              (term) =>
+              (term: any) =>
                 titleWords.includes(term) ||
                 artistWords.includes(term) ||
                 titleWords.split(" ").some((word) => word.startsWith(term)) ||
@@ -2138,10 +2138,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
           return res.status(404).json({ message: "User not found" });
         }
 
-        const roles = await storage.getRoles();
-        const userRole = roles.find((role) => role.id === user.roleId);
+        const userRoleIds = await storage.getUserRoleIds(userId); // returns number[]
         const isOwner = song.artistUserId === userId;
-        const isAdmin = user && [1, 2].includes(user.roleId);
+        const isAdmin = userRoleIds.some((id) => [1, 2].includes(id));
 
         if (!isOwner && !isAdmin) {
           return res
@@ -2686,10 +2685,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
     async (req: Request, res: Response) => {
       try {
         const { sourceType, sourceId } = req.params;
-        const cacheKey = generateCacheKey("cross-upsell-relationships", {
-          sourceType,
-          sourceId,
-        });
+        const cacheKey = generateCacheKey(
+          `cross-upsell-relationships:${sourceType}:${sourceId}`
+        );
+
         const relationships = await withCache(cacheKey, async () => {
           return await storage.getCrossUpsellsBySource(
             sourceType,
@@ -2990,8 +2989,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         const TALENT_ROLE_IDS = [3, 4, 5, 6, 7, 8];
 
         // ✅ collect all roleIds (not row PK ids)
-        const roles = await storage.getUserRoles(user.id);
-        const roleIds = roles.map((r) => r.id);
+        const roleIds = await storage.getUserRoleIds(user.id);
 
         if (roleIds.some((r) => TALENT_ROLE_IDS.includes(r))) {
           // ✅ Bookings where this talent is assigned
@@ -3001,7 +2999,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
               bookerUserId: schema.bookings.bookerUserId,
               eventName: schema.bookings.eventName,
               eventType: schema.bookings.eventType,
-              eventDate: schema.bookings.eventDate,
+              eventDate: sql`array_agg(${schema.bookingDates.eventDate})`,
               venueName: schema.bookings.venueName,
               venueAddress: schema.bookings.venueAddress,
               status: schema.bookings.status,
@@ -3017,13 +3015,14 @@ export async function registerRoutes(app: Express): Promise<Server> {
             .innerJoin(
               schema.bookingAssignmentsMembers,
               and(
-                eq(
-                  schema.bookingAssignmentsMembers.bookingId,
-                  schema.bookings.id
-                ),
+                eq(schema.bookingAssignmentsMembers.bookingId, schema.bookings.id),
                 eq(schema.bookingAssignmentsMembers.userId, userId),
                 eq(schema.bookingAssignmentsMembers.status, "active")
               )
+            )
+            .innerJoin(
+              schema.bookingDates,
+              eq(schema.bookingDates.bookingId, schema.bookings.id)
             )
             .orderBy(desc(schema.bookings.createdAt));
 
@@ -3053,6 +3052,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
         const bookingId = parseInt(req.params.id);
         const userId = req.user?.userId;
 
+        if (typeof bookingId !== "number" || typeof userId !== "number") {
+          throw new Error("bookingId or userId is undefined");
+        }
         // Check if user is assigned to this booking
         const assignment = await db
           .select()
@@ -3396,7 +3398,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     async (req: Request, res: Response) => {
       try {
         const bookingData = req.body;
-  
+
         const {
           additionalTalentUserIds,
           multiTalentBooking,
@@ -3405,15 +3407,15 @@ export async function registerRoutes(app: Express): Promise<Server> {
           endTime,
           ...coreBookingData
         } = bookingData;
-  
+
         console.log("Booking data received:", bookingData);
-  
+
         // --- Create booking ---
         const booking = await storage.createBooking({
           ...coreBookingData,
           bookerUserId: req.user?.userId,
         });
-  
+
         // --- Save eventDates in booking_dates ---
         if (Array.isArray(eventDates) && eventDates.length > 0) {
           for (const ed of eventDates) {
@@ -3425,13 +3427,13 @@ export async function registerRoutes(app: Express): Promise<Server> {
             });
           }
         }
-  
+
         // --- Assign primary artist ---
         if (coreBookingData.primaryArtistUserId) {
           const primaryUser = await storage.getUser(coreBookingData.primaryArtistUserId);
           const roles = await storage.getUserRoles(coreBookingData.primaryArtistUserId);
           const roleIds = roles.map((r) => r.id);
-  
+
           if (roleIds.some((id) => [3, 4, 5, 6].includes(id))) {
             const assignmentRole = "Main Booked Talent";
             const assignmentNotes = `Primary talent - ${roleIds.includes(3)
@@ -3442,7 +3444,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
                   ? "managed musician"
                   : "musician"
               }`;
-  
+
             await storage.createBookingAssignment({
               bookingId: booking.id,
               assignedUserId: coreBookingData.primaryArtistUserId,
@@ -3452,17 +3454,17 @@ export async function registerRoutes(app: Express): Promise<Server> {
             });
           }
         }
-  
+
         // --- Assign additional talents ---
         if (multiTalentBooking && additionalTalentUserIds?.length > 0) {
           for (const talentUserId of additionalTalentUserIds) {
             const user = await storage.getUser(talentUserId);
             const roles = await storage.getUserRoles(talentUserId);
             const roleIds = roles.map((r) => r.id);
-  
+
             let assignmentRole = "Main Booked Talent"; // default
             let assignmentNotes = "Multi-talent booking";
-  
+
             if (roleIds.some((id) => [3, 5].includes(id))) {
               assignmentRole = "Main Booked Talent";
               assignmentNotes = `Multi-talent booking - ${roleIds.includes(3) ? "managed artist" : "managed musician"}`;
@@ -3473,7 +3475,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
               assignmentRole = "Supporting Professional";
               assignmentNotes = `Multi-talent booking - ${roleIds.includes(7) ? "managed professional" : "professional"}`;
             }
-  
+
             await storage.createBookingAssignment({
               bookingId: booking.id,
               assignedUserId: talentUserId,
@@ -3483,9 +3485,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
             });
           }
         }
-  
+
         cacheHelpers.invalidateBookingCache();
-  
+
         res.status(201).json({
           ...booking,
           multiTalentBooking,
@@ -3500,8 +3502,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
       }
     }
   );
-  
-  
+
+
 
   // ================== ENHANCED BOOKING ASSIGNMENT API ENDPOINTS ==================
 
@@ -3512,7 +3514,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     async (req: Request, res: Response) => {
       try {
         const mixerGroup = req.params.group;
-        const cacheKey = generateCacheKey("instruments", { mixerGroup });
+        const cacheKey = generateCacheKey("instruments", mixerGroup);
         const instruments = await withCache(cacheKey, async () => {
           return await storage.getInstrumentsByMixerGroup(mixerGroup);
         });
@@ -3540,65 +3542,34 @@ export async function registerRoutes(app: Express): Promise<Server> {
           roleId,
           selectedTalent,
           isMainBookedTalent,
-          assignmentType = "workflow",
+          assignmentType,
           assignedGroup,
           assignedChannel,
           assignedChannelPair,
         } = req.body;
-
+  
         if (!userId || !roleId) {
           return res.status(400).json({ message: "userId and roleId are required" });
         }
-
-        // Insert new assignment
-        const [assignment] = await db
-          .insert(schema.bookingAssignmentsMembers)
-          .values({
-            bookingId,
-            userId,
-            roleInBooking: roleId,
-            selectedTalent: selectedTalent,
-            isMainBookedTalent: isMainBookedTalent || false,
-            assignmentType,
-            assignedGroup,
-            assignedChannelPair,
-            assignedChannel,
-            assignedBy: req.user!.userId,
-            status: "active",
-            assignedAt: new Date(),
-            createdAt: new Date(),
-            updatedAt: new Date(),
-          })
-          .returning();
-
-        // Optionally join user/role info for frontend convenience
-        const detailedAssignment = await db
-          .select({
-            id: schema.bookingAssignmentsMembers.id,
-            bookingId: schema.bookingAssignmentsMembers.bookingId,
-            userId: schema.bookingAssignmentsMembers.userId,
-            userFullName: schema.users.fullName,
-            roleInBooking: schema.bookingAssignmentsMembers.roleInBooking,
-            roleName: schema.rolesManagement.name,
-            assignmentType: schema.bookingAssignmentsMembers.assignmentType,
-            selectedTalent: schema.bookingAssignmentsMembers.selectedTalent,
-            isMainBookedTalent: schema.bookingAssignmentsMembers.isMainBookedTalent,
-            assignedGroup: schema.bookingAssignmentsMembers.assignedGroup,
-            assignedChannelPair: schema.bookingAssignmentsMembers.assignedChannelPair,
-            assignedChannel: schema.bookingAssignmentsMembers.assignedChannel,
-            status: schema.bookingAssignmentsMembers.status,
-            assignedAt: schema.bookingAssignmentsMembers.assignedAt,
-          })
-          .from(schema.bookingAssignmentsMembers)
-          .innerJoin(schema.users, eq(schema.bookingAssignmentsMembers.userId, schema.users.id))
-          .innerJoin(schema.rolesManagement, eq(schema.bookingAssignmentsMembers.roleInBooking, schema.rolesManagement.id))
-          .where(eq(schema.bookingAssignmentsMembers.id, assignment.id))
-          .limit(1);
-
-        // Invalidate cache if needed
+  
+        const assignment = await storage.createBookingAssignmentMember({
+          bookingId,
+          userId,
+          roleInBooking: roleId,
+          selectedTalent,
+          isMainBookedTalent,
+          assignmentType,
+          assignedGroup,
+          assignedChannel,
+          assignedChannelPair,
+          assignedBy: req.user!.userId,
+        });
+  
+        const detailedAssignment = await storage.getBookingAssignmentDetails(assignment.id);
+  
         invalidateCache(`booking-assignments:${bookingId}`);
-
-        res.status(201).json(detailedAssignment[0]);
+  
+        res.status(201).json(detailedAssignment);
       } catch (error: any) {
         console.error("❌ Create assignment error:", error);
         res.status(500).json({ message: error.message || "Internal server error" });
@@ -3875,8 +3846,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
             eq(schema.bookingAssignmentsMembers.bookingId, schema.bookings.id)
           )
           .leftJoin(
-            schema.roles,
-            eq(schema.bookingAssignmentsMembers.roleInBooking, schema.roles.id)
+            schema.rolesManagement,
+            eq(schema.bookingAssignmentsMembers.roleInBooking, schema.rolesManagement.id)
           )
           .leftJoin(
             schema.allInstruments,
@@ -3976,7 +3947,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.get(
     "/api/booking-assignment-talent",
     authenticateToken,
-    requireRole(ROLE_GROUPS.ADMIN_ONLY),
+    requireRole([1, 2]),
     async (req: Request, res: Response) => {
       try {
         const cacheKey = generateCacheKey("booking-assignment-talent");
@@ -3989,25 +3960,15 @@ export async function registerRoutes(app: Express): Promise<Server> {
               id: schema.users.id,
               fullName: schema.users.fullName,
               email: schema.users.email,
-              roleId: schema.users.roleId,
-              roleName: schema.roles.name,
-              stageName: schema.artists.stageName,
+              roleId: schema.userRoles.roleId,
+              roleName: schema.rolesManagement.name,
+              stageName: schema.artists.stageName
             })
             .from(schema.users)
-            .innerJoin(schema.roles, eq(schema.users.roleId, schema.roles.id))
-            .leftJoin(
-              schema.artists,
-              eq(schema.users.id, schema.artists.userId)
-            )
-            .leftJoin(
-              schema.musicians,
-              eq(schema.users.id, schema.musicians.userId)
-            )
-            .leftJoin(
-              schema.professionals,
-              eq(schema.users.id, schema.professionals.userId)
-            )
-            .where(inArray(schema.users.roleId, talentRoleIds))
+            .innerJoin(schema.userRoles, eq(schema.users.id, schema.userRoles.userId))
+            .innerJoin(schema.rolesManagement, eq(schema.userRoles.roleId, schema.rolesManagement.id))
+            .leftJoin(schema.artists, eq(schema.users.id, schema.artists.userId))
+            .where(inArray(schema.userRoles.roleId, talentRoleIds))
             .orderBy(schema.users.fullName);
 
           return talent;
@@ -28432,7 +28393,7 @@ ${messageData.messageText}
       try {
         const bookingId = parseInt(req.params.id);
         const userId = req.user?.userId;
-        const userRole = req.user?.roleId;
+        const userRoles = await storage.getUserRoleIds(userId);
 
         // Get booking to verify access
         const booking = await storage.getBooking(bookingId);
@@ -28446,7 +28407,7 @@ ${messageData.messageText}
         // Filter documents based on user role and visibility
         const filteredDocuments = documents.filter((doc) => {
           // Admins can see all documents
-          if (userRole && [1, 2].includes(userRole)) return true;
+          if (userRoles && (userRoles.some(r => [1, 2].includes(r)))) return true;
 
           // Booker can see their own documents
           if (doc.uploadedBy.id === userId) return true;
@@ -28551,7 +28512,7 @@ ${messageData.messageText}
       try {
         const documentId = parseInt(req.params.documentId);
         const userId = req.user?.userId;
-        const userRole = req.user?.roleId;
+        const userRoles = await storage.getUserRoleIds(userId);
 
         // Get document to check ownership
         const document = await storage.getDocument(documentId);
@@ -28561,7 +28522,7 @@ ${messageData.messageText}
 
         // Check permission to delete
         const canDelete =
-          (userRole && [1, 2].includes(userRole)) ||
+          (userRoles && (userRoles.some(r => [1, 2].includes(r)))) ||
           document.uploadedBy === userId;
         if (!canDelete) {
           return res.status(403).json({ message: "Permission denied" });

@@ -345,7 +345,7 @@ CREATE TABLE "bookings" (
 	"primary_artist_user_id" integer NOT NULL,
 	"event_name" text NOT NULL,
 	"event_type" text NOT NULL,
-	"event_date" timestamp,
+	-- "event_date" timestamp,
 	"venue_name" text,
 	"venue_address" text,
 	"requirements" text,
