@@ -1688,7 +1688,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
               let primaryTalent = null;
               if (professional.primaryTalentId) {
-                const talent = await storage.getPrimaryTalentById(pofessional.primaryTalentId);
+                const talent = await storage.getPrimaryTalentById(professional.primaryTalentId);
                 primaryTalent = talent ? talent.name : null;
               }
 
@@ -3048,20 +3048,21 @@ export async function registerRoutes(app: Express): Promise<Server> {
   );
 
   // Get booking details for talent users (includes contracts, technical riders, etc.)
-  app.get(
-    "/api/bookings/:id/talent-view",
+  app.get("/api/bookings/:id/talent-views",
     authenticateToken,
     validateParams(schemas.idParamSchema),
     async (req: Request, res: Response) => {
       try {
-        const bookingId = parseInt(req.params.id);
+        res.setHeader("Cache-Control", "no-store");
+        const bookingId = parseInt(req.params.id, 10);
         const userId = req.user?.userId;
 
-        if (typeof bookingId !== "number" || typeof userId !== "number") {
-          throw new Error("bookingId or userId is undefined");
+        if (!bookingId || !userId) {
+          return res.status(400).json({ message: "Invalid bookingId or userId" });
         }
-        // Check if user is assigned to this booking
-        const assignment = await db
+
+        // ✅ Check if user is assigned to this booking
+        const [assignment] = await db
           .select()
           .from(schema.bookingAssignmentsMembers)
           .where(
@@ -3073,31 +3074,31 @@ export async function registerRoutes(app: Express): Promise<Server> {
           )
           .limit(1);
 
-        if (assignment.length === 0) {
+        if (!assignment) {
           return res
             .status(403)
             .json({ message: "You are not assigned to this booking" });
         }
 
-        // Get booking details with related data
-        const booking = await storage.getBooking(bookingId);
+        // ✅ Use your improved getBookingById (returns booking + eventDates array)
+        const booking = await storage.getBookingById(bookingId);
         if (!booking) {
           return res.status(404).json({ message: "Booking not found" });
         }
 
-        // Get contracts for this booking
+        // ✅ Fetch related contracts
         const contracts = await db
           .select()
           .from(schema.contracts)
           .where(eq(schema.contracts.bookingId, bookingId));
 
-        // Get technical riders for this booking
+        // ✅ Fetch technical riders
         const technicalRiders = await db
           .select()
           .from(schema.technicalRiders)
           .where(eq(schema.technicalRiders.bookingId, bookingId));
 
-        // Get contract signatures for this booking
+        // ✅ Fetch contract signatures
         const signatures = await db
           .select({
             signatureId: schema.contractSignatures.id,
@@ -3117,20 +3118,15 @@ export async function registerRoutes(app: Express): Promise<Server> {
           )
           .where(eq(schema.contracts.bookingId, bookingId));
 
-        console.log({
-          booking,
-          contracts,
-          technicalRiders,
-          signatures,
-          assignment: assignment[0],
-        });
+        // ✅ Respond with a clean JSON payload
         res.json({
           booking,
-          contracts,
-          technicalRiders,
-          signatures,
-          assignment: assignment[0],
+          contracts: contracts.map(c => ({ ...c })),
+          technicalRiders: technicalRiders.map(t => ({ ...t })),
+          signatures: signatures.map(s => ({ ...s })),
+          assignment: assignment[0] ? { ...assignment[0] } : null,
         });
+
       } catch (error) {
         logError(error, ErrorSeverity.ERROR, {
           endpoint: "/api/bookings/:id/talent-view",
@@ -3141,6 +3137,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       }
     }
   );
+
 
   // Talent approval/counter-offer endpoint
   app.post(
@@ -3847,7 +3844,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     async (req: Request, res: Response) => {
       try {
         const userId = req.user!.userId;
-  
+
         // Assignments where user is involved
         const rawAssignments = await db
           .select({
@@ -3910,7 +3907,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
             schema.rolesManagement.name,
             schema.allInstruments.name
           );
-  
+
         // Bookings where user is the primary artist
         const primaryBookings = await db
           .select({
@@ -3942,7 +3939,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
           )
           .where(eq(schema.bookings.primaryArtistUserId, userId))
           .groupBy(schema.bookings.id);
-  
+
         // Merge both lists
         const allGigs = [...rawAssignments, ...primaryBookings]
           .sort((a, b) => {
@@ -3959,7 +3956,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
             (gig, index, self) =>
               index === self.findIndex((g) => g.bookingId === gig.bookingId)
           );
-  
+
         res.json(allGigs);
       } catch (error) {
         logError(error, ErrorSeverity.ERROR, {
@@ -3970,9 +3967,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
       }
     }
   );
-  
-  
-  
+
+
+
 
   // Get available talent for assignment (users who can be assigned to bookings)
   app.get(
@@ -12031,132 +12028,6 @@ This is a preview of the performance engagement contract. Final agreement will i
     }
   );
 
-  // Get single booking data
-  // app.get(
-  //   "/api/bookings/:id",
-  //   authenticateToken,
-  //   async (req: Request, res: Response) => {
-  //     try {
-  //       const bookingId = parseInt(req.params.id);
-  //       const booking = await storage.getBooking(bookingId);
-
-  //       if (!booking) {
-  //         return res.status(404).json({ message: "Booking not found" });
-  //       }
-
-  //       // Get related data for complete booking details
-  //       const [primaryArtist, booker] = await Promise.all([
-  //         storage.getUser(booking.primaryArtistUserId),
-  //         booking.bookerUserId ? storage.getUser(booking.bookerUserId) : null,
-  //       ]);
-
-  //       // Transform artist to match expected format
-  //       const artistDetails = primaryArtist
-  //         ? await storage.getArtist(primaryArtist.id)
-  //         : null;
-
-  //       const bookingDetails = {
-  //         ...booking,
-  //         primaryArtist: artistDetails
-  //           ? {
-  //             stageName: artistDetails?.stageName || primaryArtist.fullName,
-  //             userId: primaryArtist.id,
-  //             fullName: primaryArtist.fullName,
-  //           }
-  //           : null,
-  //         booker: booker
-  //           ? {
-  //             fullName: booker.fullName,
-  //             email: booker.email,
-  //           }
-  //           : {
-  //             guestName: booking.guestName,
-  //             guestEmail: booking.guestEmail,
-  //           },
-  //         assignedMusicians: [], // TODO: Implement assigned musicians retrieval
-  //       };
-
-  //       res.json(bookingDetails);
-  //     } catch (error) {
-  //       console.error("Get booking error:", error);
-  //       res.status(500).json({ message: "Internal server error" });
-  //     }
-  //   }
-  // );
-
-  app.get(
-    "/api/bookings/:id",
-    authenticateToken,
-    async (req: Request, res: Response) => {
-      try {
-        const bookingId = parseInt(req.params.id);
-        const booking = await storage.getBooking(bookingId);
-
-        if (!booking) {
-          return res.status(404).json({ message: "Booking not found" });
-        }
-
-        const signatures = await storage.getContractSignatures(bookingId);
-        const payments = await storage.getPayments(bookingId);
-
-        // Related data
-        const [primaryArtist, booker] = await Promise.all([
-          storage.getUser(booking.primaryArtistUserId),
-          booking.bookerUserId ? storage.getUser(booking.bookerUserId) : null,
-        ]);
-
-        const artistDetails = primaryArtist
-          ? await storage.getArtist(primaryArtist.id)
-          : null;
-
-        // Workflow fallback
-        const workflowData = booking.workflowData || {};
-
-        // --- NEW: Try DB first ---
-        const dbTechnicalRider = await storage.getTechnicalRiderByBooking(bookingId);
-        const dbStagePlot = await storage.getStagePlotByBooking(bookingId);
-        const dbContractedData = await storage.getContractByBooking(bookingId);
-
-        const technicalRider = dbTechnicalRider ?? workflowData.technicalRider ?? {};
-        const stagePlot = dbStagePlot ?? workflowData.stagePlot ?? {};
-
-        const bookingDetails = {
-          ...booking,
-          primaryArtist: artistDetails
-            ? {
-              stageName: artistDetails?.stageName || primaryArtist.fullName,
-              userId: primaryArtist.id,
-              fullName: primaryArtist.fullName,
-            }
-            : null,
-          booker: booker
-            ? {
-              fullName: booker.fullName,
-              email: booker.email,
-            }
-            : {
-              guestName: booking.guestName,
-              guestEmail: booking.guestEmail,
-            },
-          assignedMusicians: [], // TODO: implement retrieval
-          technicalRider,
-          stagePlot,
-          signatures,
-          payments,
-          contracts: dbContractedData
-        };
-
-        res.json(bookingDetails);
-      } catch (error) {
-        console.error("Get booking error:", error);
-        res.status(500).json({ message: "Internal server error" });
-      }
-    }
-  );
-
-
-
-
   // Get booking workflow data
   app.get(
     "/api/bookings/:id/workflow",
@@ -13090,79 +12961,6 @@ This is a preview of the performance engagement contract. Final agreement will i
         doc.end();
       } catch (error) {
         console.error("Generate workflow PDF error:", error);
-        res.status(500).json({ message: "Internal server error" });
-      }
-    }
-  );
-
-  // Update booking data (PATCH endpoint)
-  app.patch(
-    "/api/bookings/:id",
-    authenticateToken,
-    requireRole([1, 2]),
-    async (req: Request, res: Response) => {
-      try {
-        const bookingId = parseInt(req.params.id);
-        const user = req.user!;
-        const updateData = req.body;
-
-        // Get current booking to check permissions
-        const currentBooking = await storage.getBooking(bookingId);
-        if (!currentBooking) {
-          return res.status(404).json({ message: "Booking not found" });
-        }
-
-        // Create update object with only allowed fields
-        const allowedFields = [
-          "status",
-          "primaryArtistAccepted",
-          "technicalRider",
-          "stagePlot",
-          "signatures",
-          "payments",
-        ];
-        const filteredUpdate: any = {};
-
-        for (const field of allowedFields) {
-          if (updateData[field] !== undefined) {
-            filteredUpdate[field] = updateData[field];
-          }
-        }
-
-        // If no valid fields to update
-        if (Object.keys(filteredUpdate).length === 0) {
-          return res.status(400).json({ message: "No valid fields to update" });
-        }
-
-        // Handle signatures - ensure they're stored as JSON string if needed
-        let updatedBooking = null
-        if (filteredUpdate.status) {
-          updatedBooking = await storage.updateBooking(bookingId, filteredUpdate)
-        }
-        if (filteredUpdate.technicalRider) {
-
-        }
-        if (filteredUpdate.stagePlot) {
-
-        }
-        if (filteredUpdate.signatures) {
-
-        }
-        if (filteredUpdate.signatures) {
-
-        }
-
-        if (!updatedBooking) {
-          return res.status(500).json({ message: "Failed to update booking" });
-        }
-
-        res.json({
-          success: true,
-          booking: updatedBooking,
-          message: "Booking updated successfully",
-        });
-      } catch (error) {
-        console.error("Update booking error:", error);
         res.status(500).json({ message: "Internal server error" });
       }
     }
@@ -29114,6 +28912,188 @@ This contract is subject to the main booking agreement and all terms therein.`;
         res
           .status(500)
           .json({ error: "Failed to generate performance contract" });
+      }
+    }
+  );
+
+
+  // Get single booking data
+  // app.get(
+  //   "/api/bookings/:id",
+  //   authenticateToken,
+  //   async (req: Request, res: Response) => {
+  //     try {
+  //       const bookingId = parseInt(req.params.id);
+  //       const booking = await storage.getBooking(bookingId);
+
+  //       if (!booking) {
+  //         return res.status(404).json({ message: "Booking not found" });
+  //       }
+
+  //       // Get related data for complete booking details
+  //       const [primaryArtist, booker] = await Promise.all([
+  //         storage.getUser(booking.primaryArtistUserId),
+  //         booking.bookerUserId ? storage.getUser(booking.bookerUserId) : null,
+  //       ]);
+
+  //       // Transform artist to match expected format
+  //       const artistDetails = primaryArtist
+  //         ? await storage.getArtist(primaryArtist.id)
+  //         : null;
+
+  //       const bookingDetails = {
+  //         ...booking,
+  //         primaryArtist: artistDetails
+  //           ? {
+  //             stageName: artistDetails?.stageName || primaryArtist.fullName,
+  //             userId: primaryArtist.id,
+  //             fullName: primaryArtist.fullName,
+  //           }
+  //           : null,
+  //         booker: booker
+  //           ? {
+  //             fullName: booker.fullName,
+  //             email: booker.email,
+  //           }
+  //           : {
+  //             guestName: booking.guestName,
+  //             guestEmail: booking.guestEmail,
+  //           },
+  //         assignedMusicians: [], // TODO: Implement assigned musicians retrieval
+  //       };
+
+  //       res.json(bookingDetails);
+  //     } catch (error) {
+  //       console.error("Get booking error:", error);
+  //       res.status(500).json({ message: "Internal server error" });
+  //     }
+  //   }
+  // );
+
+  app.get(
+    "/api/bookings/:id",
+    authenticateToken,
+    async (req: Request, res: Response) => {
+      try {
+        const bookingId = parseInt(req.params.id);
+        const booking = await storage.getBooking(bookingId);
+
+        if (!booking) {
+          return res.status(404).json({ message: "Booking not found" });
+        }
+
+        const signatures = await storage.getContractSignatures(bookingId);
+        const payments = await storage.getPayments(bookingId);
+
+        // Related data
+        const [primaryArtist, booker] = await Promise.all([
+          storage.getUser(booking.primaryArtistUserId),
+          booking.bookerUserId ? storage.getUser(booking.bookerUserId) : null,
+        ]);
+
+        const artistDetails = primaryArtist ? await storage.getArtist(primaryArtist.id) : null;
+
+        // Workflow fallback
+        const workflowData = booking.workflowData || {};
+
+        // --- NEW: Try DB first ---
+        const dbTechnicalRider = await storage.getTechnicalRiderByBooking(bookingId);
+        const dbStagePlot = await storage.getStagePlotByBooking(bookingId);
+        const dbContractedData = await storage.getContractByBooking(bookingId);
+
+        const technicalRider = dbTechnicalRider ?? workflowData.technicalRider ?? {};
+        const stagePlot = dbStagePlot ?? workflowData.stagePlot ?? {};
+
+        const bookingDetails = {
+          ...booking,
+          primaryArtist: artistDetails ? artistDetails : null,
+          booker: booker ? booker : { guestName: booking.guestName, guestEmail: booking.guestEmail, },
+          assignedMusicians: [], // TODO: implement retrieval
+          technicalRider,
+          stagePlot,
+          signatures,
+          payments,
+          contracts: dbContractedData
+        };
+
+        res.json(bookingDetails);
+      } catch (error) {
+        console.error("Get booking error:", error);
+        res.status(500).json({ message: "Internal server error" });
+      }
+    }
+  );
+
+
+  // Update booking data (PATCH endpoint)
+  app.patch(
+    "/api/bookings/:id",
+    authenticateToken,
+    requireRole([1, 2]),
+    async (req: Request, res: Response) => {
+      try {
+        const bookingId = parseInt(req.params.id);
+        const user = req.user!;
+        const updateData = req.body;
+
+        // Get current booking to check permissions
+        const currentBooking = await storage.getBooking(bookingId);
+        if (!currentBooking) {
+          return res.status(404).json({ message: "Booking not found" });
+        }
+
+        // Create update object with only allowed fields
+        const allowedFields = [
+          "status",
+          "primaryArtistAccepted",
+          "technicalRider",
+          "stagePlot",
+          "signatures",
+          "payments",
+        ];
+        const filteredUpdate: any = {};
+
+        for (const field of allowedFields) {
+          if (updateData[field] !== undefined) {
+            filteredUpdate[field] = updateData[field];
+          }
+        }
+
+        // If no valid fields to update
+        if (Object.keys(filteredUpdate).length === 0) {
+          return res.status(400).json({ message: "No valid fields to update" });
+        }
+
+        // Handle signatures - ensure they're stored as JSON string if needed
+        let updatedBooking = null
+        if (filteredUpdate.status) {
+          updatedBooking = await storage.updateBooking(bookingId, filteredUpdate)
+        }
+        if (filteredUpdate.technicalRider) {
+
+        }
+        if (filteredUpdate.stagePlot) {
+
+        }
+        if (filteredUpdate.signatures) {
+
+        }
+        if (filteredUpdate.signatures) {
+
+        }
+
+        if (!updatedBooking) {
+          return res.status(500).json({ message: "Failed to update booking" });
+        }
+
+        res.json({
+          success: true,
+          booking: updatedBooking,
+          message: "Booking updated successfully",
+        });
+      } catch (error) {
+        console.error("Update booking error:", error);
+        res.status(500).json({ message: "Internal server error" });
       }
     }
   );

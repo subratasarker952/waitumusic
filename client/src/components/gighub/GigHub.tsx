@@ -36,31 +36,6 @@ import { SpleeterInterface } from './components/SpleeterInterface';
 import { CounterOfferDialog } from './components/CounterOfferDialog';
 import { MediaHubSection } from './components/MediaHubSection';
 
-interface BookingDetails {
-  id: number;
-  eventName: string;
-  eventDate: string | null;
-  eventType: string;
-  venueName: string | null;
-  venueAddress: string | null;
-  status: string;
-  totalBudget: string | null;
-  finalPrice: string | null;
-  requirements: string | null;
-  primaryArtist: {
-    userId: number;
-    stageName: string;
-  };
-  workflowData: any;
-  assignmentInfo?: {
-    roleInBooking: string;
-    selectedTalent: string;
-    isMainBookedTalent: boolean;
-    assignedGroup: string;
-    assignedChannel: number;
-    status: string;
-  };
-}
 
 export default function GigHub() {
   const { user, roles } = useAuth();
@@ -76,9 +51,9 @@ export default function GigHub() {
 
   // Fetch booking details
   const { data: booking, isLoading, error } = useQuery({
-    queryKey: ['booking-details', bookingId],
+    queryKey: ['talent-views'],
     queryFn: async () => {
-      const response = await apiRequest(`/api/bookings/${bookingId}/talent-view`);
+      const response = await apiRequest(`/api/bookings/${bookingId}/talent-views`);
       return response ;
     },
     enabled: !!bookingId && !!user
@@ -128,7 +103,7 @@ export default function GigHub() {
         title: "Booking Accepted",
         description: "You've successfully accepted this booking."
       });
-      queryClient.invalidateQueries({ queryKey: ['booking-details', bookingId] });
+      queryClient.invalidateQueries({ queryKey: ['talent-views'] });
     }
   });
 
@@ -146,7 +121,7 @@ export default function GigHub() {
         description: "You've declined this booking.",
         variant: "default"
       });
-      queryClient.invalidateQueries({ queryKey: ['booking-details', bookingId] });
+      queryClient.invalidateQueries({ queryKey: ['talent-views'] });
     }
   });
 
@@ -534,7 +509,7 @@ export default function GigHub() {
         currentPrice={booking.finalPrice}
         onSuccess={() => {
           setCounterOfferOpen(false);
-          queryClient.invalidateQueries({ queryKey: ['booking-details', bookingId] });
+          queryClient.invalidateQueries({ queryKey: ['talent-views'] });
         }}
       />
     </div>

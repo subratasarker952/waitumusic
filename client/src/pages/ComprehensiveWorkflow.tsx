@@ -61,6 +61,23 @@ export default function ComprehensiveWorkflow() {
     }
   };
 
+  function formatEventDates(eventDates: any[]) {
+    return eventDates.map(({ eventDate, startTime, endTime }) => {
+      const dateObj = new Date(eventDate);
+      const options = { month: "short", day: "numeric", year: "numeric" };
+      const formattedDate = dateObj.toLocaleDateString("en-US", options);
+
+      const formatTime = (time: any) => {
+        const [hour, minute] = time?.split(":")?.map(Number);
+        const ampm = hour >= 12 ? "PM" : "AM";
+        const hour12 = hour % 12 || 12;
+        return `${hour12}:${minute.toString().padStart(2, "0")} ${ampm}`;
+      };
+
+      return <p className='whitespace-nowrap' key={eventDate}>{formattedDate} ({formatTime(startTime)} - {formatTime(endTime)})</p>;
+    });
+  }
+
   // Show loading state while authentication is being checked
   if (authLoading) {
     return (
@@ -166,17 +183,9 @@ export default function ComprehensiveWorkflow() {
 
                             <div className="flex items-center gap-2">
                               <Calendar className="h-4 w-4 text-muted-foreground" />
-                              <span>
-                                {booking.eventDate
-                                  ? new Date(booking.eventDate).toLocaleDateString('en-US', {
-                                    weekday: 'short',
-                                    year: 'numeric',
-                                    month: 'short',
-                                    day: 'numeric'
-                                  })
-                                  : 'Date TBD'
-                                }
-                              </span>
+                              <div>
+                                {formatEventDates(booking.eventDates)}
+                              </div>
                             </div>
 
                             {booking.venueName && (
@@ -269,23 +278,18 @@ export default function ComprehensiveWorkflow() {
                       <div>
                         <p className="text-sm font-medium text-muted-foreground">Date</p>
                         <div>
-                          {currentBooking.eventDates?.map((event: any, i: number) => (
-                            <p key={i} className='whitespace-nowrap'>
-                              {new Date(event.eventDate).toLocaleDateString()} {" "}
-                              {event.startTime && event.endTime
-                                ? `${event.startTime} - ${event.endTime}`
-                                : ""}
-                            </p>
-                          ))}
+                          {formatEventDates(currentBooking.eventDates)}
                         </div>
                       </div>
                       <div>
-                        <p className="text-sm font-medium text-muted-foreground">Status</p>
-                        <Badge className={getStatusColor(currentBooking.status)}>
-                          <span className='capitalize'>
-                            {currentBooking.status}
-                          </span>
-                        </Badge>
+                        <div>
+                          <p className="text-sm font-medium text-muted-foreground">Status</p>
+                          <Badge className={getStatusColor(currentBooking.status)}>
+                            <span className='capitalize'>
+                              {currentBooking.status}
+                            </span>
+                          </Badge>
+                        </div>
                       </div>
                     </div>
                   ) : (

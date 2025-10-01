@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigation } from '@/hooks/useNavigation';
 import { useQuery, useMutation } from '@tanstack/react-query';
-import { queryClient } from '@/lib/queryClient';
+import { apiRequest, queryClient } from '@/lib/queryClient';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -78,13 +78,8 @@ export function TalentBookingView() {
     queryKey: ['booking-details', selectedBooking],
     queryFn: async () => {
       if (!selectedBooking) return null;
-      const response = await fetch(`/api/bookings/${selectedBooking}/talent-view`, {
-        headers: {
-          'Authorization': `Bearer ${localStorage.getItem('token')}`
-        }
-      });
-      if (!response.ok) throw new Error('Failed to fetch booking details');
-      return response.json();
+      const response = await apiRequest(`/api/bookings/${selectedBooking}/talent-view`);
+      return response;
     },
     enabled: !!selectedBooking
   });
@@ -92,12 +87,8 @@ export function TalentBookingView() {
   // Submit talent response
   const responseMutation = useMutation({
     mutationFn: async (data: { action: string; counterOffer?: string; notes?: string }) => {
-      const response = await fetch(`/api/bookings/${selectedBooking}/talent-response`, {
+      const response = await apiRequest(`/api/bookings/${selectedBooking}/talent-response`, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('token')}`
-        },
         body: JSON.stringify(data)
       });
       if (!response.ok) throw new Error('Failed to submit response');
@@ -205,19 +196,19 @@ export function TalentBookingView() {
               <CardContent className="space-y-3">
                 <div className="flex items-center text-sm text-gray-600">
                   <Calendar className="h-4 w-4 mr-2" />
-                  {booking.eventDate 
+                  {booking.eventDate
                     ? format(new Date(booking.eventDate), 'PPP')
                     : 'Date TBD'
                   }
                 </div>
-                
+
                 {booking.venueName && (
                   <div className="flex items-center text-sm text-gray-600">
                     <MapPin className="h-4 w-4 mr-2" />
                     {booking.venueName}
                   </div>
                 )}
-                
+
                 {booking.finalPrice && (
                   <div className="flex items-center text-sm text-gray-600">
                     <DollarSign className="h-4 w-4 mr-2" />
@@ -231,16 +222,16 @@ export function TalentBookingView() {
                 </div>
 
                 <div className="flex space-x-2 mt-4">
-                  <Button 
-                    variant="outline" 
-                    size="sm" 
+                  <Button
+                    variant="outline"
+                    size="sm"
                     onClick={() => setSelectedBooking(booking.id)}
                     className="flex-1"
                   >
                     <FileText className="h-4 w-4 mr-1" />
                     View Details
                   </Button>
-                  
+
                   {booking.status === 'pending' && (
                     <Button
                       size="sm"
@@ -300,7 +291,7 @@ export function TalentBookingView() {
                   <div>
                     <Label className="text-sm font-medium">Date</Label>
                     <p className="text-sm text-gray-600">
-                      {bookingDetails.booking.eventDate 
+                      {bookingDetails.booking.eventDate
                         ? format(new Date(bookingDetails.booking.eventDate), 'PPP')
                         : 'TBD'
                       }
@@ -437,7 +428,7 @@ export function TalentBookingView() {
               <Button variant="outline" onClick={() => setResponseDialog(false)}>
                 Cancel
               </Button>
-              <Button 
+              <Button
                 onClick={handleResponse}
                 disabled={responseMutation.isPending}
               >

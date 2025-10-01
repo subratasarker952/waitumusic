@@ -162,8 +162,8 @@ export function GigComponent() {
             </Card>
           ) : (
             <div className="grid gap-4 md:grid-cols-2">
-              {pastGigs.map((gig: BookingAssignment) => (
-                <GigCard key={gig.id} gig={gig} />
+              {pastGigs.map((gig: BookingAssignment, index:number) => (
+                <GigCard key={index} gig={gig} />
               ))}
             </div>
           )}

@@ -200,7 +200,6 @@ export default function BookingWorkflow({
     }
   };
 
-  console.log(booking);
   console.log(assignedTalent);
 
   // Modal states for technical rider components
@@ -209,17 +208,13 @@ export default function BookingWorkflow({
   const [technicalRiderModalOpen, setTechnicalRiderModalOpen] = useState(false);
 
   // Load booking data with controlled caching
-  const {
-    data: bookingData,
-    isLoading: bookingLoading,
-    refetch: refetchBooking,
-  } = useQuery({
+  const { data: bookingData, isLoading: bookingLoading, refetch: refetchBooking, } = useQuery({
     queryKey: ["booking-workflow", bookingId],
     enabled: !!bookingId,
     queryFn: async () => {
       if (!bookingId) return {};
       const res = await apiRequest(`/api/bookings/${bookingId}`);
-      return res; // or res.json() depending on your apiRequest
+      return res;
     },
     staleTime: 5 * 60 * 1000, // 5 minutes
     gcTime: 10 * 60 * 1000, // 10 minutes
@@ -250,22 +245,11 @@ export default function BookingWorkflow({
   });
 
   // Load assigned talent data with controlled caching
-  const {
-    data: assignedTalentData,
-    isLoading: assignedTalentLoading,
-    refetch: refetchAssignedTalent,
-  } = useQuery({
+  const { data: assignedTalentData, isLoading: assignedTalentLoading, refetch: refetchAssignedTalent, } = useQuery({
     queryKey: ["booking-assigned-talent", bookingId],
     queryFn: async () => {
       if (!bookingId) return [];
-      console.log(
-        "🔍 FRONTEND: Fetching assigned talent for booking ID:",
-        bookingId
-      );
-      const data = await apiRequest(
-        `/api/bookings/${bookingId}/assigned-talent`
-      );
-      console.log("📋 FRONTEND: Received assigned talent data:", data);
+      const data = await apiRequest(`/api/bookings/${bookingId}/assigned-talent`);
       return data;
     },
     enabled: !!bookingId,
@@ -442,6 +426,23 @@ export default function BookingWorkflow({
       });
     },
   });
+
+  function formatEventDates(eventDates: any[]) {
+    return eventDates.map(({ eventDate, startTime, endTime }) => {
+      const dateObj = new Date(eventDate);
+      const options = { month: "short", day: "numeric", year: "numeric" };
+      const formattedDate = dateObj.toLocaleDateString("en-US", options);
+
+      const formatTime = (time: any) => {
+        const [hour, minute] = time?.split(":")?.map(Number);
+        const ampm = hour >= 12 ? "PM" : "AM";
+        const hour12 = hour % 12 || 12;
+        return `${hour12}:${minute.toString().padStart(2, "0")} ${ampm}`;
+      };
+
+      return <p className="whitespace-nowrap" key={eventDate}>{formattedDate} ({formatTime(startTime)} - {formatTime(endTime)})</p>;
+    });
+  }
 
   const sendWorkflowNotification = async (
     type: string,
@@ -1598,9 +1599,9 @@ export default function BookingWorkflow({
       id: "signature_collection",
       title: "Signature Collection",
       description: "Collect contract signatures",
-      canProgress: (booking?.signatures?.length) >= 1 && booking.signatures.every((sig: any) => sig.status === "signed"), // boolean
+      canProgress: ((booking?.signatures) && (booking?.signatures.length) >= 1) && booking?.signatures.every((sig: any) => sig.status === "signed"), // boolean
       status:
-        (booking?.signatures?.length || 0) >= 1 && booking.signatures.every((sig: any) => sig.status === "signed")
+        (booking?.signatures?.length || 0) >= 1 && booking?.signatures.every((sig: any) => sig.status === "signed")
           ? "completed"
           : currentStep === 5
             ? "in_progress"
@@ -1847,14 +1848,7 @@ export default function BookingWorkflow({
                       <div className="text-sm text-gray-600 mt-1">
                         Event: {booking.eventName} •{" "}
                         <div>
-                          {booking.eventDates?.map((event: any, i: number) => (
-                            <p key={i} className='whitespace-nowrap'>
-                              {new Date(event.eventDate).toLocaleDateString()} {" "}
-                              {event.startTime && event.endTime
-                                ? `${event.startTime} - ${event.endTime}`
-                                : ""}
-                            </p>
-                          ))}
+                          {/* {formatEventDates(booking.eventDates)} */}
                         </div>
                       </div>
                       <Badge variant="default" className="mt-2 bg-emerald-600">
