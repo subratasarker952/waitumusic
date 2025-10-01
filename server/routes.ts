@@ -3117,6 +3117,13 @@ export async function registerRoutes(app: Express): Promise<Server> {
           )
           .where(eq(schema.contracts.bookingId, bookingId));
 
+        console.log({
+          booking,
+          contracts,
+          technicalRiders,
+          signatures,
+          assignment: assignment[0],
+        });
         res.json({
           booking,
           contracts,
@@ -3840,11 +3847,37 @@ export async function registerRoutes(app: Express): Promise<Server> {
     async (req: Request, res: Response) => {
       try {
         const userId = req.user!.userId;
-
-        // Get all bookings where this user is assigned
-        // Get all bookings where this user is assigned with proper joins
+  
+        // Assignments where user is involved
         const rawAssignments = await db
-          .select()
+          .select({
+            id: schema.bookingAssignmentsMembers.id,
+            bookingId: schema.bookingAssignmentsMembers.bookingId,
+            bookingEventDate: sql<string | null>`MIN(${schema.bookingDates.eventDate})`, // earliest date
+            bookingEventName: schema.bookings.eventName,
+            bookingVenueName: schema.bookings.venueName,
+            bookingVenueAddress: schema.bookings.venueAddress,
+            status: schema.bookings.status,
+            roleInBooking: schema.rolesManagement.name,
+            selectedTalent: schema.allInstruments.name,
+            instrumentName: schema.allInstruments.name,
+            isMainBookedTalent: schema.bookingAssignmentsMembers.isMainBookedTalent,
+            assignedGroup: schema.bookingAssignmentsMembers.assignedGroup,
+            assignedChannel: schema.bookingAssignmentsMembers.assignedChannel,
+            isPrimaryArtist: sql`false`,
+            eventDates: sql`
+              coalesce(
+                json_agg(
+                  json_build_object(
+                    'eventDate', ${schema.bookingDates.eventDate},
+                    'startTime', ${schema.bookingDates.startTime},
+                    'endTime', ${schema.bookingDates.endTime}
+                  ) ORDER BY ${schema.bookingDates.eventDate}
+                ) FILTER (WHERE ${schema.bookingDates.id} IS NOT NULL),
+                '[]'
+              )
+            `,
+          })
           .from(schema.bookingAssignmentsMembers)
           .innerJoin(
             schema.bookings,
@@ -3861,67 +3894,57 @@ export async function registerRoutes(app: Express): Promise<Server> {
               schema.allInstruments.id
             )
           )
+          .leftJoin(
+            schema.bookingDates,
+            eq(schema.bookingDates.bookingId, schema.bookings.id)
+          )
           .where(
             and(
               eq(schema.bookingAssignmentsMembers.userId, userId),
               eq(schema.bookingAssignmentsMembers.status, "active")
             )
+          )
+          .groupBy(
+            schema.bookingAssignmentsMembers.id,
+            schema.bookings.id,
+            schema.rolesManagement.name,
+            schema.allInstruments.name
           );
-
-        // Get bookings where user is the primary artist
+  
+        // Bookings where user is the primary artist
         const primaryBookings = await db
           .select({
             bookingId: schema.bookings.id,
-            bookingEventDate: schema.bookings.eventDate,
+            bookingEventDate: sql<string | null>`MIN(${schema.bookingDates.eventDate})`, // earliest date
             bookingEventName: schema.bookings.eventName,
             bookingVenueName: schema.bookings.venueName,
             bookingVenueAddress: schema.bookings.venueAddress,
             status: schema.bookings.status,
             primaryArtistUserId: schema.bookings.primaryArtistUserId,
+            isPrimaryArtist: sql`true`,
+            eventDates: sql`
+              coalesce(
+                json_agg(
+                  json_build_object(
+                    'eventDate', ${schema.bookingDates.eventDate},
+                    'startTime', ${schema.bookingDates.startTime},
+                    'endTime', ${schema.bookingDates.endTime}
+                  ) ORDER BY ${schema.bookingDates.eventDate}
+                ) FILTER (WHERE ${schema.bookingDates.id} IS NOT NULL),
+                '[]'
+              )
+            `,
           })
           .from(schema.bookings)
-          .where(eq(schema.bookings.primaryArtistUserId, userId));
-
-        // Transform the raw assignment data to a cleaner format
-        const assignments = rawAssignments.map((row) => ({
-          id: row.booking_assignments_members.id,
-          bookingId: row.booking_assignments_members.bookingId,
-          bookingEventDate: row.bookings.eventDate,
-          bookingEventName: row.bookings.eventName,
-          bookingVenueName: row.bookings.venueName,
-          bookingVenueAddress: row.bookings.venueAddress,
-          roleInBooking: row.roles?.name || "Musician",
-          selectedTalent: row.all_instruments?.name || "General",
-          instrumentName: row.all_instruments?.name || "General",
-          status: row.booking_assignments_members.status,
-          isMainBookedTalent:
-            row.booking_assignments_members.isMainBookedTalent,
-          assignedGroup:
-            row.booking_assignments_members.assignedGroup || "Main",
-          assignedChannel: row.booking_assignments_members.assignedChannel || 0,
-          isPrimaryArtist: false,
-        }));
-
-        // Transform primary bookings and add to assignments
-        const primaryGigs = primaryBookings.map((booking) => ({
-          id: `primary-${booking.bookingId}`,
-          bookingId: booking.bookingId,
-          bookingEventDate: booking.bookingEventDate,
-          bookingEventName: booking.bookingEventName,
-          bookingVenueName: booking.bookingVenueName,
-          bookingVenueAddress: booking.bookingVenueAddress,
-          roleInBooking: "Primary Artist",
-          selectedTalent: "Primary Artist",
-          instrumentName: "Primary Artist",
-          status: booking.status || "active",
-          isMainBookedTalent: true,
-          assignedGroup: "Main",
-          assignedChannel: 0,
-          isPrimaryArtist: true,
-        }));
-
-        // Combine both lists and sort by event date
-        const allGigs = [...assignments, ...primaryGigs]
+          .leftJoin(
+            schema.bookingDates,
+            eq(schema.bookingDates.bookingId, schema.bookings.id)
+          )
+          .where(eq(schema.bookings.primaryArtistUserId, userId))
+          .groupBy(schema.bookings.id);
+  
+        // Merge both lists
+        const allGigs = [...rawAssignments, ...primaryBookings]
           .sort((a, b) => {
             const dateA = a.bookingEventDate
               ? new Date(a.bookingEventDate).getTime()
@@ -3929,14 +3952,14 @@ export async function registerRoutes(app: Express): Promise<Server> {
             const dateB = b.bookingEventDate
               ? new Date(b.bookingEventDate).getTime()
               : 0;
-            return dateB - dateA; // Most recent first
+            return dateB - dateA; // newest first
           })
-          // Remove duplicates (in case user is both primary artist AND in assignments)
+          // Remove duplicates if user is both primary artist & assigned
           .filter(
             (gig, index, self) =>
               index === self.findIndex((g) => g.bookingId === gig.bookingId)
           );
-
+  
         res.json(allGigs);
       } catch (error) {
         logError(error, ErrorSeverity.ERROR, {
@@ -3947,6 +3970,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
       }
     }
   );
+  
+  
+  
 
   // Get available talent for assignment (users who can be assigned to bookings)
   app.get(

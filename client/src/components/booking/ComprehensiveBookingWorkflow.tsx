@@ -1844,12 +1844,19 @@ export default function BookingWorkflow({
                         {booking.primaryArtist?.isManaged ? "Managed " : ""}
                         {booking.primaryArtist?.userType || "Artist"}
                       </p>
-                      <p className="text-sm text-gray-600 mt-1">
+                      <div className="text-sm text-gray-600 mt-1">
                         Event: {booking.eventName} •{" "}
-                        {booking.eventDate
-                          ? new Date(booking.eventDate).toLocaleDateString()
-                          : "Date TBD"}
-                      </p>
+                        <div>
+                          {booking.eventDates?.map((event: any, i: number) => (
+                            <p key={i} className='whitespace-nowrap'>
+                              {new Date(event.eventDate).toLocaleDateString()} {" "}
+                              {event.startTime && event.endTime
+                                ? `${event.startTime} - ${event.endTime}`
+                                : ""}
+                            </p>
+                          ))}
+                        </div>
+                      </div>
                       <Badge variant="default" className="mt-2 bg-emerald-600">
                         Main Booked Talent
                       </Badge>

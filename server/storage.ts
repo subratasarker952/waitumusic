@@ -3806,30 +3806,30 @@ export class DatabaseStorage implements IStorage {
       .select()
       .from(bookings)
       .where(eq(bookings.id, id));
-  
+
     if (!booking) return undefined;
-  
+
     const dates = await db
       .select({ eventDate: bookingDates.eventDate })
       .from(bookingDates)
       .where(eq(bookingDates.bookingId, id));
-  
+
     return {
       ...booking,
       eventDates: dates.map(d => d.eventDate),
     };
   }
-  
+
   async getBookingsByUser(userId: number) {
     const bookingsList = await db
       .select()
       .from(bookings)
       .where(eq(bookings.bookerUserId, userId));
-  
+
     const bookingIds = bookingsList.map(b => b.id);
-  
+
     if (bookingIds.length === 0) return []; // কোন booking নেই
-  
+
     const dates = await db
       .select({
         bookingId: bookingDates.bookingId,
@@ -3837,7 +3837,7 @@ export class DatabaseStorage implements IStorage {
       })
       .from(bookingDates)
       .where(inArray(bookingDates.bookingId, bookingIds));
-  
+
     return bookingsList.map(b => ({
       ...b,
       eventDates: dates
@@ -4195,13 +4195,22 @@ export class DatabaseStorage implements IStorage {
           id: bookings.id,
           eventName: bookings.eventName,
           venueName: bookings.venueName,
-          eventDates: sql`array_agg(${bookingDates.eventDate} ORDER BY ${bookingDates.eventDate})`,
+          eventDates: sql`
+  json_agg(
+    json_build_object(
+      'eventDate', ${bookingDates.eventDate},
+      'startTime', ${bookingDates.startTime},
+      'endTime', ${bookingDates.endTime}
+    )
+    ORDER BY ${bookingDates.eventDate}
+  )
+`,
           status: bookings.status,
           isGuestBooking: bookings.isGuestBooking,
           guestName: bookings.guestName,
           guestEmail: bookings.guestEmail,
           guestPhone: bookings.guestPhone,
-  
+
           // Artist/Musician/Professional fields
           primaryArtistUserId: bookings.primaryArtistUserId,
           artistStageName: artists.stageName,
@@ -4220,7 +4229,7 @@ export class DatabaseStorage implements IStorage {
           artistPrimaryTalentId: artists.primaryTalentId,
           artistIsDemo: artists.isDemo,
           artistIsComplete: artists.isComplete,
-  
+
           // Workflow + contract/payment
           workflowData: bookings.workflowData,
           currentWorkflowStep: bookings.currentWorkflowStep,
@@ -4251,7 +4260,7 @@ export class DatabaseStorage implements IStorage {
           artists.isDemo,
           artists.isComplete
         );
-  
+
       const assignments = await db
         .select({
           id: bookingAssignmentsMembers.id,
@@ -4271,38 +4280,200 @@ export class DatabaseStorage implements IStorage {
           updatedAt: bookingAssignmentsMembers.updatedAt,
         })
         .from(bookingAssignmentsMembers);
-  
+
       const enriched = results.map((b) => ({
         ...b,
         assignments: assignments.filter((a) => a.bookingId === b.id),
       }));
-  
+
       return enriched;
     } catch (error) {
       console.error("Error fetching bookings with assignments:", error);
       return [];
     }
   }
-  
 
-  async getBookingsByArtist(artistUserId: number): Promise<Booking[]> {
+
+  // async getBookingsByArtist(artistUserId: number): Promise<Booking[]> {
+  //   return await db
+  //     .select()
+  //     .from(bookings)
+  //     .where(eq(bookings.primaryArtistUserId, artistUserId));
+  // }
+
+  async getBookingsByArtist(artistUserId: number): Promise<any[]> {
     return await db
-      .select()
+      .select({
+        id: bookings.id,
+        bookerUserId: bookings.bookerUserId,
+        primaryArtistUserId: bookings.primaryArtistUserId,
+        eventName: bookings.eventName,
+        eventType: bookings.eventType,
+        venueName: bookings.venueName,
+        venueAddress: bookings.venueAddress,
+        requirements: bookings.requirements,
+        status: bookings.status,
+        totalBudget: bookings.totalBudget,
+        finalPrice: bookings.finalPrice,
+        guestName: bookings.guestName,
+        guestEmail: bookings.guestEmail,
+        guestPhone: bookings.guestPhone,
+        isGuestBooking: bookings.isGuestBooking,
+        assignedAdminId: bookings.assignedAdminId,
+        adminApprovedAt: bookings.adminApprovedAt,
+        internalObjectives: bookings.internalObjectives,
+        internalNotes: bookings.internalNotes,
+        contractsGenerated: bookings.contractsGenerated,
+        allSignaturesCompleted: bookings.allSignaturesCompleted,
+        paymentCompleted: bookings.paymentCompleted,
+        receiptGenerated: bookings.receiptGenerated,
+        workflowData: bookings.workflowData,
+        currentWorkflowStep: bookings.currentWorkflowStep,
+        lastModified: bookings.lastModified,
+        createdAt: bookings.createdAt,
+        updatedAt: bookings.updatedAt,
+
+        eventDates: sql`
+          coalesce(
+            json_agg(
+              json_build_object(
+                'eventDate', ${bookingDates.eventDate},
+                'startTime', ${bookingDates.startTime},
+                'endTime', ${bookingDates.endTime}
+              )
+              ORDER BY ${bookingDates.eventDate}
+            ) FILTER (WHERE ${bookingDates.id} IS NOT NULL),
+            '[]'
+          )
+        `,
+      })
       .from(bookings)
-      .where(eq(bookings.primaryArtistUserId, artistUserId));
+      .leftJoin(bookingDates, eq(bookings.id, bookingDates.bookingId))
+      .where(eq(bookings.primaryArtistUserId, artistUserId))
+      .groupBy(bookings.id);
   }
 
-  async getBookingById(bookingId: number): Promise<Booking | undefined> {
+
+  // async getBookingById(bookingId: number): Promise<Booking | undefined> {
+  //   const [booking] = await db
+  //     .select()
+  //     .from(bookings)
+  //     .where(eq(bookings.id, bookingId));
+  //   return booking;
+  // }
+
+  async getBookingById(bookingId: number): Promise<any | undefined> {
     const [booking] = await db
-      .select()
+      .select({
+        id: bookings.id,
+        bookerUserId: bookings.bookerUserId,
+        primaryArtistUserId: bookings.primaryArtistUserId,
+        eventName: bookings.eventName,
+        eventType: bookings.eventType,
+        venueName: bookings.venueName,
+        venueAddress: bookings.venueAddress,
+        requirements: bookings.requirements,
+        status: bookings.status,
+        totalBudget: bookings.totalBudget,
+        finalPrice: bookings.finalPrice,
+        guestName: bookings.guestName,
+        guestEmail: bookings.guestEmail,
+        guestPhone: bookings.guestPhone,
+        isGuestBooking: bookings.isGuestBooking,
+        assignedAdminId: bookings.assignedAdminId,
+        adminApprovedAt: bookings.adminApprovedAt,
+        internalObjectives: bookings.internalObjectives,
+        internalNotes: bookings.internalNotes,
+        contractsGenerated: bookings.contractsGenerated,
+        allSignaturesCompleted: bookings.allSignaturesCompleted,
+        paymentCompleted: bookings.paymentCompleted,
+        receiptGenerated: bookings.receiptGenerated,
+        workflowData: bookings.workflowData,
+        currentWorkflowStep: bookings.currentWorkflowStep,
+        lastModified: bookings.lastModified,
+        createdAt: bookings.createdAt,
+        updatedAt: bookings.updatedAt,
+
+        eventDates: sql`
+          coalesce(
+            json_agg(
+              json_build_object(
+                'eventDate', ${bookingDates.eventDate},
+                'startTime', ${bookingDates.startTime},
+                'endTime', ${bookingDates.endTime}
+              )
+              ORDER BY ${bookingDates.eventDate}
+            ) FILTER (WHERE ${bookingDates.id} IS NOT NULL),
+            '[]'
+          )
+        `,
+      })
       .from(bookings)
-      .where(eq(bookings.id, bookingId));
-    return booking;
+      .leftJoin(bookingDates, eq(bookings.id, bookingDates.bookingId))
+      .where(eq(bookings.id, bookingId))
+      .groupBy(bookings.id);
+
+    return booking || undefined;
   }
 
-  async getBookings(): Promise<Booking[]> {
-    return await db.select().from(bookings);
+
+  // async getBookings(): Promise<Booking[]> {
+  //   return await db.select().from(bookings);
+  // }
+
+  async getBookings(): Promise<any[]> {
+    const results = await db
+      .select({
+        id: bookings.id,
+        bookerUserId: bookings.bookerUserId,
+        primaryArtistUserId: bookings.primaryArtistUserId,
+        eventName: bookings.eventName,
+        eventType: bookings.eventType,
+        venueName: bookings.venueName,
+        venueAddress: bookings.venueAddress,
+        requirements: bookings.requirements,
+        status: bookings.status,
+        totalBudget: bookings.totalBudget,
+        finalPrice: bookings.finalPrice,
+        guestName: bookings.guestName,
+        guestEmail: bookings.guestEmail,
+        guestPhone: bookings.guestPhone,
+        isGuestBooking: bookings.isGuestBooking,
+        assignedAdminId: bookings.assignedAdminId,
+        adminApprovedAt: bookings.adminApprovedAt,
+        internalObjectives: bookings.internalObjectives,
+        internalNotes: bookings.internalNotes,
+        contractsGenerated: bookings.contractsGenerated,
+        allSignaturesCompleted: bookings.allSignaturesCompleted,
+        paymentCompleted: bookings.paymentCompleted,
+        receiptGenerated: bookings.receiptGenerated,
+        workflowData: bookings.workflowData,
+        currentWorkflowStep: bookings.currentWorkflowStep,
+        lastModified: bookings.lastModified,
+        createdAt: bookings.createdAt,
+        updatedAt: bookings.updatedAt,
+
+        // ✅ EventDates aggregation
+        eventDates: sql`
+      coalesce(
+        json_agg(
+          json_build_object(
+            'eventDate', ${bookingDates.eventDate},
+            'startTime', ${bookingDates.startTime},
+            'endTime', ${bookingDates.endTime}
+          )
+          ORDER BY ${bookingDates.eventDate}
+        ) FILTER (WHERE ${bookingDates.id} IS NOT NULL),
+        '[]'
+      )
+    `,
+      })
+      .from(bookings)
+      .leftJoin(bookingDates, eq(bookings.id, bookingDates.bookingId))
+      .groupBy(bookings.id);
+    return results;
   }
+
 
   async getUserById(userId: number): Promise<User | undefined> {
     const [user] = await db.select().from(users).where(eq(users.id, userId));
@@ -11119,18 +11290,18 @@ export class DatabaseStorage implements IStorage {
         assignedBy: bookingAssignmentsMembers.assignedBy,
         assignedAt: bookingAssignmentsMembers.assignedAt,
         createdAt: bookingAssignmentsMembers.createdAt,
-  
+
         user: {
           id: users.id,
           fullName: users.fullName,
           email: users.email,
         },
-  
+
         role: {
           id: rolesManagement.id,
           name: rolesManagement.name,
         },
-  
+
         instrument: {
           id: allInstruments.id,
           name: allInstruments.name,
@@ -11144,7 +11315,7 @@ export class DatabaseStorage implements IStorage {
       .leftJoin(allInstruments, eq(bookingAssignmentsMembers.selectedTalent, allInstruments.id))
       .where(eq(bookingAssignmentsMembers.bookingId, bookingId))
       .orderBy(desc(bookingAssignmentsMembers.isMainBookedTalent));
-  
+
     return result;
   }
 

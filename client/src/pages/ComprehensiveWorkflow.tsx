@@ -268,14 +268,23 @@ export default function ComprehensiveWorkflow() {
                       </div>
                       <div>
                         <p className="text-sm font-medium text-muted-foreground">Date</p>
-                        <p className="font-semibold">
-                          {new Date(currentBooking.eventDate).toLocaleDateString()}
-                        </p>
+                        <div>
+                          {currentBooking.eventDates?.map((event: any, i: number) => (
+                            <p key={i} className='whitespace-nowrap'>
+                              {new Date(event.eventDate).toLocaleDateString()} {" "}
+                              {event.startTime && event.endTime
+                                ? `${event.startTime} - ${event.endTime}`
+                                : ""}
+                            </p>
+                          ))}
+                        </div>
                       </div>
                       <div>
                         <p className="text-sm font-medium text-muted-foreground">Status</p>
                         <Badge className={getStatusColor(currentBooking.status)}>
-                          {currentBooking.status}
+                          <span className='capitalize'>
+                            {currentBooking.status}
+                          </span>
                         </Badge>
                       </div>
                     </div>
