@@ -3555,6 +3555,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
           selectedTalent,
           isMainBookedTalent,
           assignmentType,
+
           assignedGroup,
           assignedChannel,
           assignedChannelPair,
@@ -3571,6 +3572,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
           selectedTalent,
           isMainBookedTalent,
           assignmentType,
+
           assignedGroup,
           assignedChannel,
           assignedChannelPair,
@@ -3847,7 +3849,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     async (req: Request, res: Response) => {
       try {
         const userId = req.user!.userId;
-  
+
         // Assignments where user is involved
         const rawAssignments = await db
           .select({
@@ -3910,7 +3912,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
             schema.rolesManagement.name,
             schema.allInstruments.name
           );
-  
+
         // Bookings where user is the primary artist
         const primaryBookings = await db
           .select({
@@ -3942,7 +3944,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
           )
           .where(eq(schema.bookings.primaryArtistUserId, userId))
           .groupBy(schema.bookings.id);
-  
+
         // Merge both lists
         const allGigs = [...rawAssignments, ...primaryBookings]
           .sort((a, b) => {
@@ -3959,7 +3961,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
             (gig, index, self) =>
               index === self.findIndex((g) => g.bookingId === gig.bookingId)
           );
-  
+
         res.json(allGigs);
       } catch (error) {
         logError(error, ErrorSeverity.ERROR, {
@@ -3970,9 +3972,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
       }
     }
   );
-  
-  
-  
+
+
+
 
   // Get available talent for assignment (users who can be assigned to bookings)
   app.get(
@@ -12090,7 +12092,7 @@ This is a preview of the performance engagement contract. Final agreement will i
     async (req: Request, res: Response) => {
       try {
         const bookingId = parseInt(req.params.id);
-        const booking = await storage.getBooking(bookingId);
+        const booking = await storage.getBookingById(bookingId);
 
         if (!booking) {
           return res.status(404).json({ message: "Booking not found" });
@@ -19920,8 +19922,8 @@ This is a preview of the performance engagement contract. Final agreement will i
             assignmentName: assignment.assignedUserName,
             fullName: assignment.assignedUserName,
             stageName: assignment.stageName || null,
-            type: assignment.role || assignment.roleInBooking,
-            role: assignment.role || assignment.roleInBooking,
+            type: isMainBooked ? "Main Booked Talent" : assignment.role,
+            role: assignment.role,
             isMainBookedTalent: isMainBooked,
             isPrimary: isMainBooked,
             primaryTalent: assignment.talent || null,

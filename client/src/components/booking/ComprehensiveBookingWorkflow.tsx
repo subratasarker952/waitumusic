@@ -161,7 +161,7 @@ export default function BookingWorkflow({
   function formatEventDates(eventDates: any[]) {
     return eventDates.map(({ eventDate, startTime, endTime }) => {
       const dateObj = new Date(eventDate);
-      const formattedDate = dateObj.toLocaleDateString("en-US",{ month: "short", day: "numeric", year: "numeric" });
+      const formattedDate = dateObj.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
 
       const formatTime = (time: any) => {
         const [hour, minute] = time?.split(":")?.map(Number);
@@ -720,10 +720,7 @@ export default function BookingWorkflow({
           individualPrice:
             individualPricing[talent.id]?.price ||
             parseFloat(
-              categoryPricing[
-              talent.type as keyof typeof categoryPricing
-              ] as string
-            ) ||
+              categoryPricing[talent.type as keyof typeof categoryPricing] as string) ||
             0,
           paymentTerms:
             individualPricing[talent.id]?.paymentTerms ||
@@ -1860,15 +1857,15 @@ export default function BookingWorkflow({
                         {booking.primaryArtist?.isManaged ? "Managed " : ""}
                         {booking.primaryArtist?.userType || "Artist"}
                       </p>
-                      <div className="text-sm text-gray-600 mt-1">
-                        Event: {booking.eventName} •{" "}
-                        <div>
-                          {formatEventDates(booking.eventDates)}
-                        </div>
-                      </div>
                       {/* <Badge variant="default" className="mt-2 bg-emerald-600">
                         Main Booked Talent
-                      </Badge> */}
+                        </Badge> */}
+                    </div>
+                    <div>
+                      <p className="font-bold"> {booking.eventName}</p>
+                      <div>
+                        {formatEventDates(booking.eventDates)}
+                      </div>
                     </div>
                   </div>
                   <div className="flex-1 flex justify-center items-center w-full h-full">
@@ -1976,7 +1973,7 @@ export default function BookingWorkflow({
                           {talent.assignmentName || talent.name || "No name"}
                         </p>
                         <p className="text-sm text-muted-foreground">
-                          {talent.type || "No type"} •{" "}
+                          {talent.type || "No type"} •
                           {talent.genre || talent.role || "No role"}
                         </p>
                         {/* Performance Professional Rate Field */}
@@ -2386,7 +2383,7 @@ export default function BookingWorkflow({
                                   {musician.secondaryTalents &&
                                     musician.secondaryTalents.length > 3 && (
                                       <span className="text-xs text-muted-foreground">
-                                        +{musician.secondaryTalents.length - 3}{" "}
+                                        +{musician.secondaryTalents.length - 3}
                                         more
                                       </span>
                                     )}
@@ -2509,7 +2506,7 @@ export default function BookingWorkflow({
                                   {musician.secondaryTalents &&
                                     musician.secondaryTalents.length > 3 && (
                                       <span className="text-xs text-muted-foreground">
-                                        +{musician.secondaryTalents.length - 3}{" "}
+                                        +{musician.secondaryTalents.length - 3}
                                         more
                                       </span>
                                     )}
@@ -2606,7 +2603,7 @@ export default function BookingWorkflow({
                                     professional.user?.fullName}
                                 </p>
                                 <p className="text-sm text-muted-foreground">
-                                  Managed Professional •{" "}
+                                  Managed Professional •
                                   {professional.primaryTalent}
                                 </p>
                               </div>
@@ -2828,24 +2825,6 @@ export default function BookingWorkflow({
             </div>
           </CardHeader>
           <CardContent className="space-y-6">
-            {/* Counter-Offer Deadline */}
-            <div>
-              <label className="text-sm font-medium">
-                Counter-Offer Deadline
-              </label>
-              <input
-                type="datetime-local"
-                value={contractConfig.counterOfferDeadline}
-                onChange={(e) =>
-                  setContractConfig((prev) => ({
-                    ...prev,
-                    counterOfferDeadline: e.target.value,
-                  }))
-                }
-                className="w-full mt-1 p-2 border rounded"
-              />
-            </div>
-
             {/* Category-Based Pricing */}
             <div>
               <h4 className="text-lg font-medium mb-3 flex items-center gap-2">
@@ -2943,8 +2922,7 @@ export default function BookingWorkflow({
                         <p className="text-sm text-muted-foreground">
                           {talent.isMainBookedTalent
                             ? "Main Booked Talent"
-                            : talent.type}{" "}
-                          - {talent.role}
+                            : talent.type} - {talent.role}
                         </p>
                       </div>
                     </div>
@@ -2958,13 +2936,7 @@ export default function BookingWorkflow({
                           min="0"
                           value={
                             individualPricing[talent.id]?.price ||
-                            parseFloat(
-                              categoryPricing[
-                              talent.type as keyof typeof categoryPricing
-                              ] as string
-                            ) ||
-                            ""
-                          }
+                            parseFloat(categoryPricing[talent.type as keyof typeof categoryPricing] as string) || ""}
                           onChange={(e) => {
                             const value = Math.max(
                               0,
@@ -3172,6 +3144,24 @@ export default function BookingWorkflow({
                   </Card>
                 ))}
               </div>
+            </div>
+
+            {/* Counter-Offer Deadline */}
+            <div>
+              <label className="text-sm font-medium">
+                Counter-Offer Deadline
+              </label>
+              <input
+                type="datetime-local"
+                value={contractConfig.counterOfferDeadline}
+                onChange={(e) =>
+                  setContractConfig((prev) => ({
+                    ...prev,
+                    counterOfferDeadline: e.target.value,
+                  }))
+                }
+                className="w-full mt-1 p-2 border rounded"
+              />
             </div>
 
             {/* Global Contract Terms */}
