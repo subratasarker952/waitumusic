@@ -158,6 +158,22 @@ export default function BookingWorkflow({
   const sigRefs = useRef<{ [key: string]: SignatureCanvas | null }>({});
 
 
+  function formatEventDates(eventDates: any[]) {
+    return eventDates.map(({ eventDate, startTime, endTime }) => {
+      const dateObj = new Date(eventDate);
+      const formattedDate = dateObj.toLocaleDateString("en-US",{ month: "short", day: "numeric", year: "numeric" });
+
+      const formatTime = (time: any) => {
+        const [hour, minute] = time?.split(":")?.map(Number);
+        const ampm = hour >= 12 ? "PM" : "AM";
+        const hour12 = hour % 12 || 12;
+        return `${hour12}:${minute.toString().padStart(2, "0")} ${ampm}`;
+      };
+
+      return <p className='whitespace-nowrap' key={eventDate}>{formattedDate} ({formatTime(startTime)} - {formatTime(endTime)})</p>;
+    });
+  }
+
   const openSignaturePad = (signerType: string) => {
     setActiveSignature(signerType);
   };
@@ -1847,19 +1863,12 @@ export default function BookingWorkflow({
                       <div className="text-sm text-gray-600 mt-1">
                         Event: {booking.eventName} •{" "}
                         <div>
-                          {booking.eventDates?.map((event: any, i: number) => (
-                            <p key={i} className='whitespace-nowrap'>
-                              {new Date(event.eventDate).toLocaleDateString()} {" "}
-                              {event.startTime && event.endTime
-                                ? `${event.startTime} - ${event.endTime}`
-                                : ""}
-                            </p>
-                          ))}
+                          {formatEventDates(booking.eventDates)}
                         </div>
                       </div>
-                      <Badge variant="default" className="mt-2 bg-emerald-600">
+                      {/* <Badge variant="default" className="mt-2 bg-emerald-600">
                         Main Booked Talent
-                      </Badge>
+                      </Badge> */}
                     </div>
                   </div>
                   <div className="flex-1 flex justify-center items-center w-full h-full">
@@ -1873,7 +1882,9 @@ export default function BookingWorkflow({
                               : "secondary"
                           }
                         >
-                          {booking.status || "pending"}
+                          <span className="capitalize">
+                            {booking.status || "pending"}
+                          </span>
                         </Badge>
                       </div>
                       <div className="flex gap-2">
@@ -2138,9 +2149,11 @@ export default function BookingWorkflow({
                               <p className="font-medium">
                                 {artist.stageName || artist.user?.fullName}
                               </p>
-                              <p className="text-sm text-muted-foreground">
+
+                              {(booking?.primaryArtist.userId === artist.userId) ? <Badge variant="default" className="bg-emerald-600 px-2 text-sm p-1 text-white">Requested Artist • {artist.primaryTalent}</Badge> : <p className="text-sm text-muted-foreground">
                                 Managed Artist • {artist.primaryTalent}
-                              </p>
+                              </p>}
+
                             </div>
                           </div>
                           {assignedTalent.some((t) => t.userId === artist.userId) ? (
@@ -2157,7 +2170,6 @@ export default function BookingWorkflow({
                                   const artistRoles = [primaryRole, ...(artist.skillsAndInstruments || [])].filter(Boolean);
                                   const newAssignment = {
                                     id: Date.now(),
-                                    userId: artist.userId,
                                     name: artist.stageName || artist.user?.fullName,
                                     type: "Main Booked Talent",
                                     role: "Main Booked Talent",
@@ -2166,23 +2178,23 @@ export default function BookingWorkflow({
                                     avatarUrl: artist.profile?.avatarUrl,
                                     genre: artist.genre,
                                     isPrimary: true,
+
+                                    userId: artist.userId,
+                                    roleId: 3,
                                     isMainBookedTalent: true,
                                     primaryTalentId: artist.primaryTalentId,
                                     assignmentType: "manual",
                                   };
 
                                   try {
-                                    await createAssignmentMutation.mutateAsync({
-                                      ...newAssignment,
-                                      roleId: 3,
-                                    });
+                                    await createAssignmentMutation.mutateAsync(newAssignment);
                                     console.log("✅ Main talent assigned");
                                   } catch (error) {
                                     console.error("❌ Failed to assign main talent:", error);
                                   }
                                 }}
                               >
-                                Assign as Main Talent
+                                Assign as Main
                               </Button>
                               {/* Normal Assign */}
                               <Button
@@ -2194,7 +2206,6 @@ export default function BookingWorkflow({
                                   const artistRoles = [primaryRole, ...(artist.skillsAndInstruments || [])].filter(Boolean);
                                   const newAssignment = {
                                     id: Date.now(),
-                                    userId: artist.userId,
                                     name: artist.stageName || artist.user?.fullName,
                                     type: "Artist",
                                     role: primaryRole,
@@ -2203,16 +2214,16 @@ export default function BookingWorkflow({
                                     avatarUrl: artist.profile?.avatarUrl,
                                     genre: artist.genre,
                                     isPrimary: false,
+
+                                    userId: artist.userId,
+                                    roleId: 4,
                                     isMainBookedTalent: false,
                                     primaryTalentId: artist.primaryTalentId,
                                     assignmentType: "manual",
                                   };
 
                                   try {
-                                    await createAssignmentMutation.mutateAsync({
-                                      ...newAssignment,
-                                      roleId: 4,
-                                    });
+                                    await createAssignmentMutation.mutateAsync(newAssignment);
                                     console.log("✅ Supporting talent assigned");
                                   } catch (error) {
                                     console.error("❌ Failed to assign:", error);
@@ -2257,53 +2268,16 @@ export default function BookingWorkflow({
                             <p className="font-medium">
                               {artist.stageName || artist.user?.fullName}
                             </p>
-                            <p className="text-sm text-muted-foreground">
+                            {(booking?.primaryArtist.userId === artist.userId) ? <Badge variant="default" className="bg-emerald-600 px-2 text-sm p-1 text-white">Requested Artist • {artist.primaryTalent}</Badge> : <p className="text-sm text-muted-foreground">
                               Artist • {artist.primaryTalent}
-                            </p>
+                            </p>}
                           </div>
                         </div>
                         {assignedTalent.some((t) => t.userId === artist.userId) ? (
                           <Badge variant="secondary">Already Assigned</Badge>
                         ) : (
                           <div className="flex gap-2">
-                            {/* Assign as Main Talent */}
-                            <Button
-                              variant="default"
-                              size="sm"
-                              className="bg-emerald-600 hover:bg-emerald-700 text-white"
-                              onClick={async () => {
-                                const primaryRole = artist.primaryRole || "Lead Vocalist";
-                                const artistRoles = [primaryRole, ...(artist.skillsAndInstruments || [])].filter(Boolean);
-                                const newAssignment = {
-                                  id: Date.now(),
-                                  userId: artist.userId,
-                                  name: artist.stageName || artist.user?.fullName,
-                                  type: "Main Booked Talent",
-                                  role: "Main Booked Talent",
-                                  selectedRoles: ["Main Booked Talent", ...artistRoles],
-                                  availableRoles: artistRoles,
-                                  avatarUrl: artist.profile?.avatarUrl,
-                                  genre: artist.genre,
-                                  isPrimary: true,
-                                  isMainBookedTalent: true,
-                                  primaryTalentId: artist.primaryTalentId,
-                                  assignmentType: "manual",
-                                };
-
-                                try {
-                                  await createAssignmentMutation.mutateAsync({
-                                    ...newAssignment,
-                                    roleId: 4,
-                                  });
-                                  console.log("✅ Main talent assigned");
-                                } catch (error) {
-                                  console.error("❌ Failed to assign main talent:", error);
-                                }
-                              }}
-                            >
-                              Assign as Main Talent
-                            </Button>
-                            {/* Normal Assign */}
+                            {/* Assign artist*/}
                             <Button
                               variant="outline"
                               size="sm"
@@ -2313,7 +2287,6 @@ export default function BookingWorkflow({
                                 const artistRoles = [primaryRole, ...(artist.skillsAndInstruments || [])].filter(Boolean);
                                 const newAssignment = {
                                   id: Date.now(),
-                                  userId: artist.userId,
                                   name: artist.stageName || artist.user?.fullName,
                                   type: "Artist",
                                   role: primaryRole,
@@ -2322,16 +2295,16 @@ export default function BookingWorkflow({
                                   avatarUrl: artist.profile?.avatarUrl,
                                   genre: artist.genre,
                                   isPrimary: false,
+
+                                  userId: artist.userId,
+                                  roleId: 4,
                                   isMainBookedTalent: false,
                                   primaryTalentId: artist.primaryTalentId,
                                   assignmentType: "manual",
                                 };
 
                                 try {
-                                  await createAssignmentMutation.mutateAsync({
-                                    ...newAssignment,
-                                    roleId: 4,
-                                  });
+                                  await createAssignmentMutation.mutateAsync(newAssignment);
                                   console.log("✅ Supporting talent assigned");
                                 } catch (error) {
                                   console.error("❌ Failed to assign:", error);
@@ -2439,7 +2412,6 @@ export default function BookingWorkflow({
                                   const musicianRoles = [primaryRole, ...(musician.secondaryTalents || []),].filter(Boolean);
                                   const newAssignment = {
                                     id: Date.now(),
-                                    userId: musician.userId,
                                     name: musician.stageName || musician.user?.fullName,
                                     type: isMainBookedTalent ? "Main Booked Talent" : "Managed Musician",
                                     role: isMainBookedTalent ? "Main Booked Talent" : primaryRole,
@@ -2447,28 +2419,19 @@ export default function BookingWorkflow({
                                     availableRoles: musicianRoles,
                                     avatarUrl: musician.profile?.avatarUrl,
                                     isPrimary: isMainBookedTalent,
+
+                                    userId: musician.userId,
+                                    roleId: 5, // managed_musician role
+                                    isMainBookedTalent: false,
                                     primaryTalentId: musician.primaryTalentId,
-                                    isMainBookedTalent: isMainBookedTalent,
+                                    assignmentType: "manual",
                                   };
-                                  // setAssignedTalent([...assignedTalent, newAssignment]);
-                                  // toast({
-                                  //   title: "Assignment",
-                                  //   description: `${musician.stageName || musician.user?.fullName} assigned as ${isMainBookedTalent ? 'Main Booked Talent' : primaryRole}`
-                                  // });
-                                  // Save immediately to database
+
                                   try {
-                                    await createAssignmentMutation.mutateAsync({
-                                      ...newAssignment,
-                                      roleId: 5, // managed_musician role
-                                    });
-                                    console.log(
-                                      "✅ Managed musician assignment saved to database immediately"
-                                    );
+                                    await createAssignmentMutation.mutateAsync(newAssignment);
+                                    console.log("✅ Managed musician assignment saved ");
                                   } catch (error) {
-                                    console.error(
-                                      "❌ Failed to save managed musician assignment:",
-                                      error
-                                    );
+                                    console.error("❌ Failed to save managed musician assignment:", error);
                                   }
                                 }}
                               >
@@ -2576,44 +2539,27 @@ export default function BookingWorkflow({
                                   ].filter(Boolean);
                                   const newAssignment = {
                                     id: Date.now(),
-                                    userId: musician.userId,
-                                    name:
-                                      musician.stageName ||
-                                      musician.user?.fullName,
-                                    type: isMainBookedTalent
-                                      ? "Main Booked Talent"
-                                      : "Musician",
-                                    role: isMainBookedTalent
-                                      ? "Main Booked Talent"
-                                      : primaryRole,
-                                    selectedRoles: isMainBookedTalent
-                                      ? ["Main Booked Talent", ...musicianRoles]
-                                      : musicianRoles,
+                                    name: musician.stageName || musician.user?.fullName,
+                                    type: isMainBookedTalent ? "Main Booked Talent" : "Musician",
+                                    role: isMainBookedTalent ? "Main Booked Talent" : primaryRole,
+                                    selectedRoles: isMainBookedTalent ? ["Main Booked alent", ...musicianRoles] : musicianRoles,
                                     availableRoles: musicianRoles,
                                     avatarUrl: musician.profile?.avatarUrl,
                                     isPrimary: isMainBookedTalent,
+
+
+                                    userId: musician.userId,
+                                    roleId: 6, // managed_musician role
+                                    isMainBookedTalent: false,
                                     primaryTalentId: musician.primaryTalentId,
-                                    isMainBookedTalent: isMainBookedTalent,
+                                    assignmentType: "manual",
                                   };
-                                  // setAssignedTalent([...assignedTalent, newAssignment]);
-                                  // toast({
-                                  //   title: "Assignment",
-                                  //   description: `${musician.stageName || musician.user?.fullName} assigned as ${isMainBookedTalent ? 'Main Booked Talent' : primaryRole}`
-                                  // });
-                                  // Save immediately to database
+
                                   try {
-                                    await createAssignmentMutation.mutateAsync({
-                                      ...newAssignment,
-                                      roleId: 6, // musician role
-                                    });
-                                    console.log(
-                                      "✅ Musician assignment saved to database immediately"
-                                    );
+                                    await createAssignmentMutation.mutateAsync(newAssignment);
+                                    console.log("✅ Musician assignment saved");
                                   } catch (error) {
-                                    console.error(
-                                      "❌ Failed to save musician assignment:",
-                                      error
-                                    );
+                                    console.error("❌ Failed to save musician assignment:", error);
                                   }
                                 }}
                               >
@@ -2680,7 +2626,6 @@ export default function BookingWorkflow({
                                   // Simple assignment for professionals - they don't need talent dropdowns
                                   const newAssignment = {
                                     id: Date.now(),
-                                    userId: professional.userId,
                                     name:
                                       professional.stageName ||
                                       professional.user?.fullName,
@@ -2688,30 +2633,20 @@ export default function BookingWorkflow({
                                     role:
                                       professional.serviceType ||
                                       "Contracted Professional",
-                                    primaryTalentId:
-                                      professional.primaryTalentId,
                                     avatarUrl: professional.profile?.avatarUrl,
-                                  };
-                                  // setAssignedTalent([...assignedTalent, newAssignment]);
-                                  // toast({
-                                  //   title: "Assignment",
-                                  //   description: `${professional.stageName || professional.user?.fullName} assigned as ${professional.serviceType || 'Professional'}`
-                                  // });
 
-                                  // Save immediately to database
+                                    userId: professional.userId,
+                                    roleId: 7, // professional role
+                                    isMainBookedTalent: false,
+                                    primaryTalentId: professional.primaryTalentId,
+                                    assignmentType: "manual",
+                                  };
+
                                   try {
-                                    await createAssignmentMutation.mutateAsync({
-                                      ...newAssignment,
-                                      roleId: 7, // professional role
-                                    });
-                                    console.log(
-                                      "✅ Professional assignment saved to database immediately"
-                                    );
+                                    await createAssignmentMutation.mutateAsync(newAssignment);
+                                    console.log("✅ Professional assignment saved to database immediately");
                                   } catch (error) {
-                                    console.error(
-                                      "❌ Failed to save professional assignment:",
-                                      error
-                                    );
+                                    console.error("❌ Failed to save professional assignment:", error);
                                   }
                                 }}
                               >
@@ -2775,34 +2710,23 @@ export default function BookingWorkflow({
                                   // Simple assignment for professionals - they don't need talent dropdowns
                                   const newAssignment = {
                                     id: Date.now(),
-                                    userId: professional.userId,
-                                    name:
-                                      professional.stageName ||
-                                      professional.user?.fullName,
+                                    name: professional.stageName || professional.user?.fullName,
                                     type: "Professional",
-                                    role:
-                                      professional.serviceType ||
-                                      "Professional",
+                                    role: professional.serviceType || "Professional",
                                     avatarUrl: professional.profile?.avatarUrl,
+
+                                    userId: professional.userId,
+                                    roleId: 8, // professional role
+                                    isMainBookedTalent: false,
+                                    primaryTalentId: professional.primaryTalentId,
+                                    assignmentType: "manual",
                                   };
-                                  // setAssignedTalent([...assignedTalent, newAssignment]);
-                                  // toast({
-                                  //   title: "Assignment",
-                                  //   description: `${professional.stageName || professional.user?.fullName} assigned as ${professional.serviceType || 'Professional'}`
-                                  // });
+
                                   try {
-                                    await createAssignmentMutation.mutateAsync({
-                                      ...newAssignment,
-                                      roleId: 8, // professional role
-                                    });
-                                    console.log(
-                                      "✅ Professional assignment saved to database immediately"
-                                    );
+                                    await createAssignmentMutation.mutateAsync(newAssignment);
+                                    console.log("✅ Professional assignment saved to database immediately");
                                   } catch (error) {
-                                    console.error(
-                                      "❌ Failed to save professional assignment:",
-                                      error
-                                    );
+                                    console.error("❌ Failed to save professional assignment:", error);
                                   }
                                 }}
                               >
@@ -2870,7 +2794,7 @@ export default function BookingWorkflow({
             Save Step {currentStep} Data
           </Button>
         </div> */}
-      </div>
+      </div >
     );
   };
 

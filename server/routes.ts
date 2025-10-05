@@ -1688,7 +1688,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
               let primaryTalent = null;
               if (professional.primaryTalentId) {
-                const talent = await storage.getPrimaryTalentById(pofessional.primaryTalentId);
+                const talent = await storage.getPrimaryTalentById(professional.primaryTalentId);
                 primaryTalent = talent ? talent.name : null;
               }
 
@@ -12158,224 +12158,224 @@ This is a preview of the performance engagement contract. Final agreement will i
 
 
   // Get booking workflow data
-  app.get(
-    "/api/bookings/:id/workflow",
-    authenticateToken,
-    async (req: Request, res: Response) => {
-      try {
-        const bookingId = parseInt(req.params.id);
-        const booking = await storage.getBooking(bookingId);
+  // app.get(
+  //   "/api/bookings/:id/workflow",
+  //   authenticateToken,
+  //   async (req: Request, res: Response) => {
+  //     try {
+  //       const bookingId = parseInt(req.params.id);
+  //       const booking = await storage.getBooking(bookingId);
 
-        if (!booking) {
-          return res.status(404).json({ message: "Booking not found" });
-        }
+  //       if (!booking) {
+  //         return res.status(404).json({ message: "Booking not found" });
+  //       }
 
-        // Get related data for workflow
-        const [
-          primaryArtist,
-          assignedMusicianIds,
-          contracts,
-          signatures,
-          payments,
-        ] = await Promise.all([
-          storage.getUser(booking.primaryArtistUserId),
-          storage.getBookingAssignments(bookingId), // Get real assigned musicians from database
-          [], // TODO: Implement contracts retrieval
-          [], // TODO: Implement signatures retrieval
-          [], // TODO: Implement payments retrieval
-        ]);
+  //       // Get related data for workflow
+  //       const [
+  //         primaryArtist,
+  //         assignedMusicianIds,
+  //         contracts,
+  //         signatures,
+  //         payments,
+  //       ] = await Promise.all([
+  //         storage.getUser(booking.primaryArtistUserId),
+  //         storage.getBookingAssignments(bookingId), // Get real assigned musicians from database
+  //         [], // TODO: Implement contracts retrieval
+  //         [], // TODO: Implement signatures retrieval
+  //         [], // TODO: Implement payments retrieval
+  //       ]);
 
-        // Load full musician details with profile data
-        const assignedMusicians = await Promise.all(
-          assignedMusicianIds.map(async (assignment: any) => {
-            const user = await storage.getUser(
-              assignment.assigned_user_id || assignment.assignedUserId
-            );
-            if (!user) return null;
+  //       // Load full musician details with profile data
+  //       const assignedMusicians = await Promise.all(
+  //         assignedMusicianIds.map(async (assignment: any) => {
+  //           const user = await storage.getUser(
+  //             assignment.assigned_user_id || assignment.assignedUserId
+  //           );
+  //           if (!user) return null;
 
-            // Get musician profile data
-            const musicianProfile = await storage.getMusician(user.id);
-            const artistProfile = await storage.getArtist(user.id);
-            const professionalProfile = await storage.getProfessional(user.id);
+  //           // Get musician profile data
+  //           const musicianProfile = await storage.getMusician(user.id);
+  //           const artistProfile = await storage.getArtist(user.id);
+  //           const professionalProfile = await storage.getProfessional(user.id);
 
-            const profile =
-              musicianProfile || artistProfile || professionalProfile;
+  //           const profile =
+  //             musicianProfile || artistProfile || professionalProfile;
 
-            return {
-              id: user.id,
-              userId: user.id,
-              name: user.fullName,
-              fullName: user.fullName,
-              email: user.email,
-              role: assignment.assignment_role || assignment.role,
-              assignmentRole: assignment.assignment_role || assignment.role,
-              primaryRole: profile?.primary_role || profile?.primaryRole,
-              skillsAndInstruments:
-                profile?.skills_and_instruments ||
-                profile?.skillsAndInstruments ||
-                [],
-              availableRoles:
-                profile?.performance_roles || profile?.performanceRoles || [],
-              instruments:
-                profile?.skills_and_instruments || profile?.instruments || [],
-              stageName:
-                profile?.stage_names?.[0] || profile?.stageNames?.[0] || "",
-              isManaged: user.roleId >= 3, // roleId 3+ are managed users
-              userType: await storage.getRoleName(user.roleId),
-            };
-          })
-        ).then((results) => results.filter(Boolean)); // Remove null entries
+  //           return {
+  //             id: user.id,
+  //             userId: user.id,
+  //             name: user.fullName,
+  //             fullName: user.fullName,
+  //             email: user.email,
+  //             role: assignment.assignment_role || assignment.role,
+  //             assignmentRole: assignment.assignment_role || assignment.role,
+  //             primaryRole: profile?.primary_role || profile?.primaryRole,
+  //             skillsAndInstruments:
+  //               profile?.skills_and_instruments ||
+  //               profile?.skillsAndInstruments ||
+  //               [],
+  //             availableRoles:
+  //               profile?.performance_roles || profile?.performanceRoles || [],
+  //             instruments:
+  //               profile?.skills_and_instruments || profile?.instruments || [],
+  //             stageName:
+  //               profile?.stage_names?.[0] || profile?.stageNames?.[0] || "",
+  //             isManaged: user.roleId >= 3, // roleId 3+ are managed users
+  //             userType: await storage.getRoleName(user.roleId),
+  //           };
+  //         })
+  //       ).then((results) => results.filter(Boolean)); // Remove null entries
 
-        // Enhance primaryArtist with role information
-        let enhancedPrimaryArtist = primaryArtist;
-        if (primaryArtist) {
-          const artistDetails = await storage.getArtist(primaryArtist.id);
+  //       // Enhance primaryArtist with role information
+  //       let enhancedPrimaryArtist = primaryArtist;
+  //       if (primaryArtist) {
+  //         const artistDetails = await storage.getArtist(primaryArtist.id);
 
-          // Determine userType based on roleId - fetch from database
-          const userType = await storage.getRoleName(primaryArtist.roleId);
+  //         // Determine userType based on roleId - fetch from database
+  //         const userType = await storage.getRoleName(primaryArtist.roleId);
 
-          enhancedPrimaryArtist = {
-            ...primaryArtist,
-            userType,
-            isManaged: artistDetails?.isManaged || false,
-            stageName:
-              (artistDetails?.stageNames as string[])?.[0] ||
-              primaryArtist.fullName,
-          };
-        }
+  //         enhancedPrimaryArtist = {
+  //           ...primaryArtist,
+  //           userType,
+  //           isManaged: artistDetails?.isManaged || false,
+  //           stageName:
+  //             (artistDetails?.stageNames as string[])?.[0] ||
+  //             primaryArtist.fullName,
+  //         };
+  //       }
 
-        const workflowData = {
-          ...booking,
-          primaryArtist: enhancedPrimaryArtist,
-          assignedMusicians,
-          contracts,
-          signatures,
-          payments,
-        };
+  //       const workflowData = {
+  //         ...booking,
+  //         primaryArtist: enhancedPrimaryArtist,
+  //         assignedMusicians,
+  //         contracts,
+  //         signatures,
+  //         payments,
+  //       };
 
-        res.json(workflowData);
-      } catch (error) {
-        console.error("Get booking workflow error:", error);
-        res.status(500).json({ message: "Internal server error" });
-      }
-    }
-  );
+  //       res.json(workflowData);
+  //     } catch (error) {
+  //       console.error("Get booking workflow error:", error);
+  //       res.status(500).json({ message: "Internal server error" });
+  //     }
+  //   }
+  // );
 
   // Get booking workflow data
-  app.get(
-    "/api/bookings/:id/workflow",
-    authenticateToken,
-    async (req: Request, res: Response) => {
-      // Disable caching to ensure fresh data
-      res.set("Cache-Control", "no-cache, no-store, must-revalidate");
-      res.set("Pragma", "no-cache");
-      res.set("Expires", "0");
+  // app.get(
+  //   "/api/bookings/:id/workflow",
+  //   authenticateToken,
+  //   async (req: Request, res: Response) => {
+  //     // Disable caching to ensure fresh data
+  //     res.set("Cache-Control", "no-cache, no-store, must-revalidate");
+  //     res.set("Pragma", "no-cache");
+  //     res.set("Expires", "0");
 
-      try {
-        const bookingId = parseInt(req.params.id);
-        const booking = await storage.getBooking(bookingId);
+  //     try {
+  //       const bookingId = parseInt(req.params.id);
+  //       const booking = await storage.getBooking(bookingId);
 
-        if (!booking) {
-          return res.status(404).json({ message: "Booking not found" });
-        }
+  //       if (!booking) {
+  //         return res.status(404).json({ message: "Booking not found" });
+  //       }
 
-        // Get related data for complete booking details
-        const [primaryArtist, booker] = await Promise.all([
-          storage.getUser(booking.primaryArtistUserId),
-          booking.bookerUserId ? storage.getUser(booking.bookerUserId) : null,
-        ]);
+  //       // Get related data for complete booking details
+  //       const [primaryArtist, booker] = await Promise.all([
+  //         storage.getUser(booking.primaryArtistUserId),
+  //         booking.bookerUserId ? storage.getUser(booking.bookerUserId) : null,
+  //       ]);
 
-        // Transform artist to match expected format
-        const artistDetails = primaryArtist
-          ? await storage.getArtist(primaryArtist.id)
-          : null;
+  //       // Transform artist to match expected format
+  //       const artistDetails = primaryArtist
+  //         ? await storage.getArtist(primaryArtist.id)
+  //         : null;
 
-        // Parse workflow data if available
-        let parsedWorkflowData = null;
-        try {
-          if (booking.workflowData) {
-            parsedWorkflowData = JSON.parse(booking.workflowData as string);
-          }
-        } catch (e) {
-          console.log("Failed to parse workflow data, using null");
-        }
+  //       // Parse workflow data if available
+  //       let parsedWorkflowData = null;
+  //       try {
+  //         if (booking.workflowData) {
+  //           parsedWorkflowData = JSON.parse(booking.workflowData as string);
+  //         }
+  //       } catch (e) {
+  //         console.log("Failed to parse workflow data, using null");
+  //       }
 
-        // Determine talent type based on roleId directly
-        let talentType = "Artist"; // default
-        if (primaryArtist?.roleId) {
-          talentType = await storage.getRoleName(primaryArtist.roleId);
-        }
+  //       // Determine talent type based on roleId directly
+  //       let talentType = "Artist"; // default
+  //       if (primaryArtist?.roleId) {
+  //         talentType = await storage.getRoleName(primaryArtist.roleId);
+  //       }
 
-        const bookingDetails = {
-          ...booking,
-          primaryArtist: artistDetails
-            ? {
-              userId: primaryArtist.id,
-              fullName: primaryArtist.fullName,
-              stageName:
-                (artistDetails.stageNames as any)?.[0] ||
-                primaryArtist.fullName,
-              stageNames: artistDetails.stageNames,
-              isManaged: artistDetails.isManaged,
-              userType: talentType,
-              profile: await storage.getUserProfile(primaryArtist.id),
-            }
-            : null,
-          booker: booker
-            ? {
-              fullName: booker.fullName,
-              email: booker.email,
-            }
-            : {
-              guestName: booking.guestName,
-              guestEmail: booking.guestEmail,
-            },
-          workflowData: parsedWorkflowData,
-          assignedMusicians: [], // TODO: Implement assigned musicians retrieval
-          contracts: [], // TODO: Implement contracts retrieval
-          payments: [], // TODO: Implement payments retrieval
-          signatures: [], // TODO: Implement signatures retrieval
-        };
+  //       const bookingDetails = {
+  //         ...booking,
+  //         primaryArtist: artistDetails
+  //           ? {
+  //             userId: primaryArtist.id,
+  //             fullName: primaryArtist.fullName,
+  //             stageName:
+  //               (artistDetails.stageNames as any)?.[0] ||
+  //               primaryArtist.fullName,
+  //             stageNames: artistDetails.stageNames,
+  //             isManaged: artistDetails.isManaged,
+  //             userType: talentType,
+  //             profile: await storage.getUserProfile(primaryArtist.id),
+  //           }
+  //           : null,
+  //         booker: booker
+  //           ? {
+  //             fullName: booker.fullName,
+  //             email: booker.email,
+  //           }
+  //           : {
+  //             guestName: booking.guestName,
+  //             guestEmail: booking.guestEmail,
+  //           },
+  //         workflowData: parsedWorkflowData,
+  //         assignedMusicians: [], // TODO: Implement assigned musicians retrieval
+  //         contracts: [], // TODO: Implement contracts retrieval
+  //         payments: [], // TODO: Implement payments retrieval
+  //         signatures: [], // TODO: Implement signatures retrieval
+  //       };
 
-        res.json(bookingDetails);
-      } catch (error) {
-        console.error("Get workflow error:", error);
-        res.status(500).json({ message: "Internal server error" });
-      }
-    }
-  );
+  //       res.json(bookingDetails);
+  //     } catch (error) {
+  //       console.error("Get workflow error:", error);
+  //       res.status(500).json({ message: "Internal server error" });
+  //     }
+  //   }
+  // );
   // Save booking workflow data
-  app.post(
-    "/api/bookings/:id/workflow/save",
-    authenticateToken,
-    requireRole([1]),
-    async (req: Request, res: Response) => {
-      try {
-        const bookingId = parseInt(req.params.id);
-        const { workflowData } = req.body;
+  // app.post(
+  //   "/api/bookings/:id/workflow/save",
+  //   authenticateToken,
+  //   requireRole([1]),
+  //   async (req: Request, res: Response) => {
+  //     try {
+  //       const bookingId = parseInt(req.params.id);
+  //       const { workflowData } = req.body;
 
-        const booking = await storage.getBooking(bookingId);
-        if (!booking) {
-          return res.status(404).json({ message: "Booking not found" });
-        }
+  //       const booking = await storage.getBooking(bookingId);
+  //       if (!booking) {
+  //         return res.status(404).json({ message: "Booking not found" });
+  //       }
 
-        // Update booking with workflow data
-        const updatedBooking = await storage.updateBooking(bookingId, {
-          workflowData: JSON.stringify(workflowData),
-          currentWorkflowStep: workflowData.currentStep || 1,
-          lastModified: new Date(),
-        });
+  //       // Update booking with workflow data
+  //       const updatedBooking = await storage.updateBooking(bookingId, {
+  //         workflowData: JSON.stringify(workflowData),
+  //         currentWorkflowStep: workflowData.currentStep || 1,
+  //         lastModified: new Date(),
+  //       });
 
-        res.json({
-          message: "Workflow data saved successfully",
-          booking: updatedBooking,
-        });
-      } catch (error) {
-        console.error("Save workflow error:", error);
-        res.status(500).json({ message: "Internal server error" });
-      }
-    }
-  );
+  //       res.json({
+  //         message: "Workflow data saved successfully",
+  //         booking: updatedBooking,
+  //       });
+  //     } catch (error) {
+  //       console.error("Save workflow error:", error);
+  //       res.status(500).json({ message: "Internal server error" });
+  //     }
+  //   }
+  // );
 
   // Generate comprehensive booking workflow PDF
   // OppHub Health Monitoring - Critical for Site Reliability
