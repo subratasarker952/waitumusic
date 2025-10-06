@@ -390,8 +390,11 @@ export default function BookingWorkflow({
         method: "PATCH",
         body: data,
       });
-      if (!response.ok) throw new Error("Failed to update booking");
-      return response.json();
+      // যদি backend error দিয়ে থাকে
+      if (!data || data.error) {
+        throw new Error(data?.message || "Failed to create assignment");
+      }
+      return response
     },
     onSuccess: () => {
       // Only invalidate the specific booking queries
@@ -2825,6 +2828,25 @@ export default function BookingWorkflow({
             </div>
           </CardHeader>
           <CardContent className="space-y-6">
+
+            {/* Counter-Offer Deadline */}
+            <div>
+              <label className="text-sm font-medium">
+                Counter-Offer Deadline
+              </label>
+              <input
+                type="datetime-local"
+                value={contractConfig.counterOfferDeadline}
+                onChange={(e) =>
+                  setContractConfig((prev) => ({
+                    ...prev,
+                    counterOfferDeadline: e.target.value,
+                  }))
+                }
+                className="w-full mt-1 p-2 border rounded"
+              />
+            </div>
+
             {/* Category-Based Pricing */}
             <div>
               <h4 className="text-lg font-medium mb-3 flex items-center gap-2">
@@ -3146,32 +3168,15 @@ export default function BookingWorkflow({
               </div>
             </div>
 
-            {/* Counter-Offer Deadline */}
-            <div>
-              <label className="text-sm font-medium">
-                Counter-Offer Deadline
-              </label>
-              <input
-                type="datetime-local"
-                value={contractConfig.counterOfferDeadline}
-                onChange={(e) =>
-                  setContractConfig((prev) => ({
-                    ...prev,
-                    counterOfferDeadline: e.target.value,
-                  }))
-                }
-                className="w-full mt-1 p-2 border rounded"
-              />
-            </div>
-
             {/* Global Contract Terms */}
             <div>
               <h4 className="text-lg font-medium mb-3">
                 Global Contract Terms
               </h4>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div>
-                  <label className="text-sm font-medium">
+                <div className="bg-gradient-to-br from-green-50 to-cyan-50 p-4 rounded-lg border border-green-200">
+                  <label className="text-sm font-medium text-green-800 flex items-center gap-2">
+                  <div className="w-2 h-2 bg-green-500 rounded-full"></div>
                     Total Booking Price ($)
                   </label>
                   <input
@@ -3191,7 +3196,7 @@ export default function BookingWorkflow({
                         totalBookingPrice: value,
                       }));
                     }}
-                    className="w-full mt-1 p-2 border rounded font-semibold text-green-700 bg-green-50"
+                    className="w-full mt-1 p-2 border rounded font-semibold text-green-700"
                     placeholder="Set final booking price"
                   />
                   {/* Enhanced Pricing Hint */}

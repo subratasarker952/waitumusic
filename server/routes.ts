@@ -287,8 +287,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
   );
 
   // Register talent booking routes
-  app.use(talentBookingRoutes);
-  app.use(roleManagementRoutes);
+  // app.use(talentBookingRoutes);
+  // app.use(roleManagementRoutes);
 
   // Authentication routes
   // app.post("/api/auth/register", validate(schemas.registerSchema), async (req: Request, res: Response) => {
@@ -3048,98 +3048,87 @@ export async function registerRoutes(app: Express): Promise<Server> {
   );
 
   // Get booking details for talent users (includes contracts, technical riders, etc.)
-  app.get(
-    "/api/bookings/:id/talent-view",
-    authenticateToken,
-    validateParams(schemas.idParamSchema),
-    async (req: Request, res: Response) => {
-      try {
-        const bookingId = parseInt(req.params.id);
-        const userId = req.user?.userId;
+  app.get("/api/bookings/:id/talent-view", authenticateToken, validateParams(schemas.idParamSchema), async (req: Request, res: Response) => {
+    try {
+      const bookingId = parseInt(req.params.id);
+      const userId = req.user?.userId;
 
-        if (typeof bookingId !== "number" || typeof userId !== "number") {
-          throw new Error("bookingId or userId is undefined");
-        }
-        // Check if user is assigned to this booking
-        const assignment = await db
-          .select()
-          .from(schema.bookingAssignmentsMembers)
-          .where(
-            and(
-              eq(schema.bookingAssignmentsMembers.bookingId, bookingId),
-              eq(schema.bookingAssignmentsMembers.userId, userId),
-              eq(schema.bookingAssignmentsMembers.status, "active")
-            )
-          )
-          .limit(1);
-
-        if (assignment.length === 0) {
-          return res
-            .status(403)
-            .json({ message: "You are not assigned to this booking" });
-        }
-
-        // Get booking details with related data
-        const booking = await storage.getBooking(bookingId);
-        if (!booking) {
-          return res.status(404).json({ message: "Booking not found" });
-        }
-
-        // Get contracts for this booking
-        const contracts = await db
-          .select()
-          .from(schema.contracts)
-          .where(eq(schema.contracts.bookingId, bookingId));
-
-        // Get technical riders for this booking
-        const technicalRiders = await db
-          .select()
-          .from(schema.technicalRiders)
-          .where(eq(schema.technicalRiders.bookingId, bookingId));
-
-        // Get contract signatures for this booking
-        const signatures = await db
-          .select({
-            signatureId: schema.contractSignatures.id,
-            contractId: schema.contractSignatures.contractId,
-            signerUserId: schema.contractSignatures.signerUserId,
-            signerType: schema.contractSignatures.signerType,
-            signerName: schema.contractSignatures.signerName,
-            signerEmail: schema.contractSignatures.signerEmail,
-            signatureData: schema.contractSignatures.signatureData,
-            signedAt: schema.contractSignatures.signedAt,
-            status: schema.contractSignatures.status,
-          })
-          .from(schema.contractSignatures)
-          .innerJoin(
-            schema.contracts,
-            eq(schema.contractSignatures.contractId, schema.contracts.id)
-          )
-          .where(eq(schema.contracts.bookingId, bookingId));
-
-        console.log({
-          booking,
-          contracts,
-          technicalRiders,
-          signatures,
-          assignment: assignment[0],
-        });
-        res.json({
-          booking,
-          contracts,
-          technicalRiders,
-          signatures,
-          assignment: assignment[0],
-        });
-      } catch (error) {
-        logError(error, ErrorSeverity.ERROR, {
-          endpoint: "/api/bookings/:id/talent-view",
-          bookingId: req.params.id,
-          userId: req.user?.userId,
-        });
-        res.status(500).json({ message: "Internal server error" });
+      if (typeof bookingId !== "number" || typeof userId !== "number") {
+        throw new Error("bookingId or userId is undefined");
       }
+      // Check if user is assigned to this booking
+      const assignment = await db
+        .select()
+        .from(schema.bookingAssignmentsMembers)
+        .where(
+          and(
+            eq(schema.bookingAssignmentsMembers.bookingId, bookingId),
+            eq(schema.bookingAssignmentsMembers.userId, userId),
+            eq(schema.bookingAssignmentsMembers.status, "active")
+          )
+        )
+        .limit(1);
+
+      if (assignment.length === 0) {
+        return res
+          .status(403)
+          .json({ message: "You are not assigned to this booking" });
+      }
+
+      // Get booking details with related data
+      const booking = await storage.getBooking(bookingId);
+      if (!booking) {
+        return res.status(404).json({ message: "Booking not found" });
+      }
+
+      // Get contracts for this booking
+      const contracts = await db
+        .select()
+        .from(schema.contracts)
+        .where(eq(schema.contracts.bookingId, bookingId));
+
+      // Get technical riders for this booking
+      const technicalRiders = await db
+        .select()
+        .from(schema.technicalRiders)
+        .where(eq(schema.technicalRiders.bookingId, bookingId));
+
+      // Get contract signatures for this booking
+      const signatures = await db
+        .select({
+          signatureId: schema.contractSignatures.id,
+          contractId: schema.contractSignatures.contractId,
+          signerUserId: schema.contractSignatures.signerUserId,
+          signerType: schema.contractSignatures.signerType,
+          signerName: schema.contractSignatures.signerName,
+          signerEmail: schema.contractSignatures.signerEmail,
+          signatureData: schema.contractSignatures.signatureData,
+          signedAt: schema.contractSignatures.signedAt,
+          status: schema.contractSignatures.status,
+        })
+        .from(schema.contractSignatures)
+        .innerJoin(
+          schema.contracts,
+          eq(schema.contractSignatures.contractId, schema.contracts.id)
+        )
+        .where(eq(schema.contracts.bookingId, bookingId));
+
+      res.json({
+        ...booking,
+        contracts,
+        technicalRiders,
+        signatures,
+        assignment: assignment[0],
+      });
+    } catch (error) {
+      logError(error, ErrorSeverity.ERROR, {
+        endpoint: "/api/bookings/:id/talent-view",
+        bookingId: req.params.id,
+        userId: req.user?.userId,
+      });
+      res.status(500).json({ message: "Internal server error" });
     }
+  }
   );
 
   // Talent approval/counter-offer endpoint
@@ -4211,10 +4200,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
         res.json(preferences);
       } catch (error) {
-        logError(error, ErrorSeverity.ERROR, {
-          endpoint: "/api/musicians/:userId/instrument-preferences",
-          userId: req.params.userId,
-        });
+        logError(error, ErrorSeverity.ERROR, { endpoint: `/api/musicians/:userId/instrument-preferences`, userId: `${req.params.userId}` });
         res.status(500).json({ message: "Internal server error" });
       }
     }
@@ -4240,10 +4226,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
         res.status(201).json(newPreference);
       } catch (error) {
-        logError(error, ErrorSeverity.ERROR, {
-          endpoint: "/api/musicians/:userId/instrument-preferences",
-          userId: req.params.userId,
-        });
+        logError(error, ErrorSeverity.ERROR, { endpoint: `/api/musicians/:userId/instrument-preferences`, userId: `${req.params.userId}` });
         res.status(500).json({ message: "Internal server error" });
       }
     }
@@ -4362,10 +4345,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
         res.json(recommendedInstruments);
       } catch (error) {
-        logError(error, ErrorSeverity.ERROR, {
-          endpoint: "/api/musicians/:userId/recommended-instruments",
-          userId: req.params.userId,
-        });
+        logError(error, ErrorSeverity.ERROR, { endpoint: `/api/musicians/:userId/recommended-instruments`, userId: `${req.params.userId}` });
         res.status(500).json({ message: "Internal server error" });
       }
     }
@@ -4433,107 +4413,52 @@ export async function registerRoutes(app: Express): Promise<Server> {
   );
 
   // System data routes
-  // Primary Roles Management Endpoints
-  app.get("/api/primary-roles", authenticateToken, async (req, res) => {
+  app.post("/api/roles", authenticateToken, requireRole([1, 2]), async (req: Request, res: Response) => {
     try {
-      const cacheKey = generateCacheKey("primary-roles");
-      const primaryRoles = await withCache(cacheKey, async () => {
-        return await storage.getPrimaryRoles();
-      });
-      res.json(primaryRoles);
+      const role = await storage.createRole(req.body);
+      invalidateCache("roles");
+      res.status(201).json(role);
     } catch (error) {
-      logError(error, ErrorSeverity.ERROR, {
-        endpoint: "/api/primary-roles",
-      });
+      logError(error, ErrorSeverity.ERROR, { endpoint: "/api/roles", method: "POST", });
       res.status(500).json({ message: "Internal server error" });
     }
   });
 
-  app.post("/api/primary-roles", authenticateToken, async (req, res) => {
+  app.patch("/api/roles/:id", authenticateToken, requireRole([1, 2]), validateParams(schemas.idParamSchema), async (req: Request, res: Response) => {
     try {
-      const validatedData = schema.insertUserPrimaryTalentSchema.parse(
-        req.body
-      );
-      const primaryRole = await storage.createPrimaryRole(validatedData);
-      invalidateCache("primary-roles");
-      res.status(201).json(primaryRole);
+      const id = parseInt(req.params.id);
+      const updates = req.body;
+      const primaryRole = await storage.updateRole(id, updates);
+      invalidateCache("roles");
+      res.json(primaryRole);
     } catch (error) {
       logError(error, ErrorSeverity.ERROR, {
-        endpoint: "/api/primary-roles",
-        method: "POST",
+        endpoint: "/api/primary-roles/:id",
+        method: "PATCH",
+        roleId: req.params.id,
       });
-      if (error instanceof z.ZodError) {
-        res.status(400).json({ message: "Invalid data", errors: error.errors });
-      } else {
-        res.status(500).json({ message: "Internal server error" });
-      }
+      res.status(500).json({ message: "Internal server error" });
     }
-  });
-
-  app.patch(
-    "/api/primary-roles/:id",
-    authenticateToken,
-    validateParams(schemas.idParamSchema),
-    async (req, res) => {
-      try {
-        const id = parseInt(req.params.id);
-        const updates = req.body;
-        const primaryRole = await storage.updatePrimaryRole(id, updates);
-        invalidateCache("primary-roles");
-        res.json(primaryRole);
-      } catch (error) {
-        logError(error, ErrorSeverity.ERROR, {
-          endpoint: "/api/primary-roles/:id",
-          method: "PATCH",
-          roleId: req.params.id,
-        });
-        res.status(500).json({ message: "Internal server error" });
-      }
-    }
+  }
   );
 
-  app.delete(
-    "/api/primary-roles/:id",
-    authenticateToken,
-    validateParams(schemas.idParamSchema),
-    async (req, res) => {
-      try {
-        const id = parseInt(req.params.id);
-        await storage.deletePrimaryRole(id);
-        cacheHelpers.invalidateCache("primary-roles");
-        res.json({ message: "Primary role deleted successfully" });
-      } catch (error) {
-        logError(error, ErrorSeverity.ERROR, {
-          endpoint: "/api/primary-roles/:id",
-          method: "DELETE",
-          roleId: req.params.id,
-        });
-        res.status(500).json({ message: "Internal server error" });
-      }
+  app.delete("/api/roles/:id", authenticateToken, validateParams(schemas.idParamSchema), async (req: Request, res: Response) => {
+    try {
+      const id = parseInt(req.params.id);
+      await storage.deleteRole(id);
+      invalidateCache("roles");
+      res.json({ message: "Role deleted successfully" });
+    } catch (error) {
+      logError(error, ErrorSeverity.ERROR, {
+        endpoint: "/api/primary-roles/:id",
+        method: "DELETE",
+        roleId: req.params.id,
+      });
+      res.status(500).json({ message: "Internal server error" });
     }
+  }
   );
 
-  app.get(
-    "/api/primary-roles/by-role/:roleId",
-    authenticateToken,
-    validateParams(schemas.roleIdParamSchema),
-    async (req, res) => {
-      try {
-        const roleId = parseInt(req.params.roleId);
-        const cacheKey = generateCacheKey("primary-roles-by-role", { roleId });
-        const primaryRoles = await withCache(cacheKey, async () => {
-          return await storage.getPrimaryRolesByRoleId(roleId);
-        });
-        res.json(primaryRoles);
-      } catch (error) {
-        logError(error, ErrorSeverity.ERROR, {
-          endpoint: "/api/primary-roles/by-role/:roleId",
-          roleId: req.params.roleId,
-        });
-        res.status(500).json({ message: "Internal server error" });
-      }
-    }
-  );
 
   app.get("/api/roles", async (req: Request, res: Response) => {
     try {
@@ -4547,6 +4472,23 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.status(500).json({ message: "Internal server error" });
     }
   });
+
+  app.get("/api/roles/:id", authenticateToken, validateParams(schemas.idParamSchema), async (req: Request, res: Response) => {
+    try {
+      const id = parseInt(req.params.id);
+      const role = await storage.getRole(id);
+      invalidateCache("roles");
+      res.json(role);
+    } catch (error) {
+      logError(error, ErrorSeverity.ERROR, {
+        endpoint: "/api/roles/:id",
+        method: "GET",
+        roleId: req.params.id,
+      });
+      res.status(500).json({ message: "Internal server error" });
+    }
+  }
+  );
 
   app.get("/api/management-tiers", async (req: Request, res: Response) => {
     try {
@@ -5808,7 +5750,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.get("/api/trending", async (req: Request, res: Response) => {
     try {
       const timeframe = (req.query.timeframe as string) || "weekly";
-      const cacheKey = generateCacheKey("trending-songs", { timeframe });
+      const cacheKey = generateCacheKey(`trending-songs, ${timeframe}`);
       const trendingSongs = await withCache(cacheKey, async () => {
         return await storage.getTrendingSongs(timeframe);
       });
@@ -7082,7 +7024,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.post(
     "/api/curators",
     authenticateToken,
-    validate(schema.insertCuratorSchema),
     async (req: Request, res: Response) => {
       try {
         const userId = req.user?.userId;
@@ -7094,7 +7035,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         };
 
         const curator = await storage.createCurator(curatorData);
-        cacheHelpers.invalidateCache("curators");
+        // cacheHelpers.invalidateCache("curators");
         res.status(201).json(curator);
       } catch (error) {
         logError(error, ErrorSeverity.ERROR, { endpoint: "/api/curators" });
@@ -7117,7 +7058,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         });
 
         const updatedCurator = await storage.getCuratorById(curatorId);
-        cacheHelpers.invalidateCache("curators");
+        // cacheHelpers.invalidateCache("curators");
         res.json(updatedCurator);
       } catch (error) {
         logError(error, ErrorSeverity.ERROR, {
@@ -12086,78 +12027,6 @@ This is a preview of the performance engagement contract. Final agreement will i
   //   }
   // );
 
-  app.get(
-    "/api/bookings/:id",
-    authenticateToken,
-    async (req: Request, res: Response) => {
-      try {
-        const bookingId = parseInt(req.params.id);
-        const booking = await storage.getBookingById(bookingId);
-
-        if (!booking) {
-          return res.status(404).json({ message: "Booking not found" });
-        }
-
-        const signatures = await storage.getContractSignatures(bookingId);
-        const payments = await storage.getPayments(bookingId);
-
-        // Related data
-        const [primaryArtist, booker] = await Promise.all([
-          storage.getUser(booking.primaryArtistUserId),
-          booking.bookerUserId ? storage.getUser(booking.bookerUserId) : null,
-        ]);
-
-        const artistDetails = primaryArtist
-          ? await storage.getArtist(primaryArtist.id)
-          : null;
-
-        // Workflow fallback
-        const workflowData = booking.workflowData || {};
-
-        // --- NEW: Try DB first ---
-        const dbTechnicalRider = await storage.getTechnicalRiderByBooking(bookingId);
-        const dbStagePlot = await storage.getStagePlotByBooking(bookingId);
-        const dbContractedData = await storage.getContractByBooking(bookingId);
-
-        const technicalRider = dbTechnicalRider ?? workflowData.technicalRider ?? {};
-        const stagePlot = dbStagePlot ?? workflowData.stagePlot ?? {};
-
-        const bookingDetails = {
-          ...booking,
-          primaryArtist: artistDetails
-            ? {
-              stageName: artistDetails?.stageName || primaryArtist.fullName,
-              userId: primaryArtist.id,
-              fullName: primaryArtist.fullName,
-            }
-            : null,
-          booker: booker
-            ? {
-              fullName: booker.fullName,
-              email: booker.email,
-            }
-            : {
-              guestName: booking.guestName,
-              guestEmail: booking.guestEmail,
-            },
-          assignedMusicians: [], // TODO: implement retrieval
-          technicalRider,
-          stagePlot,
-          signatures,
-          payments,
-          contracts: dbContractedData
-        };
-
-        res.json(bookingDetails);
-      } catch (error) {
-        console.error("Get booking error:", error);
-        res.status(500).json({ message: "Internal server error" });
-      }
-    }
-  );
-
-
-
 
   // Get booking workflow data
   // app.get(
@@ -13097,78 +12966,6 @@ This is a preview of the performance engagement contract. Final agreement will i
     }
   );
 
-  // Update booking data (PATCH endpoint)
-  app.patch(
-    "/api/bookings/:id",
-    authenticateToken,
-    requireRole([1, 2]),
-    async (req: Request, res: Response) => {
-      try {
-        const bookingId = parseInt(req.params.id);
-        const user = req.user!;
-        const updateData = req.body;
-
-        // Get current booking to check permissions
-        const currentBooking = await storage.getBooking(bookingId);
-        if (!currentBooking) {
-          return res.status(404).json({ message: "Booking not found" });
-        }
-
-        // Create update object with only allowed fields
-        const allowedFields = [
-          "status",
-          "primaryArtistAccepted",
-          "technicalRider",
-          "stagePlot",
-          "signatures",
-          "payments",
-        ];
-        const filteredUpdate: any = {};
-
-        for (const field of allowedFields) {
-          if (updateData[field] !== undefined) {
-            filteredUpdate[field] = updateData[field];
-          }
-        }
-
-        // If no valid fields to update
-        if (Object.keys(filteredUpdate).length === 0) {
-          return res.status(400).json({ message: "No valid fields to update" });
-        }
-
-        // Handle signatures - ensure they're stored as JSON string if needed
-        let updatedBooking = null
-        if (filteredUpdate.status) {
-          updatedBooking = await storage.updateBooking(bookingId, filteredUpdate)
-        }
-        if (filteredUpdate.technicalRider) {
-
-        }
-        if (filteredUpdate.stagePlot) {
-
-        }
-        if (filteredUpdate.signatures) {
-
-        }
-        if (filteredUpdate.signatures) {
-
-        }
-
-        if (!updatedBooking) {
-          return res.status(500).json({ message: "Failed to update booking" });
-        }
-
-        res.json({
-          success: true,
-          booking: updatedBooking,
-          message: "Booking updated successfully",
-        });
-      } catch (error) {
-        console.error("Update booking error:", error);
-        res.status(500).json({ message: "Internal server error" });
-      }
-    }
-  );
 
   // Email test endpoint
   app.post(
@@ -13881,7 +13678,7 @@ This is a preview of the performance engagement contract. Final agreement will i
     "/api/system-settings",
     authenticateToken,
     requireRole([1, 2]),
-    async (req, res) => {
+    async (req: Request, res: Response) => {
       try {
         const settings = await storage.getSystemSettings();
         res.json(settings);
@@ -13896,7 +13693,7 @@ This is a preview of the performance engagement contract. Final agreement will i
     "/api/activity-logs",
     authenticateToken,
     requireRole([1, 2]),
-    async (req, res) => {
+    async (req: Request, res: Response) => {
       try {
         const logs = await storage.getActivityLogs();
         res.json(logs);
@@ -13912,7 +13709,7 @@ This is a preview of the performance engagement contract. Final agreement will i
     "/api/users",
     authenticateToken,
     requireRole([1, 2]),
-    async (req, res) => {
+    async (req: Request, res: Response) => {
       try {
         const users = await storage.getAllUsers();
         res.json(users);
@@ -14036,7 +13833,7 @@ This is a preview of the performance engagement contract. Final agreement will i
     "/api/users/all",
     authenticateToken,
     requireRole([1, 2]),
-    async (req, res) => {
+    async (req: Request, res: Response) => {
       try {
         const users = await storage.getAllUsers();
         const roles = await storage.getRoles();
@@ -14102,7 +13899,7 @@ This is a preview of the performance engagement contract. Final agreement will i
     "/api/users/:userId/profile",
     authenticateToken,
     requireRole([1, 2]),
-    async (req, res) => {
+    async (req: Request, res: Response) => {
       try {
         const userId = parseInt(req.params.userId);
 
@@ -14124,7 +13921,7 @@ This is a preview of the performance engagement contract. Final agreement will i
     "/api/users/:userId/songs",
     authenticateToken,
     requireRole([1, 2]),
-    async (req, res) => {
+    async (req: Request, res: Response) => {
       try {
         const userId = parseInt(req.params.userId);
 
@@ -14146,7 +13943,7 @@ This is a preview of the performance engagement contract. Final agreement will i
     "/api/users/:userId/merchandise",
     authenticateToken,
     requireRole([1, 2]),
-    async (req, res) => {
+    async (req: Request, res: Response) => {
       try {
         const userId = parseInt(req.params.userId);
 
@@ -14168,7 +13965,7 @@ This is a preview of the performance engagement contract. Final agreement will i
     "/api/users/:userId/events",
     authenticateToken,
     requireRole([1, 2]),
-    async (req, res) => {
+    async (req: Request, res: Response) => {
       try {
         const userId = parseInt(req.params.userId);
 
@@ -14193,7 +13990,7 @@ This is a preview of the performance engagement contract. Final agreement will i
     "/api/admin/media/files",
     authenticateToken,
     requireRole([1, 2]),
-    async (req, res) => {
+    async (req: Request, res: Response) => {
       try {
         // Mock data for now - would connect to actual file storage
         const files = [
@@ -14234,7 +14031,7 @@ This is a preview of the performance engagement contract. Final agreement will i
     "/api/admin/media/security-scan",
     authenticateToken,
     requireRole([1, 2]),
-    async (req, res) => {
+    async (req: Request, res: Response) => {
       try {
         // Mock security scan process
         res.json({
@@ -14254,7 +14051,7 @@ This is a preview of the performance engagement contract. Final agreement will i
     "/api/admin/media/optimize",
     authenticateToken,
     requireRole([1, 2]),
-    async (req, res) => {
+    async (req: Request, res: Response) => {
       try {
         // Mock optimization process
         res.json({
@@ -14274,7 +14071,7 @@ This is a preview of the performance engagement contract. Final agreement will i
     "/api/admin/media/files/:id/assignments",
     authenticateToken,
     requireRole([1, 2]),
-    async (req, res) => {
+    async (req: Request, res: Response) => {
       try {
         const { assignments } = req.body;
         // Mock update assignment logic
@@ -14289,7 +14086,7 @@ This is a preview of the performance engagement contract. Final agreement will i
     "/api/admin/media/files/:id/visibility",
     authenticateToken,
     requireRole([1, 2]),
-    async (req, res) => {
+    async (req: Request, res: Response) => {
       try {
         const { visibility } = req.body;
         // Mock update visibility logic
@@ -14304,7 +14101,7 @@ This is a preview of the performance engagement contract. Final agreement will i
     "/api/admin/media/files/:id",
     authenticateToken,
     requireRole([1, 2]),
-    async (req, res) => {
+    async (req: Request, res: Response) => {
       try {
         // Mock delete file logic
         res.json({ success: true, message: "File deleted successfully" });
@@ -14319,7 +14116,7 @@ This is a preview of the performance engagement contract. Final agreement will i
     "/api/users/all-with-permissions",
     authenticateToken,
     requireRole([1, 2]),
-    async (req, res) => {
+    async (req: Request, res: Response) => {
       try {
         const allUsers = await storage.getAllUsers();
 
@@ -14353,7 +14150,7 @@ This is a preview of the performance engagement contract. Final agreement will i
     "/api/users/:id",
     authenticateToken,
     requireRole([1, 2]),
-    async (req, res) => {
+    async (req: Request, res: Response) => {
       try {
         const userId = parseInt(req.params.id);
 
@@ -14381,7 +14178,7 @@ This is a preview of the performance engagement contract. Final agreement will i
     "/api/users/:id",
     authenticateToken,
     requireRole([1, 2]),
-    async (req, res) => {
+    async (req: Request, res: Response) => {
       try {
         const userId = parseInt(req.params.id);
         const updates = req.body;
@@ -14604,7 +14401,7 @@ This is a preview of the performance engagement contract. Final agreement will i
     "/api/media/stats",
     authenticateToken,
     requireRole([1, 2]),
-    async (req, res) => {
+    async (req: Request, res: Response) => {
       try {
         const songs = await storage.getSongs();
         const merchandise = await storage.getAllMerchandise();
@@ -14654,7 +14451,7 @@ This is a preview of the performance engagement contract. Final agreement will i
     "/api/media/activity",
     authenticateToken,
     requireRole([1, 2]),
-    async (req, res) => {
+    async (req: Request, res: Response) => {
       try {
         const recentSongs = await storage.getSongs();
         const allUsers = await storage.getAllUsers();
@@ -14701,7 +14498,7 @@ This is a preview of the performance engagement contract. Final agreement will i
     "/api/security-scan",
     authenticateToken,
     requireRole([1, 2]),
-    async (req, res) => {
+    async (req: Request, res: Response) => {
       try {
         // Note: ClamAV scanning is not available in this environment
         // Simulate security scan response for demo purposes
@@ -27917,7 +27714,7 @@ ${messageData.messageText}
   app.get(
     "/api/subscribers/count/:artistId",
     authenticateToken,
-    async (req, res) => {
+    async (req: Request, res: Response) => {
       try {
         const artistId = parseInt(req.params.artistId);
 
@@ -27939,7 +27736,7 @@ ${messageData.messageText}
     }
   );
 
-  app.get("/api/subscribers/:artistId", authenticateToken, async (req, res) => {
+  app.get("/api/subscribers/:artistId", authenticateToken, async (req: Request, res: Response) => {
     try {
       const artistId = parseInt(req.params.artistId);
 
@@ -28673,92 +28470,46 @@ ${messageData.messageText}
     }
   );
 
-  // Add marketplace routes
-  const { registerMarketplaceRoutes } = await import("./marketplaceRoutes");
-  registerMarketplaceRoutes(app);
+  // Enhanced Technical Rider Save Endpoint
+  app.post("/api/bookings/:id/enhanced-technical-rider", async (req: Request, res: Response) => {
+    try {
+      const bookingId = parseInt(req.params.id);
+      const {
+        booking_id,
+        band_members,
+        equipment_requests,
+        stage_layout,
+        audio_config,
+        completion_status,
+      } = req.body;
 
-  return httpServer;
-}
+      // Save enhanced technical rider data
+      const savedData = {
+        id: `tr-${bookingId}-${Date.now()}`,
+        booking_id: bookingId,
+        band_members: band_members || [],
+        equipment_requests: equipment_requests || [],
+        stage_layout: stage_layout || {},
+        audio_config: audio_config || {},
+        completion_status: completion_status || {},
+        saved_at: new Date().toISOString(),
+      };
 
-// ClamAV file scanning function
-async function scanFileWithClamAV(
-  filePath: string
-): Promise<{ status: string; result: string }> {
-  return new Promise((resolve) => {
-    const clamScan = spawn("clamdscan", ["--fdpass", filePath]);
-    let output = "";
-    let errorOutput = "";
-
-    clamScan.stdout.on("data", (data) => {
-      output += data.toString();
-    });
-
-    clamScan.stderr.on("data", (data) => {
-      errorOutput += data.toString();
-    });
-
-    clamScan.on("close", (code) => {
-      if (code === 0) {
-        resolve({ status: "clean", result: "File is clean" });
-      } else if (code === 1) {
-        resolve({ status: "infected", result: output || "Virus detected" });
-      } else {
-        // ClamAV not available, allow file through with warning
-        resolve({
-          status: "clean",
-          result: "ClamAV scan unavailable - file allowed",
-        });
-      }
-    });
-
-    clamScan.on("error", (error) => {
-      // ClamAV not available, allow file through with warning
-      resolve({
-        status: "clean",
-        result: "ClamAV scan unavailable - file allowed",
+      res.json({
+        success: true,
+        data: savedData,
+        message: "Enhanced technical rider saved successfully",
       });
-    });
+    } catch (error) {
+      console.error("Save enhanced technical rider error:", error);
+      res
+        .status(500)
+        .json({ error: "Failed to save enhanced technical rider" });
+    }
   });
 
-  // Enhanced Technical Rider Save Endpoint
-  // app.post("/api/bookings/:id/enhanced-technical-rider", async (req, res) => {
-  //   try {
-  //     const bookingId = parseInt(req.params.id);
-  //     const {
-  //       booking_id,
-  //       band_members,
-  //       equipment_requests,
-  //       stage_layout,
-  //       audio_config,
-  //       completion_status,
-  //     } = req.body;
 
-  //     // Save enhanced technical rider data
-  //     const savedData = {
-  //       id: `tr-${bookingId}-${Date.now()}`,
-  //       booking_id: bookingId,
-  //       band_members: band_members || [],
-  //       equipment_requests: equipment_requests || [],
-  //       stage_layout: stage_layout || {},
-  //       audio_config: audio_config || {},
-  //       completion_status: completion_status || {},
-  //       saved_at: new Date().toISOString(),
-  //     };
-
-  //     res.json({
-  //       success: true,
-  //       data: savedData,
-  //       message: "Enhanced technical rider saved successfully",
-  //     });
-  //   } catch (error) {
-  //     console.error("Save enhanced technical rider error:", error);
-  //     res
-  //       .status(500)
-  //       .json({ error: "Failed to save enhanced technical rider" });
-  //   }
-  // });
-
-  app.post("/api/bookings/:id/enhanced-technical-rider", async (req, res) => {
+  app.post("/api/bookings/:id/enhanced-technical-rider", async (req: Request, res: Response) => {
     try {
       const bookingId = parseInt(req.params.id);
       const {
@@ -28808,7 +28559,7 @@ async function scanFileWithClamAV(
   });
 
   // Enhanced Booking Contract Generation
-  app.post("/api/bookings/:id/generate-booking-contract", async (req, res) => {
+  app.post("/api/bookings/:id/generate-booking-contract", async (req: Request, res: Response) => {
     try {
       const bookingId = parseInt(req.params.id);
       const booking = await storage.getBooking(bookingId);
@@ -28983,666 +28734,796 @@ async function scanFileWithClamAV(
   });
 
   // Enhanced Performance Contract Generation
-  app.post(
-    "/api/bookings/:id/generate-performance-contract",
-    async (req, res) => {
+  app.post("/api/bookings/:id/generate-performance-contract", async (req: Request, res: Response) => {
+    try {
+      const bookingId = parseInt(req.params.id);
+      const booking = await storage.getBooking(bookingId);
+      const assignedTalent = await storage.getAssignedTalent(bookingId);
+
+      if (!booking) {
+        return res.status(404).json({ error: "Booking not found" });
+      }
+
+      const PDFDocument = require("pdfkit");
+      const doc = new PDFDocument({
+        margin: 50,
+        size: "A4",
+      });
+
+      res.setHeader("Content-Type", "application/pdf");
+      res.setHeader(
+        "Content-Disposition",
+        `attachment; filename="Performance_Contract_${bookingId}_${new Date().toISOString().split("T")[0]
+        }.pdf"`
+      );
+
+      doc.pipe(res);
+
+      // Header
+      doc.fontSize(18).font("Helvetica-Bold").text("WAI'TUMUSIC", 50, 50);
+      doc.fontSize(14).text("Performance Engagement Contract", 50, 80);
+
+      let yPosition = 120;
+
+      // Contract for each assigned talent
+      if (assignedTalent && assignedTalent.length > 0) {
+        assignedTalent.forEach((talent, index) => {
+          if (index > 0) {
+            doc.addPage();
+            yPosition = 50;
+          }
+
+          doc
+            .fontSize(16)
+            .font("Helvetica-Bold")
+            .text(
+              `INDIVIDUAL PERFORMANCE CONTRACT - ${talent.stageName || talent.fullName
+              }`,
+              50,
+              yPosition
+            );
+          yPosition += 30;
+
+          doc
+            .fontSize(12)
+            .font("Helvetica")
+            .text(
+              `Contract ID: WM-PC-${String(bookingId)}-${String(
+                index + 1
+              ).padStart(2, "0")}`,
+              400,
+              yPosition
+            )
+            .text(
+              `Talent: ${talent.primaryTalent || "Performer"}`,
+              400,
+              yPosition + 15
+            )
+            .text(`Status: Active`, 400, yPosition + 30);
+
+          yPosition += 60;
+
+          const performanceContract = `This Individual Performance Contract is made between Wai'tuMusic (Service Provider) and ${talent.stageName || talent.fullName
+            } (Performer) for the event "${booking.eventName || "Performance Event"
+            }" scheduled for ${booking.eventDate || "TBD"}.
+
+          PERFORMER DETAILS:
+          • Name: ${talent.fullName}
+          • Stage Name: ${talent.stageName || "N/A"}
+          • Role: ${talent.primaryTalent || "Performer"}
+          • User Type: ${talent.talentType || "N/A"}
+
+          PERFORMANCE TERMS:
+          • Event: ${booking.eventName || "Performance Event"}
+          • Date: ${booking.eventDate || "TBD"}
+          • Venue: ${booking.venueName || "Venue TBD"}
+          • Performance Fee: To be determined based on role and experience
+          • Rehearsal Requirements: As scheduled by Service Provider
+
+          RESPONSIBILITIES:
+          1. Performer agrees to participate in all scheduled rehearsals
+          2. Performer will provide professional performance during the event
+          3. Performer grants rights for promotional use of name and likeness
+          4. Performer agrees to exclusivity terms during the event period
+
+          This contract is subject to the main booking agreement and all terms therein.`;
+
+          doc
+            .fontSize(10)
+            .font("Helvetica")
+            .text(performanceContract, 50, yPosition, {
+              width: 500,
+              align: "left",
+            });
+
+          // Signature section for individual performer
+          yPosition += 300;
+          if (yPosition > 650) {
+            doc.addPage();
+            yPosition = 50;
+          }
+
+          doc
+            .fontSize(12)
+            .font("Helvetica")
+            .text("Service Provider", 50, yPosition)
+            .text("Performer", 350, yPosition);
+          yPosition += 15;
+          doc
+            .text("Wai'tuMusic", 50, yPosition)
+            .text(`${talent.stageName || talent.fullName}`, 350, yPosition);
+          yPosition += 30;
+          doc
+            .text(`Date: ${new Date().toLocaleDateString()}`, 50, yPosition)
+            .text(`Date: _______________`, 350, yPosition);
+        });
+      }
+
+      doc.end();
+    } catch (error) {
+      console.error("Performance contract generation error:", error);
+      res
+        .status(500)
+        .json({ error: "Failed to generate performance contract" });
+    }
+  }
+  );
+
+
+  app.get(
+    "/api/bookings/:id",
+    authenticateToken,
+    async (req: Request, res: Response) => {
       try {
         const bookingId = parseInt(req.params.id);
-        const booking = await storage.getBooking(bookingId);
-        const assignedTalent = await storage.getAssignedTalent(bookingId);
+        const booking = await storage.getBookingById(bookingId);
 
         if (!booking) {
-          return res.status(404).json({ error: "Booking not found" });
+          return res.status(404).json({ message: "Booking not found" });
         }
 
-        const PDFDocument = require("pdfkit");
-        const doc = new PDFDocument({
-          margin: 50,
-          size: "A4",
-        });
+        const signatures = await storage.getContractSignatures(bookingId);
+        const payments = await storage.getPayments(bookingId);
 
-        res.setHeader("Content-Type", "application/pdf");
-        res.setHeader(
-          "Content-Disposition",
-          `attachment; filename="Performance_Contract_${bookingId}_${new Date().toISOString().split("T")[0]
-          }.pdf"`
-        );
+        // Related data
+        const [primaryArtist, booker] = await Promise.all([
+          storage.getUser(booking.primaryArtistUserId),
+          booking.bookerUserId ? storage.getUser(booking.bookerUserId) : null,
+        ]);
 
-        doc.pipe(res);
+        const artistDetails = primaryArtist
+          ? await storage.getArtist(primaryArtist.id)
+          : null;
 
-        // Header
-        doc.fontSize(18).font("Helvetica-Bold").text("WAI'TUMUSIC", 50, 50);
-        doc.fontSize(14).text("Performance Engagement Contract", 50, 80);
+        // Workflow fallback
+        const workflowData = booking.workflowData || {};
 
-        let yPosition = 120;
+        // --- NEW: Try DB first ---
+        const dbTechnicalRider = await storage.getTechnicalRiderByBooking(bookingId);
+        const dbStagePlot = await storage.getStagePlotByBooking(bookingId);
+        const dbContractedData = await storage.getContractByBooking(bookingId);
 
-        // Contract for each assigned talent
-        if (assignedTalent && assignedTalent.length > 0) {
-          assignedTalent.forEach((talent, index) => {
-            if (index > 0) {
-              doc.addPage();
-              yPosition = 50;
-            }
+        const technicalRider = dbTechnicalRider ?? workflowData.technicalRider ?? {};
+        const stagePlot = dbStagePlot ?? workflowData.stagePlot ?? {};
 
-            doc
-              .fontSize(16)
-              .font("Helvetica-Bold")
-              .text(
-                `INDIVIDUAL PERFORMANCE CONTRACT - ${talent.stageName || talent.fullName
-                }`,
-                50,
-                yPosition
-              );
-            yPosition += 30;
+        const bookingDetails = {
+          ...booking,
+          primaryArtist: artistDetails
+            ? artistDetails
+            : null,
+          booker: booker
+            ? booker
+            : {
+              guestName: booking.guestName,
+              guestEmail: booking.guestEmail,
+            },
+          assignedMusicians: [], // TODO: implement retrieval
+          technicalRider,
+          stagePlot,
+          signatures,
+          payments,
+          contracts: dbContractedData
+        };
 
-            doc
-              .fontSize(12)
-              .font("Helvetica")
-              .text(
-                `Contract ID: WM-PC-${String(bookingId)}-${String(
-                  index + 1
-                ).padStart(2, "0")}`,
-                400,
-                yPosition
-              )
-              .text(
-                `Talent: ${talent.primaryTalent || "Performer"}`,
-                400,
-                yPosition + 15
-              )
-              .text(`Status: Active`, 400, yPosition + 30);
-
-            yPosition += 60;
-
-            const performanceContract = `This Individual Performance Contract is made between Wai'tuMusic (Service Provider) and ${talent.stageName || talent.fullName
-              } (Performer) for the event "${booking.eventName || "Performance Event"
-              }" scheduled for ${booking.eventDate || "TBD"}.
-
-PERFORMER DETAILS:
-• Name: ${talent.fullName}
-• Stage Name: ${talent.stageName || "N/A"}
-• Role: ${talent.primaryTalent || "Performer"}
-• User Type: ${talent.talentType || "N/A"}
-
-PERFORMANCE TERMS:
-• Event: ${booking.eventName || "Performance Event"}
-• Date: ${booking.eventDate || "TBD"}
-• Venue: ${booking.venueName || "Venue TBD"}
-• Performance Fee: To be determined based on role and experience
-• Rehearsal Requirements: As scheduled by Service Provider
-
-RESPONSIBILITIES:
-1. Performer agrees to participate in all scheduled rehearsals
-2. Performer will provide professional performance during the event
-3. Performer grants rights for promotional use of name and likeness
-4. Performer agrees to exclusivity terms during the event period
-
-This contract is subject to the main booking agreement and all terms therein.`;
-
-            doc
-              .fontSize(10)
-              .font("Helvetica")
-              .text(performanceContract, 50, yPosition, {
-                width: 500,
-                align: "left",
-              });
-
-            // Signature section for individual performer
-            yPosition += 300;
-            if (yPosition > 650) {
-              doc.addPage();
-              yPosition = 50;
-            }
-
-            doc
-              .fontSize(12)
-              .font("Helvetica")
-              .text("Service Provider", 50, yPosition)
-              .text("Performer", 350, yPosition);
-            yPosition += 15;
-            doc
-              .text("Wai'tuMusic", 50, yPosition)
-              .text(`${talent.stageName || talent.fullName}`, 350, yPosition);
-            yPosition += 30;
-            doc
-              .text(`Date: ${new Date().toLocaleDateString()}`, 50, yPosition)
-              .text(`Date: _______________`, 350, yPosition);
-          });
-        }
-
-        doc.end();
+        res.json(bookingDetails);
       } catch (error) {
-        console.error("Performance contract generation error:", error);
-        res
-          .status(500)
-          .json({ error: "Failed to generate performance contract" });
+        console.error("Get booking error:", error);
+        res.status(500).json({ message: "Internal server error" });
       }
     }
   );
 
+  // Update booking data (PATCH endpoint)
+  app.patch(
+    "/api/bookings/:id",
+    authenticateToken,
+    requireRole([1, 2]),
+    async (req: Request, res: Response) => {
+      try {
+        const bookingId = parseInt(req.params.id);
+        const user = req.user!;
+        const updateData = req.body;
+
+        // Get current booking to check permissions
+        const currentBooking = await storage.getBooking(bookingId);
+        if (!currentBooking) {
+          return res.status(404).json({ message: "Booking not found" });
+        }
+
+        // Create update object with only allowed fields
+        const allowedFields = [
+          "status",
+          "primaryArtistAccepted",
+          "technicalRider",
+          "stagePlot",
+          "signatures",
+          "payments",
+        ];
+        const filteredUpdate: any = {};
+
+        for (const field of allowedFields) {
+          if (updateData[field] !== undefined) {
+            filteredUpdate[field] = updateData[field];
+          }
+        }
+
+        // If no valid fields to update
+        if (Object.keys(filteredUpdate).length === 0) {
+          return res.status(400).json({ message: "No valid fields to update" });
+        }
+
+        // Handle signatures - ensure they're stored as JSON string if needed
+        let updatedBooking = null
+        if (filteredUpdate.status) {
+          updatedBooking = await storage.updateBooking(bookingId, { ...filteredUpdate, adminApprovedAt: new Date() })
+        }
+        if (filteredUpdate.technicalRider) {
+
+        }
+        if (filteredUpdate.stagePlot) {
+
+        }
+        if (filteredUpdate.signatures) {
+
+        }
+        if (filteredUpdate.signatures) {
+
+        }
+
+        if (!updatedBooking) {
+          return res.status(500).json({ message: "Failed to update booking" });
+        }
+
+        res.json({
+          success: true,
+          booking: updatedBooking,
+          message: "Booking updated successfully",
+        });
+      } catch (error) {
+        console.error("Update booking error:", error);
+        res.status(500).json({ message: "Internal server error" });
+      }
+    }
+  );
   // ================================
   // ⚡ CONFIGURATION MANAGEMENT ROUTES
   // ================================
 
   // Configuration management endpoints
-  app.get(
-    "/api/admin/configuration",
-    configurationRoutes.getPlatformConfiguration
-  );
-  app.put(
-    "/api/admin/configuration",
-    configurationRoutes.updatePlatformConfiguration
-  );
-  app.get(
-    "/api/admin/configuration/history",
-    configurationRoutes.getConfigurationHistory
-  );
-  app.post(
-    "/api/admin/configuration/delegation",
-    configurationRoutes.createConfigurationDelegation
-  );
-  app.get(
-    "/api/admin/configuration/delegations/:userId",
-    configurationRoutes.getUserDelegatedAspects
-  );
-  app.put(
-    "/api/admin/configuration/ui-element",
-    configurationRoutes.updateUIElement
-  );
-
-  console.log("✅ Configuration Management API endpoints loaded");
+  app.get("/api/admin/configuration", configurationRoutes.getPlatformConfiguration);
+  app.put("/api/admin/configuration", configurationRoutes.updatePlatformConfiguration);
+  app.get("/api/admin/configuration/history", configurationRoutes.getConfigurationHistory);
+  app.post("/api/admin/configuration/delegation", configurationRoutes.createConfigurationDelegation);
+  app.get("/api/admin/configuration/delegations/:userId", configurationRoutes.getUserDelegatedAspects);
+  app.put("/api/admin/configuration/ui-element", configurationRoutes.updateUIElement);
 
   // ================================
   // 🔐 AUTHORIZATION MANAGEMENT ROUTES
   // ================================
 
   // Get all authorization rules
-  app.get(
-    "/api/admin/authorization-rules",
-    requireRole([1]),
-    async (req: Request, res: Response) => {
-      try {
-        const rules = AuthorizationManager.getAllRules();
-        res.json(rules);
-      } catch (error) {
-        console.error("Error fetching authorization rules:", error);
-        res.status(500).json({ error: "Failed to fetch authorization rules" });
-      }
+  app.get("/api/admin/authorization-rules", requireRole([1]), async (req: Request, res: Response) => {
+    try {
+      const rules = AuthorizationManager.getAllRules();
+      res.json(rules);
+    } catch (error) {
+      console.error("Error fetching authorization rules:", error);
+      res.status(500).json({ error: "Failed to fetch authorization rules" });
     }
+  }
   );
 
   // Get authorization rule by ID
-  app.get(
-    "/api/admin/authorization-rules/:id",
-    requireRole([1]),
-    async (req: Request, res: Response) => {
-      try {
-        const rule = AuthorizationManager.getRuleById(req.params.id);
-        if (!rule) {
-          return res
-            .status(404)
-            .json({ error: "Authorization rule not found" });
-        }
-        res.json(rule);
-      } catch (error) {
-        console.error("Error fetching authorization rule:", error);
-        res.status(500).json({ error: "Failed to fetch authorization rule" });
+  app.get("/api/admin/authorization-rules/:id", requireRole([1]), async (req: Request, res: Response) => {
+    try {
+      const rule = AuthorizationManager.getRuleById(req.params.id);
+      if (!rule) {
+        return res
+          .status(404)
+          .json({ error: "Authorization rule not found" });
       }
+      res.json(rule);
+    } catch (error) {
+      console.error("Error fetching authorization rule:", error);
+      res.status(500).json({ error: "Failed to fetch authorization rule" });
     }
+  }
   );
 
   // Update authorization rule
-  app.patch(
-    "/api/admin/authorization-rules/:id",
-    requireRole([1]),
-    async (req: Request, res: Response) => {
-      try {
-        const success = AuthorizationManager.updateRule(req.params.id, {
-          ...req.body,
-          modifiedBy: req.user!.userId,
-        });
+  app.patch("/api/admin/authorization-rules/:id", requireRole([1]), async (req: Request, res: Response) => {
+    try {
+      const success = AuthorizationManager.updateRule(req.params.id, {
+        ...req.body,
+        modifiedBy: req.user!.userId,
+      });
 
-        if (!success) {
-          return res
-            .status(404)
-            .json({ error: "Authorization rule not found" });
-        }
-
-        res.json({ message: "Authorization rule updated successfully" });
-      } catch (error) {
-        console.error("Error updating authorization rule:", error);
-        res.status(500).json({ error: "Failed to update authorization rule" });
+      if (!success) {
+        return res
+          .status(404)
+          .json({ error: "Authorization rule not found" });
       }
+
+      res.json({ message: "Authorization rule updated successfully" });
+    } catch (error) {
+      console.error("Error updating authorization rule:", error);
+      res.status(500).json({ error: "Failed to update authorization rule" });
     }
+  }
   );
 
   // Delete authorization rule
-  app.delete(
-    "/api/admin/authorization-rules/:id",
-    requireRole([1]),
-    async (req: Request, res: Response) => {
-      try {
-        const success = AuthorizationManager.removeRule(req.params.id);
+  app.delete("/api/admin/authorization-rules/:id", requireRole([1]), async (req: Request, res: Response) => {
+    try {
+      const success = AuthorizationManager.removeRule(req.params.id);
 
-        if (!success) {
-          return res
-            .status(404)
-            .json({ error: "Authorization rule not found" });
-        }
-
-        res.json({ message: "Authorization rule deleted successfully" });
-      } catch (error) {
-        console.error("Error deleting authorization rule:", error);
-        res.status(500).json({ error: "Failed to delete authorization rule" });
+      if (!success) {
+        return res
+          .status(404)
+          .json({ error: "Authorization rule not found" });
       }
+
+      res.json({ message: "Authorization rule deleted successfully" });
+    } catch (error) {
+      console.error("Error deleting authorization rule:", error);
+      res.status(500).json({ error: "Failed to delete authorization rule" });
     }
+  }
   );
 
   // Create new authorization rule
-  app.post(
-    "/api/admin/authorization-rules",
-    requireRole([1]),
-    async (req: Request, res: Response) => {
-      try {
-        const rule = {
-          ...req.body,
-          id: req.body.id || `rule-${Date.now()}`,
-          lastModified: new Date(),
-          modifiedBy: req.user!.userId,
-        };
+  app.post("/api/admin/authorization-rules", requireRole([1]), async (req: Request, res: Response) => {
+    try {
+      const rule = {
+        ...req.body,
+        id: req.body.id || `rule-${Date.now()}`,
+        lastModified: new Date(),
+        modifiedBy: req.user!.userId,
+      };
 
-        AuthorizationManager.addRule(rule);
-        res
-          .status(201)
-          .json({ message: "Authorization rule created successfully" });
-      } catch (error) {
-        console.error("Error creating authorization rule:", error);
-        res.status(500).json({ error: "Failed to create authorization rule" });
-      }
+      AuthorizationManager.addRule(rule);
+      res
+        .status(201)
+        .json({ message: "Authorization rule created successfully" });
+    } catch (error) {
+      console.error("Error creating authorization rule:", error);
+      res.status(500).json({ error: "Failed to create authorization rule" });
     }
+  }
   );
 
   // Get rules by category
-  app.get(
-    "/api/admin/authorization-rules/category/:category",
-    requireRole([1]),
-    async (req: Request, res: Response) => {
-      try {
-        const rules = AuthorizationManager.getRulesByCategory(
-          req.params.category
-        );
-        res.json(rules);
-      } catch (error) {
-        console.error("Error fetching authorization rules by category:", error);
-        res.status(500).json({ error: "Failed to fetch authorization rules" });
-      }
+  app.get("/api/admin/authorization-rules/category/:category", requireRole([1]), async (req: Request, res: Response) => {
+    try {
+      const rules = AuthorizationManager.getRulesByCategory(
+        req.params.category
+      );
+      res.json(rules);
+    } catch (error) {
+      console.error("Error fetching authorization rules by category:", error);
+      res.status(500).json({ error: "Failed to fetch authorization rules" });
     }
+  }
   );
 
   // Get endpoints accessible by role
-  app.get(
-    "/api/admin/authorization-endpoints/role/:roleId",
-    requireRole([1, 2]),
-    async (req: Request, res: Response) => {
-      try {
-        const roleId = parseInt(req.params.roleId);
-        const endpoints = AuthorizationManager.getEndpointsByRole(roleId);
-        res.json(endpoints);
-      } catch (error) {
-        console.error("Error fetching endpoints by role:", error);
-        res.status(500).json({ error: "Failed to fetch endpoints" });
-      }
+  app.get("/api/admin/authorization-endpoints/role/:roleId", requireRole([1, 2]), async (req: Request, res: Response) => {
+    try {
+      const roleId = parseInt(req.params.roleId);
+      const endpoints = AuthorizationManager.getEndpointsByRole(roleId);
+      res.json(endpoints);
+    } catch (error) {
+      console.error("Error fetching endpoints by role:", error);
+      res.status(500).json({ error: "Failed to fetch endpoints" });
     }
+  }
   );
 
   // Global endpoint permissions check
-  app.get(
-    "/api/admin/authorization-check/:endpoint/:method",
-    requireRole([1, 2]),
-    async (req: Request, res: Response) => {
-      try {
-        const { endpoint, method } = req.params;
-        const requiredRoles = getRequiredRoles(endpoint, method);
-        res.json({
-          endpoint,
-          method,
-          requiredRoles,
-          allowsCurrentUser: requiredRoles.includes(req.user!.roleId),
-        });
-      } catch (error) {
-        console.error("Error checking endpoint authorization:", error);
-        res
-          .status(500)
-          .json({ error: "Failed to check endpoint authorization" });
-      }
+  app.get("/api/admin/authorization-check/:endpoint/:method", requireRole([1, 2]), async (req: Request, res: Response) => {
+    try {
+      const { endpoint, method } = req.params;
+      const requiredRoles = getRequiredRoles(endpoint, method);
+      res.json({
+        endpoint,
+        method,
+        requiredRoles,
+        allowsCurrentUser: requiredRoles.includes(req.user!.roleId),
+      });
+    } catch (error) {
+      console.error("Error checking endpoint authorization:", error);
+      res
+        .status(500)
+        .json({ error: "Failed to check endpoint authorization" });
     }
+  }
   );
 
   console.log("✅ Authorization Management API endpoints loaded");
 
   // Test endpoint for correct channel assignment with real band data
-  app.get(
-    "/api/test/channel-assignment/:bookingId",
-    authenticateToken,
-    async (req: Request, res: Response) => {
-      try {
-        const bookingId = parseInt(req.params.bookingId);
+  app.get("/api/test/channel-assignment/:bookingId", authenticateToken, async (req: Request, res: Response) => {
+    try {
+      const bookingId = parseInt(req.params.bookingId);
 
-        console.log(`🎛️ TESTING CHANNEL ASSIGNMENT FOR BOOKING ${bookingId}`);
-        console.log("================================================");
+      console.log(`🎛️ TESTING CHANNEL ASSIGNMENT FOR BOOKING ${bookingId}`);
+      console.log("================================================");
 
-        // Get assigned talent for this booking
-        const assignedTalent = await db
-          .select({
-            userId: schema.bookingAssignments.assignedUserId,
-            instrumentRole: schema.bookingAssignments.instrumentRole,
-            assignmentType: schema.bookingAssignments.assignmentType,
-            user: {
-              id: schema.users.id,
-              fullName: schema.users.fullName,
-              roleId: schema.users.roleId,
-            },
-          })
-          .from(schema.bookingAssignments)
-          .leftJoin(
-            schema.users,
-            eq(schema.bookingAssignments.assignedUserId, schema.users.id)
-          )
-          .where(eq(schema.bookingAssignments.bookingId, bookingId));
+      // Get assigned talent for this booking
+      const assignedTalent = await db
+        .select({
+          userId: schema.bookingAssignments.assignedUserId,
+          instrumentRole: schema.bookingAssignments.instrumentRole,
+          assignmentType: schema.bookingAssignments.assignmentType,
+          user: {
+            id: schema.users.id,
+            fullName: schema.users.fullName,
+            roleId: schema.users.roleId,
+          },
+        })
+        .from(schema.bookingAssignments)
+        .leftJoin(
+          schema.users,
+          eq(schema.bookingAssignments.assignedUserId, schema.users.id)
+        )
+        .where(eq(schema.bookingAssignments.bookingId, bookingId));
 
-        if (assignedTalent.length === 0) {
-          return res
-            .status(404)
-            .json({ error: "No assigned talent found for this booking" });
-        }
-
-        console.log("📋 Assigned Talent:");
-        assignedTalent.forEach((talent) => {
-          console.log(
-            `  - ${talent.user?.fullName} (${talent.instrumentRole})`
-          );
-        });
-
-        // Get stage names for artists and musicians
-        const bandMembers = [];
-
-        for (const talent of assignedTalent) {
-          const userId = talent.userId;
-          const roleId = talent.user?.roleId;
-
-          let stageName = talent.user?.fullName;
-          let instruments = [talent.instrumentRole || "vocals"];
-
-          // Get stage name from artist or musician profile
-          if (roleId === 3 || roleId === 4) {
-            // artist or managed_artist
-            const [artistProfile] = await db
-              .select({ stageName: schema.artists.stageName })
-              .from(schema.artists)
-              .where(eq(schema.artists.userId, userId));
-
-            if (artistProfile?.stageName) {
-              stageName = artistProfile.stageName;
-            }
-          } else if (roleId === 5 || roleId === 6) {
-            // musician or managed_musician
-            const [musicianProfile] = await db
-              .select({ stageName: schema.musicians.stageName })
-              .from(schema.musicians)
-              .where(eq(schema.musicians.userId, userId));
-
-            if (musicianProfile?.stageName) {
-              stageName = musicianProfile.stageName;
-            }
-          }
-
-          // Get additional instruments from skills table
-          const skills = await db
-            .select({ skillName: schema.userSkillsAndInstruments.skillName })
-            .from(schema.userSkillsAndInstruments)
-            .where(eq(schema.userSkillsAndInstruments.userId, userId));
-
-          if (skills.length > 0) {
-            instruments = skills.map((s) => s.skillName.toLowerCase());
-          }
-
-          bandMembers.push({
-            userId,
-            name: stageName,
-            fullName: talent.user?.fullName,
-            instruments,
-          });
-        }
-
-        console.log("📋 Band Members with Instruments:");
-        bandMembers.forEach((member) => {
-          console.log(`  - ${member.name} (${member.instruments.join(", ")})`);
-        });
-
-        // Mock mixer channels (same as test)
-        const mixerChannels = {
-          vocals: [
-            {
-              id: "vocal-1",
-              input: "Lead Vocal",
-              assignedTo: "",
-              applicable: true,
-            },
-            {
-              id: "vocal-2",
-              input: "Backup Vocal",
-              assignedTo: "",
-              applicable: true,
-            },
-          ],
-          guitar: [
-            {
-              id: "guitar-1",
-              input: "Guitar 1",
-              assignedTo: "",
-              applicable: true,
-            },
-            {
-              id: "guitar-2",
-              input: "Guitar 2",
-              assignedTo: "",
-              applicable: false,
-            },
-          ],
-          bass: [
-            {
-              id: "bass-1",
-              input: "Bass DI",
-              assignedTo: "",
-              applicable: true,
-            },
-            {
-              id: "bass-2",
-              input: "Bass Mic",
-              assignedTo: "",
-              applicable: false,
-            },
-          ],
-          keyboard: [
-            {
-              id: "keyboard-1",
-              input: "Keyboard Left",
-              assignedTo: "",
-              applicable: true,
-            },
-            {
-              id: "keyboard-2",
-              input: "Keyboard Right",
-              assignedTo: "",
-              applicable: true,
-            },
-          ],
-          drums: [
-            {
-              id: "drum-1",
-              input: "Kick In",
-              assignedTo: "",
-              applicable: true,
-            },
-            {
-              id: "drum-2",
-              input: "Snare Top",
-              assignedTo: "",
-              applicable: true,
-            },
-            { id: "drum-3", input: "Hi Hat", assignedTo: "", applicable: true },
-            {
-              id: "drum-4",
-              input: "Over Head Left",
-              assignedTo: "",
-              applicable: true,
-            },
-            {
-              id: "drum-5",
-              input: "Over Head Right",
-              assignedTo: "",
-              applicable: true,
-            },
-          ],
-        };
-
-        // Apply correct channel assignment logic
-        const updatedChannels = JSON.parse(JSON.stringify(mixerChannels));
-        const assignedMembers = new Set();
-
-        // PHASE 1: 1-to-1 assignments (vocals, guitar, bass)
-        console.log("\n🎯 PHASE 1: 1-to-1 Channel Assignments");
-
-        const oneToOneChannels = ["vocals", "guitar", "bass"];
-        oneToOneChannels.forEach((channelType) => {
-          const availableChannels = updatedChannels[channelType].filter(
-            (ch) => ch.applicable
-          );
-          const compatibleMembers = bandMembers.filter(
-            (member) =>
-              member.instruments.includes(channelType) &&
-              !assignedMembers.has(member.name)
-          );
-
-          if (availableChannels.length > 0 && compatibleMembers.length > 0) {
-            const maxAssignments = Math.min(
-              availableChannels.length,
-              compatibleMembers.length
-            );
-
-            for (let i = 0; i < maxAssignments; i++) {
-              const member = compatibleMembers[i];
-              const channel = availableChannels[i];
-
-              const channelIndex = updatedChannels[channelType].findIndex(
-                (ch) => ch.id === channel.id
-              );
-              updatedChannels[channelType][channelIndex].assignedTo =
-                member.name;
-
-              assignedMembers.add(member.name);
-              console.log(
-                `✅ ${channelType.toUpperCase()}: ${member.name} → "${channel.input
-                }" (1 channel only)`
-              );
-            }
-          }
-        });
-
-        // PHASE 2: Keyboard L/R pairs
-        console.log("\n🎯 PHASE 2: Keyboard L/R Pair Assignments");
-        const keyboardChannels = updatedChannels.keyboard.filter(
-          (ch) => ch.applicable
-        );
-        const keyboardMembers = bandMembers.filter(
-          (member) =>
-            member.instruments.includes("keyboard") &&
-            !assignedMembers.has(member.name)
-        );
-
-        if (keyboardMembers.length > 0) {
-          const keyboardist = keyboardMembers[0];
-          keyboardChannels.forEach((channel) => {
-            const channelIndex = updatedChannels.keyboard.findIndex(
-              (ch) => ch.id === channel.id
-            );
-            updatedChannels.keyboard[channelIndex].assignedTo =
-              keyboardist.name;
-          });
-          assignedMembers.add(keyboardist.name);
-          console.log(
-            `🎹 KEYBOARD: ${keyboardist.name} → L/R pair (${keyboardChannels.length} channels)`
-          );
-        } else {
-          console.log(`🎹 No keyboardists in current band`);
-        }
-
-        // PHASE 3: Drummer gets multiple channels
-        console.log("\n🎯 PHASE 3: Drum Multi-Channel Assignments");
-        const drumChannels = updatedChannels.drums.filter(
-          (ch) => ch.applicable
-        );
-        const drummers = bandMembers.filter(
-          (member) =>
-            member.instruments.includes("drums") &&
-            !assignedMembers.has(member.name)
-        );
-
-        if (drummers.length > 0) {
-          const drummer = drummers[0];
-          drumChannels.forEach((channel) => {
-            const channelIndex = updatedChannels.drums.findIndex(
-              (ch) => ch.id === channel.id
-            );
-            updatedChannels.drums[channelIndex].assignedTo = drummer.name;
-          });
-          assignedMembers.add(drummer.name);
-          console.log(
-            `🥁 DRUMS: ${drummer.name} → ALL ${drumChannels.length} drum channels`
-          );
-        } else {
-          console.log(`🥁 No drummers in current band`);
-        }
-
-        console.log("\n🎯 ASSIGNMENT SEQUENCE COMPLETE");
-        console.log(
-          `✅ Assigned Members: ${Array.from(assignedMembers).join(", ")}`
-        );
-
-        // Verification
-        const assignmentCounts = {};
-        Object.values(updatedChannels).forEach((channelList) => {
-          channelList.forEach((channel) => {
-            if (channel.assignedTo) {
-              assignmentCounts[channel.assignedTo] =
-                (assignmentCounts[channel.assignedTo] || 0) + 1;
-            }
-          });
-        });
-
-        console.log("\n🔍 VERIFICATION:");
-        console.log("Assignment counts per person:");
-        Object.entries(assignmentCounts).forEach(([person, count]) => {
-          console.log(`  - ${person}: ${count} channels`);
-        });
-
-        res.json({
-          success: true,
-          bookingId,
-          bandMembers,
-          channelAssignments: updatedChannels,
-          assignmentCounts,
-          message:
-            "Channel assignment completed using correct audio engineering sequence",
-        });
-      } catch (error: any) {
-        console.error("Error testing channel assignment:", error);
-        res.status(500).json({ error: "Failed to test channel assignment" });
+      if (assignedTalent.length === 0) {
+        return res
+          .status(404)
+          .json({ error: "No assigned talent found for this booking" });
       }
+
+      console.log("📋 Assigned Talent:");
+      assignedTalent.forEach((talent) => {
+        console.log(
+          `  - ${talent.user?.fullName} (${talent.instrumentRole})`
+        );
+      });
+
+      // Get stage names for artists and musicians
+      const bandMembers = [];
+
+      for (const talent of assignedTalent) {
+        const userId = talent.userId;
+        const roleId = talent.user?.roleId;
+
+        let stageName = talent.user?.fullName;
+        let instruments = [talent.instrumentRole || "vocals"];
+
+        // Get stage name from artist or musician profile
+        if (roleId === 3 || roleId === 4) {
+          // artist or managed_artist
+          const [artistProfile] = await db
+            .select({ stageName: schema.artists.stageName })
+            .from(schema.artists)
+            .where(eq(schema.artists.userId, userId));
+
+          if (artistProfile?.stageName) {
+            stageName = artistProfile.stageName;
+          }
+        } else if (roleId === 5 || roleId === 6) {
+          // musician or managed_musician
+          const [musicianProfile] = await db
+            .select({ stageName: schema.musicians.stageName })
+            .from(schema.musicians)
+            .where(eq(schema.musicians.userId, userId));
+
+          if (musicianProfile?.stageName) {
+            stageName = musicianProfile.stageName;
+          }
+        }
+
+        // Get additional instruments from skills table
+        const skills = await db
+          .select({ skillName: schema.userSkillsAndInstruments.skillName })
+          .from(schema.userSkillsAndInstruments)
+          .where(eq(schema.userSkillsAndInstruments.userId, userId));
+
+        if (skills.length > 0) {
+          instruments = skills.map((s) => s.skillName.toLowerCase());
+        }
+
+        bandMembers.push({
+          userId,
+          name: stageName,
+          fullName: talent.user?.fullName,
+          instruments,
+        });
+      }
+
+      console.log("📋 Band Members with Instruments:");
+      bandMembers.forEach((member) => {
+        console.log(`  - ${member.name} (${member.instruments.join(", ")})`);
+      });
+
+      // Mock mixer channels (same as test)
+      const mixerChannels = {
+        vocals: [
+          {
+            id: "vocal-1",
+            input: "Lead Vocal",
+            assignedTo: "",
+            applicable: true,
+          },
+          {
+            id: "vocal-2",
+            input: "Backup Vocal",
+            assignedTo: "",
+            applicable: true,
+          },
+        ],
+        guitar: [
+          {
+            id: "guitar-1",
+            input: "Guitar 1",
+            assignedTo: "",
+            applicable: true,
+          },
+          {
+            id: "guitar-2",
+            input: "Guitar 2",
+            assignedTo: "",
+            applicable: false,
+          },
+        ],
+        bass: [
+          {
+            id: "bass-1",
+            input: "Bass DI",
+            assignedTo: "",
+            applicable: true,
+          },
+          {
+            id: "bass-2",
+            input: "Bass Mic",
+            assignedTo: "",
+            applicable: false,
+          },
+        ],
+        keyboard: [
+          {
+            id: "keyboard-1",
+            input: "Keyboard Left",
+            assignedTo: "",
+            applicable: true,
+          },
+          {
+            id: "keyboard-2",
+            input: "Keyboard Right",
+            assignedTo: "",
+            applicable: true,
+          },
+        ],
+        drums: [
+          {
+            id: "drum-1",
+            input: "Kick In",
+            assignedTo: "",
+            applicable: true,
+          },
+          {
+            id: "drum-2",
+            input: "Snare Top",
+            assignedTo: "",
+            applicable: true,
+          },
+          { id: "drum-3", input: "Hi Hat", assignedTo: "", applicable: true },
+          {
+            id: "drum-4",
+            input: "Over Head Left",
+            assignedTo: "",
+            applicable: true,
+          },
+          {
+            id: "drum-5",
+            input: "Over Head Right",
+            assignedTo: "",
+            applicable: true,
+          },
+        ],
+      };
+
+      // Apply correct channel assignment logic
+      const updatedChannels = JSON.parse(JSON.stringify(mixerChannels));
+      const assignedMembers = new Set();
+
+      // PHASE 1: 1-to-1 assignments (vocals, guitar, bass)
+      console.log("\n🎯 PHASE 1: 1-to-1 Channel Assignments");
+
+      const oneToOneChannels = ["vocals", "guitar", "bass"];
+      oneToOneChannels.forEach((channelType) => {
+        const availableChannels = updatedChannels[channelType].filter(
+          (ch) => ch.applicable
+        );
+        const compatibleMembers = bandMembers.filter(
+          (member) =>
+            member.instruments.includes(channelType) &&
+            !assignedMembers.has(member.name)
+        );
+
+        if (availableChannels.length > 0 && compatibleMembers.length > 0) {
+          const maxAssignments = Math.min(
+            availableChannels.length,
+            compatibleMembers.length
+          );
+
+          for (let i = 0; i < maxAssignments; i++) {
+            const member = compatibleMembers[i];
+            const channel = availableChannels[i];
+
+            const channelIndex = updatedChannels[channelType].findIndex(
+              (ch) => ch.id === channel.id
+            );
+            updatedChannels[channelType][channelIndex].assignedTo =
+              member.name;
+
+            assignedMembers.add(member.name);
+            console.log(
+              `✅ ${channelType.toUpperCase()}: ${member.name} → "${channel.input
+              }" (1 channel only)`
+            );
+          }
+        }
+      });
+
+      // PHASE 2: Keyboard L/R pairs
+      console.log("\n🎯 PHASE 2: Keyboard L/R Pair Assignments");
+      const keyboardChannels = updatedChannels.keyboard.filter(
+        (ch) => ch.applicable
+      );
+      const keyboardMembers = bandMembers.filter(
+        (member) =>
+          member.instruments.includes("keyboard") &&
+          !assignedMembers.has(member.name)
+      );
+
+      if (keyboardMembers.length > 0) {
+        const keyboardist = keyboardMembers[0];
+        keyboardChannels.forEach((channel) => {
+          const channelIndex = updatedChannels.keyboard.findIndex(
+            (ch) => ch.id === channel.id
+          );
+          updatedChannels.keyboard[channelIndex].assignedTo =
+            keyboardist.name;
+        });
+        assignedMembers.add(keyboardist.name);
+        console.log(
+          `🎹 KEYBOARD: ${keyboardist.name} → L/R pair (${keyboardChannels.length} channels)`
+        );
+      } else {
+        console.log(`🎹 No keyboardists in current band`);
+      }
+
+      // PHASE 3: Drummer gets multiple channels
+      console.log("\n🎯 PHASE 3: Drum Multi-Channel Assignments");
+      const drumChannels = updatedChannels.drums.filter(
+        (ch) => ch.applicable
+      );
+      const drummers = bandMembers.filter(
+        (member) =>
+          member.instruments.includes("drums") &&
+          !assignedMembers.has(member.name)
+      );
+
+      if (drummers.length > 0) {
+        const drummer = drummers[0];
+        drumChannels.forEach((channel) => {
+          const channelIndex = updatedChannels.drums.findIndex(
+            (ch) => ch.id === channel.id
+          );
+          updatedChannels.drums[channelIndex].assignedTo = drummer.name;
+        });
+        assignedMembers.add(drummer.name);
+        console.log(
+          `🥁 DRUMS: ${drummer.name} → ALL ${drumChannels.length} drum channels`
+        );
+      } else {
+        console.log(`🥁 No drummers in current band`);
+      }
+
+      console.log("\n🎯 ASSIGNMENT SEQUENCE COMPLETE");
+      console.log(
+        `✅ Assigned Members: ${Array.from(assignedMembers).join(", ")}`
+      );
+
+      // Verification
+      const assignmentCounts = {};
+      Object.values(updatedChannels).forEach((channelList) => {
+        channelList.forEach((channel) => {
+          if (channel.assignedTo) {
+            assignmentCounts[channel.assignedTo] =
+              (assignmentCounts[channel.assignedTo] || 0) + 1;
+          }
+        });
+      });
+
+      console.log("\n🔍 VERIFICATION:");
+      console.log("Assignment counts per person:");
+      Object.entries(assignmentCounts).forEach(([person, count]) => {
+        console.log(`  - ${person}: ${count} channels`);
+      });
+
+      res.json({
+        success: true,
+        bookingId,
+        bandMembers,
+        channelAssignments: updatedChannels,
+        assignmentCounts,
+        message:
+          "Channel assignment completed using correct audio engineering sequence",
+      });
+    } catch (error: any) {
+      console.error("Error testing channel assignment:", error);
+      res.status(500).json({ error: "Failed to test channel assignment" });
     }
+  }
   );
 
-  return app;
+  // Add marketplace routes
+  const { registerMarketplaceRoutes } = await import("./marketplaceRoutes");
+  registerMarketplaceRoutes(app);
+
+  return httpServer;
+}
+
+// ClamAV file scanning function
+async function scanFileWithClamAV(filePath: string): Promise<{ status: string; result: string }> {
+  return new Promise((resolve) => {
+    const clamScan = spawn("clamdscan", ["--fdpass", filePath]);
+    let output = "";
+    let errorOutput = "";
+
+    clamScan.stdout.on("data", (data) => {
+      output += data.toString();
+    });
+
+    clamScan.stderr.on("data", (data) => {
+      errorOutput += data.toString();
+    });
+
+    clamScan.on("close", (code) => {
+      if (code === 0) {
+        resolve({ status: "clean", result: "File is clean" });
+      } else if (code === 1) {
+        resolve({ status: "infected", result: output || "Virus detected" });
+      } else {
+        // ClamAV not available, allow file through with warning
+        resolve({
+          status: "clean",
+          result: "ClamAV scan unavailable - file allowed",
+        });
+      }
+    });
+
+    clamScan.on("error", (error) => {
+      // ClamAV not available, allow file through with warning
+      resolve({
+        status: "clean",
+        result: "ClamAV scan unavailable - file allowed",
+      });
+    });
+  });
 }
 
 // ==================== HELPER FUNCTIONS ====================

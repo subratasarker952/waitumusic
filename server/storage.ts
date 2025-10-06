@@ -2711,10 +2711,46 @@ export class DatabaseStorage implements IStorage {
 
   // START NEW CODEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
 
-  // get all roles
-  async getRoles() {
+  // ✅ Get all roles
+  async getRoles(): Promise<Role[]> {
     return await db.select().from(rolesManagement).orderBy(rolesManagement.id);
   }
+
+  // ✅ Get a single role by ID
+  async getRole(id: number): Promise<Role | undefined> {
+    const [role] = await db
+      .select()
+      .from(rolesManagement)
+      .where(eq(rolesManagement.id, id));
+    return role || undefined;
+  }
+
+  // ✅ Create a new role
+  async createRole(roleData: Partial<Role>): Promise<Role> {
+    const [role] = await db.insert(rolesManagement).values(roleData as any).returning();
+    return role;
+  }
+
+  // ✅ Update a role (your existing version)
+  async updateRole(id: number, updates: Partial<Role>): Promise<Role | undefined> {
+    const [role] = await db
+      .update(rolesManagement)
+      .set(updates)
+      .where(eq(rolesManagement.id, id))
+      .returning();
+    return role || undefined;
+  }
+
+  // ✅ Delete a role
+  async deleteRole(id: number): Promise<boolean> {
+    const result = await db
+      .delete(rolesManagement)
+      .where(eq(rolesManagement.id, id))
+      .execute();
+
+    return result.length > 0;
+  }
+
 
   // Check if user has a specific role
   async userHasRole(userId: number, roleId: number): Promise<boolean> {
@@ -3227,32 +3263,6 @@ export class DatabaseStorage implements IStorage {
       .from(userPrimaryRoles)
       .where(eq(userPrimaryRoles.roleId, roleId))
       .orderBy(userPrimaryRoles.sortOrder, userPrimaryRoles.name);
-  }
-
-  // Role management methods
-  async createRole(roleData: Partial<Role>): Promise<Role> {
-    const [role] = await db
-      .insert(rolesManagement)
-      .values(roleData as any)
-      .returning();
-    return role;
-  }
-
-  async updateRole(
-    id: number,
-    updates: Partial<Role>
-  ): Promise<Role | undefined> {
-    const [role] = await db
-      .update(rolesManagement)
-      .set(updates)
-      .where(eq(rolesManagement.id, id))
-      .returning();
-    return role || undefined;
-  }
-
-  async deleteRole(id: number): Promise<boolean> {
-    const result = await db.delete(rolesManagement).where(eq(rolesManagement.id, id));
-    return result.rowCount > 0;
   }
 
   async getUsersByRole(roleId: number): Promise<User[]> {
