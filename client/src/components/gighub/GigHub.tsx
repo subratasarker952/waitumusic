@@ -53,8 +53,8 @@ interface BookingDetails {
   };
   workflowData: any;
   assignmentInfo?: {
-    roleInBooking: string;
-    selectedTalent: string;
+    roleInBooking: any;
+    selectedTalent: any;
     isMainBookedTalent: boolean;
     assignedGroup: string;
     assignedChannel: number;
@@ -79,7 +79,7 @@ export default function GigHub() {
     queryKey: ['booking-details', bookingId],
     queryFn: async () => {
       const response = await apiRequest(`/api/bookings/${bookingId}/talent-view`);
-      return response ;
+      return response;
     },
     enabled: !!bookingId && !!user
   });
@@ -98,7 +98,7 @@ export default function GigHub() {
 
     // Audio or Visual Professionals (roles 7 or 8)
     if (roleIds.some(r => [7, 8].includes(r))) {
-      const talent = booking?.assignmentInfo?.selectedTalent?.toLowerCase() || "";
+      const talent = booking?.assignmentInfo?.selectedTalent?.name?.toLowerCase() || "";
 
       if (talent.includes("dj")) {
         return "dj";
@@ -170,41 +170,57 @@ export default function GigHub() {
   const getTabs = () => {
     const baseTabs = [
       { value: 'overview', label: 'Overview', icon: <Briefcase className="h-4 w-4" /> },
-      { value: 'mediahub', label: 'MediaHub', icon: <FileText className="h-4 w-4" /> },
       { value: 'contracts', label: 'Contracts', icon: <FileText className="h-4 w-4" /> },
+      { value: 'mediahub', label: 'MediaHub', icon: <FileText className="h-4 w-4" /> },
       { value: 'payment', label: 'Payment', icon: <DollarSign className="h-4 w-4" /> }
     ];
 
     switch (roleType) {
       case 'performer':
         return [
-          ...baseTabs.slice(0, 1),
+          ...baseTabs.slice(0, 2),
           { value: 'setlist', label: 'Setlist', icon: <Music className="h-4 w-4" /> },
           { value: 'charts', label: 'Chord Charts', icon: <BookOpen className="h-4 w-4" /> },
           { value: 'technical', label: 'Technical', icon: <Layout className="h-4 w-4" /> },
-          ...baseTabs.slice(1)
+          ...baseTabs.slice(2)
         ];
 
       case 'dj':
         return [
-          ...baseTabs.slice(0, 1),
+          ...baseTabs.slice(0, 2),
           { value: 'tracks', label: 'Tracks', icon: <Headphones className="h-4 w-4" /> },
           { value: 'spleeter', label: 'Stem Separation', icon: <SplitSquareVertical className="h-4 w-4" /> },
-          ...baseTabs.slice(1)
+          ...baseTabs.slice(2)
         ];
 
       case 'visual_professional':
         return [
-          ...baseTabs.slice(0, 1),
+          ...baseTabs.slice(0, 2),
           { value: 'shooting-guide', label: 'Shooting Guide', icon: <Camera className="h-4 w-4" /> },
           { value: 'stage-layout', label: 'Stage Layout', icon: <Layout className="h-4 w-4" /> },
-          ...baseTabs.slice(1)
+          ...baseTabs.slice(2)
         ];
 
       default:
         return baseTabs;
     }
   };
+
+  function formatEventDates(eventDates: any[]) {
+    return eventDates.map(({ eventDate, startTime, endTime }) => {
+      const dateObj = new Date(eventDate);
+      const formattedDate = dateObj.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
+
+      const formatTime = (time: any) => {
+        const [hour, minute] = time?.split(":")?.map(Number);
+        const ampm = hour >= 12 ? "PM" : "AM";
+        const hour12 = hour % 12 || 12;
+        return `${hour12}:${minute.toString().padStart(2, "0")} ${ampm}`;
+      };
+
+      return <p className='whitespace-nowrap' key={eventDate}>{formattedDate} ({formatTime(startTime)} - {formatTime(endTime)})</p>;
+    });
+  }
 
   const renderBookingActions = () => {
     const canRespond = booking.assignmentInfo?.status === 'pending' || booking.status === 'pending';
@@ -267,10 +283,10 @@ export default function GigHub() {
               <CardDescription className="mt-2">
                 {booking.assignmentInfo && (
                   <div className="flex items-center gap-2">
-                    <Badge variant="outline">{booking.assignmentInfo.roleInBooking}</Badge>
+                    <Badge variant="outline">{booking.assignmentInfo.roleInBooking.name}</Badge>
                     <Badge variant="secondary">
                       <Music className="h-3 w-3 mr-1" />
-                      {booking.assignmentInfo.selectedTalent}
+                      {booking.assignmentInfo.selectedTalent.name}
                     </Badge>
                     {booking.assignmentInfo.isMainBookedTalent && (
                       <Badge variant="default">Main Talent</Badge>
@@ -313,32 +329,68 @@ export default function GigHub() {
             </TabsTrigger>
           ))}
         </TabsList>
-
         <TabsContent value="overview">
-          <Card>
+          <Card className="p-6 bg-white shadow-lg rounded-lg">
             <CardHeader>
-              <CardTitle>Booking Overview</CardTitle>
+              <CardTitle className="text-xl font-semibold text-gray-800">
+                Booking Overview
+              </CardTitle>
             </CardHeader>
-            <CardContent className="space-y-4">
-              <div>
-                <Label>Event Type</Label>
-                <p className="text-sm">{booking.eventType}</p>
+
+            <CardContent className="space-y-6">
+              {/* Event Name */}
+              <div className="flex flex-col">
+                <Label className="font-medium text-gray-600">Event Name</Label>
+                <p className="text-sm text-gray-800">{booking.eventName}</p>
               </div>
+
+              {/* Event Type */}
+              <div className="flex flex-col">
+                <Label className="font-medium text-gray-600">Event Type</Label>
+                <p className="text-sm text-gray-800">{booking.eventType}</p>
+              </div>
+
+              {/* Event Dates */}
+              <div className="flex flex-col">
+                <Label className="font-medium text-gray-600">Event Dates</Label>
+                <div className="text-sm text-gray-800">
+                  {formatEventDates(booking.eventDates)}
+                </div>
+              </div>
+
+              {/* Venue */}
+              <div className="flex flex-col">
+                <Label className="font-medium text-gray-600">Venue Name</Label>
+                <p className="text-sm text-gray-800">{booking.venueName}</p>
+              </div>
+
+              <div className="flex flex-col">
+                <Label className="font-medium text-gray-600">Venue Address</Label>
+                <p className="text-sm text-gray-800">{booking.venueAddress}</p>
+              </div>
+
+              {/* Requirements */}
               {booking.requirements && (
-                <div>
-                  <Label>Requirements</Label>
-                  <p className="text-sm whitespace-pre-wrap">{booking.requirements}</p>
+                <div className="flex flex-col">
+                  <Label className="font-medium text-gray-600">Requirements</Label>
+                  <p className="text-sm text-gray-800 whitespace-pre-wrap border-l-2 border-blue-200 pl-4">
+                    {booking.requirements}
+                  </p>
                 </div>
               )}
+
+              {/* Assignment Info */}
               {booking.assignmentInfo && (
-                <div className="space-y-2">
-                  <Label>Your Assignment Details</Label>
-                  <div className="grid grid-cols-2 gap-2 text-sm">
+                <div className="flex flex-col space-y-2 border-t border-gray-200 pt-4">
+                  <Label className="font-medium text-gray-600">Your Assignment Details</Label>
+                  <div className="grid grid-cols-2 gap-4 text-sm text-gray-800">
                     <div>
-                      <span className="text-muted-foreground">Group:</span> {booking.assignmentInfo.assignedGroup}
+                      <span className="font-medium text-gray-600">Group:</span>{" "}
+                      {booking.assignmentInfo.assignedGroup}
                     </div>
                     <div>
-                      <span className="text-muted-foreground">Channel:</span> {booking.assignmentInfo.assignedChannel || 'TBD'}
+                      <span className="font-medium text-gray-600">Channel:</span>{" "}
+                      {booking.assignmentInfo.assignedChannel || "TBD"}
                     </div>
                   </div>
                 </div>
@@ -346,6 +398,8 @@ export default function GigHub() {
             </CardContent>
           </Card>
         </TabsContent>
+
+
 
         {/* Performer-specific tabs */}
         {roleType === 'performer' && (
@@ -475,12 +529,12 @@ export default function GigHub() {
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
-                {booking.workflowData?.contracts?.length > 0 ? (
-                  booking.workflowData.contracts.map((contract: any, index: number) => (
+                {booking?.contracts?.length > 0 ? (
+                  booking.contracts.map((contract: any, index: number) => (
                     <div key={index} className="flex items-center justify-between p-4 border rounded-lg">
                       <div>
-                        <h4 className="font-medium">{contract.type || 'Performance Agreement'}</h4>
-                        <p className="text-sm text-muted-foreground">Status: {contract.status || 'Pending'}</p>
+                        <h4 className="font-medium">{contract.contractType === "booking_agreement" ? "Booking Agreement" : 'Performance Agreement'}</h4>
+                        <p className="text-sm text-muted-foreground capitalize">Status: {contract.status || 'Pending'}</p>
                       </div>
                       <Button variant="outline" size="sm">
                         <Eye className="h-4 w-4 mr-1" />
@@ -509,8 +563,8 @@ export default function GigHub() {
                     <Label>Total Amount</Label>
                     <p className="text-2xl font-bold">{booking.finalPrice ? `$${booking.finalPrice}` : 'TBD'}</p>
                   </div>
-                  <Badge variant={booking.workflowData?.paymentStatus === 'paid' ? 'default' : 'secondary'}>
-                    {booking.workflowData?.paymentStatus || 'Pending'}
+                  <Badge variant={booking?.paymentCompleted ? 'default' : 'secondary'}>
+                    {booking?.paymentCompleted ? "Paid" : 'Pending'}
                   </Badge>
                 </div>
                 <Separator />

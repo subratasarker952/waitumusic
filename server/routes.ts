@@ -3048,88 +3048,208 @@ export async function registerRoutes(app: Express): Promise<Server> {
   );
 
   // Get booking details for talent users (includes contracts, technical riders, etc.)
-  app.get("/api/bookings/:id/talent-view", authenticateToken, validateParams(schemas.idParamSchema), async (req: Request, res: Response) => {
-    try {
-      const bookingId = parseInt(req.params.id);
-      const userId = req.user?.userId;
+  // app.get("/api/bookings/:id/talent-view", authenticateToken, validateParams(schemas.idParamSchema), async (req: Request, res: Response) => {
+  //   try {
+  //     const bookingId = parseInt(req.params.id);
+  //     const userId = req.user?.userId;
 
-      if (typeof bookingId !== "number" || typeof userId !== "number") {
-        throw new Error("bookingId or userId is undefined");
-      }
-      // Check if user is assigned to this booking
-      const assignment = await db
-        .select()
-        .from(schema.bookingAssignmentsMembers)
-        .where(
-          and(
-            eq(schema.bookingAssignmentsMembers.bookingId, bookingId),
-            eq(schema.bookingAssignmentsMembers.userId, userId),
-            eq(schema.bookingAssignmentsMembers.status, "active")
+  //     if (typeof bookingId !== "number" || typeof userId !== "number") {
+  //       throw new Error("bookingId or userId is undefined");
+  //     }
+  //     // Check if user is assigned to this booking
+  //     const assignment = await db
+  //       .select()
+  //       .from(schema.bookingAssignmentsMembers)
+  //       .where(
+  //         and(
+  //           eq(schema.bookingAssignmentsMembers.bookingId, bookingId),
+  //           eq(schema.bookingAssignmentsMembers.userId, userId),
+  //           eq(schema.bookingAssignmentsMembers.status, "active")
+  //         )
+  //       )
+  //       .limit(1);
+
+  //     if (assignment.length === 0) {
+  //       return res
+  //         .status(403)
+  //         .json({ message: "You are not assigned to this booking" });
+  //     }
+
+  //     // Get booking details with related data
+  //     const booking = await storage.getBookingById(bookingId);
+  //     if (!booking) {
+  //       return res.status(404).json({ message: "Booking not found" });
+  //     }
+
+  //     // Get contracts for this booking
+  //     const contracts = await db
+  //       .select()
+  //       .from(schema.contracts)
+  //       .where(eq(schema.contracts.bookingId, bookingId));
+
+  //     // Get technical riders for this booking
+  //     const technicalRiders = await db
+  //       .select()
+  //       .from(schema.technicalRiders)
+  //       .where(eq(schema.technicalRiders.bookingId, bookingId));
+
+  //     // Get contract signatures for this booking
+  //     const signatures = await db
+  //       .select({
+  //         signatureId: schema.contractSignatures.id,
+  //         contractId: schema.contractSignatures.contractId,
+  //         signerUserId: schema.contractSignatures.signerUserId,
+  //         signerType: schema.contractSignatures.signerType,
+  //         signerName: schema.contractSignatures.signerName,
+  //         signerEmail: schema.contractSignatures.signerEmail,
+  //         signatureData: schema.contractSignatures.signatureData,
+  //         signedAt: schema.contractSignatures.signedAt,
+  //         status: schema.contractSignatures.status,
+  //       })
+  //       .from(schema.contractSignatures)
+  //       .innerJoin(
+  //         schema.contracts,
+  //         eq(schema.contractSignatures.contractId, schema.contracts.id)
+  //       )
+  //       .where(eq(schema.contracts.bookingId, bookingId));
+
+  //     res.json({
+  //       ...booking,
+  //       contracts,
+  //       technicalRiders,
+  //       signatures,
+  //       assignmentInfo: assignment[0],
+  //     });
+  //   } catch (error) {
+  //     logError(error, ErrorSeverity.ERROR, {
+  //       endpoint: "/api/bookings/:id/talent-view",
+  //       bookingId: req.params.id,
+  //       userId: req.user?.userId,
+  //     });
+  //     res.status(500).json({ message: "Internal server error" });
+  //   }
+  // }
+  // );
+
+  app.get(
+    "/api/bookings/:id/talent-view",
+    authenticateToken,
+    validateParams(schemas.idParamSchema),
+    async (req: Request, res: Response) => {
+      try {
+        const bookingId = parseInt(req.params.id);
+        const userId = req.user?.userId;
+  
+        if (typeof bookingId !== "number" || isNaN(bookingId) || typeof userId !== "number") {
+          throw new Error("bookingId or userId is undefined");
+        }
+  
+        // 🧩 1️⃣ Check if user is assigned to this booking
+        const assignment = await db
+          .select()
+          .from(schema.bookingAssignmentsMembers)
+          .where(
+            and(
+              eq(schema.bookingAssignmentsMembers.bookingId, bookingId),
+              eq(schema.bookingAssignmentsMembers.userId, userId),
+              eq(schema.bookingAssignmentsMembers.status, "active")
+            )
           )
-        )
-        .limit(1);
-
-      if (assignment.length === 0) {
-        return res
-          .status(403)
-          .json({ message: "You are not assigned to this booking" });
+          .limit(1);
+  
+        if (assignment.length === 0) {
+          return res.status(403).json({ message: "You are not assigned to this booking" });
+        }
+  
+        const assignmentInfo = assignment[0];
+  
+        // 🧩 2️⃣ Get booking details
+        const booking = await storage.getBookingById(bookingId);
+        if (!booking) {
+          return res.status(404).json({ message: "Booking not found" });
+        }
+  
+        // 🧩 3️⃣ Get related contract + technical rider + signatures
+        const [contracts, technicalRiders, signatures] = await Promise.all([
+          db.select().from(schema.contracts).where(eq(schema.contracts.bookingId, bookingId)),
+  
+          db.select().from(schema.technicalRiders).where(eq(schema.technicalRiders.bookingId, bookingId)),
+  
+          db
+            .select({
+              signatureId: schema.contractSignatures.id,
+              contractId: schema.contractSignatures.contractId,
+              signerUserId: schema.contractSignatures.signerUserId,
+              signerType: schema.contractSignatures.signerType,
+              signerName: schema.contractSignatures.signerName,
+              signerEmail: schema.contractSignatures.signerEmail,
+              signatureData: schema.contractSignatures.signatureData,
+              signedAt: schema.contractSignatures.signedAt,
+              status: schema.contractSignatures.status,
+            })
+            .from(schema.contractSignatures)
+            .innerJoin(schema.contracts, eq(schema.contractSignatures.contractId, schema.contracts.id))
+            .where(eq(schema.contracts.bookingId, bookingId)),
+        ]);
+  
+        // 🧩 4️⃣ Enrich assignment info (pull `selectedTalent` + `roleInBooking`)
+        const [selectedTalent, roleInBooking] = await Promise.all([
+          assignmentInfo.selectedTalent
+            ? db
+                .select({
+                  id: schema.allInstruments.id,
+                  name: schema.allInstruments.name,
+                })
+                .from(schema.allInstruments)
+                .where(eq(schema.allInstruments.id, assignmentInfo.selectedTalent))
+                .limit(1)
+            : Promise.resolve([]),
+  
+          assignmentInfo.roleInBooking
+            ? db
+                .select({
+                  id: schema.rolesManagement.id,
+                  name: schema.rolesManagement.name,
+                })
+                .from(schema.rolesManagement)
+                .where(eq(schema.rolesManagement.id, assignmentInfo.roleInBooking))
+                .limit(1)
+            : Promise.resolve([]),
+        ]);
+  
+        // 🧩 5️⃣ Merge and return enriched data
+        const enrichedAssignment = {
+          ...assignmentInfo,
+          selectedTalent: selectedTalent[0] || assignmentInfo.selectedTalent,
+          roleInBooking: roleInBooking[0] || assignmentInfo.roleInBooking,
+        };
+  
+        // console.log({
+        //   ...booking,
+        //   contracts,
+        //   technicalRiders,
+        //   signatures,
+        //   assignmentInfo: enrichedAssignment,
+        // })
+        // ✅ Final Response
+        res.json({
+          ...booking,
+          contracts,
+          technicalRiders,
+          signatures,
+          assignmentInfo: enrichedAssignment,
+        });
+      } catch (error) {
+        logError(error, ErrorSeverity.ERROR, {
+          endpoint: "/api/bookings/:id/talent-view",
+          bookingId: req.params.id,
+          userId: req.user?.userId,
+        });
+        res.status(500).json({ message: "Internal server error" });
       }
-
-      // Get booking details with related data
-      const booking = await storage.getBooking(bookingId);
-      if (!booking) {
-        return res.status(404).json({ message: "Booking not found" });
-      }
-
-      // Get contracts for this booking
-      const contracts = await db
-        .select()
-        .from(schema.contracts)
-        .where(eq(schema.contracts.bookingId, bookingId));
-
-      // Get technical riders for this booking
-      const technicalRiders = await db
-        .select()
-        .from(schema.technicalRiders)
-        .where(eq(schema.technicalRiders.bookingId, bookingId));
-
-      // Get contract signatures for this booking
-      const signatures = await db
-        .select({
-          signatureId: schema.contractSignatures.id,
-          contractId: schema.contractSignatures.contractId,
-          signerUserId: schema.contractSignatures.signerUserId,
-          signerType: schema.contractSignatures.signerType,
-          signerName: schema.contractSignatures.signerName,
-          signerEmail: schema.contractSignatures.signerEmail,
-          signatureData: schema.contractSignatures.signatureData,
-          signedAt: schema.contractSignatures.signedAt,
-          status: schema.contractSignatures.status,
-        })
-        .from(schema.contractSignatures)
-        .innerJoin(
-          schema.contracts,
-          eq(schema.contractSignatures.contractId, schema.contracts.id)
-        )
-        .where(eq(schema.contracts.bookingId, bookingId));
-
-      res.json({
-        ...booking,
-        contracts,
-        technicalRiders,
-        signatures,
-        assignment: assignment[0],
-      });
-    } catch (error) {
-      logError(error, ErrorSeverity.ERROR, {
-        endpoint: "/api/bookings/:id/talent-view",
-        bookingId: req.params.id,
-        userId: req.user?.userId,
-      });
-      res.status(500).json({ message: "Internal server error" });
     }
-  }
   );
+  
 
   // Talent approval/counter-offer endpoint
   app.post(
@@ -9981,7 +10101,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
           return res.status(400).json({ message: "Missing required contract data" });
         }
 
-        const createdByUserId = req.user.userId;
+        const createdByUserId = req.user!.userId;
         const assignedToUserId = createdByUserId;
 
         // শুধু Contract create/update
