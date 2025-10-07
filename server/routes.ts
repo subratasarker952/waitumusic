@@ -3139,11 +3139,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
       try {
         const bookingId = parseInt(req.params.id);
         const userId = req.user?.userId;
-  
+
         if (typeof bookingId !== "number" || isNaN(bookingId) || typeof userId !== "number") {
           throw new Error("bookingId or userId is undefined");
         }
-  
+
         // 🧩 1️⃣ Check if user is assigned to this booking
         const assignment = await db
           .select()
@@ -3156,25 +3156,25 @@ export async function registerRoutes(app: Express): Promise<Server> {
             )
           )
           .limit(1);
-  
+
         if (assignment.length === 0) {
           return res.status(403).json({ message: "You are not assigned to this booking" });
         }
-  
+
         const assignmentInfo = assignment[0];
-  
+
         // 🧩 2️⃣ Get booking details
         const booking = await storage.getBookingById(bookingId);
         if (!booking) {
           return res.status(404).json({ message: "Booking not found" });
         }
-  
+
         // 🧩 3️⃣ Get related contract + technical rider + signatures
         const [contracts, technicalRiders, signatures] = await Promise.all([
           db.select().from(schema.contracts).where(eq(schema.contracts.bookingId, bookingId)),
-  
+
           db.select().from(schema.technicalRiders).where(eq(schema.technicalRiders.bookingId, bookingId)),
-  
+
           db
             .select({
               signatureId: schema.contractSignatures.id,
@@ -3191,39 +3191,39 @@ export async function registerRoutes(app: Express): Promise<Server> {
             .innerJoin(schema.contracts, eq(schema.contractSignatures.contractId, schema.contracts.id))
             .where(eq(schema.contracts.bookingId, bookingId)),
         ]);
-  
+
         // 🧩 4️⃣ Enrich assignment info (pull `selectedTalent` + `roleInBooking`)
         const [selectedTalent, roleInBooking] = await Promise.all([
           assignmentInfo.selectedTalent
             ? db
-                .select({
-                  id: schema.allInstruments.id,
-                  name: schema.allInstruments.name,
-                })
-                .from(schema.allInstruments)
-                .where(eq(schema.allInstruments.id, assignmentInfo.selectedTalent))
-                .limit(1)
+              .select({
+                id: schema.allInstruments.id,
+                name: schema.allInstruments.name,
+              })
+              .from(schema.allInstruments)
+              .where(eq(schema.allInstruments.id, assignmentInfo.selectedTalent))
+              .limit(1)
             : Promise.resolve([]),
-  
+
           assignmentInfo.roleInBooking
             ? db
-                .select({
-                  id: schema.rolesManagement.id,
-                  name: schema.rolesManagement.name,
-                })
-                .from(schema.rolesManagement)
-                .where(eq(schema.rolesManagement.id, assignmentInfo.roleInBooking))
-                .limit(1)
+              .select({
+                id: schema.rolesManagement.id,
+                name: schema.rolesManagement.name,
+              })
+              .from(schema.rolesManagement)
+              .where(eq(schema.rolesManagement.id, assignmentInfo.roleInBooking))
+              .limit(1)
             : Promise.resolve([]),
         ]);
-  
+
         // 🧩 5️⃣ Merge and return enriched data
         const enrichedAssignment = {
           ...assignmentInfo,
           selectedTalent: selectedTalent[0] || assignmentInfo.selectedTalent,
           roleInBooking: roleInBooking[0] || assignmentInfo.roleInBooking,
         };
-  
+
         // console.log({
         //   ...booking,
         //   contracts,
@@ -3249,7 +3249,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       }
     }
   );
-  
+
 
   // Talent approval/counter-offer endpoint
   app.post(
@@ -10233,29 +10233,21 @@ export async function registerRoutes(app: Express): Promise<Server> {
           booking: bookingOverride,
         } = req.body;
 
-        const booking =
-          (await storage.getBooking(bookingId)) || bookingOverride;
+        const booking = (await storage.getBooking(bookingId)) || bookingOverride;
         if (!booking) {
           return res.status(404).json({ message: "Booking not found" });
         }
 
         // Calculate total talent costs from individual pricing
-        const totalTalentCost = assignedTalent.reduce(
-          (total: number, talent: any) => {
-            return total + (talent.individualPrice || 0);
-          },
-          0
-        );
+        const totalTalentCost = assignedTalent.reduce((total: number, talent: any) => {
+          return total + (talent.individualPrice || 0);
+        }, 0);
 
         // Generate professional booking agreement based on real document format
         const contractDate = new Date().toLocaleDateString();
-        const eventDate = booking.eventDate
-          ? new Date(booking.eventDate).toLocaleDateString()
-          : "TBD";
+        const eventDate = booking.eventDate ? new Date(booking.eventDate).toLocaleDateString() : "TBD";
         const contractId = `WM-CO-${String(bookingId).padStart(5, "0")}`;
-        const totalContractValue =
-          contractConfig.proposedPrice || totalTalentCost;
-
+        const totalContractValue = contractConfig.proposedPrice || totalTalentCost;
         const contractPreview = `
                                                    WAI'TUMUSIC
                               ${booking.eventName || "Performance Engagement"}
@@ -10409,8 +10401,7 @@ This is a preview of the booking agreement. Final contract will include full leg
           booking: bookingOverride,
         } = req.body;
 
-        const booking =
-          (await storage.getBooking(bookingId)) || bookingOverride;
+        const booking = (await storage.getBooking(bookingId)) || bookingOverride;
         if (!booking) {
           return res.status(404).json({ message: "Booking not found" });
         }
@@ -10420,10 +10411,8 @@ This is a preview of the booking agreement. Final contract will include full leg
           .map((talent: any) => {
             // Use individual pricing from enhanced configuration
             const compensation = talent.individualPrice || 0;
-            const paymentTerms =
-              talent.paymentTerms || contractConfig.paymentTerms;
-            const cancellationPolicy =
-              talent.cancellationPolicy || contractConfig.cancellationPolicy;
+            const paymentTerms = talent.paymentTerms || contractConfig.paymentTerms;
+            const cancellationPolicy = talent.cancellationPolicy || contractConfig.cancellationPolicy;
 
             return `
 PERFORMANCE ENGAGEMENT CONTRACT - ${talent.name}
@@ -10436,22 +10425,14 @@ PERFORMER DETAILS:
 - Performance Role: ${talent.role}
 - Talent Category: ${talent.type}
 - Event Assignment: ${booking.eventName}
-- Performance Date: ${booking.eventDate
-                ? new Date(booking.eventDate).toLocaleDateString()
-                : "TBD"
-              }
+- Performance Date: ${booking.eventDate ? new Date(booking.eventDate).toLocaleDateString() : "TBD"}
 - Venue: ${booking.venueDetails || booking.venueName || "TBD"}
 
 FINANCIAL COMPENSATION:
 - Individual Performance Fee: $${compensation}
 - Payment Terms: ${paymentTerms}
 - Cancellation Policy: ${cancellationPolicy}
-${talent.counterOfferDeadline
-                ? `- Counter-Offer Response Deadline: ${new Date(
-                  talent.counterOfferDeadline
-                ).toLocaleDateString()}`
-                : ""
-              }
+${talent.counterOfferDeadline ? `- Counter-Offer Response Deadline: ${new Date(talent.counterOfferDeadline).toLocaleDateString()}` : ""}
 
 PERFORMANCE REQUIREMENTS:
 - Professional conduct and punctuality required

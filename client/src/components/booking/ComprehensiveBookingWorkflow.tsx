@@ -642,17 +642,14 @@ export default function BookingWorkflow({
   });
 
   // Individual talent pricing overrides
-  const [individualPricing, setIndividualPricing] = useState<
-    Record<
-      string,
-      {
-        price: number;
-        counterOfferDeadline: string;
-        paymentTerms: string;
-        cancellationPolicy: string;
-        additionalTerms: string;
-      }
-    >
+  const [individualPricing, setIndividualPricing] = useState<Record<string, {
+    price: number;
+    counterOfferDeadline: string;
+    paymentTerms: string;
+    cancellationPolicy: string;
+    additionalTerms: string;
+  }
+  >
   >({});
 
   const [counterOffer, setCounterOffer] = useState({
@@ -720,21 +717,11 @@ export default function BookingWorkflow({
       const previewData = {
         assignedTalent: assignedTalent.map((talent) => ({
           ...talent,
-          individualPrice:
-            individualPricing[talent.id]?.price ||
-            parseFloat(
-              categoryPricing[talent.type as keyof typeof categoryPricing] as string) ||
-            0,
-          paymentTerms:
-            individualPricing[talent.id]?.paymentTerms ||
-            contractConfig.paymentTerms,
-          cancellationPolicy:
-            individualPricing[talent.id]?.cancellationPolicy ||
-            contractConfig.cancellationPolicy,
+          individualPrice: individualPricing[talent.id]?.price || parseFloat(categoryPricing[talent.type as keyof typeof categoryPricing] as string) || 0,
+          paymentTerms: individualPricing[talent.id]?.paymentTerms || contractConfig.paymentTerms,
+          cancellationPolicy: individualPricing[talent.id]?.cancellationPolicy || contractConfig.cancellationPolicy,
           additionalTerms: individualPricing[talent.id]?.additionalTerms || "",
-          counterOfferDeadline:
-            individualPricing[talent.id]?.counterOfferDeadline ||
-            contractConfig.counterOfferDeadline,
+          counterOfferDeadline: individualPricing[talent.id]?.counterOfferDeadline || contractConfig.counterOfferDeadline,
         })),
         contractConfig: {
           ...contractConfig,
@@ -758,10 +745,8 @@ export default function BookingWorkflow({
           eventDate: booking?.eventDate || "",
           venueName: booking?.venueName || booking?.venueDetails || "TBD",
         },
-        totalBookingPrice:
-          contractConfig.totalBookingPrice || calculateTotalBookingPrice(),
-        finalOfferPrice:
-          contractConfig.totalBookingPrice || calculateTotalBookingPrice(),
+        totalBookingPrice: contractConfig.totalBookingPrice || calculateTotalBookingPrice(),
+        finalOfferPrice: contractConfig.totalBookingPrice || calculateTotalBookingPrice(),
         talentAskingPrice: calculateTotalBookingPrice(),
       };
 
@@ -2969,16 +2954,10 @@ export default function BookingWorkflow({
                               [talent.id]: {
                                 ...prev[talent.id],
                                 price: value,
-                                counterOfferDeadline:
-                                  prev[talent.id]?.counterOfferDeadline || "",
-                                paymentTerms:
-                                  prev[talent.id]?.paymentTerms ||
-                                  "50% deposit, 50% on completion",
-                                cancellationPolicy:
-                                  prev[talent.id]?.cancellationPolicy ||
-                                  "72 hours notice required",
-                                additionalTerms:
-                                  prev[talent.id]?.additionalTerms || "",
+                                counterOfferDeadline: prev[talent.id]?.counterOfferDeadline || "",
+                                paymentTerms: prev[talent.id]?.paymentTerms || "50% deposit, 50% on completion",
+                                cancellationPolicy: prev[talent.id]?.cancellationPolicy || "72 hours notice required",
+                                additionalTerms: prev[talent.id]?.additionalTerms || "",
                               },
                             }));
                           }}
@@ -3001,23 +2980,11 @@ export default function BookingWorkflow({
                               ...prev,
                               [talent.id]: {
                                 ...prev[talent.id],
-                                price:
-                                  prev[talent.id]?.price ||
-                                  parseFloat(
-                                    categoryPricing[
-                                    talent.type as keyof typeof categoryPricing
-                                    ] as string
-                                  ) ||
-                                  0,
+                                price: prev[talent.id]?.price || parseFloat(categoryPricing[talent.type as keyof typeof categoryPricing] as string) || 0,
                                 counterOfferDeadline: e.target.value,
-                                paymentTerms:
-                                  prev[talent.id]?.paymentTerms ||
-                                  "50% deposit, 50% on completion",
-                                cancellationPolicy:
-                                  prev[talent.id]?.cancellationPolicy ||
-                                  "72 hours notice required",
-                                additionalTerms:
-                                  prev[talent.id]?.additionalTerms || "",
+                                paymentTerms: prev[talent.id]?.paymentTerms || "50% deposit, 50% on completion",
+                                cancellationPolicy: prev[talent.id]?.cancellationPolicy || "72 hours notice required",
+                                additionalTerms: prev[talent.id]?.additionalTerms || "",
                               },
                             }))
                           }
@@ -3038,22 +3005,11 @@ export default function BookingWorkflow({
                               ...prev,
                               [talent.id]: {
                                 ...prev[talent.id],
-                                price:
-                                  prev[talent.id]?.price ||
-                                  parseFloat(
-                                    categoryPricing[
-                                    talent.type as keyof typeof categoryPricing
-                                    ] as string
-                                  ) ||
-                                  0,
-                                counterOfferDeadline:
-                                  prev[talent.id]?.counterOfferDeadline || "",
+                                price: prev[talent.id]?.price || parseFloat(categoryPricing[talent.type as keyof typeof categoryPricing] as string) || 0,
+                                counterOfferDeadline: prev[talent.id]?.counterOfferDeadline || "",
                                 paymentTerms: e.target.value,
-                                cancellationPolicy:
-                                  prev[talent.id]?.cancellationPolicy ||
-                                  "72 hours notice required",
-                                additionalTerms:
-                                  prev[talent.id]?.additionalTerms || "",
+                                cancellationPolicy: prev[talent.id]?.cancellationPolicy || "72 hours notice required",
+                                additionalTerms: prev[talent.id]?.additionalTerms || "",
                               },
                             }))
                           }
@@ -3086,22 +3042,11 @@ export default function BookingWorkflow({
                               ...prev,
                               [talent.id]: {
                                 ...prev[talent.id],
-                                price:
-                                  prev[talent.id]?.price ||
-                                  parseFloat(
-                                    categoryPricing[
-                                    talent.type as keyof typeof categoryPricing
-                                    ] as string
-                                  ) ||
-                                  0,
-                                counterOfferDeadline:
-                                  prev[talent.id]?.counterOfferDeadline || "",
-                                paymentTerms:
-                                  prev[talent.id]?.paymentTerms ||
-                                  "50% deposit, 50% on completion",
+                                price: prev[talent.id]?.price || parseFloat(categoryPricing[talent.type as keyof typeof categoryPricing] as string) || 0,
+                                counterOfferDeadline: prev[talent.id]?.counterOfferDeadline || "",
+                                paymentTerms: prev[talent.id]?.paymentTerms || "50% deposit, 50% on completion",
                                 cancellationPolicy: e.target.value,
-                                additionalTerms:
-                                  prev[talent.id]?.additionalTerms || "",
+                                additionalTerms: prev[talent.id]?.additionalTerms || "",
                               },
                             }))
                           }
@@ -3137,22 +3082,10 @@ export default function BookingWorkflow({
                               ...prev,
                               [talent.id]: {
                                 ...prev[talent.id],
-                                price:
-                                  prev[talent.id]?.price ||
-                                  parseFloat(
-                                    categoryPricing[
-                                    talent.type as keyof typeof categoryPricing
-                                    ] as string
-                                  ) ||
-                                  0,
-                                counterOfferDeadline:
-                                  prev[talent.id]?.counterOfferDeadline || "",
-                                paymentTerms:
-                                  prev[talent.id]?.paymentTerms ||
-                                  "50% deposit, 50% on completion",
-                                cancellationPolicy:
-                                  prev[talent.id]?.cancellationPolicy ||
-                                  "72 hours notice required",
+                                price: prev[talent.id]?.price || parseFloat(categoryPricing[talent.type as keyof typeof categoryPricing] as string) || 0,
+                                counterOfferDeadline: prev[talent.id]?.counterOfferDeadline || "",
+                                paymentTerms: prev[talent.id]?.paymentTerms || "50% deposit, 50% on completion",
+                                cancellationPolicy: prev[talent.id]?.cancellationPolicy || "72 hours notice required",
                                 additionalTerms: e.target.value,
                               },
                             }))
@@ -3176,7 +3109,7 @@ export default function BookingWorkflow({
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div className="bg-gradient-to-br from-green-50 to-cyan-50 p-4 rounded-lg border border-green-200">
                   <label className="text-sm font-medium text-green-800 flex items-center gap-2">
-                  <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                    <div className="w-2 h-2 bg-green-500 rounded-full"></div>
                     Total Booking Price ($)
                   </label>
                   <input

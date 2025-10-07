@@ -330,7 +330,7 @@ export default function GigHub() {
           ))}
         </TabsList>
         <TabsContent value="overview">
-          <Card className="p-6 bg-white shadow-lg rounded-lg">
+          <Card className="bg-white shadow-lg rounded-lg">
             <CardHeader>
               <CardTitle className="text-xl font-semibold text-gray-800">
                 Booking Overview
@@ -338,46 +338,53 @@ export default function GigHub() {
             </CardHeader>
 
             <CardContent className="space-y-6">
-              {/* Event Name */}
-              <div className="flex flex-col">
-                <Label className="font-medium text-gray-600">Event Name</Label>
-                <p className="text-sm text-gray-800">{booking.eventName}</p>
-              </div>
+              <div className='grid grid-cols-1 md:grid-cols-3 gap-6'>
 
-              {/* Event Type */}
-              <div className="flex flex-col">
-                <Label className="font-medium text-gray-600">Event Type</Label>
-                <p className="text-sm text-gray-800">{booking.eventType}</p>
-              </div>
+                <div>
+                  {/* Event Name */}
+                  <div className="flex flex-col">
+                    <Label className="font-medium text-gray-600">Event Name</Label>
+                    <p className="text-sm text-gray-800">{booking.eventName}</p>
+                  </div>
 
-              {/* Event Dates */}
-              <div className="flex flex-col">
-                <Label className="font-medium text-gray-600">Event Dates</Label>
-                <div className="text-sm text-gray-800">
-                  {formatEventDates(booking.eventDates)}
+                  {/* Event Type */}
+                  <div className="flex flex-col">
+                    <Label className="font-medium text-gray-600">Event Type</Label>
+                    <p className="text-sm text-gray-800">{booking.eventType}</p>
+                  </div>
                 </div>
-              </div>
 
-              {/* Venue */}
-              <div className="flex flex-col">
-                <Label className="font-medium text-gray-600">Venue Name</Label>
-                <p className="text-sm text-gray-800">{booking.venueName}</p>
-              </div>
-
-              <div className="flex flex-col">
-                <Label className="font-medium text-gray-600">Venue Address</Label>
-                <p className="text-sm text-gray-800">{booking.venueAddress}</p>
-              </div>
-
-              {/* Requirements */}
-              {booking.requirements && (
+                {/* Event Dates */}
                 <div className="flex flex-col">
-                  <Label className="font-medium text-gray-600">Requirements</Label>
-                  <p className="text-sm text-gray-800 whitespace-pre-wrap border-l-2 border-blue-200 pl-4">
-                    {booking.requirements}
-                  </p>
+                  <Label className="font-medium text-gray-600">Event Dates</Label>
+                  <div className="text-sm text-gray-800">
+                    {formatEventDates(booking.eventDates)}
+                  </div>
                 </div>
-              )}
+
+                <div>
+                  {/* Venue */}
+                  <div className="flex flex-col">
+                    <Label className="font-medium text-gray-600">Venue Name</Label>
+                    <p className="text-sm text-gray-800">{booking.venueName}</p>
+                  </div>
+
+                  <div className="flex flex-col">
+                    <Label className="font-medium text-gray-600">Venue Address</Label>
+                    <p className="text-sm text-gray-800">{booking.venueAddress}</p>
+                  </div>
+
+                  {/* Requirements */}
+                  {booking.requirements && (
+                    <div className="flex flex-col">
+                      <Label className="font-medium text-gray-600">Requirements</Label>
+                      <p className="text-sm text-gray-800 whitespace-pre-wrap border-l-2 border-blue-200 pl-4">
+                        {booking.requirements}
+                      </p>
+                    </div>
+                  )}
+                </div>
+              </div>
 
               {/* Assignment Info */}
               {booking.assignmentInfo && (
