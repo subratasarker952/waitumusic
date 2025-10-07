@@ -10096,13 +10096,12 @@ export async function registerRoutes(app: Express): Promise<Server> {
           return res.status(400).json({ message: "Invalid booking ID" });
         }
 
-        const { contractType, title, content, metadata, status } = req.body;
+        const { contractType, title, content, metadata, status, assignedToUserId } = req.body;
         if (!contractType || !title || !content) {
           return res.status(400).json({ message: "Missing required contract data" });
         }
 
         const createdByUserId = req.user!.userId;
-        const assignedToUserId = createdByUserId;
 
         // শুধু Contract create/update
         const newContract = await storage.upsertContract({
@@ -10116,7 +10115,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
           assignedToUserId,
         });
 
-        await storage.createOrUpdateDefaultSignatures(newContract.contract.id, bookingId);
+        // await storage.createOrUpdateDefaultSignatures(newContract.contract.id, bookingId);
 
         return res.json(newContract);
 
@@ -28971,68 +28970,172 @@ ${messageData.messageText}
   );
 
 
+  // app.get(
+  //   "/api/bookings/:id",
+  //   authenticateToken,
+  //   async (req: Request, res: Response) => {
+  //     try {
+  //       const bookingId = parseInt(req.params.id);
+  //       const booking = await storage.getBookingById(bookingId);
+
+  //       if (!booking) {
+  //         return res.status(404).json({ message: "Booking not found" });
+  //       }
+
+  //       const signatures = await storage.getContractSignatures(bookingId);
+  //       const payments = await storage.getPayments(bookingId);
+
+  //       // Related data
+  //       const [primaryArtist, booker] = await Promise.all([
+  //         storage.getUser(booking.primaryArtistUserId),
+  //         booking.bookerUserId ? storage.getUser(booking.bookerUserId) : null,
+  //       ]);
+
+  //       const artistDetails = primaryArtist ? await storage.getArtist(primaryArtist.id) : null;
+
+  //       // Workflow fallback
+  //       const workflowData = booking.workflowData || {};
+
+  //       // --- NEW: Try DB first ---
+  //       const dbTechnicalRider = await storage.getTechnicalRiderByBooking(bookingId);
+  //       const dbStagePlot = await storage.getStagePlotByBooking(bookingId);
+  //       const dbContractedData = await storage.getContractByBooking(bookingId);
+
+  //       const technicalRider = dbTechnicalRider ?? workflowData.technicalRider ?? {};
+  //       const stagePlot = dbStagePlot ?? workflowData.stagePlot ?? {};
+
+  //       const bookingDetails = {
+  //         ...booking,
+  //         primaryArtist: artistDetails ? artistDetails : null,
+  //         booker: booker ? booker : { guestName: booking.guestName, guestEmail: booking.guestEmail, },
+  //         assignedMusicians: [], // TODO: implement retrieval
+  //         technicalRider,
+  //         stagePlot,
+  //         signatures,
+  //         payments,
+  //         contracts: dbContractedData
+  //       };
+
+  //       res.json(bookingDetails);
+  //     } catch (error) {
+  //       console.error("Get booking error:", error);
+  //       res.status(500).json({ message: "Internal server error" });
+  //     }
+  //   }
+  // );
+
   app.get(
     "/api/bookings/:id",
     authenticateToken,
     async (req: Request, res: Response) => {
       try {
         const bookingId = parseInt(req.params.id);
+        if (isNaN(bookingId)) {
+          return res.status(400).json({ message: "Invalid booking ID" });
+        }
+  
         const booking = await storage.getBookingById(bookingId);
-
         if (!booking) {
           return res.status(404).json({ message: "Booking not found" });
         }
-
-        const signatures = await storage.getContractSignatures(bookingId);
-        const payments = await storage.getPayments(bookingId);
-
-        // Related data
-        const [primaryArtist, booker] = await Promise.all([
+  
+        // Parallel loading
+        const [
+          signatures,
+          payments,
+          primaryArtist,
+          booker,
+          dbTechnicalRider,
+          dbStagePlot,
+          dbContracts,
+        ] = await Promise.all([
+          storage.getContractSignatures(bookingId),
+          storage.getPayments(bookingId),
           storage.getUser(booking.primaryArtistUserId),
           booking.bookerUserId ? storage.getUser(booking.bookerUserId) : null,
+          storage.getTechnicalRiderByBooking(bookingId),
+          storage.getStagePlotByBooking(bookingId),
+          storage.getContractByBooking(bookingId),
         ]);
-
-        const artistDetails = primaryArtist
-          ? await storage.getArtist(primaryArtist.id)
-          : null;
-
-        // Workflow fallback
+  
+        // 👇 Populate assigned performers (if available)
+        const assignedMembers = await db
+          .select()
+          .from(schema.bookingAssignmentsMembers)
+          .where(eq(schema.bookingAssignmentsMembers.bookingId, bookingId));
+  
+        // Fetch performer details for each assigned member
+        const performers = await Promise.all(
+          assignedMembers.map(async (member) => {
+            const user = await storage.getUser(member.userId);
+            const role =
+              member.roleInBooking &&
+              (await db
+                .select()
+                .from(schema.rolesManagement)
+                .where(eq(schema.rolesManagement.id, member.roleInBooking))
+                .limit(1));
+  
+            return {
+              ...member,
+              user,
+              role: role?.[0] || null,
+            };
+          })
+        );
+  
+        // 👇 Enrich contracts with performer info and individual pricing
+        const contracts = await Promise.all(
+          dbContracts.map(async (contract: any) => {
+            let assignedUser = null;
+            let assignedUserPrice = null;
+  
+            if (contract.assignedToUserId) {
+              assignedUser = await storage.getUser(contract.assignedToUserId);
+  
+              // extract performer-specific price
+              const pricing = contract.content?.individualPricing || {};
+              assignedUserPrice = pricing?.[contract.assignedToUserId] ?? null;
+            }
+  
+            return {
+              ...contract,
+              assignedUser,
+              assignedUserPrice,
+            };
+          })
+        );
+  
+        // --- Workflow fallback
         const workflowData = booking.workflowData || {};
-
-        // --- NEW: Try DB first ---
-        const dbTechnicalRider = await storage.getTechnicalRiderByBooking(bookingId);
-        const dbStagePlot = await storage.getStagePlotByBooking(bookingId);
-        const dbContractedData = await storage.getContractByBooking(bookingId);
-
         const technicalRider = dbTechnicalRider ?? workflowData.technicalRider ?? {};
         const stagePlot = dbStagePlot ?? workflowData.stagePlot ?? {};
-
+  
+        // --- Response object ---
         const bookingDetails = {
           ...booking,
-          primaryArtist: artistDetails
-            ? artistDetails
-            : null,
-          booker: booker
-            ? booker
-            : {
-              guestName: booking.guestName,
-              guestEmail: booking.guestEmail,
-            },
-          assignedMusicians: [], // TODO: implement retrieval
+          primaryArtist: primaryArtist || null,
+          booker: booker || {
+            guestName: booking.guestName,
+            guestEmail: booking.guestEmail,
+          },
+          performers,
           technicalRider,
           stagePlot,
           signatures,
           payments,
-          contracts: dbContractedData
+          contracts,
         };
-
+  
         res.json(bookingDetails);
       } catch (error) {
-        console.error("Get booking error:", error);
+        console.error("❌ Get booking error:", error);
         res.status(500).json({ message: "Internal server error" });
       }
     }
   );
+  
+
 
   // Update booking data (PATCH endpoint)
   app.patch(

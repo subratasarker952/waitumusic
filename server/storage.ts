@@ -2682,9 +2682,10 @@ export class MemStorage {
 // Databasestorage start from hereeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
 
 export class DatabaseStorage implements IStorage {
-  async getUser(id: number): Promise<User | undefined> {
-    const [user] = await db.select().from(users).where(eq(users.id, id));
-    return user || undefined;
+  // 🔹 ৩️⃣ User
+  async getUser(id: number): Promise<User | null> {
+    const [user] = await db.select().from(users).where(eq(users.id, id)).limit(1);
+    return user || null;
   }
 
   async getUserByEmail(email: string): Promise<User | undefined> {
@@ -3887,11 +3888,13 @@ export class DatabaseStorage implements IStorage {
   //   return rows;
   // }
 
-  // Booking-এর সব payment records
+  // 🔹 ২️⃣ Payments
   async getPayments(bookingId: number) {
-    const rows = await db.select().from(payments)
-      .where(eq(payments.bookingId, bookingId));
-    return rows;
+    return await db
+      .select()
+      .from(payments)
+      .where(eq(payments.bookingId, bookingId))
+      .orderBy(payments.createdAt); // optional: newest to oldest
   }
 
   // documents insert
@@ -3938,42 +3941,62 @@ export class DatabaseStorage implements IStorage {
 
 
 
-  // signatures insert
   async createOrUpdateDefaultSignatures(contractId: number, bookingId: number) {
-    // Booking info
+    // 🔹 Booking info
     const booking = await db
       .select()
       .from(bookings)
       .where(eq(bookings.id, bookingId))
       .limit(1)
       .then(rows => rows[0]);
-
+  
     if (!booking) throw new Error("Booking not found");
-
-    // Booker info
-    const bookerUser = await db
+  
+    // 🔹 Contract info
+    const contract = await db
       .select()
-      .from(users)
-      .where(eq(users.id, booking.bookerUserId!))
+      .from(contracts)
+      .where(eq(contracts.id, contractId))
       .limit(1)
       .then(rows => rows[0]);
-
-    // Admin info
+  
+    if (!contract) throw new Error("Contract not found");
+  
+    // 🔹 Booker info
+    const bookerUser = booking.bookerUserId
+      ? await db
+          .select()
+          .from(users)
+          .where(eq(users.id, booking.bookerUserId))
+          .limit(1)
+          .then(rows => rows[0])
+      : null;
+  
+    // 🔹 Assigned talent (for performance contract)
+    const performerUser = contract.assignedToUserId
+      ? await db
+          .select()
+          .from(users)
+          .where(eq(users.id, contract.assignedToUserId))
+          .limit(1)
+          .then(rows => rows[0])
+      : null;
+  
+    // 🔹 Admin info (superadmin)
     const adminUserRow = await db
       .select()
       .from(users)
       .innerJoin(userRoles, eq(users.id, userRoles.userId))
-      .where(eq(userRoles.roleId, 1)) // roleId = 1 means superadmin
+      .where(eq(userRoles.roleId, 1)) // roleId = 1 => SuperAdmin
       .limit(1)
       .then(rows => rows[0]);
-
+  
     const adminUser = adminUserRow?.users;
-
     if (!adminUser) throw new Error("Admin user not found");
-
-    // Upsert function
+  
+    // 🔹 Upsert helper
     const upsertSignature = async (
-      signerType: "booker" | "superadmin",
+      signerType: string,
       signerUserId: number | null,
       signerName: string,
       signerEmail: string
@@ -3983,15 +4006,14 @@ export class DatabaseStorage implements IStorage {
         .from(contractSignatures)
         .where(
           and(
-            eq(contractSignatures.contractId, contractId), // ✅ contractSignatures.contractId ব্যবহার
+            eq(contractSignatures.contractId, contractId),
             eq(contractSignatures.signerType, signerType)
           )
         )
         .limit(1)
         .then(rows => rows[0]);
-
+  
       if (existing) {
-        // Update
         await db
           .update(contractSignatures)
           .set({
@@ -4000,10 +4022,10 @@ export class DatabaseStorage implements IStorage {
             signerEmail,
             signatureData: null,
             status: "pending",
+            signedAt: null
           })
           .where(eq(contractSignatures.id, existing.id));
       } else {
-        // Insert
         await db.insert(contractSignatures).values({
           contractId,
           signerUserId,
@@ -4011,34 +4033,49 @@ export class DatabaseStorage implements IStorage {
           signerName,
           signerEmail,
           signatureData: null,
-          status: "pending",
+          status: "pending"
         });
       }
     };
-
-    // Booker signature
-    await upsertSignature(
-      "booker",
-      bookerUser?.id || null,
-      bookerUser?.fullName || "Booker",
-      bookerUser?.email || ""
-    );
-
-    // Admin signature
-    await upsertSignature(
-      "superadmin",
-      adminUser?.id || null,
-      adminUser?.fullName || "SuperAdmin",
-      adminUser?.email || ""
-    );
+  
+    // --- 🔸 Logic by contract type ---
+    if (contract.contractType === "booking_agreement") {
+      // Booking Agreement → Booker + Admin
+      await upsertSignature(
+        "booker",
+        bookerUser?.id || null,
+        bookerUser?.fullName || "Booker",
+        bookerUser?.email || ""
+      );
+  
+      await upsertSignature(
+        "superadmin",
+        adminUser?.id || null,
+        adminUser?.fullName || "SuperAdmin",
+        adminUser?.email || ""
+      );
+    } else if (contract.contractType === "performance_contract") {
+      // Performance Contract → Performer + Admin
+      if (performerUser) {
+        await upsertSignature(
+          "performer",
+          performerUser.id,
+          performerUser.fullName || "Performer",
+          performerUser.email || ""
+        );
+      }
+  
+      await upsertSignature(
+        "superadmin",
+        adminUser?.id || null,
+        adminUser?.fullName || "SuperAdmin",
+        adminUser?.email || ""
+      );
+    }
   }
 
 
-
-
-
-
-  // contract signatures fetch by booking
+  // 🔹 ১️⃣ Contract Signatures
   async getContractSignatures(bookingId: number) {
     return await db
       .select({
@@ -4050,8 +4087,8 @@ export class DatabaseStorage implements IStorage {
         signatureData: contractSignatures.signatureData,
         signedAt: contractSignatures.signedAt,
         status: contractSignatures.status,
-        contractType: contracts.contractType,   // 👈 এখানে যুক্ত করলেন
-        title: contracts.title
+        contractType: contracts.contractType,
+        title: contracts.title,
       })
       .from(contractSignatures)
       .innerJoin(contracts, eq(contractSignatures.contractId, contracts.id))
@@ -7290,11 +7327,11 @@ export class DatabaseStorage implements IStorage {
     return result[0];
   }
 
-  // Stage Plot by bookingId
+  // 🔹 ৫️⃣ Stage Plot
   async getStagePlotByBooking(bookingId: number): Promise<any | null> {
     const [row] = await db
       .select()
-      .from(stagePlots) // যদি তোমার stage_plots নামে table থাকে
+      .from(stagePlots)
       .where(eq(stagePlots.bookingId, bookingId))
       .limit(1);
 
@@ -10155,43 +10192,47 @@ export class DatabaseStorage implements IStorage {
     bookingId: number;
     contractType: "booking_agreement" | "performance_contract";
     title: string;
-    content: any; // JSON terms
+    content: any;
     createdByUserId?: number;
     assignedToUserId?: number;
     metadata?: Record<string, any>;
     status?: "draft" | "sent" | "signed" | "countered" | "completed";
   }) {
     try {
-      // চেক করবো ওই bookingId + contractType এর contract আছে কিনা
+      // 🔹 Performance contract হলে, assignedToUserId দিয়ে চেক করবো
+      // 🔹 Booking agreement হলে, শুধু contractType দিয়ে
+      let conditions = [
+        eq(contracts.bookingId, bookingId),
+        eq(contracts.contractType, contractType)
+      ];
+  
+      if (contractType === "performance_contract" && assignedToUserId) {
+        conditions.push(eq(contracts.assignedToUserId, assignedToUserId));
+      }
+  
       const existing = await db
         .select()
         .from(contracts)
-        .where(
-          and(
-            eq(contracts.bookingId, bookingId),
-            eq(contracts.contractType, contractType)
-          )
-        )
+        .where(and(...conditions))
         .limit(1);
-
+  
       if (existing.length > 0) {
-        // থাকলে update করবো
+        // 🔁 Update existing
         const [updated] = await db
           .update(contracts)
           .set({
             title,
             content,
-            assignedToUserId,
             metadata,
             status,
             updatedAt: new Date()
           })
           .where(eq(contracts.id, existing[0].id))
           .returning();
-
+  
         return { action: "updated", contract: updated };
       } else {
-        // না থাকলে নতুন insert করবো
+        // 🆕 Insert new
         const [inserted] = await db
           .insert(contracts)
           .values({
@@ -10205,7 +10246,7 @@ export class DatabaseStorage implements IStorage {
             status
           })
           .returning();
-
+  
         return { action: "inserted", contract: inserted };
       }
     } catch (error) {
@@ -10231,19 +10272,51 @@ export class DatabaseStorage implements IStorage {
     }
   }
 
-  // Get contracts by booking ID (optional filter by type)
+  // 🔹 ৬️⃣ Contracts by Booking
   async getContractByBooking(bookingId: number) {
     try {
-      return await db
-        .select()
+      const results = await db
+        .select({
+          id: contracts.id,
+          bookingId: contracts.bookingId,
+          contractType: contracts.contractType,
+          title: contracts.title,
+          content: contracts.content,
+          metadata: contracts.metadata,
+          status: contracts.status,
+          assignedToUserId: contracts.assignedToUserId,
+          createdByUserId: contracts.createdByUserId,
+          createdAt: contracts.createdAt,
+          updatedAt: contracts.updatedAt,
+        })
         .from(contracts)
-        .where(eq(contracts.bookingId, bookingId));
+        .where(eq(contracts.bookingId, bookingId))
+        .orderBy(contracts.createdAt);
+
+      return results;
     } catch (error) {
       console.error("❌ Get contracts by booking error:", error);
       return [];
     }
   }
 
+  async getContractsWithSignatures(bookingId: number) {
+    return await db
+      .select({
+        contractId: contracts.id,
+        title: contracts.title,
+        type: contracts.contractType,
+        signerName: contractSignatures.signerName,
+        signerEmail: contractSignatures.signerEmail,
+        signetureData: contractSignatures.signatureData,
+        signedAt: contractSignatures.signedAt,
+        status: contractSignatures.status,
+      })
+      .from(contracts)
+      .leftJoin(contractSignatures, eq(contracts.id, contractSignatures.contractId))
+      .where(eq(contracts.bookingId, bookingId));
+  }
+  
 
   // Get all technical riders
   async getTechnicalRiders(): Promise<any[]> {
@@ -10299,7 +10372,7 @@ export class DatabaseStorage implements IStorage {
   }
 
 
-  // Technical Rider by bookingId
+  // 🔹 ৪️⃣ Technical Rider
   async getTechnicalRiderByBooking(bookingId: number): Promise<any | null> {
     const [row] = await db
       .select()

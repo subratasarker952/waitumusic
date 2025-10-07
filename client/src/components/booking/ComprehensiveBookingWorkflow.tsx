@@ -1352,26 +1352,28 @@ export default function BookingWorkflow({
         }
       );
 
-      // Performance Contract
-      const performanceContract = await apiRequest(
-        `/api/bookings/${bookingId}/contracts`,
-        {
+
+      for (const talent of assignedTalent) {
+        const priceForThisTalent = individualPricing?.[talent.id] || 0;
+        await apiRequest(`/api/bookings/${bookingId}/contracts`, {
           method: "POST",
           body: {
             contractType: "performance_contract",
-            title: `Performance Contract for ${booking?.eventName || "Event"}`,
+            assignedToUserId: talent.id, // performer-specific
+            title: `Performance Contract for ${booking?.eventName} - ${talent.fullName}`,
             content: {
               totalBookingPrice: contractConfig.totalBookingPrice || calculateTotalBookingPrice(),
               categoryPricing,
-              individualPricing,
+              individualPricing: { [talent.id]: priceForThisTalent },
               contractConfig,
               counterOffer,
             },
             metadata: { generatedBy: "system", step: "contract_generation" },
             status: "draft",
-          },
-        }
-      );
+          }
+        });
+      }
+
 
       // Step confirm
       setStepConfirmations((prev) => ({ ...prev, 2: true }));
@@ -1386,7 +1388,7 @@ export default function BookingWorkflow({
         description: "Booking & Performance contracts saved successfully",
       });
 
-      return { bookingContract, performanceContract };
+      // return { bookingContract, performanceContract };
     } catch (error: any) {
       console.error("❌ Save contracts error:", error);
       toast({
@@ -1399,6 +1401,27 @@ export default function BookingWorkflow({
     }
   };
 
+
+  // Performance Contract
+  // const performanceContract = await apiRequest(
+  //   `/api/bookings/${bookingId}/contracts`,
+  //   {
+  //     method: "POST",
+  //     body: {
+  //       contractType: "performance_contract",
+  //       title: `Performance Contract for ${booking?.eventName || "Event"}`,
+  //       content: {
+  //         totalBookingPrice: contractConfig.totalBookingPrice || calculateTotalBookingPrice(),
+  //         categoryPricing,
+  //         individualPricing,
+  //         contractConfig,
+  //         counterOffer,
+  //       },
+  //       metadata: { generatedBy: "system", step: "contract_generation" },
+  //       status: "draft",
+  //     },
+  //   }
+  // );
 
   // 3
   const saveTechnicalRider = async (data: any) => {
