@@ -1332,8 +1332,7 @@ export default function BookingWorkflow({
       setIsLoading(true);
 
       // Booking Agreement
-      const bookingContract = await apiRequest(
-        `/api/bookings/${bookingId}/contracts`,
+      await apiRequest( `/api/bookings/${bookingId}/contracts`,
         {
           method: "POST",
           body: {

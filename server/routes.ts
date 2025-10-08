@@ -10095,15 +10095,15 @@ export async function registerRoutes(app: Express): Promise<Server> {
         if (isNaN(bookingId)) {
           return res.status(400).json({ message: "Invalid booking ID" });
         }
-
+  
         const { contractType, title, content, metadata, status, assignedToUserId } = req.body;
         if (!contractType || !title || !content) {
           return res.status(400).json({ message: "Missing required contract data" });
         }
-
+  
         const createdByUserId = req.user!.userId;
-
-        // শুধু Contract create/update
+  
+        // Contract create/update
         const newContract = await storage.upsertContract({
           bookingId,
           contractType,
@@ -10114,11 +10114,14 @@ export async function registerRoutes(app: Express): Promise<Server> {
           status,
           assignedToUserId,
         });
-
-        // await storage.createOrUpdateDefaultSignatures(newContract.contract.id, bookingId);
-
+  
+        // **Signature record তৈরি**  
+        if (contractType === "performance_contract" && assignedToUserId) {
+          await storage.createOrUpdateDefaultSignatures(newContract.contract.id, bookingId, assignedToUserId);
+        }
+  
         return res.json(newContract);
-
+  
       } catch (error: any) {
         console.error("❌ Save contract error:", error);
         return res
@@ -10127,6 +10130,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       }
     }
   );
+  
 
   // app.post(
   //   "/api/contracts/:contractId/signatures",
@@ -10172,7 +10176,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
           return res.status(400).json({ message: "Signature data is required" });
         }
   
-        // ✅ Check contract exists
         const [contract] = await db
           .select()
           .from(schema.contracts)
@@ -10183,7 +10186,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
           return res.status(404).json({ message: "Contract not found" });
         }
   
-        // ✅ Check pending signature for current user
         const [existing] = await db
           .select()
           .from(schema.contractSignatures)
@@ -10197,12 +10199,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
           .limit(1);
   
         if (!existing) {
-          return res
-            .status(404)
-            .json({ message: "No pending signature found for this user" });
+          return res.status(404).json({ message: "No pending signature found for this user" });
         }
   
-        // ✅ Update signature as signed
         const [updated] = await db
           .update(schema.contractSignatures)
           .set({
@@ -10213,33 +10212,37 @@ export async function registerRoutes(app: Express): Promise<Server> {
           .where(eq(schema.contractSignatures.id, existing.id))
           .returning();
   
-        // ✅ Optional: check if all signatures done → update contract status
         const allSigs = await db
           .select()
           .from(schema.contractSignatures)
           .where(eq(schema.contractSignatures.contractId, contractId));
   
         const allSigned = allSigs.every((s) => s.status === "signed");
+  
+        let invoiceId = null;
+  
         if (allSigned) {
           await db
             .update(schema.contracts)
             .set({ status: "signed", updatedAt: new Date() })
             .where(eq(schema.contracts.id, contractId));
+  
+          // ✅ Call workflow to create invoice
+          invoiceId = await financialAutomation.generatePerformerInvoice(contract, userId);
         }
   
         res.json({
           message: "Contract signed successfully",
           signature: updated,
           allSigned,
+          invoiceId,
         });
       } catch (error: any) {
         console.error("❌ Sign contract error:", error);
-        res
-          .status(500)
-          .json({ message: "Internal server error", error: error.message });
+        res.status(500).json({ message: "Internal server error", error: error.message });
       }
     }
-  );
+  ); 
 
   // app.get("/api/contracts/:id/pdf", authenticateToken, async (req, res) => {
   //   try {
@@ -18373,23 +18376,23 @@ This is a preview of the performance engagement contract. Final agreement will i
       try {
         const proformaId = parseInt(req.params.proformaId);
         const user = req.user!;
-
+  
         const finalInvoiceId = await financialAutomation.convertProformaToFinal(
           proformaId,
           user.userId
         );
-
+  
         res.json({
           success: true,
           finalInvoiceId,
           message: "Proforma invoice converted to final invoice successfully",
         });
       } catch (error) {
-        console.error("Convert invoice error:", error);
+        console.error("❌ Convert invoice error:", error);
         res.status(500).json({ message: "Failed to convert proforma invoice" });
       }
     }
-  );
+  ); 
 
   // Generate invoice for booking (legacy - now creates final invoice directly)
   app.post(
@@ -29149,6 +29152,7 @@ ${messageData.messageText}
           dbTechnicalRider,
           dbStagePlot,
           dbContracts,
+          dbInvoices, // 🧾 new
         ] = await Promise.all([
           storage.getContractSignatures(bookingId),
           storage.getPayments(bookingId),
@@ -29157,7 +29161,8 @@ ${messageData.messageText}
           storage.getTechnicalRiderByBooking(bookingId),
           storage.getStagePlotByBooking(bookingId),
           storage.getContractByBooking(bookingId),
-        ]);
+          storage.getInvoicesByBooking(bookingId), 
+        ]);               
 
         // 👇 Populate assigned performers (if available)
         const assignedMembers = await db
@@ -29226,6 +29231,7 @@ ${messageData.messageText}
           signatures,
           payments,
           contracts,
+          invoices: dbInvoices, 
         };
 
         res.json(bookingDetails);

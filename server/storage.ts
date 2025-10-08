@@ -3941,8 +3941,12 @@ export class DatabaseStorage implements IStorage {
 
 
 
-  async createOrUpdateDefaultSignatures(contractId: number, bookingId: number) {
-    // 🔹 Booking info
+  async createOrUpdateDefaultSignatures(
+    contractId: number,
+    bookingId: number,
+    performerUserId?: number
+  ) {
+    // Booking info
     const booking = await db
       .select()
       .from(bookings)
@@ -3952,7 +3956,7 @@ export class DatabaseStorage implements IStorage {
   
     if (!booking) throw new Error("Booking not found");
   
-    // 🔹 Contract info
+    // Contract info
     const contract = await db
       .select()
       .from(contracts)
@@ -3962,7 +3966,7 @@ export class DatabaseStorage implements IStorage {
   
     if (!contract) throw new Error("Contract not found");
   
-    // 🔹 Booker info
+    // Booker info
     const bookerUser = booking.bookerUserId
       ? await db
           .select()
@@ -3972,29 +3976,28 @@ export class DatabaseStorage implements IStorage {
           .then(rows => rows[0])
       : null;
   
-    // 🔹 Assigned talent (for performance contract)
-    const performerUser = contract.assignedToUserId
+    // Performer info (explicitly passed)
+    const performerUser = performerUserId
       ? await db
           .select()
           .from(users)
-          .where(eq(users.id, contract.assignedToUserId))
+          .where(eq(users.id, performerUserId))
           .limit(1)
           .then(rows => rows[0])
       : null;
   
-    // 🔹 Admin info (superadmin)
+    // Admin info
     const adminUserRow = await db
       .select()
       .from(users)
       .innerJoin(userRoles, eq(users.id, userRoles.userId))
-      .where(eq(userRoles.roleId, 1)) // roleId = 1 => SuperAdmin
+      .where(eq(userRoles.roleId, 1)) // SuperAdmin
       .limit(1)
       .then(rows => rows[0]);
   
     const adminUser = adminUserRow?.users;
     if (!adminUser) throw new Error("Admin user not found");
   
-    // 🔹 Upsert helper
     const upsertSignature = async (
       signerType: string,
       signerUserId: number | null,
@@ -4038,9 +4041,8 @@ export class DatabaseStorage implements IStorage {
       }
     };
   
-    // --- 🔸 Logic by contract type ---
+    // Logic by contract type
     if (contract.contractType === "booking_agreement") {
-      // Booking Agreement → Booker + Admin
       await upsertSignature(
         "booker",
         bookerUser?.id || null,
@@ -4055,7 +4057,6 @@ export class DatabaseStorage implements IStorage {
         adminUser?.email || ""
       );
     } else if (contract.contractType === "performance_contract") {
-      // Performance Contract → Performer + Admin
       if (performerUser) {
         await upsertSignature(
           "performer",
@@ -4073,7 +4074,7 @@ export class DatabaseStorage implements IStorage {
       );
     }
   }
-
+  
 
   // 🔹 ১️⃣ Contract Signatures
   async getContractSignatures(bookingId: number) {

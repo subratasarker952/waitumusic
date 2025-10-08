@@ -1,10 +1,12 @@
 import { db } from "./db";
-import { 
-  bookings, invoices, payoutRequests, documentLinkages, 
+import {
+  bookings, invoices, payoutRequests, documentLinkages,
   paymentTransactions, financialAuditLog, payments, receipts,
   users, artists, bookingAssignments,
   type InsertInvoice, type InsertPayoutRequest, type InsertDocumentLinkage,
-  type InsertPaymentTransaction, type InsertFinancialAuditLog
+  type InsertPaymentTransaction, type InsertFinancialAuditLog,
+  contractSignatures,
+  contracts
 } from "@shared/schema";
 import { eq, and, desc } from "drizzle-orm";
 import PDFDocument from "pdfkit";
@@ -18,11 +20,137 @@ export class FinancialAutomationService {
       .select({ count: invoices.id })
       .from(invoices)
       .then(result => result.length);
-    
+
     const year = new Date().getFullYear();
     const paddedCount = String(count + 1).padStart(6, '0');
     return `${prefix}-${year}-${paddedCount}`;
   }
+
+  private async generatePerformerInvoiceNumber(userId: number, bookingId: number): Promise<string> {
+    try {
+      // Count existing invoices for this booking
+      const countResult = await db
+        .select()
+        .from(invoices)
+        .where(eq(invoices.bookingId, bookingId))
+        .then((results) => results.length);
+
+      const nextCount = countResult + 1;
+
+      // Pad count with zeros (e.g., 1 → "00001")
+      const countStr = String(nextCount).padStart(5, "0");
+
+      // Build invoice number
+      const invoiceNumber = `INV-${userId}-${bookingId}-${countStr}`;
+
+      return invoiceNumber;
+    } catch (error) {
+      console.error("❌ generateInvoiceNumber error:", error);
+      throw error;
+    }
+  }
+
+
+  async generatePerformerInvoice(
+    contract: any,
+    triggeredByUserId: number
+  ): Promise<number> {
+    try {
+      const bookingId = contract.bookingId;
+  
+      // Generate invoice number
+      const invoiceNumber = await this.generatePerformerInvoiceNumber(
+        contract.assignedToUserId,
+        bookingId
+      );
+  
+      // Fetch booking details
+      const booking = await db
+        .select()
+        .from(bookings)
+        .where(eq(bookings.id, bookingId))
+        .limit(1)
+        .then((res) => res[0]);
+  
+      if (!booking) {
+        throw new Error(`Booking ${bookingId} not found`);
+      }
+  
+      // Fetch performer details
+      const performer = await db
+        .select()
+        .from(users)
+        .where(eq(users.id, contract.assignedToUserId))
+        .limit(1)
+        .then((res) => res[0]);
+  
+      if (!performer) {
+        throw new Error(`Performer ${contract.assignedToUserId} not found`);
+      }
+  
+      // Safely extract feeAmount from contract content
+      const feeAmount =
+        parseFloat(
+          contract.content?.individualPricing?.[contract.assignedToUserId]?.toString() ||
+            "0"
+        ) || 0;
+  
+      const lineItems = [
+        {
+          description: `Performance Fee for Booking #${bookingId} (${booking.eventName})`,
+          quantity: 1,
+          rate: feeAmount.toString(),
+          amount: feeAmount.toString(),
+        },
+      ];
+  
+      const subtotalAmount = feeAmount;
+      const taxAmount = 0; // Adjust if tax applies
+      const totalAmount = subtotalAmount + taxAmount;
+  
+      // Insert invoice record
+      const [invoice] = await db
+        .insert(invoices)
+        .values({
+          bookingId,
+          invoiceNumber,
+          invoiceType: "final",
+          issuerName: "Wai'tuMusic",
+          issuerAddress: "123 Music Lane, Sound City, SC 12345",
+          issuerTaxId: "TAX-123456789",
+          recipientName: performer.fullName,
+          recipientAddress: "",
+          recipientTaxId: null,
+          lineItems,
+          subtotalAmount: subtotalAmount.toString(),
+          taxAmount: taxAmount.toString(),
+          totalAmount: totalAmount.toString(),
+          dueDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000), // Net 30
+          paymentTerms: "Net 30",
+          status: "pending",
+          triggeredBy: "contract_signature",
+          triggeredByUserId,
+          generatedAt: new Date(),
+        })
+        .returning();
+  
+      if (!invoice) {
+        throw new Error("Invoice creation failed");
+      }
+  
+      // Generate PDF
+      await this.generateInvoicePDF(invoice.id);
+  
+      console.log(
+        `✅ Performer Invoice #${invoice.invoiceNumber} created for contract ${contract.id}`
+      );
+      return invoice.id;
+    } catch (error) {
+      console.error("❌ generatePerformerInvoice error:", error);
+      throw error;
+    }
+  }
+  
 
   // Generate unique payout request number
   private async generatePayoutRequestNumber(): Promise<string> {
@@ -30,7 +158,7 @@ export class FinancialAutomationService {
       .select({ count: payoutRequests.id })
       .from(payoutRequests)
       .then(result => result.length);
-    
+
     const year = new Date().getFullYear();
     const paddedCount = String(count + 1).padStart(6, '0');
     return `PAYOUT-${year}-${paddedCount}`;
@@ -105,8 +233,8 @@ export class FinancialAutomationService {
 
     // Determine payment terms
     const paymentTerms = booking.eventType === 'corporate' ? 'Net 30' : 'Due on Receipt';
-    const dueDate = paymentTerms === 'Net 30' 
-      ? new Date(Date.now() + 30 * 24 * 60 * 60 * 1000) 
+    const dueDate = paymentTerms === 'Net 30'
+      ? new Date(Date.now() + 30 * 24 * 60 * 60 * 1000)
       : new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
 
     // Create line items
@@ -155,14 +283,14 @@ export class FinancialAutomationService {
     }
 
     const invoiceNumber = await this.generateInvoiceNumber('PRO');
-    
+
     const subtotalAmount = parseFloat(booking.totalBudget || "0");
     const taxAmount = subtotalAmount * 0.08;
     const totalAmount = subtotalAmount + taxAmount;
 
     const paymentTerms = booking.eventType === 'corporate' ? 'Net 30' : 'Due on Receipt';
-    const dueDate = paymentTerms === 'Net 30' 
-      ? new Date(Date.now() + 30 * 24 * 60 * 60 * 1000) 
+    const dueDate = paymentTerms === 'Net 30'
+      ? new Date(Date.now() + 30 * 24 * 60 * 60 * 1000)
       : new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
 
     const lineItems = [
@@ -215,7 +343,7 @@ export class FinancialAutomationService {
 
   // Convert proforma to final invoice when accepted (REDESIGNED: Updates SAME invoice)
   async convertProformaToFinal(
-    proformaInvoiceId: number, 
+    proformaInvoiceId: number,
     triggeredByUserId?: number
   ): Promise<number> {
     const proformaInvoice = await db
@@ -234,7 +362,7 @@ export class FinancialAutomationService {
     // Update the SAME invoice from proforma to final
     await db
       .update(invoices)
-      .set({ 
+      .set({
         invoiceNumber: finalInvoiceNumber,
         invoiceType: 'final',
         status: 'pending',
@@ -260,52 +388,182 @@ export class FinancialAutomationService {
     await this.generateInvoicePDF(proformaInvoiceId);
     return proformaInvoiceId; // Return same ID since it's the same invoice
   }
-  
+
   // Generate PDF for invoice
+  // async generateInvoicePDF(invoiceId: number): Promise<string> {
+  //   // Get invoice details with booking and user information
+  //   const invoice = await db
+  //     .select({
+  //       invoice: invoices,
+  //       booking: bookings,
+  //       booker: users
+  //     })
+  //     .from(invoices)
+  //     .leftJoin(bookings, eq(invoices.bookingId, bookings.id))
+  //     .leftJoin(users, eq(bookings.bookerUserId, users.id))
+  //     .where(eq(invoices.id, invoiceId))
+  //     .then(result => result[0]);
+
+  //   if (!invoice) {
+  //     throw new Error(`Invoice ${invoiceId} not found`);
+  //   }
+
+  //   // Create invoices directory if it doesn't exist
+  //   const invoicesDir = path.join(process.cwd(), 'invoices');
+  //   if (!fs.existsSync(invoicesDir)) {
+  //     fs.mkdirSync(invoicesDir, { recursive: true });
+  //   }
+
+  //   const fileName = `invoice_${invoice.invoice.invoiceNumber.replace(/[\/\\:*?"<>|]/g, '_')}.pdf`;
+  //   const filePath = path.join(invoicesDir, fileName);
+
+  //   return new Promise((resolve, reject) => {
+  //     const doc = new PDFDocument({ margin: 50 });
+  //     const stream = fs.createWriteStream(filePath);
+  //     doc.pipe(stream);
+
+  //     // Header
+  //     doc.fontSize(20).text("Wai'tuMusic", 50, 50);
+  //     doc.fontSize(10).text("Music Label Management Platform", 50, 75);
+  //     doc.text("123 Music Lane, Sound City, SC 12345", 50, 90);
+  //     doc.text("contact@waitumusic.com | (555) 123-MUSIC", 50, 105);
+
+  //     // Invoice Title
+  //     doc.fontSize(24).text("INVOICE", 400, 50);
+  //     doc.fontSize(12).text(`Invoice #: ${invoice.invoice.invoiceNumber}`, 400, 75);
+  //     doc.text(`Date: ${new Date(invoice.invoice.generatedAt).toLocaleDateString()}`, 400, 90);
+  //     doc.text(`Due: ${new Date(invoice.invoice.dueDate).toLocaleDateString()}`, 400, 105);
+
+  //     // Bill To Section
+  //     doc.fontSize(14).text("Bill To:", 50, 150);
+  //     doc.fontSize(12);
+  //     doc.text(invoice.invoice.recipientName, 50, 170);
+  //     if (invoice.invoice.recipientAddress) {
+  //       doc.text(invoice.invoice.recipientAddress, 50, 185);
+  //     }
+  //     if (invoice.booking?.guestEmail) {
+  //       doc.text(invoice.booking.guestEmail, 50, 200);
+  //     }
+
+  //     // Event Details
+  //     if (invoice.booking) {
+  //       doc.fontSize(14).text("Event Details:", 300, 150);
+  //       doc.fontSize(12);
+  //       doc.text(`Event: ${invoice.booking.eventName}`, 300, 170);
+  //       doc.text(`Type: ${invoice.booking.eventType}`, 300, 185);
+  //       doc.text(`Date: ${new Date(invoice.booking.eventDate).toLocaleDateString()}`, 300, 200);
+  //       doc.text(`Venue: ${invoice.booking.venueName}`, 300, 215);
+  //     }
+
+  //     // Line Items Table
+  //     const tableTop = 280;
+  //     doc.fontSize(12);
+
+  //     // Table Headers
+  //     doc.text("Description", 50, tableTop);
+  //     doc.text("Qty", 300, tableTop);
+  //     doc.text("Rate", 350, tableTop);
+  //     doc.text("Amount", 450, tableTop);
+
+  //     // Table Line
+  //     doc.moveTo(50, tableTop + 15).lineTo(550, tableTop + 15).stroke();
+
+  //     // Line Items
+  //     let yPosition = tableTop + 30;
+  //     const lineItems = invoice.invoice.lineItems as any[];
+
+  //     lineItems.forEach((item, index) => {
+  //       doc.text(item.description, 50, yPosition);
+  //       doc.text(item.quantity.toString(), 300, yPosition);
+  //       doc.text(`$${parseFloat(item.rate).toFixed(2)}`, 350, yPosition);
+  //       doc.text(`$${parseFloat(item.amount).toFixed(2)}`, 450, yPosition);
+  //       yPosition += 20;
+  //     });
+
+  //     // Totals
+  //     const totalsTop = yPosition + 30;
+  //     doc.text("Subtotal:", 350, totalsTop);
+  //     doc.text(`$${parseFloat(invoice.invoice.subtotalAmount).toFixed(2)}`, 450, totalsTop);
+
+  //     if (invoice.invoice.taxAmount) {
+  //       doc.text("Tax (8%):", 350, totalsTop + 20);
+  //       doc.text(`$${parseFloat(invoice.invoice.taxAmount).toFixed(2)}`, 450, totalsTop + 20);
+  //     }
+
+  //     doc.fontSize(14).text("Total:", 350, totalsTop + 40);
+  //     doc.text(`$${parseFloat(invoice.invoice.totalAmount).toFixed(2)}`, 450, totalsTop + 40);
+
+  //     // Payment Terms
+  //     doc.fontSize(10);
+  //     doc.text(`Payment Terms: ${invoice.invoice.paymentTerms}`, 50, totalsTop + 80);
+  //     doc.text("Please remit payment by the due date to avoid late fees.", 50, totalsTop + 95);
+
+  //     // Footer
+  //     doc.text("Thank you for choosing Wai'tuMusic!", 50, totalsTop + 120);
+
+  //     doc.end();
+
+  //     stream.on('finish', async () => {
+  //       // Update invoice with PDF URL
+  //       const invoiceUrl = `/api/financial/invoice/${invoiceId}/pdf`;
+  //       await db
+  //         .update(invoices)
+  //         .set({ invoiceUrl, updatedAt: new Date() })
+  //         .where(eq(invoices.id, invoiceId));
+
+  //       resolve(filePath);
+  //     });
+
+  //     stream.on('error', reject);
+  //   });
+  // }
+
   async generateInvoicePDF(invoiceId: number): Promise<string> {
-    // Get invoice details with booking and user information
+    // Get invoice details with booking, bookingDates, and user information
     const invoice = await db
       .select({
         invoice: invoices,
         booking: bookings,
-        booker: users
+        booker: users,
+        bookingDates: bookingDates
       })
       .from(invoices)
       .leftJoin(bookings, eq(invoices.bookingId, bookings.id))
       .leftJoin(users, eq(bookings.bookerUserId, users.id))
+      .leftJoin(bookingDates, eq(bookings.id, bookingDates.bookingId)) // join bookingDates
       .where(eq(invoices.id, invoiceId))
       .then(result => result[0]);
-
+  
     if (!invoice) {
       throw new Error(`Invoice ${invoiceId} not found`);
     }
-
+  
     // Create invoices directory if it doesn't exist
     const invoicesDir = path.join(process.cwd(), 'invoices');
     if (!fs.existsSync(invoicesDir)) {
       fs.mkdirSync(invoicesDir, { recursive: true });
     }
-
+  
     const fileName = `invoice_${invoice.invoice.invoiceNumber.replace(/[\/\\:*?"<>|]/g, '_')}.pdf`;
     const filePath = path.join(invoicesDir, fileName);
-
+  
     return new Promise((resolve, reject) => {
       const doc = new PDFDocument({ margin: 50 });
       const stream = fs.createWriteStream(filePath);
       doc.pipe(stream);
-
+  
       // Header
       doc.fontSize(20).text("Wai'tuMusic", 50, 50);
       doc.fontSize(10).text("Music Label Management Platform", 50, 75);
       doc.text("123 Music Lane, Sound City, SC 12345", 50, 90);
       doc.text("contact@waitumusic.com | (555) 123-MUSIC", 50, 105);
-
+  
       // Invoice Title
       doc.fontSize(24).text("INVOICE", 400, 50);
       doc.fontSize(12).text(`Invoice #: ${invoice.invoice.invoiceNumber}`, 400, 75);
       doc.text(`Date: ${new Date(invoice.invoice.generatedAt).toLocaleDateString()}`, 400, 90);
       doc.text(`Due: ${new Date(invoice.invoice.dueDate).toLocaleDateString()}`, 400, 105);
-
+  
       // Bill To Section
       doc.fontSize(14).text("Bill To:", 50, 150);
       doc.fontSize(12);
@@ -316,34 +574,43 @@ export class FinancialAutomationService {
       if (invoice.booking?.guestEmail) {
         doc.text(invoice.booking.guestEmail, 50, 200);
       }
-
+  
       // Event Details
       if (invoice.booking) {
         doc.fontSize(14).text("Event Details:", 300, 150);
         doc.fontSize(12);
         doc.text(`Event: ${invoice.booking.eventName}`, 300, 170);
         doc.text(`Type: ${invoice.booking.eventType}`, 300, 185);
-        doc.text(`Date: ${new Date(invoice.booking.eventDate).toLocaleDateString()}`, 300, 200);
+  
+        // Use bookingDates.eventDate instead of booking.eventDate
+        if (invoice.bookingDates?.eventDate) {
+          doc.text(
+            `Date: ${new Date(invoice.bookingDates.eventDate).toLocaleDateString()}`,
+            300,
+            200
+          );
+        }
+  
         doc.text(`Venue: ${invoice.booking.venueName}`, 300, 215);
       }
-
+  
       // Line Items Table
       const tableTop = 280;
       doc.fontSize(12);
-      
+  
       // Table Headers
       doc.text("Description", 50, tableTop);
       doc.text("Qty", 300, tableTop);
       doc.text("Rate", 350, tableTop);
       doc.text("Amount", 450, tableTop);
-      
+  
       // Table Line
       doc.moveTo(50, tableTop + 15).lineTo(550, tableTop + 15).stroke();
-
+  
       // Line Items
       let yPosition = tableTop + 30;
       const lineItems = invoice.invoice.lineItems as any[];
-      
+  
       lineItems.forEach((item, index) => {
         doc.text(item.description, 50, yPosition);
         doc.text(item.quantity.toString(), 300, yPosition);
@@ -351,44 +618,44 @@ export class FinancialAutomationService {
         doc.text(`$${parseFloat(item.amount).toFixed(2)}`, 450, yPosition);
         yPosition += 20;
       });
-
+  
       // Totals
       const totalsTop = yPosition + 30;
       doc.text("Subtotal:", 350, totalsTop);
       doc.text(`$${parseFloat(invoice.invoice.subtotalAmount).toFixed(2)}`, 450, totalsTop);
-      
+  
       if (invoice.invoice.taxAmount) {
         doc.text("Tax (8%):", 350, totalsTop + 20);
         doc.text(`$${parseFloat(invoice.invoice.taxAmount).toFixed(2)}`, 450, totalsTop + 20);
       }
-      
+  
       doc.fontSize(14).text("Total:", 350, totalsTop + 40);
       doc.text(`$${parseFloat(invoice.invoice.totalAmount).toFixed(2)}`, 450, totalsTop + 40);
-
+  
       // Payment Terms
       doc.fontSize(10);
       doc.text(`Payment Terms: ${invoice.invoice.paymentTerms}`, 50, totalsTop + 80);
       doc.text("Please remit payment by the due date to avoid late fees.", 50, totalsTop + 95);
-
+  
       // Footer
       doc.text("Thank you for choosing Wai'tuMusic!", 50, totalsTop + 120);
-
+  
       doc.end();
-
+  
       stream.on('finish', async () => {
-        // Update invoice with PDF URL
         const invoiceUrl = `/api/financial/invoice/${invoiceId}/pdf`;
         await db
           .update(invoices)
           .set({ invoiceUrl, updatedAt: new Date() })
           .where(eq(invoices.id, invoiceId));
-
+  
         resolve(filePath);
       });
-
+  
       stream.on('error', reject);
     });
   }
+  
 
   // 1. Automatic Invoice Generation on Booking Acceptance (Updated for proforma workflow)
   async generateInvoiceOnBookingAcceptance(
@@ -416,7 +683,7 @@ export class FinancialAutomationService {
 
     // Determine payment terms based on booking type
     const paymentTerms = booking.eventType === 'corporate' ? 'Net 30' : 'Due on Receipt';
-    const dueDate = paymentTerms === 'Net 30' 
+    const dueDate = paymentTerms === 'Net 30'
       ? new Date(Date.now() + 30 * 24 * 60 * 60 * 1000) // 30 days from now
       : new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);  // 7 days from now
 
@@ -589,7 +856,7 @@ export class FinancialAutomationService {
     // Calculate fees and net amount
     const platformFeePercentage = 0.05; // 5% platform fee
     const gatewayFeePercentage = 0.029; // 2.9% gateway fee (typical Stripe fee)
-    
+
     const platformFee = amount * platformFeePercentage;
     const gatewayFee = amount * gatewayFeePercentage;
     const netAmount = amount - platformFee - gatewayFee;
@@ -760,7 +1027,7 @@ export class FinancialAutomationService {
       .select({ count: receipts.id })
       .from(receipts)
       .then(result => result.length);
-    
+
     const year = new Date().getFullYear();
     const receiptNumber = `REC-${year}-${String(receiptCount + 1).padStart(6, '0')}`;
 
