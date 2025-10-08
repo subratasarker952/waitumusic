@@ -35,6 +35,7 @@ import { SetlistViewer } from './components/SetlistViewer';
 import { SpleeterInterface } from './components/SpleeterInterface';
 import { CounterOfferDialog } from './components/CounterOfferDialog';
 import { MediaHubSection } from './components/MediaHubSection';
+import { ContractsTab } from './components/ContractsTab';
 
 interface BookingDetails {
   id: number;
@@ -529,32 +530,7 @@ export default function GigHub() {
         </TabsContent>
 
         <TabsContent value="contracts">
-          <Card>
-            <CardHeader>
-              <CardTitle>Contracts</CardTitle>
-              <CardDescription>View and sign performance contracts</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                {booking?.contracts?.length > 0 ? (
-                  booking.contracts.map((contract: any, index: number) => (
-                    <div key={index} className="flex items-center justify-between p-4 border rounded-lg">
-                      <div>
-                        <h4 className="font-medium">{contract.contractType === "booking_agreement" ? "Booking Agreement" : 'Performance Agreement'}</h4>
-                        <p className="text-sm text-muted-foreground capitalize">Status: {contract.status || 'Pending'}</p>
-                      </div>
-                      <Button variant="outline" size="sm">
-                        <Eye className="h-4 w-4 mr-1" />
-                        View
-                      </Button>
-                    </div>
-                  ))
-                ) : (
-                  <p className="text-muted-foreground">No contracts available yet.</p>
-                )}
-              </div>
-            </CardContent>
-          </Card>
+          <ContractsTab booking={booking}></ContractsTab>
         </TabsContent>
 
         <TabsContent value="payment">

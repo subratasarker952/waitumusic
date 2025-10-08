@@ -10128,34 +10128,135 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   );
 
+  // app.post(
+  //   "/api/contracts/:contractId/signatures",
+  //   authenticateToken,
+  //   async (req: Request, res: Response) => {
+  //     try {
+  //       const contractId = parseInt(req.params.contractId);
+  //       const { signatureData, signerType } = req.body;
+
+  //       if (!signatureData || !signerType) {
+  //         return res.status(400).json({ message: "Missing signature data or signer type" });
+  //       }
+
+  //       const updatedSignature = await storage.signContract(contractId, signerType, signatureData);
+
+  //       return res.json({
+  //         message: "Signature saved successfully",
+  //         signature: updatedSignature,
+  //       });
+  //     } catch (error: any) {
+  //       console.error("❌ Save signature error:", error);
+  //       return res.status(500).json({
+  //         message: error.message || "Failed to save signature",
+  //       });
+  //     }
+  //   }
+  // );
+
   app.post(
-    "/api/contracts/:contractId/signatures",
+    "/api/contracts/:id/sign",
     authenticateToken,
     async (req: Request, res: Response) => {
       try {
-        const contractId = parseInt(req.params.contractId);
-        const { signatureData, signerType } = req.body;
-
-        if (!signatureData || !signerType) {
-          return res.status(400).json({ message: "Missing signature data or signer type" });
+        const contractId = Number(req.params.id);
+        const userId = req.user!.userId;
+        const { signatureData } = req.body;
+  
+        if (!contractId || isNaN(contractId)) {
+          return res.status(400).json({ message: "Invalid contract ID" });
         }
-
-        const updatedSignature = await storage.signContract(contractId, signerType, signatureData);
-
-        return res.json({
-          message: "Signature saved successfully",
-          signature: updatedSignature,
+  
+        if (!signatureData || typeof signatureData !== "string") {
+          return res.status(400).json({ message: "Signature data is required" });
+        }
+  
+        // ✅ Check contract exists
+        const [contract] = await db
+          .select()
+          .from(schema.contracts)
+          .where(eq(schema.contracts.id, contractId))
+          .limit(1);
+  
+        if (!contract) {
+          return res.status(404).json({ message: "Contract not found" });
+        }
+  
+        // ✅ Check pending signature for current user
+        const [existing] = await db
+          .select()
+          .from(schema.contractSignatures)
+          .where(
+            and(
+              eq(schema.contractSignatures.contractId, contractId),
+              eq(schema.contractSignatures.signerUserId, userId),
+              eq(schema.contractSignatures.status, "pending")
+            )
+          )
+          .limit(1);
+  
+        if (!existing) {
+          return res
+            .status(404)
+            .json({ message: "No pending signature found for this user" });
+        }
+  
+        // ✅ Update signature as signed
+        const [updated] = await db
+          .update(schema.contractSignatures)
+          .set({
+            signatureData,
+            signedAt: new Date(),
+            status: "signed",
+          })
+          .where(eq(schema.contractSignatures.id, existing.id))
+          .returning();
+  
+        // ✅ Optional: check if all signatures done → update contract status
+        const allSigs = await db
+          .select()
+          .from(schema.contractSignatures)
+          .where(eq(schema.contractSignatures.contractId, contractId));
+  
+        const allSigned = allSigs.every((s) => s.status === "signed");
+        if (allSigned) {
+          await db
+            .update(schema.contracts)
+            .set({ status: "signed", updatedAt: new Date() })
+            .where(eq(schema.contracts.id, contractId));
+        }
+  
+        res.json({
+          message: "Contract signed successfully",
+          signature: updated,
+          allSigned,
         });
       } catch (error: any) {
-        console.error("❌ Save signature error:", error);
-        return res.status(500).json({
-          message: error.message || "Failed to save signature",
-        });
+        console.error("❌ Sign contract error:", error);
+        res
+          .status(500)
+          .json({ message: "Internal server error", error: error.message });
       }
     }
   );
 
-
+  // app.get("/api/contracts/:id/pdf", authenticateToken, async (req, res) => {
+  //   try {
+  //     const contractId = parseInt(req.params.id);
+  //     const [contract] = await db.select().from(contracts).where(eq(contracts.id, contractId));
+  
+  //     if (!contract) {
+  //       return res.status(404).json({ message: "Contract not found" });
+  //     }
+  
+  //     res.setHeader("Content-Type", "application/pdf");
+  //     res.send(generateContractPDF(contract)); // use pdf-lib / reportlab here
+  //   } catch (err) {
+  //     console.error("PDF view error:", err);
+  //     res.status(500).json({ message: "Failed to load contract PDF" });
+  //   }
+  // });
 
 
   // Save / Update Technical Rider
@@ -29033,12 +29134,12 @@ ${messageData.messageText}
         if (isNaN(bookingId)) {
           return res.status(400).json({ message: "Invalid booking ID" });
         }
-  
+
         const booking = await storage.getBookingById(bookingId);
         if (!booking) {
           return res.status(404).json({ message: "Booking not found" });
         }
-  
+
         // Parallel loading
         const [
           signatures,
@@ -29057,13 +29158,13 @@ ${messageData.messageText}
           storage.getStagePlotByBooking(bookingId),
           storage.getContractByBooking(bookingId),
         ]);
-  
+
         // 👇 Populate assigned performers (if available)
         const assignedMembers = await db
           .select()
           .from(schema.bookingAssignmentsMembers)
           .where(eq(schema.bookingAssignmentsMembers.bookingId, bookingId));
-  
+
         // Fetch performer details for each assigned member
         const performers = await Promise.all(
           assignedMembers.map(async (member) => {
@@ -29075,7 +29176,7 @@ ${messageData.messageText}
                 .from(schema.rolesManagement)
                 .where(eq(schema.rolesManagement.id, member.roleInBooking))
                 .limit(1));
-  
+
             return {
               ...member,
               user,
@@ -29083,21 +29184,21 @@ ${messageData.messageText}
             };
           })
         );
-  
+
         // 👇 Enrich contracts with performer info and individual pricing
         const contracts = await Promise.all(
           dbContracts.map(async (contract: any) => {
             let assignedUser = null;
             let assignedUserPrice = null;
-  
+
             if (contract.assignedToUserId) {
               assignedUser = await storage.getUser(contract.assignedToUserId);
-  
+
               // extract performer-specific price
               const pricing = contract.content?.individualPricing || {};
               assignedUserPrice = pricing?.[contract.assignedToUserId] ?? null;
             }
-  
+
             return {
               ...contract,
               assignedUser,
@@ -29105,12 +29206,12 @@ ${messageData.messageText}
             };
           })
         );
-  
+
         // --- Workflow fallback
         const workflowData = booking.workflowData || {};
         const technicalRider = dbTechnicalRider ?? workflowData.technicalRider ?? {};
         const stagePlot = dbStagePlot ?? workflowData.stagePlot ?? {};
-  
+
         // --- Response object ---
         const bookingDetails = {
           ...booking,
@@ -29126,7 +29227,7 @@ ${messageData.messageText}
           payments,
           contracts,
         };
-  
+
         res.json(bookingDetails);
       } catch (error) {
         console.error("❌ Get booking error:", error);
@@ -29134,7 +29235,7 @@ ${messageData.messageText}
       }
     }
   );
-  
+
 
 
   // Update booking data (PATCH endpoint)
