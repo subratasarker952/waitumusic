@@ -90,6 +90,7 @@ import { workerData } from "worker_threads";
 import { LoadingSpinner } from "../ui/loading-spinner";
 import { Alert } from "../ui/alert";
 import { singlestoreDatabase } from "drizzle-orm/singlestore-core";
+import { width } from "pdfkit/js/page";
 
 interface ComprehensiveBookingWorkflowProps {
   bookingId: number;
@@ -322,6 +323,7 @@ export default function BookingWorkflow({
 
   // Update assigned talent state when data loads
   useEffect(() => {
+
     if (assignedTalentData) {
       console.log("📋 UPDATING assigned talent state:", assignedTalentData);
       console.log(
@@ -599,7 +601,7 @@ export default function BookingWorkflow({
       if (talent.isMainBookedTalent) {
         return (
           total +
-          (individualPricing[talent.id]?.price ||
+          (individualPricing[talent.userId]?.price ||
             parseFloat(categoryPricing["Main Booked Talent"] as string) ||
             0)
         );
@@ -607,7 +609,7 @@ export default function BookingWorkflow({
       // For other talent, individual pricing overrides category pricing
       return (
         total +
-        (individualPricing[talent.id]?.price ||
+        (individualPricing[talent.userId]?.price ||
           parseFloat(
             categoryPricing[
             talent.type as keyof typeof categoryPricing
@@ -651,6 +653,10 @@ export default function BookingWorkflow({
   }
   >
   >({});
+
+  useEffect(() => {
+    console.log(individualPricing)
+  }, [individualPricing]);
 
   const [counterOffer, setCounterOffer] = useState({
     received: false,
@@ -717,18 +723,18 @@ export default function BookingWorkflow({
       const previewData = {
         assignedTalent: assignedTalent.map((talent) => ({
           ...talent,
-          individualPrice: individualPricing[talent.id]?.price || parseFloat(categoryPricing[talent.type as keyof typeof categoryPricing] as string) || 0,
-          paymentTerms: individualPricing[talent.id]?.paymentTerms || contractConfig.paymentTerms,
-          cancellationPolicy: individualPricing[talent.id]?.cancellationPolicy || contractConfig.cancellationPolicy,
-          additionalTerms: individualPricing[talent.id]?.additionalTerms || "",
-          counterOfferDeadline: individualPricing[talent.id]?.counterOfferDeadline || contractConfig.counterOfferDeadline,
+          individualPrice: individualPricing[talent.userId]?.price || parseFloat(categoryPricing[talent.type as keyof typeof categoryPricing] as string) || 0,
+          paymentTerms: individualPricing[talent.userId]?.paymentTerms || contractConfig.paymentTerms,
+          cancellationPolicy: individualPricing[talent.userId]?.cancellationPolicy || contractConfig.cancellationPolicy,
+          additionalTerms: individualPricing[talent.userId]?.additionalTerms || "",
+          counterOfferDeadline: individualPricing[talent.userId]?.counterOfferDeadline || contractConfig.counterOfferDeadline,
         })),
         contractConfig: {
           ...contractConfig,
           categoryPricing,
           totalTalentCost: assignedTalent.reduce((total, talent) => {
             const talentPrice =
-              individualPricing[talent.id]?.price ||
+              individualPricing[talent.userId]?.price ||
               categoryPricing[talent.type as keyof typeof categoryPricing] ||
               0;
             return total + talentPrice;
@@ -1332,7 +1338,7 @@ export default function BookingWorkflow({
       setIsLoading(true);
 
       // Booking Agreement
-      await apiRequest( `/api/bookings/${bookingId}/contracts`,
+      await apiRequest(`/api/bookings/${bookingId}/contracts`,
         {
           method: "POST",
           body: {
@@ -1353,17 +1359,17 @@ export default function BookingWorkflow({
 
 
       for (const talent of assignedTalent) {
-        const priceForThisTalent = individualPricing?.[talent.id] || 0;
+        const priceForThisTalent = individualPricing?.[talent.userId] || 0;
         await apiRequest(`/api/bookings/${bookingId}/contracts`, {
           method: "POST",
           body: {
             contractType: "performance_contract",
-            assignedToUserId: talent.id, // performer-specific
+            assignedToUserId: talent.userId, // performer-specific
             title: `Performance Contract for ${booking?.eventName} - ${talent.fullName}`,
             content: {
               totalBookingPrice: contractConfig.totalBookingPrice || calculateTotalBookingPrice(),
               categoryPricing,
-              individualPricing: { [talent.id]: priceForThisTalent },
+              individualPricing: { [talent.userId]: priceForThisTalent },
               contractConfig,
               counterOffer,
             },
@@ -1990,20 +1996,20 @@ export default function BookingWorkflow({
                         {talent.type === "Performance Professional" && (
                           <div className="mt-2 flex items-center gap-2">
                             <Label
-                              htmlFor={`rate-${talent.id}`}
+                              htmlFor={`rate-${talent.userId}`}
                               className="text-xs"
                             >
                               Rate:
                             </Label>
                             <Input
-                              id={`rate-${talent.id}`}
+                              id={`rate-${talent.userId}`}
                               type="number"
                               placeholder="$0.00"
                               className="w-24 h-6 text-xs"
                               defaultValue={talent.rate || ""}
                               onChange={(e) => {
                                 const updatedTalent = assignedTalent.map((t) =>
-                                  t.id === talent.id
+                                  t.id === talent.userId
                                     ? { ...t, rate: e.target.value }
                                     : t
                                 );
@@ -2047,12 +2053,12 @@ export default function BookingWorkflow({
                             className="border-red-300 text-red-600 hover:bg-red-50"
                             onClick={async () => {
                               try {
-                                await apiRequest(`/api/assignments/${talent.id}`, {
+                                await apiRequest(`/api/assignments/${talent.userId}`, {
                                   method: "DELETE",
                                 });
 
                                 setAssignedTalent((prev) =>
-                                  prev.filter((t) => t.id !== talent.id)
+                                  prev.filter((t) => t.id !== talent.userId)
                                 );
 
                                 toast({
@@ -2080,12 +2086,12 @@ export default function BookingWorkflow({
                         className="border-red-300 text-red-600 hover:bg-red-50"
                         onClick={async () => {
                           try {
-                            await apiRequest(`/api/assignments/${talent.id}`, {
+                            await apiRequest(`/api/assignments/${talent.userId}`, {
                               method: "DELETE",
                             });
 
                             setAssignedTalent((prev) =>
-                              prev.filter((t) => t.id !== talent.id)
+                              prev.filter((t) => t.id !== talent.userId)
                             );
 
                             toast({
@@ -2924,202 +2930,248 @@ export default function BookingWorkflow({
 
             {/* Individual Talent Overrides */}
             <div>
-              <h4 className="text-lg font-medium mb-3">
-                Individual Talent Pricing
-              </h4>
+              <h4 className="text-lg font-medium mb-3">Individual Talent Pricing</h4>
               <p className="text-sm text-muted-foreground mb-4">
-                Override category pricing and set individual terms for specific
-                talent
+                Override category pricing and set individual terms for specific talent
               </p>
               <div className="space-y-4">
-                {assignedTalent.map((talent) => (
-                  <Card key={talent.id} className="p-4">
-                    <div className="flex items-center gap-3 mb-3">
-                      <Avatar className="w-10 h-10">
-                        <AvatarImage src={talent.avatarUrl} />
-                        <AvatarFallback>
-                          {talent.name
-                            .split(" ")
-                            .map((n: string) => n[0])
-                            .join("")}
-                        </AvatarFallback>
-                      </Avatar>
-                      <div>
-                        <p className="font-medium">
-                          {talent.assignmentName || talent.name}
-                        </p>
-                        <p className="text-sm text-muted-foreground">
-                          {talent.isMainBookedTalent
-                            ? "Main Booked Talent"
-                            : talent.type} - {talent.role}
-                        </p>
+                {assignedTalent.map((talent) => {
+                  const talentKey = String(talent.userId); // ✅ Force string key
+
+                  return (
+                    <Card key={talentKey} className="p-4">
+                      <div className="flex items-center gap-3 mb-3">
+                        <Avatar className="w-10 h-10">
+                          <AvatarImage src={talent.avatarUrl} />
+                          <AvatarFallback>
+                            {talent.name
+                              .split(" ")
+                              .map((n: string) => n[0])
+                              .join("")}
+                          </AvatarFallback>
+                        </Avatar>
+                        <div>
+                          <p className="font-medium">
+                            {talent.assignmentName || talent.name}
+                          </p>
+                          <p className="text-sm text-muted-foreground">
+                            {talent.isMainBookedTalent
+                              ? "Main Booked Talent"
+                              : talent.type}{" "}
+                            - {talent.role}
+                          </p>
+                        </div>
                       </div>
-                    </div>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      <div>
-                        <label className="text-sm font-medium">
-                          Individual Price ($)
-                        </label>
-                        <input
-                          type="number"
-                          min="0"
-                          value={
-                            individualPricing[talent.id]?.price ||
-                            parseFloat(categoryPricing[talent.type as keyof typeof categoryPricing] as string) || ""}
-                          onChange={(e) => {
-                            const value = Math.max(
-                              0,
-                              parseFloat(e.target.value) || 0
-                            );
-                            setIndividualPricing((prev) => ({
-                              ...prev,
-                              [talent.id]: {
-                                ...prev[talent.id],
-                                price: value,
-                                counterOfferDeadline: prev[talent.id]?.counterOfferDeadline || "",
-                                paymentTerms: prev[talent.id]?.paymentTerms || "50% deposit, 50% on completion",
-                                cancellationPolicy: prev[talent.id]?.cancellationPolicy || "72 hours notice required",
-                                additionalTerms: prev[talent.id]?.additionalTerms || "",
-                              },
-                            }));
-                          }}
-                          className="w-full mt-1 p-2 border rounded"
-                          placeholder="Individual rate"
-                        />
+
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        {/* Price */}
+                        <div>
+                          <label className="text-sm font-medium">Individual Price ($)</label>
+                          <input
+                            type="number"
+                            min="0"
+                            value={
+                              individualPricing[talentKey]?.price ??
+                              parseFloat(
+                                categoryPricing[talent.type as keyof typeof categoryPricing] as string
+                              ) ??
+                              ""
+                            }
+                            onChange={(e) => {
+                              const value = Math.max(0, parseFloat(e.target.value) || 0);
+                              setIndividualPricing((prev) => ({
+                                ...prev,
+                                [talentKey]: {
+                                  ...prev[talentKey],
+                                  price: value,
+                                  counterOfferDeadline:
+                                    prev[talentKey]?.counterOfferDeadline || "",
+                                  paymentTerms:
+                                    prev[talentKey]?.paymentTerms ||
+                                    "50% deposit, 50% on completion",
+                                  cancellationPolicy:
+                                    prev[talentKey]?.cancellationPolicy ||
+                                    "72 hours notice required",
+                                  additionalTerms:
+                                    prev[talentKey]?.additionalTerms || "",
+                                },
+                              }));
+                            }}
+                            className="w-full mt-1 p-2 border rounded"
+                            placeholder="Individual rate"
+                          />
+                        </div>
+
+                        {/* Counter-Offer Deadline */}
+                        <div>
+                          <label className="text-sm font-medium">
+                            Counter-Offer Deadline
+                          </label>
+                          <input
+                            type="datetime-local"
+                            value={individualPricing[talentKey]?.counterOfferDeadline || ""}
+                            onChange={(e) =>
+                              setIndividualPricing((prev) => ({
+                                ...prev,
+                                [talentKey]: {
+                                  ...prev[talentKey],
+                                  price:
+                                    prev[talentKey]?.price ??
+                                    parseFloat(
+                                      categoryPricing[talent.type as keyof typeof categoryPricing] as string
+                                    ) ??
+                                    0,
+                                  counterOfferDeadline: e.target.value,
+                                  paymentTerms:
+                                    prev[talentKey]?.paymentTerms ||
+                                    "50% deposit, 50% on completion",
+                                  cancellationPolicy:
+                                    prev[talentKey]?.cancellationPolicy ||
+                                    "72 hours notice required",
+                                  additionalTerms:
+                                    prev[talentKey]?.additionalTerms || "",
+                                },
+                              }))
+                            }
+                            className="w-full mt-1 p-2 border rounded"
+                          />
+                        </div>
+
+                        {/* Payment Terms */}
+                        <div>
+                          <label className="text-sm font-medium">Payment Terms</label>
+                          <select
+                            value={
+                              individualPricing[talentKey]?.paymentTerms ||
+                              "50% deposit, 50% on completion"
+                            }
+                            onChange={(e) =>
+                              setIndividualPricing((prev) => ({
+                                ...prev,
+                                [talentKey]: {
+                                  ...prev[talentKey],
+                                  paymentTerms: e.target.value,
+                                  price:
+                                    prev[talentKey]?.price ??
+                                    parseFloat(
+                                      categoryPricing[talent.type as keyof typeof categoryPricing] as string
+                                    ) ??
+                                    0,
+                                  counterOfferDeadline:
+                                    prev[talentKey]?.counterOfferDeadline || "",
+                                  cancellationPolicy:
+                                    prev[talentKey]?.cancellationPolicy ||
+                                    "72 hours notice required",
+                                  additionalTerms:
+                                    prev[talentKey]?.additionalTerms || "",
+                                },
+                              }))
+                            }
+                            className="w-full mt-1 p-2 border rounded"
+                          >
+                            <option value="50% deposit, 50% on completion">
+                              50% deposit, 50% on completion
+                            </option>
+                            <option value="100% upfront">100% upfront</option>
+                            <option value="Payment on completion">
+                              Payment on completion
+                            </option>
+                            <option value="Net 30 terms">Net 30 terms</option>
+                            <option value="Payment within 7 days">
+                              Payment within 7 days
+                            </option>
+                          </select>
+                        </div>
+
+                        {/* Cancellation Policy */}
+                        <div>
+                          <label className="text-sm font-medium">Cancellation Policy</label>
+                          <select
+                            value={
+                              individualPricing[talentKey]?.cancellationPolicy ||
+                              "72 hours notice required"
+                            }
+                            onChange={(e) =>
+                              setIndividualPricing((prev) => ({
+                                ...prev,
+                                [talentKey]: {
+                                  ...prev[talentKey],
+                                  cancellationPolicy: e.target.value,
+                                  price:
+                                    prev[talentKey]?.price ??
+                                    parseFloat(
+                                      categoryPricing[talent.type as keyof typeof categoryPricing] as string
+                                    ) ??
+                                    0,
+                                  counterOfferDeadline:
+                                    prev[talentKey]?.counterOfferDeadline || "",
+                                  paymentTerms:
+                                    prev[talentKey]?.paymentTerms ||
+                                    "50% deposit, 50% on completion",
+                                  additionalTerms:
+                                    prev[talentKey]?.additionalTerms || "",
+                                },
+                              }))
+                            }
+                            className="w-full mt-1 p-2 border rounded"
+                          >
+                            <option value="72 hours notice required">
+                              72 hours notice required
+                            </option>
+                            <option value="7 days notice required">
+                              7 days notice required
+                            </option>
+                            <option value="14 days notice required">
+                              14 days notice required
+                            </option>
+                            <option value="30 days notice required">
+                              30 days notice required
+                            </option>
+                            <option value="No cancellation allowed">
+                              No cancellation allowed
+                            </option>
+                          </select>
+                        </div>
+
+                        {/* Additional Terms */}
+                        <div className="md:col-span-2">
+                          <label className="text-sm font-medium">
+                            Additional Terms for {talent.name}
+                          </label>
+                          <textarea
+                            value={individualPricing[talentKey]?.additionalTerms || ""}
+                            onChange={(e) =>
+                              setIndividualPricing((prev) => ({
+                                ...prev,
+                                [talentKey]: {
+                                  ...prev[talentKey],
+                                  additionalTerms: e.target.value,
+                                  price:
+                                    prev[talentKey]?.price ??
+                                    parseFloat(
+                                      categoryPricing[talent.type as keyof typeof categoryPricing] as string
+                                    ) ??
+                                    0,
+                                  counterOfferDeadline:
+                                    prev[talentKey]?.counterOfferDeadline || "",
+                                  paymentTerms:
+                                    prev[talentKey]?.paymentTerms ||
+                                    "50% deposit, 50% on completion",
+                                  cancellationPolicy:
+                                    prev[talentKey]?.cancellationPolicy ||
+                                    "72 hours notice required",
+                                },
+                              }))
+                            }
+                            rows={2}
+                            className="w-full mt-1 p-2 border rounded"
+                            placeholder="Special terms or requirements for this talent"
+                          />
+                        </div>
                       </div>
-                      <div>
-                        <label className="text-sm font-medium">
-                          Counter-Offer Deadline
-                        </label>
-                        <input
-                          type="datetime-local"
-                          value={
-                            individualPricing[talent.id]
-                              ?.counterOfferDeadline || ""
-                          }
-                          onChange={(e) =>
-                            setIndividualPricing((prev) => ({
-                              ...prev,
-                              [talent.id]: {
-                                ...prev[talent.id],
-                                price: prev[talent.id]?.price || parseFloat(categoryPricing[talent.type as keyof typeof categoryPricing] as string) || 0,
-                                counterOfferDeadline: e.target.value,
-                                paymentTerms: prev[talent.id]?.paymentTerms || "50% deposit, 50% on completion",
-                                cancellationPolicy: prev[talent.id]?.cancellationPolicy || "72 hours notice required",
-                                additionalTerms: prev[talent.id]?.additionalTerms || "",
-                              },
-                            }))
-                          }
-                          className="w-full mt-1 p-2 border rounded"
-                        />
-                      </div>
-                      <div>
-                        <label className="text-sm font-medium">
-                          Payment Terms
-                        </label>
-                        <select
-                          value={
-                            individualPricing[talent.id]?.paymentTerms ||
-                            "50% deposit, 50% on completion"
-                          }
-                          onChange={(e) =>
-                            setIndividualPricing((prev) => ({
-                              ...prev,
-                              [talent.id]: {
-                                ...prev[talent.id],
-                                price: prev[talent.id]?.price || parseFloat(categoryPricing[talent.type as keyof typeof categoryPricing] as string) || 0,
-                                counterOfferDeadline: prev[talent.id]?.counterOfferDeadline || "",
-                                paymentTerms: e.target.value,
-                                cancellationPolicy: prev[talent.id]?.cancellationPolicy || "72 hours notice required",
-                                additionalTerms: prev[talent.id]?.additionalTerms || "",
-                              },
-                            }))
-                          }
-                          className="w-full mt-1 p-2 border rounded"
-                        >
-                          <option value="50% deposit, 50% on completion">
-                            50% deposit, 50% on completion
-                          </option>
-                          <option value="100% upfront">100% upfront</option>
-                          <option value="Payment on completion">
-                            Payment on completion
-                          </option>
-                          <option value="Net 30 terms">Net 30 terms</option>
-                          <option value="Payment within 7 days">
-                            Payment within 7 days
-                          </option>
-                        </select>
-                      </div>
-                      <div>
-                        <label className="text-sm font-medium">
-                          Cancellation Policy
-                        </label>
-                        <select
-                          value={
-                            individualPricing[talent.id]?.cancellationPolicy ||
-                            "72 hours notice required"
-                          }
-                          onChange={(e) =>
-                            setIndividualPricing((prev) => ({
-                              ...prev,
-                              [talent.id]: {
-                                ...prev[talent.id],
-                                price: prev[talent.id]?.price || parseFloat(categoryPricing[talent.type as keyof typeof categoryPricing] as string) || 0,
-                                counterOfferDeadline: prev[talent.id]?.counterOfferDeadline || "",
-                                paymentTerms: prev[talent.id]?.paymentTerms || "50% deposit, 50% on completion",
-                                cancellationPolicy: e.target.value,
-                                additionalTerms: prev[talent.id]?.additionalTerms || "",
-                              },
-                            }))
-                          }
-                          className="w-full mt-1 p-2 border rounded"
-                        >
-                          <option value="72 hours notice required">
-                            72 hours notice required
-                          </option>
-                          <option value="7 days notice required">
-                            7 days notice required
-                          </option>
-                          <option value="14 days notice required">
-                            14 days notice required
-                          </option>
-                          <option value="30 days notice required">
-                            30 days notice required
-                          </option>
-                          <option value="No cancellation allowed">
-                            No cancellation allowed
-                          </option>
-                        </select>
-                      </div>
-                      <div className="md:col-span-2">
-                        <label className="text-sm font-medium">
-                          Additional Terms for {talent.name}
-                        </label>
-                        <textarea
-                          value={
-                            individualPricing[talent.id]?.additionalTerms || ""
-                          }
-                          onChange={(e) =>
-                            setIndividualPricing((prev) => ({
-                              ...prev,
-                              [talent.id]: {
-                                ...prev[talent.id],
-                                price: prev[talent.id]?.price || parseFloat(categoryPricing[talent.type as keyof typeof categoryPricing] as string) || 0,
-                                counterOfferDeadline: prev[talent.id]?.counterOfferDeadline || "",
-                                paymentTerms: prev[talent.id]?.paymentTerms || "50% deposit, 50% on completion",
-                                cancellationPolicy: prev[talent.id]?.cancellationPolicy || "72 hours notice required",
-                                additionalTerms: e.target.value,
-                              },
-                            }))
-                          }
-                          rows={2}
-                          className="w-full mt-1 p-2 border rounded"
-                          placeholder="Special terms or requirements for this talent"
-                        />
-                      </div>
-                    </div>
-                  </Card>
-                ))}
+                    </Card>
+                  );
+                })}
               </div>
             </div>
 
@@ -3653,7 +3705,7 @@ export default function BookingWorkflow({
             <EnhancedMixerPatchSystem
               bookingId={bookingId}
               assignedTalent={assignedTalent.map((talent: any) => ({
-                id: talent.id || talent.userId?.toString(),
+                id: talent.userId || talent.userId?.toString(),
                 userId: talent.userId,
                 name: talent.name || talent.fullName,
                 stageName: talent.stageName || talent.name || talent.fullName,
@@ -3839,8 +3891,7 @@ export default function BookingWorkflow({
                               }}
                               penColor="black"
                               canvasProps={{
-                                height: 200,
-                                className: "border border-gray-400 rounded bg-white w-full",
+                                className: "border border-gray-400 rounded bg-white w-full h-[200px]",
                               }}
                             />
                             <div className="flex gap-2">

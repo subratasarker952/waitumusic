@@ -186,7 +186,7 @@ export function ContractsTab({ booking, onSigned }: { booking: any; onSigned?: (
 
       {/* Signature Modal */}
       <Dialog open={open} onOpenChange={setOpen}>
-        <DialogContent className="max-w-2xl">
+        <DialogContent className="max-w-2xl overflow-visible">
           <DialogHeader>
             <DialogTitle>{selectedContract?.title}</DialogTitle>
           </DialogHeader>
@@ -204,10 +204,7 @@ export function ContractsTab({ booking, onSigned }: { booking: any; onSigned?: (
             </p>
             <p className="text-sm">
               <strong>Total:</strong> ৳
-              {Number(
-                selectedContract?.content?.totalBookingPrice ||
-                  booking.totalBudget
-              ).toLocaleString()}
+              {Number(selectedContract?.content?.individualPricing).toLocaleString()}
             </p>
           </div>
 
@@ -218,9 +215,7 @@ export function ContractsTab({ booking, onSigned }: { booking: any; onSigned?: (
               ref={setSigPad}
               penColor="black"
               canvasProps={{
-                width: 500,
-                height: 200,
-                className: "border rounded-md w-full",
+                className: "border border-gray-400 rounded bg-white w-full h-[200px]",
               }}
             />
             <div className="flex justify-between mt-2">
