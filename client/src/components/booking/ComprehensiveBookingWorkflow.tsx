@@ -655,7 +655,32 @@ export default function BookingWorkflow({
   >({});
 
   useEffect(() => {
-    console.log(individualPricing)
+    if (!assignedTalent?.length) return;
+  
+    setIndividualPricing((prev) => {
+      const updated = { ...prev };
+  
+      assignedTalent.forEach((talent) => {
+        const key = String(talent.userId);
+        if (!updated[key]) {
+          updated[key] = {
+            price: parseFloat(
+              categoryPricing[talent.type as keyof typeof categoryPricing] || "0"
+            ),
+            counterOfferDeadline: "",
+            paymentTerms: "50% deposit, 50% on completion",
+            cancellationPolicy: "72 hours notice required",
+            additionalTerms: "",
+          };
+        }
+      });
+  
+      return updated;
+    });
+  }, [assignedTalent, categoryPricing]);
+
+  useEffect(() => {
+    console.log("✅ individualPricing ready:", individualPricing);
   }, [individualPricing]);
 
   const [counterOffer, setCounterOffer] = useState({

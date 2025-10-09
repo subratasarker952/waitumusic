@@ -19,6 +19,7 @@ import SignatureCanvas from "react-signature-canvas";
 import { apiRequest } from "@/lib/api";
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/contexts/AuthContext";
+import { Description } from "@radix-ui/react-dialog";
 
 export function ContractsTab({ booking, onSigned }: { booking: any; onSigned?: (id: number) => void }) {
   const { toast } = useToast();
@@ -40,18 +41,10 @@ export function ContractsTab({ booking, onSigned }: { booking: any; onSigned?: (
     if (roleIds.includes(1)) return true; // Superadmin can see all
 
     // Booker sees booking_agreement
-    if (
-      user?.id === booking.bookerUserId &&
-      contract.contractType === "booking_agreement"
-    )
-      return true;
+    if (user?.id === booking.bookerUserId && contract.contractType === "booking_agreement") return true;
 
     // Performer sees own performance_contract
-    if (
-      contract.contractType === "performance_contract" &&
-      contract.assignedToUserId === user?.id
-    )
-      return true;
+    if (contract.contractType === "performance_contract" && contract.assignedToUserId === user?.id) return true;
 
     return false;
   });
@@ -103,12 +96,14 @@ export function ContractsTab({ booking, onSigned }: { booking: any; onSigned?: (
 
   // 🖋️ Get user’s pending signature for selected contract
   const getSignatureStatus = (contractId: number) => {
-    const sig = allSignatures.find(
-      (s: any) =>
-        s.contractId === contractId && s.signerUserId === user?.id
-    );
+    const sig = allSignatures.find((s: any) => s.contractId === contractId && s.signerUserId === user?.id);
     return sig ? sig.status : "pending";
   };
+
+  const individualPrice =
+    selectedContract?.content?.individualPricing?.[selectedContract?.assignedToUserId]?.price ||
+    selectedContract?.content?.individualPricing?.[user!.id]?.price ||
+    selectedContract?.content?.totalBookingPrice || booking.totalBudget;
 
   return (
     <Card>
@@ -128,12 +123,7 @@ export function ContractsTab({ booking, onSigned }: { booking: any; onSigned?: (
           <div className="space-y-4">
             {userContracts.map((contract: any) => {
               const status = getSignatureStatus(contract.id);
-              const canSign = allSignatures.some(
-                (s: any) =>
-                  s.contractId === contract.id &&
-                  s.signerUserId === user?.id &&
-                  s.status !== "signed"
-              );
+              const canSign = allSignatures.some((s: any) => s.contractId === contract.id && s.signerUserId === user?.id && s.status !== "signed");
 
               return (
                 <div
@@ -146,14 +136,8 @@ export function ContractsTab({ booking, onSigned }: { booking: any; onSigned?: (
                       Type: {contract.contractType.replace("_", " ")}
                     </p>
                     <p className="text-sm text-muted-foreground">
-                      Status:{" "}
-                      <span
-                        className={
-                          status === "signed"
-                            ? "text-green-600"
-                            : "text-yellow-600"
-                        }
-                      >
+                      Status:
+                      <span className={status === "signed" ? "text-green-600 capitalize" : "text-yellow-600 capitalize"}                      >
                         {status}
                       </span>
                     </p>
@@ -203,14 +187,13 @@ export function ContractsTab({ booking, onSigned }: { booking: any; onSigned?: (
               <strong>Type:</strong> {booking.eventType}
             </p>
             <p className="text-sm">
-              <strong>Total:</strong> ৳
-              {Number(selectedContract?.content?.individualPricing).toLocaleString()}
+              <strong>Total:</strong> $ {Number(individualPrice).toLocaleString()}
             </p>
           </div>
 
           {/* Signature Canvas */}
           <div>
-            <p className="text-sm font-medium mb-2">Sign below:</p>
+            <Description> Sign below: </Description>
             <SignatureCanvas
               ref={setSigPad}
               penColor="black"
