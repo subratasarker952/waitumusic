@@ -3944,9 +3944,10 @@ export class DatabaseStorage implements IStorage {
   async createOrUpdateDefaultSignatures(
     contractId: number,
     bookingId: number,
-    performerUserId?: number
+    performerUserId?: number,
+    autoSignSuperAdmin = false // 🔹 Optional: auto-sign superadmin
   ) {
-    // Booking info
+    // --- 🔹 1. Fetch Booking ---
     const booking = await db
       .select()
       .from(bookings)
@@ -3956,7 +3957,7 @@ export class DatabaseStorage implements IStorage {
   
     if (!booking) throw new Error("Booking not found");
   
-    // Contract info
+    // --- 🔹 2. Fetch Contract ---
     const contract = await db
       .select()
       .from(contracts)
@@ -3966,43 +3967,42 @@ export class DatabaseStorage implements IStorage {
   
     if (!contract) throw new Error("Contract not found");
   
-    // Booker info
-    const bookerUser = booking.bookerUserId
-      ? await db
-          .select()
-          .from(users)
-          .where(eq(users.id, booking.bookerUserId))
-          .limit(1)
-          .then(rows => rows[0])
-      : null;
+    // --- 🔹 3. Fetch Booker, Performer, and SuperAdmin ---
+    const [bookerUser, performerUser, adminUserRow] = await Promise.all([
+      booking.bookerUserId
+        ? db
+            .select()
+            .from(users)
+            .where(eq(users.id, booking.bookerUserId))
+            .limit(1)
+            .then(rows => rows[0])
+        : null,
   
-    // Performer info (explicitly passed)
-    const performerUser = performerUserId
-      ? await db
-          .select()
-          .from(users)
-          .where(eq(users.id, performerUserId))
-          .limit(1)
-          .then(rows => rows[0])
-      : null;
+      performerUserId
+        ? db
+            .select()
+            .from(users)
+            .where(eq(users.id, performerUserId))
+            .limit(1)
+            .then(rows => rows[0])
+        : null,
   
-    // Admin info
-    const adminUserRow = await db
-      .select()
-      .from(users)
-      .innerJoin(userRoles, eq(users.id, userRoles.userId))
-      .where(eq(userRoles.roleId, 1)) // SuperAdmin
-      .limit(1)
-      .then(rows => rows[0]);
+      db
+        .select()
+        .from(users)
+        .innerJoin(userRoles, eq(users.id, userRoles.userId))
+        .where(eq(userRoles.roleId, 1)) // roleId = 1 → SuperAdmin
+        .limit(1)
+        .then(rows => rows[0]),
+    ]);
   
     const adminUser = adminUserRow?.users;
-    if (!adminUser) throw new Error("Admin user not found");
+    if (!adminUser) throw new Error("SuperAdmin not found");
   
+    // --- 🔹 4. Upsert Signature Helper ---
     const upsertSignature = async (
-      signerType: string,
-      signerUserId: number | null,
-      signerName: string,
-      signerEmail: string
+      signerType: "booker" | "performer" | "superadmin",
+      signerUser: any
     ) => {
       const existing = await db
         .select()
@@ -4016,63 +4016,56 @@ export class DatabaseStorage implements IStorage {
         .limit(1)
         .then(rows => rows[0]);
   
+      const values = {
+        signerUserId: signerUser?.id || null,
+        signerName: signerUser?.fullName || signerType,
+        signerEmail: signerUser?.email || "",
+        signatureData: null,
+        status: "pending",
+        signedAt: null,
+      };
+  
       if (existing) {
         await db
           .update(contractSignatures)
-          .set({
-            signerUserId,
-            signerName,
-            signerEmail,
-            signatureData: null,
-            status: "pending",
-            signedAt: null
-          })
+          .set(values)
           .where(eq(contractSignatures.id, existing.id));
       } else {
         await db.insert(contractSignatures).values({
           contractId,
-          signerUserId,
           signerType,
-          signerName,
-          signerEmail,
-          signatureData: null,
-          status: "pending"
+          ...values,
         });
+      }
+  
+      // --- 🔸 Auto-sign if enabled (for superadmin only)
+      if (autoSignSuperAdmin && signerType === "superadmin") {
+        await db
+          .update(contractSignatures)
+          .set({
+            status: "signed",
+            signedAt: new Date(),
+            signatureData: "AUTO_SIGNED_BY_SYSTEM",
+          })
+          .where(
+            and(
+              eq(contractSignatures.contractId, contractId),
+              eq(contractSignatures.signerType, "superadmin")
+            )
+          );
       }
     };
   
-    // Logic by contract type
+    // --- 🔹 5. Signature Logic by Contract Type ---
     if (contract.contractType === "booking_agreement") {
-      await upsertSignature(
-        "booker",
-        bookerUser?.id || null,
-        bookerUser?.fullName || "Booker",
-        bookerUser?.email || ""
-      );
-  
-      await upsertSignature(
-        "superadmin",
-        adminUser?.id || null,
-        adminUser?.fullName || "SuperAdmin",
-        adminUser?.email || ""
-      );
+      await upsertSignature("booker", bookerUser);
+      await upsertSignature("superadmin", adminUser);
     } else if (contract.contractType === "performance_contract") {
-      if (performerUser) {
-        await upsertSignature(
-          "performer",
-          performerUser.id,
-          performerUser.fullName || "Performer",
-          performerUser.email || ""
-        );
-      }
-  
-      await upsertSignature(
-        "superadmin",
-        adminUser?.id || null,
-        adminUser?.fullName || "SuperAdmin",
-        adminUser?.email || ""
-      );
+      if (performerUser) await upsertSignature("performer", performerUser);
+      await upsertSignature("superadmin", adminUser);
     }
+  
+    console.log(`✅ Default signatures created/updated for contract #${contractId}`);
   }
   
 

@@ -91,6 +91,7 @@ import { LoadingSpinner } from "../ui/loading-spinner";
 import { Alert } from "../ui/alert";
 import { singlestoreDatabase } from "drizzle-orm/singlestore-core";
 import { width } from "pdfkit/js/page";
+import { useAuth } from "@/contexts/AuthContext";
 
 interface ComprehensiveBookingWorkflowProps {
   bookingId: number;
@@ -139,6 +140,8 @@ export default function BookingWorkflow({
   canEdit = true,
 }: ComprehensiveBookingWorkflowProps) {
   const { toast } = useToast();
+  const { user, roles } = useAuth()
+  const roleIds = roles.map(r => r.id)
   const queryClient = useQueryClient();
   const [currentStep, setCurrentStep] = useState(1);
   const [booking, setBooking] = useState<BookingData | null>(null);
@@ -180,31 +183,55 @@ export default function BookingWorkflow({
   };
 
 
-  const saveSignature = async (signerType: string, contractIds: number[]) => {
-    const canvas = sigRefs.current[signerType];
-    if (!canvas) return;
+  // const saveSignature = async (signerType: string, contractIds: number[]) => {
+  //   const canvas = sigRefs.current[signerType];
+  //   if (!canvas) return;
 
-    if (canvas.isEmpty()) {
-      alert("Signature pad is empty!");
-      return;
-    }
+  //   if (canvas.isEmpty()) {
+  //     toast({
+  //       title: "Signature Required",
+  //       description: "Please sign before saving.",
+  //       variant: "destructive",
+  //     });
+  //     return;
+  //   }
 
-    try {
-      const signatureData = canvas.getTrimmedCanvas().toDataURL("image/png");
+  //   try {
+  //     const signatureData = canvas.getTrimmedCanvas().toDataURL("image/png");
+  //     setIsSubmitting(true);
 
-      for (const contractId of contractIds) {
-        await apiRequest(`/api/contracts/${contractId}/signatures`, {
-          method: "POST",
-          body: JSON.stringify({ signatureData, signerType }),
-        });
-      }
+  //     // 🧾 যদি একাধিক contract থাকে (multi-contract case)
+  //     for (const contractId of contractIds) {
+  //       await apiRequest(`/api/contracts/${contractId}/sign`, {
+  //         method: "POST",
+  //         body: JSON.stringify({ signatureData }),
+  //       });
+  //     }
 
-      queryClient.invalidateQueries({ queryKey: ["booking-workflow", bookingId], });
-      setActiveSignature(null);
-    } catch (err) {
-      console.error("Signature save failed:", err);
-    }
-  };
+  //     toast({
+  //       title: "Signed Successfully",
+  //       description: "Your signature has been saved.",
+  //     });
+
+  //     // ✅ Refresh booking data
+  //     queryClient.invalidateQueries({
+  //       queryKey: ["booking-workflow", bookingId],
+  //     });
+
+  //     // 🧹 Cleanup
+  //     setActiveSignature(null);
+  //   } catch (err: any) {
+  //     console.error("❌ Signature save failed:", err);
+  //     toast({
+  //       title: "Error",
+  //       description: err.message || "Failed to save signature.",
+  //       variant: "destructive",
+  //     });
+  //   } finally {
+  //     setIsSubmitting(false);
+  //   }
+  // };
+
 
 
   const clearSignature = (signerType: string) => {
@@ -656,10 +683,10 @@ export default function BookingWorkflow({
 
   useEffect(() => {
     if (!assignedTalent?.length) return;
-  
+
     setIndividualPricing((prev) => {
       const updated = { ...prev };
-  
+
       assignedTalent.forEach((talent) => {
         const key = String(talent.userId);
         if (!updated[key]) {
@@ -674,7 +701,7 @@ export default function BookingWorkflow({
           };
         }
       });
-  
+
       return updated;
     });
   }, [assignedTalent, categoryPricing]);
@@ -3781,20 +3808,18 @@ export default function BookingWorkflow({
     );
   };
 
-  // Render Signature Collection step
   const renderSignatureCollection = () => {
     if (!booking?.signatures?.length) return null;
 
-    const groupedSignatures = booking?.signatures.reduce((acc, sig) => {
+    // ✅ 1. Group all signatures by signerType
+    const groupedSignatures = booking.signatures.reduce((acc, sig) => {
       if (!acc[sig.signerType]) acc[sig.signerType] = [];
       acc[sig.signerType].push(sig);
       return acc;
     }, {} as Record<string, any[]>);
 
-
-
+    // ✅ 2. Group by contractId for display
     const renderSignatures = (signatures: any[]) => {
-      // 1. Group by contractId
       const groupedByContract = signatures.reduce((acc, sig) => {
         if (!acc[sig.contractId]) acc[sig.contractId] = [];
         acc[sig.contractId].push(sig);
@@ -3823,7 +3848,7 @@ export default function BookingWorkflow({
                     <p><strong>Status:</strong> {sig.status}</p>
                     <p><strong>Signed At:</strong> {sig.signedAt || "Not signed yet"}</p>
 
-                    {(sig.status === 'signed' && sig.signatureData) ? (
+                    {(sig.status === "signed" && sig.signatureData) ? (
                       <img
                         src={sig.signatureData}
                         alt="Signature"
@@ -3841,7 +3866,48 @@ export default function BookingWorkflow({
       );
     };
 
+    // ✅ 3. Save function (new API style)
+    const saveSignature = async (signerType: string, contractIds: number[]) => {
+      const canvas = sigRefs.current[signerType];
+      if (!canvas) return;
 
+      if (canvas.isEmpty()) {
+        toast({
+          title: "Signature Required",
+          description: "Please sign before submitting.",
+          variant: "destructive",
+        });
+        return;
+      }
+
+      try {
+        const signatureData = canvas.getTrimmedCanvas().toDataURL("image/png");
+
+        for (const contractId of contractIds) {
+          await apiRequest(`/api/contracts/${contractId}/sign`, {
+            method: "POST",
+            body: JSON.stringify({ signatureData }),
+          });
+        }
+
+        toast({
+          title: "Signed Successfully",
+          description: `${signerType} signature saved successfully.`,
+        });
+
+        queryClient.invalidateQueries({ queryKey: ["booking-workflow", bookingId] });
+        setActiveSignature(null);
+      } catch (err: any) {
+        console.error("Signature save failed:", err);
+        toast({
+          title: "Error",
+          description: err.message || "Failed to save signature",
+          variant: "destructive",
+        });
+      }
+    };
+
+    // ✅ 4. Render UI
     return (
       <div className="space-y-6">
         <Card>
@@ -3853,41 +3919,38 @@ export default function BookingWorkflow({
                   Signature Collection
                 </CardTitle>
                 <CardDescription>
-                  Collect digital signatures from all parties on contracts and
-                  agreements
+                  Collect digital signatures from all parties on contracts and agreements
                 </CardDescription>
               </div>
-
-              {/* <div>
-                <Button className="w-full" onClick={saveSignatures} disabled={isLoading}>
-                  Save Step {currentStep} Data
-                </Button>
-              </div> */}
             </div>
           </CardHeader>
 
           <CardContent>
-
+            {/* Signature Display Section */}
             <div className="p-4">
               <h1 className="text-2xl font-bold mb-4">Signature Collection</h1>
               {renderSignatures(booking?.signatures)}
             </div>
 
+            {/* Signature Pad Section */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {Object.entries(groupedSignatures || {}).map(([signerType, signatures]) => {
-                const contractIds = signatures?.map((s: any) => s.contractId);
+                const contractIds = signatures.map((s: any) => s.contractId);
                 const key = signerType;
+
+                // 🔹 Only show pad for current user's role
+                const canSign = roleIds.includes(1) ? signerType === "superadmin" : user?.id === signatures[0]?.signerUserId;
+
+                if (!canSign) return null; // hide others' pads
 
                 return (
                   <div key={key} className="mb-6">
-                    <div>
-
-                      <h3 className="text-lg font-semibold mb-3 capitalize">
-                        {signerType} Signatures      {signatures?.every((sig: any) => sig.status === "signed") && (
-                          <span className="text-green-600 font-semibold">(Signed)</span>
-                        )}
-                      </h3>
-                    </div>
+                    <h3 className="text-lg font-semibold mb-3 capitalize">
+                      {signerType} Signature{" "}
+                      {signatures?.every((sig: any) => sig.status === "signed") && (
+                        <span className="text-green-600 font-semibold">(Signed)</span>
+                      )}
+                    </h3>
 
                     <Card className="border border-gray-200">
                       <CardHeader>
@@ -3896,6 +3959,7 @@ export default function BookingWorkflow({
                           {signatures[0]?.signerName} ({signatures[0]?.signerEmail})
                         </CardDescription>
                       </CardHeader>
+
                       <CardContent>
                         {activeSignature !== key && (
                           <Button
@@ -3916,17 +3980,30 @@ export default function BookingWorkflow({
                               }}
                               penColor="black"
                               canvasProps={{
-                                className: "border border-gray-400 rounded bg-white w-full h-[200px]",
+                                className:
+                                  "border border-gray-400 rounded bg-white w-full h-[200px]",
                               }}
                             />
+
                             <div className="flex gap-2">
-                              <Button className="w-full" onClick={() => saveSignature(key, contractIds)}>
+                              <Button
+                                className="w-full"
+                                onClick={() => saveSignature(key, contractIds)}
+                              >
                                 Save
                               </Button>
-                              <Button className="w-full" variant="outline" onClick={() => clearSignature(key)}>
+                              <Button
+                                className="w-full"
+                                variant="outline"
+                                onClick={() => clearSignature(key)}
+                              >
                                 Clear
                               </Button>
-                              <Button className="w-full" variant="ghost" onClick={() => setActiveSignature(null)}>
+                              <Button
+                                className="w-full"
+                                variant="ghost"
+                                onClick={() => setActiveSignature(null)}
+                              >
                                 Cancel
                               </Button>
                             </div>
@@ -3943,6 +4020,7 @@ export default function BookingWorkflow({
       </div>
     );
   };
+
 
   function getPaymentSummary(contracts: any[]) {
     let totalPrice = 0;
