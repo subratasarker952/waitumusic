@@ -35,6 +35,38 @@ BEGIN
 END $$;
 
 
+⚠️ Option 1: শুধুমাত্র contracts টেবিল clear (safe way)
+DELETE FROM contracts;
+
+
+👉 এটা শুধু contracts টেবিলের রো (row) গুলো মুছে দেবে, কিন্তু টেবিল structure থাকবে।
+যদি টেবিলের সাথে foreign key (যেমন contractSignatures, invoices, bookings) থাকে, তাহলে delete করতে গিয়ে error পেতে পারো।
+
+🧩 Option 2: Cascade delete (dependent data সহ মুছতে চাইলে)
+
+যদি তোমার database-এ contracts টেবিলের সাথে অন্য টেবিল গুলো (যেমন contract_signatures, invoices) foreign key relation এ থাকে, তাহলে use করো 👇
+
+TRUNCATE TABLE contracts CASCADE;
+
+
+👉 এতে contracts এবং তার সাথে dependent সব table (যেগুলা foreign key দ্বারা reference করে) auto-clear হয়ে যাবে।
+✅ super fast
+⚠️ irreversible (undo করা যাবে না)
+
+🔒 Option 3: Purge all related contract data manually (controlled way)
+DELETE FROM contract_signatures;
+DELETE FROM invoices;
+DELETE FROM contracts;
+
+
+👉 এতে তুমি manually ensure করতে পারবে কোন table clear হবে, কোনটা থাকবে।
+
+🧹 Bonus: ID reset করতে চাও (auto-increment reset)
+
+যদি তুমি চান নতুন contract insert করলে ID আবার 1 থেকে শুরু হোক:
+
+TRUNCATE TABLE contracts RESTART IDENTITY CASCADE;
+
   Table Name | Row Count
 NOTICE:  user_secondary_roles | 0
 NOTICE:  roles | 9

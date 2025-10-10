@@ -80,7 +80,6 @@ export default function EquipmentManager({ user }: EquipmentManagerProps) {
     mutationFn: async (data: EquipmentFormData) => {
       const response = await apiRequest('/api/equipment', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ ...data, userId: user.id })
       });
       return await response.json();
@@ -108,7 +107,6 @@ export default function EquipmentManager({ user }: EquipmentManagerProps) {
     mutationFn: async (data: EquipmentFormData & { id: number }) => {
       const response = await apiRequest(`/api/equipment/${data.id}`, {
         method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data)
       });
       return await response.json();
@@ -423,7 +421,7 @@ export default function EquipmentManager({ user }: EquipmentManagerProps) {
 
       {/* Equipment Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {equipmentList.map((item) => (
+        {equipmentList.map((item:any) => (
           <Card key={item.id} className="bg-gradient-to-br from-white to-gray-50 dark:from-gray-900 dark:to-gray-800 hover:shadow-lg transition-shadow duration-200">
             <CardHeader className="pb-3">
               <div className="flex items-start justify-between">

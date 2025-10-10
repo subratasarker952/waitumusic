@@ -3132,6 +3132,83 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // );
 
   app.get(
+    "/api/bookings/:id/booker-view",
+    authenticateToken,
+    validateParams(schemas.idParamSchema),
+    async (req: Request, res: Response) => {
+      try {
+        const bookingId = parseInt(req.params.id);
+        const userId = req.user?.userId;
+  
+        if (isNaN(bookingId) || !userId) {
+          return res.status(400).json({ message: "Invalid booking or user" });
+        }
+  
+        // 🧩 1️⃣ Check if user is the booker of this booking
+        const booking = await storage.getBookingById(bookingId);
+        if (!booking) {
+          return res.status(404).json({ message: "Booking not found" });
+        }
+  
+        if (booking.bookerUserId !== userId) {
+          return res.status(403).json({ message: "You are not authorized to view this booking" });
+        }
+  
+        // 🧩 2️⃣ Fetch related data
+        const [contracts, technicalRiders, signatures, assignedTalent] = await Promise.all([
+          db.select().from(schema.contracts).where(eq(schema.contracts.bookingId, bookingId)),
+  
+          db.select().from(schema.technicalRiders).where(eq(schema.technicalRiders.bookingId, bookingId)),
+  
+          db
+            .select({
+              signatureId: schema.contractSignatures.id,
+              contractId: schema.contractSignatures.contractId,
+              signerUserId: schema.contractSignatures.signerUserId,
+              signerType: schema.contractSignatures.signerType,
+              signerName: schema.contractSignatures.signerName,
+              signerEmail: schema.contractSignatures.signerEmail,
+              signatureData: schema.contractSignatures.signatureData,
+              signedAt: schema.contractSignatures.signedAt,
+              status: schema.contractSignatures.status,
+            })
+            .from(schema.contractSignatures)
+            .innerJoin(schema.contracts, eq(schema.contractSignatures.contractId, schema.contracts.id))
+            .where(eq(schema.contracts.bookingId, bookingId)),
+  
+          // Assigned talent list
+          db
+            .select({
+              userId: schema.bookingAssignmentsMembers.userId,
+              status: schema.bookingAssignmentsMembers.status,
+              role: schema.bookingAssignmentsMembers.roleInBooking,
+            })
+            .from(schema.bookingAssignmentsMembers)
+            .where(eq(schema.bookingAssignmentsMembers.bookingId, bookingId)),
+        ]);
+  
+        // ✅ Final response
+        res.json({
+          ...booking,
+          contracts,
+          technicalRiders,
+          signatures,
+          assignedTalent,
+        });
+      } catch (error) {
+        logError(error, ErrorSeverity.ERROR, {
+          endpoint: "/api/bookings/:id/booker-view",
+          bookingId: req.params.id,
+          userId: req.user?.userId,
+        });
+        res.status(500).json({ message: "Internal server error" });
+      }
+    }
+  );
+  
+
+
+  app.get(
     "/api/bookings/:id/talent-view",
     authenticateToken,
     validateParams(schemas.idParamSchema),
@@ -10095,14 +10172,14 @@ export async function registerRoutes(app: Express): Promise<Server> {
         if (isNaN(bookingId)) {
           return res.status(400).json({ message: "Invalid booking ID" });
         }
-  
-        const { contractType, title, content, metadata, status, assignedToUserId } = req.body;
+
+        const { contractType, title, content, metadata, status, assignedToUserId, autoSign=false } = req.body;
         if (!contractType || !title || !content) {
           return res.status(400).json({ message: "Missing required contract data" });
         }
-  
+
         const createdByUserId = req.user!.userId;
-  
+
         // Contract create/update
         const newContract = await storage.upsertContract({
           bookingId,
@@ -10114,14 +10191,12 @@ export async function registerRoutes(app: Express): Promise<Server> {
           status,
           assignedToUserId,
         });
-  
+
         // **Signature record তৈরি**  
-        if (contractType === "performance_contract" && assignedToUserId) {
-          await storage.createOrUpdateDefaultSignatures(newContract.contract.id, bookingId, assignedToUserId);
-        }
-  
+        await storage.createOrUpdateDefaultSignatures(newContract.contract.id, bookingId, assignedToUserId || undefined, autoSign);
+
         return res.json(newContract);
-  
+
       } catch (error: any) {
         console.error("❌ Save contract error:", error);
         return res
@@ -10130,7 +10205,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       }
     }
   );
-  
+
 
   // app.post(
   //   "/api/contracts/:contractId/signatures",
@@ -10167,25 +10242,25 @@ export async function registerRoutes(app: Express): Promise<Server> {
         const contractId = Number(req.params.id);
         const userId = req.user!.userId;
         const { signatureData } = req.body;
-  
+
         if (!contractId || isNaN(contractId)) {
           return res.status(400).json({ message: "Invalid contract ID" });
         }
-  
+
         if (!signatureData || typeof signatureData !== "string") {
           return res.status(400).json({ message: "Signature data is required" });
         }
-  
+
         const [contract] = await db
           .select()
           .from(schema.contracts)
           .where(eq(schema.contracts.id, contractId))
           .limit(1);
-  
+
         if (!contract) {
           return res.status(404).json({ message: "Contract not found" });
         }
-  
+
         const [existing] = await db
           .select()
           .from(schema.contractSignatures)
@@ -10197,11 +10272,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
             )
           )
           .limit(1);
-  
+
         if (!existing) {
           return res.status(404).json({ message: "No pending signature found for this user" });
         }
-  
+
         const [updated] = await db
           .update(schema.contractSignatures)
           .set({
@@ -10211,26 +10286,26 @@ export async function registerRoutes(app: Express): Promise<Server> {
           })
           .where(eq(schema.contractSignatures.id, existing.id))
           .returning();
-  
+
         const allSigs = await db
           .select()
           .from(schema.contractSignatures)
           .where(eq(schema.contractSignatures.contractId, contractId));
-  
+
         const allSigned = allSigs.every((s) => s.status === "signed");
-  
+
         let invoiceId = null;
-  
+
         if (allSigned) {
           await db
             .update(schema.contracts)
             .set({ status: "signed", updatedAt: new Date() })
             .where(eq(schema.contracts.id, contractId));
-  
+
           // ✅ Call workflow to create invoice
           invoiceId = await financialAutomation.generatePerformerInvoice(contract, userId);
         }
-  
+
         res.json({
           message: "Contract signed successfully",
           signature: updated,
@@ -10242,17 +10317,17 @@ export async function registerRoutes(app: Express): Promise<Server> {
         res.status(500).json({ message: "Internal server error", error: error.message });
       }
     }
-  ); 
+  );
 
   // app.get("/api/contracts/:id/pdf", authenticateToken, async (req, res) => {
   //   try {
   //     const contractId = parseInt(req.params.id);
   //     const [contract] = await db.select().from(contracts).where(eq(contracts.id, contractId));
-  
+
   //     if (!contract) {
   //       return res.status(404).json({ message: "Contract not found" });
   //     }
-  
+
   //     res.setHeader("Content-Type", "application/pdf");
   //     res.send(generateContractPDF(contract)); // use pdf-lib / reportlab here
   //   } catch (err) {
@@ -18376,12 +18451,12 @@ This is a preview of the performance engagement contract. Final agreement will i
       try {
         const proformaId = parseInt(req.params.proformaId);
         const user = req.user!;
-  
+
         const finalInvoiceId = await financialAutomation.convertProformaToFinal(
           proformaId,
           user.userId
         );
-  
+
         res.json({
           success: true,
           finalInvoiceId,
@@ -18392,7 +18467,7 @@ This is a preview of the performance engagement contract. Final agreement will i
         res.status(500).json({ message: "Failed to convert proforma invoice" });
       }
     }
-  ); 
+  );
 
   // Generate invoice for booking (legacy - now creates final invoice directly)
   app.post(
@@ -29161,8 +29236,8 @@ ${messageData.messageText}
           storage.getTechnicalRiderByBooking(bookingId),
           storage.getStagePlotByBooking(bookingId),
           storage.getContractByBooking(bookingId),
-          storage.getInvoicesByBooking(bookingId), 
-        ]);               
+          storage.getInvoicesByBooking(bookingId),
+        ]);
 
         // 👇 Populate assigned performers (if available)
         const assignedMembers = await db
@@ -29231,7 +29306,7 @@ ${messageData.messageText}
           signatures,
           payments,
           contracts,
-          invoices: dbInvoices, 
+          invoices: dbInvoices,
         };
 
         res.json(bookingDetails);

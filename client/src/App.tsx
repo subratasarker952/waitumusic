@@ -86,6 +86,7 @@ import Albums from "@/pages/Albums";
 import HospitalityRequirements from "@/pages/HospitalityRequirements";
 import TechnicalRequirements from "@/pages/TechnicalRequirements";
 import PerformanceRequirements from "@/pages/PerformanceRequirements";
+import BookerView from "./components/bookerview/BookerView";
 
 function Router() {
   return (
@@ -253,6 +254,12 @@ function Router() {
         <Route path="/bookings/:id">
           <AuthorizedRoute>
             <GigHub />
+          </AuthorizedRoute>
+        </Route>
+        
+        <Route path="/my-bookings/:id">
+          <AuthorizedRoute>
+            <BookerView />
           </AuthorizedRoute>
         </Route>
         

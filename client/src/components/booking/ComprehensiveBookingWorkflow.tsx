@@ -683,28 +683,37 @@ export default function BookingWorkflow({
 
   useEffect(() => {
     if (!assignedTalent?.length) return;
-
+  
     setIndividualPricing((prev) => {
       const updated = { ...prev };
-
+  
       assignedTalent.forEach((talent) => {
         const key = String(talent.userId);
+        const categoryPrice = parseFloat(
+          categoryPricing[talent.type as keyof typeof categoryPricing] || "0"
+        );
+  
+        // যদি আগে থেকে না থাকে, তৈরি করো
         if (!updated[key]) {
           updated[key] = {
-            price: parseFloat(
-              categoryPricing[talent.type as keyof typeof categoryPricing] || "0"
-            ),
+            price: categoryPrice,
             counterOfferDeadline: "",
             paymentTerms: "50% deposit, 50% on completion",
             cancellationPolicy: "72 hours notice required",
             additionalTerms: "",
           };
+        } else {
+          // যদি থাকে, তাহলে শুধু price update করো category অনুযায়ী
+          updated[key].price = categoryPrice;
         }
       });
-
+  
       return updated;
     });
-  }, [assignedTalent, categoryPricing]);
+  }, [categoryPricing, assignedTalent]);
+  
+
+  
 
   useEffect(() => {
     console.log("✅ individualPricing ready:", individualPricing);
