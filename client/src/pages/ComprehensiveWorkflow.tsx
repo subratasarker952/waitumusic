@@ -326,12 +326,7 @@ export default function ComprehensiveWorkflow() {
                               className="border-green-500 text-green-700 hover:bg-green-50 w-full"
                               onClick={async () => {
                                 try {
-                                  await updateBookingMutation.mutateAsync({ status: "approved",adminApprovedAt: new Date() });
-                                  toast({
-                                    title: "Booking Approved",
-                                    description:
-                                      "The booking has been approved by admin",
-                                  });
+                                  await updateBookingMutation.mutateAsync({ status: "approved", adminApprovedAt: new Date() });
                                 } catch (error) {
                                   toast({
                                     title: "Error",
@@ -351,11 +346,7 @@ export default function ComprehensiveWorkflow() {
                               onClick={async () => {
                                 try {
                                   await updateBookingMutation.mutateAsync({ status: "rejected", });
-                                  toast({
-                                    title: "Booking Declined",
-                                    description:
-                                      "The booking has been rejected by admin",
-                                  });
+                                  
                                 } catch (error) {
                                   toast({
                                     title: "Error",

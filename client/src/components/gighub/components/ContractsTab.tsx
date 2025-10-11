@@ -100,10 +100,8 @@ export function ContractsTab({ booking, onSigned }: { booking: any; onSigned?: (
     return sig ? sig.status : "pending";
   };
 
-  const individualPrice =
-    selectedContract?.content?.individualPricing?.[selectedContract?.assignedToUserId]?.price ||
-    selectedContract?.content?.individualPricing?.[user!.id]?.price ||
-    selectedContract?.content?.totalBookingPrice || booking.totalBudget;
+  const individualPrice = selectedContract?.content?.individualPricing?.[selectedContract?.assignedToUserId]?.price;
+  const totalBookingPrice = parseInt(selectedContract?.content?.totalBookingPrice) + parseInt(selectedContract?.content?.totalBookingPrice) * 0.08;
 
   return (
     <Card>
@@ -187,7 +185,7 @@ export function ContractsTab({ booking, onSigned }: { booking: any; onSigned?: (
               <strong>Type:</strong> {booking.eventType}
             </p>
             <p className="text-sm">
-              <strong>Total:</strong> $ {Number(individualPrice).toLocaleString()}
+              <strong>Total:</strong> $ {Number(totalBookingPrice || individualPrice).toLocaleString()}
             </p>
           </div>
 

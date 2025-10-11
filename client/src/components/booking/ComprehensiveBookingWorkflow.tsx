@@ -413,33 +413,6 @@ export default function BookingWorkflow({
   //   }
   // };
 
-  const updateBookingMutation = useMutation({
-    mutationFn: async (data: any) => {
-      const response = await apiRequest(`/api/bookings/${bookingId}`, {
-        method: "PATCH",
-        body: data,
-      });
-      // যদি backend error দিয়ে থাকে
-      if (!data || data.error) {
-        throw new Error(data?.message || "Failed to create assignment");
-      }
-      return response
-    },
-    onSuccess: () => {
-      // Only invalidate the specific booking queries
-      queryClient.invalidateQueries({ queryKey: ["booking-workflow", bookingId], });
-      queryClient.invalidateQueries({ queryKey: ["booking-assigned-talent", bookingId], });
-      toast({ title: "Success", description: "Booking updated successfully" });
-    },
-    onError: () => {
-      toast({
-        title: "Error",
-        description: "Failed to update booking",
-        variant: "destructive",
-      });
-    },
-  });
-
   // Assignment creation mutation with comprehensive cache invalidation
   const createAssignmentMutation = useMutation({
     mutationFn: async (assignmentData: any) => {

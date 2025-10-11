@@ -65,10 +65,12 @@ import {
 } from "lucide-react";
 import { ContractsTab } from "../gighub/components/ContractsTab";
 import { CounterOfferDialog } from "../gighub/components/CounterOfferDialog";
+import DocumentsCard from "./components/DocumentsCard";
 
 // Role-specific components
 
 export default function BookerView() {
+  const token = localStorage.getItem("token");
   const { user, roles } = useAuth();
   const roleIds = roles.map((r) => r.id);
   const { config } = useConfiguration();
@@ -124,13 +126,13 @@ export default function BookerView() {
       icon: <Briefcase className="h-4 w-4" />,
     },
     {
-      value: "performer",
-      label: "Performer",
+      value: "contracts",
+      label: "Contracts",
       icon: <FileText className="h-4 w-4" />,
     },
     {
-      value: "contracts",
-      label: "Contracts",
+      value: "performer",
+      label: "Performer",
       icon: <FileText className="h-4 w-4" />,
     },
     {
@@ -163,8 +165,6 @@ export default function BookerView() {
       );
     });
   }
-
-  const totalBookingPrice = booking.contracts?.find((c: any) => c.contractType === "booking_agreement").content.totalBookingPrice
 
   const renderBookingActions = () => {
     const canRespond =
@@ -243,7 +243,7 @@ export default function BookerView() {
                 <DollarSign className="h-4 w-4 text-muted-foreground" />
                 <span>
                   Final Price:{" "}
-                  {booking.finalPrice ? `$${booking.finalPrice}` : `$${parseInt(totalBookingPrice) + booking.totalBudget * 0.08}`}
+                  {booking.finalPrice ? `$${booking.finalPrice}` : `$${parseInt(booking.contracts?.find((c: any) => c.contractType === "booking_agreement").content.totalBookingPrice) + parseInt(booking.contracts?.find((c: any) => c.contractType === "booking_agreement").content.totalBookingPrice) * 0.08}`}
                 </span>
               </div>
             </div>
@@ -341,55 +341,7 @@ export default function BookerView() {
             </CardContent>
           </Card>
 
-          <Card className="mt-6">
-            <CardHeader>
-              <CardTitle>Documents</CardTitle>
-              <CardDescription>View or download your agreement and invoices</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="flex flex-wrap gap-3 mt-4">
-                {/* Agreement */}
-                {booking?.agreementSigned ? (
-                  <Button asChild variant="outline" size="sm">
-                    <a href={booking.agreementPdfUrl} target="_blank" rel="noopener noreferrer">
-                      <FileText className="h-4 w-4 mr-1" /> View Agreement
-                    </a>
-                  </Button>
-                ) : (
-                  <Button disabled variant="outline" size="sm">
-                    <FileText className="h-4 w-4 mr-1" /> Agreement Pending
-                  </Button>
-                )}
-
-                {/* Due Invoice */}
-                {booking?.agreementSigned && !booking?.paymentCompleted && (
-                  <Button asChild variant="outline" size="sm">
-                    <a href={booking.dueInvoiceUrl} target="_blank" rel="noopener noreferrer">
-                      <Download className="h-4 w-4 mr-1" /> Download Due Invoice
-                    </a>
-                  </Button>
-                )}
-
-                {/* Paid Invoice */}
-                {booking?.paymentCompleted && booking?.paidInvoiceUrl && (
-                  <Button asChild variant="outline" size="sm">
-                    <a href={booking.paidInvoiceUrl} target="_blank" rel="noopener noreferrer">
-                      <Download className="h-4 w-4 mr-1" /> Download Paid Invoice
-                    </a>
-                  </Button>
-                )}
-
-                {/* Receipt */}
-                {booking?.paymentCompleted && booking?.receiptUrl && (
-                  <Button asChild variant="outline" size="sm">
-                    <a href={booking.receiptUrl} target="_blank" rel="noopener noreferrer">
-                      <Download className="h-4 w-4 mr-1" /> Download Receipt
-                    </a>
-                  </Button>
-                )}
-              </div>
-            </CardContent>
-          </Card>
+          <DocumentsCard booking={booking} token={token!} />
         </TabsContent>
 
         <TabsContent value="contracts">

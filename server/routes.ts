@@ -123,6 +123,7 @@ import {
 } from "./utils/query-cache";
 import BookingStageNameSelector from "@/components/booking/BookingStageNameSelector";
 import { TerminalSquareIcon } from "lucide-react";
+import { useDeprecatedAnimatedState } from "framer-motion";
 
 const JWT_SECRET = process.env.JWT_SECRET || "waitumusic-demo-secret-key-2025";
 const DEMO_MODE_ENABLED = process.env.DEMO_MODE_ENABLED !== "false"; // Default to true, set to "false" to disable
@@ -3139,114 +3140,96 @@ export async function registerRoutes(app: Express): Promise<Server> {
       try {
         const bookingId = parseInt(req.params.id);
         const userId = req.user?.userId;
-
+  
         if (isNaN(bookingId) || !userId) {
           return res.status(400).json({ message: "Invalid booking or user" });
         }
-
-        // 🧩 Step 1: Verify ownership
+  
+        // Step 1: Verify ownership
         const booking = await storage.getBookingById(bookingId);
-        if (!booking) {
-          return res.status(404).json({ message: "Booking not found" });
-        }
-
+        if (!booking) return res.status(404).json({ message: "Booking not found" });
         if (booking.bookerUserId !== userId) {
           return res.status(403).json({ message: "You are not authorized to view this booking" });
         }
-
-        // 🧩 Step 2: Fetch related data in parallel
-        const [contracts, technicalRiders, signatures, assignedTalent] = await Promise.all([
-          // 🧾 Contracts
-          db
-            .select()
-            .from(schema.contracts)
-            .where(eq(schema.contracts.bookingId, bookingId)),
-
-          // ⚙️ Technical Riders
-          db
-            .select()
-            .from(schema.technicalRiders)
-            .where(eq(schema.technicalRiders.bookingId, bookingId)),
-
-          // ✍️ Contract Signatures
-          db
-            .select({
-              signatureId: schema.contractSignatures.id,
-              contractId: schema.contractSignatures.contractId,
-              signerUserId: schema.contractSignatures.signerUserId,
-              signerType: schema.contractSignatures.signerType,
-              signerName: schema.contractSignatures.signerName,
-              signerEmail: schema.contractSignatures.signerEmail,
-              signatureData: schema.contractSignatures.signatureData,
-              signedAt: schema.contractSignatures.signedAt,
-              status: schema.contractSignatures.status,
-            })
-            .from(schema.contractSignatures)
-            .innerJoin(schema.contracts, eq(schema.contractSignatures.contractId, schema.contracts.id))
-            .where(eq(schema.contracts.bookingId, bookingId)),
-
-          // 🎭 Assigned talent list (with user details)
-          db
-            .select({
-              userId: schema.bookingAssignmentsMembers.userId,
-              status: schema.bookingAssignmentsMembers.status,
-              roleId: schema.bookingAssignmentsMembers.roleInBooking,
-              selectedTalent: schema.bookingAssignmentsMembers.selectedTalent,
-
-              // 🧍 User info
-              fullName: schema.users.fullName,
-              avatarUrl: schema.users.avatarUrl,
-              gender: schema.users.gender,
-              phoneNumber: schema.users.phoneNumber,
-              privacySetting: schema.users.privacySetting,
-            })
-            .from(schema.bookingAssignmentsMembers)
-            .innerJoin(schema.users, eq(schema.bookingAssignmentsMembers.userId, schema.users.id))
-            .where(eq(schema.bookingAssignmentsMembers.bookingId, bookingId)),
-        ]);
-
-        // 🧩 Step 3: Enhance assignedTalent with role & instrument info
+  
+        // Step 2: Fetch data in parallel
+        const [dbContracts, dbTechnicalRiders, dbSignatures, assignedTalent, dbInvoices, dbReceipts] =
+          await Promise.all([
+            db.select().from(schema.contracts).where(eq(schema.contracts.bookingId, bookingId)),
+            db.select().from(schema.technicalRiders).where(eq(schema.technicalRiders.bookingId, bookingId)),
+            db
+              .select({
+                signatureId: schema.contractSignatures.id,
+                contractId: schema.contractSignatures.contractId,
+                signerUserId: schema.contractSignatures.signerUserId,
+                signerType: schema.contractSignatures.signerType,
+                signerName: schema.contractSignatures.signerName,
+                signerEmail: schema.contractSignatures.signerEmail,
+                signatureData: schema.contractSignatures.signatureData,
+                signedAt: schema.contractSignatures.signedAt,
+                status: schema.contractSignatures.status,
+              })
+              .from(schema.contractSignatures)
+              .innerJoin(schema.contracts, eq(schema.contractSignatures.contractId, schema.contracts.id))
+              .where(eq(schema.contracts.bookingId, bookingId)),
+            db
+              .select({
+                userId: schema.bookingAssignmentsMembers.userId,
+                status: schema.bookingAssignmentsMembers.status,
+                roleId: schema.bookingAssignmentsMembers.roleInBooking,
+                selectedTalent: schema.bookingAssignmentsMembers.selectedTalent,
+                fullName: schema.users.fullName,
+                avatarUrl: schema.users.avatarUrl,
+                gender: schema.users.gender,
+                phoneNumber: schema.users.phoneNumber,
+                privacySetting: schema.users.privacySetting,
+              })
+              .from(schema.bookingAssignmentsMembers)
+              .innerJoin(schema.users, eq(schema.bookingAssignmentsMembers.userId, schema.users.id))
+              .where(eq(schema.bookingAssignmentsMembers.bookingId, bookingId)),
+            db.select().from(schema.invoices).where(eq(schema.invoices.bookingId, bookingId)),
+            db.select().from(schema.receipts).where(eq(schema.receipts.bookingId, bookingId)),
+          ]);
+  
+        // Step 3: Enhance assignedTalent with role & instrument info
         const detailedAssignedTalent = await Promise.all(
           assignedTalent.map(async (talent: any) => {
             const [roleData, instrumentData] = await Promise.all([
               talent.roleId
                 ? db
-                  .select({
-                    id: schema.rolesManagement.id,
-                    name: schema.rolesManagement.name,
-                  })
-                  .from(schema.rolesManagement)
-                  .where(eq(schema.rolesManagement.id, talent.roleId))
-                  .limit(1)
+                    .select({ id: schema.rolesManagement.id, name: schema.rolesManagement.name })
+                    .from(schema.rolesManagement)
+                    .where(eq(schema.rolesManagement.id, talent.roleId))
+                    .limit(1)
                 : Promise.resolve([]),
-
               talent.selectedTalent
                 ? db
-                  .select({
-                    id: schema.allInstruments.id,
-                    name: schema.allInstruments.name,
-                  })
-                  .from(schema.allInstruments)
-                  .where(eq(schema.allInstruments.id, talent.selectedTalent))
-                  .limit(1)
+                    .select({ id: schema.allInstruments.id, name: schema.allInstruments.name })
+                    .from(schema.allInstruments)
+                    .where(eq(schema.allInstruments.id, talent.selectedTalent))
+                    .limit(1)
                 : Promise.resolve([]),
             ]);
-
-            return {
-              ...talent,
-              role: roleData[0] || null,
-              selectedTalent: instrumentData[0] || null,
-            };
+            return { ...talent, role: roleData[0] || null, selectedTalent: instrumentData[0] || null };
           })
         );
-
-        // ✅ Step 4: Send full response
+  
+        // Step 4: Determine agreement & payment status
+        const bookingAgreement = dbContracts.find(c => c.contractType === "booking_agreement");
+        const agreementSigned = bookingAgreement?.status === "signed";
+        const paymentCompleted = dbInvoices.some(i => i.status === "paid");
+  
+        // Step 5: Send full response
         res.json({
           ...booking,
-          contracts,
-          technicalRiders,
-          signatures,
+          contracts: dbContracts,
+          technicalRiders: dbTechnicalRiders,
+          signatures: dbSignatures,
           assignedTalent: detailedAssignedTalent,
+          invoices: dbInvoices,
+          receipts: dbReceipts,
+          agreementSigned,
+          paymentCompleted,
         });
       } catch (error) {
         logError(error, ErrorSeverity.ERROR, {
@@ -3258,6 +3241,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       }
     }
   );
+  
 
 
 
@@ -10323,14 +10307,14 @@ export async function registerRoutes(app: Express): Promise<Server> {
             and(
               eq(schema.contractSignatures.contractId, contractId),
               eq(schema.contractSignatures.signerUserId, userId),
-              eq(schema.contractSignatures.status, "pending")
+              // eq(schema.contractSignatures.status, "pending")
             )
           )
           .limit(1);
 
-        if (!existing) {
-          return res.status(404).json({ message: "No pending signature found for this user" });
-        }
+        // if (!existing) {
+        //   return res.status(404).json({ message: "No pending signature found for this user" });
+        // }
 
         const [updated] = await db
           .update(schema.contractSignatures)
@@ -10358,7 +10342,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
             .where(eq(schema.contracts.id, contractId));
 
           // ✅ Call workflow to create invoice
-          invoiceId = await financialAutomation.generatePerformerInvoice(contract, userId);
+          if (contract.contractType === "performance_contract") {
+            invoiceId = await financialAutomation.generatePerformerInvoice(contract, userId);
+          } else if (contract.contractType === "booking_agreement") {
+            invoiceId = await financialAutomation.generateBookerInvoice(contract, userId);
+          }
         }
 
         res.json({
@@ -16057,7 +16045,7 @@ This is a preview of the performance engagement contract. Final agreement will i
         // ✅ Determine reviewer role
         const roles = await storage.getUserRoles(currentUserId);
         const roleIds = roles.map((r) => r.id);
-        const reviewerRole = [1, 2].includes(roleIds) ? "superadmin" : "admin";
+        const reviewerRole = roleIds.some(r => [1, 2].includes(r)) ? "superadmin" : "admin";
 
         // ✅ Create review record
         await storage.createManagementApplicationReview({
@@ -16778,7 +16766,7 @@ This is a preview of the performance engagement contract. Final agreement will i
     async (req: Request, res: Response) => {
       try {
         const applicationId = parseInt(req.params.id);
-        const currentUserId = req.user?.userId;
+        const currentUserId = req.user!.userId;
 
         const application = await storage.getManagementApplication(
           applicationId
@@ -16852,7 +16840,7 @@ This is a preview of the performance engagement contract. Final agreement will i
           } else {
             await storage.createArtist({
               userId: application.applicantUserId,
-              stageName: applicant.fullName || applicant.email.split("@")[0],
+              stageName: applicant!.fullName || applicant!.email.split("@")[0],
               primaryGenre: "To Be Determined",
               bio: "New managed artist",
               primaryTalentId: 1,
@@ -16873,7 +16861,7 @@ This is a preview of the performance engagement contract. Final agreement will i
           } else {
             await storage.createMusician({
               userId: application.applicantUserId,
-              stageName: applicant.fullName || applicant.email.split("@")[0],
+              stageName: applicant!.fullName || applicant!.email.split("@")[0],
               primaryTalentId: 1,
               bio: "New managed musician",
               primaryGenre: "To Be Determined",
@@ -17265,7 +17253,7 @@ This is a preview of the performance engagement contract. Final agreement will i
     async (req: Request, res: Response) => {
       try {
         const userId = parseInt(req.params.userId);
-        const currentUserId = req.user?.userId;
+        const currentUserId = req.user!.userId;
 
         // Users can only view their own discounts unless they're admin/superadmin
         if (currentUserId !== userId) {
@@ -17307,11 +17295,7 @@ This is a preview of the performance engagement contract. Final agreement will i
         } = req.body;
         const currentUserId = req.user?.userId;
 
-        if (
-          !userId ||
-          overrideDiscountPercentage === undefined ||
-          !overrideReason
-        ) {
+        if (!userId || overrideDiscountPercentage === undefined || !overrideReason) {
           return res.status(400).json({ message: "Missing required fields" });
         }
 
@@ -17322,7 +17306,7 @@ This is a preview of the performance engagement contract. Final agreement will i
           userId,
           serviceId,
           userServiceId,
-          originalDiscountPercentage: currentMaxDiscount,
+          originalDiscountPercentage: String(currentMaxDiscount),
           overrideDiscountPercentage,
           overrideReason,
           authorizedByUserId: currentUserId || 0,
@@ -17668,8 +17652,7 @@ This is a preview of the performance engagement contract. Final agreement will i
             return chordProgressions.drums.basic;
           }
 
-          const progressions =
-            chordProgressions[instrumentKey] || chordProgressions.guitar;
+          const progressions = chordProgressions[instrumentKey] || chordProgressions.guitar;
           return progressions[songKey] || progressions["C Major"];
         };
 
@@ -17826,7 +17809,7 @@ This is a preview of the performance engagement contract. Final agreement will i
       try {
         const bookingId = parseInt(req.params.bookingId);
         const setlistData = req.body;
-        const savedSetlist = await storage.saveSetlist(bookingId, setlistData);
+        const savedSetlist = await storage.saveSetlist(setlistData);
         res.json(savedSetlist);
       } catch (error) {
         console.error("Error saving setlist:", error);
@@ -18101,7 +18084,9 @@ This is a preview of the performance engagement contract. Final agreement will i
 
           // Check if user is superadmin (roleId === 1) and add additional information on separate page
           const user = req.user;
-          const isSuperadmin = user && user.role === "superadmin";
+          const userId = req.user!.userId;
+          const roleIds = await storage.getUserRoleIds(userId)
+          const isSuperadmin = roleIds.includes(1);
 
           if (isSuperadmin) {
             // Check if any songs have additional information
@@ -18297,27 +18282,14 @@ This is a preview of the performance engagement contract. Final agreement will i
     async (req: Request, res: Response) => {
       try {
         const { name, rows, bookingId } = req.body;
-        const user = req.user;
-
-        console.log("Mixer patch save - User object:", user);
-        console.log(
-          "Mixer patch save - Request headers:",
-          req.headers.authorization
-        );
-
-        if (!user || !user.userId) {
-          console.log("Authentication failed - user or user.userId missing");
-          return res
-            .status(401)
-            .json({ message: "User authentication required" });
-        }
+        const userId = req.user!.userId;
 
         // Clean data and ensure proper types
         const patchListData = {
           name: name || "Untitled Mixer Patch List",
           rows: rows || [],
           bookingId: bookingId || null,
-          createdBy: user.userId,
+          createdBy: userId,
           // Don't pass timestamp fields - let database handle defaults
         };
 
@@ -18337,13 +18309,12 @@ This is a preview of the performance engagement contract. Final agreement will i
     async (req: Request, res: Response) => {
       try {
         const id = parseInt(req.params.id);
-        const user = req.user!;
+        const userId = req.user!.userId;
+        const roleIds = await storage.getUserRoleIds(userId)
 
         // Only superadmin can delete patch lists
-        if (user.roleId !== 1) {
-          return res
-            .status(403)
-            .json({ message: "Only superadmins can delete mixer patch lists" });
+        if (roleIds.includes(1)) {
+          return res.status(403).json({ message: "Only superadmins can delete mixer patch lists" });
         }
 
         await storage.deleteMixerPatchList(id);
@@ -18376,16 +18347,7 @@ This is a preview of the performance engagement contract. Final agreement will i
     async (req: Request, res: Response) => {
       try {
         const { name, description, songs } = req.body;
-        const user = req.user;
-
-        console.log("Setlist template save - User object:", user);
-
-        if (!user || !user.userId) {
-          console.log("Authentication failed - user or user.userId missing");
-          return res
-            .status(401)
-            .json({ message: "User authentication required" });
-        }
+        const userId = req.user!.userId;
 
         // Calculate total duration
         const totalDuration = songs.reduce((acc: number, song: any) => {
@@ -18397,7 +18359,7 @@ This is a preview of the performance engagement contract. Final agreement will i
           description: description || "",
           songs: songs || [],
           totalDuration,
-          createdBy: user.userId,
+          createdBy: userId,
         };
 
         console.log("Creating setlist template with data:", templateData);
@@ -18416,7 +18378,8 @@ This is a preview of the performance engagement contract. Final agreement will i
     async (req: Request, res: Response) => {
       try {
         const id = parseInt(req.params.id);
-        const user = req.user!;
+        const userId = req.user!.userId;
+        const roleIds = await storage.getUserRoleIds(userId)
 
         // Check if user owns the template or is superadmin/admin
         const template = await storage.getSetlistTemplate(id);
@@ -18424,13 +18387,8 @@ This is a preview of the performance engagement contract. Final agreement will i
           return res.status(404).json({ message: "Template not found" });
         }
 
-        if (
-          template.createdBy !== user.userId &&
-          ![1, 2].includes(user.roleId)
-        ) {
-          return res
-            .status(403)
-            .json({ message: "Can only delete your own templates" });
+        if (template.createdBy !== userId && !(roleIds.some(r => [1, 2].includes(r)))) {
+          return res.status(403).json({ message: "Can only delete your own templates" });
         }
 
         await storage.deleteSetlistTemplate(id);
@@ -18456,7 +18414,7 @@ This is a preview of the performance engagement contract. Final agreement will i
     async (req: Request, res: Response) => {
       try {
         const bookingId = parseInt(req.params.id);
-        const user = req.user!;
+        const userId = req.user!.userId;
 
         const preview = await financialAutomation.generateInvoicePreview(
           bookingId
@@ -18478,11 +18436,11 @@ This is a preview of the performance engagement contract. Final agreement will i
     async (req: Request, res: Response) => {
       try {
         const bookingId = parseInt(req.params.id);
-        const user = req.user!;
+        const userId = req.user!.userId;
 
         const invoiceId = await financialAutomation.createProformaInvoice(
           bookingId,
-          user.userId
+          userId
         );
 
         res.json({
@@ -18532,12 +18490,12 @@ This is a preview of the performance engagement contract. Final agreement will i
     async (req: Request, res: Response) => {
       try {
         const bookingId = parseInt(req.params.id);
-        const user = req.user!;
+        const userId = req.user!.userId;
 
         const invoiceId =
           await financialAutomation.generateInvoiceOnBookingAcceptance(
             bookingId,
-            user.userId
+            userId
           );
 
         res.json({
@@ -18561,7 +18519,7 @@ This is a preview of the performance engagement contract. Final agreement will i
       try {
         const bookingId = parseInt(req.params.id);
         const performerUserId = parseInt(req.params.performerId);
-        const user = req.user!;
+        const userId = req.user!.userId;
         const { requestType = "performance_fee" } = req.body;
 
         const payoutId =
@@ -18569,7 +18527,7 @@ This is a preview of the performance engagement contract. Final agreement will i
             bookingId,
             performerUserId,
             requestType,
-            user.userId
+            userId
           );
 
         res.json({
@@ -18588,11 +18546,9 @@ This is a preview of the performance engagement contract. Final agreement will i
   app.post(
     "/api/bookings/:id/payment-transaction",
     authenticateToken,
-    requireRole([1, 2]),
     async (req: Request, res: Response) => {
       try {
         const bookingId = parseInt(req.params.id);
-        const user = req.user!;
         const {
           transactionType,
           amount,
@@ -18635,14 +18591,14 @@ This is a preview of the performance engagement contract. Final agreement will i
     async (req: Request, res: Response) => {
       try {
         const bookingId = parseInt(req.params.id);
-        const user = req.user!;
+        const userId = req.user!.userId;
         const { paymentId, contractIds = [] } = req.body;
 
         const receiptId = await financialAutomation.generateReceiptWithLinkage(
           bookingId,
           paymentId,
           contractIds,
-          user.userId
+          userId
         );
 
         res.json({
@@ -18661,11 +18617,11 @@ This is a preview of the performance engagement contract. Final agreement will i
   app.get(
     "/api/bookings/:id/financial-summary",
     authenticateToken,
-    requireRole([1, 2]),
     async (req: Request, res: Response) => {
       try {
         const bookingId = parseInt(req.params.id);
-        const user = req.user!;
+        const userId = req.user!.userId;
+        const roleIds = await storage.getUserRoleIds(userId)
 
         // Check permissions - allow users to view their own bookings
         const booking = await storage.getBooking(bookingId);
@@ -18674,10 +18630,11 @@ This is a preview of the performance engagement contract. Final agreement will i
         }
 
         // Allow access if user is superadmin/admin, or booking owner, or assigned to booking
-        const hasAccess = booking.userId === user.userId ||
-          booking.mainArtistUserId === user.userId;
+        const isAdmin = roleIds.some(r => [1, 2].includes(r))
+        const hasAccess = booking.bookerUserId === userId || booking.primaryArtistUserId === userId;
 
-        if (!hasAccess) {
+
+        if (!hasAccess && !isAdmin) {
           return res.status(403).json({
             message: "Insufficient permissions to view financial summary",
           });
@@ -18699,30 +18656,31 @@ This is a preview of the performance engagement contract. Final agreement will i
   app.patch(
     "/api/bookings/:id/status",
     authenticateToken,
-    requireRole([1, 2]),
     async (req: Request, res: Response) => {
       try {
         const bookingId = parseInt(req.params.id);
-        const user = req.user!;
+        const userId = req.user!.userId;
+        const roleIds = await storage.getUserRoleIds(userId)
         const { status: newStatus } = req.body;
 
         // Get current booking to check old status
-        const currentBooking = await storage.getBooking(bookingId);
-        if (!currentBooking) {
+        const booking = await storage.getBooking(bookingId);
+        if (!booking) {
           return res.status(404).json({ message: "Booking not found" });
         }
 
         // Check permissions
-        const hasAccess = currentBooking.userId === user.userId ||
-          currentBooking.mainArtistUserId === user.userId;
+        const isAdmin = roleIds.some(r => [1, 2].includes(r))
+        const hasAccess = booking.bookerUserId === userId || booking.primaryArtistUserId === userId;
 
-        if (!hasAccess) {
+
+        if (!hasAccess && !isAdmin) {
           return res.status(403).json({
-            message: "Insufficient permissions to update booking status",
+            message: "Insufficient permissions to view financial summary",
           });
         }
 
-        const oldStatus = currentBooking.status;
+        const oldStatus = booking.status!;
 
         // Update booking status
         const updatedBooking = await storage.updateBookingStatus(
@@ -18741,7 +18699,7 @@ This is a preview of the performance engagement contract. Final agreement will i
           bookingId,
           oldStatus,
           newStatus,
-          user.userId
+          userId
         );
 
         res.json({
@@ -18819,7 +18777,6 @@ This is a preview of the performance engagement contract. Final agreement will i
   app.get(
     "/api/financial/invoice/:invoiceId/pdf",
     authenticateToken,
-    requireRole([1, 2]),
     async (req: Request, res: Response) => {
       try {
         const invoiceId = parseInt(req.params.invoiceId);
@@ -20178,12 +20135,10 @@ This is a preview of the performance engagement contract. Final agreement will i
     async (req: Request, res: Response) => {
       try {
         const { managedTalentId, assigneeId } = req.query;
-        const currentUserId = req.user?.userId;
 
         // Get user with multi-roles
-        const user = await storage.getUser(currentUserId || 0);
-        const userRoles = await storage.getUserRoles(user.id);
-        const roleIds = userRoles.map((r) => r.id);
+        const userId = req.user!.userId;
+        const roleIds = await storage.getUserRoleIds(userId)
 
         // Admin / Superadmin check
         const isAdminOrSuperadmin = roleIds.includes(1) || roleIds.includes(2);
@@ -20193,7 +20148,7 @@ This is a preview of the performance engagement contract. Final agreement will i
         if (managedTalentId) {
           // Check if user can access this managed talent's assignments
           const requestedTalentId = parseInt(managedTalentId as string);
-          if (!isAdminOrSuperadmin && currentUserId !== requestedTalentId) {
+          if (!isAdminOrSuperadmin && userId !== requestedTalentId) {
             return res
               .status(403)
               .json({ message: "Insufficient permissions" });
@@ -20212,7 +20167,7 @@ This is a preview of the performance engagement contract. Final agreement will i
         } else {
           // Regular users can only see their own (as managed talent or assignee)
           assignments = await storage.getArtistMusicianAssignmentsByUser(
-            currentUserId
+            userId
           );
         }
 
@@ -20232,36 +20187,25 @@ This is a preview of the performance engagement contract. Final agreement will i
     async (req: Request, res: Response) => {
       try {
         const assignmentData = req.body;
-        const currentUserId = req.user?.userId;
 
         // Get user + roles
-        const user = await storage.getUser(currentUserId || 0);
-        const userRoles = await storage.getUserRoles(user.id);
-        const roleIds = userRoles.map((r) => r.id);
+        const userId = req.user!.userId;
+        const roleIds = await storage.getUserRoleIds(userId)
 
         // Admin / Superadmin check
         const isAdminOrSuperadmin = roleIds.includes(1) || roleIds.includes(2);
 
         // Permission check
-        if (
-          !isAdminOrSuperadmin &&
-          currentUserId !== assignmentData.managedTalentId
-        ) {
-          return res
-            .status(403)
-            .json({ message: "Can only create assignments for yourself" });
+        if (!isAdminOrSuperadmin && userId !== assignmentData.managedTalentId) {
+          return res.status(403).json({ message: "Can only create assignments for yourself" });
         }
 
-        const assignment = await storage.createArtistMusicianAssignment(
-          assignmentData
-        );
+        const assignment = await storage.createArtistMusicianAssignment(assignmentData);
 
         res.status(201).json(assignment);
       } catch (error) {
         console.error("❌ Create artist-musician assignment error:", error);
-        res
-          .status(500)
-          .json({ message: "Failed to create artist-musician assignment" });
+        res.status(500).json({ message: "Failed to create artist-musician assignment" });
       }
     }
   );
@@ -20272,7 +20216,6 @@ This is a preview of the performance engagement contract. Final agreement will i
     async (req: Request, res: Response) => {
       try {
         const assignmentId = parseInt(req.params.id);
-        const currentUserId = req.user?.userId;
 
         const assignment = await storage.getArtistMusicianAssignment(
           assignmentId
@@ -20282,18 +20225,14 @@ This is a preview of the performance engagement contract. Final agreement will i
         }
 
         // Get user + all roles
-        const user = await storage.getUser(currentUserId || 0);
-        const userRoles = await storage.getUserRoles(user.id);
-        const roleIds = userRoles.map((r) => r.id);
-
+        const userId = req.user!.userId;
+        const roleIds = await storage.getUserRoleIds(userId)
         // Check admin / superadmin
         const isAdminOrSuperadmin = roleIds.includes(1) || roleIds.includes(2);
 
         // Permission check
         if (
-          !isAdminOrSuperadmin &&
-          currentUserId !== assignment.managedTalentId &&
-          currentUserId !== assignment.assigneeId
+          !isAdminOrSuperadmin && userId !== assignment.managedTalentId && userId !== assignment.assigneeId
         ) {
           return res
             .status(403)
@@ -20317,7 +20256,6 @@ This is a preview of the performance engagement contract. Final agreement will i
       try {
         const assignmentId = parseInt(req.params.id);
         const updates = req.body;
-        const currentUserId = req.user?.userId;
 
         // Get existing assignment
         const existingAssignment = await storage.getArtistMusicianAssignment(
@@ -20328,18 +20266,14 @@ This is a preview of the performance engagement contract. Final agreement will i
         }
 
         // Get user roles
-        const user = await storage.getUser(currentUserId || 0);
-        const userRoles = await storage.getUserRoles(user.id);
-        const roleIds = userRoles.map((r) => r.id);
+        const userId = req.user!.userId;
+        const roleIds = await storage.getUserRoleIds(userId)
 
         // Admin / Superadmin check
         const isAdminOrSuperadmin = roleIds.includes(1) || roleIds.includes(2);
 
         // Permission check
-        if (
-          !isAdminOrSuperadmin &&
-          currentUserId !== existingAssignment.managedTalentId
-        ) {
+        if (!isAdminOrSuperadmin && userId !== existingAssignment.managedTalentId) {
           return res
             .status(403)
             .json({ message: "Can only update your own assignments" });
@@ -20366,32 +20300,24 @@ This is a preview of the performance engagement contract. Final agreement will i
     async (req: Request, res: Response) => {
       try {
         const assignmentId = parseInt(req.params.id);
-        const currentUserId = req.user?.userId;
 
         // Get existing assignment
-        const existingAssignment = await storage.getArtistMusicianAssignment(
-          assignmentId
-        );
+        const existingAssignment = await storage.getArtistMusicianAssignment(assignmentId);
         if (!existingAssignment) {
           return res.status(404).json({ message: "Assignment not found" });
         }
 
         // Get user roles
-        const user = await storage.getUser(currentUserId || 0);
-        const userRoles = await storage.getUserRoles(user.id);
-        const roleIds = userRoles.map((r) => r.id);
+        const userId = req.user!.userId;
+        const roleIds = await storage.getUserRoleIds(userId)
 
         // Admin / Superadmin check
         const isAdminOrSuperadmin = roleIds.includes(1) || roleIds.includes(2);
 
         // Permission check
-        if (
-          !isAdminOrSuperadmin &&
-          currentUserId !== existingAssignment.managedTalentId
+        if (!isAdminOrSuperadmin && userId !== existingAssignment.managedTalentId
         ) {
-          return res
-            .status(403)
-            .json({ message: "Can only remove your own assignments" });
+          return res.status(403).json({ message: "Can only remove your own assignments" });
         }
 
         // Delete assignment
@@ -20641,7 +20567,7 @@ This is a preview of the performance engagement contract. Final agreement will i
   app.get(
     "/api/opportunities",
     authenticateToken,
-    requireRole(ROLE_GROUPS.NON_FANS),
+    requireRole([1, 2, 3, 4, 5, 6, 7, 8]),
     async (req: Request, res: Response) => {
       try {
         const { categoryId, status, isVerified, is_demo } = req.query;
@@ -20678,10 +20604,9 @@ This is a preview of the performance engagement contract. Final agreement will i
     }
   );
 
-  app.get(
-    "/api/opportunities/:id",
+  app.get("/api/opportunities/:id",
     authenticateToken,
-    requireRole(ROLE_GROUPS.NON_FANS),
+    requireRole([1, 2, 3, 4, 5, 6, 7, 8]),
     async (req: Request, res: Response) => {
       try {
         const id = parseInt(req.params.id);
@@ -20762,7 +20687,7 @@ This is a preview of the performance engagement contract. Final agreement will i
         const filter = new OppHubAdvancedFiltering(storage);
 
         const { criteria } = req.body;
-        const userProfile = await storage.getUserProfile(req.user?.userId);
+        const userProfile = await storage.getUserProfile(req.user!.userId);
 
         const filteredOpportunities = await filter.getFilteredOpportunities(
           criteria,
@@ -20818,9 +20743,7 @@ This is a preview of the performance engagement contract. Final agreement will i
         );
         const filter = new OppHubAdvancedFiltering(storage);
 
-        const report = await filter.generatePersonalizedReport(
-          req.user?.userId
-        );
+        const report = await filter.generatePersonalizedReport(req.user!.userId);
 
         res.json({
           success: true,
@@ -29267,12 +29190,12 @@ ${messageData.messageText}
         if (isNaN(bookingId)) {
           return res.status(400).json({ message: "Invalid booking ID" });
         }
-
+  
         const booking = await storage.getBookingById(bookingId);
         if (!booking) {
           return res.status(404).json({ message: "Booking not found" });
         }
-
+  
         // Parallel loading
         const [
           signatures,
@@ -29282,7 +29205,8 @@ ${messageData.messageText}
           dbTechnicalRider,
           dbStagePlot,
           dbContracts,
-          dbInvoices, // 🧾 new
+          dbInvoices,
+          dbReceipts,
         ] = await Promise.all([
           storage.getContractSignatures(bookingId),
           storage.getPayments(bookingId),
@@ -29292,15 +29216,15 @@ ${messageData.messageText}
           storage.getStagePlotByBooking(bookingId),
           storage.getContractByBooking(bookingId),
           storage.getInvoicesByBooking(bookingId),
+          db.select().from(schema.receipts).where(eq(schema.receipts.bookingId, bookingId)),
         ]);
-
-        // 👇 Populate assigned performers (if available)
+  
+        // 👇 Enrich contracts with performer info
         const assignedMembers = await db
           .select()
           .from(schema.bookingAssignmentsMembers)
           .where(eq(schema.bookingAssignmentsMembers.bookingId, bookingId));
-
-        // Fetch performer details for each assigned member
+  
         const performers = await Promise.all(
           assignedMembers.map(async (member) => {
             const user = await storage.getUser(member.userId);
@@ -29311,7 +29235,7 @@ ${messageData.messageText}
                 .from(schema.rolesManagement)
                 .where(eq(schema.rolesManagement.id, member.roleInBooking))
                 .limit(1));
-
+  
             return {
               ...member,
               user,
@@ -29319,21 +29243,18 @@ ${messageData.messageText}
             };
           })
         );
-
-        // 👇 Enrich contracts with performer info and individual pricing
+  
         const contracts = await Promise.all(
           dbContracts.map(async (contract: any) => {
             let assignedUser = null;
             let assignedUserPrice = null;
-
+  
             if (contract.assignedToUserId) {
               assignedUser = await storage.getUser(contract.assignedToUserId);
-
-              // extract performer-specific price
               const pricing = contract.content?.individualPricing || {};
               assignedUserPrice = pricing?.[contract.assignedToUserId] ?? null;
             }
-
+  
             return {
               ...contract,
               assignedUser,
@@ -29341,20 +29262,19 @@ ${messageData.messageText}
             };
           })
         );
-
-        // --- Workflow fallback
+  
         const workflowData = booking.workflowData || {};
         const technicalRider = dbTechnicalRider ?? workflowData.technicalRider ?? {};
         const stagePlot = dbStagePlot ?? workflowData.stagePlot ?? {};
-
-        // --- Response object ---
+  
+        const bookingAgreement = contracts.find(c => c.contractType === "booking_agreement");
+        const agreementSigned = bookingAgreement?.status === "signed";
+        const paymentCompleted = dbInvoices.some(i => i.status === "paid");
+  
         const bookingDetails = {
           ...booking,
           primaryArtist: primaryArtist || null,
-          booker: booker || {
-            guestName: booking.guestName,
-            guestEmail: booking.guestEmail,
-          },
+          booker: booker || { guestName: booking.guestName, guestEmail: booking.guestEmail },
           performers,
           technicalRider,
           stagePlot,
@@ -29362,8 +29282,11 @@ ${messageData.messageText}
           payments,
           contracts,
           invoices: dbInvoices,
+          receipts: dbReceipts, // array of receipts
+          agreementSigned,
+          paymentCompleted,
         };
-
+  
         res.json(bookingDetails);
       } catch (error) {
         console.error("❌ Get booking error:", error);
