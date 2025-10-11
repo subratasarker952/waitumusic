@@ -3,7 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import { useAuth } from '@/contexts/AuthContext';
 import AuthorizedRoute from '@/components/AuthorizedRoute';
 import BookingWorkflow from '@/components/booking/ComprehensiveBookingWorkflow';
@@ -13,9 +13,12 @@ import {
   Music, Zap, Move, Hash
 } from 'lucide-react';
 import { useLocation } from 'wouter';
+import { apiRequest, queryClient } from '@/lib/queryClient';
+import { useToast } from '@/hooks/use-toast';
 
 export default function ComprehensiveWorkflow() {
   const [, setLocation] = useLocation();
+  const { toast } = useToast();
   const { user, isLoading: authLoading, roles } = useAuth();
   const [selectedBookingId, setSelectedBookingId] = useState<number | null>(null);
 
@@ -61,10 +64,37 @@ export default function ComprehensiveWorkflow() {
     }
   };
 
+  const updateBookingMutation = useMutation({
+    mutationFn: async (data: any) => {
+      const response = await apiRequest(`/api/bookings/${selectedBookingId}`, {
+        method: "PATCH",
+        body: data,
+      });
+      // যদি backend error দিয়ে থাকে
+      if (!data || data.error) {
+        throw new Error(data?.message || "Failed to create assignment");
+      }
+      return response
+    },
+    onSuccess: () => {
+      // Only invalidate the specific booking queries
+      queryClient.invalidateQueries({ queryKey: ["booking-workflow", selectedBookingId], });
+      queryClient.invalidateQueries({ queryKey: ["booking-assigned-talent", selectedBookingId], });
+      toast({ title: "Success", description: "Booking updated successfully" });
+    },
+    onError: () => {
+      toast({
+        title: "Error",
+        description: "Failed to update booking",
+        variant: "destructive",
+      });
+    },
+  });
+
   function formatEventDates(eventDates: any[]) {
     return eventDates.map(({ eventDate, startTime, endTime }) => {
       const dateObj = new Date(eventDate);
-      const formattedDate = dateObj.toLocaleDateString("en-US",{ month: "short", day: "numeric", year: "numeric" });
+      const formattedDate = dateObj.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
 
       const formatTime = (time: any) => {
         const [hour, minute] = time?.split(":")?.map(Number);
@@ -76,7 +106,7 @@ export default function ComprehensiveWorkflow() {
       return <p className='whitespace-nowrap' key={eventDate}>{formattedDate} ({formatTime(startTime)} - {formatTime(endTime)})</p>;
     });
   }
-  
+
   // Show loading state while authentication is being checked
   if (authLoading) {
     return (
@@ -170,7 +200,7 @@ export default function ComprehensiveWorkflow() {
                             </div>
                             <Badge className={getStatusColor(booking.status)}>
                               {getStatusIcon(booking.status)}
-                              <span className="ml-1">{booking.status}</span>
+                              <span className="ml-1 capitalize">{booking.status}</span>
                             </Badge>
                           </div>
 
@@ -183,15 +213,7 @@ export default function ComprehensiveWorkflow() {
                             <div className="flex items-center gap-2">
                               <Calendar className="h-4 w-4 text-muted-foreground" />
                               <span>
-                                {booking.eventDate
-                                  ? new Date(booking.eventDate).toLocaleDateString('en-US', {
-                                    weekday: 'short',
-                                    year: 'numeric',
-                                    month: 'short',
-                                    day: 'numeric'
-                                  })
-                                  : 'Date TBD'
-                                }
+                                {formatEventDates(booking.eventDates)}
                               </span>
                             </div>
 
@@ -290,11 +312,63 @@ export default function ComprehensiveWorkflow() {
                       </div>
                       <div>
                         <p className="text-sm font-medium text-muted-foreground">Status</p>
-                        <Badge className={getStatusColor(currentBooking.status)}>
-                          <span className='capitalize'>
-                            {currentBooking.status}
-                          </span>
-                        </Badge>
+                        <div className='flex flex-col gap-2'>
+                          <Badge className={getStatusColor(currentBooking.status)}>
+                            <p className='capitalize mx-auto w-full'>
+                              {currentBooking.status}
+                            </p>
+                          </Badge>
+
+                          <div className="flex gap-2">
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              className="border-green-500 text-green-700 hover:bg-green-50 w-full"
+                              onClick={async () => {
+                                try {
+                                  await updateBookingMutation.mutateAsync({ status: "approved",adminApprovedAt: new Date() });
+                                  toast({
+                                    title: "Booking Approved",
+                                    description:
+                                      "The booking has been approved by admin",
+                                  });
+                                } catch (error) {
+                                  toast({
+                                    title: "Error",
+                                    description: "Failed to approve booking",
+                                    variant: "destructive",
+                                  });
+                                }
+                              }}
+                            >
+                              Approved Booking
+                            </Button>
+
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              className="border-red-500 text-red-700 hover:bg-red-50 w-full"
+                              onClick={async () => {
+                                try {
+                                  await updateBookingMutation.mutateAsync({ status: "rejected", });
+                                  toast({
+                                    title: "Booking Declined",
+                                    description:
+                                      "The booking has been rejected by admin",
+                                  });
+                                } catch (error) {
+                                  toast({
+                                    title: "Error",
+                                    description: "Failed to reject booking",
+                                    variant: "destructive",
+                                  });
+                                }
+                              }}
+                            >
+                              Rejected Booking
+                            </Button>
+                          </div>
+                        </div>
                       </div>
                     </div>
                   ) : (

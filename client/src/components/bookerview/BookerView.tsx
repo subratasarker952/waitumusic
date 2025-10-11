@@ -124,6 +124,11 @@ export default function BookerView() {
       icon: <Briefcase className="h-4 w-4" />,
     },
     {
+      value: "performer",
+      label: "Performer",
+      icon: <FileText className="h-4 w-4" />,
+    },
+    {
       value: "contracts",
       label: "Contracts",
       icon: <FileText className="h-4 w-4" />,
@@ -158,6 +163,8 @@ export default function BookerView() {
       );
     });
   }
+
+  const totalBookingPrice = booking.contracts?.find((c: any) => c.contractType === "booking_agreement").content.totalBookingPrice
 
   const renderBookingActions = () => {
     const canRespond =
@@ -236,7 +243,7 @@ export default function BookerView() {
                 <DollarSign className="h-4 w-4 text-muted-foreground" />
                 <span>
                   Final Price:{" "}
-                  {booking.finalPrice ? `$${booking.finalPrice}` : "Price TBD"}
+                  {booking.finalPrice ? `$${booking.finalPrice}` : `$${parseInt(totalBookingPrice) + booking.totalBudget * 0.08}`}
                 </span>
               </div>
             </div>
@@ -263,7 +270,7 @@ export default function BookerView() {
           ))}
         </TabsList>
         <TabsContent value="overview">
-          <Card className="bg-white shadow-lg rounded-lg">
+          <Card>
             <CardHeader>
               <CardTitle className="text-xl font-semibold text-gray-800">
                 Booking Overview
@@ -333,10 +340,168 @@ export default function BookerView() {
               </div>
             </CardContent>
           </Card>
+
+          <Card className="mt-6">
+            <CardHeader>
+              <CardTitle>Documents</CardTitle>
+              <CardDescription>View or download your agreement and invoices</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="flex flex-wrap gap-3 mt-4">
+                {/* Agreement */}
+                {booking?.agreementSigned ? (
+                  <Button asChild variant="outline" size="sm">
+                    <a href={booking.agreementPdfUrl} target="_blank" rel="noopener noreferrer">
+                      <FileText className="h-4 w-4 mr-1" /> View Agreement
+                    </a>
+                  </Button>
+                ) : (
+                  <Button disabled variant="outline" size="sm">
+                    <FileText className="h-4 w-4 mr-1" /> Agreement Pending
+                  </Button>
+                )}
+
+                {/* Due Invoice */}
+                {booking?.agreementSigned && !booking?.paymentCompleted && (
+                  <Button asChild variant="outline" size="sm">
+                    <a href={booking.dueInvoiceUrl} target="_blank" rel="noopener noreferrer">
+                      <Download className="h-4 w-4 mr-1" /> Download Due Invoice
+                    </a>
+                  </Button>
+                )}
+
+                {/* Paid Invoice */}
+                {booking?.paymentCompleted && booking?.paidInvoiceUrl && (
+                  <Button asChild variant="outline" size="sm">
+                    <a href={booking.paidInvoiceUrl} target="_blank" rel="noopener noreferrer">
+                      <Download className="h-4 w-4 mr-1" /> Download Paid Invoice
+                    </a>
+                  </Button>
+                )}
+
+                {/* Receipt */}
+                {booking?.paymentCompleted && booking?.receiptUrl && (
+                  <Button asChild variant="outline" size="sm">
+                    <a href={booking.receiptUrl} target="_blank" rel="noopener noreferrer">
+                      <Download className="h-4 w-4 mr-1" /> Download Receipt
+                    </a>
+                  </Button>
+                )}
+              </div>
+            </CardContent>
+          </Card>
         </TabsContent>
 
         <TabsContent value="contracts">
           <ContractsTab booking={booking}></ContractsTab>
+        </TabsContent>
+
+        <TabsContent value="performer">
+          <Card className="mt-6">
+            <CardHeader>
+              <CardTitle>Performers & Agreements</CardTitle>
+              <CardDescription>
+                See all assigned performers, their fees, and contract status
+              </CardDescription>
+            </CardHeader>
+
+            <CardContent>
+              {booking.contracts?.filter((c: any) => c.contractType === "performance_contract")
+                .length > 0 ? (
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                  {booking.contracts
+                    .filter((c: any) => c.contractType === "performance_contract")
+                    .map((contract: any) => {
+                      const performerId = contract.assignedToUserId;
+                      if (!performerId) return null;
+
+                      const performer = booking.assignedTalent?.find(
+                        (t: any) => t.userId === performerId
+                      );
+
+                      const performerName = performer?.fullName || `Performer #${performerId}`;
+                      const performerAvatar = performer?.avatarUrl;
+
+                      const individualPrice =
+                        contract.content?.individualPricing?.[performerId]?.price ??
+                        contract.content?.totalBookingPrice ??
+                        0;
+
+                      const isSigned = contract.status === "signed";
+                      const pdfUrl = contract.pdfUrl;
+
+                      return (
+                        <div
+                          key={contract.id}
+                          className="flex flex-col border rounded-xl p-4 bg-muted/30 hover:bg-muted/50 transition-all shadow-sm"
+                        >
+                          {/* Avatar & Name */}
+                          <div className="flex items-center gap-3 mb-3">
+                            {performerAvatar ? (
+                              <img
+                                src={performerAvatar}
+                                alt={performerName}
+                                className="h-12 w-12 rounded-full object-cover border"
+                              />
+                            ) : (
+                              <div className="h-12 w-12 rounded-full bg-gray-300 flex items-center justify-center text-sm font-semibold text-gray-700">
+                                {performerName.charAt(0).toUpperCase()}
+                              </div>
+                            )}
+
+                            <div>
+                              <p className="font-medium text-base">{performerName}</p>
+                              <p
+                                className={`text-sm ${isSigned ? "text-green-600" : "text-yellow-600"
+                                  }`}
+                              >
+                                {isSigned ? "Signed" : "Pending Signature"}
+                              </p>
+                            </div>
+                          </div>
+
+                          {/* Performer Details */}
+                          <div className="text-sm text-muted-foreground flex-1 space-y-1">
+                            <p>Price: ৳{Number(individualPrice).toLocaleString()}</p>
+                            {performer?.gender && (
+                              <p>Gender: {performer.gender}</p>
+                            )}
+                            {performer?.phoneNumber && (
+                              <p>Phone: {performer.phoneNumber}</p>
+                            )}
+                          </div>
+
+                          {/* Action Button */}
+                          <div className="mt-4">
+                            {isSigned && pdfUrl ? (
+                              <Button
+                                asChild
+                                variant="outline"
+                                size="sm"
+                                className="w-full"
+                              >
+                                <a href={pdfUrl} target="_blank" rel="noopener noreferrer">
+                                  <Download className="h-4 w-4 mr-1" /> Agreement
+                                </a>
+                              </Button>
+                            ) : (
+                              <Button disabled variant="outline" size="sm" className="w-full">
+                                Pending
+                              </Button>
+                            )}
+                          </div>
+                        </div>
+                      );
+                    })}
+                </div>
+              ) : (
+                <p className="text-sm text-muted-foreground text-center py-3">
+                  No performer agreements yet.
+                </p>
+              )}
+            </CardContent>
+
+          </Card>
         </TabsContent>
 
         <TabsContent value="payment">

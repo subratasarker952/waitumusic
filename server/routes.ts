@@ -3139,27 +3139,36 @@ export async function registerRoutes(app: Express): Promise<Server> {
       try {
         const bookingId = parseInt(req.params.id);
         const userId = req.user?.userId;
-  
+
         if (isNaN(bookingId) || !userId) {
           return res.status(400).json({ message: "Invalid booking or user" });
         }
-  
-        // 🧩 1️⃣ Check if user is the booker of this booking
+
+        // 🧩 Step 1: Verify ownership
         const booking = await storage.getBookingById(bookingId);
         if (!booking) {
           return res.status(404).json({ message: "Booking not found" });
         }
-  
+
         if (booking.bookerUserId !== userId) {
           return res.status(403).json({ message: "You are not authorized to view this booking" });
         }
-  
-        // 🧩 2️⃣ Fetch related data
+
+        // 🧩 Step 2: Fetch related data in parallel
         const [contracts, technicalRiders, signatures, assignedTalent] = await Promise.all([
-          db.select().from(schema.contracts).where(eq(schema.contracts.bookingId, bookingId)),
-  
-          db.select().from(schema.technicalRiders).where(eq(schema.technicalRiders.bookingId, bookingId)),
-  
+          // 🧾 Contracts
+          db
+            .select()
+            .from(schema.contracts)
+            .where(eq(schema.contracts.bookingId, bookingId)),
+
+          // ⚙️ Technical Riders
+          db
+            .select()
+            .from(schema.technicalRiders)
+            .where(eq(schema.technicalRiders.bookingId, bookingId)),
+
+          // ✍️ Contract Signatures
           db
             .select({
               signatureId: schema.contractSignatures.id,
@@ -3175,25 +3184,69 @@ export async function registerRoutes(app: Express): Promise<Server> {
             .from(schema.contractSignatures)
             .innerJoin(schema.contracts, eq(schema.contractSignatures.contractId, schema.contracts.id))
             .where(eq(schema.contracts.bookingId, bookingId)),
-  
-          // Assigned talent list
+
+          // 🎭 Assigned talent list (with user details)
           db
             .select({
               userId: schema.bookingAssignmentsMembers.userId,
               status: schema.bookingAssignmentsMembers.status,
-              role: schema.bookingAssignmentsMembers.roleInBooking,
+              roleId: schema.bookingAssignmentsMembers.roleInBooking,
+              selectedTalent: schema.bookingAssignmentsMembers.selectedTalent,
+
+              // 🧍 User info
+              fullName: schema.users.fullName,
+              avatarUrl: schema.users.avatarUrl,
+              gender: schema.users.gender,
+              phoneNumber: schema.users.phoneNumber,
+              privacySetting: schema.users.privacySetting,
             })
             .from(schema.bookingAssignmentsMembers)
+            .innerJoin(schema.users, eq(schema.bookingAssignmentsMembers.userId, schema.users.id))
             .where(eq(schema.bookingAssignmentsMembers.bookingId, bookingId)),
         ]);
-  
-        // ✅ Final response
+
+        // 🧩 Step 3: Enhance assignedTalent with role & instrument info
+        const detailedAssignedTalent = await Promise.all(
+          assignedTalent.map(async (talent: any) => {
+            const [roleData, instrumentData] = await Promise.all([
+              talent.roleId
+                ? db
+                  .select({
+                    id: schema.rolesManagement.id,
+                    name: schema.rolesManagement.name,
+                  })
+                  .from(schema.rolesManagement)
+                  .where(eq(schema.rolesManagement.id, talent.roleId))
+                  .limit(1)
+                : Promise.resolve([]),
+
+              talent.selectedTalent
+                ? db
+                  .select({
+                    id: schema.allInstruments.id,
+                    name: schema.allInstruments.name,
+                  })
+                  .from(schema.allInstruments)
+                  .where(eq(schema.allInstruments.id, talent.selectedTalent))
+                  .limit(1)
+                : Promise.resolve([]),
+            ]);
+
+            return {
+              ...talent,
+              role: roleData[0] || null,
+              selectedTalent: instrumentData[0] || null,
+            };
+          })
+        );
+
+        // ✅ Step 4: Send full response
         res.json({
           ...booking,
           contracts,
           technicalRiders,
           signatures,
-          assignedTalent,
+          assignedTalent: detailedAssignedTalent,
         });
       } catch (error) {
         logError(error, ErrorSeverity.ERROR, {
@@ -3205,7 +3258,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       }
     }
   );
-  
+
 
 
   app.get(
@@ -10173,11 +10226,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
           return res.status(400).json({ message: "Invalid booking ID" });
         }
 
-        const { contractType, title, content, metadata, status, assignedToUserId, autoSign=false } = req.body;
+        const { contractType, title, content, metadata, status, assignedToUserId, autoSign = false } = req.body;
+
         if (!contractType || !title || !content) {
           return res.status(400).json({ message: "Missing required contract data" });
         }
-
         const createdByUserId = req.user!.userId;
 
         // Contract create/update
@@ -10192,6 +10245,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
           assignedToUserId,
         });
 
+        const totalBookingPrice = content.totalBookingPrice
+        await storage.updateBooking(bookingId, { finalPrice: totalBookingPrice })
         // **Signature record তৈরি**  
         await storage.createOrUpdateDefaultSignatures(newContract.contract.id, bookingId, assignedToUserId || undefined, autoSign);
 
