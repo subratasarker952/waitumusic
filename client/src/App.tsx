@@ -43,6 +43,7 @@ import MusicianRateManagement from "@/pages/MusicianRateManagement";
 import ComprehensiveWorkflow from "@/pages/ComprehensiveWorkflow";
 import ComprehensiveBookingWorkflow from "@/components/booking/ComprehensiveBookingWorkflow";
 import GigHub from "@/components/gighub/GigHub";
+import BookerView from "@/components/bookerview/BookerView";
 import Users from "@/pages/Users";
 import OppHubMarketplace from "@/pages/OppHubMarketplace";
 import EnhancedOppHubMarketplace from "@/pages/EnhancedOppHubMarketplace";
@@ -86,7 +87,6 @@ import Albums from "@/pages/Albums";
 import HospitalityRequirements from "@/pages/HospitalityRequirements";
 import TechnicalRequirements from "@/pages/TechnicalRequirements";
 import PerformanceRequirements from "@/pages/PerformanceRequirements";
-import BookerView from "./components/bookerview/BookerView";
 
 function Router() {
   return (

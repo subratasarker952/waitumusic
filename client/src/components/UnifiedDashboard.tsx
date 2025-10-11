@@ -261,7 +261,7 @@ export default function UnifiedDashboard({ stats, bookings, applications }: Unif
   };
 
   const handleViewBooking = (booking: any) => {
-    setLocation(`/bookings/${booking.id}`);
+    setLocation(`/my-bookings/${booking.id}`);
   };
 
 
